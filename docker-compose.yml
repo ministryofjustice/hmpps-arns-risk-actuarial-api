@@ -1,11 +1,11 @@
 version: "3"
 services:
-  hmpps-template-kotlin:
+  hmpps-arns-risk-actuarial-api:
     build:
       context: .
     networks:
       - hmpps
-    container_name: hmpps-template-kotlin
+    container_name: hmpps-arns-risk-actuarial-api
     ports:
       - "8080:8080"
     healthcheck:
