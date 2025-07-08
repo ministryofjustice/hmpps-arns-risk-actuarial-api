@@ -7,15 +7,16 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.RiskScoresService
 
 @RestController
 @RequestMapping("/risk-scores")
-class RiskScoresController {
+class RiskScoresController(private val riskScoresService: RiskScoresService) {
 
   @PostMapping
   @PreAuthorize("hasRole('ARNS_RISK_ACTUARIAL')")
   fun postRiskScores(@RequestBody request: RiskScoreRequest): RiskScoreResponse {
-    // todo APP-119 call to service logic
-    return RiskScoreResponse(request.score)
+    val riskScore: RiskScoreResponse = riskScoresService.riskScoreProducer(request)
+    return RiskScoreResponse(riskScore.score)
   }
 }
