@@ -1,5 +1,8 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto
 
-data class RiskScoreResponse(
-  val OGRS3: OGRS3Object,
-)
+enum class RiskBand {
+  LOW,
+  MEDIUM,
+  HIGH,
+  VERY_HIGH,
+}
