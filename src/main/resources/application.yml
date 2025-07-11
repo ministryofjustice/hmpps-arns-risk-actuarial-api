@@ -20,6 +20,12 @@ spring:
           jwk-set-uri: ${hmpps-auth.url}/.well-known/jwks.json
 
       client:
+        registration:
+          hmpps-arns-risk-actuarial-api:
+            provider: hmpps-auth
+            client-id: ${API_CLIENT_ID}
+            client-secret: ${API_CLIENT_SECRET}
+            authorization-grant-type: client_credentials
         provider:
           hmpps-auth:
             token-uri: ${hmpps-auth.url}/oauth/token
