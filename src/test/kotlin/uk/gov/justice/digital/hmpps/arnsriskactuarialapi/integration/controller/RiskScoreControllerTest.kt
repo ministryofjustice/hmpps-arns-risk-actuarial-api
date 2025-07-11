@@ -38,4 +38,15 @@ class RiskScoreControllerTest : IntegrationTestBase() {
       .exchange()
       .expectStatus().isForbidden
   }
+
+  @Test
+  fun `postRiskScores returns 401 unauthorised for no auth token`() {
+    whenever(riskScoresService.riskScoreProducer(RiskScoreRequest(1))).thenReturn(RiskScoreResponse(1))
+
+    webTestClient.post()
+      .uri("/risk-scores")
+      .bodyValue(RiskScoreRequest(1))
+      .exchange()
+      .expectStatus().isUnauthorized
+  }
 }
