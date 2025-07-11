@@ -10,6 +10,5 @@ data class OGRS3Request(
   val dateAtStartOfFollowup: Int?,
   val totalNumberOfSanctions: Int?,
   val ageAtFirstSanction: Int?,
-  val currentOffence: String?
+  val currentOffence: String?,
 )
-
