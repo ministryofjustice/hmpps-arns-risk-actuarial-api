@@ -1,0 +1,3023 @@
+﻿OFFENCE_GROUP_CODE,SUB_CODE,OGRS3_WEIGHTING,RSR_OFFENCE_CATEGORY,RSR_CATEGORY_DESC,OPD_VIOL_SEX
+000,00,0,,,N
+000,01,0,,,Y
+001,00,0,24,Violence against the person (ABH+),Y
+001,01,0,24,Violence against the person (ABH+),Y
+001,02,0,24,Violence against the person (ABH+),Y
+002,00,0,24,Violence against the person (ABH+),Y
+003,00,0,24,Violence against the person (ABH+),Y
+003,01,0,24,Violence against the person (ABH+),Y
+003,02,0,24,Violence against the person (ABH+),Y
+003,03,0,24,Violence against the person (ABH+),Y
+003,04,0,24,Violence against the person (ABH+),Y
+003,05,0,24,Violence against the person (ABH+),Y
+003,06,0,24,Violence against the person (ABH+),Y
+004,00,0,24,Violence against the person (ABH+),Y
+004,01,0,24,Violence against the person (ABH+),Y
+004,02,0,24,Violence against the person (ABH+),Y
+004,03,0,24,Violence against the person (ABH+),Y
+004,04,0.2622,15,Motoring offences,N
+004,05,0,24,Violence against the person (ABH+),Y
+004,06,-0.1214,16,Drink driving,N
+004,07,0,24,Violence against the person (ABH+),Y
+004,08,0.2622,15,Motoring offences,Y
+004,09,0.2622,15,Motoring offences,Y
+004,10,0,24,Violence against the person (ABH+),Y
+004,11,0,24,Violence against the person (ABH+),N
+004,12,0.2622,15,Motoring offences,Y
+004,18,0.2622,15,Motoring offences,N
+004,19,0.2622,15,Motoring offences,N
+005,00,0,24,Violence against the person (ABH+),Y
+005,01,0,24,Violence against the person (ABH+),Y
+005,02,0,24,Violence against the person (ABH+),Y
+005,04,0,24,Violence against the person (ABH+),Y
+005,05,0,24,Violence against the person (ABH+),Y
+005,06,0,24,Violence against the person (ABH+),Y
+005,07,0,24,Violence against the person (ABH+),Y
+005,08,0,24,Violence against the person (ABH+),Y
+005,09,0,24,Violence against the person (ABH+),Y
+005,10,0,24,Violence against the person (ABH+),Y
+005,11,0,24,Violence against the person (ABH+),Y
+005,13,0,24,Violence against the person (ABH+),Y
+005,14,0,21,Firearms (most serious),Y
+005,15,0,21,Firearms (most serious),Y
+005,16,0,21,Firearms (most serious),Y
+005,17,0,21,Firearms (most serious),Y
+005,18,0,21,Firearms (most serious),Y
+005,19,0,21,Firearms (most serious),Y
+005,20,0,24,Violence against the person (ABH+),Y
+005,21,0,24,Violence against the person (ABH+),Y
+005,22,0,24,Violence against the person (ABH+),Y
+005,23,0,24,Violence against the person (ABH+),Y
+005,24,0,24,Violence against the person (ABH+),Y
+005,25,0,24,Violence against the person (ABH+),Y
+005,26,0,24,Violence against the person (ABH+),Y
+005,27,0,24,Violence against the person (ABH+),Y
+005,28,0,24,Violence against the person (ABH+),Y
+006,00,0,24,Violence against the person (ABH+),Y
+006,01,0,24,Violence against the person (ABH+),Y
+006,02,0,24,Violence against the person (ABH+),Y
+006,03,0,24,Violence against the person (ABH+),Y
+006,04,0,24,Violence against the person (ABH+),Y
+007,00,0,24,Violence against the person (ABH+),Y
+007,01,0,24,Violence against the person (ABH+),Y
+007,02,0,24,Violence against the person (ABH+),Y
+007,03,0,24,Violence against the person (ABH+),Y
+007,04,0,24,Violence against the person (ABH+),Y
+007,05,0,24,Violence against the person (ABH+),Y
+007,06,0,24,Violence against the person (ABH+),Y
+007,07,0,24,Violence against the person (ABH+),Y
+007,08,0,24,Violence against the person (ABH+),Y
+007,09,0,24,Violence against the person (ABH+),N
+007,10,0,24,Violence against the person (ABH+),N
+007,11,0,24,Violence against the person (ABH+),N
+007,12,0,24,Violence against the person (ABH+),N
+007,13,0,24,Violence against the person (ABH+),Y
+007,14,0,24,Violence against the person (ABH+),Y
+007,15,0,24,Violence against the person (ABH+),Y
+007,16,0,24,Violence against the person (ABH+),Y
+007,17,0,24,Violence against the person (ABH+),Y
+008,00,0,24,Violence against the person (ABH+),Y
+008,01,0,24,Violence against the person (ABH+),Y
+008,02,0,24,Violence against the person (ABH+),Y
+008,03,0,24,Violence against the person (ABH+),Y
+008,04,0,15,Motoring offences,Y
+008,05,0,24,Violence against the person (ABH+),Y
+008,06,0,24,Violence against the person (ABH+),Y
+008,07,0,24,Violence against the person (ABH+),Y
+008,08,0,24,Violence against the person (ABH+),N
+008,09,0,24,Violence against the person (ABH+),Y
+008,11,0,23,Weapons (non-firearm),Y
+008,13,0,21,Firearms (most serious),Y
+008,14,0,21,Firearms (most serious),Y
+008,15,0,21,Firearms (most serious),Y
+008,16,0,21,Firearms (most serious),Y
+008,17,0,21,Firearms (most serious),Y
+008,18,0,21,Firearms (most serious),Y
+008,19,0,24,Violence against the person (ABH+),N
+008,20,0,24,Violence against the person (ABH+),Y
+008,21,0,1,Violence against the person (sub-ABH),Y
+008,22,0,1,Violence against the person (sub-ABH),Y
+008,23,0,21,Firearms (most serious),Y
+008,24,0,21,Firearms (most serious),Y
+008,25,0,21,Firearms (most serious),Y
+008,26,0,23,Weapons (non-firearm),Y
+008,27,0,23,Weapons (non-firearm),Y
+008,28,0,23,Weapons (non-firearm),Y
+008,29,0,3,Public order and harassment,Y
+008,30,0,24,Violence against the person (ABH+),Y
+008,31,0,3,Public order and harassment,Y
+008,32,-0.0607,20,Other offences,N
+008,33,0,24,Violence against the person (ABH+),Y
+008,34,0,24,Violence against the person (ABH+),Y
+008,35,0,24,Violence against the person (ABH+),Y
+008,36,0,3,Public order and harassment,Y
+008,37,0,3,Public order and harassment,Y
+008,38,0,24,Violence against the person (ABH+),Y
+008,39,0.0328,3,Public order and harassment,Y
+008,40,0,24,Violence against the person (ABH+),Y
+008,41,0,24,Violence against the person (ABH+),Y
+008,42,0,24,Violence against the person (ABH+),Y
+008,43,0,3,Public order and harassment,Y
+008,44,0,3,Public order and harassment,Y
+008,45,0,3,Public order and harassment,Y
+008,46,0,24,Violence against the person (ABH+),Y
+008,47,0,24,Violence against the person (ABH+),Y
+008,48,0,24,Violence against the person (ABH+),Y
+008,49,0,3,Public order and harassment,Y
+008,50,0,3,Public order and harassment,Y
+008,51,0,3,Public order and harassment,Y
+008,52,0,24,Violence against the person (ABH+),Y
+008,53,0,23,Weapons (non-firearm),Y
+008,54,0,21,Firearms (most serious),Y
+008,55,0,3,Public order and harassment,Y
+008,56,0,3,Public order and harassment,Y
+008,57,0,24,Violence against the person (ABH+),Y
+008,58,0,3,Public order and harassment,Y
+008,59,0,24,Violence against the person (ABH+),Y
+008,60,0,24,Violence against the person (ABH+),Y
+008,61,0,23,Weapons (non-firearm),Y
+008,62,0,23,Weapons (non-firearm),Y
+008,63,0,23,Weapons (non-firearm),Y
+008,64,0,23,Weapons (non-firearm),Y
+008,65,0,3,Public order and harassment,Y
+008,66,0,3,Public order and harassment,Y
+008,67,0,3,Public order and harassment,Y
+008,71,0,3,Public order and harassment,Y
+008,72,0,3,Public order and harassment,N
+008,73,0,24,Violence against the person (ABH+),N
+008,74,0,3,Public order and harassment,N
+008,75,0,23,Weapons (non-firearm),N
+008,76,0,23,Weapons (non-firearm),N
+008,77,0,24,Violence against the person (ABH+),Y
+009,00,0.205,17,Criminal damage,Y
+011,00,0,24,Violence against the person (ABH+),Y
+011,02,0,24,Violence against the person (ABH+),Y
+011,03,0,24,Violence against the person (ABH+),Y
+012,00,0,24,Violence against the person (ABH+),Y
+013,00,0,24,Violence against the person (ABH+),Y
+013,01,0,24,Violence against the person (ABH+),Y
+013,02,0,24,Violence against the person (ABH+),Y
+014,00,0,24,Violence against the person (ABH+),Y
+014,01,0,24,Violence against the person (ABH+),Y
+014,02,0,24,Violence against the person (ABH+),Y
+015,00,0,24,Violence against the person (ABH+),Y
+016,00,0.0328,4,Sexual (not against child),Y
+016,02,0.0328,4,Sexual (not against child),N
+016,05,0.0328,4,Sexual (not against child),N
+016,06,0.0328,4,Sexual (not against child),N
+016,11,0.0328,4,Sexual (not against child),N
+016,12,-0.6534,5,Sexual (against child),Y
+016,13,-0.6534,5,Sexual (against child),Y
+016,14,-0.6534,5,Sexual (against child),Y
+016,15,0.0328,4,Sexual (not against child),Y
+016,16,0.0328,4,Sexual (not against child),Y
+016,17,-0.6534,5,Sexual (against child),Y
+016,18,-0.6534,5,Sexual (against child),Y
+016,19,-0.6534,5,Sexual (against child),Y
+016,20,0.0328,4,Sexual (not against child),Y
+016,21,0.0328,4,Sexual (not against child),Y
+016,22,0.0328,4,Sexual (not against child),Y
+016,23,-0.6534,5,Sexual (against child),Y
+016,24,-0.6534,5,Sexual (against child),Y
+016,25,-0.6534,5,Sexual (against child),Y
+016,26,-0.6534,5,Sexual (against child),Y
+016,27,-0.6534,5,Sexual (against child),Y
+016,28,-0.6534,5,Sexual (against child),Y
+017,00,0.0328,4,Sexual (not against child),Y
+017,11,-0.6534,5,Sexual (against child),Y
+017,12,0.0328,4,Sexual (not against child),Y
+017,13,0.0328,4,Sexual (not against child),Y
+017,14,-0.6534,5,Sexual (against child),Y
+017,15,0.0328,4,Sexual (not against child),Y
+017,16,-0.6534,5,Sexual (against child),Y
+018,00,0.0328,4,Sexual (not against child),Y
+018,02,0.0328,4,Sexual (not against child),Y
+018,03,-0.6534,5,Sexual (against child),Y
+018,04,-0.6534,5,Sexual (against child),Y
+018,05,0.0328,4,Sexual (not against child),Y
+018,06,0.0328,4,Sexual (not against child),Y
+018,07,-0.6534,5,Sexual (against child),Y
+018,08,-0.6534,5,Sexual (against child),Y
+018,09,0.0328,4,Sexual (not against child),Y
+018,10,0.0328,4,Sexual (not against child),Y
+018,11,-0.6534,5,Sexual (against child),Y
+019,00,0.0328,4,Sexual (not against child),Y
+019,02,0.0328,4,Sexual (not against child),Y
+019,03,0.0328,4,Sexual (not against child),Y
+019,04,0.0328,4,Sexual (not against child),Y
+019,07,-0.6534,5,Sexual (against child),Y
+019,08,0.0328,4,Sexual (not against child),Y
+019,09,-0.6534,5,Sexual (against child),Y
+019,10,0.0328,4,Sexual (not against child),Y
+019,11,-0.6534,5,Sexual (against child),Y
+019,12,0.0328,4,Sexual (not against child),Y
+019,13,-0.6534,5,Sexual (against child),Y
+019,14,0.0328,4,Sexual (not against child),Y
+019,16,-0.6534,5,Sexual (against child),Y
+019,17,-0.6534,5,Sexual (against child),Y
+019,18,-0.6534,5,Sexual (against child),Y
+019,19,-0.6534,5,Sexual (against child),Y
+020,00,0.0328,4,Sexual (not against child),Y
+020,01,-0.6534,5,Sexual (against child),Y
+020,02,0.0328,4,Sexual (not against child),Y
+020,03,0.0328,4,Sexual (not against child),Y
+020,04,-0.6534,5,Sexual (against child),Y
+020,05,0.0328,4,Sexual (not against child),Y
+020,06,-0.6534,5,Sexual (against child),Y
+021,00,-0.6534,5,Sexual (against child),Y
+021,01,-0.6534,5,Sexual (against child),Y
+021,02,-0.6534,5,Sexual (against child),Y
+021,03,-0.6534,5,Sexual (against child),Y
+021,04,-0.6534,5,Sexual (against child),Y
+021,05,-0.6534,5,Sexual (against child),Y
+021,06,-0.6534,5,Sexual (against child),Y
+021,07,-0.6534,5,Sexual (against child),Y
+021,08,-0.6534,5,Sexual (against child),Y
+021,09,-0.6534,5,Sexual (against child),Y
+021,10,-0.6534,5,Sexual (against child),Y
+021,11,-0.6534,5,Sexual (against child),Y
+021,12,-0.6534,5,Sexual (against child),Y
+021,13,-0.6534,5,Sexual (against child),Y
+021,14,-0.6534,5,Sexual (against child),Y
+021,15,-0.6534,5,Sexual (against child),Y
+021,16,-0.6534,5,Sexual (against child),Y
+021,17,-0.6534,5,Sexual (against child),Y
+021,18,-0.6534,5,Sexual (against child),Y
+021,19,-0.6534,5,Sexual (against child),Y
+021,20,-0.6534,5,Sexual (against child),Y
+021,21,-0.6534,5,Sexual (against child),Y
+021,22,-0.6534,5,Sexual (against child),Y
+021,23,-0.6534,5,Sexual (against child),Y
+021,24,-0.6534,5,Sexual (against child),Y
+021,25,-0.6534,5,Sexual (against child),Y
+022,00,-0.6534,5,Sexual (against child),Y
+022,01,-0.6534,5,Sexual (against child),Y
+022,02,0.0328,4,Sexual (not against child),Y
+022,03,0.0328,4,Sexual (not against child),Y
+022,04,0.0328,4,Sexual (not against child),Y
+022,05,0.0328,4,Sexual (not against child),Y
+022,06,-0.6534,5,Sexual (against child),Y
+022,07,-0.6534,5,Sexual (against child),Y
+022,08,-0.6534,5,Sexual (against child),Y
+022,09,-0.6534,5,Sexual (against child),Y
+022,10,-0.6534,5,Sexual (against child),Y
+022,11,-0.6534,5,Sexual (against child),Y
+022,12,-0.6534,5,Sexual (against child),Y
+022,13,-0.6534,5,Sexual (against child),Y
+022,14,-0.6534,5,Sexual (against child),Y
+022,15,-0.6534,5,Sexual (against child),Y
+022,16,-0.6534,5,Sexual (against child),Y
+022,17,-0.6534,5,Sexual (against child),Y
+022,18,-0.6534,5,Sexual (against child),Y
+022,19,-0.6534,5,Sexual (against child),Y
+022,20,-0.6534,5,Sexual (against child),Y
+022,21,-0.6534,5,Sexual (against child),Y
+022,22,-0.6534,5,Sexual (against child),Y
+022,23,-0.6534,5,Sexual (against child),Y
+022,24,-0.6534,5,Sexual (against child),Y
+022,25,-0.6534,5,Sexual (against child),Y
+023,00,-0.6534,5,Sexual (against child),Y
+023,01,-0.6534,5,Sexual (against child),Y
+023,02,0.0328,4,Sexual (not against child),Y
+023,03,-0.6534,5,Sexual (against child),Y
+023,04,-0.6534,5,Sexual (against child),Y
+023,05,-0.6534,5,Sexual (against child),Y
+023,06,-0.6534,5,Sexual (against child),Y
+023,07,-0.6534,5,Sexual (against child),Y
+023,08,-0.6534,5,Sexual (against child),Y
+023,09,-0.6534,5,Sexual (against child),Y
+023,10,-0.6534,5,Sexual (against child),Y
+023,11,-0.6534,5,Sexual (against child),Y
+023,12,0.0328,4,Sexual (not against child),Y
+023,13,0.0328,4,Sexual (not against child),Y
+023,14,-0.6534,5,Sexual (against child),Y
+023,15,-0.6534,5,Sexual (against child),Y
+023,16,-0.6534,5,Sexual (against child),Y
+023,17,-0.6534,5,Sexual (against child),Y
+023,18,-0.6534,5,Sexual (against child),Y
+023,19,-0.6534,5,Sexual (against child),Y
+023,20,-0.6534,5,Sexual (against child),Y
+023,21,-0.6534,5,Sexual (against child),Y
+023,22,-0.6534,5,Sexual (against child),Y
+023,23,-0.6534,5,Sexual (against child),Y
+023,24,-0.6534,5,Sexual (against child),Y
+023,25,-0.6534,5,Sexual (against child),Y
+023,26,-0.6534,5,Sexual (against child),Y
+023,27,-0.6534,5,Sexual (against child),Y
+023,28,-0.6534,5,Sexual (against child),Y
+023,29,-0.6534,5,Sexual (against child),Y
+023,30,-0.6534,5,Sexual (against child),Y
+023,31,-0.6534,5,Sexual (against child),Y
+023,32,-0.6534,5,Sexual (against child),Y
+023,33,-0.6534,5,Sexual (against child),Y
+023,34,-0.6534,5,Sexual (against child),Y
+023,35,-0.6534,5,Sexual (against child),Y
+023,36,-0.6534,5,Sexual (against child),Y
+023,37,-0.6534,5,Sexual (against child),Y
+024,00,0.7606,20,Other offences,N
+024,01,0.7606,20,Other offences,N
+024,02,0.7606,20,Other offences,N
+024,03,0.7606,20,Other offences,N
+024,04,0.7606,5,Sexual (against child),N
+024,05,0.7606,20,Other offences,N
+024,06,0.7606,20,Other offences,N
+024,07,0.7606,20,Other offences,N
+024,10,0.7606,20,Other offences,N
+024,11,0.7606,20,Other offences,N
+024,12,0.7606,20,Other offences,N
+024,13,0.7606,20,Other offences,N
+024,14,0.7606,20,Other offences,N
+024,15,0.7606,20,Other offences,N
+024,16,0.7606,20,Other offences,N
+024,17,0.7606,20,Other offences,N
+024,18,0.7606,20,Other offences,N
+024,19,0.7606,20,Other offences,N
+025,00,0.0328,4,Sexual (not against child),Y
+025,01,0.0328,4,Sexual (not against child),Y
+025,02,0.0328,4,Sexual (not against child),Y
+025,03,-0.6534,5,Sexual (against child),Y
+025,04,-0.6534,5,Sexual (against child),Y
+025,05,0.0328,4,Sexual (not against child),Y
+026,00,-0.0607,20,Other offences,N
+027,00,0.7606,20,Other offences,N
+028,00,-0.1239,7,Burglary (domestic),N
+028,01,-0.1239,7,Burglary (domestic),N
+028,02,-0.1239,7,Burglary (domestic),N
+028,03,-0.1239,7,Burglary (domestic),N
+029,00,0,2,Acquisitive violence,Y
+030,00,0.2406,8,Burglary (other),N
+030,01,0.2406,8,Burglary (other),N
+030,02,0.2406,8,Burglary (other),N
+031,00,0,2,Acquisitive violence,Y
+032,00,0,2,Acquisitive violence,Y
+033,00,0.2406,8,Burglary (other),N
+034,00,-0.6348,2,Acquisitive violence,N
+034,01,-0.6348,2,Acquisitive violence,N
+034,02,-0.6348,2,Acquisitive violence,N
+034,03,-0.6348,2,Acquisitive violence,N
+035,00,0,24,Violence against the person (ABH+),Y
+036,00,0,24,Violence against the person (ABH+),Y
+036,01,0,24,Violence against the person (ABH+),Y
+036,02,0,24,Violence against the person (ABH+),Y
+036,03,0,24,Violence against the person (ABH+),Y
+036,04,0,24,Violence against the person (ABH+),Y
+036,08,0,24,Violence against the person (ABH+),N
+036,12,0,24,Violence against the person (ABH+),N
+037,00,0.3801,13,Vehicle-related theft,N
+037,01,0.3801,24,Violence against the person (ABH+),N
+037,02,0.3801,13,Vehicle-related theft,N
+038,00,0.6612,11,Fraud and forgery,N
+038,01,0.6612,11,Fraud and forgery,N
+038,02,0.6612,11,Fraud and forgery,N
+038,03,0.6612,11,Fraud and forgery,N
+038,04,0.6612,11,Fraud and forgery,N
+038,05,0.6612,11,Fraud and forgery,N
+038,06,0.6612,11,Fraud and forgery,N
+038,07,0.6612,11,Fraud and forgery,N
+038,08,0.6612,11,Fraud and forgery,N
+038,09,0.6612,11,Fraud and forgery,N
+039,00,0.6612,9,Theft (non-motor),N
+040,00,0.6612,9,Theft (non-motor),N
+041,00,0.6612,11,Fraud and forgery,N
+042,00,0.6612,9,Theft (non-motor),N
+043,00,0.6612,9,Theft (non-motor),N
+044,00,0.6612,13,Vehicle-related theft,N
+045,00,0.4272,13,Vehicle-related theft,N
+045,10,0.4272,13,Vehicle-related theft,N
+045,11,0.4272,13,Vehicle-related theft,N
+046,00,0.6612,9,Theft (non-motor),N
+047,00,0.6612,9,Theft (non-motor),N
+048,00,0.3801,13,Vehicle-related theft,N
+048,01,0.3801,13,Vehicle-related theft,N
+049,00,0.6612,9,Theft (non-motor),N
+049,10,0.6612,9,Theft (non-motor),N
+049,11,0.6612,9,Theft (non-motor),N
+049,12,0.6612,9,Theft (non-motor),N
+050,00,0.1599,11,Fraud and forgery,N
+051,00,0.1599,11,Fraud and forgery,N
+051,01,0.1599,11,Fraud and forgery,N
+051,02,0.1599,11,Fraud and forgery,N
+051,03,0.1599,11,Fraud and forgery,N
+051,04,0.1599,11,Fraud and forgery,N
+051,05,0.1599,11,Fraud and forgery,N
+051,06,0.1599,11,Fraud and forgery,N
+052,00,0.1599,11,Fraud and forgery,N
+052,01,0.1599,11,Fraud and forgery,N
+052,02,0.1599,11,Fraud and forgery,N
+052,03,0.1599,11,Fraud and forgery,N
+052,04,0.1599,11,Fraud and forgery,N
+052,05,0.1599,11,Fraud and forgery,N
+052,06,0.1599,11,Fraud and forgery,N
+052,07,0.1599,11,Fraud and forgery,N
+052,08,0.1599,11,Fraud and forgery,N
+052,09,0.1599,11,Fraud and forgery,N
+052,10,0.1599,11,Fraud and forgery,N
+053,00,0.1599,11,Fraud and forgery,N
+053,01,0.1599,11,Fraud and forgery,N
+053,02,0.1599,11,Fraud and forgery,N
+053,04,0.1599,11,Fraud and forgery,N
+053,05,0.1599,11,Fraud and forgery,N
+053,06,0.1599,11,Fraud and forgery,N
+053,08,0.1599,11,Fraud and forgery,N
+053,10,0.1599,11,Fraud and forgery,N
+053,11,0.1599,11,Fraud and forgery,N
+053,13,0.1599,11,Fraud and forgery,N
+053,14,0.1599,11,Fraud and forgery,N
+053,15,0.1599,11,Fraud and forgery,N
+053,16,0.1599,11,Fraud and forgery,N
+053,20,0.1599,11,Fraud and forgery,N
+053,21,0.1599,11,Fraud and forgery,N
+053,22,0.1599,11,Fraud and forgery,N
+053,23,0.1599,11,Fraud and forgery,N
+053,24,0.1599,11,Fraud and forgery,N
+053,25,0.1599,11,Fraud and forgery,N
+053,26,0.1599,11,Fraud and forgery,N
+053,27,0.1599,11,Fraud and forgery,N
+053,28,0.1599,11,Fraud and forgery,N
+053,29,0.1599,11,Fraud and forgery,N
+053,30,0.1599,11,Fraud and forgery,N
+053,31,0.1599,11,Fraud and forgery,N
+053,32,0.1599,11,Fraud and forgery,N
+053,33,0.1599,14,Welfare fraud,N
+053,34,0.1599,11,Fraud and forgery,N
+053,35,0.1599,11,Fraud and forgery,N
+053,36,0.1599,14,Welfare fraud,N
+053,37,0.1599,11,Fraud and forgery,N
+053,38,0.1599,11,Fraud and forgery,N
+053,39,0.1599,11,Fraud and forgery,N
+053,40,0.1599,11,Fraud and forgery,N
+053,41,0.1599,11,Fraud and forgery,N
+053,42,0.1599,11,Fraud and forgery,N
+053,43,0.1599,11,Fraud and forgery,N
+053,44,0.1599,11,Fraud and forgery,N
+053,45,0.1599,11,Fraud and forgery,N
+053,46,0.1599,11,Fraud and forgery,N
+053,52,0.1599,11,Fraud and forgery,N
+053,53,0.1599,11,Fraud and forgery,N
+053,54,0.1599,11,Fraud and forgery,N
+053,55,0.1599,11,Fraud and forgery,N
+053,56,0.1599,11,Fraud and forgery,N
+053,57,0.1599,14,Welfare fraud,N
+053,99,0.1599,11,Fraud and forgery,N
+054,00,0.3519,10,Handling stolen goods,N
+054,01,0.3519,10,Handling stolen goods,N
+054,02,0.3519,10,Handling stolen goods,N
+055,00,0.1599,11,Fraud and forgery,N
+055,01,0.1599,11,Fraud and forgery,N
+055,02,0.1599,11,Fraud and forgery,N
+055,03,0.1599,11,Fraud and forgery,N
+055,04,0.1599,11,Fraud and forgery,N
+055,05,0.1599,11,Fraud and forgery,N
+055,06,0.1599,11,Fraud and forgery,N
+055,07,0.1599,11,Fraud and forgery,N
+055,08,0.1599,11,Fraud and forgery,N
+055,09,0.1599,11,Fraud and forgery,N
+055,10,0.1599,11,Fraud and forgery,N
+055,11,0.1599,11,Fraud and forgery,N
+055,12,0.1599,11,Fraud and forgery,N
+056,00,0.205,17,Criminal damage,N
+056,01,0.205,17,Criminal damage,N
+056,02,0.205,17,Criminal damage,N
+057,00,0.205,17,Criminal damage,N
+057,02,0.205,17,Criminal damage,N
+057,11,0.205,17,Criminal damage,N
+057,12,0.205,17,Criminal damage,N
+057,13,0.205,17,Criminal damage,N
+057,14,0.205,17,Criminal damage,N
+057,15,0.205,17,Criminal damage,N
+057,16,0.205,17,Criminal damage,N
+057,17,0.205,17,Criminal damage,N
+057,22,0.205,17,Criminal damage,N
+057,28,0.205,17,Criminal damage,N
+058,00,0.205,17,Criminal damage,N
+058,01,0.205,17,Criminal damage,N
+058,02,0.205,17,Criminal damage,N
+058,03,0.205,17,Criminal damage,N
+058,04,0.205,17,Criminal damage,N
+059,00,0.205,17,Criminal damage,N
+059,11,0.205,17,Criminal damage,N
+059,12,0.205,17,Criminal damage,N
+059,13,0.205,17,Criminal damage,N
+059,14,0.205,17,Criminal damage,N
+059,15,0,24,Violence against the person (ABH+),Y
+060,00,0.1599,11,Fraud and forgery,N
+060,21,0.1599,11,Fraud and forgery,N
+060,22,0.1599,11,Fraud and forgery,N
+060,23,0.1599,11,Fraud and forgery,N
+061,00,0.1599,11,Fraud and forgery,N
+061,21,0.1599,11,Fraud and forgery,N
+061,22,0.1599,11,Fraud and forgery,N
+061,23,0.1599,11,Fraud and forgery,N
+061,24,0.1599,11,Fraud and forgery,N
+061,25,0.1599,11,Fraud and forgery,N
+061,26,0.1599,11,Fraud and forgery,N
+061,27,0.1599,11,Fraud and forgery,N
+061,28,0.1599,11,Fraud and forgery,N
+061,29,0.1599,11,Fraud and forgery,N
+061,30,0.1599,11,Fraud and forgery,N
+061,31,0.1599,11,Fraud and forgery,N
+061,32,0.1599,11,Fraud and forgery,N
+061,33,0.1599,11,Fraud and forgery,N
+061,34,0.1599,11,Fraud and forgery,N
+061,35,0.1599,11,Fraud and forgery,N
+061,36,0.1599,11,Fraud and forgery,N
+061,37,0.1599,11,Fraud and forgery,N
+061,38,0.1599,11,Fraud and forgery,N
+061,39,0.1599,11,Fraud and forgery,N
+061,40,0.1599,11,Fraud and forgery,N
+061,41,0.1599,11,Fraud and forgery,N
+062,00,-0.0607,20,Other offences,N
+063,00,-0.0607,20,Other offences,N
+064,00,0.1819,3,Public order and harassment,N
+064,01,0.1819,3,Public order and harassment,N
+064,02,0.1819,3,Public order and harassment,N
+065,00,0.1819,3,Public order and harassment,N
+066,00,0.1819,3,Public order and harassment,N
+066,01,0.1819,3,Public order and harassment,N
+066,02,-0.0607,11,Fraud and forgery,N
+066,03,0.1819,3,Public order and harassment,N
+066,04,0.1819,3,Public order and harassment,N
+066,05,0.1819,3,Public order and harassment,N
+066,06,0.1819,3,Public order and harassment,N
+066,07,0.1819,3,Public order and harassment,N
+066,08,0.0328,20,Other offences,N
+066,09,0.1819,3,Public order and harassment,N
+066,10,0.1819,3,Public order and harassment,N
+066,11,0.1819,3,Public order and harassment,N
+066,12,0.1819,3,Public order and harassment,N
+066,13,0.1819,3,Public order and harassment,N
+066,14,0.1819,3,Public order and harassment,N
+066,15,0.1819,3,Public order and harassment,N
+066,16,0.1819,3,Public order and harassment,N
+066,17,0.0328,20,Other offences,N
+066,18,0.0328,20,Other offences,N
+066,19,0.0328,20,Other offences,N
+066,20,0.0328,20,Other offences,N
+066,21,0.1819,3,Public order and harassment,N
+066,22,0.1819,3,Public order and harassment,N
+066,23,0.1819,3,Public order and harassment,N
+066,24,0.1819,3,Public order and harassment,N
+066,25,0.1819,3,Public order and harassment,N
+066,26,0.1819,3,Public order and harassment,N
+066,27,0.1819,3,Public order and harassment,N
+066,28,0.1819,3,Public order and harassment,N
+066,29,0.1819,3,Public order and harassment,N
+066,30,0.1819,3,Public order and harassment,N
+066,31,0.1819,3,Public order and harassment,N
+066,32,0.1819,3,Public order and harassment,N
+066,33,0.1819,3,Public order and harassment,N
+066,34,0.1819,3,Public order and harassment,N
+066,35,0.1819,3,Public order and harassment,N
+066,36,0.1819,3,Public order and harassment,N
+066,37,0.1819,3,Public order and harassment,N
+066,38,0.1819,3,Public order and harassment,N
+066,39,0.1819,3,Public order and harassment,N
+066,40,0.1819,3,Public order and harassment,N
+066,41,0.1819,3,Public order and harassment,N
+066,42,0.1819,3,Public order and harassment,N
+066,43,0.1819,3,Public order and harassment,N
+066,44,0.1819,3,Public order and harassment,N
+066,45,0.1819,3,Public order and harassment,N
+066,46,0.1819,3,Public order and harassment,N
+066,47,0.1819,3,Public order and harassment,N
+066,48,0.1819,3,Public order and harassment,N
+066,49,0.1819,3,Public order and harassment,N
+066,50,0.1819,3,Public order and harassment,N
+066,51,0.1819,3,Public order and harassment,N
+066,52,0.1819,3,Public order and harassment,N
+066,53,0.1819,3,Public order and harassment,N
+066,54,0.1819,3,Public order and harassment,N
+066,55,0.1819,3,Public order and harassment,N
+066,56,0.1819,3,Public order and harassment,N
+066,57,0.1819,3,Public order and harassment,N
+066,58,0.1819,3,Public order and harassment,N
+066,59,0.1819,3,Public order and harassment,N
+066,60,0.1819,3,Public order and harassment,N
+066,61,0.1819,3,Public order and harassment,N
+066,62,0.1819,3,Public order and harassment,N
+066,64,0.1819,3,Public order and harassment,N
+066,65,0.1819,3,Public order and harassment,N
+066,66,0.1819,3,Public order and harassment,N
+066,67,0.1819,3,Public order and harassment,N
+066,68,0.1819,3,Public order and harassment,N
+066,69,0.1819,3,Public order and harassment,N
+066,70,0.1819,3,Public order and harassment,N
+066,71,0.1819,3,Public order and harassment,N
+066,72,0.1819,3,Public order and harassment,N
+066,73,0.1819,3,Public order and harassment,N
+066,74,0.1819,3,Public order and harassment,N
+066,75,0.1819,3,Public order and harassment,N
+066,76,0.1819,3,Public order and harassment,N
+066,77,0.1819,3,Public order and harassment,N
+066,78,0.1819,3,Public order and harassment,N
+066,79,0.1819,3,Public order and harassment,N
+066,80,0.1819,3,Public order and harassment,N
+066,81,0.1819,3,Public order and harassment,N
+066,82,0.1819,3,Public order and harassment,N
+066,83,0,20,Other offences,N
+066,84,0,20,Other offences,N
+066,85,0,20,Other offences,N
+066,86,0,20,Other offences,N
+066,87,0,20,Other offences,N
+066,88,0,20,Other offences,N
+066,89,0.1819,3,Public order and harassment,N
+066,90,0,20,Other offences,Y
+066,91,0.1819,3,Public order and harassment,N
+066,92,0.1819,3,Public order and harassment,N
+066,93,0.1819,3,Public order and harassment,N
+066,94,0.1819,3,Public order and harassment,N
+066,95,0.1819,3,Public order and harassment,N
+066,96,0.1819,3,Public order and harassment,N
+066,97,0,24,Violence against the person (ABH+),N
+066,99,0.1819,3,Public order and harassment,N
+067,00,-0.0607,11,Fraud and forgery,N
+067,01,-0.0607,11,Fraud and forgery,N
+067,02,-0.0607,11,Fraud and forgery,N
+068,00,-0.0607,20,Other offences,N
+068,01,0.1819,3,Public order and harassment,N
+068,02,0.1819,3,Public order and harassment,N
+068,03,0.1819,3,Public order and harassment,N
+068,04,0,24,Violence against the person (ABH+),Y
+068,05,-0.0607,20,Other offences,N
+068,06,-0.0607,20,Other offences,N
+068,07,0.0328,20,Other offences,N
+068,08,0.0328,20,Other offences,N
+068,09,0.1819,3,Public order and harassment,N
+068,10,0.1819,3,Public order and harassment,N
+068,15,-0.0607,20,Other offences,N
+068,16,0,3,Public order and harassment,N
+068,19,0.1819,3,Public order and harassment,Y
+069,00,-0.0607,20,Other offences,N
+069,01,-0.0607,20,Other offences,N
+069,02,-0.0607,20,Other offences,N
+069,03,-0.0607,20,Other offences,N
+069,04,-0.0607,20,Other offences,N
+069,05,-0.0607,20,Other offences,N
+069,06,0,23,Weapons (non-firearm),N
+070,00,0.0328,4,Sexual (not against child),Y
+070,01,0.0328,4,Sexual (not against child),Y
+070,02,0.0328,4,Sexual (not against child),Y
+070,03,0.0328,4,Sexual (not against child),Y
+070,04,0.0328,4,Sexual (not against child),Y
+070,05,0.0328,4,Sexual (not against child),Y
+070,06,0.0328,4,Sexual (not against child),Y
+070,07,0.0328,4,Sexual (not against child),Y
+070,08,0.0328,4,Sexual (not against child),Y
+070,09,0.0328,4,Sexual (not against child),Y
+070,10,0.0328,4,Sexual (not against child),Y
+070,11,0.0328,4,Sexual (not against child),Y
+070,12,0.0328,4,Sexual (not against child),Y
+070,13,0.0328,4,Sexual (not against child),Y
+070,14,0.0328,4,Sexual (not against child),Y
+070,15,0.0328,4,Sexual (not against child),Y
+070,16,0.0328,4,Sexual (not against child),Y
+070,17,0.0328,4,Sexual (not against child),Y
+070,18,0.0328,4,Sexual (not against child),Y
+070,19,0.0328,4,Sexual (not against child),Y
+070,20,0.0328,4,Sexual (not against child),Y
+070,21,0.0328,4,Sexual (not against child),Y
+070,22,0.0328,4,Sexual (not against child),Y
+070,23,0.0328,4,Sexual (not against child),Y
+070,24,0.0328,4,Sexual (not against child),Y
+071,00,-0.6534,5,Sexual (against child),Y
+071,01,-0.6534,5,Sexual (against child),Y
+071,02,-0.6534,5,Sexual (against child),Y
+071,03,-0.6534,5,Sexual (against child),Y
+071,04,-0.6534,5,Sexual (against child),Y
+071,05,-0.6534,5,Sexual (against child),Y
+071,06,-0.6534,5,Sexual (against child),Y
+071,07,-0.6534,5,Sexual (against child),Y
+071,08,-0.6534,5,Sexual (against child),Y
+071,09,-0.6534,5,Sexual (against child),Y
+071,10,-0.6534,5,Sexual (against child),Y
+071,11,-0.6534,5,Sexual (against child),Y
+071,12,-0.6534,5,Sexual (against child),Y
+071,13,-0.6534,5,Sexual (against child),Y
+071,14,-0.6534,5,Sexual (against child),Y
+071,15,-0.6534,5,Sexual (against child),Y
+071,16,-0.6534,5,Sexual (against child),N
+071,17,-0.6534,5,Sexual (against child),N
+072,00,-0.0607,4,Sexual (not against child),N
+072,01,0.0328,4,Sexual (not against child),Y
+072,02,0.0328,4,Sexual (not against child),Y
+072,03,0.0328,4,Sexual (not against child),Y
+072,04,0.0328,4,Sexual (not against child),Y
+072,05,0.0328,4,Sexual (not against child),Y
+072,06,0.0328,4,Sexual (not against child),Y
+073,00,-0.6534,5,Sexual (against child),Y
+073,01,-0.6534,5,Sexual (against child),Y
+073,02,-0.6534,5,Sexual (against child),Y
+073,03,0.0328,20,Other offences,Y
+073,04,0.0328,20,Other offences,Y
+073,05,0.0328,20,Other offences,Y
+073,06,0.0328,20,Other offences,Y
+073,07,-0.6534,5,Sexual (against child),Y
+073,08,-0.6534,5,Sexual (against child),Y
+073,09,-0.6534,5,Sexual (against child),Y
+073,10,-0.6534,5,Sexual (against child),Y
+073,11,-0.6534,5,Sexual (against child),Y
+073,12,-0.6534,5,Sexual (against child),Y
+073,13,-0.6534,5,Sexual (against child),Y
+073,14,-0.6534,5,Sexual (against child),Y
+073,15,-0.6534,5,Sexual (against child),Y
+073,16,-0.6534,5,Sexual (against child),Y
+073,17,-0.6534,5,Sexual (against child),Y
+073,18,-0.6534,5,Sexual (against child),Y
+074,00,-0.6534,5,Sexual (against child),Y
+074,01,-0.6534,5,Sexual (against child),Y
+074,02,-0.6534,5,Sexual (against child),Y
+075,00,-0.0607,20,Other offences,N
+075,01,-0.0607,20,Other offences,N
+075,02,-0.0607,20,Other offences,N
+075,12,-0.0607,20,Other offences,N
+075,13,-0.0607,20,Other offences,N
+075,15,-0.0607,20,Other offences,N
+075,19,-0.0607,20,Other offences,N
+075,21,-0.0607,20,Other offences,N
+075,22,-0.0607,20,Other offences,N
+075,23,-0.0607,20,Other offences,N
+075,24,-0.0607,20,Other offences,N
+075,31,-0.0607,20,Other offences,N
+075,32,-0.0607,20,Other offences,N
+075,33,-0.0607,20,Other offences,N
+075,34,-0.0607,20,Other offences,N
+075,35,-0.0607,20,Other offences,N
+075,39,-0.0607,20,Other offences,N
+075,40,-0.0607,20,Other offences,N
+075,41,-0.0607,20,Other offences,N
+075,42,-0.0607,20,Other offences,N
+075,43,-0.0607,20,Other offences,N
+075,44,-0.0607,20,Other offences,N
+075,45,-0.0607,20,Other offences,N
+075,46,-0.0607,20,Other offences,N
+075,47,-0.0607,20,Other offences,N
+075,48,-0.0607,20,Other offences,N
+075,49,-0.0607,20,Other offences,N
+075,50,-0.0607,20,Other offences,N
+075,51,-0.0607,20,Other offences,N
+075,52,-0.0607,20,Other offences,N
+075,53,-0.0607,20,Other offences,N
+075,54,-0.0607,20,Other offences,N
+075,55,-0.0607,20,Other offences,N
+075,56,-0.0607,20,Other offences,N
+075,57,-0.0607,20,Other offences,N
+075,58,-0.0607,20,Other offences,N
+075,59,-0.0607,20,Other offences,N
+075,60,-0.0607,20,Other offences,N
+075,61,-0.0607,20,Other offences,N
+075,62,-0.0607,20,Other offences,N
+076,00,-0.0607,20,Other offences,N
+076,01,-0.0607,20,Other offences,N
+077,00,0.0772,18,Drug import/export/production,N
+077,50,-0.7956,18,Drug import/export/production,N
+077,51,0.0772,18,Drug import/export/production,N
+077,52,0.0772,18,Drug import/export/production,N
+077,53,0.0772,18,Drug import/export/production,N
+077,54,0.0772,18,Drug import/export/production,N
+077,55,0.0772,18,Drug import/export/production,N
+077,56,0.0772,18,Drug import/export/production,N
+077,57,0.0772,18,Drug import/export/production,N
+077,58,0.0772,18,Drug import/export/production,N
+077,59,0.0772,18,Drug import/export/production,N
+077,60,0.0772,18,Drug import/export/production,N
+077,61,-0.7956,18,Drug import/export/production,N
+077,62,-0.7956,18,Drug import/export/production,N
+077,63,-0.7956,18,Drug import/export/production,N
+077,64,-0.7956,18,Drug import/export/production,N
+077,65,-0.7956,18,Drug import/export/production,N
+078,00,-0.0607,11,Fraud and forgery,N
+078,01,-0.0607,11,Fraud and forgery,N
+078,04,-0.0607,11,Fraud and forgery,N
+078,05,-0.0607,11,Fraud and forgery,N
+078,06,-0.0607,11,Fraud and forgery,N
+078,07,-0.0607,11,Fraud and forgery,N
+078,08,-0.0607,11,Fraud and forgery,N
+078,09,-0.0607,11,Fraud and forgery,N
+078,10,-0.0607,11,Fraud and forgery,N
+078,11,-0.0607,11,Fraud and forgery,N
+078,12,-0.0607,11,Fraud and forgery,N
+078,13,-0.0607,11,Fraud and forgery,N
+078,14,-0.0607,11,Fraud and forgery,N
+078,15,-0.0607,11,Fraud and forgery,N
+078,16,-0.0607,11,Fraud and forgery,N
+078,17,-0.0607,11,Fraud and forgery,N
+078,18,-0.0607,11,Fraud and forgery,N
+078,19,-0.0607,11,Fraud and forgery,N
+078,20,-0.0607,11,Fraud and forgery,N
+078,21,-0.0607,11,Fraud and forgery,N
+078,22,-0.0607,11,Fraud and forgery,N
+078,23,-0.0607,11,Fraud and forgery,N
+078,24,-0.0607,11,Fraud and forgery,N
+078,25,-0.0607,11,Fraud and forgery,N
+078,28,-0.0607,11,Fraud and forgery,N
+079,00,-0.0607,20,Other offences,N
+079,01,-0.0607,20,Other offences,N
+079,02,0,24,Violence against the person (ABH+),Y
+079,03,0,24,Violence against the person (ABH+),Y
+079,04,0,24,Violence against the person (ABH+),Y
+079,05,0,24,Violence against the person (ABH+),Y
+079,07,-0.0607,20,Other offences,N
+079,11,-0.0607,11,Fraud and forgery,N
+080,00,0.7334,12,Absconding/bail,N
+080,01,0.7334,12,Absconding/bail,N
+081,00,0,22,Firearms (other),Y
+081,03,0,22,Firearms (other),Y
+081,04,0,22,Firearms (other),Y
+081,07,0,22,Firearms (other),Y
+081,08,0,22,Firearms (other),Y
+081,09,0,22,Firearms (other),Y
+081,10,0,22,Firearms (other),Y
+081,11,0,22,Firearms (other),Y
+081,12,0,22,Firearms (other),Y
+081,13,0,22,Firearms (other),Y
+081,14,0,22,Firearms (other),Y
+081,15,0,22,Firearms (other),Y
+081,16,0,22,Firearms (other),Y
+081,17,0,22,Firearms (other),Y
+081,26,0,22,Firearms (other),Y
+081,27,0,22,Firearms (other),Y
+081,29,0,22,Firearms (other),Y
+081,30,0,22,Firearms (other),Y
+081,35,0,22,Firearms (other),Y
+081,36,0,22,Firearms (other),Y
+081,37,0,22,Firearms (other),Y
+081,38,0,22,Firearms (other),Y
+081,39,0,22,Firearms (other),Y
+081,40,0,22,Firearms (other),Y
+081,42,0,22,Firearms (other),Y
+081,43,0,22,Firearms (other),Y
+081,44,0,22,Firearms (other),Y
+081,45,0,22,Firearms (other),Y
+081,69,0,22,Firearms (other),Y
+081,70,0,22,Firearms (other),Y
+081,71,0,22,Firearms (other),Y
+081,72,0,22,Firearms (other),Y
+081,73,0,22,Firearms (other),Y
+081,74,0,22,Firearms (other),Y
+081,76,0,22,Firearms (other),Y
+081,77,0,22,Firearms (other),Y
+081,78,0,22,Firearms (other),N
+081,86,0,22,Firearms (other),N
+081,87,0,22,Firearms (other),N
+081,88,0,22,Firearms (other),N
+082,00,-0.0607,20,Other offences,N
+082,02,-0.0607,20,Other offences,N
+082,03,-0.0607,20,Other offences,N
+082,04,-0.0607,20,Other offences,N
+083,00,0.7334,12,Absconding/bail,N
+083,01,0.7334,12,Absconding/bail,N
+083,02,0.7334,12,Absconding/bail,N
+083,03,0.7334,12,Absconding/bail,N
+083,05,0.7334,12,Absconding/bail,N
+083,06,0.7334,12,Absconding/bail,N
+084,00,-0.0607,20,Other offences,N
+084,01,-0.0607,20,Other offences,N
+084,02,-0.0607,20,Other offences,N
+084,03,-0.0607,20,Other offences,N
+084,04,-0.0607,20,Other offences,N
+084,05,-0.0607,20,Other offences,N
+084,06,-0.0607,20,Other offences,N
+084,07,-0.0607,20,Other offences,N
+084,08,-0.0607,20,Other offences,N
+084,09,-0.0607,20,Other offences,N
+084,10,-0.0607,20,Other offences,N
+084,11,-0.0607,20,Other offences,N
+084,12,-0.0607,20,Other offences,N
+084,13,-0.0607,20,Other offences,N
+084,14,-0.0607,20,Other offences,N
+084,15,-0.0607,20,Other offences,N
+084,16,-0.0607,20,Other offences,N
+084,17,-0.0607,20,Other offences,N
+084,18,-0.0607,20,Other offences,N
+084,19,-0.0607,20,Other offences,N
+084,20,-0.0607,20,Other offences,N
+084,21,-0.0607,20,Other offences,N
+085,00,-0.0607,20,Other offences,N
+085,01,-0.0607,20,Other offences,N
+085,02,-0.0607,20,Other offences,N
+085,03,-0.0607,20,Other offences,N
+085,04,-0.0607,20,Other offences,N
+085,05,-0.0607,20,Other offences,N
+085,06,-0.0607,20,Other offences,N
+085,07,-0.0607,20,Other offences,N
+085,08,-0.0607,20,Other offences,N
+085,09,-0.0607,20,Other offences,N
+086,00,0.0328,4,Sexual (not against child),Y
+086,01,0.0328,4,Sexual (not against child),Y
+086,02,-0.6534,5,Sexual (against child),Y
+086,03,0.0328,4,Sexual (not against child),Y
+086,04,0.0328,4,Sexual (not against child),Y
+086,05,0.0328,4,Sexual (not against child),Y
+086,06,0.0328,4,Sexual (not against child),Y
+086,07,0.0328,4,Sexual (not against child),Y
+086,08,0.0328,4,Sexual (not against child),Y
+086,09,0.0328,4,Sexual (not against child),Y
+086,10,-0.6534,5,Sexual (against child),Y
+086,11,0.0328,4,Sexual (not against child),Y
+086,12,0.0328,4,Sexual (not against child),Y
+086,13,0.0328,4,Sexual (not against child),Y
+086,14,0.0328,4,Sexual (not against child),Y
+086,15,-0.6534,5,Sexual (against child),Y
+086,16,0.0328,4,Sexual (not against child),N
+086,17,0.0328,4,Sexual (not against child),N
+087,00,-0.0607,20,Other offences,N
+087,01,-0.0607,20,Other offences,N
+087,02,-0.0607,20,Other offences,N
+087,03,-0.0607,20,Other offences,N
+087,95,-0.0607,20,Other offences,N
+088,00,999,4,Sexual (not against child),Y
+088,01,-0.6534,5,Sexual (against child),Y
+088,02,-0.6534,5,Sexual (against child),Y
+088,03,0.0328,4,Sexual (not against child),Y
+088,04,0.0328,4,Sexual (not against child),Y
+088,05,0.0328,4,Sexual (not against child),Y
+088,06,0.0328,4,Sexual (not against child),Y
+088,07,0.0328,4,Sexual (not against child),Y
+088,08,0.0328,4,Sexual (not against child),N
+088,09,0.0328,4,Sexual (not against child),Y
+088,10,0.0328,4,Sexual (not against child),Y
+088,11,0.0328,4,Sexual (not against child),Y
+088,12,0.0328,4,Sexual (not against child),N
+088,14,0.0328,4,Sexual (not against child),Y
+088,15,0.0328,4,Sexual (not against child),Y
+088,90,-0.0607,20,Other offences,N
+089,00,-0.0607,20,Other offences,N
+089,01,-0.0607,20,Other offences,N
+089,02,-0.0607,20,Other offences,N
+089,03,-0.0607,20,Other offences,N
+089,04,-0.0607,20,Other offences,N
+089,05,-0.0607,20,Other offences,N
+089,06,-0.0607,20,Other offences,N
+089,07,-0.0607,20,Other offences,N
+089,08,-0.0607,20,Other offences,N
+089,09,-0.0607,20,Other offences,N
+089,10,-0.0607,20,Other offences,N
+089,11,-0.0607,20,Other offences,N
+089,12,-0.0607,20,Other offences,N
+090,00,0,23,Weapons (non-firearm),N
+090,01,0,23,Weapons (non-firearm),N
+090,02,0,23,Weapons (non-firearm),N
+090,03,0,23,Weapons (non-firearm),N
+090,04,0,23,Weapons (non-firearm),N
+090,05,0,23,Weapons (non-firearm),N
+091,00,-0.0607,20,Other offences,N
+091,01,-0.0607,20,Other offences,N
+091,02,-0.0607,20,Other offences,N
+091,06,-0.0607,20,Other offences,N
+091,07,-0.0607,20,Other offences,N
+091,08,-0.0607,20,Other offences,N
+091,09,-0.0607,20,Other offences,N
+091,10,-0.0607,20,Other offences,N
+091,11,-0.0607,20,Other offences,N
+091,12,-0.0607,20,Other offences,N
+091,13,-0.0607,20,Other offences,N
+091,14,-0.0607,20,Other offences,N
+091,15,-0.0607,20,Other offences,N
+091,16,-0.0607,20,Other offences,N
+091,17,-0.0607,20,Other offences,N
+091,18,-0.0607,20,Other offences,N
+091,19,-0.0607,20,Other offences,N
+091,20,-0.0607,20,Other offences,N
+091,21,-0.0607,20,Other offences,N
+091,22,-0.0607,20,Other offences,N
+091,25,-0.0607,20,Other offences,N
+091,26,-0.0607,20,Other offences,N
+091,27,-0.0607,20,Other offences,N
+091,28,-0.0607,20,Other offences,N
+091,29,-0.0607,20,Other offences,N
+091,30,-0.0607,20,Other offences,N
+091,31,-0.0607,20,Other offences,N
+091,32,-0.0607,20,Other offences,N
+091,33,-0.0607,20,Other offences,N
+091,34,-0.0607,20,Other offences,N
+091,35,-0.0607,20,Other offences,N
+091,36,-0.0607,20,Other offences,N
+091,37,-0.0607,20,Other offences,N
+091,38,-0.0607,20,Other offences,N
+091,39,-0.0607,20,Other offences,N
+091,40,-0.0607,20,Other offences,N
+091,41,-0.0607,20,Other offences,N
+091,42,-0.0607,20,Other offences,N
+091,43,-0.0607,20,Other offences,N
+091,44,-0.0607,20,Other offences,N
+091,45,-0.0607,20,Other offences,N
+091,46,-0.0607,20,Other offences,N
+091,47,-0.0607,20,Other offences,N
+091,48,-0.0607,20,Other offences,N
+091,49,-0.0607,20,Other offences,N
+091,50,-0.0607,20,Other offences,N
+091,51,-0.0607,20,Other offences,N
+091,52,-0.0607,20,Other offences,N
+091,53,-0.0607,20,Other offences,N
+091,54,-0.0607,20,Other offences,N
+091,55,-0.0607,20,Other offences,N
+091,56,-0.0607,20,Other offences,N
+091,57,-0.0607,20,Other offences,N
+091,58,-0.0607,20,Other offences,N
+091,59,-0.0607,20,Other offences,N
+091,60,-0.0607,20,Other offences,N
+091,61,-0.0607,20,Other offences,N
+091,62,-0.0607,20,Other offences,N
+091,63,-0.0607,20,Other offences,N
+091,64,-0.0607,20,Other offences,N
+091,65,-0.0607,20,Other offences,N
+091,66,-0.0607,20,Other offences,N
+091,67,-0.0607,20,Other offences,N
+091,68,-0.0607,20,Other offences,N
+091,69,-0.0607,20,Other offences,N
+091,70,-0.0607,20,Other offences,N
+091,71,-0.0607,20,Other offences,N
+091,72,-0.0607,20,Other offences,N
+091,73,-0.0607,20,Other offences,N
+091,74,-0.0607,20,Other offences,N
+091,75,-0.0607,20,Other offences,N
+091,76,-0.0607,20,Other offences,N
+091,77,-0.0607,20,Other offences,N
+091,78,-0.0607,20,Other offences,N
+091,79,-0.0607,20,Other offences,N
+091,80,-0.0607,20,Other offences,N
+091,81,-0.0607,20,Other offences,N
+091,82,-0.0607,20,Other offences,N
+091,83,-0.0607,20,Other offences,N
+091,85,-0.0607,20,Other offences,N
+092,00,-0.7956,19,Drug possession/supply,N
+092,01,-0.7956,18,Drug import/export/production,N
+092,02,-0.7956,18,Drug import/export/production,N
+092,03,-0.7956,18,Drug import/export/production,N
+092,04,-0.7956,18,Drug import/export/production,N
+092,05,-0.7956,18,Drug import/export/production,N
+092,06,-0.7956,18,Drug import/export/production,N
+092,07,-0.7956,18,Drug import/export/production,N
+092,08,-0.7956,18,Drug import/export/production,N
+092,10,-0.7956,18,Drug import/export/production,N
+092,11,-0.7956,18,Drug import/export/production,N
+092,12,-0.7956,18,Drug import/export/production,N
+092,13,-0.7956,18,Drug import/export/production,N
+092,14,-0.7956,18,Drug import/export/production,N
+092,15,-0.7956,18,Drug import/export/production,N
+092,19,-0.7956,18,Drug import/export/production,N
+092,20,-0.7956,18,Drug import/export/production,N
+092,21,-0.7956,18,Drug import/export/production,N
+092,22,-0.7956,18,Drug import/export/production,N
+092,23,-0.7956,18,Drug import/export/production,N
+092,25,-0.7956,18,Drug import/export/production,N
+092,26,-0.7956,18,Drug import/export/production,N
+092,27,-0.7956,18,Drug import/export/production,N
+092,28,-0.7956,18,Drug import/export/production,N
+092,29,-0.7956,18,Drug import/export/production,N
+092,30,-0.7956,19,Drug possession/supply,N
+092,31,-0.7956,19,Drug possession/supply,N
+092,32,-0.7956,19,Drug possession/supply,N
+092,33,-0.7956,19,Drug possession/supply,N
+092,34,-0.7956,19,Drug possession/supply,N
+092,35,-0.7956,19,Drug possession/supply,N
+092,37,-0.7956,18,Drug import/export/production,N
+092,38,-0.7956,18,Drug import/export/production,N
+092,39,-0.7956,19,Drug possession/supply,N
+092,40,-0.7956,19,Drug possession/supply,N
+092,41,-0.7956,19,Drug possession/supply,N
+092,42,-0.7956,19,Drug possession/supply,N
+092,43,-0.7956,19,Drug possession/supply,N
+092,45,-0.7956,19,Drug possession/supply,N
+092,46,-0.7956,19,Drug possession/supply,N
+092,47,-0.7956,19,Drug possession/supply,N
+092,48,-0.7956,19,Drug possession/supply,N
+092,49,-0.7956,19,Drug possession/supply,N
+092,50,0.0772,19,Drug possession/supply,N
+092,51,0.0772,19,Drug possession/supply,N
+092,52,0.0772,19,Drug possession/supply,N
+092,53,0.0772,19,Drug possession/supply,N
+092,54,0.0772,19,Drug possession/supply,N
+092,55,0.0772,19,Drug possession/supply,N
+092,59,0.0772,19,Drug possession/supply,N
+092,60,0.0772,19,Drug possession/supply,N
+092,61,0.0772,19,Drug possession/supply,N
+092,62,0.0772,19,Drug possession/supply,N
+092,63,0.0772,19,Drug possession/supply,N
+092,65,0.0772,19,Drug possession/supply,N
+092,66,0.0772,19,Drug possession/supply,N
+092,67,0.0772,19,Drug possession/supply,N
+092,68,0.0772,19,Drug possession/supply,N
+092,69,0.0772,19,Drug possession/supply,N
+092,70,0.0772,19,Drug possession/supply,N
+092,71,0.0772,19,Drug possession/supply,N
+092,72,0.0772,19,Drug possession/supply,N
+092,73,0.0772,19,Drug possession/supply,N
+092,74,0.0772,19,Drug possession/supply,N
+092,75,0.0772,19,Drug possession/supply,N
+092,79,0.0772,19,Drug possession/supply,N
+092,80,0.0772,19,Drug possession/supply,N
+092,81,0.0772,19,Drug possession/supply,N
+092,82,0.0772,19,Drug possession/supply,N
+092,83,0.0772,19,Drug possession/supply,N
+092,85,0.0772,19,Drug possession/supply,N
+092,86,0.0772,19,Drug possession/supply,N
+092,87,0.0772,19,Drug possession/supply,N
+092,88,0.0772,19,Drug possession/supply,N
+092,89,0.0772,19,Drug possession/supply,N
+092,90,-0.7956,19,Drug possession/supply,N
+092,91,-0.7956,19,Drug possession/supply,N
+092,92,-0.7956,19,Drug possession/supply,N
+092,93,-0.7956,19,Drug possession/supply,N
+093,00,0.0772,19,Drug possession/supply,N
+093,10,0.0772,19,Drug possession/supply,N
+093,11,0.0772,19,Drug possession/supply,N
+093,12,0.0772,19,Drug possession/supply,N
+093,13,0.0772,19,Drug possession/supply,N
+093,14,0.0772,19,Drug possession/supply,N
+093,15,0.0772,19,Drug possession/supply,N
+093,19,0.0772,19,Drug possession/supply,N
+093,20,0.0772,19,Drug possession/supply,N
+093,21,0.0772,19,Drug possession/supply,N
+093,22,0.0772,19,Drug possession/supply,N
+093,23,0.0772,19,Drug possession/supply,N
+093,25,0.0772,19,Drug possession/supply,N
+093,26,0.0772,19,Drug possession/supply,N
+093,27,0.0772,19,Drug possession/supply,N
+093,28,0.0772,19,Drug possession/supply,N
+093,29,0.0772,19,Drug possession/supply,N
+093,30,0.0772,18,Drug import/export/production,N
+093,40,0.0772,19,Drug possession/supply,N
+093,49,0.0772,18,Drug import/export/production,N
+093,50,0.0772,18,Drug import/export/production,N
+093,51,0.0772,18,Drug import/export/production,N
+093,52,0.0772,18,Drug import/export/production,N
+093,53,0.0772,18,Drug import/export/production,N
+093,54,0.0772,18,Drug import/export/production,N
+093,55,-0.7956,18,Drug import/export/production,N
+093,57,-0.7956,18,Drug import/export/production,N
+093,58,-0.7956,18,Drug import/export/production,N
+093,59,-0.7956,18,Drug import/export/production,N
+093,60,-0.7956,18,Drug import/export/production,N
+093,61,-0.7956,19,Drug possession/supply,N
+093,63,0.0772,19,Drug possession/supply,N
+093,64,0.0772,19,Drug possession/supply,N
+093,65,0.0772,19,Drug possession/supply,N
+093,66,0.0772,19,Drug possession/supply,N
+093,67,0.0772,19,Drug possession/supply,N
+093,69,0.0772,19,Drug possession/supply,N
+093,70,0.0772,19,Drug possession/supply,N
+093,71,0.0772,19,Drug possession/supply,N
+093,72,0.0772,19,Drug possession/supply,N
+093,73,0.0772,19,Drug possession/supply,N
+093,75,0.0772,19,Drug possession/supply,N
+093,76,0.0772,19,Drug possession/supply,N
+093,77,0.0772,19,Drug possession/supply,N
+093,78,0.0772,19,Drug possession/supply,N
+093,79,0.0772,19,Drug possession/supply,N
+093,81,0.0772,19,Drug possession/supply,N
+093,82,0.0772,19,Drug possession/supply,N
+093,83,0.0772,19,Drug possession/supply,N
+093,84,0.0772,19,Drug possession/supply,N
+093,85,0.0772,18,Drug import/export/production,N
+093,86,0.0772,19,Drug possession/supply,N
+093,87,0.0772,19,Drug possession/supply,N
+093,88,0.0772,19,Drug possession/supply,N
+093,89,0.0772,18,Drug import/export/production,N
+094,00,-0.0607,20,Other offences,N
+094,01,-0.0607,20,Other offences,N
+094,02,-0.0607,20,Other offences,N
+094,03,-0.0607,20,Other offences,N
+094,04,-0.0607,20,Other offences,N
+094,05,-0.0607,20,Other offences,N
+094,06,-0.0607,20,Other offences,N
+094,07,-0.0607,20,Other offences,N
+094,08,-0.0607,20,Other offences,N
+094,09,-0.0607,20,Other offences,N
+094,10,-0.0607,20,Other offences,N
+094,11,-0.0607,20,Other offences,N
+094,17,0,24,Violence against the person (ABH+),N
+095,00,-0.0607,20,Other offences,N
+095,01,-0.0607,3,Public order and harassment,N
+095,02,-0.0607,3,Public order and harassment,N
+095,03,-0.0607,3,Public order and harassment,N
+095,04,-0.0607,3,Public order and harassment,N
+095,05,-0.0607,3,Public order and harassment,N
+095,06,-0.0607,20,Other offences,N
+095,07,-0.0607,20,Other offences,N
+095,08,-0.0607,11,Fraud and forgery,N
+095,09,-0.0607,11,Fraud and forgery,N
+095,10,-0.0607,11,Fraud and forgery,N
+095,11,-0.0607,11,Fraud and forgery,N
+095,12,-0.0607,11,Fraud and forgery,N
+095,13,-0.0607,11,Fraud and forgery,N
+095,14,-0.0607,20,Other offences,N
+095,15,-0.0607,20,Other offences,N
+095,16,-0.0607,20,Other offences,N
+095,17,-0.0607,11,Fraud and forgery,N
+095,18,-0.0607,11,Fraud and forgery,N
+095,19,-0.0607,11,Fraud and forgery,N
+095,20,-0.0607,20,Other offences,N
+095,21,-0.0607,20,Other offences,N
+095,22,-0.0607,20,Other offences,N
+095,23,-0.0607,3,Public order and harassment,N
+095,24,-0.0607,3,Public order and harassment,N
+095,25,-0.0607,3,Public order and harassment,N
+095,26,-0.0607,20,Other offences,N
+095,27,-0.0607,11,Fraud and forgery,N
+095,28,-0.0607,20,Other offences,N
+095,29,-0.0607,20,Other offences,N
+095,30,-0.0607,20,Other offences,N
+095,31,-0.0607,20,Other offences,N
+095,32,-0.0607,20,Other offences,N
+095,33,-0.0607,20,Other offences,N
+095,34,-0.0607,20,Other offences,N
+095,35,-0.0607,20,Other offences,N
+095,36,-0.0607,20,Other offences,N
+095,37,-0.0607,20,Other offences,N
+095,38,-0.0607,20,Other offences,N
+095,39,-0.0607,20,Other offences,N
+095,40,-0.0607,20,Other offences,N
+095,41,-0.0607,20,Other offences,N
+095,42,-0.0607,20,Other offences,N
+095,43,-0.0607,20,Other offences,N
+095,44,-0.0607,20,Other offences,N
+095,45,-0.0607,20,Other offences,N
+095,46,-0.0607,20,Other offences,N
+095,47,-0.0607,20,Other offences,N
+095,48,-0.0607,20,Other offences,N
+095,49,-0.0607,20,Other offences,N
+095,50,-0.0607,20,Other offences,N
+095,51,-0.0607,20,Other offences,N
+095,52,-0.0607,3,Public order and harassment,N
+095,53,-0.0607,11,Fraud and forgery,N
+095,54,-0.0607,20,Other offences,N
+095,55,-0.0607,20,Other offences,N
+095,56,-0.0607,20,Other offences,N
+095,57,-0.0607,20,Other offences,N
+095,58,-0.0607,20,Other offences,N
+095,59,-0.0607,20,Other offences,N
+095,60,-0.0607,20,Other offences,N
+095,61,-0.0607,20,Other offences,N
+095,62,-0.0607,20,Other offences,N
+095,63,-0.0607,20,Other offences,N
+095,64,-0.0607,20,Other offences,N
+095,65,-0.0607,20,Other offences,N
+095,66,-0.0607,20,Other offences,N
+095,67,-0.0607,20,Other offences,N
+095,68,-0.0607,20,Other offences,N
+095,69,-0.0607,20,Other offences,N
+095,70,-0.0607,20,Other offences,N
+095,71,-0.0607,20,Other offences,N
+096,00,-0.0607,20,Other offences,N
+096,09,-0.0607,20,Other offences,N
+098,00,-0.0607,20,Other offences,N
+098,01,-0.0607,20,Other offences,N
+098,02,-0.0607,20,Other offences,N
+098,03,-0.0607,20,Other offences,N
+098,04,-0.0607,20,Other offences,N
+098,05,-0.0607,20,Other offences,N
+098,06,-0.0607,20,Other offences,N
+098,07,-0.0607,20,Other offences,N
+098,08,-0.0607,20,Other offences,N
+098,09,-0.0607,20,Other offences,N
+098,10,-0.0607,20,Other offences,N
+098,11,-0.0607,20,Other offences,N
+098,12,-0.0607,20,Other offences,N
+098,13,-0.0607,20,Other offences,N
+098,14,-0.0607,20,Other offences,N
+098,15,-0.0607,20,Other offences,N
+098,16,-0.0607,20,Other offences,N
+098,17,-0.0607,20,Other offences,N
+098,18,-0.0607,20,Other offences,N
+098,19,-0.0607,20,Other offences,N
+098,20,-0.0607,20,Other offences,N
+098,21,-0.0607,20,Other offences,N
+098,22,-0.0607,20,Other offences,N
+098,23,-0.0607,20,Other offences,N
+098,24,-0.0607,20,Other offences,N
+098,25,-0.0607,20,Other offences,N
+098,26,-0.0607,20,Other offences,N
+098,27,-0.0607,20,Other offences,N
+098,28,-0.0607,20,Other offences,N
+098,29,-0.0607,20,Other offences,N
+098,30,-0.0607,20,Other offences,N
+098,31,-0.0607,20,Other offences,N
+098,32,-0.0607,20,Other offences,N
+098,33,-0.0607,20,Other offences,N
+098,34,-0.0607,20,Other offences,N
+098,35,-0.0607,20,Other offences,N
+098,36,-0.0607,20,Other offences,N
+098,37,-0.0607,20,Other offences,N
+098,38,-0.0607,20,Other offences,N
+098,39,-0.0607,20,Other offences,N
+098,40,-0.0607,20,Other offences,N
+098,41,-0.0607,20,Other offences,N
+098,42,-0.0607,20,Other offences,N
+098,43,-0.0607,20,Other offences,N
+098,44,-0.0607,20,Other offences,N
+098,45,-0.0607,20,Other offences,N
+098,46,-0.0607,20,Other offences,N
+098,47,-0.0607,20,Other offences,N
+098,48,-0.0607,20,Other offences,N
+098,49,-0.0607,20,Other offences,N
+098,50,-0.0607,20,Other offences,N
+098,51,-0.0607,20,Other offences,N
+098,52,-0.0607,20,Other offences,N
+098,53,-0.0607,20,Other offences,N
+098,56,-0.0607,20,Other offences,N
+098,63,-0.0607,20,Other offences,N
+098,64,-0.0607,20,Other offences,N
+098,65,-0.0607,20,Other offences,N
+098,66,-0.0607,20,Other offences,N
+098,67,-0.0607,20,Other offences,N
+098,69,-0.0607,20,Other offences,N
+098,70,-0.0607,20,Other offences,N
+098,71,-0.0607,20,Other offences,N
+098,72,-0.0607,20,Other offences,N
+098,73,-0.0607,20,Other offences,N
+098,74,-0.0607,20,Other offences,N
+098,75,-0.0607,20,Other offences,N
+098,76,-0.0607,20,Other offences,N
+098,77,-0.0607,20,Other offences,N
+098,78,-0.0607,20,Other offences,N
+098,79,-0.0607,20,Other offences,N
+098,80,-0.0607,20,Other offences,N
+098,81,-0.0607,20,Other offences,N
+098,82,-0.0607,20,Other offences,N
+098,83,-0.0607,20,Other offences,N
+098,84,-0.0607,20,Other offences,N
+098,85,-0.0607,20,Other offences,N
+098,86,-0.0607,20,Other offences,N
+098,87,-0.0607,20,Other offences,N
+098,88,-0.0607,20,Other offences,N
+098,89,-0.0607,20,Other offences,N
+099,00,-0.0607,20,Other offences,N
+099,01,-0.0607,20,Other offences,N
+099,02,-0.0607,20,Other offences,N
+099,03,-0.0607,20,Other offences,N
+099,04,-0.0607,20,Other offences,N
+099,05,-0.0607,20,Other offences,N
+099,06,-0.0607,20,Other offences,N
+099,07,0.1599,11,Fraud and forgery,N
+099,08,0.1599,11,Fraud and forgery,N
+099,09,0.1599,11,Fraud and forgery,N
+099,10,0.1599,11,Fraud and forgery,N
+099,11,-0.0607,11,Fraud and forgery,N
+099,12,-0.0607,20,Other offences,N
+099,13,-0.0607,20,Other offences,N
+099,14,-0.0607,20,Other offences,N
+099,15,-0.0607,20,Other offences,N
+099,16,-0.0607,20,Other offences,N
+099,19,-0.0607,20,Other offences,N
+099,20,-0.0607,20,Other offences,N
+099,21,-0.0607,20,Other offences,N
+099,22,-0.0607,20,Other offences,N
+099,23,-0.0607,20,Other offences,N
+099,24,-0.0607,20,Other offences,N
+099,25,-0.0607,24,Violence against the person (ABH+),N
+099,26,-0.0607,24,Violence against the person (ABH+),N
+099,28,-0.0607,11,Fraud and forgery,N
+099,29,-0.0607,20,Other offences,N
+099,30,-0.0607,20,Other offences,N
+099,31,-0.0607,20,Other offences,N
+099,32,-0.0607,20,Other offences,N
+099,33,-0.0607,20,Other offences,N
+099,34,-0.0607,20,Other offences,N
+099,35,-0.0607,20,Other offences,N
+099,36,-0.0607,20,Other offences,N
+099,37,-0.0607,20,Other offences,N
+099,38,-0.0607,20,Other offences,N
+099,39,-0.0607,20,Other offences,N
+099,40,-0.0607,20,Other offences,N
+099,41,-0.0607,20,Other offences,N
+099,42,-0.0607,20,Other offences,N
+099,43,-0.0607,6,Drunkenness,N
+099,44,-0.0607,20,Other offences,N
+099,45,-0.0607,20,Other offences,N
+099,46,-0.0607,20,Other offences,N
+099,47,-0.0607,20,Other offences,N
+099,48,-0.0607,20,Other offences,N
+099,49,-0.0607,20,Other offences,N
+099,50,-0.0607,20,Other offences,N
+099,51,-0.0607,20,Other offences,N
+099,52,-0.0607,20,Other offences,N
+099,53,-0.0607,20,Other offences,N
+099,54,-0.0607,20,Other offences,N
+099,55,-0.0607,20,Other offences,N
+099,56,-0.0607,20,Other offences,N
+099,57,-0.0607,20,Other offences,N
+099,58,-0.0607,20,Other offences,N
+099,59,-0.0607,20,Other offences,N
+099,60,-0.0607,20,Other offences,N
+099,61,-0.0607,20,Other offences,N
+099,62,-0.0607,20,Other offences,N
+099,63,-0.0607,20,Other offences,N
+099,64,-0.0607,20,Other offences,N
+099,65,-0.0607,20,Other offences,N
+099,66,-0.0607,20,Other offences,N
+099,67,-0.0607,20,Other offences,N
+099,68,-0.0607,20,Other offences,N
+099,69,-0.0607,20,Other offences,N
+099,70,-0.0607,20,Other offences,N
+099,71,-0.0607,20,Other offences,N
+099,72,-0.0607,3,Public order and harassment,N
+099,73,-0.0607,20,Other offences,N
+099,74,-0.0607,20,Other offences,N
+099,75,-0.0607,20,Other offences,N
+099,76,-0.0607,20,Other offences,N
+099,77,-0.0607,20,Other offences,N
+099,78,-0.0607,20,Other offences,N
+099,79,-0.0607,24,Violence against the person (ABH+),N
+099,80,-0.0607,24,Violence against the person (ABH+),N
+099,81,-0.0607,20,Other offences,N
+099,82,-0.0607,20,Other offences,N
+099,83,-0.0607,20,Other offences,N
+099,84,-0.0607,20,Other offences,N
+099,85,-0.0607,20,Other offences,N
+099,86,-0.0607,20,Other offences,N
+099,87,-0.0607,20,Other offences,N
+099,88,-0.0607,20,Other offences,N
+099,89,-0.0607,20,Other offences,N
+099,90,-0.0607,11,Fraud and forgery,N
+099,91,-0.0607,20,Other offences,N
+099,92,-0.0607,20,Other offences,N
+099,93,-0.0607,20,Other offences,N
+099,94,-0.0607,10,Handling stolen goods,N
+099,95,-0.0607,20,Other offences,N
+099,96,-0.0607,20,Other offences,N
+099,97,-0.0607,20,Other offences,N
+099,98,-0.0607,20,Other offences,N
+099,99,-0.0607,20,Other offences,N
+101,00,-0.0607,20,Other offences,N
+101,02,-0.0607,20,Other offences,N
+101,06,-0.0607,20,Other offences,N
+101,07,-0.0607,20,Other offences,N
+101,08,-0.0607,20,Other offences,N
+101,09,-0.0607,20,Other offences,N
+101,10,-0.0607,20,Other offences,N
+101,11,-0.0607,20,Other offences,N
+101,12,-0.0607,20,Other offences,N
+101,20,-0.0607,20,Other offences,N
+103,00,0,1,Violence against the person (sub-ABH),Y
+104,00,0,1,Violence against the person (sub-ABH),Y
+104,01,0,1,Violence against the person (sub-ABH),N
+104,02,0,1,Violence against the person (sub-ABH),N
+104,04,0,1,Violence against the person (sub-ABH),N
+104,05,0,1,Violence against the person (sub-ABH),N
+104,06,0,1,Violence against the person (sub-ABH),N
+104,07,0,1,Violence against the person (sub-ABH),N
+104,08,0,1,Violence against the person (sub-ABH),N
+104,09,0,1,Violence against the person (sub-ABH),N
+104,20,0,1,Violence against the person (sub-ABH),N
+104,22,0,1,Violence against the person (sub-ABH),N
+104,23,0,1,Violence against the person (sub-ABH),Y
+104,24,0,1,Violence against the person (sub-ABH),N
+104,25,0,1,Violence against the person (sub-ABH),Y
+104,26,0,1,Violence against the person (sub-ABH),N
+104,27,0,1,Violence against the person (sub-ABH),N
+104,28,0,1,Violence against the person (sub-ABH),N
+104,30,0,1,Violence against the person (sub-ABH),Y
+104,31,0,1,Violence against the person (sub-ABH),Y
+104,33,0,1,Violence against the person (sub-ABH),Y
+104,35,0,1,Violence against the person (sub-ABH),Y
+104,36,0,1,Violence against the person (sub-ABH),Y
+104,37,0,1,Violence against the person (sub-ABH),Y
+104,38,0,1,Violence against the person (sub-ABH),Y
+104,39,0,1,Violence against the person (sub-ABH),Y
+104,40,0,1,Violence against the person (sub-ABH),Y
+104,42,-0.0607,3,Public order and harassment,N
+105,00,0,1,Violence against the person (sub-ABH),Y
+105,01,0,1,Violence against the person (sub-ABH),Y
+105,02,0,1,Violence against the person (sub-ABH),Y
+105,03,0,1,Violence against the person (sub-ABH),Y
+105,04,0,1,Violence against the person (sub-ABH),Y
+105,05,0,1,Violence against the person (sub-ABH),Y
+105,06,0,1,Violence against the person (sub-ABH),Y
+105,07,0,1,Violence against the person (sub-ABH),Y
+105,08,0,1,Violence against the person (sub-ABH),Y
+105,09,0,1,Violence against the person (sub-ABH),Y
+105,10,0,1,Violence against the person (sub-ABH),Y
+105,11,0,1,Violence against the person (sub-ABH),Y
+105,12,0,1,Violence against the person (sub-ABH),Y
+105,13,0,1,Violence against the person (sub-ABH),Y
+105,14,0,1,Violence against the person (sub-ABH),N
+105,15,0,1,Violence against the person (sub-ABH),N
+105,16,0,1,Violence against the person (sub-ABH),N
+105,17,0,1,Violence against the person (sub-ABH),N
+106,00,-0.0607,20,Other offences,N
+106,02,-0.0607,20,Other offences,N
+106,04,-0.0607,20,Other offences,N
+106,05,-0.0607,20,Other offences,N
+106,06,-0.0607,20,Other offences,N
+106,07,-0.0607,20,Other offences,N
+106,08,-0.0607,20,Other offences,N
+106,09,-0.0607,20,Other offences,N
+106,10,-0.0607,20,Other offences,N
+106,11,-0.0607,20,Other offences,N
+106,12,-0.0607,20,Other offences,N
+106,13,-0.0607,20,Other offences,N
+106,20,-0.0607,20,Other offences,N
+106,21,-0.0607,20,Other offences,N
+106,23,-0.0607,20,Other offences,N
+106,24,-0.0607,20,Other offences,N
+106,29,-0.0607,20,Other offences,N
+106,30,-0.0607,20,Other offences,N
+106,31,-0.0607,20,Other offences,N
+106,32,-0.0607,20,Other offences,N
+106,36,-0.0607,20,Other offences,N
+106,43,-0.0607,20,Other offences,N
+106,44,-0.0607,20,Other offences,N
+106,45,-0.0607,20,Other offences,N
+106,46,-0.0607,20,Other offences,N
+106,47,-0.0607,20,Other offences,N
+106,48,-0.0607,20,Other offences,N
+106,49,-0.0607,20,Other offences,N
+106,50,-0.0607,20,Other offences,N
+106,51,-0.0607,20,Other offences,N
+106,52,-0.0607,20,Other offences,N
+106,53,-0.0607,20,Other offences,N
+106,54,-0.0607,20,Other offences,N
+106,55,-0.0607,20,Other offences,N
+106,56,-0.0607,20,Other offences,N
+106,57,-0.0607,20,Other offences,N
+106,58,-0.0607,20,Other offences,N
+106,59,-0.0607,20,Other offences,N
+106,60,-0.0607,20,Other offences,N
+106,62,-0.0607,20,Other offences,N
+106,63,-0.0607,20,Other offences,N
+106,64,-0.0607,20,Other offences,N
+106,65,-0.0607,20,Other offences,N
+106,66,-0.0607,20,Other offences,N
+106,67,-0.0607,20,Other offences,N
+106,68,-0.0607,20,Other offences,N
+106,69,-0.0607,20,Other offences,N
+106,70,-0.0607,20,Other offences,N
+106,71,-0.0607,20,Other offences,N
+106,72,-0.0607,20,Other offences,N
+106,73,-0.0607,20,Other offences,N
+106,81,-0.0607,20,Other offences,N
+106,86,-0.0607,20,Other offences,N
+106,87,-0.0607,20,Other offences,N
+106,88,-0.0607,20,Other offences,N
+106,99,-0.0607,20,Other offences,N
+107,00,0.7606,20,Other offences,N
+107,01,0.7606,20,Other offences,N
+107,02,0.7606,20,Other offences,N
+107,03,0.7606,20,Other offences,N
+107,04,0.7606,20,Other offences,N
+107,05,0.7606,20,Other offences,N
+107,06,0.7606,20,Other offences,N
+107,07,0.7606,20,Other offences,N
+107,10,0.7606,20,Other offences,N
+108,00,-0.0607,20,Other offences,N
+108,01,-0.0607,20,Other offences,N
+108,02,-0.0607,20,Other offences,N
+108,03,-0.0607,20,Other offences,N
+108,04,-0.0607,20,Other offences,N
+108,05,-0.0607,20,Other offences,N
+108,06,-0.0607,20,Other offences,N
+108,07,-0.0607,20,Other offences,N
+108,08,-0.0607,20,Other offences,N
+108,09,-0.0607,20,Other offences,N
+108,10,-0.0607,20,Other offences,N
+108,11,-0.0607,20,Other offences,N
+108,12,-0.0607,20,Other offences,N
+108,13,-0.0607,20,Other offences,N
+108,14,-0.0607,20,Other offences,N
+108,16,-0.0607,20,Other offences,N
+108,17,-0.0607,20,Other offences,N
+108,18,-0.0607,20,Other offences,N
+108,19,-0.0607,20,Other offences,N
+108,20,-0.0607,20,Other offences,N
+108,21,-0.0607,20,Other offences,N
+108,22,-0.0607,20,Other offences,N
+108,23,-0.0607,20,Other offences,N
+108,24,-0.0607,20,Other offences,N
+108,25,-0.0607,20,Other offences,N
+108,26,-0.0607,20,Other offences,N
+108,27,-0.0607,20,Other offences,N
+108,28,-0.0607,20,Other offences,N
+108,29,-0.0607,20,Other offences,N
+108,30,-0.0607,20,Other offences,N
+108,31,-0.0607,20,Other offences,N
+108,32,-0.0607,20,Other offences,N
+108,33,-0.0607,20,Other offences,N
+108,34,-0.0607,20,Other offences,N
+108,35,-0.0607,20,Other offences,N
+108,36,-0.0607,20,Other offences,N
+108,37,-0.0607,20,Other offences,N
+108,38,-0.0607,20,Other offences,N
+108,39,-0.0607,20,Other offences,N
+109,00,0,24,Violence against the person (ABH+),Y
+109,01,0,24,Violence against the person (ABH+),Y
+109,02,0,24,Violence against the person (ABH+),Y
+109,03,0,24,Violence against the person (ABH+),Y
+109,05,0,24,Violence against the person (ABH+),Y
+109,06,0,24,Violence against the person (ABH+),Y
+109,07,0,24,Violence against the person (ABH+),Y
+109,08,0,24,Violence against the person (ABH+),Y
+109,09,0,24,Violence against the person (ABH+),Y
+110,00,-0.0607,20,Other offences,N
+110,01,-0.0607,20,Other offences,N
+110,02,-0.0607,20,Other offences,N
+110,03,-0.0607,20,Other offences,N
+110,04,-0.0607,20,Other offences,N
+110,05,-0.0607,20,Other offences,N
+111,00,999,20,Other offences,N
+111,01,-0.0607,20,Other offences,N
+111,02,0,1,Violence against the person (sub-ABH),Y
+111,03,-0.0607,20,Other offences,N
+111,04,-0.0607,20,Other offences,N
+111,05,-0.0607,20,Other offences,N
+111,06,-0.0607,20,Other offences,N
+111,07,-0.0607,20,Other offences,N
+111,08,-0.0607,20,Other offences,N
+111,10,-0.0607,20,Other offences,N
+111,11,-0.0607,20,Other offences,N
+111,12,0,1,Violence against the person (sub-ABH),Y
+111,13,0,1,Violence against the person (sub-ABH),Y
+111,14,0,1,Violence against the person (sub-ABH),Y
+111,15,0,1,Violence against the person (sub-ABH),Y
+111,16,0,1,Violence against the person (sub-ABH),Y
+111,17,0,1,Violence against the person (sub-ABH),Y
+111,18,0,1,Violence against the person (sub-ABH),Y
+111,19,0,1,Violence against the person (sub-ABH),Y
+111,20,0,1,Violence against the person (sub-ABH),Y
+111,21,-0.0607,20,Other offences,N
+111,22,-0.0607,20,Other offences,N
+111,23,-0.0607,20,Other offences,N
+111,24,-0.0607,20,Other offences,N
+112,00,-0.0607,20,Other offences,N
+112,01,-0.0607,20,Other offences,N
+112,03,-0.0607,20,Other offences,N
+112,04,-0.0607,20,Other offences,N
+112,05,-0.0607,20,Other offences,N
+112,06,-0.0607,20,Other offences,N
+113,00,0,23,Weapons (non-firearm),Y
+114,00,-0.0607,20,Other offences,N
+114,01,-0.0607,20,Other offences,N
+115,00,0,22,Firearms (other),Y
+115,04,0,22,Firearms (other),Y
+115,06,0,22,Firearms (other),Y
+115,18,0,22,Firearms (other),N
+115,19,0,22,Firearms (other),N
+115,20,0,22,Firearms (other),N
+115,21,0,22,Firearms (other),Y
+115,22,0,22,Firearms (other),Y
+115,25,0,22,Firearms (other),N
+115,28,0,22,Firearms (other),Y
+115,31,0,22,Firearms (other),Y
+115,32,0,22,Firearms (other),Y
+115,33,0,22,Firearms (other),Y
+115,34,0,22,Firearms (other),Y
+115,41,0,22,Firearms (other),Y
+115,42,0,22,Firearms (other),Y
+115,43,0,22,Firearms (other),Y
+115,44,0,22,Firearms (other),Y
+115,45,0,22,Firearms (other),Y
+115,46,0,22,Firearms (other),Y
+115,47,0,22,Firearms (other),N
+115,48,0,22,Firearms (other),Y
+115,49,0,22,Firearms (other),Y
+115,50,0,22,Firearms (other),Y
+115,51,0,22,Firearms (other),Y
+115,52,0,22,Firearms (other),Y
+115,53,0,22,Firearms (other),Y
+115,54,0,22,Firearms (other),Y
+115,55,0,22,Firearms (other),Y
+115,56,0,22,Firearms (other),Y
+115,57,0,22,Firearms (other),Y
+115,58,0,22,Firearms (other),Y
+115,59,0,22,Firearms (other),Y
+115,60,0,22,Firearms (other),Y
+115,61,0,22,Firearms (other),Y
+115,62,0,22,Firearms (other),N
+115,63,0,22,Firearms (other),N
+115,64,0,22,Firearms (other),N
+115,65,0,22,Firearms (other),N
+115,66,0,22,Firearms (other),N
+115,67,0,22,Firearms (other),N
+115,68,0,22,Firearms (other),N
+115,69,0,22,Firearms (other),N
+115,70,0,22,Firearms (other),Y
+115,71,0,22,Firearms (other),Y
+115,72,0,22,Firearms (other),Y
+115,73,0,22,Firearms (other),N
+115,74,0,22,Firearms (other),N
+115,75,0,22,Firearms (other),N
+115,76,0,22,Firearms (other),Y
+115,77,0,22,Firearms (other),Y
+115,78,0,22,Firearms (other),Y
+115,79,0,22,Firearms (other),Y
+115,80,0,22,Firearms (other),N
+115,81,0,22,Firearms (other),N
+115,82,0,22,Firearms (other),N
+115,83,0,22,Firearms (other),N
+115,84,0,22,Firearms (other),N
+115,85,0,22,Firearms (other),N
+115,86,0,22,Firearms (other),Y
+115,87,0,22,Firearms (other),Y
+115,88,0,22,Firearms (other),N
+115,90,0,22,Firearms (other),N
+115,91,0,22,Firearms (other),N
+115,92,0,22,Firearms (other),N
+115,93,0,22,Firearms (other),N
+115,94,0,22,Firearms (other),N
+115,95,0,22,Firearms (other),N
+115,96,0,22,Firearms (other),N
+115,97,0,22,Firearms (other),Y
+115,98,0,22,Firearms (other),N
+116,00,-0.0607,20,Other offences,N
+116,01,-0.0607,20,Other offences,N
+116,02,-0.0607,20,Other offences,N
+116,03,-0.0607,20,Other offences,N
+116,04,-0.0607,20,Other offences,N
+116,06,-0.0607,20,Other offences,N
+116,09,-0.0607,20,Other offences,N
+116,11,-0.0607,20,Other offences,N
+116,12,-0.0607,20,Other offences,N
+116,17,-0.0607,20,Other offences,N
+116,18,-0.0607,20,Other offences,N
+116,19,-0.0607,20,Other offences,N
+116,20,-0.0607,20,Other offences,N
+117,00,-0.0607,20,Other offences,N
+118,00,0.6612,9,Theft (non-motor),N
+118,01,0.6612,9,Theft (non-motor),N
+118,02,0.6612,9,Theft (non-motor),N
+119,00,0.6612,9,Theft (non-motor),N
+119,01,0.6612,9,Theft (non-motor),N
+120,00,0.3519,10,Handling stolen goods,N
+120,01,0.3519,10,Handling stolen goods,N
+121,00,0.3519,10,Handling stolen goods,N
+121,01,0.3519,10,Handling stolen goods,N
+121,02,0.3519,10,Handling stolen goods,N
+121,03,0.3519,10,Handling stolen goods,N
+121,04,0.3519,10,Handling stolen goods,N
+121,05,0.3519,10,Handling stolen goods,N
+121,06,0.6612,9,Theft (non-motor),N
+121,07,0.6612,9,Theft (non-motor),N
+121,09,-0.0607,20,Other offences,N
+121,11,-0.0607,20,Other offences,N
+121,12,-0.0607,20,Other offences,N
+121,13,-0.0607,20,Other offences,N
+121,14,-0.0607,20,Other offences,N
+121,15,-0.0607,20,Other offences,N
+121,16,-0.0607,20,Other offences,N
+121,17,-0.0607,20,Other offences,N
+121,18,-0.0607,20,Other offences,N
+121,19,-0.0607,20,Other offences,N
+121,20,-0.0607,20,Other offences,N
+121,21,-0.0607,20,Other offences,N
+122,00,-0.0607,20,Other offences,N
+122,01,-0.0607,20,Other offences,N
+122,02,-0.0607,20,Other offences,N
+122,03,-0.0607,20,Other offences,N
+122,04,-0.0607,20,Other offences,N
+122,05,-0.0607,20,Other offences,N
+122,06,-0.0607,20,Other offences,N
+122,07,-0.0607,20,Other offences,N
+122,20,-0.0607,20,Other offences,N
+123,00,-0.0607,20,Other offences,N
+123,01,-0.0607,20,Other offences,N
+123,02,-0.0607,20,Other offences,N
+123,03,-0.0607,20,Other offences,N
+123,04,-0.0607,20,Other offences,N
+123,05,-0.0607,20,Other offences,N
+123,06,-0.0607,20,Other offences,N
+124,00,-0.0607,20,Other offences,N
+124,01,-0.0607,20,Other offences,N
+124,02,-0.0607,20,Other offences,N
+124,03,-0.0607,20,Other offences,N
+124,04,-0.0607,20,Other offences,N
+124,05,-0.0607,20,Other offences,N
+124,06,-0.0607,20,Other offences,N
+124,07,-0.0607,20,Other offences,N
+124,08,-0.0607,20,Other offences,N
+124,09,-0.0607,20,Other offences,N
+124,10,-0.0607,20,Other offences,N
+124,11,-0.0607,20,Other offences,N
+124,12,-0.0607,20,Other offences,N
+124,13,-0.0607,20,Other offences,N
+124,14,-0.0607,20,Other offences,N
+124,15,-0.0607,20,Other offences,N
+124,16,-0.0607,20,Other offences,N
+124,17,-0.0607,20,Other offences,N
+124,18,-0.0607,20,Other offences,N
+124,19,-0.0607,20,Other offences,N
+124,20,-0.0607,20,Other offences,N
+125,00,0.1819,3,Public order and harassment,N
+125,01,0.1819,3,Public order and harassment,N
+125,02,0.1819,3,Public order and harassment,N
+125,05,0.1819,3,Public order and harassment,N
+125,09,0.1819,3,Public order and harassment,N
+125,11,0.1819,3,Public order and harassment,N
+125,12,0.1819,3,Public order and harassment,N
+125,13,0.1819,3,Public order and harassment,N
+125,14,0.1819,3,Public order and harassment,N
+125,15,0.1819,3,Public order and harassment,N
+125,16,0.1819,3,Public order and harassment,N
+125,17,0.1819,3,Public order and harassment,N
+125,18,0.1819,3,Public order and harassment,N
+125,19,0.1819,3,Public order and harassment,N
+125,20,0.1819,3,Public order and harassment,N
+125,21,0.1819,3,Public order and harassment,N
+125,22,0.1819,3,Public order and harassment,N
+125,23,0.1819,3,Public order and harassment,N
+125,24,0.1819,3,Public order and harassment,N
+125,25,0.1819,3,Public order and harassment,N
+125,26,0.1819,3,Public order and harassment,N
+125,27,0.1819,3,Public order and harassment,N
+125,28,0.1819,3,Public order and harassment,N
+125,29,0.1819,3,Public order and harassment,N
+125,30,0.1819,3,Public order and harassment,N
+125,31,0.1819,3,Public order and harassment,N
+125,32,0.1819,3,Public order and harassment,N
+125,33,0.1819,3,Public order and harassment,N
+125,34,0.1819,3,Public order and harassment,N
+125,35,0.1819,3,Public order and harassment,N
+125,36,0.1819,3,Public order and harassment,N
+125,37,0.1819,3,Public order and harassment,N
+125,38,0.1819,3,Public order and harassment,N
+125,39,0.1819,3,Public order and harassment,N
+125,40,0.1819,3,Public order and harassment,N
+125,41,0.1819,3,Public order and harassment,N
+125,42,0.1819,3,Public order and harassment,N
+125,43,0.1819,3,Public order and harassment,N
+125,44,0.1819,3,Public order and harassment,N
+125,45,0.1819,3,Public order and harassment,N
+125,46,0.1819,3,Public order and harassment,N
+125,47,0.1819,3,Public order and harassment,N
+125,48,0.1819,3,Public order and harassment,N
+125,49,0.1819,3,Public order and harassment,N
+125,50,0.1819,3,Public order and harassment,N
+125,51,0.1819,3,Public order and harassment,N
+125,52,0.1819,3,Public order and harassment,N
+125,53,0.1819,3,Public order and harassment,N
+125,54,0.1819,3,Public order and harassment,N
+125,55,0.1819,3,Public order and harassment,N
+125,56,0.1819,3,Public order and harassment,N
+125,57,0.1819,3,Public order and harassment,N
+125,58,0.1819,3,Public order and harassment,N
+125,59,0.1819,3,Public order and harassment,N
+125,60,0.1819,3,Public order and harassment,N
+125,61,0.1819,3,Public order and harassment,N
+125,62,0.1819,3,Public order and harassment,N
+125,63,0.1819,3,Public order and harassment,N
+125,64,0.1819,3,Public order and harassment,N
+125,65,0.1819,3,Public order and harassment,N
+125,66,0.1819,3,Public order and harassment,N
+125,67,0.1819,3,Public order and harassment,N
+125,68,0.1819,3,Public order and harassment,N
+125,69,0.1819,3,Public order and harassment,N
+125,70,0.1819,3,Public order and harassment,N
+125,71,0.1819,3,Public order and harassment,N
+125,72,0.1819,3,Public order and harassment,N
+125,73,0.1819,3,Public order and harassment,N
+125,74,0.1819,3,Public order and harassment,N
+125,75,0.1819,3,Public order and harassment,N
+125,76,0.1819,3,Public order and harassment,N
+125,77,0.1819,3,Public order and harassment,N
+125,78,0.1819,3,Public order and harassment,N
+125,79,0.1819,3,Public order and harassment,N
+125,80,0.1819,3,Public order and harassment,N
+125,81,0.1819,3,Public order and harassment,N
+125,82,0.1819,3,Public order and harassment,N
+125,83,0.1819,3,Public order and harassment,N
+125,84,0.1819,3,Public order and harassment,N
+125,85,0.1819,3,Public order and harassment,N
+125,86,-0.0607,3,Public order and harassment,N
+125,99,0.1819,3,Public order and harassment,N
+126,00,0.2622,13,Vehicle-related theft,N
+130,00,0.3801,13,Vehicle-related theft,N
+130,01,0.3801,13,Vehicle-related theft,N
+130,02,0.3801,13,Vehicle-related theft,N
+130,03,0.3801,13,Vehicle-related theft,N
+131,00,0.3801,13,Vehicle-related theft,N
+131,01,0.3801,13,Vehicle-related theft,N
+135,00,-0.0607,20,Other offences,N
+135,01,-0.0607,20,Other offences,N
+135,02,-0.0607,20,Other offences,N
+135,04,-0.0607,20,Other offences,N
+135,05,-0.0607,20,Other offences,N
+135,06,-0.0607,20,Other offences,N
+135,07,-0.0607,20,Other offences,N
+135,08,-0.0607,20,Other offences,N
+135,09,-0.0607,20,Other offences,N
+135,10,-0.0607,20,Other offences,N
+135,11,-0.0607,20,Other offences,N
+135,12,-0.0607,20,Other offences,N
+135,13,-0.0607,20,Other offences,N
+135,14,-0.0607,20,Other offences,N
+135,15,-0.0607,20,Other offences,N
+135,16,-0.0607,20,Other offences,N
+135,20,-0.0607,20,Other offences,N
+136,00,-0.0607,20,Other offences,N
+136,01,-0.0607,20,Other offences,N
+136,02,-0.0607,20,Other offences,N
+136,04,-0.0607,20,Other offences,N
+136,05,-0.0607,20,Other offences,N
+136,06,-0.0607,20,Other offences,N
+136,07,-0.0607,20,Other offences,N
+136,20,-0.0607,20,Other offences,N
+137,00,-0.0607,20,Other offences,N
+137,01,-0.0607,20,Other offences,N
+137,04,-0.0607,20,Other offences,N
+137,05,-0.0607,20,Other offences,N
+137,06,-0.0607,20,Other offences,N
+137,07,-0.0607,20,Other offences,N
+137,08,-0.0607,20,Other offences,N
+137,09,-0.0607,20,Other offences,N
+137,10,-0.0607,20,Other offences,N
+137,11,-0.0607,20,Other offences,N
+137,12,-0.0607,20,Other offences,N
+137,13,-0.0607,20,Other offences,N
+137,14,-0.0607,20,Other offences,N
+137,15,-0.0607,20,Other offences,N
+137,16,-0.0607,20,Other offences,N
+137,17,-0.0607,20,Other offences,N
+137,18,-0.0607,13,Vehicle-related theft,N
+137,20,-0.0607,20,Other offences,N
+137,30,-0.0607,20,Other offences,N
+137,99,-0.0607,20,Other offences,N
+138,00,-0.0607,20,Other offences,N
+138,01,-0.0607,20,Other offences,N
+138,02,-0.0607,20,Other offences,N
+138,03,-0.0607,20,Other offences,N
+138,04,-0.0607,20,Other offences,N
+138,05,-0.0607,20,Other offences,N
+138,06,-0.0607,20,Other offences,N
+138,07,-0.0607,20,Other offences,N
+138,08,-0.0607,20,Other offences,N
+138,09,-0.0607,20,Other offences,N
+138,10,-0.0607,20,Other offences,N
+138,11,-0.0607,20,Other offences,N
+138,12,-0.0607,20,Other offences,N
+138,13,-0.0607,20,Other offences,N
+138,14,-0.0607,20,Other offences,N
+138,15,-0.0607,20,Other offences,N
+138,16,-0.0607,20,Other offences,N
+138,17,-0.0607,20,Other offences,N
+138,18,-0.0607,20,Other offences,N
+138,19,-0.0607,20,Other offences,N
+138,20,-0.0607,20,Other offences,N
+138,21,-0.0607,20,Other offences,N
+138,22,-0.0607,20,Other offences,N
+138,23,-0.0607,20,Other offences,N
+138,24,-0.0607,20,Other offences,N
+138,25,-0.0607,20,Other offences,N
+138,26,-0.0607,20,Other offences,N
+138,27,-0.0607,20,Other offences,N
+138,28,-0.0607,20,Other offences,N
+138,29,-0.0607,20,Other offences,N
+138,30,-0.0607,20,Other offences,N
+138,31,-0.0607,20,Other offences,N
+138,32,-0.0607,20,Other offences,N
+138,33,-0.0607,20,Other offences,N
+138,34,-0.0607,20,Other offences,N
+138,35,-0.0607,20,Other offences,N
+138,45,-0.0607,20,Other offences,N
+138,46,-0.0607,20,Other offences,N
+138,47,-0.0607,20,Other offences,N
+138,48,-0.0607,20,Other offences,N
+139,00,0.0328,4,Sexual (not against child),Y
+140,00,0.1819,6,Drunkenness,N
+140,01,0.1819,6,Drunkenness,N
+140,05,0.1819,6,Drunkenness,N
+140,06,0.1819,6,Drunkenness,N
+140,10,0.1819,6,Drunkenness,N
+140,11,0.1819,6,Drunkenness,N
+141,00,999,6,Drunkenness,N
+141,01,0.1819,6,Drunkenness,N
+141,02,-0.1214,6,Drunkenness,N
+141,03,0.1819,6,Drunkenness,N
+141,04,0.1819,6,Drunkenness,N
+141,05,0.1819,6,Drunkenness,N
+141,08,-0.1214,6,Drunkenness,N
+141,09,-0.1214,6,Drunkenness,N
+141,10,0.1819,6,Drunkenness,N
+141,11,0.1819,6,Drunkenness,N
+141,12,0.1819,6,Drunkenness,N
+141,20,0.1819,6,Drunkenness,N
+142,00,-0.0607,20,Other offences,N
+142,01,-0.0607,20,Other offences,N
+142,02,-0.0607,20,Other offences,N
+142,03,-0.0607,20,Other offences,N
+142,04,-0.0607,20,Other offences,N
+142,05,-0.0607,20,Other offences,N
+142,06,-0.0607,20,Other offences,N
+142,07,-0.0607,20,Other offences,N
+142,10,-0.0607,20,Other offences,N
+142,13,-0.0607,20,Other offences,N
+142,14,-0.0607,20,Other offences,N
+142,15,-0.0607,20,Other offences,N
+142,16,-0.0607,20,Other offences,N
+142,19,-0.0607,20,Other offences,N
+142,21,-0.0607,20,Other offences,N
+142,23,-0.0607,20,Other offences,N
+142,24,-0.0607,20,Other offences,N
+142,25,-0.0607,20,Other offences,N
+142,27,-0.0607,20,Other offences,N
+142,28,-0.0607,20,Other offences,N
+142,29,-0.0607,20,Other offences,N
+142,30,-0.0607,20,Other offences,N
+142,31,-0.0607,20,Other offences,N
+142,32,-0.0607,20,Other offences,N
+142,33,-0.0607,20,Other offences,N
+142,34,-0.0607,20,Other offences,N
+142,35,-0.0607,20,Other offences,N
+142,37,-0.0607,20,Other offences,N
+142,40,-0.0607,20,Other offences,N
+142,41,-0.0607,20,Other offences,N
+142,42,-0.0607,20,Other offences,N
+142,43,-0.0607,20,Other offences,N
+142,44,-0.0607,20,Other offences,N
+142,45,-0.0607,20,Other offences,N
+142,46,-0.0607,20,Other offences,N
+142,47,-0.0607,20,Other offences,N
+142,48,-0.0607,20,Other offences,N
+142,49,-0.0607,20,Other offences,N
+142,50,-0.0607,20,Other offences,N
+142,51,-0.0607,20,Other offences,N
+142,52,-0.0607,20,Other offences,N
+142,53,-0.0607,20,Other offences,N
+142,64,-0.0607,20,Other offences,N
+142,65,-0.0607,20,Other offences,N
+142,66,-0.0607,20,Other offences,N
+142,67,-0.0607,20,Other offences,N
+142,68,-0.0607,20,Other offences,N
+142,69,-0.0607,20,Other offences,N
+142,70,-0.0607,20,Other offences,N
+142,71,-0.0607,20,Other offences,N
+142,72,-0.0607,20,Other offences,N
+142,73,-0.0607,20,Other offences,N
+142,74,-0.0607,20,Other offences,N
+142,75,-0.0607,20,Other offences,N
+142,76,-0.0607,20,Other offences,N
+142,77,-0.0607,20,Other offences,N
+142,78,-0.0607,20,Other offences,N
+142,79,-0.0607,20,Other offences,N
+142,80,-0.0607,20,Other offences,N
+142,81,-0.0607,20,Other offences,N
+142,82,-0.0607,20,Other offences,N
+142,83,-0.0607,20,Other offences,N
+142,84,-0.0607,20,Other offences,N
+142,85,-0.0607,20,Other offences,N
+142,86,-0.0607,20,Other offences,N
+142,87,-0.0607,20,Other offences,N
+142,88,-0.0607,20,Other offences,N
+142,89,-0.0607,20,Other offences,N
+142,90,-0.0607,20,Other offences,N
+142,91,-0.0607,20,Other offences,N
+142,92,-0.0607,20,Other offences,N
+142,93,-0.0607,20,Other offences,N
+143,00,-0.0607,20,Other offences,N
+143,01,-0.0607,20,Other offences,N
+143,02,-0.0607,20,Other offences,N
+143,03,-0.0607,20,Other offences,N
+143,04,-0.0607,20,Other offences,N
+143,05,-0.0607,20,Other offences,N
+143,06,-0.0607,20,Other offences,N
+143,07,-0.0607,20,Other offences,N
+143,08,-0.0607,20,Other offences,N
+143,09,-0.0607,20,Other offences,N
+143,10,-0.0607,20,Other offences,N
+143,11,-0.0607,20,Other offences,N
+143,12,-0.0607,20,Other offences,N
+143,14,-0.0607,20,Other offences,N
+143,15,-0.0607,20,Other offences,N
+143,16,-0.0607,20,Other offences,N
+143,17,-0.0607,20,Other offences,N
+143,18,-0.0607,20,Other offences,N
+143,19,-0.0607,20,Other offences,N
+143,21,-0.0607,20,Other offences,N
+143,22,-0.0607,20,Other offences,N
+143,23,-0.0607,20,Other offences,N
+143,24,-0.0607,20,Other offences,N
+143,28,-0.0607,20,Other offences,N
+143,29,-0.0607,20,Other offences,N
+143,33,-0.0607,20,Other offences,N
+143,34,-0.0607,20,Other offences,N
+143,35,-0.0607,20,Other offences,N
+143,36,-0.0607,20,Other offences,N
+143,37,-0.0607,20,Other offences,N
+143,38,-0.0607,20,Other offences,N
+143,39,-0.0607,20,Other offences,N
+143,40,-0.0607,20,Other offences,N
+143,44,-0.0607,20,Other offences,N
+143,45,-0.0607,20,Other offences,N
+143,46,-0.0607,20,Other offences,N
+143,47,-0.0607,20,Other offences,N
+143,48,-0.0607,20,Other offences,N
+143,49,-0.0607,20,Other offences,N
+143,50,-0.0607,20,Other offences,N
+143,51,-0.0607,20,Other offences,N
+143,52,-0.0607,20,Other offences,N
+143,53,-0.0607,20,Other offences,N
+143,54,-0.0607,20,Other offences,N
+143,59,-0.0607,20,Other offences,N
+143,60,-0.0607,20,Other offences,N
+143,61,-0.0607,20,Other offences,N
+143,62,-0.0607,20,Other offences,N
+143,63,-0.0607,20,Other offences,N
+143,64,-0.0607,20,Other offences,N
+143,65,-0.0607,20,Other offences,N
+143,66,-0.0607,20,Other offences,N
+143,67,-0.0607,20,Other offences,N
+143,68,-0.0607,20,Other offences,N
+143,69,-0.0607,20,Other offences,N
+143,70,-0.0607,20,Other offences,N
+143,71,-0.0607,20,Other offences,N
+143,72,-0.0607,20,Other offences,N
+143,73,-0.0607,20,Other offences,N
+143,74,-0.0607,20,Other offences,N
+143,75,-0.0607,20,Other offences,N
+143,76,-0.0607,20,Other offences,N
+143,77,-0.0607,20,Other offences,N
+143,78,-0.0607,20,Other offences,N
+143,79,-0.0607,20,Other offences,N
+143,80,-0.0607,20,Other offences,N
+143,81,-0.0607,20,Other offences,N
+143,82,-0.0607,20,Other offences,N
+143,83,-0.0607,20,Other offences,N
+143,84,-0.0607,20,Other offences,N
+143,85,-0.0607,20,Other offences,N
+143,86,-0.0607,20,Other offences,N
+143,87,-0.0607,20,Other offences,N
+143,88,-0.0607,20,Other offences,N
+143,89,-0.0607,20,Other offences,N
+143,90,-0.0607,20,Other offences,N
+143,91,-0.0607,20,Other offences,N
+143,92,-0.0607,20,Other offences,N
+143,93,-0.0607,20,Other offences,N
+143,94,-0.0607,20,Other offences,N
+143,95,-0.0607,20,Other offences,N
+143,96,0.1819,20,Other offences,N
+143,97,0.1819,20,Other offences,N
+143,98,-0.0607,20,Other offences,N
+143,99,-0.0607,20,Other offences,N
+144,00,-0.0607,20,Other offences,N
+144,01,-0.0607,20,Other offences,N
+144,02,-0.0607,20,Other offences,N
+144,03,-0.0607,20,Other offences,N
+145,00,0,3,Public order and harassment,Y
+145,01,0,3,Public order and harassment,N
+146,00,-0.0607,20,Other offences,N
+146,05,-0.0607,20,Other offences,N
+146,99,-0.0607,20,Other offences,N
+147,00,-0.0607,20,Other offences,N
+147,01,-0.0607,20,Other offences,N
+147,02,-0.0607,20,Other offences,N
+147,04,-0.0607,20,Other offences,N
+147,05,-0.0607,20,Other offences,N
+147,06,-0.0607,20,Other offences,N
+147,07,-0.0607,20,Other offences,N
+147,20,-0.0607,20,Other offences,N
+148,00,-0.0607,20,Other offences,N
+148,02,-0.0607,20,Other offences,N
+148,17,-0.0607,20,Other offences,N
+148,22,-0.0607,20,Other offences,N
+148,23,-0.0607,20,Other offences,N
+148,24,-0.0607,20,Other offences,N
+148,26,-0.0607,20,Other offences,N
+148,29,-0.0607,20,Other offences,N
+148,35,-0.0607,20,Other offences,N
+148,42,-0.0607,20,Other offences,N
+148,48,-0.0607,20,Other offences,N
+148,50,-0.0607,20,Other offences,N
+148,51,-0.0607,20,Other offences,N
+148,59,-0.0607,20,Other offences,N
+148,62,-0.0607,20,Other offences,N
+148,63,-0.0607,20,Other offences,N
+148,64,-0.0607,20,Other offences,N
+149,00,0.205,17,Criminal damage,N
+150,00,-0.0607,20,Other offences,N
+150,04,-0.0607,20,Other offences,N
+150,07,-0.0607,20,Other offences,N
+150,09,-0.0607,20,Other offences,N
+150,10,-0.0607,20,Other offences,N
+150,11,-0.0607,20,Other offences,N
+150,19,-0.0607,20,Other offences,N
+150,25,-0.0607,20,Other offences,N
+150,27,-0.0607,20,Other offences,N
+150,28,-0.0607,20,Other offences,N
+150,29,-0.0607,20,Other offences,N
+150,30,-0.0607,20,Other offences,N
+150,31,-0.0607,20,Other offences,N
+150,32,-0.0607,20,Other offences,N
+150,33,-0.0607,20,Other offences,N
+150,34,-0.0607,20,Other offences,N
+150,35,-0.0607,20,Other offences,N
+151,00,-0.0607,14,Welfare fraud,N
+151,01,-0.0607,14,Welfare fraud,N
+151,03,-0.0607,14,Welfare fraud,N
+151,04,-0.0607,14,Welfare fraud,N
+151,05,-0.0607,14,Welfare fraud,N
+151,06,-0.0607,14,Welfare fraud,N
+151,07,-0.0607,14,Welfare fraud,N
+151,09,-0.0607,14,Welfare fraud,N
+151,10,-0.0607,14,Welfare fraud,N
+151,11,-0.0607,14,Welfare fraud,N
+151,12,-0.0607,14,Welfare fraud,N
+151,14,-0.0607,14,Welfare fraud,N
+151,15,-0.0607,14,Welfare fraud,N
+152,00,-0.0607,14,Welfare fraud,N
+153,00,-0.0607,20,Other offences,N
+153,02,-0.0607,20,Other offences,N
+153,05,-0.0607,20,Other offences,N
+153,06,-0.0607,20,Other offences,N
+153,07,-0.0607,20,Other offences,N
+153,15,-0.0607,20,Other offences,N
+154,00,-0.0607,20,Other offences,N
+154,04,-0.0607,20,Other offences,N
+154,09,-0.0607,20,Other offences,N
+154,17,-0.0607,20,Other offences,N
+155,00,-0.0607,20,Other offences,N
+155,01,-0.0607,20,Other offences,N
+155,03,-0.0607,20,Other offences,N
+155,08,-0.0607,20,Other offences,N
+155,09,-0.0607,20,Other offences,N
+155,10,-0.0607,20,Other offences,N
+155,11,-0.0607,20,Other offences,N
+155,12,-0.0607,20,Other offences,N
+155,13,-0.0607,20,Other offences,N
+155,14,-0.0607,20,Other offences,N
+155,15,-0.0607,20,Other offences,N
+155,16,-0.0607,1,Violence against the person (sub-ABH),N
+155,17,-0.0607,20,Other offences,N
+155,18,0,1,Violence against the person (sub-ABH),Y
+156,00,-0.0607,20,Other offences,N
+156,01,-0.0607,20,Other offences,N
+156,02,-0.0607,20,Other offences,N
+156,03,-0.0607,20,Other offences,N
+156,05,-0.0607,20,Other offences,N
+156,06,-0.0607,20,Other offences,N
+156,07,-0.0607,20,Other offences,N
+156,08,-0.0607,20,Other offences,N
+156,09,-0.0607,20,Other offences,N
+156,10,-0.0607,20,Other offences,N
+156,11,-0.0607,20,Other offences,N
+156,12,-0.0607,20,Other offences,N
+156,13,-0.0607,20,Other offences,N
+156,20,-0.0607,20,Other offences,N
+157,00,-0.0607,20,Other offences,N
+157,06,0,22,Firearms (other),N
+157,07,0,22,Firearms (other),N
+158,00,-0.0607,20,Other offences,N
+158,01,-0.0607,20,Other offences,N
+158,02,-0.0607,20,Other offences,N
+158,03,-0.0607,20,Other offences,N
+158,04,-0.0607,20,Other offences,N
+158,05,-0.0607,20,Other offences,N
+158,06,-0.0607,20,Other offences,N
+159,00,-0.0607,20,Other offences,N
+159,01,-0.0607,20,Other offences,N
+159,02,-0.0607,20,Other offences,N
+159,03,-0.0607,20,Other offences,N
+159,04,-0.0607,20,Other offences,N
+159,05,-0.0607,20,Other offences,N
+160,00,-0.0607,20,Other offences,N
+161,00,-0.0607,20,Other offences,N
+161,03,-0.0607,20,Other offences,N
+161,05,-0.0607,20,Other offences,N
+161,10,-0.0607,20,Other offences,N
+161,11,-0.0607,20,Other offences,N
+162,00,0.1819,3,Public order and harassment,N
+162,02,0.1819,3,Public order and harassment,N
+162,03,0.1819,3,Public order and harassment,N
+162,10,0.1819,3,Public order and harassment,N
+162,11,0.1819,3,Public order and harassment,N
+163,00,-0.0607,20,Other offences,N
+163,10,-0.0607,20,Other offences,N
+163,11,-0.0607,20,Other offences,N
+164,00,0.1819,20,Other offences,N
+164,02,0.1819,20,Other offences,N
+164,03,0.1819,20,Other offences,N
+164,04,0.1819,20,Other offences,N
+164,05,0.1819,20,Other offences,N
+164,06,0.1819,20,Other offences,N
+164,07,0.1819,20,Other offences,N
+164,09,-0.0607,20,Other offences,N
+164,10,-0.0607,20,Other offences,N
+164,11,-0.0607,20,Other offences,N
+164,12,0.0328,4,Sexual (not against child),N
+164,15,-0.0607,20,Other offences,N
+164,16,-0.0607,20,Other offences,N
+164,17,-0.0607,20,Other offences,N
+165,00,0.7606,20,Other offences,N
+165,01,0.7606,20,Other offences,N
+165,02,0.7606,20,Other offences,N
+165,03,0.7606,20,Other offences,N
+166,00,0.7606,20,Other offences,N
+166,01,0.7606,20,Other offences,N
+166,04,0.7606,20,Other offences,N
+166,20,0.7606,20,Other offences,N
+167,00,0.7606,20,Other offences,N
+167,01,0.7606,20,Other offences,N
+167,02,0.7606,20,Other offences,N
+168,00,-0.0607,20,Other offences,N
+168,01,-0.0607,20,Other offences,N
+168,02,-0.0607,20,Other offences,N
+168,03,-0.0607,20,Other offences,N
+168,04,-0.0607,20,Other offences,N
+168,05,-0.0607,20,Other offences,N
+168,07,-0.0607,20,Other offences,N
+168,08,-0.0607,20,Other offences,N
+168,09,-0.0607,20,Other offences,N
+168,10,-0.0607,20,Other offences,N
+168,11,-0.0607,20,Other offences,N
+168,12,-0.0607,20,Other offences,N
+168,14,-0.0607,20,Other offences,N
+168,15,-0.0607,20,Other offences,N
+168,17,-0.0607,20,Other offences,N
+168,18,-0.0607,20,Other offences,N
+168,19,-0.0607,20,Other offences,N
+168,20,-0.0607,20,Other offences,N
+168,21,-0.0607,20,Other offences,N
+168,23,-0.0607,20,Other offences,N
+168,24,-0.0607,20,Other offences,N
+168,25,-0.0607,20,Other offences,N
+168,26,-0.0607,20,Other offences,N
+168,29,-0.0607,20,Other offences,N
+168,30,-0.0607,20,Other offences,N
+168,31,-0.0607,20,Other offences,N
+168,33,-0.0607,20,Other offences,N
+168,34,-0.0607,20,Other offences,N
+168,35,-0.0607,20,Other offences,N
+168,36,-0.0607,20,Other offences,N
+168,40,-0.0607,20,Other offences,N
+168,42,-0.0607,20,Other offences,N
+168,43,-0.0607,20,Other offences,N
+168,45,-0.0607,20,Other offences,N
+168,47,-0.0607,20,Other offences,N
+168,51,-0.0607,20,Other offences,N
+168,52,-0.0607,20,Other offences,N
+168,53,-0.0607,20,Other offences,N
+168,54,-0.0607,20,Other offences,N
+168,55,-0.0607,20,Other offences,N
+168,56,-0.0607,20,Other offences,N
+168,63,-0.0607,20,Other offences,N
+168,64,-0.0607,20,Other offences,N
+168,65,-0.0607,20,Other offences,N
+168,66,-0.0607,20,Other offences,N
+168,67,-0.0607,20,Other offences,N
+168,68,-0.0607,20,Other offences,N
+168,69,-0.0607,20,Other offences,N
+168,70,-0.0607,20,Other offences,N
+168,71,-0.0607,20,Other offences,N
+168,72,-0.0607,20,Other offences,N
+168,73,-0.0607,20,Other offences,N
+168,74,-0.0607,20,Other offences,N
+168,75,-0.0607,20,Other offences,N
+168,76,-0.0607,20,Other offences,N
+168,77,-0.0607,20,Other offences,N
+168,78,-0.0607,20,Other offences,N
+168,79,-0.0607,20,Other offences,N
+168,80,-0.0607,20,Other offences,N
+168,81,-0.0607,20,Other offences,N
+168,82,-0.0607,20,Other offences,N
+168,83,-0.0607,20,Other offences,N
+168,84,-0.0607,20,Other offences,N
+168,85,-0.0607,20,Other offences,N
+168,86,-0.0607,20,Other offences,N
+168,87,-0.0607,20,Other offences,N
+168,88,-0.0607,20,Other offences,N
+168,89,-0.0607,20,Other offences,N
+168,90,-0.0607,20,Other offences,N
+168,91,-0.0607,20,Other offences,N
+168,92,-0.0607,20,Other offences,N
+168,93,-0.0607,20,Other offences,N
+168,94,-0.0607,20,Other offences,N
+168,95,-0.0607,20,Other offences,N
+168,96,-0.0607,20,Other offences,N
+168,97,-0.0607,20,Other offences,N
+168,98,-0.0607,20,Other offences,N
+169,00,-0.0607,20,Other offences,N
+169,01,-0.0607,20,Other offences,N
+169,04,-0.0607,20,Other offences,N
+169,05,-0.0607,20,Other offences,N
+169,06,-0.0607,20,Other offences,N
+169,07,-0.0607,20,Other offences,N
+169,08,-0.0607,20,Other offences,N
+169,09,-0.0607,20,Other offences,N
+169,10,-0.0607,20,Other offences,N
+169,20,-0.0607,20,Other offences,N
+170,00,0.2622,15,Motoring offences,N
+172,00,-0.0607,20,Other offences,N
+173,00,0.2622,15,Motoring offences,N
+173,01,0.2622,15,Motoring offences,N
+173,02,0.2622,15,Motoring offences,N
+173,04,0.2622,15,Motoring offences,N
+173,05,0.2622,15,Motoring offences,N
+173,06,0.2622,15,Motoring offences,N
+173,07,0.2622,15,Motoring offences,N
+173,08,0.2622,15,Motoring offences,N
+173,09,0.2622,15,Motoring offences,N
+173,10,0.2622,15,Motoring offences,N
+173,12,0.2622,15,Motoring offences,N
+173,13,0.2622,15,Motoring offences,N
+173,16,0.2622,15,Motoring offences,N
+173,18,0.2622,15,Motoring offences,N
+173,20,0.2622,15,Motoring offences,N
+173,30,-0.0607,20,Other offences,N
+173,31,-0.0607,20,Other offences,N
+173,50,0.2622,15,Motoring offences,N
+175,00,-0.0607,20,Other offences,Y
+175,01,-0.0607,20,Other offences,N
+175,02,-0.0607,20,Other offences,N
+175,03,-0.0607,20,Other offences,N
+175,04,-0.0607,4,Sexual (not against child),Y
+175,05,-0.0607,20,Other offences,N
+175,06,-0.0607,20,Other offences,N
+175,07,-0.0607,20,Other offences,N
+176,00,-0.0607,20,Other offences,N
+176,01,-0.0607,20,Other offences,N
+176,02,-0.0607,20,Other offences,N
+176,03,-0.0607,20,Other offences,N
+177,00,-0.0607,11,Fraud and forgery,N
+177,01,-0.0607,11,Fraud and forgery,N
+179,00,-0.0607,20,Other offences,N
+179,03,-0.0607,20,Other offences,N
+179,04,-0.0607,20,Other offences,N
+179,08,-0.0607,20,Other offences,N
+179,09,-0.0607,20,Other offences,N
+179,10,-0.0607,20,Other offences,N
+179,11,-0.0607,20,Other offences,N
+180,00,-0.0607,20,Other offences,N
+181,00,-0.0607,10,Handling stolen goods,N
+181,01,-0.0607,10,Handling stolen goods,N
+181,04,-0.0607,10,Handling stolen goods,N
+181,05,-0.0607,10,Handling stolen goods,N
+181,20,-0.0607,10,Handling stolen goods,N
+182,00,0.1819,3,Public order and harassment,N
+183,00,0.1819,3,Public order and harassment,N
+184,00,-0.0607,20,Other offences,N
+184,01,-0.0607,20,Other offences,N
+184,02,-0.0607,20,Other offences,N
+185,00,0.205,8,Burglary (other),N
+185,01,0.205,8,Burglary (other),N
+185,02,0.205,8,Burglary (other),N
+188,00,-0.0607,20,Other offences,N
+188,01,-0.0607,20,Other offences,N
+188,04,-0.0607,20,Other offences,N
+188,05,-0.0607,20,Other offences,N
+188,06,-0.0607,20,Other offences,N
+188,99,-0.0607,20,Other offences,N
+189,00,-0.0607,20,Other offences,N
+189,01,-0.0607,20,Other offences,N
+189,02,-0.0607,20,Other offences,N
+189,03,-0.0607,20,Other offences,N
+190,00,-0.0607,20,Other offences,N
+190,01,-0.0607,20,Other offences,N
+190,02,-0.0607,20,Other offences,N
+190,03,-0.0607,20,Other offences,N
+190,04,-0.0607,20,Other offences,N
+190,05,-0.0607,20,Other offences,N
+190,06,-0.0607,20,Other offences,N
+190,07,-0.0607,20,Other offences,N
+190,08,-0.0607,20,Other offences,N
+190,09,-0.0607,20,Other offences,N
+191,00,-0.0607,20,Other offences,N
+191,01,-0.0607,20,Other offences,N
+191,02,-0.0607,20,Other offences,N
+191,03,-0.0607,20,Other offences,N
+191,04,-0.0607,20,Other offences,N
+191,05,-0.0607,20,Other offences,N
+191,06,-0.0607,20,Other offences,N
+191,07,-0.0607,20,Other offences,N
+191,08,-0.0607,20,Other offences,N
+191,09,-0.0607,20,Other offences,N
+191,10,-0.0607,20,Other offences,N
+191,11,-0.0607,20,Other offences,N
+191,12,-0.0607,20,Other offences,N
+191,13,-0.0607,20,Other offences,N
+191,15,-0.0607,20,Other offences,N
+191,17,-0.0607,20,Other offences,N
+191,18,-0.0607,20,Other offences,N
+191,19,-0.0607,20,Other offences,N
+191,20,-0.0607,20,Other offences,N
+192,00,-0.0607,20,Other offences,N
+192,03,-0.0607,20,Other offences,N
+192,04,-0.0607,20,Other offences,N
+192,05,-0.0607,20,Other offences,N
+192,06,-0.0607,20,Other offences,N
+193,00,0.0772,19,Drug possession/supply,N
+193,01,0.0772,18,Drug import/export/production,N
+193,02,0.0772,19,Drug possession/supply,N
+193,03,0.0772,19,Drug possession/supply,N
+193,04,0.0772,19,Drug possession/supply,N
+193,05,0.0772,18,Drug import/export/production,N
+193,06,0.0772,19,Drug possession/supply,N
+193,07,0.0772,19,Drug possession/supply,N
+193,08,0.0772,19,Drug possession/supply,N
+193,09,0.0772,19,Drug possession/supply,N
+193,10,0.0772,19,Drug possession/supply,N
+193,11,0.0772,19,Drug possession/supply,N
+193,12,0.0772,19,Drug possession/supply,N
+193,13,0.0772,19,Drug possession/supply,N
+193,14,0.0772,19,Drug possession/supply,N
+193,15,0.0772,19,Drug possession/supply,N
+193,16,0.0772,19,Drug possession/supply,N
+193,17,0.0772,18,Drug import/export/production,N
+193,18,0.0772,18,Drug import/export/production,N
+193,19,0.0772,18,Drug import/export/production,N
+193,20,0.0772,18,Drug import/export/production,N
+193,21,0.0772,19,Drug possession/supply,N
+193,22,0.0772,19,Drug possession/supply,N
+193,23,0.0772,19,Drug possession/supply,N
+193,24,0.0772,19,Drug possession/supply,N
+193,25,0.0772,19,Drug possession/supply,N
+193,26,0.0772,19,Drug possession/supply,N
+193,27,0.0772,19,Drug possession/supply,N
+193,28,0.0772,19,Drug possession/supply,N
+193,29,0.0772,19,Drug possession/supply,N
+193,30,0.0772,19,Drug possession/supply,N
+193,31,0.0772,19,Drug possession/supply,N
+193,32,0.0772,19,Drug possession/supply,N
+193,33,0.0772,19,Drug possession/supply,N
+193,34,0.0772,19,Drug possession/supply,N
+193,35,0.0772,19,Drug possession/supply,N
+193,36,0.0772,19,Drug possession/supply,N
+193,37,0.0772,19,Drug possession/supply,N
+193,38,0.0772,19,Drug possession/supply,N
+193,39,0.0772,19,Drug possession/supply,N
+193,40,0.0772,19,Drug possession/supply,N
+193,41,0.0772,19,Drug possession/supply,N
+193,42,0.0772,19,Drug possession/supply,N
+193,43,0.0772,19,Drug possession/supply,N
+193,44,0.0772,19,Drug possession/supply,N
+193,46,0.0772,19,Drug possession/supply,N
+193,47,0.0772,12,Absconding/bail,N
+193,48,0.0772,12,Absconding/bail,N
+193,49,-0.0607,18,Drug import/export/production,N
+193,50,-0.0607,18,Drug import/export/production,N
+193,51,-0.0607,18,Drug import/export/production,N
+193,52,-0.0607,18,Drug import/export/production,N
+193,53,-0.0607,12,Absconding/bail,N
+193,54,-0.0607,12,Absconding/bail,N
+193,55,-0.0607,19,Drug possession/supply,N
+193,91,0.0772,19,Drug possession/supply,N
+193,92,0.0772,19,Drug possession/supply,N
+194,00,-0.0607,11,Fraud and forgery,N
+194,01,-0.0607,11,Fraud and forgery,N
+194,02,-0.0607,11,Fraud and forgery,N
+194,03,-0.0607,11,Fraud and forgery,N
+194,04,-0.0607,11,Fraud and forgery,N
+194,05,-0.0607,11,Fraud and forgery,N
+194,06,-0.0607,11,Fraud and forgery,N
+194,07,-0.0607,11,Fraud and forgery,N
+194,08,-0.0607,11,Fraud and forgery,N
+194,09,-0.0607,11,Fraud and forgery,N
+194,10,-0.0607,11,Fraud and forgery,N
+194,11,-0.0607,11,Fraud and forgery,N
+194,12,-0.0607,11,Fraud and forgery,N
+194,13,-0.0607,11,Fraud and forgery,N
+194,14,-0.0607,11,Fraud and forgery,N
+194,15,-0.0607,11,Fraud and forgery,N
+194,16,-0.0607,11,Fraud and forgery,N
+194,17,-0.0607,11,Fraud and forgery,N
+194,18,-0.0607,11,Fraud and forgery,N
+194,19,-0.0607,11,Fraud and forgery,N
+194,20,-0.0607,11,Fraud and forgery,N
+194,21,-0.0607,11,Fraud and forgery,N
+194,22,-0.0607,11,Fraud and forgery,N
+194,23,-0.0607,11,Fraud and forgery,N
+194,24,-0.0607,11,Fraud and forgery,N
+194,25,-0.0607,11,Fraud and forgery,N
+194,26,-0.0607,11,Fraud and forgery,N
+194,27,-0.0607,1,Violence against the person (sub-ABH),N
+194,28,-0.0607,11,Fraud and forgery,N
+194,29,-0.0607,11,Fraud and forgery,N
+194,30,-0.0607,11,Fraud and forgery,N
+194,31,-0.0607,11,Fraud and forgery,N
+194,32,-0.0607,11,Fraud and forgery,N
+194,33,-0.0607,11,Fraud and forgery,N
+194,34,-0.0607,11,Fraud and forgery,N
+194,35,-0.0607,11,Fraud and forgery,N
+194,37,-0.0607,11,Fraud and forgery,N
+194,38,-0.0607,11,Fraud and forgery,N
+194,39,-0.0607,11,Fraud and forgery,N
+194,40,-0.0607,11,Fraud and forgery,N
+194,41,-0.0607,11,Fraud and forgery,N
+194,42,-0.0607,1,Violence against the person (sub-ABH),N
+194,43,-0.0607,1,Violence against the person (sub-ABH),N
+194,44,-0.0607,11,Fraud and forgery,N
+194,45,-0.0607,11,Fraud and forgery,N
+194,46,-0.0607,11,Fraud and forgery,N
+194,47,-0.0607,11,Fraud and forgery,N
+194,48,-0.0607,11,Fraud and forgery,N
+194,49,-0.0607,11,Fraud and forgery,N
+194,50,-0.0607,1,Violence against the person (sub-ABH),N
+194,51,-0.0607,11,Fraud and forgery,N
+194,52,-0.0607,11,Fraud and forgery,N
+194,53,-0.0607,12,Absconding/bail,N
+194,54,-0.0607,11,Fraud and forgery,N
+194,55,-0.0607,11,Fraud and forgery,N
+194,56,-0.0607,11,Fraud and forgery,N
+194,57,-0.0607,11,Fraud and forgery,N
+194,58,-0.0607,11,Fraud and forgery,N
+194,59,-0.0607,11,Fraud and forgery,N
+194,60,-0.0607,12,Absconding/bail,N
+194,61,-0.0607,1,Violence against the person (sub-ABH),N
+194,62,-0.0607,11,Fraud and forgery,N
+195,00,-0.0607,20,Other offences,N
+195,01,-0.0607,20,Other offences,N
+195,02,-0.0607,20,Other offences,N
+195,03,-0.0607,20,Other offences,N
+195,04,-0.0607,20,Other offences,N
+195,05,-0.0607,20,Other offences,N
+195,06,-0.0607,20,Other offences,N
+195,07,-0.0607,20,Other offences,N
+195,08,-0.0607,20,Other offences,N
+195,09,-0.0607,20,Other offences,N
+195,10,-0.0607,20,Other offences,N
+195,11,-0.0607,20,Other offences,N
+195,12,0,3,Public order and harassment,N
+195,13,-0.0607,20,Other offences,N
+195,14,-0.0607,20,Other offences,N
+195,15,-0.0607,20,Other offences,N
+195,16,-0.0607,20,Other offences,N
+195,17,-0.0607,20,Other offences,N
+195,18,-0.0607,20,Other offences,N
+195,20,-0.0607,23,Weapons (non-firearm),N
+195,21,-0.0607,20,Other offences,N
+195,22,-0.0607,23,Weapons (non-firearm),N
+195,23,-0.0607,20,Other offences,N
+195,24,-0.0607,20,Other offences,N
+195,25,-0.0607,20,Other offences,N
+195,26,-0.0607,20,Other offences,N
+195,27,-0.0607,20,Other offences,N
+195,28,-0.0607,20,Other offences,N
+195,29,-0.0607,20,Other offences,N
+195,30,-0.0607,20,Other offences,N
+195,31,-0.0607,20,Other offences,N
+195,32,-0.0607,20,Other offences,N
+195,33,-0.0607,20,Other offences,N
+195,34,-0.0607,10,Handling stolen goods,N
+195,35,-0.0607,20,Other offences,N
+195,36,0.3519,10,Handling stolen goods,N
+195,38,-0.0607,20,Other offences,N
+195,39,-0.0607,20,Other offences,N
+195,40,-0.0607,20,Other offences,N
+195,41,-0.0607,3,Public order and harassment,N
+195,42,-0.0607,20,Other offences,N
+195,43,-0.0607,20,Other offences,N
+195,44,-0.0607,20,Other offences,N
+195,45,-0.0607,20,Other offences,N
+195,46,-0.0607,20,Other offences,N
+195,47,-0.0607,20,Other offences,N
+195,48,-0.0607,20,Other offences,N
+195,49,-0.0607,20,Other offences,N
+195,50,-0.0607,20,Other offences,N
+195,51,-0.0607,20,Other offences,N
+195,52,-0.0607,20,Other offences,N
+195,53,-0.0607,20,Other offences,N
+195,54,-0.0607,20,Other offences,N
+195,55,-0.0607,20,Other offences,N
+195,56,-0.0607,20,Other offences,N
+195,57,-0.0607,20,Other offences,N
+195,58,-0.0607,20,Other offences,N
+195,59,-0.0607,20,Other offences,N
+195,60,-0.0607,20,Other offences,N
+195,61,-0.0607,20,Other offences,N
+195,62,-0.0607,20,Other offences,N
+195,63,-0.0607,20,Other offences,N
+195,64,-0.0607,20,Other offences,N
+195,65,-0.0607,20,Other offences,N
+195,66,-0.0607,20,Other offences,N
+195,67,-0.0607,20,Other offences,N
+195,68,-0.0607,20,Other offences,N
+195,69,-0.0607,20,Other offences,N
+195,70,-0.0607,20,Other offences,N
+195,71,-0.0607,20,Other offences,N
+195,72,-0.0607,20,Other offences,N
+195,73,-0.0607,20,Other offences,N
+195,74,-0.0607,20,Other offences,N
+195,75,-0.0607,20,Other offences,N
+195,76,-0.0607,20,Other offences,N
+195,77,-0.0607,20,Other offences,N
+195,78,-0.0607,20,Other offences,N
+195,79,-0.0607,20,Other offences,N
+195,80,-0.0607,23,Weapons (non-firearm),N
+195,81,-0.0607,23,Weapons (non-firearm),N
+195,82,-0.0607,23,Weapons (non-firearm),N
+195,83,-0.0607,20,Other offences,N
+195,84,-0.0607,20,Other offences,N
+195,85,-0.0607,20,Other offences,N
+195,86,-0.0607,20,Other offences,N
+195,87,-0.0607,20,Other offences,N
+195,88,-0.0607,20,Other offences,N
+195,89,-0.0607,20,Other offences,N
+195,90,-0.0607,3,Public order and harassment,N
+195,91,-0.0607,20,Other offences,N
+195,92,-0.0607,20,Other offences,N
+195,93,-0.0607,20,Other offences,N
+195,94,0,3,Public order and harassment,N
+195,99,-0.0607,20,Other offences,N
+196,00,-0.0607,20,Other offences,N
+196,01,-0.0607,20,Other offences,N
+196,02,-0.0607,20,Other offences,N
+196,03,-0.0607,20,Other offences,N
+196,04,-0.0607,20,Other offences,N
+196,05,-0.0607,20,Other offences,N
+196,06,-0.0607,20,Other offences,N
+196,07,-0.0607,3,Public order and harassment,N
+196,08,-0.0607,20,Other offences,N
+196,10,-0.0607,20,Other offences,N
+196,11,-0.0607,20,Other offences,N
+196,12,-0.0607,20,Other offences,N
+196,13,-0.0607,20,Other offences,N
+196,14,-0.0607,20,Other offences,N
+196,15,-0.0607,20,Other offences,N
+196,16,-0.0607,20,Other offences,N
+196,17,-0.0607,20,Other offences,N
+196,18,-0.0607,20,Other offences,N
+196,19,-0.0607,20,Other offences,N
+196,20,-0.0607,20,Other offences,N
+196,21,-0.0607,20,Other offences,N
+196,22,-0.0607,20,Other offences,N
+196,23,-0.0607,20,Other offences,N
+196,24,-0.0607,20,Other offences,N
+196,25,-0.0607,20,Other offences,N
+196,26,-0.0607,20,Other offences,N
+196,27,-0.0607,20,Other offences,N
+196,28,-0.0607,20,Other offences,N
+196,29,-0.0607,20,Other offences,N
+196,30,-0.0607,20,Other offences,N
+196,31,-0.0607,20,Other offences,N
+196,32,-0.0607,20,Other offences,N
+196,33,-0.0607,20,Other offences,N
+196,34,-0.0607,20,Other offences,N
+196,35,-0.0607,20,Other offences,N
+196,36,-0.0607,20,Other offences,N
+196,37,-0.0607,20,Other offences,N
+196,38,-0.0607,20,Other offences,N
+196,39,-0.0607,20,Other offences,N
+196,40,-0.0607,20,Other offences,N
+196,41,-0.0607,20,Other offences,N
+196,42,-0.0607,20,Other offences,N
+196,43,-0.0607,20,Other offences,N
+196,44,-0.0607,20,Other offences,N
+196,46,-0.0607,20,Other offences,N
+196,47,-0.0607,20,Other offences,N
+196,48,-0.0607,20,Other offences,N
+196,49,-0.0607,20,Other offences,N
+196,50,-0.0607,20,Other offences,N
+196,51,-0.0607,20,Other offences,N
+196,52,-0.0607,20,Other offences,N
+196,53,-0.0607,20,Other offences,N
+196,54,-0.0607,20,Other offences,N
+196,57,-0.0607,20,Other offences,N
+196,58,-0.0607,20,Other offences,N
+196,59,-0.0607,20,Other offences,N
+196,60,-0.0607,20,Other offences,N
+196,61,-0.0607,20,Other offences,N
+196,62,-0.0607,20,Other offences,N
+196,63,-0.0607,20,Other offences,N
+196,64,-0.0607,20,Other offences,N
+196,65,-0.0607,20,Other offences,N
+196,66,-0.0607,20,Other offences,N
+196,67,-0.0607,20,Other offences,N
+196,68,0,23,Weapons (non-firearm),N
+196,69,0,22,Firearms (other),Y
+196,70,0,22,Firearms (other),Y
+196,71,0,22,Firearms (other),Y
+196,72,0,22,Firearms (other),Y
+196,73,0,1,Violence against the person (sub-ABH),Y
+196,74,-0.0607,20,Other offences,N
+196,75,-0.0607,20,Other offences,N
+196,76,-0.0607,20,Other offences,N
+196,77,-0.0607,20,Other offences,N
+196,78,-0.0607,20,Other offences,N
+196,79,-0.0607,20,Other offences,N
+196,80,-0.0607,20,Other offences,N
+196,81,-0.0607,20,Other offences,N
+196,82,-0.0607,20,Other offences,N
+196,83,-0.0607,20,Other offences,N
+196,84,0,22,Firearms (other),N
+196,85,-0.0607,20,Other offences,N
+196,86,-0.0607,20,Other offences,N
+196,87,-0.0607,20,Other offences,N
+196,88,0.1819,20,Other offences,N
+196,89,0.1819,20,Other offences,N
+196,90,0.1819,20,Other offences,N
+196,91,0.1819,20,Other offences,N
+196,92,-0.0607,20,Other offences,N
+196,93,-0.0607,20,Other offences,N
+196,94,-0.0607,20,Other offences,N
+196,95,-0.0607,20,Other offences,N
+196,96,-0.0607,20,Other offences,N
+196,97,-0.0607,20,Other offences,N
+196,98,-0.0607,20,Other offences,N
+197,01,-0.0607,20,Other offences,N
+197,21,0,23,Weapons (non-firearm),N
+501,00,-0.0607,20,Other offences,N
+502,00,0.1819,3,Public order and harassment,N
+503,00,0.0328,20,Other offences,N
+504,00,0.0328,20,Other offences,N
+725,01,0.1819,3,Public order and harassment,N
+725,02,0.1819,3,Public order and harassment,N
+725,15,0.2622,15,Motoring offences,N
+725,16,0.2622,15,Motoring offences,N
+725,17,0.2622,15,Motoring offences,N
+725,18,0.2622,15,Motoring offences,N
+725,81,0.1819,3,Public order and harassment,N
+725,82,0.1819,3,Public order and harassment,N
+755,09,-0.0607,20,Other offences,N
+755,11,-0.0607,20,Other offences,N
+755,16,-0.0607,20,Other offences,N
+795,08,0.2622,15,Motoring offences,N
+795,20,-0.0607,20,Other offences,N
+795,24,0.1819,20,Other offences,N
+796,88,-0.0607,20,Other offences,N
+796,89,0.1819,20,Other offences,N
+796,90,-0.0607,20,Other offences,N
+796,91,-0.0607,20,Other offences,N
+796,92,-0.0607,20,Other offences,N
+796,93,-0.0607,20,Other offences,N
+802,00,0.2622,15,Motoring offences,N
+803,00,-0.1214,16,Drink driving,N
+803,01,-0.1214,16,Drink driving,N
+803,02,-0.1214,16,Drink driving,N
+803,03,-0.1214,16,Drink driving,N
+803,04,-0.1214,16,Drink driving,N
+803,05,-0.1214,16,Drink driving,N
+803,06,-0.1214,16,Drink driving,N
+803,07,-0.1214,16,Drink driving,N
+803,08,-0.1214,16,Drink driving,N
+803,09,-0.1214,16,Drink driving,N
+803,10,-0.1214,16,Drink driving,N
+803,11,-0.1214,16,Drink driving,N
+803,12,-0.1214,16,Drink driving,N
+803,15,-0.1214,16,Drink driving,N
+803,16,-0.1214,16,Drink driving,N
+804,00,0.2622,15,Motoring offences,N
+804,01,0.2622,15,Motoring offences,N
+804,02,0.2622,15,Motoring offences,N
+804,03,0.2622,15,Motoring offences,N
+804,04,0.2622,15,Motoring offences,N
+804,05,0.2622,15,Motoring offences,N
+804,06,0.2622,15,Motoring offences,N
+804,90,0.2622,15,Motoring offences,N
+805,00,0.2622,15,Motoring offences,N
+805,01,0.2622,15,Motoring offences,N
+805,02,0.2622,15,Motoring offences,N
+805,03,0.2622,15,Motoring offences,N
+807,00,0.2622,15,Motoring offences,N
+807,01,0.2622,15,Motoring offences,N
+807,02,0.2622,15,Motoring offences,N
+807,03,0.2622,15,Motoring offences,N
+807,04,0.2622,15,Motoring offences,N
+807,05,0.2622,15,Motoring offences,N
+807,06,0.2622,15,Motoring offences,N
+807,07,0.2622,15,Motoring offences,N
+807,08,0.2622,15,Motoring offences,N
+807,09,0.2622,15,Motoring offences,N
+807,10,0.2622,15,Motoring offences,N
+807,90,0.2622,15,Motoring offences,N
+809,00,0.2622,15,Motoring offences,N
+809,01,0.2622,15,Motoring offences,N
+809,02,0.2622,15,Motoring offences,N
+809,03,0.2622,15,Motoring offences,N
+809,90,0.2622,15,Motoring offences,N
+810,00,0.2622,15,Motoring offences,N
+810,01,0.2622,15,Motoring offences,N
+810,02,0.2622,15,Motoring offences,N
+810,03,0.2622,15,Motoring offences,N
+810,90,0.2622,15,Motoring offences,N
+811,00,0.2622,15,Motoring offences,N
+811,01,0.2622,15,Motoring offences,N
+811,02,0.2622,15,Motoring offences,N
+811,03,0.2622,15,Motoring offences,N
+811,04,0.2622,15,Motoring offences,N
+811,90,0.2622,15,Motoring offences,N
+812,00,0.2622,15,Motoring offences,N
+813,00,0.2622,15,Motoring offences,N
+814,00,0.2622,11,Fraud and forgery,N
+814,01,0.2622,11,Fraud and forgery,N
+814,02,0.2622,11,Fraud and forgery,N
+814,03,0.2622,11,Fraud and forgery,N
+814,04,0.2622,11,Fraud and forgery,N
+814,05,0.2622,11,Fraud and forgery,N
+814,06,0.2622,11,Fraud and forgery,N
+814,07,0.2622,11,Fraud and forgery,N
+814,08,0.2622,11,Fraud and forgery,N
+814,09,0.2622,11,Fraud and forgery,N
+814,10,0.2622,11,Fraud and forgery,N
+815,00,0.2622,15,Motoring offences,N
+815,01,0.2622,15,Motoring offences,N
+815,02,0.2622,15,Motoring offences,N
+815,03,0.2622,15,Motoring offences,N
+815,04,0.2622,15,Motoring offences,N
+815,05,0.2622,15,Motoring offences,N
+815,90,0.2622,15,Motoring offences,N
+816,00,0.2622,15,Motoring offences,N
+816,01,0.2622,15,Motoring offences,N
+816,11,0.2622,15,Motoring offences,N
+817,00,0.2622,15,Motoring offences,N
+818,00,0.2622,15,Motoring offences,N
+818,01,0.2622,15,Motoring offences,N
+818,02,0.2622,15,Motoring offences,N
+818,11,0.2622,15,Motoring offences,N
+818,90,0.2622,15,Motoring offences,N
+819,00,0.2622,15,Motoring offences,N
+819,01,0.2622,15,Motoring offences,N
+819,02,0.2622,15,Motoring offences,N
+820,00,0.2622,15,Motoring offences,N
+820,01,0.2622,15,Motoring offences,N
+820,02,0.2622,11,Fraud and forgery,N
+820,03,0.2622,11,Fraud and forgery,N
+820,04,0.2622,11,Fraud and forgery,N
+820,05,0.2622,11,Fraud and forgery,N
+820,06,0.2622,15,Motoring offences,N
+820,07,0.2622,15,Motoring offences,N
+820,08,0.2622,15,Motoring offences,N
+820,09,0.2622,15,Motoring offences,N
+820,10,0.2622,15,Motoring offences,N
+820,11,0.2622,15,Motoring offences,N
+820,12,0.2622,15,Motoring offences,N
+820,13,0.2622,15,Motoring offences,N
+820,90,0.2622,15,Motoring offences,N
+821,00,0.2622,15,Motoring offences,N
+822,00,0.2622,15,Motoring offences,N
+823,00,0.2622,15,Motoring offences,N
+823,01,0.2622,15,Motoring offences,N
+823,02,0.2622,15,Motoring offences,N
+823,90,0.2622,15,Motoring offences,N
+824,00,0.2622,15,Motoring offences,N
+824,01,0.2622,15,Motoring offences,N
+824,02,0.2622,15,Motoring offences,N
+825,00,0.2622,15,Motoring offences,N
+825,01,0.2622,15,Motoring offences,N
+825,02,0.2622,15,Motoring offences,N
+825,03,0.2622,15,Motoring offences,N
+825,04,0.2622,15,Motoring offences,N
+825,05,0.2622,15,Motoring offences,N
+825,06,0.2622,15,Motoring offences,N
+825,07,0.2622,15,Motoring offences,N
+825,08,0.2622,15,Motoring offences,N
+825,09,0.2622,15,Motoring offences,N
+825,10,0.2622,15,Motoring offences,N
+825,11,0.2622,15,Motoring offences,N
+825,12,0.2622,15,Motoring offences,N
+825,13,0.2622,15,Motoring offences,N
+825,14,0.2622,15,Motoring offences,N
+825,15,0.2622,15,Motoring offences,N
+825,16,0.2622,15,Motoring offences,N
+825,17,0.2622,15,Motoring offences,N
+825,18,0.2622,15,Motoring offences,N
+825,19,0.2622,15,Motoring offences,N
+825,20,0.2622,15,Motoring offences,N
+825,21,0.2622,15,Motoring offences,N
+825,22,0.2622,15,Motoring offences,N
+825,23,0.2622,15,Motoring offences,N
+825,24,0.2622,15,Motoring offences,N
+825,90,0.2622,15,Motoring offences,N
+825,99,0.2622,15,Motoring offences,N
+950,00,,20,Other offences,N
+950,01,,20,Other offences,N
+950,02,,20,Other offences,N
+950,03,,20,Other offences,N
+950,04,,20,Other offences,N
+950,05,,20,Other offences,N
+950,06,,20,Other offences,N
+950,07,,20,Other offences,N
+950,08,,20,Other offences,N
+950,09,,20,Other offences,N
+950,10,,20,Other offences,N
+950,11,,20,Other offences,N
+950,12,,11,Fraud and forgery,N
+950,13,,20,Other offences,N
+996,00,-0.0607,20,Other offences,N
+996,01,-0.0607,20,Other offences,N
+996,02,-0.0607,20,Other offences,N
+996,03,-0.0607,20,Other offences,N
+996,04,-0.0607,20,Other offences,N
+996,05,-0.0607,20,Other offences,N
+996,06,-0.0607,20,Other offences,N
+996,07,-0.0607,20,Other offences,N
+996,08,-0.0607,20,Other offences,N
+996,09,-0.0607,20,Other offences,N
+996,10,-0.0607,20,Other offences,N
+996,11,-0.0607,20,Other offences,N
+996,12,-0.0607,20,Other offences,N
+996,17,-0.0607,20,Other offences,N
+996,18,-0.0607,20,Other offences,N
+996,20,-0.0607,20,Other offences,N
+997,00,-0.0607,20,Other offences,N
+997,01,0,3,Public order and harassment,Y
+998,00,-0.0607,20,Other offences,N
+999,00,-0.0607,20,Other offences,N
+999,01,-0.0607,20,Other offences,N
+999,02,-0.0607,20,Other offences,N
+999,03,-0.0607,20,Other offences,Y
+999,04,-0.0607,20,Other offences,N
+999,05,-0.0607,20,Other offences,N
+999,06,0,19,Drug possession/supply,N
+999,07,0,3,Public order and harassment,N
+999,08,-0.0607,20,Other offences,N
+999,20,-0.1239,8,Burglary (other),N
+999,21,0.6612,9,Theft (non-motor),N
+999,49,-0.0607,20,Other offences,N
+999,50,0.205,17,Criminal damage,N
+999,51,0.2622,15,Motoring offences,N
+999,52,-0.0607,19,Drug possession/supply,N
+999,53,0.2622,15,Motoring offences,N
+999,54,0.1599,11,Fraud and forgery,N
+999,55,,20,Other offences,N
+999,56,0.1819,20,Other offences,N
+999,57,0,24,Violence against the person (ABH+),Y
+999,58,0,21,Firearms (most serious),Y
+999,59,0.1819,3,Public order and harassment,Y
+999,68,-0.0607,20,Other offences,N

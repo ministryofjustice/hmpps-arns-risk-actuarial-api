@@ -61,3 +61,7 @@ management:
     info:
       cache:
         time-to-live: 2000ms
+hmpps:
+  arnsriskactuarial:
+    offensegroupparameters:
+      csv: "/offensegroupparameters/CT_Offence_min.csv"
