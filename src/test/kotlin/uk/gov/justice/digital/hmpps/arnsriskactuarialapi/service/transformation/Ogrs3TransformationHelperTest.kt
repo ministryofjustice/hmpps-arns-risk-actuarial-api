@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
-import java.math.BigDecimal
 import java.time.LocalDate
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -165,7 +164,6 @@ class Ogrs3TransformationHelperTest {
         getOgrs3OneYear(-1000.0)
       }
     }
-
   }
 
   @TestInstance(TestInstance.Lifecycle.PER_CLASS)
