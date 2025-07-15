@@ -7,7 +7,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.scale.toCommonScale
 import java.math.BigDecimal
 import java.math.MathContext
-import java.math.RoundingMode
 import java.time.LocalDate
 import java.time.Period
 import java.time.temporal.ChronoUnit
@@ -65,7 +64,6 @@ fun getOffenderCopasScore(
   val logValue = ln(numerator / denominator)
 
   return BigDecimal(logValue, MathContext.DECIMAL64).toCommonScale()
-
 }
 
 fun getAgeGenderParameter(ageGroup: AgeGroup, gender: Gender): Double {

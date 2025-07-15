@@ -5,5 +5,4 @@ import java.math.RoundingMode
 
 const val CALCULATION_SCALE = 5
 
-fun BigDecimal.toCommonScale(): BigDecimal =
-  this.setScale(CALCULATION_SCALE, RoundingMode.HALF_UP)
+fun BigDecimal.toCommonScale(): BigDecimal = this.setScale(CALCULATION_SCALE, RoundingMode.HALF_UP)
