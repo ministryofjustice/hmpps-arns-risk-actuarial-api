@@ -11,6 +11,8 @@ dependencies {
   implementation("uk.gov.justice.service.hmpps:hmpps-kotlin-spring-boot-starter:1.4.7")
   implementation("org.springframework.boot:spring-boot-starter-webflux")
   implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9")
+  implementation("jakarta.validation:jakarta.validation-api:3.0.2")
+  implementation("org.springframework.boot:spring-boot-starter-validation")
 
   testImplementation("uk.gov.justice.service.hmpps:hmpps-kotlin-spring-boot-starter-test:1.4.7")
   testImplementation("org.wiremock:wiremock-standalone:3.13.1")

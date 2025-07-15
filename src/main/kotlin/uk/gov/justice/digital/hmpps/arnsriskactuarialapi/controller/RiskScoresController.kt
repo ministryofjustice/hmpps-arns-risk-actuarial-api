@@ -1,5 +1,6 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.controller
 
+import jakarta.validation.Valid
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -15,7 +16,7 @@ class RiskScoresController(private val riskScoresService: RiskScoresService) {
 
   @PostMapping
   @PreAuthorize("hasRole('ARNS_RISK_ACTUARIAL')")
-  fun postRiskScores(@RequestBody request: RiskScoreRequest): RiskScoreResponse {
+  fun postRiskScores(@Valid @RequestBody request: RiskScoreRequest): RiskScoreResponse {
     val riskScore: RiskScoreResponse = riskScoresService.riskScoreProducer(request)
     return RiskScoreResponse(riskScore.score)
   }
