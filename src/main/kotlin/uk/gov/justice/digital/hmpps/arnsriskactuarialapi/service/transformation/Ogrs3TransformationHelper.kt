@@ -4,6 +4,10 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.AgeGroup
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.OffenderConvictionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.scale.toCommonScale
+import java.math.BigDecimal
+import java.math.MathContext
+import java.math.RoundingMode
 import java.time.LocalDate
 import java.time.Period
 import java.time.temporal.ChronoUnit
@@ -51,10 +55,17 @@ fun getOffenderCopasScore(
   numberOfPreviousSanctions: Int,
   ageAtCurrentConviction: Int,
   ageAtFirstSanction: Int,
-): Double {
+): BigDecimal {
   val numerator = 1.plus(numberOfPreviousSanctions).toDouble()
   val denominator = 10.plus(ageAtCurrentConviction).minus(ageAtFirstSanction).toDouble()
-  return ln((((numerator / denominator))))
+
+  if (denominator <= 0.0) {
+    throw IllegalArgumentException("Invalid age values leading to non-positive denominator")
+  }
+  val logValue = ln(numerator / denominator)
+
+  return BigDecimal(logValue, MathContext.DECIMAL64).toCommonScale()
+
 }
 
 fun getAgeGenderParameter(ageGroup: AgeGroup, gender: Gender): Double {
@@ -115,7 +126,7 @@ private fun getReoffendingProbability(totalForAllParameters: Double, x: Double):
   return numerator / denominator
 }
 
-private fun getAgeGroup(age: Int): AgeGroup = when {
+fun getAgeGroup(age: Int): AgeGroup = when {
   age < 0 -> throw IllegalArgumentException("Age cannot be negative")
   age < 10 -> throw IllegalArgumentException("Age must be age 10 or more")
   age in 10..11 -> AgeGroup.TEN_TO_UNDER_TWELVE
