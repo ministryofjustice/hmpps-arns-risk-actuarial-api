@@ -3,9 +3,8 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.OffenderConvictionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.scale.toCommonScale
 import java.math.BigDecimal
-import java.math.MathContext
+import java.math.RoundingMode
 import java.time.LocalDate
 import java.time.Period
 import java.time.temporal.ChronoUnit
@@ -14,6 +13,13 @@ import kotlin.math.floor
 import kotlin.math.ln
 
 private const val MIN_CONVICTION_AGE = 10
+private const val FIXED_CAPAS_VALUE = 1.25112
+private const val FIXED_ONE_YEAR_SCORE_VALUE = 1.40256
+private const val FIXED_TWO_YEAR_SCORE_VALUE = 2.1217
+
+fun Double.roundTo5Decimals(): Double {
+  return BigDecimal(this).setScale(5, RoundingMode.HALF_UP).toDouble()
+}
 
 fun getAgeAtCurrentConviction(
   dateOfBirth: LocalDate,
@@ -47,7 +53,7 @@ fun getOffenderCopasScore(
   numberOfPreviousSanctions: Int,
   ageAtCurrentConviction: Int,
   ageAtFirstSanction: Int,
-): BigDecimal {
+): Double {
   val numerator = 1.plus(numberOfPreviousSanctions).toDouble()
   val denominator = 10.plus(ageAtCurrentConviction).minus(ageAtFirstSanction).toDouble()
 
@@ -56,15 +62,30 @@ fun getOffenderCopasScore(
   }
   val logValue = ln(numerator / denominator)
 
-  return BigDecimal(logValue, MathContext.DECIMAL64).toCommonScale()
+  return logValue.roundTo5Decimals()
 }
 
 fun getConvictionStatusParameter(offenderConvictionStatus: OffenderConvictionStatus) = if (offenderConvictionStatus == OffenderConvictionStatus.REPEAT_OFFENDER) 0.46306 else 0.12614
 
-fun getOffenderCopasScore(offenderCopasScore: Double) = offenderCopasScore * 1.25112
+fun getOffenderCopasScore(offenderCopasScore: Double) = offenderCopasScore * FIXED_CAPAS_VALUE
 
-fun getOgrs3OneYear(totalForAllParameters: Double) = getReoffendingProbability(totalForAllParameters, 1.40256)
-fun getOgrs3TwoYear(totalForAllParameters: Double) = getReoffendingProbability(totalForAllParameters, 2.1217)
+fun getOgrs3OneYear(totalForAllParameters: Double) = getReoffendingProbability(totalForAllParameters, FIXED_ONE_YEAR_SCORE_VALUE).roundTo5Decimals()
+
+fun getOgrs3TwoYear(totalForAllParameters: Double) = getReoffendingProbability(totalForAllParameters, FIXED_TWO_YEAR_SCORE_VALUE).roundTo5Decimals()
+
+private fun getReoffendingProbability(totalForAllParameters: Double, fixedScore: Double): Double {
+  val maxExpInput = 709.0 // above these values the calculation overflows
+  val minExpInput = -745.0
+
+  val exponent = fixedScore + totalForAllParameters
+  return when {
+    exponent >= maxExpInput || exponent <= minExpInput -> throw IllegalArgumentException("invalid inputs overflow exp operation")
+    else -> {
+      val expValue = exp(exponent)
+      expValue / (1.0 + expValue)
+    }
+  }
+}
 
 fun getRiskBand(ogrs3TwoYear: Double): RiskBand {
   val percentage = floor(ogrs3TwoYear * 100).toInt()
@@ -75,12 +96,6 @@ fun getRiskBand(ogrs3TwoYear: Double): RiskBand {
     in 90..Int.MAX_VALUE -> RiskBand.VERY_HIGH
     else -> throw IllegalArgumentException("Unhandled ogrs3TwoYear percent: $percentage")
   }
-}
-
-private fun getReoffendingProbability(totalForAllParameters: Double, x: Double): Double {
-  val numerator = exp(x.plus(totalForAllParameters))
-  val denominator = 1.plus(numerator)
-  return numerator / denominator
 }
 
 fun getAgeGenderParameter(age: Int, gender: Gender): Double {

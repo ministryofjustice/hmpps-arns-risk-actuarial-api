@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import java.math.BigDecimal
 import java.time.LocalDate
 
@@ -91,7 +92,7 @@ class Ogrs3TransformationHelperTest {
     @Test
     fun `getOffenderCopasScore should produce the copas score`() {
       val score = getOffenderCopasScore(3, 30, 20)
-      val expected = BigDecimal("-1.60944") // TODO: find some test data to compare against
+      val expected = -1.60944 // TODO: find some test data to compare against
       assertEquals(expected, score)
     }
 
@@ -126,6 +127,81 @@ class Ogrs3TransformationHelperTest {
     fun `getAgeGenderParameter should return the current weight for the age group when female`() {
       val actual = getAgeGenderParameter(11, Gender.FEMALE)
       assertEquals(0.785, actual)
+    }
+  }
+
+  @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+  @Nested
+  inner class Ogrs3ProbabilityTest {
+    @Test
+    fun `getOgrs3OneYear with zero input`() {
+      val result = getOgrs3OneYear(0.0)
+      assertEquals(0.80259, result) // TODO: get some examples OASys values to compare
+    }
+
+    @Test
+    fun `getOgrs3TwoYear with zero input`() {
+      val result = getOgrs3TwoYear(0.0)
+      assertEquals(0.89299, result) // TODO: get some examples OASys values to compare
+    }
+
+    @Test
+    fun `getOgrs3OneYear with valid input`() {
+      val input = 1.0
+      val result = getOgrs3OneYear(input)
+      assertEquals(0.91702, result) // TODO: get some examples OASys values to compare
+    }
+
+    @Test
+    fun `getOgrs3TwoYear throws for too big values`() {
+      assertThrows(IllegalArgumentException::class.java) {
+        getOgrs3OneYear(1000.0)
+      }
+    }
+
+    @Test
+    fun `getOgrs3TwoYear throws for too small values`() {
+      assertThrows(IllegalArgumentException::class.java) {
+        getOgrs3OneYear(-1000.0)
+      }
+    }
+
+  }
+
+  @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+  @Nested
+  inner class GetRiskBandTest {
+
+    @Test
+    fun `getRiskBand returns LOW for percentages 0 to 49`() {
+      assertEquals(RiskBand.LOW, getRiskBand(0.00))
+      assertEquals(RiskBand.LOW, getRiskBand(0.49))
+    }
+
+    @Test
+    fun `getRiskBand returns MEDIUM for percentages 50 to 74`() {
+      assertEquals(RiskBand.MEDIUM, getRiskBand(0.50))
+      assertEquals(RiskBand.MEDIUM, getRiskBand(0.74))
+    }
+
+    @Test
+    fun `getRiskBand returns HIGH for percentages 75 to 89`() {
+      assertEquals(RiskBand.HIGH, getRiskBand(0.75))
+      assertEquals(RiskBand.HIGH, getRiskBand(0.89))
+    }
+
+    @Test
+    fun `getRiskBand returns VERY_HIGH for percentages 90 and above`() {
+      assertEquals(RiskBand.VERY_HIGH, getRiskBand(0.90))
+      assertEquals(RiskBand.VERY_HIGH, getRiskBand(1.00))
+      assertEquals(RiskBand.VERY_HIGH, getRiskBand(1.20)) // > 100%
+    }
+
+    @Test
+    fun `getRiskBand throws exception for negative input`() {
+      assertThrows(IllegalArgumentException::class.java) {
+        getRiskBand(-0.01)
+      }
     }
   }
 }
