@@ -17,33 +17,33 @@ class Ogrs3TransformationHelperTest {
   inner class AgeAtCurrentConvictionTest {
 
     @Test
-    fun `ageAtCurrentConviction age should be greater than min value`() {
+    fun `getAgeAtCurrentConviction age should be greater than min value`() {
       val dob = today.minusYears(10)
-      val result = ageAtCurrentConviction(dob, today, ageAtFirstSanction = 10)
+      val result = getAgeAtCurrentConviction(dob, today, ageAtFirstSanction = 10)
       assertTrue(result.isSuccess)
       assertEquals(10, result.getOrNull())
     }
 
     @Test
-    fun `ageAtCurrentConviction should round down months`() {
+    fun `getAgeAtCurrentConviction should round down months`() {
       val dob = today.minusYears(10).minusMonths(3)
-      val result = ageAtCurrentConviction(dob, today, ageAtFirstSanction = 10)
+      val result = getAgeAtCurrentConviction(dob, today, ageAtFirstSanction = 10)
       assertTrue(result.isSuccess)
       assertEquals(10, result.getOrNull())
     }
 
     @Test
-    fun `ageAtCurrentConviction age less than min should return error`() {
+    fun `getAgeAtCurrentConviction age less than min should return error`() {
       val dob = today.minusYears(9)
-      val result = ageAtCurrentConviction(dob, today, ageAtFirstSanction = 18)
+      val result = getAgeAtCurrentConviction(dob, today, ageAtFirstSanction = 18)
       assertTrue(result.isFailure)
       assertEquals("Age at current conviction must be at least 10.", result.exceptionOrNull()?.message)
     }
 
     @Test
-    fun `ageAtCurrentConviction null dateOfBirth should return error`() {
+    fun `getAgeAtCurrentConviction null dateOfBirth should return error`() {
       val result = runCatching {
-        ageAtCurrentConviction(
+        getAgeAtCurrentConviction(
           dateOfBirth = LocalDate.parse(null),
           dateOfCurrentConviction = today,
           ageAtFirstSanction = 18,
@@ -53,9 +53,9 @@ class Ogrs3TransformationHelperTest {
     }
 
     @Test
-    fun `ageAtFirstSanction greater than current age should return error`() {
+    fun `getAgeAtCurrentConviction greater than current age should return error`() {
       val dob = today.minusYears(15)
-      val result = ageAtCurrentConviction(dob, today, ageAtFirstSanction = 20)
+      val result = getAgeAtCurrentConviction(dob, today, ageAtFirstSanction = 20)
       assertTrue(result.isFailure)
       assertEquals(
         "Age at first sanction cannot be greater than age at current conviction.",
@@ -64,9 +64,9 @@ class Ogrs3TransformationHelperTest {
     }
 
     @Test
-    fun `ageAtCurrentConviction null date inputs should throw error`() {
+    fun `getAgeAtCurrentConviction null date inputs should throw error`() {
       val result =
-        ageAtCurrentConviction(
+        getAgeAtCurrentConviction(
           dateOfBirth = today.minusYears(18),
           dateOfCurrentConviction = null,
           ageAtFirstSanction = 18,

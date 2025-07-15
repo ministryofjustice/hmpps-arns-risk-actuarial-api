@@ -8,7 +8,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreResponse
 class RiskScoresService {
 
   fun riskScoreProducer(riskScoreRequest: RiskScoreRequest): RiskScoreResponse {
-    // todo
+    // todo 1) Check all nullables
+    // todo 2) call transformation helpers with valid input request
     return RiskScoreResponse(riskScoreRequest.score)
   }
 }
