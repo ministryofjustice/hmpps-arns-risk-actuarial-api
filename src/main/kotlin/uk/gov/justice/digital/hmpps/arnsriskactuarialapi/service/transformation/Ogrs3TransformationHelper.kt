@@ -18,12 +18,9 @@ private const val MIN_CONVICTION_AGE = 10
 
 fun getAgeAtCurrentConviction(
   dateOfBirth: LocalDate,
-  dateOfCurrentConviction: LocalDate?, // can this actually be null ?
+  dateOfCurrentConviction: LocalDate,
   ageAtFirstSanction: Int,
 ): Result<Int> = runCatching {
-  if (dateOfCurrentConviction == null) {
-    throw IllegalArgumentException("conviction date is null.")
-  }
 
   if (dateOfCurrentConviction.isBefore(dateOfBirth)) {
     throw IllegalArgumentException("Conviction date cannot be before date of birth.")
@@ -124,7 +121,7 @@ private fun getReoffendingProbability(totalForAllParameters: Double, x: Double):
   return numerator / denominator
 }
 
-fun getAgeGroup(age: Int): AgeGroup = when {
+private fun getAgeGroup(age: Int): AgeGroup = when {
   age < 0 -> throw IllegalArgumentException("Age cannot be negative")
   age < 10 -> throw IllegalArgumentException("Age must be age 10 or more")
   age in 10..11 -> AgeGroup.TEN_TO_UNDER_TWELVE
