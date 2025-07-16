@@ -43,7 +43,7 @@ class OGRS3RiskProducerServiceTest {
   }
 
   @Test
-  fun `should return null OGRS3Object for valid input but weighting not found`() {
+  fun `should return null OGRS3Object with error message for exceptions thrown during calculation`() {
     // Given
     whenever(offenceGroupParametersService.getOGRS3Weighting("123")).thenThrow(
       NoSuchElementException("123 not found"),
