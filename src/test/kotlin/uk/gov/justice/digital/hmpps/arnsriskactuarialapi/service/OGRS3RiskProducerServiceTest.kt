@@ -28,7 +28,7 @@ class OGRS3RiskProducerServiceTest {
   @Test
   fun `should return valid OGRS3Object for valid input`() {
     // Given
-    whenever(offenceGroupParametersService.getOGRS3Weighting("051101")).thenReturn(2.0)
+    whenever(offenceGroupParametersService.getOGRS3Weighting("05110")).thenReturn(2.0)
 
     // When
     val result = ogrs3RiskProducerService.getRiskScore(validRiskScoreRequest())
@@ -43,14 +43,53 @@ class OGRS3RiskProducerServiceTest {
   }
 
   @Test
-  fun `should return null OGRS3Object with error message for exceptions thrown during calculation`() {
+  fun `should return null OGRS3Object with error message for exceptions thrown before calculation`() {
     // Given
-    whenever(offenceGroupParametersService.getOGRS3Weighting("123")).thenThrow(
-      NoSuchElementException("123 not found"),
+    val request = RiskScoreRequest(
+      "1_0",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    )
+    // When
+    val result = ogrs3RiskProducerService.getRiskScore(request)
+
+    val expectedFields = listOf(
+      "Gender",
+      "Date of birth",
+      "Date of current conviction",
+      "Date at start of followup",
+      "Total number of sanctions",
+      "Age at first sanction",
+      "Current offence",
     )
 
+    // Then
+    assertNotNull(result)
+    assertEquals("1_0", result.algorithmVersion)
+    assertNull(result.ogrs3OneYear)
+    assertNull(result.ogrs3TwoYear)
+    assertNull(result.band)
+    assertEquals(1, result.validationError?.size)
+    val error = result.validationError?.first()
+    assertEquals(ValidationErrorType.MISSING_INPUT, error?.type)
+    assertEquals("ERR5 - Field is Null", error?.message)
+    assertEquals(expectedFields, error?.fields)
+  }
+
+  @Test
+  fun `should return null OGRS3Object with error message for exceptions thrown during calculation`() {
     // When
-    val result = ogrs3RiskProducerService.getRiskScore(validRiskScoreRequest().copy(currentOffence = "123"))
+    val result = ogrs3RiskProducerService.getRiskScore(
+      validRiskScoreRequest().copy(
+        dateOfBirth = LocalDate.of(2002, 12, 13),
+        dateOfCurrentConviction = LocalDate.of(2000, 12, 13),
+      ),
+    )
 
     // Then
     assertNotNull(result)
@@ -61,7 +100,7 @@ class OGRS3RiskProducerServiceTest {
     assertEquals(1, result.validationError?.size)
     val error = result.validationError?.first()
     assertEquals(ValidationErrorType.NO_MATCHING_INPUT, error?.type)
-    assertEquals("Error: 123 not found", error?.message)
+    assertEquals("Error: Conviction date cannot be before date of birth.", error?.message)
   }
 
   private fun validRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
@@ -70,8 +109,8 @@ class OGRS3RiskProducerServiceTest {
     LocalDate.of(1964, 10, 15),
     LocalDate.of(2014, 12, 13),
     LocalDate.of(2027, 12, 12),
-    10,
-    30,
-    "051101",
+    10 as Integer?,
+    30 as Integer?,
+    "05110",
   )
 }
