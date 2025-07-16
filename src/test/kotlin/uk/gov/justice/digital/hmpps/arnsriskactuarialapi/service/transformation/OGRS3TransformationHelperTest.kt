@@ -11,7 +11,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import java.time.LocalDate
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class Ogrs3TransformationHelperTest {
+class OGRS3TransformationHelperTest {
 
   private val today = LocalDate.of(2025, 1, 1)
 
@@ -86,6 +86,7 @@ class Ogrs3TransformationHelperTest {
   @TestInstance(TestInstance.Lifecycle.PER_CLASS)
   @Nested
   inner class OffenderCopasScoreTest {
+
     @Test
     fun `getOffenderCopasScore should produce the copas score matching OASys spreadsheet`() {
       val score = getOffenderCopasScore(9, 50, 30)
@@ -109,26 +110,26 @@ class Ogrs3TransformationHelperTest {
     @Test
     fun `getOffenderAgeGroup should throw error when under ten`() {
       val exception = assertThrows(IllegalArgumentException::class.java) {
-        getAgeGenderParameter(9, Gender.MALE)
+        getAgeGenderScore(9, Gender.MALE)
       }
       assert(exception.message!!.contains("Unhandled age: 9"))
     }
 
     @Test
     fun `getAgeGenderParameter should return the current weight for the age group when male`() {
-      val actual = getAgeGenderParameter(11, Gender.MALE)
+      val actual = getAgeGenderScore(11, Gender.MALE)
       assertEquals(0.0, actual)
     }
 
     @Test
     fun `getAgeGenderParameter should return the current weight for the age group when female`() {
-      val actual = getAgeGenderParameter(11, Gender.FEMALE)
+      val actual = getAgeGenderScore(11, Gender.FEMALE)
       assertEquals(0.785, actual)
     }
 
     @Test
     fun `getAgeGenderParameter matches OASys spreadsheet`() {
-      val actual = getAgeGenderParameter(50, Gender.MALE)
+      val actual = getAgeGenderScore(50, Gender.MALE)
       assertEquals(-2.0253, actual)
     }
   }

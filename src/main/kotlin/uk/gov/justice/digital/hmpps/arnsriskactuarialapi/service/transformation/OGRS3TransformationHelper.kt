@@ -3,8 +3,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.OffenderConvictionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
-import java.math.BigDecimal
-import java.math.RoundingMode
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.roundTo5Decimals
 import java.time.LocalDate
 import java.time.Period
 import java.time.temporal.ChronoUnit
@@ -15,9 +14,6 @@ private const val MIN_CONVICTION_AGE = 10
 private const val FIXED_CAPAS_VALUE = 1.25112
 private const val FIXED_ONE_YEAR_SCORE_VALUE = 1.40256
 private const val FIXED_TWO_YEAR_SCORE_VALUE = 2.1217
-
-fun Double.roundTo5Decimals(): Double = BigDecimal(this).setScale(5, RoundingMode.HALF_UP).toDouble()
-fun Double.asPercentage(): Int = BigDecimal(this).multiply(BigDecimal.valueOf(100)).setScale(0, RoundingMode.HALF_UP).toInt()
 
 fun getAgeAtCurrentConviction(
   dateOfBirth: LocalDate,
@@ -61,7 +57,7 @@ fun getOffenderCopasScore(
   return logValue.roundTo5Decimals()
 }
 
-fun getConvictionStatusParameter(offenderConvictionStatus: OffenderConvictionStatus) = if (offenderConvictionStatus == OffenderConvictionStatus.REPEAT_OFFENDER) 0.46306 else 0.12614
+fun getConvictionStatusScore(offenderConvictionStatus: OffenderConvictionStatus) = if (offenderConvictionStatus == OffenderConvictionStatus.REPEAT_OFFENDER) 0.46306 else 0.12614
 
 fun getOffenderCopasFinalScore(offenderCopasScore: Double) = offenderCopasScore * FIXED_CAPAS_VALUE
 
@@ -91,7 +87,7 @@ fun getRiskBand(percentage: Int): RiskBand = when (percentage) {
   else -> throw IllegalArgumentException("Unhandled ogrs3TwoYear percent: $percentage")
 }
 
-fun getAgeGenderParameter(age: Int, gender: Gender): Double {
+fun getAgeGenderScore(age: Int, gender: Gender): Double {
   val maleParams = listOf(
     10..11 to 0.0,
     12..13 to 0.08392,
