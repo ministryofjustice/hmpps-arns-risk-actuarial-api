@@ -2,6 +2,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.integration.controller
 
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.whenever
+import org.springframework.http.MediaType
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.OGRS3Object
@@ -73,5 +74,53 @@ class RiskScoreControllerTest : IntegrationTestBase() {
       .bodyValue(basicRequest)
       .exchange()
       .expectStatus().isUnauthorized
+  }
+
+  @Test
+  fun `postRiskScores returns 400 if incorrect enum value used`() {
+    webTestClient.post()
+      .uri("/risk-scores")
+      .headers(setAuthorisation(roles = listOf("ARNS_RISK_ACTUARIAL")))
+      .contentType(MediaType.APPLICATION_JSON)
+      .bodyValue(
+        """
+        {
+          "version": 1,
+          "gender": "INVALID_OPTION",
+          "dateOfBirth": null,
+          "dateOfCurrentConviction": null,
+          "dateAtStartOfFollowup": null,
+          "totalNumberOfSanctions": null,
+          "ageAtFirstSanction": null,
+          "currentOffence": null
+        }
+        """.trimIndent(),
+      )
+      .exchange()
+      .expectStatus().isBadRequest
+  }
+
+  @Test
+  fun `postRiskScores returns 400 if incorrect type used`() {
+    webTestClient.post()
+      .uri("/risk-scores")
+      .headers(setAuthorisation(roles = listOf("ARNS_RISK_ACTUARIAL")))
+      .contentType(MediaType.APPLICATION_JSON)
+      .bodyValue(
+        """
+        {
+          "version": 1,
+          "gender": "MALE",
+          "dateOfBirth": null,
+          "dateOfCurrentConviction": null,
+          "dateAtStartOfFollowup": null,
+          "totalNumberOfSanctions": "not a number",
+          "ageAtFirstSanction": null,
+          "currentOffence": null
+        }
+        """.trimIndent(),
+      )
+      .exchange()
+      .expectStatus().isBadRequest
   }
 }
