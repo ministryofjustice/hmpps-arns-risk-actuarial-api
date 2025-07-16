@@ -57,7 +57,7 @@ fun getOffenderCopasScore(
   return logValue.roundTo5Decimals()
 }
 
-fun getConvictionStatusParameter(offenderConvictionStatus: OffenderConvictionStatus) = if (offenderConvictionStatus == OffenderConvictionStatus.REPEAT_OFFENDER) 0.46306 else 0.12614
+fun getConvictionStatusScore(offenderConvictionStatus: OffenderConvictionStatus) = if (offenderConvictionStatus == OffenderConvictionStatus.REPEAT_OFFENDER) 0.46306 else 0.12614
 
 fun getOffenderCopasFinalScore(offenderCopasScore: Double) = offenderCopasScore * FIXED_CAPAS_VALUE
 
@@ -87,7 +87,7 @@ fun getRiskBand(percentage: Int): RiskBand = when (percentage) {
   else -> throw IllegalArgumentException("Unhandled ogrs3TwoYear percent: $percentage")
 }
 
-fun getAgeGenderParameter(age: Int, gender: Gender): Double {
+fun getAgeGenderScore(age: Int, gender: Gender): Double {
   val maleParams = listOf(
     10..11 to 0.0,
     12..13 to 0.08392,
