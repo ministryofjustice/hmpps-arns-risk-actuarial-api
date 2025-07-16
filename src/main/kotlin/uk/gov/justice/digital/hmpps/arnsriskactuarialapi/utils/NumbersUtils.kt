@@ -9,8 +9,8 @@ fun Double.asPercentage(): Int = BigDecimal(this).multiply(BigDecimal.valueOf(10
 /**
  * This is business logic that does not accept 0% nor 100% instead they are defaulted to 1% and 99% respectively.
  */
-fun Int.sanitisePercentage(): Int = when (this) {
-  0 -> 1
-  100 -> 99
+fun Int.sanitisePercentage(): Int = when {
+  this <= 0 -> 1
+  this > 99 -> 99
   else -> this
 }

@@ -23,8 +23,10 @@ class NumbersUtilsTest {
 
   @Test
   fun `sanitisePercentage should default 0 with 1 and 100 with 99`() {
+    assertEquals(1, (-1).sanitisePercentage())
     assertEquals(1, 0.sanitisePercentage())
     assertEquals(99, 100.sanitisePercentage())
+    assertEquals(99, 121.sanitisePercentage())
     assertEquals(50, 50.sanitisePercentage())
     assertEquals(25, 25.sanitisePercentage())
   }
