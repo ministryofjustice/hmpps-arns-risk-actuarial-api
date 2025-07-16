@@ -35,7 +35,6 @@ class RiskScoreServiceTest {
     whenever(oGRS3RiskScoreService.getRiskScore(request))
       .thenReturn(OGRS3Object("1_0", null, null, null, null))
 
-
     val result = riskScoreService.riskScoreProducer(request)
     Assertions.assertEquals("1_0", result.OGRS3.algorithmVersion)
   }
