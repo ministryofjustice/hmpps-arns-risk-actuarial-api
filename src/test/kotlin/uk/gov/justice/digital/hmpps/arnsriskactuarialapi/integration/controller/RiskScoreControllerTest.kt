@@ -82,7 +82,8 @@ class RiskScoreControllerTest : IntegrationTestBase() {
       .uri("/risk-scores")
       .headers(setAuthorisation(roles = listOf("ARNS_RISK_ACTUARIAL")))
       .contentType(MediaType.APPLICATION_JSON)
-      .bodyValue("""
+      .bodyValue(
+        """
         {
           "version": 1,
           "gender": "INVALID_OPTION",
@@ -93,7 +94,8 @@ class RiskScoreControllerTest : IntegrationTestBase() {
           "ageAtFirstSanction": null,
           "currentOffence": null
         }
-      """.trimIndent())
+        """.trimIndent(),
+      )
       .exchange()
       .expectStatus().isBadRequest
   }
@@ -104,7 +106,8 @@ class RiskScoreControllerTest : IntegrationTestBase() {
       .uri("/risk-scores")
       .headers(setAuthorisation(roles = listOf("ARNS_RISK_ACTUARIAL")))
       .contentType(MediaType.APPLICATION_JSON)
-      .bodyValue("""
+      .bodyValue(
+        """
         {
           "version": 1,
           "gender": "MALE",
@@ -115,7 +118,8 @@ class RiskScoreControllerTest : IntegrationTestBase() {
           "ageAtFirstSanction": null,
           "currentOffence": null
         }
-      """.trimIndent())
+        """.trimIndent(),
+      )
       .exchange()
       .expectStatus().isBadRequest
   }
