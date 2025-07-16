@@ -25,15 +25,15 @@ class RiskScoreControllerTest : IntegrationTestBase() {
     LocalDate.of(2027, 12, 12),
     10,
     30,
-    "051101",
+    "05101",
   )
 
   @Test
   fun `postRiskScores returns 200 ok and risk score for correct user role`() {
     val ogrs3 = OGRS3Object(
       "1_0",
-      1.0,
-      1.0,
+      1,
+      1,
       RiskBand.LOW,
       listOf(),
     )

@@ -9,7 +9,6 @@ import java.time.LocalDate
 import java.time.Period
 import java.time.temporal.ChronoUnit
 import kotlin.math.exp
-import kotlin.math.floor
 import kotlin.math.ln
 
 private const val MIN_CONVICTION_AGE = 10
@@ -18,6 +17,7 @@ private const val FIXED_ONE_YEAR_SCORE_VALUE = 1.40256
 private const val FIXED_TWO_YEAR_SCORE_VALUE = 2.1217
 
 fun Double.roundTo5Decimals(): Double = BigDecimal(this).setScale(5, RoundingMode.HALF_UP).toDouble()
+fun Double.asPercentage(): Int = BigDecimal(this).multiply(BigDecimal.valueOf(100)).setScale(0, RoundingMode.HALF_UP).toInt()
 
 fun getAgeAtCurrentConviction(
   dateOfBirth: LocalDate,
@@ -83,15 +83,12 @@ private fun getReoffendingProbability(totalForAllParameters: Double, fixedScore:
   }
 }
 
-fun getRiskBand(ogrs3TwoYear: Double): RiskBand {
-  val percentage = floor(ogrs3TwoYear * 100).toInt()
-  return when (percentage) {
-    in 0..49 -> RiskBand.LOW
-    in 50..74 -> RiskBand.MEDIUM
-    in 75..89 -> RiskBand.HIGH
-    in 90..Int.MAX_VALUE -> RiskBand.VERY_HIGH
-    else -> throw IllegalArgumentException("Unhandled ogrs3TwoYear percent: $percentage")
-  }
+fun getRiskBand(percentage: Int): RiskBand = when (percentage) {
+  in 0..49 -> RiskBand.LOW
+  in 50..74 -> RiskBand.MEDIUM
+  in 75..89 -> RiskBand.HIGH
+  in 90..Int.MAX_VALUE -> RiskBand.VERY_HIGH
+  else -> throw IllegalArgumentException("Unhandled ogrs3TwoYear percent: $percentage")
 }
 
 fun getAgeGenderParameter(age: Int, gender: Gender): Double {
