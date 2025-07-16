@@ -87,9 +87,9 @@ class Ogrs3TransformationHelperTest {
   @Nested
   inner class OffenderCopasScoreTest {
     @Test
-    fun `getOffenderCopasScore should produce the copas score`() {
-      val score = getOffenderCopasScore(3, 30, 20)
-      val expected = -1.60944 // TODO: find some test data to compare against
+    fun `getOffenderCopasScore should produce the copas score matching OASys spreadsheet`() {
+      val score = getOffenderCopasScore(9, 50, 30)
+      val expected = -1.09861 // real example matching OASys spreadsheet
       assertEquals(expected, score)
     }
 
@@ -125,6 +125,12 @@ class Ogrs3TransformationHelperTest {
       val actual = getAgeGenderParameter(11, Gender.FEMALE)
       assertEquals(0.785, actual)
     }
+
+    @Test
+    fun `getAgeGenderParameter matches OASys spreadsheet`() {
+      val actual = getAgeGenderParameter(50, Gender.MALE)
+      assertEquals(-2.0253, actual)
+    }
   }
 
   @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -133,20 +139,32 @@ class Ogrs3TransformationHelperTest {
     @Test
     fun `getOgrs3OneYear with zero input`() {
       val result = getOgrs3OneYear(0.0)
-      assertEquals(0.80259, result) // TODO: get some examples OASys values to compare
+      assertEquals(0.80259, result)
+    }
+
+    @Test
+    fun `getOgrs3OneYear matches OASys spreadsheet`() {
+      val result = getOgrs3OneYear(-2.776835807)
+      assertEquals(0.20193, result)
+    }
+
+    @Test
+    fun `getOgrs3TwoYear matches OASys spreadsheet`() {
+      val result = getOgrs3TwoYear(-2.776835807)
+      assertEquals(0.34183, result)
     }
 
     @Test
     fun `getOgrs3TwoYear with zero input`() {
       val result = getOgrs3TwoYear(0.0)
-      assertEquals(0.89299, result) // TODO: get some examples OASys values to compare
+      assertEquals(0.89299, result)
     }
 
     @Test
     fun `getOgrs3OneYear with valid input`() {
       val input = 1.0
       val result = getOgrs3OneYear(input)
-      assertEquals(0.91702, result) // TODO: get some examples OASys values to compare
+      assertEquals(0.91702, result)
     }
 
     @Test
@@ -170,33 +188,33 @@ class Ogrs3TransformationHelperTest {
 
     @Test
     fun `getRiskBand returns LOW for percentages 0 to 49`() {
-      assertEquals(RiskBand.LOW, getRiskBand(0.00))
-      assertEquals(RiskBand.LOW, getRiskBand(0.49))
+      assertEquals(RiskBand.LOW, getRiskBand(0))
+      assertEquals(RiskBand.LOW, getRiskBand(49))
     }
 
     @Test
     fun `getRiskBand returns MEDIUM for percentages 50 to 74`() {
-      assertEquals(RiskBand.MEDIUM, getRiskBand(0.50))
-      assertEquals(RiskBand.MEDIUM, getRiskBand(0.74))
+      assertEquals(RiskBand.MEDIUM, getRiskBand(50))
+      assertEquals(RiskBand.MEDIUM, getRiskBand(74))
     }
 
     @Test
     fun `getRiskBand returns HIGH for percentages 75 to 89`() {
-      assertEquals(RiskBand.HIGH, getRiskBand(0.75))
-      assertEquals(RiskBand.HIGH, getRiskBand(0.89))
+      assertEquals(RiskBand.HIGH, getRiskBand(75))
+      assertEquals(RiskBand.HIGH, getRiskBand(89))
     }
 
     @Test
     fun `getRiskBand returns VERY_HIGH for percentages 90 and above`() {
-      assertEquals(RiskBand.VERY_HIGH, getRiskBand(0.90))
-      assertEquals(RiskBand.VERY_HIGH, getRiskBand(1.00))
-      assertEquals(RiskBand.VERY_HIGH, getRiskBand(1.20)) // > 100%
+      assertEquals(RiskBand.VERY_HIGH, getRiskBand(90))
+      assertEquals(RiskBand.VERY_HIGH, getRiskBand(100))
+      assertEquals(RiskBand.VERY_HIGH, getRiskBand(120)) // > 100%
     }
 
     @Test
     fun `getRiskBand throws exception for negative input`() {
       assertThrows(IllegalArgumentException::class.java) {
-        getRiskBand(-0.01)
+        getRiskBand(-1)
       }
     }
   }

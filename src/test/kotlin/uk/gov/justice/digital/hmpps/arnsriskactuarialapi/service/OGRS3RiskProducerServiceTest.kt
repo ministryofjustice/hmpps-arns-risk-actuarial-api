@@ -36,8 +36,8 @@ class OGRS3RiskProducerServiceTest {
     // Then
     assertNotNull(result)
     assertEquals("1_0", result.algorithmVersion)
-    assertEquals("0.6144", result.ogrs3OneYear.toString())
-    assertEquals("0.76584", result.ogrs3TwoYear.toString())
+    assertEquals(64, result.ogrs3OneYear)
+    assertEquals(79, result.ogrs3TwoYear)
     assertEquals(RiskBand.HIGH, result.band)
     assertTrue(result.validationError.isNullOrEmpty())
   }

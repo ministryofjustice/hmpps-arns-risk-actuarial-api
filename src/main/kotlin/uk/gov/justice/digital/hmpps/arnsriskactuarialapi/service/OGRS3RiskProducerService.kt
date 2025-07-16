@@ -7,6 +7,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.asPercentage
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getAgeAtCurrentConviction
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getAgeGenderParameter
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getConvictionStatusParameter
@@ -45,14 +46,13 @@ class OGRS3RiskProducerService : RiskProducer<OGRS3Object> {
       riskScoreRequest.dateOfCurrentConviction,
       riskScoreRequest.ageAtFirstSanction,
     )
-    val numberOfPreviousSanctions = riskScoreRequest.totalNumberOfSanctions.minus(1)
     val offenderConvictionStatus = getOffenderConvictionStatus(riskScoreRequest.totalNumberOfSanctions)
 
     val ageGenderParameter = getAgeGenderParameter(ageAtCurrentConviction, riskScoreRequest.gender)
     val convictionStatusParameter = getConvictionStatusParameter(offenderConvictionStatus)
     val copasParameter = getOffenderCopasFinalScore(
       getOffenderCopasScore(
-        numberOfPreviousSanctions,
+        riskScoreRequest.totalNumberOfSanctions,
         ageAtCurrentConviction,
         riskScoreRequest.ageAtFirstSanction,
       ),
@@ -61,8 +61,8 @@ class OGRS3RiskProducerService : RiskProducer<OGRS3Object> {
 
     val totalForAllParameters =
       ageGenderParameter.plus(convictionStatusParameter).plus(copasParameter).plus(offenceGroupParameter)
-    val ogrs3OneYear = getOgrs3OneYear(totalForAllParameters)
-    val ogrs3TwoYear = getOgrs3TwoYear(totalForAllParameters)
+    val ogrs3OneYear = getOgrs3OneYear(totalForAllParameters).asPercentage()
+    val ogrs3TwoYear = getOgrs3TwoYear(totalForAllParameters).asPercentage()
     val riskBand = getRiskBand(ogrs3TwoYear)
 
     return OGRS3Object(riskScoreRequest.version, ogrs3OneYear, ogrs3TwoYear, riskBand, emptyList())
