@@ -3,26 +3,31 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.integration.controller
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
+import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.test.context.bean.override.mockito.MockitoBean
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.OGRS3Object
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.integration.IntegrationTestBase
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.RiskScoreService
+import java.time.LocalDate
 
 class RiskScoreControllerTest : IntegrationTestBase() {
 
-  private val riskScoreService: RiskScoreService = mock()
+  @MockitoBean
+  private lateinit var riskScoreService: RiskScoreService
 
   private val basicRequest = RiskScoreRequest(
     "1_0",
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
+    Gender.MALE,
+    LocalDate.of(1964, 10, 15),
+    LocalDate.of(2014, 12, 13),
+    LocalDate.of(2027, 12, 12),
+    10,
+    30,
+    "051101",
   )
 
   @Test
@@ -46,7 +51,11 @@ class RiskScoreControllerTest : IntegrationTestBase() {
       .expectStatus()
       .isOk
       .expectBody()
-      .jsonPath("$.ogrs3.algorithmVersion").isEqualTo("1_0")
+      .jsonPath("$.ogrs3.algorithmVersion").isEqualTo(ogrs3.algorithmVersion)
+      .jsonPath("$.ogrs3.ogrs3OneYear").isEqualTo(ogrs3.ogrs3OneYear)
+      .jsonPath("$.ogrs3.ogrs3TwoYear").isEqualTo(ogrs3.ogrs3TwoYear)
+      .jsonPath("$.ogrs3.band").isEqualTo(ogrs3.band)
+      .jsonPath("$.ogrs3.validationError").isEmpty()
   }
 
   @Test
