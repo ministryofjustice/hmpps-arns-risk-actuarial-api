@@ -51,7 +51,7 @@ class RiskScoreSnapshotTest : IntegrationTestBase() {
     if (expectedJson != actualJson) {
       println("Expected JSON:\n${objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(expectedJson)}")
       println("Actual JSON:\n${objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actualJson)}")
-        fail("Response JSON did not match expected output.")
+      fail("Response JSON did not match expected output.")
     }
   }
 }
