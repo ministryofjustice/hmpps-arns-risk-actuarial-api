@@ -134,4 +134,5 @@ docker compose pull && docker compose up --scale hmpps-arns-risk-actuarial-api=0
 ```
 
 will just start a docker instance of HMPPS Auth. The application should then be started with a `dev` active profile
-in Intellij.
+in Intellij. Alternatively use a command like:
+`HMPPS_AUTH_URL=https://sign-in-dev.hmpps.service.justice.gov.uk/auth SPRING_PROFILES_ACTIVE=dev ./gradlew bootRun`

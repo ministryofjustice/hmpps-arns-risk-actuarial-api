@@ -12,3 +12,14 @@ data class RiskScoreRequest(
   val ageAtFirstSanction: Int?,
   val currentOffence: String?,
 )
+
+data class RiskScoreRequestValidated(
+  val version: String,
+  val gender: Gender,
+  val dateOfBirth: LocalDate,
+  val dateOfCurrentConviction: LocalDate,
+  val dateAtStartOfFollowup: LocalDate,
+  val totalNumberOfSanctions: Int,
+  val ageAtFirstSanction: Int,
+  val currentOffence: String,
+)

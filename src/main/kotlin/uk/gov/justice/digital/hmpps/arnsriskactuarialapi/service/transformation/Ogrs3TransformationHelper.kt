@@ -23,7 +23,7 @@ fun getAgeAtCurrentConviction(
   dateOfBirth: LocalDate,
   dateOfCurrentConviction: LocalDate,
   ageAtFirstSanction: Int,
-): Result<Int> = runCatching {
+): Int {
   if (dateOfCurrentConviction.isBefore(dateOfBirth)) {
     throw IllegalArgumentException("Conviction date cannot be before date of birth.")
   }
@@ -38,12 +38,10 @@ fun getAgeAtCurrentConviction(
     throw IllegalArgumentException("Age at first sanction cannot be greater than age at current conviction.")
   }
 
-  ageAtCurrentConviction
+  return ageAtCurrentConviction
 }
 
 fun getAgeAtStartOfFollowup(dateOfBirth: LocalDate, dateAtStartOfFollowup: LocalDate): Int = ChronoUnit.YEARS.between(dateOfBirth, dateAtStartOfFollowup).toInt()
-
-fun getNumberOfPreviousSanctions(totalNumberOfSanctions: Int) = totalNumberOfSanctions.minus(1)
 
 fun getOffenderConvictionStatus(totalNumberOfSanctions: Int) = if (totalNumberOfSanctions == 1) OffenderConvictionStatus.FIRST_TIME_OFFENDER else OffenderConvictionStatus.REPEAT_OFFENDER
 
@@ -65,7 +63,7 @@ fun getOffenderCopasScore(
 
 fun getConvictionStatusParameter(offenderConvictionStatus: OffenderConvictionStatus) = if (offenderConvictionStatus == OffenderConvictionStatus.REPEAT_OFFENDER) 0.46306 else 0.12614
 
-fun getOffenderCopasScore(offenderCopasScore: Double) = offenderCopasScore * FIXED_CAPAS_VALUE
+fun getOffenderCopasFinalScore(offenderCopasScore: Double) = offenderCopasScore * FIXED_CAPAS_VALUE
 
 fun getOgrs3OneYear(totalForAllParameters: Double) = getReoffendingProbability(totalForAllParameters, FIXED_ONE_YEAR_SCORE_VALUE).roundTo5Decimals()
 

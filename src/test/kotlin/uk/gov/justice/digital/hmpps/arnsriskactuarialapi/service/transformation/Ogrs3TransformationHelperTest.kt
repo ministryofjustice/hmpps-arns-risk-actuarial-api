@@ -23,24 +23,24 @@ class Ogrs3TransformationHelperTest {
     fun `getAgeAtCurrentConviction age should be greater than min value`() {
       val dob = today.minusYears(10)
       val result = getAgeAtCurrentConviction(dob, today, ageAtFirstSanction = 10)
-      assertTrue(result.isSuccess)
-      assertEquals(10, result.getOrNull())
+
+      assertEquals(10, result)
     }
 
     @Test
     fun `getAgeAtCurrentConviction should round down months`() {
       val dob = today.minusYears(10).minusMonths(3)
       val result = getAgeAtCurrentConviction(dob, today, ageAtFirstSanction = 10)
-      assertTrue(result.isSuccess)
-      assertEquals(10, result.getOrNull())
+      assertEquals(10, result)
     }
 
     @Test
     fun `getAgeAtCurrentConviction age less than min should return error`() {
       val dob = today.minusYears(9)
-      val result = getAgeAtCurrentConviction(dob, today, ageAtFirstSanction = 18)
-      assertTrue(result.isFailure)
-      assertEquals("Age at current conviction must be at least 10.", result.exceptionOrNull()?.message)
+      val exception = assertThrows(IllegalArgumentException::class.java) {
+        getAgeAtCurrentConviction(dob, today, ageAtFirstSanction = 18)
+      }
+      assertEquals("Age at current conviction must be at least 10.", exception?.message)
     }
 
     @Test
@@ -58,12 +58,10 @@ class Ogrs3TransformationHelperTest {
     @Test
     fun `getAgeAtCurrentConviction greater than current age should return error`() {
       val dob = today.minusYears(15)
-      val result = getAgeAtCurrentConviction(dob, today, ageAtFirstSanction = 20)
-      assertTrue(result.isFailure)
-      assertEquals(
-        "Age at first sanction cannot be greater than age at current conviction.",
-        result.exceptionOrNull()?.message,
-      )
+      val exception = assertThrows(IllegalArgumentException::class.java) {
+        val result = getAgeAtCurrentConviction(dob, today, ageAtFirstSanction = 20)
+      }
+      assertEquals("Age at first sanction cannot be greater than age at current conviction.", exception?.message)
     }
 
     @Test
