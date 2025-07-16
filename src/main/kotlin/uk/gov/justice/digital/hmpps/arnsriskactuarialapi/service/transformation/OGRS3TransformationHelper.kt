@@ -3,8 +3,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.OffenderConvictionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
-import java.math.BigDecimal
-import java.math.RoundingMode
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.roundTo5Decimals
 import java.time.LocalDate
 import java.time.Period
 import java.time.temporal.ChronoUnit
@@ -15,9 +14,6 @@ private const val MIN_CONVICTION_AGE = 10
 private const val FIXED_CAPAS_VALUE = 1.25112
 private const val FIXED_ONE_YEAR_SCORE_VALUE = 1.40256
 private const val FIXED_TWO_YEAR_SCORE_VALUE = 2.1217
-
-fun Double.roundTo5Decimals(): Double = BigDecimal(this).setScale(5, RoundingMode.HALF_UP).toDouble()
-fun Double.asPercentage(): Int = BigDecimal(this).multiply(BigDecimal.valueOf(100)).setScale(0, RoundingMode.HALF_UP).toInt()
 
 fun getAgeAtCurrentConviction(
   dateOfBirth: LocalDate,

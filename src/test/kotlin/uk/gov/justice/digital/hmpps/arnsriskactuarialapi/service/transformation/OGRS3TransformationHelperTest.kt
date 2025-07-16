@@ -11,7 +11,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import java.time.LocalDate
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class Ogrs3TransformationHelperTest {
+class OGRS3TransformationHelperTest {
 
   private val today = LocalDate.of(2025, 1, 1)
 
@@ -86,6 +86,7 @@ class Ogrs3TransformationHelperTest {
   @TestInstance(TestInstance.Lifecycle.PER_CLASS)
   @Nested
   inner class OffenderCopasScoreTest {
+
     @Test
     fun `getOffenderCopasScore should produce the copas score matching OASys spreadsheet`() {
       val score = getOffenderCopasScore(9, 50, 30)

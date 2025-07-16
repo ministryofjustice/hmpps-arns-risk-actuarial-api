@@ -7,7 +7,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.asPercentage
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getAgeAtCurrentConviction
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getAgeGenderParameter
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getConvictionStatusParameter
@@ -17,6 +16,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getOgrs3OneYear
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getOgrs3TwoYear
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getRiskBand
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asPercentage
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sanitisePercentage
 
 @Service
 class OGRS3RiskProducerService : RiskProducer<OGRS3Object> {
@@ -61,8 +62,8 @@ class OGRS3RiskProducerService : RiskProducer<OGRS3Object> {
 
     val totalForAllParameters =
       ageGenderParameter.plus(convictionStatusParameter).plus(copasParameter).plus(offenceGroupParameter)
-    val ogrs3OneYear = getOgrs3OneYear(totalForAllParameters).asPercentage()
-    val ogrs3TwoYear = getOgrs3TwoYear(totalForAllParameters).asPercentage()
+    val ogrs3OneYear = getOgrs3OneYear(totalForAllParameters).asPercentage().sanitisePercentage()
+    val ogrs3TwoYear = getOgrs3TwoYear(totalForAllParameters).asPercentage().sanitisePercentage()
     val riskBand = getRiskBand(ogrs3TwoYear)
 
     return OGRS3Object(riskScoreRequest.version, ogrs3OneYear, ogrs3TwoYear, riskBand, emptyList())
