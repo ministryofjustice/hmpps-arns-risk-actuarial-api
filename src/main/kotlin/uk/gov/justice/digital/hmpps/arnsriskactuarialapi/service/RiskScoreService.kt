@@ -9,10 +9,10 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreResponse
 class RiskScoreService {
 
   @Autowired
-  lateinit var oGRS3RiskScoreService: OGRS3RiskScoreService
+  lateinit var oGRS3RiskProducerService: OGRS3RiskProducerService
 
   fun riskScoreProducer(riskScoreRequest: RiskScoreRequest): RiskScoreResponse {
-    val ogrs3 = oGRS3RiskScoreService.getRiskScore(riskScoreRequest)
+    val ogrs3 = oGRS3RiskProducerService.getRiskScore(riskScoreRequest)
     return RiskScoreResponse(ogrs3)
   }
 }

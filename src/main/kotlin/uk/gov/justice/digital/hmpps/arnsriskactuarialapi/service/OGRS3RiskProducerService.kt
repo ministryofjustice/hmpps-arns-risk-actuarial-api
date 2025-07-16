@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.OGRS3Object
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequestValidated
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getAgeAtCurrentConviction
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getAgeGenderParameter
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getConvictionStatusParameter
@@ -16,13 +18,14 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getRiskBand
 
 @Service
-class OGRS3RiskScoreService {
+class OGRS3RiskProducerService : RiskProducer<OGRS3Object> {
 
   @Autowired
   lateinit var offenceGroupParametersService: OffenceGroupParametersService
 
-  fun getRiskScore(riskScoreRequest: RiskScoreRequest): OGRS3Object {
+  override fun getRiskScore(riskScoreRequest: RiskScoreRequest): OGRS3Object {
     // TODO: real validation
+    val errors = mutableListOf<ValidationErrorResponse>()
     val validRequest = RiskScoreRequestValidated(
       riskScoreRequest.version,
       riskScoreRequest.gender!!,
@@ -33,10 +36,10 @@ class OGRS3RiskScoreService {
       riskScoreRequest.ageAtFirstSanction!!,
       riskScoreRequest.currentOffence!!,
     )
-    return getOGRS3Object(validRequest)
+    return getOGRS3Object(validRequest, errors)
   }
 
-  private fun getOGRS3Object(riskScoreRequest: RiskScoreRequestValidated): OGRS3Object = runCatching {
+  private fun getOGRS3Object(riskScoreRequest: RiskScoreRequestValidated, errors: MutableList<ValidationErrorResponse>): OGRS3Object = runCatching {
     val ageAtCurrentConviction = getAgeAtCurrentConviction(
       riskScoreRequest.dateOfBirth,
       riskScoreRequest.dateOfCurrentConviction,
@@ -64,7 +67,14 @@ class OGRS3RiskScoreService {
 
     return OGRS3Object(riskScoreRequest.version, ogrs3OneYear, ogrs3TwoYear, riskBand, emptyList())
   }.getOrElse {
-    println(it.message)
-    OGRS3Object(riskScoreRequest.version, null, null, null, emptyList())
+    errors.add(
+      ValidationErrorResponse(
+        type = ValidationErrorType.NO_MATCHING_INPUT,
+        message = "Error: ${it.message}",
+        fields = null,
+      ),
+    )
+
+    OGRS3Object(riskScoreRequest.version, null, null, null, errors)
   }
 }

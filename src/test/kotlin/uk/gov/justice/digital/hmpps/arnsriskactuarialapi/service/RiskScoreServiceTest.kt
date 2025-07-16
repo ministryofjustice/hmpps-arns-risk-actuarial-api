@@ -14,7 +14,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 class RiskScoreServiceTest {
 
   @Mock
-  private lateinit var oGRS3RiskScoreService: OGRS3RiskScoreService
+  private lateinit var oGRS3RiskProducerService: OGRS3RiskProducerService
 
   @InjectMocks
   private lateinit var riskScoreService: RiskScoreService
@@ -32,7 +32,7 @@ class RiskScoreServiceTest {
       null,
     )
 
-    whenever(oGRS3RiskScoreService.getRiskScore(request))
+    whenever(oGRS3RiskProducerService.getRiskScore(request))
       .thenReturn(OGRS3Object("1_0", null, null, null, null))
 
     val result = riskScoreService.riskScoreProducer(request)
