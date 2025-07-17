@@ -22,7 +22,7 @@ class OGRS3TransformationHelperTest {
     @Test
     fun `getAgeAtCurrentConviction age should be greater than min value`() {
       val dob = today.minusYears(10)
-      val result = getAgeAtCurrentConviction(dob, today, ageAtFirstSanction = 10)
+      val result = getAgeAtCurrentConviction(dob, today)
 
       assertEquals(10, result)
     }
@@ -30,18 +30,10 @@ class OGRS3TransformationHelperTest {
     @Test
     fun `getAgeAtCurrentConviction should round down months`() {
       val dob = today.minusYears(10).minusMonths(3)
-      val result = getAgeAtCurrentConviction(dob, today, ageAtFirstSanction = 10)
+      val result = getAgeAtCurrentConviction(dob, today)
       assertEquals(10, result)
     }
 
-    @Test
-    fun `getAgeAtCurrentConviction age less than min should return error`() {
-      val dob = today.minusYears(9)
-      val exception = assertThrows(IllegalArgumentException::class.java) {
-        getAgeAtCurrentConviction(dob, today, ageAtFirstSanction = 18)
-      }
-      assertEquals("Age at current conviction must be at least 10.", exception?.message)
-    }
 
     @Test
     fun `getAgeAtCurrentConviction null dateOfBirth should return error`() {
@@ -49,19 +41,9 @@ class OGRS3TransformationHelperTest {
         getAgeAtCurrentConviction(
           dateOfBirth = LocalDate.parse(null),
           dateOfCurrentConviction = today,
-          ageAtFirstSanction = 18,
         )
       }
       assertTrue(result.isFailure)
-    }
-
-    @Test
-    fun `getAgeAtCurrentConviction greater than current age should return error`() {
-      val dob = today.minusYears(15)
-      val exception = assertThrows(IllegalArgumentException::class.java) {
-        val result = getAgeAtCurrentConviction(dob, today, ageAtFirstSanction = 20)
-      }
-      assertEquals("Age at first sanction cannot be greater than age at current conviction.", exception?.message)
     }
 
     @Test

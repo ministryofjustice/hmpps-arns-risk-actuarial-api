@@ -10,30 +10,18 @@ import java.time.temporal.ChronoUnit
 import kotlin.math.exp
 import kotlin.math.ln
 
-private const val MIN_CONVICTION_AGE = 10
 private const val FIXED_CAPAS_VALUE = 1.25112
 private const val FIXED_ONE_YEAR_SCORE_VALUE = 1.40256
 private const val FIXED_TWO_YEAR_SCORE_VALUE = 2.1217
 
 fun getAgeAtCurrentConviction(
   dateOfBirth: LocalDate,
-  dateOfCurrentConviction: LocalDate,
-  ageAtFirstSanction: Int,
+  dateOfCurrentConviction: LocalDate
 ): Int {
   if (dateOfCurrentConviction.isBefore(dateOfBirth)) {
     throw IllegalArgumentException("Conviction date cannot be before date of birth.")
   }
-
   val ageAtCurrentConviction = Period.between(dateOfBirth, dateOfCurrentConviction).years
-
-  if (ageAtCurrentConviction < MIN_CONVICTION_AGE) {
-    throw IllegalArgumentException("Age at current conviction must be at least $MIN_CONVICTION_AGE.")
-  }
-
-  if (ageAtFirstSanction > ageAtCurrentConviction) {
-    throw IllegalArgumentException("Age at first sanction cannot be greater than age at current conviction.")
-  }
-
   return ageAtCurrentConviction
 }
 

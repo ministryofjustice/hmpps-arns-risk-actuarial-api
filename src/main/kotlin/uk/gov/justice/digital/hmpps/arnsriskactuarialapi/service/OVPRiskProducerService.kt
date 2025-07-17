@@ -8,7 +8,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ovp.OVPObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ovp.OVPRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.ovpInitialValidation
-import kotlin.getOrElse
 
 @Service
 class OVPRiskProducerService : RiskProducer<OVPObject> {
@@ -19,7 +18,7 @@ class OVPRiskProducerService : RiskProducer<OVPObject> {
   override fun getRiskScore(riskScoreRequest: RiskScoreRequest): OVPObject {
     val errors = ovpInitialValidation(riskScoreRequest)
 
-    if (!errors.isEmpty()) {
+    if (errors.isNotEmpty()) {
       return OVPObject(riskScoreRequest.version, null, null, null, errors)
     }
 
@@ -53,7 +52,7 @@ class OVPRiskProducerService : RiskProducer<OVPObject> {
         ValidationErrorResponse(
           type = ValidationErrorType.NO_MATCHING_INPUT,
           message = "Error: ${it.message}",
-          fields = null,
+          fields = emptyList(),
         ),
       )
       OVPObject(request.version, null, null, null, errors)

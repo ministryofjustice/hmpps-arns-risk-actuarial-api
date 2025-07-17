@@ -17,6 +17,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getOgrs3TwoYear
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getRiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.ogrs3InitialValidation
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateAge
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asPercentage
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sanitisePercentage
 
@@ -29,7 +30,7 @@ class OGRS3RiskProducerService : RiskProducer<OGRS3Object> {
   override fun getRiskScore(riskScoreRequest: RiskScoreRequest): OGRS3Object {
     val errors = ogrs3InitialValidation(riskScoreRequest)
 
-    if (!errors.isEmpty()) {
+    if (errors.isNotEmpty()) {
       return OGRS3Object(riskScoreRequest.version, null, null, null, errors)
     }
 
@@ -46,12 +47,17 @@ class OGRS3RiskProducerService : RiskProducer<OGRS3Object> {
     return getOGRS3Object(validRequest, errors)
   }
 
-  private fun getOGRS3Object(request: OGRS3RequestValidated, errors: MutableList<ValidationErrorResponse>): OGRS3Object = runCatching {
+  private fun getOGRS3Object(
+    request: OGRS3RequestValidated,
+    errors: MutableList<ValidationErrorResponse>,
+  ): OGRS3Object = runCatching {
     val ageAtCurrentConviction = getAgeAtCurrentConviction(
       request.dateOfBirth,
       request.dateOfCurrentConviction,
-      request.ageAtFirstSanction,
     )
+
+    errors.addAll(validateAge(ageAtCurrentConviction, request.ageAtFirstSanction, errors))
+
     val offenderConvictionStatus = getOffenderConvictionStatus(request.totalNumberOfSanctions)
 
     listOf(

@@ -1,0 +1,121 @@
+package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
+
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
+
+class CommonValidationHelperTest {
+
+  @Test
+  fun `getTotalNumberOfSanctionsValidation no errors`() {
+    val result = getTotalNumberOfSanctionsValidation(1 as Integer?, mutableListOf())
+    assertTrue(result.isEmpty())
+  }
+
+  @Test
+  fun `getTotalNumberOfSanctionsValidation no error added when number of sanctions is null`() {
+    val missingFieldError = mutableListOf(
+      ValidationErrorResponse(
+        type = ValidationErrorType.MISSING_INPUT,
+        message = "Unable to produce OGRS3 score due to missing field(s)",
+        fields = listOf("Total number of sanctions"),
+      ),
+    )
+    val result = getTotalNumberOfSanctionsValidation(null, missingFieldError)
+    assertTrue(result.count() == 1)
+    assertFalse(ValidationErrorType.BELOW_MIN_VALUE == result.first().type)
+  }
+
+  @Test
+  fun `getTotalNumberOfSanctionsValidation below min value error`() {
+    val result = getTotalNumberOfSanctionsValidation(0 as Integer?, mutableListOf())
+    val error = result.first()
+    assertEquals(ValidationErrorType.BELOW_MIN_VALUE, error.type)
+    assertEquals("ERR2 - Below minimum value", error.message)
+    assertEquals("Total number of sanctions", error.fields?.first())
+  }
+
+
+  @Test
+  fun `getCurrentOffenceValidation no errors`() {
+    val result = getCurrentOffenceValidation("00101", mutableListOf())
+    assertTrue(result.isEmpty())
+  }
+
+  @Test
+  fun `getCurrentOffenceValidation no error added when current offence null`() {
+    val missingFieldError = mutableListOf(
+      ValidationErrorResponse(
+        type = ValidationErrorType.MISSING_INPUT,
+        message = "Unable to produce OGRS3 score due to missing field(s)",
+        fields = listOf("Current offence"),
+      ),
+    )
+    val result = getCurrentOffenceValidation(null, missingFieldError)
+    assertTrue(result.count() == 1)
+    assertFalse(ValidationErrorType.NO_MATCHING_INPUT == result.first().type)
+  }
+
+  @Test
+  fun `getCurrentOffenceValidation char count error`() {
+    val result = getCurrentOffenceValidation("001010", mutableListOf())
+    val error = result.first()
+    assertEquals(ValidationErrorType.NO_MATCHING_INPUT, error.type)
+    assertEquals("ERR4 - Does not match agreed input", error.message)
+    assertEquals("Current offence", error.fields?.first())
+  }
+
+
+  @Test
+  fun `validateAge should return no errors with valid parameters`() {
+    val result = validateAge(10, 10, mutableListOf())
+    assertTrue(result.isEmpty())
+  }
+
+  @Test
+  fun `validateAge should return 1 error for age under 10`() {
+    val result = validateAge(9, 10, mutableListOf())
+    val error = result.first()
+    assertEquals(ValidationErrorType.BELOW_MIN_VALUE, error.type)
+    assertEquals("ERR6 - Age at current conviction must be at least 10.", error.message)
+    assertEquals("Age at current conviction", error.fields?.first())
+  }
+
+  @Test
+  fun `validateAge should return 1 error for age below first sanction age`() {
+    val result = validateAge(11, 15, mutableListOf())
+    val error = result.first()
+    assertEquals(ValidationErrorType.BELOW_MIN_VALUE, error.type)
+    assertEquals("ERR7 - Age at first sanction cannot be greater than age at current conviction.", error.message)
+    assertEquals("Age at current conviction", error.fields?.first())
+    assertEquals("Age at first sanction", error.fields?.last())
+  }
+
+  @Test
+  fun `validateAge should not alter exiting errors list if no new errors`() {
+    val existingErrors = mutableListOf(
+      ValidationErrorResponse(
+        type = ValidationErrorType.MISSING_INPUT,
+        message = "Unable to produce OGRS3 score due to missing field(s)",
+        fields = listOf("Current offence"),
+      ),
+    )
+    val result = validateAge(22, 15, existingErrors)
+    assertTrue(result.count() == 1)
+    assertFalse(ValidationErrorType.NO_MATCHING_INPUT == result.first().type)
+  }
+
+  @Test
+  fun `validateAge should add errors to existing list of errors`() {
+    val existingErrors = mutableListOf(
+      ValidationErrorResponse(
+        type = ValidationErrorType.MISSING_INPUT,
+        message = "Unable to produce OGRS3 score due to missing field(s)",
+        fields = listOf("Current offence"),
+      ),
+    )
+    val result = validateAge(11, 15, existingErrors)
+    assertEquals(2, result.size)
+  }
+}
