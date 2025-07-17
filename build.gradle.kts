@@ -12,6 +12,7 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-webflux")
   implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9")
   implementation("org.apache.commons:commons-csv:1.9.0")
+  implementation(kotlin("reflect"))
 
   //  Add fixed versions to override transitive vulnerabilities
   implementation("com.nimbusds:nimbus-jose-jwt:10.3.1")
