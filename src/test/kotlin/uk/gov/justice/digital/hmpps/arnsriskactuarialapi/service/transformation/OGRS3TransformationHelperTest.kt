@@ -34,7 +34,6 @@ class OGRS3TransformationHelperTest {
       assertEquals(10, result)
     }
 
-
     @Test
     fun `getAgeAtCurrentConviction null dateOfBirth should return error`() {
       val result = runCatching {

@@ -16,7 +16,7 @@ private const val FIXED_TWO_YEAR_SCORE_VALUE = 2.1217
 
 fun getAgeAtCurrentConviction(
   dateOfBirth: LocalDate,
-  dateOfCurrentConviction: LocalDate
+  dateOfCurrentConviction: LocalDate,
 ): Int {
   if (dateOfCurrentConviction.isBefore(dateOfBirth)) {
     throw IllegalArgumentException("Conviction date cannot be before date of birth.")

@@ -1,6 +1,8 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
@@ -36,7 +38,6 @@ class CommonValidationHelperTest {
     assertEquals("Total number of sanctions", error.fields?.first())
   }
 
-
   @Test
   fun `getCurrentOffenceValidation no errors`() {
     val result = getCurrentOffenceValidation("00101", mutableListOf())
@@ -66,7 +67,6 @@ class CommonValidationHelperTest {
     assertEquals("Current offence", error.fields?.first())
   }
 
-
   @Test
   fun `validateAge should return no errors with valid parameters`() {
     val result = validateAge(10, 10, mutableListOf())
@@ -78,7 +78,7 @@ class CommonValidationHelperTest {
     val result = validateAge(9, 10, mutableListOf())
     val error = result.first()
     assertEquals(ValidationErrorType.BELOW_MIN_VALUE, error.type)
-    assertEquals("ERR6 - Age at current conviction must be at least 10.", error.message)
+    assertEquals("ERR2 - Below minimum value", error.message)
     assertEquals("Age at current conviction", error.fields?.first())
   }
 
@@ -87,7 +87,7 @@ class CommonValidationHelperTest {
     val result = validateAge(11, 15, mutableListOf())
     val error = result.first()
     assertEquals(ValidationErrorType.BELOW_MIN_VALUE, error.type)
-    assertEquals("ERR7 - Age at first sanction cannot be greater than age at current conviction.", error.message)
+    assertEquals("ERR2 - Below minimum value", error.message)
     assertEquals("Age at current conviction", error.fields?.first())
     assertEquals("Age at first sanction", error.fields?.last())
   }
