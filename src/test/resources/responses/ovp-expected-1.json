@@ -1,8 +1,8 @@
 {
   "ovp" : {
     "algorithmVersion" : "1",
-    "nonOvpReoffendingOneYear" : null,
-    "nonOvpReoffendingTwoYear" : null,
+    "provenViolentTypeReoffendingOneYear" : null,
+    "provenViolentTypeReoffendingTwoYear" : null,
     "band" : null,
     "validationError" : [ {
       "type" : "MISSING_INPUT",

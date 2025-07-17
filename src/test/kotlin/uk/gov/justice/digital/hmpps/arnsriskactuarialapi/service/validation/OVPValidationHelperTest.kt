@@ -4,12 +4,10 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
-import java.time.LocalDate
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validOVPRiskScoreRequest
 
 class OVPValidationHelperTest {
 
@@ -112,24 +110,4 @@ class OVPValidationHelperTest {
     assertEquals("ERR4 - Does not match agreed input", error.message)
     assertEquals("Current offence", error.fields?.first())
   }
-
-  private fun validOVPRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
-    version = "1_0",
-    gender = Gender.MALE,
-    dateOfBirth = LocalDate.of(1964, 10, 15),
-    dateOfCurrentConviction = LocalDate.of(2014, 12, 13),
-    dateAtStartOfFollowup = LocalDate.of(2027, 12, 12),
-    totalNumberOfSanctions = 10 as Integer?,
-    totalNumberOfViolentSanctions = 30 as Integer?,
-    impactOfOffendingOnOthers = true,
-    currentAccommodation = true,
-    ageAtFirstSanction = null,
-    currentOffence = null,
-    employmentStatus = true,
-    alcoholIsCurrentUseAProblem = ProblemLevel.NO_PROBLEMS,
-    alcoholExcessive6Months = ProblemLevel.NO_PROBLEMS,
-    currentPsychiatricTreatmentOrPending = false,
-    temperControl = ProblemLevel.NO_PROBLEMS,
-    proCriminalAttitudes = ProblemLevel.NO_PROBLEMS,
-  )
 }

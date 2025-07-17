@@ -3,7 +3,13 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ovp.OVPRequestValidated
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asPercentage
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sanitisePercentage
 import kotlin.math.exp
+import kotlin.math.floor
+
+private const val FIXED_ONE_YEAR_COEFFICIENT = 4.5215
+private const val FIXED_TWO_YEAR_COEFFICIENT = 3.8773
 
 // Boolean to Int Score transformers
 private fun Boolean.booleanToScore(): Int = when (this) {
@@ -18,6 +24,11 @@ private fun Boolean.booleanToInverseScore(): Int = when (this) {
 
 // Int to Int Score transformers
 private fun Int.numberToScore(): Int = if (this == 2) 4 else 0
+
+fun getAlcoholMisuseWeighted(request: OVPRequestValidated): Int = listOf(
+  request.alcoholIsCurrentUseAProblem.ordinal,
+  request.alcoholExcessive6Months.ordinal,
+).sum().let { floor(it * 2.5).toInt() }
 
 fun getCurrentAccommodationOffendersScore(request: OVPRequestValidated): Int = request.currentAccommodation.booleanToScore()
 
@@ -89,7 +100,10 @@ fun getOffenderAgeGroupOVP(ageAtStartOfFollowup: Int) = when (ageAtStartOfFollow
   else -> throw IllegalArgumentException("Invalid ageAtStartOfFollowup value: $ageAtStartOfFollowup")
 }
 
-fun calculateOVPPercentage(totalOVPScore: Int, yearlyCoefficient: Double): Double {
+fun calculateOVPPercentageOneYear(totalOVPScore: Int) = calculateOVPPercentage(totalOVPScore, FIXED_ONE_YEAR_COEFFICIENT).asPercentage().sanitisePercentage()
+fun calculateOVPPercentageTwoYears(totalOVPScore: Int) = calculateOVPPercentage(totalOVPScore, FIXED_TWO_YEAR_COEFFICIENT).asPercentage().sanitisePercentage()
+
+private fun calculateOVPPercentage(totalOVPScore: Int, yearlyCoefficient: Double): Double {
   val exponent = 0.0722 * totalOVPScore - yearlyCoefficient
   val expValue = exp(exponent)
   return (expValue / (1 + expValue)) * 100
