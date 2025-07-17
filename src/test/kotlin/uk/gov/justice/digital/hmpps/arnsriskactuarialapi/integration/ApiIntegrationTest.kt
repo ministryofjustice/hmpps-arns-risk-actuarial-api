@@ -20,11 +20,11 @@ class ApiIntegrationTest : IntegrationTestBase() {
   companion object {
     @JvmStatic
     fun requestResponseProvider(): Stream<Array<String>> = Stream.of(
-      arrayOf("ogrs3", "requests/osgr3-input-1-valid.json", "responses/osgr3-expected-1.json"),
-      arrayOf("ogrs3", "requests/osgr3-input-2-missing-fields.json", "responses/osgr3-expected-2.json"),
-      arrayOf("ogrs3", "requests/osgr3-input-3-invalid-age.json", "responses/osgr3-expected-3.json"),
-      arrayOf("ogrs3", "requests/osgr3-input-4-invalid-offence.json", "responses/osgr3-expected-4.json"),
-      arrayOf("ovp", "requests/ovp-input-1-invalid.json", "responses/ovp-expected-1.json"),
+      arrayOf("ogrs3", "requests/ogrs3-input-1-valid.json", "responses/ogrs3-expected-1.json"),
+      arrayOf("ogrs3", "requests/ogrs3-input-2-missing-fields.json", "responses/ogrs3-expected-2.json"),
+      arrayOf("ogrs3", "requests/ogrs3-input-3-invalid-age.json", "responses/ogrs3-expected-3.json"),
+      arrayOf("ogrs3", "requests/ogrs3-input-4-invalid-offence.json", "responses/ogrs3-expected-4.json"),
+      arrayOf("ovp", "requests/ovp-input-1-missing-fields.json", "responses/ovp-expected-1.json"),
       // Add more as needed
     )
 
