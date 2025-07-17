@@ -2,7 +2,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp
 
 data class OGPInput(
   val algorithmVersion: String,
-  val ogrs3TwoYear: Double?,
+  val ogrs3TwoYear: Int?,
   val currentAccomodation: Boolean?,
   val employmentStatus: Boolean?,
   val regularOffendingActivities: ProblemsGrading?,

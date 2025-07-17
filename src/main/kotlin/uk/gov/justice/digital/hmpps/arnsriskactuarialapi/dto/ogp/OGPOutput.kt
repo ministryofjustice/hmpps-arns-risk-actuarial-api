@@ -4,8 +4,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResp
 
 data class OGPOutput(
   val algorithmVersion: String,
-  val nonOvpReoffendingOneYear: Double?,
-  val nonOvpReoffendingTwoYear: Double?,
+  val ogpReoffendingOneYear: Double?,
+  val ogpReoffendingTwoYear: Double?,
   val bandOGP: OGPBand?,
   val validationError: List<ValidationErrorResponse>?,
 )
