@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertNull
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
@@ -16,7 +17,6 @@ class OVPRiskProducerServiceTest {
 
   private val service: OVPRiskProducerService = OVPRiskProducerService()
 
-  @Disabled("Need some real data to compare because this calculation does not seem correct")
   @Test
   fun `should return valid OVPObject for valid input LOW risk`() {
     val result = service.getRiskScore(
@@ -31,22 +31,46 @@ class OVPRiskProducerServiceTest {
     assertNotNull(result)
     assertTrue(result.validationError.isNullOrEmpty())
     assertEquals("1_0", result.algorithmVersion)
-    assertEquals(99, result.provenViolentTypeReoffendingOneYear)
-    assertEquals(99, result.provenViolentTypeReoffendingTwoYear)
+    assertEquals(7, result.provenViolentTypeReoffendingOneYear)
+    assertEquals(12, result.provenViolentTypeReoffendingTwoYear)
     assertEquals(RiskBand.LOW, result.band)
     assertTrue(result.validationError.isNullOrEmpty())
   }
 
   @Test
-  fun `should return valid OVPObject for valid input VERY_HIGH risk`() {
+  fun `should return valid OVPObject for valid input MEDIUM risk`() {
     val result = service.getRiskScore(validOVPRiskScoreRequest())
 
     assertNotNull(result)
     assertTrue(result.validationError.isNullOrEmpty())
     assertEquals("1_0", result.algorithmVersion)
-    assertEquals(99, result.provenViolentTypeReoffendingOneYear)
-    assertEquals(99, result.provenViolentTypeReoffendingTwoYear)
-    assertEquals(RiskBand.VERY_HIGH, result.band)
+    assertEquals(20, result.provenViolentTypeReoffendingOneYear)
+    assertEquals(32, result.provenViolentTypeReoffendingTwoYear)
+    assertEquals(RiskBand.MEDIUM, result.band)
+    assertTrue(result.validationError.isNullOrEmpty())
+  }
+
+
+  @Test
+  fun `should return valid OVPObject for valid input HIGH risk`() {
+    val result = service.getRiskScore(
+      validOVPRiskScoreRequest()
+        .copy(
+          totalNumberOfSanctions = 55 as Integer,
+          totalNumberOfViolentSanctions = 40 as Integer,
+          impactOfOffendingOnOthers = true,
+          temperControl = ProblemLevel.SIGNIFICANT_PROBLEMS,
+          alcoholIsCurrentUseAProblem = ProblemLevel.SOME_PROBLEMS,
+          alcoholExcessive6Months = ProblemLevel.SOME_PROBLEMS
+        ),
+    )
+
+    assertNotNull(result)
+    assertTrue(result.validationError.isNullOrEmpty())
+    assertEquals("1_0", result.algorithmVersion)
+    assertEquals(49, result.provenViolentTypeReoffendingOneYear)
+    assertEquals(65, result.provenViolentTypeReoffendingTwoYear)
+    assertEquals(RiskBand.HIGH, result.band)
     assertTrue(result.validationError.isNullOrEmpty())
   }
 

@@ -100,13 +100,13 @@ fun getOffenderAgeGroupOVP(ageAtStartOfFollowup: Int) = when (ageAtStartOfFollow
   else -> throw IllegalArgumentException("Invalid ageAtStartOfFollowup value: $ageAtStartOfFollowup")
 }
 
-fun calculateOVPPercentageOneYear(totalOVPScore: Int) = calculateOVPPercentage(totalOVPScore, FIXED_ONE_YEAR_COEFFICIENT).asPercentage().sanitisePercentage()
-fun calculateOVPPercentageTwoYears(totalOVPScore: Int) = calculateOVPPercentage(totalOVPScore, FIXED_TWO_YEAR_COEFFICIENT).asPercentage().sanitisePercentage()
+fun calculateOVPPercentageOneYear(totalOVPScore: Int) = calculateOVPRate(totalOVPScore, FIXED_ONE_YEAR_COEFFICIENT).asPercentage().sanitisePercentage()
+fun calculateOVPPercentageTwoYears(totalOVPScore: Int) = calculateOVPRate(totalOVPScore, FIXED_TWO_YEAR_COEFFICIENT).asPercentage().sanitisePercentage()
 
-private fun calculateOVPPercentage(totalOVPScore: Int, yearlyCoefficient: Double): Double {
+fun calculateOVPRate(totalOVPScore: Int, yearlyCoefficient: Double): Double {
   val exponent = 0.0722 * totalOVPScore - yearlyCoefficient
   val expValue = exp(exponent)
-  return (expValue / (1 + expValue)) * 100
+  return (expValue / (1 + expValue))
 }
 
 fun getOVPBand(percentage: Int): RiskBand = when (percentage) {

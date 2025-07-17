@@ -104,14 +104,14 @@ class OVPTransformationHelperTest {
   fun `calculateOVPPercentageOneYear should calculate percentage`() {
     val percentage = calculateOVPPercentageOneYear(totalOVPScore = 15)
     assertTrue(percentage in 1..99)
-    assertEquals(99, percentage)
+    assertEquals(3, percentage)
   }
 
   @Test
   fun `calculateOVPPercentageTwoYears should calculate percentage`() {
     val percentage = calculateOVPPercentageTwoYears(totalOVPScore = 15)
     assertTrue(percentage in 1..99)
-    assertEquals(99, percentage)
+    assertEquals(6, percentage)
   }
 
   @Test
