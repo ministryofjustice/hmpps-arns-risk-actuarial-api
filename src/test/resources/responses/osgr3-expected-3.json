@@ -1,0 +1,13 @@
+{
+  "ogrs3": {
+    "algorithmVersion" : "1",
+    "ogrs3OneYear" : null,
+    "ogrs3TwoYear" : null,
+    "band" : null,
+    "validationError" : [ {
+      "type" : "NO_MATCHING_INPUT",
+      "message" : "Error: Conviction date cannot be before date of birth.",
+      "fields" : null
+    } ]
+  }
+}

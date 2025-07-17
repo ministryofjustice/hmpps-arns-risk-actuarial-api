@@ -15,12 +15,16 @@ import kotlin.test.fail
  * Uses snapshot testing as a mean of comparing complex calculations with results for OASys.
  * Tests compare the current output to the expected json snapshot.
  */
-class RiskScoreSnapshotTest : IntegrationTestBase() {
+class ApiIntegrationTest : IntegrationTestBase() {
 
   companion object {
     @JvmStatic
     fun requestResponseProvider(): Stream<Array<String>> = Stream.of(
-      arrayOf("requests/osgr3-input-1.json", "responses/osgr3-expected-1.json"),
+      arrayOf("ogrs3", "requests/osgr3-input-1-valid.json", "responses/osgr3-expected-1.json"),
+      arrayOf("ogrs3", "requests/osgr3-input-2-missing-fields.json", "responses/osgr3-expected-2.json"),
+      arrayOf("ogrs3", "requests/osgr3-input-3-invalid-age.json", "responses/osgr3-expected-3.json"),
+      arrayOf("ogrs3","requests/osgr3-input-4-invalid-offence.json", "responses/osgr3-expected-4.json"),
+      arrayOf("ovp", "requests/ovp-input-1-invalid.json", "responses/ovp-expected-1.json"),
       // Add more as needed
     )
 
@@ -29,7 +33,7 @@ class RiskScoreSnapshotTest : IntegrationTestBase() {
 
   @ParameterizedTest
   @MethodSource("requestResponseProvider")
-  fun `post risk score returns expected response`(requestPath: String, expectedResponsePath: String) {
+  fun `post risk score returns expected response`(jsonTreeToCompare: String, requestPath: String, expectedResponsePath: String) {
     val objectMapper = ObjectMapper()
     val requestBody = readFileFromClasspath(requestPath)
     val expectedResponseBody = readFileFromClasspath(expectedResponsePath)
@@ -45,8 +49,8 @@ class RiskScoreSnapshotTest : IntegrationTestBase() {
       .returnResult()
       .responseBody ?: fail("No response body received")
 
-    val expectedJson: JsonNode = objectMapper.readTree(expectedResponseBody)
-    val actualJson: JsonNode = objectMapper.readTree(responseBody)
+    val expectedJson: JsonNode = objectMapper.readTree(expectedResponseBody).path(jsonTreeToCompare)
+    val actualJson: JsonNode = objectMapper.readTree(responseBody).path(jsonTreeToCompare)
 
     if (expectedJson != actualJson) {
       println("Expected JSON:\n${objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(expectedJson)}")

@@ -1,0 +1,13 @@
+{
+  "ogrs3": {
+    "algorithmVersion" : "1",
+    "ogrs3OneYear" : null,
+    "ogrs3TwoYear" : null,
+    "band" : null,
+    "validationError" : [ {
+      "type" : "MISSING_INPUT",
+      "message" : "ERR5 - Field is Null",
+      "fields" : [ "Gender", "Date of birth", "Date of current conviction", "Date at start of followup", "Total number of sanctions", "Age at first sanction", "Current offence" ]
+    } ]
+  }
+}
