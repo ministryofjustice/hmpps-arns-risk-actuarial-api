@@ -2,11 +2,11 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.OGRS3Object
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3Object
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3RequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getAgeAtCurrentConviction
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getAgeGenderScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getConvictionStatusScore
@@ -33,7 +33,7 @@ class OGRS3RiskProducerService : RiskProducer<OGRS3Object> {
       return OGRS3Object(riskScoreRequest.version, null, null, null, errors)
     }
 
-    val validRequest = RiskScoreRequestValidated(
+    val validRequest = OGRS3RequestValidated(
       riskScoreRequest.version,
       riskScoreRequest.gender!!,
       riskScoreRequest.dateOfBirth!!,
@@ -46,7 +46,7 @@ class OGRS3RiskProducerService : RiskProducer<OGRS3Object> {
     return getOGRS3Object(validRequest, errors)
   }
 
-  private fun getOGRS3Object(request: RiskScoreRequestValidated, errors: MutableList<ValidationErrorResponse>): OGRS3Object = runCatching {
+  private fun getOGRS3Object(request: OGRS3RequestValidated, errors: MutableList<ValidationErrorResponse>): OGRS3Object = runCatching {
     val ageAtCurrentConviction = getAgeAtCurrentConviction(
       request.dateOfBirth,
       request.dateOfCurrentConviction,

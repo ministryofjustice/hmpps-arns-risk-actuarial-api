@@ -5,10 +5,11 @@ import org.mockito.kotlin.whenever
 import org.springframework.http.MediaType
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.OGRS3Object
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3Object
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOVP
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.integration.IntegrationTestBase
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.RiskScoreService
 import java.time.LocalDate
@@ -40,7 +41,7 @@ class RiskScoreControllerTest : IntegrationTestBase() {
     )
 
     whenever(riskScoreService.riskScoreProducer(basicRequest))
-      .thenReturn(RiskScoreResponse(ogrs3))
+      .thenReturn(RiskScoreResponse(ogrs3, emptyOVP()))
 
     webTestClient.post()
       .uri("/risk-scores")

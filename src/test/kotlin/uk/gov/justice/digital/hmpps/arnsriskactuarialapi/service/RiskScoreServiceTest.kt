@@ -7,14 +7,18 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.whenever
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.OGRS3Object
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOGRS3
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOVP
 
 @ExtendWith(MockitoExtension::class)
 class RiskScoreServiceTest {
 
   @Mock
-  private lateinit var oGRS3RiskProducerService: OGRS3RiskProducerService
+  private lateinit var ogrs3RiskProducerService: OGRS3RiskProducerService
+
+  @Mock
+  private lateinit var ovpRiskProducerService: OVPRiskProducerService
 
   @InjectMocks
   private lateinit var riskScoreService: RiskScoreService
@@ -32,8 +36,11 @@ class RiskScoreServiceTest {
       null,
     )
 
-    whenever(oGRS3RiskProducerService.getRiskScore(request))
-      .thenReturn(OGRS3Object("1_0", null, null, null, null))
+    whenever(ogrs3RiskProducerService.getRiskScore(request))
+      .thenReturn(emptyOGRS3())
+
+    whenever(ovpRiskProducerService.getRiskScore(request))
+      .thenReturn(emptyOVP())
 
     val result = riskScoreService.riskScoreProducer(request)
     Assertions.assertEquals("1_0", result.OGRS3.algorithmVersion)
