@@ -5,16 +5,17 @@ import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import java.time.LocalDate
 
-class Ogrs3ValidationHelperTest {
+class OVPValidationHelperTest {
 
   @Test
   fun `getMissingFieldsValidation no errors`() {
-    val result = getMissingOGRS3FieldsValidation(validRiskScoreRequest())
+    val result = getMissingOVPFieldsValidation(validOVPRiskScoreRequest())
     assertTrue(result.isEmpty())
   }
 
@@ -30,16 +31,22 @@ class Ogrs3ValidationHelperTest {
       null,
       null,
     )
-    val result = getMissingOGRS3FieldsValidation(request)
+    val result = getMissingOVPFieldsValidation(request)
 
     val expectedFields = listOf(
       "Gender",
       "Date of birth",
-      "Date of current conviction",
       "Date at start of followup",
       "Total number of sanctions",
-      "Age at first sanction",
-      "Current offence",
+      "Total number of violent sanctions",
+      "Impact of offending on others",
+      "Current accommodation",
+      "Employment status",
+      "Alcohol is current use a problem",
+      "Alcohol excessive 6 months",
+      "Current psychiatric treatment or pending",
+      "Temper control",
+      "Pro criminal attitudes",
     )
 
     val error = result.first()
@@ -59,7 +66,7 @@ class Ogrs3ValidationHelperTest {
     val missingFieldError = mutableListOf(
       ValidationErrorResponse(
         type = ValidationErrorType.MISSING_INPUT,
-        message = "Unable to produce OGRS3 score due to missing field(s)",
+        message = "Unable to produce OVP score due to missing field(s)",
         fields = listOf("Total number of sanctions"),
       ),
     )
@@ -106,14 +113,23 @@ class Ogrs3ValidationHelperTest {
     assertEquals("Current offence", error.fields?.first())
   }
 
-  private fun validRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
-    "1_0",
-    Gender.MALE,
-    LocalDate.of(1964, 10, 15),
-    LocalDate.of(2014, 12, 13),
-    LocalDate.of(2027, 12, 12),
-    10 as Integer?,
-    30 as Integer?,
-    "051101",
+  private fun validOVPRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
+    version = "1_0",
+    gender = Gender.MALE,
+    dateOfBirth = LocalDate.of(1964, 10, 15),
+    dateOfCurrentConviction = LocalDate.of(2014, 12, 13),
+    dateAtStartOfFollowup = LocalDate.of(2027, 12, 12),
+    totalNumberOfSanctions = 10 as Integer?,
+    totalNumberOfViolentSanctions = 30 as Integer?,
+    impactOfOffendingOnOthers = true,
+    currentAccommodation = true,
+    ageAtFirstSanction = null,
+    currentOffence = null,
+    employmentStatus = true,
+    alcoholIsCurrentUseAProblem = ProblemLevel.NO_PROBLEMS,
+    alcoholExcessive6Months = ProblemLevel.NO_PROBLEMS,
+    currentPsychiatricTreatmentOrPending = false,
+    temperControl = ProblemLevel.NO_PROBLEMS,
+    proCriminalAttitudes = ProblemLevel.NO_PROBLEMS,
   )
 }

@@ -13,24 +13,13 @@ data class RiskScoreRequest(
   val currentOffence: String?,
 
   // OVP additional properties
-  val impactOfOffendingOnOthers: Boolean?,
-  val currentAccommodation: Boolean?,
-  val employmentStatus: Boolean?,
-  val alcoholIsCurrentUseAProblem: ProblemLevel?,
-  val alcoholExcessive6Months: ProblemLevel?,
-  val currentPsychiatricTreatmentOrPending: Boolean?,
-  val temperControl: ProblemLevel?,
-  val proCriminalAttitudes: ProblemLevel?,
-
-  )
-
-data class OGRS3RequestValidated(
-  val version: String,
-  val gender: Gender,
-  val dateOfBirth: LocalDate,
-  val dateOfCurrentConviction: LocalDate,
-  val dateAtStartOfFollowup: LocalDate,
-  val totalNumberOfSanctions: Int,
-  val ageAtFirstSanction: Int,
-  val currentOffence: String,
+  val totalNumberOfViolentSanctions: Integer? = null,
+  val impactOfOffendingOnOthers: Boolean? = null,
+  val currentAccommodation: Boolean? = null,
+  val employmentStatus: Boolean? = null,
+  val alcoholIsCurrentUseAProblem: ProblemLevel? = null,
+  val alcoholExcessive6Months: ProblemLevel? = null,
+  val currentPsychiatricTreatmentOrPending: Boolean? = null,
+  val temperControl: ProblemLevel? = null,
+  val proCriminalAttitudes: ProblemLevel? = null,
 )
