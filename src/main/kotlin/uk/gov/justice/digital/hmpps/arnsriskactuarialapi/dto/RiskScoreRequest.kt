@@ -8,8 +8,8 @@ data class RiskScoreRequest(
   val dateOfBirth: LocalDate?,
   val dateOfCurrentConviction: LocalDate?,
   val dateAtStartOfFollowup: LocalDate?,
-  val totalNumberOfSanctions: Int?,
-  val ageAtFirstSanction: Int?,
+  val totalNumberOfSanctions: Integer?,
+  val ageAtFirstSanction: Integer?,
   val currentOffence: String?,
 
   // OVP additional properties

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.OGRS3Object
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.OGRS3RequestValidated
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getAgeAtCurrentConviction
@@ -16,6 +16,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getOgrs3OneYear
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getOgrs3TwoYear
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getRiskBand
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.ogrs3InitialValidation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asPercentage
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sanitisePercentage
 
@@ -26,26 +27,26 @@ class OGRS3RiskProducerService : RiskProducer<OGRS3Object> {
   lateinit var offenceGroupParametersService: OffenceGroupParametersService
 
   override fun getRiskScore(riskScoreRequest: RiskScoreRequest): OGRS3Object {
-    // TODO: real validation
-    val errors = mutableListOf<ValidationErrorResponse>()
-    val validRequest = OGRS3RequestValidated(
+    val errors = ogrs3InitialValidation(riskScoreRequest)
+
+    if (!errors.isEmpty()) {
+      return OGRS3Object(riskScoreRequest.version, null, null, null, errors)
+    }
+
+    val validRequest = RiskScoreRequestValidated(
       riskScoreRequest.version,
       riskScoreRequest.gender!!,
       riskScoreRequest.dateOfBirth!!,
       riskScoreRequest.dateOfCurrentConviction!!,
       riskScoreRequest.dateAtStartOfFollowup!!,
-      riskScoreRequest.totalNumberOfSanctions!!,
-      riskScoreRequest.ageAtFirstSanction!!,
+      riskScoreRequest.totalNumberOfSanctions!!.toInt(),
+      riskScoreRequest.ageAtFirstSanction!!.toInt(),
       riskScoreRequest.currentOffence!!,
     )
     return getOGRS3Object(validRequest, errors)
   }
 
-<<<<<<< Updated upstream
   private fun getOGRS3Object(request: RiskScoreRequestValidated, errors: MutableList<ValidationErrorResponse>): OGRS3Object = runCatching {
-=======
-  private fun getOGRS3Object(riskScoreRequest: OGRS3RequestValidated, errors: MutableList<ValidationErrorResponse>): OGRS3Object = runCatching {
->>>>>>> Stashed changes
     val ageAtCurrentConviction = getAgeAtCurrentConviction(
       request.dateOfBirth,
       request.dateOfCurrentConviction,
