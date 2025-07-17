@@ -3,7 +3,6 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertNull
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
@@ -50,7 +49,6 @@ class OVPRiskProducerServiceTest {
     assertTrue(result.validationError.isNullOrEmpty())
   }
 
-
   @Test
   fun `should return valid OVPObject for valid input HIGH risk`() {
     val result = service.getRiskScore(
@@ -61,7 +59,7 @@ class OVPRiskProducerServiceTest {
           impactOfOffendingOnOthers = true,
           temperControl = ProblemLevel.SIGNIFICANT_PROBLEMS,
           alcoholIsCurrentUseAProblem = ProblemLevel.SOME_PROBLEMS,
-          alcoholExcessive6Months = ProblemLevel.SOME_PROBLEMS
+          alcoholExcessive6Months = ProblemLevel.SOME_PROBLEMS,
         ),
     )
 
