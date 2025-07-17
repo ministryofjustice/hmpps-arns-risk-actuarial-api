@@ -2,8 +2,10 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import kotlin.test.assertFailsWith
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class OGPBandTest {
 
   @Test
