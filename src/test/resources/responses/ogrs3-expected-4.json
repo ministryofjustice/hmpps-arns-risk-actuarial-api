@@ -1,0 +1,13 @@
+{
+  "ogrs3": {
+    "algorithmVersion" : "1",
+    "ogrs3OneYear" : null,
+    "ogrs3TwoYear" : null,
+    "band" : null,
+    "validationError" : [ {
+      "type" : "NO_MATCHING_INPUT",
+      "message" : "ERR4 - Does not match agreed input",
+      "fields" : [ "Current offence" ]
+    } ]
+  }
+}

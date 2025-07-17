@@ -1,0 +1,10 @@
+{
+  "version": "1",
+  "gender": "MALE",
+  "dateOfBirth": "2015-10-15",
+  "dateOfCurrentConviction": "2014-12-12",
+  "dateAtStartOfFollowup": "2027-12-12",
+  "totalNumberOfSanctions": 10,
+  "ageAtFirstSanction": 30,
+  "currentOffence": "05101"
+}
