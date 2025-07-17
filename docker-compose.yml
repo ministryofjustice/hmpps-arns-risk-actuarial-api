@@ -24,10 +24,13 @@ services:
       - "8090:8080"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/auth/health"]
+    volumes:
+      - ./auth_db:/auth_db
     environment:
       - SERVER_PORT=8080
       - SPRING_PROFILES_ACTIVE=dev
       - APPLICATION_AUTHENTICATION_UI_ALLOWLIST=0.0.0.0/0
+      - SPRING_FLYWAY_LOCATIONS=classpath:db/auth,db/auth_h2,db/dev/data/auth_h2,db/dev/data/auth,filesystem:/auth_db
 
 networks:
   hmpps:
