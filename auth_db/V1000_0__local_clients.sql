@@ -1,0 +1,3 @@
+-- Add client for local dev. Client secret is test-secret.
+INSERT INTO oauth_client_details (client_id, access_token_validity, additional_information, authorities, authorized_grant_types, autoapprove, client_secret, refresh_token_validity, resource_ids, scope, web_server_redirect_uri)
+VALUES ('hmpps-arns-risk-actuarial-api-dev', 1200, '{}', 'ARNS_RISK_ACTUARIAL', 'client_credentials', 'read', '$2a$12$f8xAS2Ft4WW86GSbJcWdruGZt75vZl22HbuH8FIh7RQdXiaZKFuB.', null, null, 'read', null);

@@ -22,4 +22,15 @@ data class RiskScoreRequest(
   val currentPsychiatricTreatmentOrPending: Boolean? = null,
   val temperControl: ProblemLevel? = null,
   val proCriminalAttitudes: ProblemLevel? = null,
+
+  // MST props
+  val peerGroupInfluences: Boolean? = null,
+  val attitudesPeerPressure: LocalDate? = null,
+  val attitudesStableBehaviour: ProblemLevel? = null,
+  val difficultiesCoping: ProblemLevel? = null,
+  val attitudesTowardsSelf: ProblemLevel? = null,
+  val impusilvityBehaviour: ProblemLevel? = null,
+  val problemSolvingSkills: ProblemLevel? = null,
+  val awarenessOfConsequences: ProblemLevel? = null,
+  val understandsPeoplesViews: ProblemLevel? = null,
 )
