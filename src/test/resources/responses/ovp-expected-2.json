@@ -1,9 +1,9 @@
 {
   "ovp" : {
     "algorithmVersion" : "1",
-    "provenViolentTypeReoffendingOneYear" : 6,
-    "provenViolentTypeReoffendingTwoYear" : 11,
-    "band" : "LOW",
+    "provenViolentTypeReoffendingOneYear" : 80,
+    "provenViolentTypeReoffendingTwoYear" : 89,
+    "band" : "VERY_HIGH",
     "validationError" : [ ]
   }
 }

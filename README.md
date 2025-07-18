@@ -130,7 +130,7 @@ will build the application and run it and HMPPS Auth within a local docker insta
 ### Running the application in Intellij
 
 ```bash
-docker compose pull && docker compose up --scale hmpps-arns-risk-actuarial-api=0
+docker compose pull && docker compose up --scale hmpps-arns-risk-actuarial-api=0dev
 ```
 
 will just start a docker instance of HMPPS Auth. The application should then be started with a `dev` active profile

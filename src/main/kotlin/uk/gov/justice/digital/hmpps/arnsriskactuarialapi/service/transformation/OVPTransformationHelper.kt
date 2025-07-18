@@ -5,8 +5,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ovp.OVPRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asPercentage
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sanitisePercentage
+import kotlin.math.ceil
 import kotlin.math.exp
-import kotlin.math.floor
 
 private const val FIXED_ONE_YEAR_COEFFICIENT = 4.5215
 private const val FIXED_TWO_YEAR_COEFFICIENT = 3.8773
@@ -28,7 +28,7 @@ private fun Int.numberToScore(): Int = if (this == 2) 4 else 0
 fun getAlcoholMisuseWeighted(request: OVPRequestValidated): Int = listOf(
   request.alcoholIsCurrentUseAProblem.ordinal,
   request.alcoholExcessive6Months.ordinal,
-).sum().let { floor(it * 2.5).toInt() }
+).sum().let { ceil(it * 2.5).toInt() }
 
 fun getCurrentAccommodationOffendersScore(request: OVPRequestValidated): Int = request.currentAccommodation.booleanToScore()
 
@@ -36,7 +36,10 @@ fun getEmploymentStatusOffendersScore(request: OVPRequestValidated): Int = reque
 
 fun getImpactOfOffendingOnOthersWeighted(request: OVPRequestValidated): Int = request.impactOfOffendingOnOthers.booleanToInverseScore()
 
-fun getCurrentPsychiatricTreatmentOrPendingWeighted(request: OVPRequestValidated): Int = request.currentPsychiatricTreatmentOrPending.booleanToInverseScore()
+fun getCurrentPsychiatricTreatmentOrPendingWeighted(request: OVPRequestValidated): Int = when (request.currentPsychiatricTreatmentOrPending) {
+  true -> 4
+  false -> 0
+}
 
 fun getCurrentAccommodationWeightedOVP(currentAccommodationOffendersScore: Int): Int = currentAccommodationOffendersScore.numberToScore()
 

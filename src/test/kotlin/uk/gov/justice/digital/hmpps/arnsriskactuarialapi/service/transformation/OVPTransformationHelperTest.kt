@@ -44,11 +44,11 @@ class OVPTransformationHelperTest {
   @Test
   fun `getCurrentPsychiatricTreatmentOrPendingWeighted maps correctly`() {
     assertEquals(
-      0,
+      4,
       getCurrentPsychiatricTreatmentOrPendingWeighted(testRequest(currentPsychiatricTreatmentOrPending = true)),
     )
     assertEquals(
-      4,
+      0,
       getCurrentPsychiatricTreatmentOrPendingWeighted(testRequest(currentPsychiatricTreatmentOrPending = false)),
     )
   }
@@ -84,14 +84,14 @@ class OVPTransformationHelperTest {
   fun `getTotalNumberOfViolentSanctionsWeighted should map sanctions`() {
     assertEquals(0, getTotalNumberOfViolentSanctionsWeighted(0))
     assertEquals(4, getTotalNumberOfViolentSanctionsWeighted(1))
-    assertEquals(25, getTotalNumberOfViolentSanctionsWeighted(20))
+    assertEquals(24, getTotalNumberOfViolentSanctionsWeighted(17))
   }
 
   @Test
   fun `getTotalNumberOfNonViolentSanctionsWeighted should map sanctions`() {
     assertEquals(0, getTotalNumberOfNonViolentSanctionsWeighted(0))
     assertEquals(2, getTotalNumberOfNonViolentSanctionsWeighted(3))
-    assertEquals(5, getTotalNumberOfNonViolentSanctionsWeighted(21))
+    assertEquals(4, getTotalNumberOfNonViolentSanctionsWeighted(20))
   }
 
   @Test
@@ -102,16 +102,14 @@ class OVPTransformationHelperTest {
 
   @Test
   fun `calculateOVPPercentageOneYear should calculate percentage`() {
-    val percentage = calculateOVPPercentageOneYear(totalOVPScore = 15)
-    assertTrue(percentage in 1..99)
-    assertEquals(3, percentage)
+    val percentage = calculateOVPPercentageOneYear(totalOVPScore = 82)
+    assertEquals(80, percentage)
   }
 
   @Test
   fun `calculateOVPPercentageTwoYears should calculate percentage`() {
-    val percentage = calculateOVPPercentageTwoYears(totalOVPScore = 15)
-    assertTrue(percentage in 1..99)
-    assertEquals(6, percentage)
+    val percentage = calculateOVPPercentageTwoYears(totalOVPScore = 82)
+    assertEquals(89, percentage)
   }
 
   @Test
@@ -135,8 +133,8 @@ class OVPTransformationHelperTest {
     @JvmStatic
     fun alcoholMisuseTestCases(): Stream<Arguments> = Stream.of(
       Arguments.of(ProblemLevel.NO_PROBLEMS, ProblemLevel.NO_PROBLEMS, 0),
-      Arguments.of(ProblemLevel.SOME_PROBLEMS, ProblemLevel.NO_PROBLEMS, 2),
-      Arguments.of(ProblemLevel.NO_PROBLEMS, ProblemLevel.SOME_PROBLEMS, 2),
+      Arguments.of(ProblemLevel.SOME_PROBLEMS, ProblemLevel.NO_PROBLEMS, 3),
+      Arguments.of(ProblemLevel.NO_PROBLEMS, ProblemLevel.SOME_PROBLEMS, 3),
       Arguments.of(ProblemLevel.SOME_PROBLEMS, ProblemLevel.SOME_PROBLEMS, 5),
       Arguments.of(ProblemLevel.SIGNIFICANT_PROBLEMS, ProblemLevel.SIGNIFICANT_PROBLEMS, 10),
     )

@@ -30,8 +30,8 @@ class OVPRiskProducerServiceTest {
     assertNotNull(result)
     assertTrue(result.validationError.isNullOrEmpty())
     assertEquals("1_0", result.algorithmVersion)
-    assertEquals(7, result.provenViolentTypeReoffendingOneYear)
-    assertEquals(12, result.provenViolentTypeReoffendingTwoYear)
+    assertEquals(5, result.provenViolentTypeReoffendingOneYear)
+    assertEquals(9, result.provenViolentTypeReoffendingTwoYear)
     assertEquals(RiskBand.LOW, result.band)
     assertTrue(result.validationError.isNullOrEmpty())
   }
@@ -43,9 +43,9 @@ class OVPRiskProducerServiceTest {
     assertNotNull(result)
     assertTrue(result.validationError.isNullOrEmpty())
     assertEquals("1_0", result.algorithmVersion)
-    assertEquals(20, result.provenViolentTypeReoffendingOneYear)
-    assertEquals(32, result.provenViolentTypeReoffendingTwoYear)
-    assertEquals(RiskBand.MEDIUM, result.band)
+    assertEquals(15, result.provenViolentTypeReoffendingOneYear)
+    assertEquals(26, result.provenViolentTypeReoffendingTwoYear)
+    assertEquals(RiskBand.LOW, result.band)
     assertTrue(result.validationError.isNullOrEmpty())
   }
 
@@ -66,9 +66,9 @@ class OVPRiskProducerServiceTest {
     assertNotNull(result)
     assertTrue(result.validationError.isNullOrEmpty())
     assertEquals("1_0", result.algorithmVersion)
-    assertEquals(49, result.provenViolentTypeReoffendingOneYear)
-    assertEquals(65, result.provenViolentTypeReoffendingTwoYear)
-    assertEquals(RiskBand.HIGH, result.band)
+    assertEquals(42, result.provenViolentTypeReoffendingOneYear)
+    assertEquals(58, result.provenViolentTypeReoffendingTwoYear)
+    assertEquals(RiskBand.MEDIUM, result.band)
     assertTrue(result.validationError.isNullOrEmpty())
   }
 
