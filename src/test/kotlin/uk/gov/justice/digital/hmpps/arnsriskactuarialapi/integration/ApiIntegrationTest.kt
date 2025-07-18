@@ -25,6 +25,7 @@ class ApiIntegrationTest : IntegrationTestBase() {
       arrayOf("ogrs3", "requests/ogrs3-input-3-invalid-age.json", "responses/ogrs3-expected-3.json"),
       arrayOf("ogrs3", "requests/ogrs3-input-4-invalid-offence.json", "responses/ogrs3-expected-4.json"),
       arrayOf("ovp", "requests/ovp-input-1-missing-fields.json", "responses/ovp-expected-1.json"),
+      arrayOf("ovp", "requests/ovp-input-2-valid-fields.json", "responses/ovp-expected-2.json"),
       // Add more as needed
     )
 

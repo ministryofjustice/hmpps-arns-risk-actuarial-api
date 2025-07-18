@@ -5,8 +5,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResp
 
 data class OVPObject(
   val algorithmVersion: String,
-  val nonOvpReoffendingOneYear: Int?,
-  val nonOvpReoffendingTwoYear: Int?,
+  val provenViolentTypeReoffendingOneYear: Int?,
+  val provenViolentTypeReoffendingTwoYear: Int?,
   val band: RiskBand?,
   val validationError: List<ValidationErrorResponse>?,
 )

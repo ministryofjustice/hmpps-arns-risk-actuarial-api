@@ -1,0 +1,18 @@
+{
+  "version": "1",
+  "gender": "MALE",
+  "dateOfBirth": "2000-10-15",
+  "dateOfCurrentConviction": "2014-12-12",
+  "dateAtStartOfFollowup": "2019-12-12",
+  "totalNumberOfSanctions": 31,
+  "totalNumberOfViolentSanctions": 17,
+  "ageAtFirstSanction": 30,
+  "impactOfOffendingOnOthers": false,
+  "currentAccommodation": true,
+  "employmentStatus": true,
+  "alcoholIsCurrentUseAProblem": "SOME_PROBLEMS",
+  "alcoholExcessive6Months": "NO_PROBLEMS",
+  "temperControl": "SIGNIFICANT_PROBLEMS",
+  "proCriminalAttitudes": "SOME_PROBLEMS",
+  "currentPsychiatricTreatmentOrPending": false
+}

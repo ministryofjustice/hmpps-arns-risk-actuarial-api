@@ -7,9 +7,7 @@ fun ovpInitialValidation(request: RiskScoreRequest): MutableList<ValidationError
   val missingFieldValidationErrorStep = getMissingOVPFieldsValidation(request)
   val totalSanctionsValidationErrorStep =
     getTotalNumberOfSanctionsValidation(request.totalNumberOfSanctions, missingFieldValidationErrorStep)
-  val currentOffenceValidationErrorStep =
-    getCurrentOffenceValidation(request.currentOffence, totalSanctionsValidationErrorStep)
-  return currentOffenceValidationErrorStep
+  return totalSanctionsValidationErrorStep
 }
 
 fun getMissingOVPFieldsValidation(request: RiskScoreRequest): MutableList<ValidationErrorResponse> {

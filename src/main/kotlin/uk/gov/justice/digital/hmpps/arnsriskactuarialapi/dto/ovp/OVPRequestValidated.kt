@@ -7,7 +7,7 @@ import java.time.LocalDate
 data class OVPRequestValidated(
   val version: String,
   val totalNumberOfSanctions: Int,
-  val totalNumberOfViolentSanctions: Integer,
+  val totalNumberOfViolentSanctions: Int,
   val dateAtStartOfFollowup: LocalDate,
   val dateOfBirth: LocalDate,
   val gender: Gender,

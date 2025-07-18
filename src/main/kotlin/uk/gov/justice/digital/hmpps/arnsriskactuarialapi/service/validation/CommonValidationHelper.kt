@@ -3,6 +3,8 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 
+private const val MIN_CONVICTION_AGE = 10
+
 fun getTotalNumberOfSanctionsValidation(
   totalNumberOfSanctions: Integer?,
   errors: MutableList<ValidationErrorResponse>,
@@ -35,6 +37,33 @@ fun getCurrentOffenceValidation(
         ),
       )
     }
+  }
+  return errors
+}
+
+fun validateAge(
+  ageAtCurrentConviction: Int,
+  ageAtFirstSanction: Int,
+  errors: MutableList<ValidationErrorResponse>,
+): MutableList<ValidationErrorResponse> {
+  if (ageAtCurrentConviction < MIN_CONVICTION_AGE) {
+    errors.add(
+      ValidationErrorResponse(
+        type = ValidationErrorType.BELOW_MIN_VALUE,
+        message = "ERR2 - Below minimum value",
+        fields = listOf("Age at current conviction"),
+      ),
+    )
+  }
+
+  if (ageAtFirstSanction > ageAtCurrentConviction) {
+    errors.add(
+      ValidationErrorResponse(
+        type = ValidationErrorType.BELOW_MIN_VALUE,
+        message = "ERR2 - Below minimum value",
+        fields = listOf("Age at current conviction", "Age at first sanction"),
+      ),
+    )
   }
   return errors
 }
