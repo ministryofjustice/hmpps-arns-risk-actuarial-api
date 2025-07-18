@@ -1,7 +1,10 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
+import java.util.Objects.isNull
+import kotlin.reflect.KProperty1
 
 private const val MIN_CONVICTION_AGE = 10
 
@@ -82,4 +85,31 @@ fun addMissingFields(
     )
   }
   return errors
+}
+
+fun getMissingFieldsValidation(
+  request: RiskScoreRequest,
+  propertyToErrors: Map<String, String>,
+): MutableList<ValidationErrorResponse> {
+  val errors = mutableListOf<ValidationErrorResponse>()
+
+  val missingFields = propertyToErrors.keys
+    .fold(mutableListOf<String>()) { acc, propertyName ->
+      acc.apply {
+        val value = readInstanceProperty<Object>(request, propertyName)
+        if (isNull(value)) {
+          acc.add(propertyToErrors[propertyName]!!)
+        }
+      }
+    }
+  return addMissingFields(missingFields, errors)
+}
+
+@Suppress("UNCHECKED_CAST")
+fun <R> readInstanceProperty(instance: Any, propertyName: String): R {
+  val property = instance::class.members
+    // don't cast here to <Any, R>, it would succeed silently
+    .first { it.name == propertyName } as KProperty1<Any, *>
+  // force a invalid cast exception if incorrect type here
+  return property.get(instance) as R
 }

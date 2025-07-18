@@ -4,10 +4,84 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.RiskScoreRequestTestConstants.ALT_NULL_OGP_REQUEST
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.RiskScoreRequestTestConstants.FULL_OGP_REQUEST
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.RiskScoreRequestTestConstants.NULL_REQUEST
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.RiskScoreRequestTestConstants.OGP_REQUEST_01569
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.RiskScoreRequestTestConstants.OGP_REQUEST_39
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 
 class CommonValidationHelperTest {
+
+  @Test
+  fun `no errors present`() {
+    val errorResponses = getMissingFieldsValidation(FULL_OGP_REQUEST, TEST_OGP_PROPERTIES_TO_ERRORS)
+    assertTrue { errorResponses.isEmpty() }
+  }
+
+  @Test
+  fun `all test fields absent`() {
+    val errorResponses = getMissingFieldsValidation(NULL_REQUEST, TEST_OGP_PROPERTIES_TO_ERRORS)
+    val expected = listOf(
+      ValidationErrorResponse(
+        ValidationErrorType.MISSING_INPUT,
+        "ERR5 - Field is Null",
+        (0..9).map { i -> "$i" },
+      ),
+    )
+    assertEquals(expected, errorResponses)
+  }
+
+  @ParameterizedTest()
+  @MethodSource("getRiskScoreRequests")
+  fun `error responses are found correctly`(request: RiskScoreRequest, expectedFields: List<String>) {
+    val errorResponses = getMissingFieldsValidation(request, TEST_OGP_PROPERTIES_TO_ERRORS)
+    val expected = listOf(
+      ValidationErrorResponse(
+        ValidationErrorType.MISSING_INPUT,
+        "ERR5 - Field is Null",
+        expectedFields,
+      ),
+    )
+    assertEquals(expected, errorResponses)
+  }
+
+  companion object {
+
+    val TEST_OGP_PROPERTIES_TO_ERRORS = mapOf(
+      "ogrs3TwoYear" to "0",
+      "currentAccomodation" to "1",
+      "employmentStatus" to "2",
+      "regularOffendingActivities" to "3",
+      "currentDrugMisuse" to "4",
+      "motivationDrug" to "5",
+      "problemSolvingSkills" to "6",
+      "awarenessOfConsequences" to "7",
+      "understandsPeoplesViews" to "8",
+      "proCriminalAttitudes" to "9",
+    )
+
+    @JvmStatic
+    fun getRiskScoreRequests(): List<Arguments> = listOf(
+      Arguments.of(
+        ALT_NULL_OGP_REQUEST,
+        (1..5).map { i -> "${2 * i - 1}" },
+      ),
+      Arguments.of(
+        OGP_REQUEST_39,
+        listOf("3", "9"),
+      ),
+      Arguments.of(
+        OGP_REQUEST_01569,
+        listOf("0", "1", "5", "6", "9"),
+      ),
+    )
+  }
 
   @Test
   fun `getTotalNumberOfSanctionsValidation no errors`() {

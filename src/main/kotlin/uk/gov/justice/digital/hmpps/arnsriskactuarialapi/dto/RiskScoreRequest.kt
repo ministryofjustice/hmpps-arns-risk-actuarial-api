@@ -4,13 +4,13 @@ import java.time.LocalDate
 
 data class RiskScoreRequest(
   val version: String,
-  val gender: Gender?,
-  val dateOfBirth: LocalDate?,
-  val dateOfCurrentConviction: LocalDate?,
-  val dateAtStartOfFollowup: LocalDate?,
-  val totalNumberOfSanctions: Integer?,
-  val ageAtFirstSanction: Integer?,
-  val currentOffence: String?,
+  val gender: Gender? = null,
+  val dateOfBirth: LocalDate? = null,
+  val dateOfCurrentConviction: LocalDate? = null,
+  val dateAtStartOfFollowup: LocalDate? = null,
+  val totalNumberOfSanctions: Integer? = null,
+  val ageAtFirstSanction: Integer? = null,
+  val currentOffence: String? = null,
 
   // OVP additional properties
   val totalNumberOfViolentSanctions: Integer? = null,
@@ -23,6 +23,16 @@ data class RiskScoreRequest(
   val temperControl: ProblemLevel? = null,
   val proCriminalAttitudes: ProblemLevel? = null,
 
+  // OGP additional properties
+  val ogrs3TwoYear: Integer? = null,
+  val currentAccomodation: Boolean? = null,
+  val regularOffendingActivities: ProblemLevel? = null,
+  val currentDrugMisuse: ProblemLevel? = null,
+  val motivationDrug: ProblemLevel? = null,
+  val problemSolvingSkills: ProblemLevel? = null,
+  val awarenessOfConsequences: ProblemLevel? = null,
+  val understandsPeoplesViews: ProblemLevel? = null,
+
   // MST props
   val peerGroupInfluences: Boolean? = null,
   val attitudesPeerPressure: LocalDate? = null,
@@ -30,7 +40,4 @@ data class RiskScoreRequest(
   val difficultiesCoping: ProblemLevel? = null,
   val attitudesTowardsSelf: ProblemLevel? = null,
   val impusilvityBehaviour: ProblemLevel? = null,
-  val problemSolvingSkills: ProblemLevel? = null,
-  val awarenessOfConsequences: ProblemLevel? = null,
-  val understandsPeoplesViews: ProblemLevel? = null,
 )

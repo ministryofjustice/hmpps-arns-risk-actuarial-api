@@ -9,5 +9,23 @@
       "message" : "ERR5 - Field is Null",
       "fields" : [ "Total number of violent sanctions", "Impact of offending on others", "Current accommodation", "Employment status", "Alcohol is current use a problem", "Alcohol excessive 6 months", "Current psychiatric treatment or pending", "Temper control", "Pro criminal attitudes" ]
     } ]
+  },
+  "ogp" : {
+    "algorithmVersion" : "1",
+    "ogpReoffendingOneYear" : null,
+    "ogpReoffendingTwoYear" : null,
+    "bandOGP" : null,
+    "validationError" : [ {
+      "type" : "MISSING_INPUT",
+      "message" : "ERR5 - Field is Null",
+      "fields" : [ "Current accomodation", "Employment status", "Regular offending activities", "Current drug misuse", "Motivation drug", "Problem solving skills", "Awareness of consequences", "Understands Peoples Views", "Procriminal attitudes" ]
+    } ]
+  },
+  "ogrs3": {
+    "algorithmVersion": "1",
+    "ogrs3OneYear": 22,
+    "ogrs3TwoYear": 37,
+    "band": "LOW",
+    "validationError": []
   }
 }
