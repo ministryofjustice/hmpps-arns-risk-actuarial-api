@@ -5,4 +5,5 @@ enum class ValidationErrorType {
   BELOW_MIN_VALUE,
   ABOVE_MAX_VALUE,
   NO_MATCHING_INPUT,
+  NOT_APPLICABLE,
 }

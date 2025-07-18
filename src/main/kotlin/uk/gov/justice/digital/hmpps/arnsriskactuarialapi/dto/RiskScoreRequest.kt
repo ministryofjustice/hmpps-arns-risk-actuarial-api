@@ -30,7 +30,4 @@ data class RiskScoreRequest(
   val difficultiesCoping: ProblemLevel? = null,
   val attitudesTowardsSelf: ProblemLevel? = null,
   val impusilvityBehaviour: ProblemLevel? = null,
-  val problemSolvingSkills: ProblemLevel? = null,
-  val awarenessOfConsequences: ProblemLevel? = null,
-  val understandsPeoplesViews: ProblemLevel? = null,
 )

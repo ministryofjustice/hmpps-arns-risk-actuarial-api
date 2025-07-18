@@ -14,9 +14,30 @@ class RiskScoreService {
   @Autowired
   lateinit var ovpRiskProducerService: OVPRiskProducerService
 
+  @Autowired
+  lateinit var mstScoreProducerService: MstScoreProducerService
+
   fun riskScoreProducer(riskScoreRequest: RiskScoreRequest): RiskScoreResponse {
     val ogrs3 = ogrs3RiskProducerService.getRiskScore(riskScoreRequest)
     val ovp = ovpRiskProducerService.getRiskScore(riskScoreRequest)
+
+//    val mstInput = MstInput(
+//      riskScoreRequest.version,
+//      riskScoreRequest.gender,
+//      riskScoreRequest.dateOfBirth,
+//      riskScoreRequest.peerGroupInfluences,
+//      riskScoreRequest.attitudesPeerPressure,
+//      riskScoreRequest.attitudesStableBehaviour,
+//      riskScoreRequest.difficultiesCoping,
+//      riskScoreRequest.attitudesTowardsSelf,
+//      riskScoreRequest.impusilvityBehaviour,
+//      riskScoreRequest.temperControl,
+//      ogp.problemSolvingSkills,
+//      ogp.awarenessOfConsequences,
+//      ogp.understandsPeoplesViews
+//    )
+//
+//    val mst = mstScoreProducerService.getMstScore(mstInput)
     return RiskScoreResponse(ogrs3, ovp)
   }
 }

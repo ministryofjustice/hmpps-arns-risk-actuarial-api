@@ -1,9 +1,9 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.mst.MstInput
 
-fun mstInitialValidation(request: RiskScoreRequest): MutableList<ValidationErrorResponse> {
+fun mstInitialValidation(request: MstInput): MutableList<ValidationErrorResponse> {
   val errors = mutableListOf<ValidationErrorResponse>()
 
   val missingFields = mutableListOf<String>()

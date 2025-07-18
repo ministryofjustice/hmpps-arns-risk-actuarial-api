@@ -4,12 +4,12 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import java.time.LocalDate
 
-data class MSTRequestValidated(
+data class MstRequestValidated(
   val version: String,
   val gender: Gender,
   val dateOfBirth: LocalDate,
   val peerGroupInfluences: Boolean,
-  val attitudesPeerPressure: LocalDate,
+  val attitudesPeerPressure: ProblemLevel,
   val attitudesStableBehaviour: ProblemLevel,
   val difficultiesCoping: ProblemLevel,
   val attitudesTowardsSelf: ProblemLevel,
