@@ -18,10 +18,15 @@ class RiskScoreService {
   @Autowired
   lateinit var ogpRiskProducerService: OGPRiskProducerService
 
+  @Autowired
+  lateinit var mstRiskProducerService: MSTRiskProducerService
+
   fun riskScoreProducer(riskScoreRequest: RiskScoreRequest): RiskScoreResponse {
     val ogrs3 = ogrs3RiskProducerService.getRiskScore(riskScoreRequest)
     val ovp = ovpRiskProducerService.getRiskScore(riskScoreRequest)
     val ogp = ogpRiskProducerService.getRiskScore(coalesceForOGP(riskScoreRequest, ogrs3.ogrs3TwoYear))
-    return RiskScoreResponse(ogrs3, ovp, ogp)
+    val mst = mstRiskProducerService.getRiskScore(riskScoreRequest)
+
+    return RiskScoreResponse(ogrs3, ovp, ogp, mst)
   }
 }

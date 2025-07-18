@@ -3,7 +3,8 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPOutput
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.mst.MSTObject
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3Object
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ovp.OVPObject
 import java.time.LocalDate
@@ -12,7 +13,9 @@ fun emptyOVP(): OVPObject = OVPObject("1_0", null, null, null, null)
 
 fun emptyOGRS3(): OGRS3Object = OGRS3Object("1_0", null, null, null, null)
 
-fun emptyOGP(): OGPOutput = OGPOutput("1_0", null, null, null, null)
+fun emptyOGP(): OGPObject = OGPObject("1_0", null, null, null, null)
+
+fun emptyMST(): MSTObject = MSTObject("1_0", null, null, null, null)
 
 object RiskScoreRequestTestConstants {
   val NULL_REQUEST = RiskScoreRequest(version = "1_0")
@@ -88,4 +91,20 @@ fun validOVPRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
   currentPsychiatricTreatmentOrPending = false,
   temperControl = ProblemLevel.NO_PROBLEMS,
   proCriminalAttitudes = ProblemLevel.NO_PROBLEMS,
+)
+
+fun validMSTRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
+  version = "1_0",
+  gender = Gender.MALE,
+  dateOfBirth = LocalDate.now().minusYears(18),
+  peerGroupInfluences = true,
+  attitudesPeerPressure = ProblemLevel.SOME_PROBLEMS,
+  attitudesStableBehaviour = ProblemLevel.SOME_PROBLEMS,
+  difficultiesCoping = ProblemLevel.SOME_PROBLEMS,
+  attitudesTowardsSelf = ProblemLevel.SOME_PROBLEMS,
+  impusilvityBehaviour = ProblemLevel.SOME_PROBLEMS,
+  temperControl = ProblemLevel.SOME_PROBLEMS,
+  problemSolvingSkills = ProblemLevel.SOME_PROBLEMS,
+  awarenessOfConsequences = ProblemLevel.SOME_PROBLEMS,
+  understandsPeoplesViews = ProblemLevel.SOME_PROBLEMS,
 )

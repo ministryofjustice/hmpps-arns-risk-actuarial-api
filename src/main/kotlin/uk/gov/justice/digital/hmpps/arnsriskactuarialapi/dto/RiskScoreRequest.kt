@@ -35,7 +35,7 @@ data class RiskScoreRequest(
 
   // MST props
   val peerGroupInfluences: Boolean? = null,
-  val attitudesPeerPressure: LocalDate? = null,
+  val attitudesPeerPressure: ProblemLevel? = null,
   val attitudesStableBehaviour: ProblemLevel? = null,
   val difficultiesCoping: ProblemLevel? = null,
   val attitudesTowardsSelf: ProblemLevel? = null,
