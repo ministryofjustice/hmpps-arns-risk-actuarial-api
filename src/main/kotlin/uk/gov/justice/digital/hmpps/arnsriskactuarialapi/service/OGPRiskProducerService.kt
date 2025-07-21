@@ -19,7 +19,7 @@ class OGPRiskProducerService : RiskProducer<OGPOutput> {
 
     val validRequest = OGPInputValidated(
       riskScoreRequest.version,
-      riskScoreRequest.ogrs3TwoYear!!,
+      riskScoreRequest.ogrs3TwoYear!!.toInt(),
       riskScoreRequest.currentAccomodation!!,
       riskScoreRequest.employmentStatus!!,
       riskScoreRequest.regularOffendingActivities!!,

@@ -4,7 +4,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 
 data class OGPInputValidated(
   val algorithmVersion: String,
-  val ogrs3TwoYear: Integer,
+  val ogrs3TwoYear: Int,
   val currentAccomodation: Boolean,
   val employmentStatus: Boolean,
   val regularOffendingActivities: ProblemLevel,
