@@ -50,7 +50,7 @@ class RiskScoreServiceTest {
     whenever(ovpRiskProducerService.getRiskScore(request))
       .thenReturn(emptyOVP())
 
-    whenever(ogpRiskProducerService.getRiskScore(request))
+    whenever(ogpRiskProducerService.getRiskScore(request, emptyOGRS3()))
       .thenReturn(emptyOGP())
 
     whenever(mstRiskProducerService.getRiskScore(request))

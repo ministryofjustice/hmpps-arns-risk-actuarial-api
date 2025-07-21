@@ -5,12 +5,13 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPInputValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPObject
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3Object
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.getMissingFieldsValidation
 
 @Service
-class OGPRiskProducerService : RiskProducer<OGPObject> {
+class OGPRiskProducerService : DependentRiskProducer<OGPObject, OGRS3Object> {
 
-  override fun getRiskScore(riskScoreRequest: RiskScoreRequest): OGPObject {
+  fun getRiskScore(riskScoreRequest: RiskScoreRequest): OGPObject {
     val errors = getMissingFieldsValidation(riskScoreRequest, PROPERTIES_TO_ERRORS)
 
     if (!errors.isEmpty()) {
@@ -33,6 +34,11 @@ class OGPRiskProducerService : RiskProducer<OGPObject> {
 
     return getOGPOutput(validRequest, errors)
   }
+
+  override fun getRiskScore(
+    request: RiskScoreRequest,
+    dependency: OGRS3Object,
+  ): OGPObject = this.getRiskScore(coalesceForOGP(request, dependency.ogrs3TwoYear))
 
   companion object {
 

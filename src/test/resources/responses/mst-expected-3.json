@@ -1,0 +1,13 @@
+{
+  "mst": {
+    "algorithmVersion" : "1_0",
+    "maturityScore" : null,
+    "maturityFlag" : null,
+    "isMstApplicable" : null,
+    "validationError" : [ {
+      "type" : "MISSING_INPUT",
+      "message" : "ERR5 - Field is Null",
+      "fields" : [ "Gender", "Date of birth", "Peer group influences", "Attitudes peer pressure", "Attitudes stable behaviour", "Difficulties coping", "Attitudes towards self", "Impulsivity behaviour", "Temper control", "Problem solving skills", "Attitudes towards self", "Aweness of consequences", "Understands peoples views" ]
+    } ]
+  }
+}

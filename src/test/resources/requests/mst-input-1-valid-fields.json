@@ -1,0 +1,15 @@
+{
+  "version": "1_0",
+  "gender": "MALE",
+  "dateOfBirth": "2000-10-15",
+  "peerGroupInfluences": true,
+  "attitudesPeerPressure": "SOME_PROBLEMS",
+  "attitudesStableBehaviour": "SOME_PROBLEMS",
+  "difficultiesCoping": "SOME_PROBLEMS",
+  "attitudesTowardsSelf": "SOME_PROBLEMS",
+  "impusilvityBehaviour": "SOME_PROBLEMS",
+  "problemSolvingSkills": "SOME_PROBLEMS",
+  "awarenessOfConsequences": "NO_PROBLEMS",
+  "understandsPeoplesViews": "NO_PROBLEMS",
+  "temperControl": "SIGNIFICANT_PROBLEMS"
+}
