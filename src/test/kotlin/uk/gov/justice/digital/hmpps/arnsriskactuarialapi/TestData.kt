@@ -3,6 +3,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPOutput
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3Object
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ovp.OVPObject
 import java.time.LocalDate
@@ -10,6 +11,64 @@ import java.time.LocalDate
 fun emptyOVP(): OVPObject = OVPObject("1_0", null, null, null, null)
 
 fun emptyOGRS3(): OGRS3Object = OGRS3Object("1_0", null, null, null, null)
+
+fun emptyOGP(): OGPOutput = OGPOutput("1_0", null, null, null, null)
+
+object RiskScoreRequestTestConstants {
+  val NULL_REQUEST = RiskScoreRequest(version = "1_0")
+  val FULL_OGP_REQUEST = RiskScoreRequest(
+    version = "1_0",
+    ogrs3TwoYear = 22 as Integer?,
+    currentAccomodation = true,
+    employmentStatus = false,
+    regularOffendingActivities = ProblemLevel.NO_PROBLEMS,
+    currentDrugMisuse = ProblemLevel.NO_PROBLEMS,
+    motivationDrug = ProblemLevel.NO_PROBLEMS,
+    problemSolvingSkills = ProblemLevel.NO_PROBLEMS,
+    awarenessOfConsequences = ProblemLevel.NO_PROBLEMS,
+    understandsPeoplesViews = ProblemLevel.NO_PROBLEMS,
+    proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
+  )
+  val ALT_NULL_OGP_REQUEST = RiskScoreRequest(
+    version = "1_0",
+    ogrs3TwoYear = 22 as Integer?,
+    currentAccomodation = null,
+    employmentStatus = false,
+    regularOffendingActivities = null,
+    currentDrugMisuse = ProblemLevel.NO_PROBLEMS,
+    motivationDrug = null,
+    problemSolvingSkills = ProblemLevel.NO_PROBLEMS,
+    awarenessOfConsequences = null,
+    understandsPeoplesViews = ProblemLevel.NO_PROBLEMS,
+    proCriminalAttitudes = null,
+  )
+  val OGP_REQUEST_39 = RiskScoreRequest(
+    version = "1_0",
+    ogrs3TwoYear = 22 as Integer?,
+    currentAccomodation = true,
+    employmentStatus = false,
+    regularOffendingActivities = null,
+    currentDrugMisuse = ProblemLevel.NO_PROBLEMS,
+    motivationDrug = ProblemLevel.NO_PROBLEMS,
+    problemSolvingSkills = ProblemLevel.NO_PROBLEMS,
+    awarenessOfConsequences = ProblemLevel.NO_PROBLEMS,
+    understandsPeoplesViews = ProblemLevel.NO_PROBLEMS,
+    proCriminalAttitudes = null,
+  )
+  val OGP_REQUEST_01569 = RiskScoreRequest(
+    version = "1_0",
+    ogrs3TwoYear = null,
+    currentAccomodation = null,
+    employmentStatus = false,
+    regularOffendingActivities = ProblemLevel.NO_PROBLEMS,
+    currentDrugMisuse = ProblemLevel.NO_PROBLEMS,
+    motivationDrug = null,
+    problemSolvingSkills = null,
+    awarenessOfConsequences = ProblemLevel.NO_PROBLEMS,
+    understandsPeoplesViews = ProblemLevel.NO_PROBLEMS,
+    proCriminalAttitudes = null,
+  )
+}
 
 fun validOVPRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
   version = "1_0",
