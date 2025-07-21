@@ -1,5 +1,6 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -9,7 +10,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.RiskScoreRequestTestCon
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.OGPRiskProducerService.Companion.coalesceForOGP
-import kotlin.test.assertEquals
 
 class OGPRiskProducerServiceTest {
 

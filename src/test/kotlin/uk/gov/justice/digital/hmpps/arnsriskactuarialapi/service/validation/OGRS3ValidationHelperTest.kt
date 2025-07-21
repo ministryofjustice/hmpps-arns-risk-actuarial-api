@@ -8,7 +8,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import java.time.LocalDate
 
-class Ogrs3ValidationHelperTest {
+class OGRS3ValidationHelperTest {
 
   @Test
   fun `getMissingFieldsValidation no errors`() {

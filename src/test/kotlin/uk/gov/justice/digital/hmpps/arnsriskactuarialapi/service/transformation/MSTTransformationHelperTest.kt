@@ -1,0 +1,53 @@
+package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
+
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
+import java.time.LocalDate
+import kotlin.test.assertFalse
+
+class MSTTransformationHelperTest {
+
+  private val today = LocalDate.now()
+
+  @Test
+  fun `calculateAge should return correct age`() {
+    val dob = today.minusYears(30)
+    val result = calculateAge(dob)
+    assertEquals(30, result)
+  }
+
+  @Test
+  fun `getMstApplicable should return true for age limitations`() {
+    val resultLowerLimit = getMstApplicable(Gender.MALE, 18)
+    assertTrue(resultLowerLimit)
+
+    val resultUpperLimit = getMstApplicable(Gender.MALE, 24)
+    assertTrue(resultUpperLimit)
+  }
+
+  @Test
+  fun `getMstApplicable should return false for age and gender limitations`() {
+    val resultLowerLimit = getMstApplicable(Gender.MALE, 17)
+    assertFalse(resultLowerLimit)
+
+    val resultUpperLimit = getMstApplicable(Gender.MALE, 25)
+    assertFalse(resultUpperLimit)
+
+    val resultForFemale = getMstApplicable(Gender.FEMALE, 18)
+    assertFalse(resultForFemale)
+  }
+
+  @Test
+  fun `getMaturityFlag should return true when maturityScore is 10 or more`() {
+    val result = getMaturityFlag(10)
+    assertTrue(result)
+  }
+
+  @Test
+  fun `getMaturityFlag should return false when maturityScore less than 10`() {
+    val result = getMaturityFlag(9)
+    assertFalse(result)
+  }
+}

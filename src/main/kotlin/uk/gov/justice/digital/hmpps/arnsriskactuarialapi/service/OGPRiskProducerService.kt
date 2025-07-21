@@ -4,17 +4,17 @@ import org.springframework.stereotype.Service
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPInputValidated
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPOutput
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.getMissingFieldsValidation
 
 @Service
-class OGPRiskProducerService : RiskProducer<OGPOutput> {
+class OGPRiskProducerService : RiskProducer<OGPObject> {
 
-  override fun getRiskScore(riskScoreRequest: RiskScoreRequest): OGPOutput {
+  override fun getRiskScore(riskScoreRequest: RiskScoreRequest): OGPObject {
     val errors = getMissingFieldsValidation(riskScoreRequest, PROPERTIES_TO_ERRORS)
 
     if (!errors.isEmpty()) {
-      return OGPOutput(riskScoreRequest.version, null, null, null, errors)
+      return OGPObject(riskScoreRequest.version, null, null, null, errors)
     }
 
     val validRequest = OGPInputValidated(
@@ -69,9 +69,9 @@ class OGPRiskProducerService : RiskProducer<OGPOutput> {
     fun getOGPOutput(
       validRequest: OGPInputValidated,
       errors: MutableList<ValidationErrorResponse>,
-    ): OGPOutput {
+    ): OGPObject {
       // TODO
-      return OGPOutput("1_0", null, null, null, null)
+      return OGPObject("1_0", null, null, null, null)
     }
   }
 }

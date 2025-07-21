@@ -9,6 +9,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3Object
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyMST
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOGP
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOVP
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.integration.IntegrationTestBase
@@ -42,7 +43,7 @@ class RiskScoreControllerTest : IntegrationTestBase() {
     )
 
     whenever(riskScoreService.riskScoreProducer(basicRequest))
-      .thenReturn(RiskScoreResponse(ogrs3, emptyOVP(), emptyOGP()))
+      .thenReturn(RiskScoreResponse(ogrs3, emptyOVP(), emptyOGP(), emptyMST()))
 
     webTestClient.post()
       .uri("/risk-scores")
