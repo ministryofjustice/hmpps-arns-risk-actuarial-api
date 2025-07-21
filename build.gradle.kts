@@ -17,6 +17,7 @@ dependencies {
   //  Add fixed versions to override transitive vulnerabilities
   implementation("com.nimbusds:nimbus-jose-jwt:10.3.1")
   implementation("org.apache.commons:commons-lang3:3.18.0")
+  implementation("io.projectreactor.netty:reactor-netty-http:1.2.10")
 
   testImplementation("uk.gov.justice.service.hmpps:hmpps-kotlin-spring-boot-starter-test:1.4.7")
   testImplementation("org.wiremock:wiremock-standalone:3.13.1")
