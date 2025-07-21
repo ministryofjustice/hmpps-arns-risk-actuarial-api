@@ -92,7 +92,7 @@ class MSTScoreProducerServiceTest {
         "Attitudes stable behaviour",
         "Difficulties coping",
         "Attitudes towards self",
-        "Impusilvity behaviour",
+        "Impulsivity behaviour",
         "Temper control",
         "Problem solving skills",
         "Attitudes towards self",

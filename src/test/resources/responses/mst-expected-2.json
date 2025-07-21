@@ -1,0 +1,9 @@
+{
+  "mst": {
+    "algorithmVersion" : "1_0",
+    "maturityScore" : 10,
+    "maturityFlag" : true,
+    "isMstApplicable" : true,
+    "validationError" : [ ]
+  }
+}

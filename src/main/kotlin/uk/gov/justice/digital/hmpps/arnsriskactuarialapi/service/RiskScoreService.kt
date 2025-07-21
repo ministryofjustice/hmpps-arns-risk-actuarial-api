@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreResponse
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.OGPRiskProducerService.Companion.coalesceForOGP
 
 @Service
 class RiskScoreService {
@@ -21,11 +20,11 @@ class RiskScoreService {
   @Autowired
   lateinit var mstRiskProducerService: MSTRiskProducerService
 
-  fun riskScoreProducer(riskScoreRequest: RiskScoreRequest): RiskScoreResponse {
-    val ogrs3 = ogrs3RiskProducerService.getRiskScore(riskScoreRequest)
-    val ovp = ovpRiskProducerService.getRiskScore(riskScoreRequest)
-    val ogp = ogpRiskProducerService.getRiskScore(coalesceForOGP(riskScoreRequest, ogrs3.ogrs3TwoYear))
-    val mst = mstRiskProducerService.getRiskScore(riskScoreRequest)
+  fun riskScoreProducer(riskScoreRequest: RiskScoreRequest): RiskScoreResponse = with(riskScoreRequest) {
+    val ogrs3 = useProducer(ogrs3RiskProducerService, this)
+    val ovp = useProducer(ovpRiskProducerService, this)
+    val ogp = useProducer(ogpRiskProducerService, this, ogrs3)
+    val mst = useProducer(mstRiskProducerService, this)
 
     return RiskScoreResponse(ogrs3, ovp, ogp, mst)
   }
