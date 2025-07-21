@@ -95,7 +95,6 @@ class MSTScoreProducerServiceTest {
         "Impusilvity behaviour",
         "Temper control",
         "Problem solving skills",
-        "Attitudes towards self",
         "Aweness of consequences",
         "Understands peoples views",
       ),

@@ -18,7 +18,6 @@ fun mstInitialValidation(request: RiskScoreRequest): MutableList<ValidationError
   if (request.impusilvityBehaviour == null) missingFields.add("Impusilvity behaviour")
   if (request.temperControl == null) missingFields.add("Temper control")
   if (request.problemSolvingSkills == null) missingFields.add("Problem solving skills")
-  if (request.attitudesTowardsSelf == null) missingFields.add("Attitudes towards self")
   if (request.awarenessOfConsequences == null) missingFields.add("Aweness of consequences")
   if (request.understandsPeoplesViews == null) missingFields.add("Understands peoples views")
 
