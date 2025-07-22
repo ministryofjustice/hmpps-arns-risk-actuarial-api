@@ -13,6 +13,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyMST
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOGP
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOVP
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.integration.IntegrationTestBase
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.omittedPNI
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.RiskScoreService
 import java.time.LocalDate
 
@@ -43,7 +44,7 @@ class RiskScoreControllerTest : IntegrationTestBase() {
     )
 
     whenever(riskScoreService.riskScoreProducer(basicRequest))
-      .thenReturn(RiskScoreResponse(ogrs3, emptyOVP(), emptyOGP(), emptyMST()))
+      .thenReturn(RiskScoreResponse(ogrs3, emptyOVP(), emptyOGP(), emptyMST(), omittedPNI()))
 
     webTestClient.post()
       .uri("/risk-scores")

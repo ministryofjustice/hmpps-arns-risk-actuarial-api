@@ -8,6 +8,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.mst.MSTObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3Object
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ovp.OVPObject
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIObject
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.ProgrammeNeedIdentifier
 import java.time.LocalDate
 
 fun emptyOVP(): OVPObject = OVPObject("1_0", null, null, null, null)
@@ -17,6 +19,8 @@ fun emptyOGRS3(): OGRS3Object = OGRS3Object("1_0", null, null, null, null)
 fun emptyOGP(): OGPObject = OGPObject("1_0", null, null, null, null)
 
 fun emptyMST(): MSTObject = MSTObject("1_0", null, null, null, null)
+
+fun omittedPNI(): PNIObject = PNIObject("1_0", ProgrammeNeedIdentifier.OMISSION, null)
 
 fun emptyContext() = RiskScoreContext()
 
