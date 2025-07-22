@@ -22,13 +22,13 @@ class RiskScoreService {
   @Autowired
   lateinit var mstRiskProducerService: MSTRiskProducerService
 
-  fun riskScoreProducer(riskScoreRequest: RiskScoreRequest): RiskScoreResponse = with(riskScoreRequest) {
-    var context = RiskScoreContext()
-    context = ogrs3RiskProducerService.getRiskScore(this, context)
-    context = ovpRiskProducerService.getRiskScore(this, context)
-    context = ogpRiskProducerService.getRiskScore(this, context)
-    context = mstRiskProducerService.getRiskScore(this, context)
-
-    return context.toRiskScoreResponse()
-  }
+  fun riskScoreProducer(riskScoreRequest: RiskScoreRequest): RiskScoreResponse =
+    listOf(
+      ogrs3RiskProducerService,
+      ovpRiskProducerService,
+      ogpRiskProducerService,
+      mstRiskProducerService
+    ).fold(RiskScoreContext()) { context, service ->
+      service.getRiskScore(riskScoreRequest, context)
+    }.toRiskScoreResponse()
 }
