@@ -34,7 +34,7 @@ class OGPRiskProducerServiceTest {
         RiskScoreRequest(
           version = "1_0",
           ogrs3TwoYear = null,
-          currentAccomodation = true,
+          currentAccommodation = true,
           employmentStatus = false,
           regularOffendingActivities = ProblemLevel.NO_PROBLEMS,
           currentDrugMisuse = ProblemLevel.NO_PROBLEMS,

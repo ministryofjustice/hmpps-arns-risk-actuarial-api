@@ -25,7 +25,7 @@ object RiskScoreRequestTestConstants {
   val FULL_OGP_REQUEST = RiskScoreRequest(
     version = "1_0",
     ogrs3TwoYear = 22 as Integer?,
-    currentAccomodation = true,
+    currentAccommodation = true,
     employmentStatus = false,
     regularOffendingActivities = ProblemLevel.NO_PROBLEMS,
     currentDrugMisuse = ProblemLevel.NO_PROBLEMS,
@@ -38,7 +38,7 @@ object RiskScoreRequestTestConstants {
   val ALT_NULL_OGP_REQUEST = RiskScoreRequest(
     version = "1_0",
     ogrs3TwoYear = 22 as Integer?,
-    currentAccomodation = null,
+    currentAccommodation = null,
     employmentStatus = false,
     regularOffendingActivities = null,
     currentDrugMisuse = ProblemLevel.NO_PROBLEMS,
@@ -51,7 +51,7 @@ object RiskScoreRequestTestConstants {
   val OGP_REQUEST_39 = RiskScoreRequest(
     version = "1_0",
     ogrs3TwoYear = 22 as Integer?,
-    currentAccomodation = true,
+    currentAccommodation = true,
     employmentStatus = false,
     regularOffendingActivities = null,
     currentDrugMisuse = ProblemLevel.NO_PROBLEMS,
@@ -64,7 +64,7 @@ object RiskScoreRequestTestConstants {
   val OGP_REQUEST_01569 = RiskScoreRequest(
     version = "1_0",
     ogrs3TwoYear = null,
-    currentAccomodation = null,
+    currentAccommodation = null,
     employmentStatus = false,
     regularOffendingActivities = ProblemLevel.NO_PROBLEMS,
     currentDrugMisuse = ProblemLevel.NO_PROBLEMS,
@@ -105,7 +105,7 @@ fun validMSTRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
   attitudesStableBehaviour = ProblemLevel.SOME_PROBLEMS,
   difficultiesCoping = ProblemLevel.SOME_PROBLEMS,
   attitudesTowardsSelf = ProblemLevel.SOME_PROBLEMS,
-  impusilvityBehaviour = ProblemLevel.SOME_PROBLEMS,
+  impulsivityBehaviour = ProblemLevel.SOME_PROBLEMS,
   temperControl = ProblemLevel.SOME_PROBLEMS,
   problemSolvingSkills = ProblemLevel.SOME_PROBLEMS,
   awarenessOfConsequences = ProblemLevel.SOME_PROBLEMS,

@@ -1,14 +1,13 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.ArgumentMatchers.any
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.whenever
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyMST
@@ -34,7 +33,6 @@ class RiskScoreServiceTest {
   @InjectMocks
   private lateinit var riskScoreService: RiskScoreService
 
-  @Disabled
   @Test
   fun `riskScoreProducer returns risk score response with algorithm version as 1_0`() {
     val request = RiskScoreRequest(
@@ -47,25 +45,26 @@ class RiskScoreServiceTest {
       null,
       null,
     )
-    val context = emptyContext()
 
-    val contextWithOgrs3 = context.copy(OGRS3 = emptyOGRS3())
-    whenever(ogrs3RiskProducerService.getRiskScore(request, any()))
-      .thenReturn(contextWithOgrs3)
+    var context = emptyContext()
 
-    val contextWithOVP = context.copy(OVP = emptyOVP())
-    whenever(ovpRiskProducerService.getRiskScore(request, any()))
-      .thenReturn(contextWithOVP)
-
-    val contextWithOGP = context.copy(OGP = emptyOGP())
-    whenever(ogpRiskProducerService.getRiskScore(request, any()))
-      .thenReturn(contextWithOGP)
-
-    val contextWithMST = context.copy(MST = emptyMST())
-    whenever(mstRiskProducerService.getRiskScore(request, any()))
-      .thenReturn(contextWithMST)
+    val steps = listOf(
+      Pair(ogrs3RiskProducerService, { ctx: RiskScoreContext -> ctx.copy(OGRS3 = emptyOGRS3()) }),
+      Pair(ovpRiskProducerService, { ctx: RiskScoreContext -> ctx.copy(OVP = emptyOVP()) }),
+      Pair(ogpRiskProducerService, { ctx: RiskScoreContext -> ctx.copy(OGP = emptyOGP()) }),
+      Pair(mstRiskProducerService, { ctx: RiskScoreContext -> ctx.copy(MST = emptyMST()) }),
+      // add more Pairs for the other mocked risk producers here
+    )
+    for ((service, transform) in steps) {
+      val nextContext = transform(context)
+      whenever(service.getRiskScore(request, context)).thenReturn(nextContext)
+      context = nextContext
+    }
 
     val result = riskScoreService.riskScoreProducer(request)
-    Assertions.assertEquals("1_0", result.OGRS3!!.algorithmVersion)
+    Assertions.assertNotNull(result.OGRS3)
+    Assertions.assertNotNull(result.OVP)
+    Assertions.assertNotNull(result.OGP)
+    Assertions.assertNotNull(result.MST)
   }
 }

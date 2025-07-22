@@ -21,7 +21,7 @@ class OGPRiskProducerService : RiskScoreProducer {
     val validRequest = OGPInputValidated(
       riskScoreRequest.version,
       riskScoreRequest.ogrs3TwoYear!!.toInt(),
-      riskScoreRequest.currentAccomodation!!,
+      riskScoreRequest.currentAccommodation!!,
       riskScoreRequest.employmentStatus!!,
       riskScoreRequest.regularOffendingActivities!!,
       riskScoreRequest.currentDrugMisuse!!,
@@ -46,7 +46,7 @@ class OGPRiskProducerService : RiskScoreProducer {
 
     val PROPERTIES_TO_ERRORS = mapOf(
       "ogrs3TwoYear" to "OGRS3 Two Year",
-      "currentAccomodation" to "Current accomodation",
+      "currentAccommodation" to "Current accommodation",
       "employmentStatus" to "Employment status",
       "regularOffendingActivities" to "Regular offending activities",
       "currentDrugMisuse" to "Current drug misuse",
@@ -63,7 +63,7 @@ class OGPRiskProducerService : RiskScoreProducer {
     ): RiskScoreRequest = RiskScoreRequest(
       version = riskScoreRequest.version,
       ogrs3TwoYear = ogrs3TwoYear as Integer?,
-      currentAccomodation = riskScoreRequest.currentAccomodation,
+      currentAccommodation = riskScoreRequest.currentAccommodation,
       employmentStatus = riskScoreRequest.employmentStatus,
       regularOffendingActivities = riskScoreRequest.regularOffendingActivities,
       currentDrugMisuse = riskScoreRequest.currentDrugMisuse,

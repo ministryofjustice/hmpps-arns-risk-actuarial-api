@@ -13,7 +13,7 @@ data class MSTRequestValidated(
   val attitudesStableBehaviour: ProblemLevel,
   val difficultiesCoping: ProblemLevel,
   val attitudesTowardsSelf: ProblemLevel,
-  val impusilvityBehaviour: ProblemLevel,
+  val impulsivityBehaviour: ProblemLevel,
   val temperControl: ProblemLevel,
   val problemSolvingSkills: ProblemLevel,
   val awarenessOfConsequences: ProblemLevel,
