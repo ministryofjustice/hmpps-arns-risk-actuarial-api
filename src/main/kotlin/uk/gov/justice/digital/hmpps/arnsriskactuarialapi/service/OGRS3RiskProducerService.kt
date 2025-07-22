@@ -2,6 +2,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
@@ -22,29 +23,30 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asPercentage
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sanitisePercentage
 
 @Service
-class OGRS3RiskProducerService : RiskProducer<OGRS3Object> {
+class OGRS3RiskProducerService : RiskScoreProducer {
 
   @Autowired
   lateinit var offenceGroupParametersService: OffenceGroupParametersService
 
-  override fun getRiskScore(riskScoreRequest: RiskScoreRequest): OGRS3Object {
-    val errors = ogrs3InitialValidation(riskScoreRequest)
+  override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
+    val errors = ogrs3InitialValidation(request)
 
     if (errors.isNotEmpty()) {
-      return OGRS3Object(riskScoreRequest.version, null, null, null, errors)
+      return context
+        .copy(OGRS3 = OGRS3Object(request.version, null, null, null, errors))
     }
 
     val validRequest = OGRS3RequestValidated(
-      riskScoreRequest.version,
-      riskScoreRequest.gender!!,
-      riskScoreRequest.dateOfBirth!!,
-      riskScoreRequest.dateOfCurrentConviction!!,
-      riskScoreRequest.dateAtStartOfFollowup!!,
-      riskScoreRequest.totalNumberOfSanctions!!.toInt(),
-      riskScoreRequest.ageAtFirstSanction!!.toInt(),
-      riskScoreRequest.currentOffence!!,
+      request.version,
+      request.gender!!,
+      request.dateOfBirth!!,
+      request.dateOfCurrentConviction!!,
+      request.dateAtStartOfFollowup!!,
+      request.totalNumberOfSanctions!!.toInt(),
+      request.ageAtFirstSanction!!.toInt(),
+      request.currentOffence!!,
     )
-    return getOGRS3Object(validRequest, errors)
+    return context.copy(OGRS3 = getOGRS3Object(validRequest, errors))
   }
 
   private fun getOGRS3Object(

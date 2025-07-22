@@ -11,6 +11,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validMSTRiskScoreRequest
 import java.time.LocalDate
 
@@ -23,15 +24,15 @@ class MSTScoreProducerServiceTest {
   @Test
   fun `should return valid MstObject for valid input`() {
     // When
-    val result = mstRiskProducerService.getRiskScore(validMSTRiskScoreRequest())
+    val result = mstRiskProducerService.getRiskScore(validMSTRiskScoreRequest(), emptyContext())
 
     // Then
     assertNotNull(result)
-    assertEquals("1_0", result.algorithmVersion)
-    assertEquals(10, result.maturityScore)
-    assertEquals(true, result.maturityFlag)
-    assertEquals(true, result.isMstApplicable)
-    assertTrue(result.validationError.isNullOrEmpty())
+    assertEquals("1_0", result.MST!!.algorithmVersion)
+    assertEquals(10, result.MST.maturityScore)
+    assertEquals(true, result.MST.maturityFlag)
+    assertEquals(true, result.MST.isMstApplicable)
+    assertTrue(result.MST.validationError.isNullOrEmpty())
   }
 
   @Test
@@ -40,15 +41,15 @@ class MSTScoreProducerServiceTest {
     val maturityFlagFalseInput = validMSTRiskScoreRequest().copy(attitudesTowardsSelf = ProblemLevel.NO_PROBLEMS)
 
     // When
-    val result = mstRiskProducerService.getRiskScore(maturityFlagFalseInput)
+    val result = mstRiskProducerService.getRiskScore(maturityFlagFalseInput, emptyContext())
 
     // Then
     assertNotNull(result)
-    assertEquals("1_0", result.algorithmVersion)
-    assertEquals(9, result.maturityScore)
-    assertEquals(false, result.maturityFlag)
-    assertEquals(true, result.isMstApplicable)
-    assertTrue(result.validationError.isNullOrEmpty())
+    assertEquals("1_0", result.MST!!.algorithmVersion)
+    assertEquals(9, result.MST.maturityScore)
+    assertEquals(false, result.MST.maturityFlag)
+    assertEquals(true, result.MST.isMstApplicable)
+    assertTrue(result.MST.validationError.isNullOrEmpty())
   }
 
   @Test
@@ -71,15 +72,15 @@ class MSTScoreProducerServiceTest {
     )
 
     // When
-    val result = mstRiskProducerService.getRiskScore(input)
+    val result = mstRiskProducerService.getRiskScore(input, emptyContext())
 
     // Then
     assertNotNull(result)
-    assertEquals("1_0", result.algorithmVersion)
-    assertEquals(null, result.maturityScore)
-    assertEquals(null, result.maturityFlag)
-    assertEquals(null, result.isMstApplicable)
-    assertTrue(result.validationError?.size == 1)
+    assertEquals("1_0", result.MST!!.algorithmVersion)
+    assertEquals(null, result.MST.maturityScore)
+    assertEquals(null, result.MST.maturityFlag)
+    assertEquals(null, result.MST.isMstApplicable)
+    assertTrue(result.MST.validationError?.size == 1)
 
     val expectedError = ValidationErrorResponse(
       ValidationErrorType.MISSING_INPUT,
@@ -99,7 +100,7 @@ class MSTScoreProducerServiceTest {
         "Understands peoples views",
       ),
     )
-    val actualError = result.validationError
+    val actualError = result.MST.validationError
 
     assertTrue(actualError?.size == 1)
     assertEquals(expectedError, actualError?.first())
@@ -109,22 +110,22 @@ class MSTScoreProducerServiceTest {
   fun `should return valid MstObject with NOT_APPLICABLE validationError when isMstApplicable is false`() {
     val isMstApplicableFalseInput = validMSTRiskScoreRequest().copy(dateOfBirth = LocalDate.now().minusYears(30))
     // When
-    val result = mstRiskProducerService.getRiskScore(isMstApplicableFalseInput)
+    val result = mstRiskProducerService.getRiskScore(isMstApplicableFalseInput, emptyContext())
 
     // Then
     assertNotNull(result)
-    assertEquals("1_0", result.algorithmVersion)
-    assertEquals(null, result.maturityScore)
-    assertEquals(null, result.maturityFlag)
-    assertEquals(false, result.isMstApplicable)
-    assertTrue(result.validationError?.size == 1)
+    assertEquals("1_0", result.MST!!.algorithmVersion)
+    assertEquals(null, result.MST.maturityScore)
+    assertEquals(null, result.MST.maturityFlag)
+    assertEquals(false, result.MST.isMstApplicable)
+    assertTrue(result.MST.validationError?.size == 1)
 
     val expectedError = ValidationErrorResponse(
       ValidationErrorType.NOT_APPLICABLE,
       "ERR - Does not meet eligibility criteria",
       listOf("Gender", "Date of birth"),
     )
-    val actualError = result.validationError
+    val actualError = result.MST.validationError
 
     assertTrue(actualError?.size == 1)
     assertEquals(expectedError, actualError?.first())

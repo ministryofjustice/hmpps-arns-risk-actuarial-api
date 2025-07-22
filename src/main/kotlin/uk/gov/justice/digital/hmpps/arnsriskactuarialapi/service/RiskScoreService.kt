@@ -2,8 +2,10 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.toRiskScoreResponse
 
 @Service
 class RiskScoreService {
@@ -20,12 +22,12 @@ class RiskScoreService {
   @Autowired
   lateinit var mstRiskProducerService: MSTRiskProducerService
 
-  fun riskScoreProducer(riskScoreRequest: RiskScoreRequest): RiskScoreResponse = with(riskScoreRequest) {
-    val ogrs3 = useProducer(ogrs3RiskProducerService, this)
-    val ovp = useProducer(ovpRiskProducerService, this)
-    val ogp = useProducer(ogpRiskProducerService, this, ogrs3)
-    val mst = useProducer(mstRiskProducerService, this)
-
-    return RiskScoreResponse(ogrs3, ovp, ogp, mst)
-  }
+  fun riskScoreProducer(riskScoreRequest: RiskScoreRequest): RiskScoreResponse = listOf(
+    ogrs3RiskProducerService,
+    ovpRiskProducerService,
+    ogpRiskProducerService,
+    mstRiskProducerService,
+  ).fold(RiskScoreContext()) { context, service ->
+    service.getRiskScore(riskScoreRequest, context)
+  }.toRiskScoreResponse()
 }

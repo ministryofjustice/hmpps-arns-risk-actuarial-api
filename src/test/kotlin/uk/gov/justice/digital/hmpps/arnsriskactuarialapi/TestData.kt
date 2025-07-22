@@ -2,6 +2,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi
 
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.mst.MSTObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPObject
@@ -16,6 +17,8 @@ fun emptyOGRS3(): OGRS3Object = OGRS3Object("1_0", null, null, null, null)
 fun emptyOGP(): OGPObject = OGPObject("1_0", null, null, null, null)
 
 fun emptyMST(): MSTObject = MSTObject("1_0", null, null, null, null)
+
+fun emptyContext() = RiskScoreContext()
 
 object RiskScoreRequestTestConstants {
   val NULL_REQUEST = RiskScoreRequest(version = "1_0")
