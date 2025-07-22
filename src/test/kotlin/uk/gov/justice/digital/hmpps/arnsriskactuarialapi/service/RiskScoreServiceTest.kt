@@ -6,7 +6,9 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
+import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.whenever
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreDependency
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyMST
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOGP
@@ -50,7 +52,7 @@ class RiskScoreServiceTest {
     whenever(ovpRiskProducerService.getRiskScore(request))
       .thenReturn(emptyOVP())
 
-    whenever(ogpRiskProducerService.getRiskScore(request, emptyOGRS3()))
+    whenever(ogpRiskProducerService.getRiskScore(request, RiskScoreDependency().copy(OGRS3 = emptyOGRS3())))
       .thenReturn(emptyOGP())
 
     whenever(mstRiskProducerService.getRiskScore(request))
