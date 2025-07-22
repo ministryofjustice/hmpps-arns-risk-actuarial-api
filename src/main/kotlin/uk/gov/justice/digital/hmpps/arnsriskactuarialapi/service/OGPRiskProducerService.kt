@@ -46,7 +46,7 @@ class OGPRiskProducerService : RiskScoreProducer {
 
     val PROPERTIES_TO_ERRORS = mapOf(
       "ogrs3TwoYear" to "OGRS3 Two Year",
-      "currentAccommodation" to "Current accomodation",
+      "currentAccommodation" to "Current accommodation",
       "employmentStatus" to "Employment status",
       "regularOffendingActivities" to "Regular offending activities",
       "currentDrugMisuse" to "Current drug misuse",
