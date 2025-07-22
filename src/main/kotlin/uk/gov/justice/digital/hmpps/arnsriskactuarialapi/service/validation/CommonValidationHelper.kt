@@ -103,12 +103,10 @@ fun addMissingCriteriaValidation(
   return errors
 }
 
-fun getMissingFieldsValidation(
+fun getMissingPropertiesErrorStrings(
   request: RiskScoreRequest,
   propertyToErrors: Map<String, String>,
-): MutableList<ValidationErrorResponse> {
-  val errors = mutableListOf<ValidationErrorResponse>()
-
+): MutableList<String> {
   val missingFields = propertyToErrors.keys
     .fold(mutableListOf<String>()) { acc, propertyName ->
       acc.apply {
@@ -118,7 +116,7 @@ fun getMissingFieldsValidation(
         }
       }
     }
-  return addMissingFields(missingFields, errors)
+  return missingFields
 }
 
 @Suppress("UNCHECKED_CAST")

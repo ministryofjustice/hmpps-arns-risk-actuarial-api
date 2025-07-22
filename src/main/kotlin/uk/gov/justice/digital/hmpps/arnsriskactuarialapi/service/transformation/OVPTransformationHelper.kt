@@ -3,6 +3,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ovp.OVPRequestValidated
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.ConversionUtils.Companion.booleanToScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asPercentage
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sanitisePercentage
 import kotlin.math.ceil
@@ -10,12 +11,6 @@ import kotlin.math.exp
 
 private const val FIXED_ONE_YEAR_COEFFICIENT = 4.5215
 private const val FIXED_TWO_YEAR_COEFFICIENT = 3.8773
-
-// Boolean to Int Score transformers
-private fun Boolean.booleanToScore(): Int = when (this) {
-  false -> 0
-  true -> 2
-}
 
 private fun Boolean.booleanToInverseScore(): Int = when (this) {
   false -> 4

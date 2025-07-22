@@ -24,7 +24,6 @@ data class RiskScoreRequest(
   val proCriminalAttitudes: ProblemLevel? = null,
 
   // OGP additional properties
-  val ogrs3TwoYear: Integer? = null,
   val regularOffendingActivities: ProblemLevel? = null,
   val currentDrugMisuse: ProblemLevel? = null,
   val motivationDrug: ProblemLevel? = null,

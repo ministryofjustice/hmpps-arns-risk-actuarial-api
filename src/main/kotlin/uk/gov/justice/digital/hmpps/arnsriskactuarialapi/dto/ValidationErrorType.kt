@@ -6,4 +6,5 @@ enum class ValidationErrorType {
   ABOVE_MAX_VALUE,
   NO_MATCHING_INPUT,
   NOT_APPLICABLE,
+  UNEXPECTED_VALUE,
 }
