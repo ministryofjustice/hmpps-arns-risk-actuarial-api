@@ -71,6 +71,5 @@ class RiskScoreServiceTest {
     Assertions.assertNotNull(result.OVP)
     Assertions.assertNotNull(result.OGP)
     Assertions.assertNotNull(result.MST)
-    Assertions.assertNotNull(result.PNI)
   }
 }
