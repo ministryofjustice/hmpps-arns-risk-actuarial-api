@@ -67,5 +67,4 @@ class RiskScoreServiceTest {
     Assertions.assertNotNull(result.OGP)
     Assertions.assertNotNull(result.MST)
   }
-
 }
