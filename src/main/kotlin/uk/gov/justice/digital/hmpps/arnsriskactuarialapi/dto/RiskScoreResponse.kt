@@ -6,8 +6,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3Object
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ovp.OVPObject
 
 data class RiskScoreResponse(
-  val OGRS3: OGRS3Object,
-  val OVP: OVPObject,
-  val OGP: OGPObject,
-  val MST: MSTObject,
+  val OGRS3: OGRS3Object?,
+  val OVP: OVPObject?,
+  val OGP: OGPObject?,
+  val MST: MSTObject?,
 )

@@ -1,6 +1,7 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
 import org.springframework.stereotype.Service
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
@@ -12,18 +13,20 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.mstInitialValidation
 
 @Service
-class MSTRiskProducerService : RiskProducer<MSTObject> {
+class MSTRiskProducerService : RiskScoreProducer {
 
-  override fun getRiskScore(riskScoreRequest: RiskScoreRequest): MSTObject {
+  override fun getRiskScore(riskScoreRequest: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
     val errors = mstInitialValidation(riskScoreRequest)
 
     if (!errors.isEmpty()) {
-      return MSTObject(
-        riskScoreRequest.version,
-        null,
-        null,
-        null,
-        errors,
+      return context.copy(
+        MST = MSTObject(
+          riskScoreRequest.version,
+          null,
+          null,
+          null,
+          errors,
+        ),
       )
     }
 
@@ -43,7 +46,9 @@ class MSTRiskProducerService : RiskProducer<MSTObject> {
       riskScoreRequest.understandsPeoplesViews!!,
     )
 
-    return getMstObject(validRequest, errors)
+    return context.copy(
+      MST = getMstObject(validRequest, errors),
+    )
   }
 
   private fun getMstObject(

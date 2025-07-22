@@ -9,6 +9,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validOVPRiskScoreRequest
 import java.time.LocalDate
 
@@ -25,28 +26,29 @@ class OVPRiskProducerServiceTest {
           totalNumberOfViolentSanctions = 0 as Integer,
           impactOfOffendingOnOthers = false,
         ),
+      emptyContext(),
     )
 
     assertNotNull(result)
-    assertTrue(result.validationError.isNullOrEmpty())
-    assertEquals("1_0", result.algorithmVersion)
-    assertEquals(5, result.provenViolentTypeReoffendingOneYear)
-    assertEquals(9, result.provenViolentTypeReoffendingTwoYear)
-    assertEquals(RiskBand.LOW, result.band)
-    assertTrue(result.validationError.isNullOrEmpty())
+    assertTrue(result.OVP!!.validationError.isNullOrEmpty())
+    assertEquals("1_0", result.OVP.algorithmVersion)
+    assertEquals(5, result.OVP.provenViolentTypeReoffendingOneYear)
+    assertEquals(9, result.OVP.provenViolentTypeReoffendingTwoYear)
+    assertEquals(RiskBand.LOW, result.OVP.band)
+    assertTrue(result.OVP.validationError.isNullOrEmpty())
   }
 
   @Test
   fun `should return valid OVPObject for valid input MEDIUM risk`() {
-    val result = service.getRiskScore(validOVPRiskScoreRequest())
+    val result = service.getRiskScore(validOVPRiskScoreRequest(), emptyContext())
 
     assertNotNull(result)
-    assertTrue(result.validationError.isNullOrEmpty())
-    assertEquals("1_0", result.algorithmVersion)
-    assertEquals(15, result.provenViolentTypeReoffendingOneYear)
-    assertEquals(26, result.provenViolentTypeReoffendingTwoYear)
-    assertEquals(RiskBand.LOW, result.band)
-    assertTrue(result.validationError.isNullOrEmpty())
+    assertTrue(result.OVP!!.validationError.isNullOrEmpty())
+    assertEquals("1_0", result.OVP.algorithmVersion)
+    assertEquals(15, result.OVP.provenViolentTypeReoffendingOneYear)
+    assertEquals(26, result.OVP.provenViolentTypeReoffendingTwoYear)
+    assertEquals(RiskBand.LOW, result.OVP.band)
+    assertTrue(result.OVP.validationError.isNullOrEmpty())
   }
 
   @Test
@@ -61,15 +63,16 @@ class OVPRiskProducerServiceTest {
           alcoholIsCurrentUseAProblem = ProblemLevel.SOME_PROBLEMS,
           alcoholExcessive6Months = ProblemLevel.SOME_PROBLEMS,
         ),
+      emptyContext(),
     )
 
     assertNotNull(result)
-    assertTrue(result.validationError.isNullOrEmpty())
-    assertEquals("1_0", result.algorithmVersion)
-    assertEquals(42, result.provenViolentTypeReoffendingOneYear)
-    assertEquals(58, result.provenViolentTypeReoffendingTwoYear)
-    assertEquals(RiskBand.MEDIUM, result.band)
-    assertTrue(result.validationError.isNullOrEmpty())
+    assertTrue(result.OVP!!.validationError.isNullOrEmpty())
+    assertEquals("1_0", result.OVP.algorithmVersion)
+    assertEquals(42, result.OVP.provenViolentTypeReoffendingOneYear)
+    assertEquals(58, result.OVP.provenViolentTypeReoffendingTwoYear)
+    assertEquals(RiskBand.MEDIUM, result.OVP.band)
+    assertTrue(result.OVP.validationError.isNullOrEmpty())
   }
 
   @Test
@@ -86,7 +89,7 @@ class OVPRiskProducerServiceTest {
       null,
     )
     // When
-    val result = service.getRiskScore(request)
+    val result = service.getRiskScore(request, emptyContext())
 
     val expectedFields = listOf(
       "Gender",
@@ -106,12 +109,12 @@ class OVPRiskProducerServiceTest {
 
     // Then
     assertNotNull(result)
-    assertEquals("1_0", result.algorithmVersion)
-    assertNull(result.provenViolentTypeReoffendingOneYear)
-    assertNull(result.provenViolentTypeReoffendingTwoYear)
-    assertNull(result.band)
-    assertEquals(1, result.validationError?.size)
-    val error = result.validationError?.first()
+    assertEquals("1_0", result.OVP!!.algorithmVersion)
+    assertNull(result.OVP.provenViolentTypeReoffendingOneYear)
+    assertNull(result.OVP.provenViolentTypeReoffendingTwoYear)
+    assertNull(result.OVP.band)
+    assertEquals(1, result.OVP.validationError?.size)
+    val error = result.OVP.validationError?.first()
     assertEquals(ValidationErrorType.MISSING_INPUT, error?.type)
     assertEquals("ERR5 - Field is Null", error?.message)
     assertEquals(expectedFields, error?.fields)
@@ -125,16 +128,17 @@ class OVPRiskProducerServiceTest {
         dateOfBirth = LocalDate.of(2002, 12, 13),
         dateAtStartOfFollowup = LocalDate.of(2000, 12, 13),
       ),
+      emptyContext(),
     )
 
     // Then
     assertNotNull(result)
-    assertEquals("1_0", result.algorithmVersion)
-    assertNull(result.provenViolentTypeReoffendingTwoYear)
-    assertNull(result.provenViolentTypeReoffendingOneYear)
-    assertNull(result.band)
-    assertEquals(1, result.validationError?.size)
-    val error = result.validationError?.first()
+    assertEquals("1_0", result.OVP!!.algorithmVersion)
+    assertNull(result.OVP.provenViolentTypeReoffendingTwoYear)
+    assertNull(result.OVP.provenViolentTypeReoffendingOneYear)
+    assertNull(result.OVP.band)
+    assertEquals(1, result.OVP.validationError?.size)
+    val error = result.OVP.validationError?.first()
     assertEquals(ValidationErrorType.NO_MATCHING_INPUT, error?.type)
     assertEquals("Error: Invalid ageAtStartOfFollowup value: -2", error?.message)
   }

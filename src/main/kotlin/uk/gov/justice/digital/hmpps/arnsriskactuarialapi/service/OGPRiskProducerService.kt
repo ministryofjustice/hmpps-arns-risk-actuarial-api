@@ -1,7 +1,7 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
 import org.springframework.stereotype.Service
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreDependency
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPInputValidated
@@ -9,7 +9,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.getMissingFieldsValidation
 
 @Service
-class OGPRiskProducerService : DependentRiskProducer<OGPObject, RiskScoreDependency> {
+class OGPRiskProducerService : RiskScoreProducer {
 
   fun getRiskScore(riskScoreRequest: RiskScoreRequest): OGPObject {
     val errors = getMissingFieldsValidation(riskScoreRequest, PROPERTIES_TO_ERRORS)
@@ -37,8 +37,10 @@ class OGPRiskProducerService : DependentRiskProducer<OGPObject, RiskScoreDepende
 
   override fun getRiskScore(
     request: RiskScoreRequest,
-    dependency: RiskScoreDependency,
-  ): OGPObject = this.getRiskScore(coalesceForOGP(request, dependency.OGRS3?.ogrs3TwoYear))
+    context: RiskScoreContext,
+  ): RiskScoreContext = context.copy(
+    OGP = this.getRiskScore(coalesceForOGP(request, context.OGRS3?.ogrs3TwoYear)),
+  )
 
   companion object {
 
