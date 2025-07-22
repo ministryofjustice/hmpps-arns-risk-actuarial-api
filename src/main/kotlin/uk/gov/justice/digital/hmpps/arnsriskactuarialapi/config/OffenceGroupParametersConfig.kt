@@ -11,21 +11,24 @@ class OffenseGroupParametersConfig(@Value("\${hmpps.arnsriskactuarial.offensegro
 
   @Bean
   fun offenseGroupParameters(): Map<String, OffenceGroupParameters> {
-    val bufferedReader = this::class.java.getResourceAsStream(resource)!!.bufferedReader()
-    val csvFormat = CSVFormat.Builder.create(CSVFormat.DEFAULT)
-      .setHeader()
-      .setSkipHeaderRecord(true)
-      .setTrim(true)
-      .build()
-    val csvParser = CSVParser(bufferedReader, csvFormat)
-    return csvParser.associate { csvRecord ->
-      "${csvRecord.get(0)}${csvRecord.get(1)}" to
-        OffenceGroupParameters(
-          ogrs3Weighting = csvRecord.get(2).toDoubleOrNull(),
-          rsrOffenceCategory = csvRecord.get(3).toIntOrNull(),
-          rsrCategoryDesc = csvRecord.get(4),
-          opdViolSex = "Y" == csvRecord.get(5),
-        )
+    val inputStream = this::class.java.getResourceAsStream(resource)
+      ?: throw IllegalArgumentException("CSV file not found at path: $resource")
+    inputStream.bufferedReader().use { reader ->
+      val csvFormat = CSVFormat.Builder.create(CSVFormat.DEFAULT)
+        .setHeader()
+        .setSkipHeaderRecord(true)
+        .setTrim(true)
+        .build()
+      val csvParser = CSVParser(reader, csvFormat)
+      return csvParser.associate { csvRecord ->
+        "${csvRecord.get(0)}${csvRecord.get(1)}" to
+          OffenceGroupParameters(
+            ogrs3Weighting = csvRecord.get(2).toDoubleOrNull(),
+            rsrOffenceCategory = csvRecord.get(3).toIntOrNull(),
+            rsrCategoryDesc = csvRecord.get(4),
+            opdViolSex = "Y" == csvRecord.get(5),
+          )
+      }
     }
   }
 }
