@@ -55,7 +55,7 @@ class CommonValidationHelperTest {
 
     val TEST_OGP_PROPERTIES_TO_ERRORS = mapOf(
       "ogrs3TwoYear" to "0",
-      "currentAccomodation" to "1",
+      "currentAccommodation" to "1",
       "employmentStatus" to "2",
       "regularOffendingActivities" to "3",
       "currentDrugMisuse" to "4",

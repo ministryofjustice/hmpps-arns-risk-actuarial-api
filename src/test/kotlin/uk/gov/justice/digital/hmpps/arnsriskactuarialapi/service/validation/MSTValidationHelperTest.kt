@@ -23,7 +23,7 @@ class MSTValidationHelperTest {
       attitudesStableBehaviour = null,
       difficultiesCoping = null,
       attitudesTowardsSelf = null,
-      impusilvityBehaviour = null,
+      impulsivityBehaviour = null,
       temperControl = null,
       problemSolvingSkills = null,
       awarenessOfConsequences = null,
