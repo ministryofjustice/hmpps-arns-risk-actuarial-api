@@ -1,0 +1,9 @@
+{
+  "ogrs3": {
+    "algorithmVersion" : "1",
+    "ogrs3OneYear" : 8,
+    "ogrs3TwoYear" : 16,
+    "band" : "LOW",
+    "validationError" : [ ]
+  }
+}

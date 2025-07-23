@@ -14,14 +14,14 @@ private const val FIXED_CAPAS_VALUE = 1.25112
 private const val FIXED_ONE_YEAR_SCORE_VALUE = 1.40256
 private const val FIXED_TWO_YEAR_SCORE_VALUE = 2.1217
 
-fun getAgeAtCurrentConviction(
+fun getAgeDiffAtOffenceDate(
   dateOfBirth: LocalDate,
-  dateOfCurrentConviction: LocalDate,
+  offenceDate: LocalDate,
 ): Int {
-  if (dateOfCurrentConviction.isBefore(dateOfBirth)) {
+  if (offenceDate.isBefore(dateOfBirth)) {
     throw IllegalArgumentException("Conviction date cannot be before date of birth.")
   }
-  val ageAtCurrentConviction = Period.between(dateOfBirth, dateOfCurrentConviction).years
+  val ageAtCurrentConviction = Period.between(dateOfBirth, offenceDate).years
   return ageAtCurrentConviction
 }
 
