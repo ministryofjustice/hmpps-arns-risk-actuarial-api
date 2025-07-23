@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.junit.jupiter.MockitoExtension
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
@@ -107,8 +108,58 @@ class MSTScoreProducerServiceTest {
   }
 
   @Test
-  fun `should return valid MstObject with NOT_APPLICABLE validationError when isMstApplicable is false`() {
-    val isMstApplicableFalseInput = validMSTRiskScoreRequest().copy(dateOfBirth = LocalDate.now().minusYears(30))
+  fun `should return valid MstObject with NOT_APPLICABLE validationError when out of age range`() {
+    val isMstApplicableFalseInput = validMSTRiskScoreRequest().copy(dateOfBirth = LocalDate.now().minusYears(25))
+    // When
+    val result = mstRiskProducerService.getRiskScore(isMstApplicableFalseInput, emptyContext())
+
+    // Then
+    assertNotNull(result)
+    assertEquals("1_0", result.MST!!.algorithmVersion)
+    assertEquals(null, result.MST.maturityScore)
+    assertEquals(null, result.MST.maturityFlag)
+    assertEquals(false, result.MST.isMstApplicable)
+    assertTrue(result.MST.validationError?.size == 1)
+
+    val expectedError = ValidationErrorResponse(
+      ValidationErrorType.NOT_APPLICABLE,
+      "ERR - Does not meet eligibility criteria",
+      listOf("Date of birth"),
+    )
+    val actualError = result.MST.validationError
+
+    assertTrue(actualError?.size == 1)
+    assertEquals(expectedError, actualError?.first())
+  }
+
+  @Test
+  fun `should return valid MstObject with NOT_APPLICABLE validationError when FEMALE`() {
+    val isMstApplicableFalseInput = validMSTRiskScoreRequest().copy(gender = Gender.FEMALE)
+    // When
+    val result = mstRiskProducerService.getRiskScore(isMstApplicableFalseInput, emptyContext())
+
+    // Then
+    assertNotNull(result)
+    assertEquals("1_0", result.MST!!.algorithmVersion)
+    assertEquals(null, result.MST.maturityScore)
+    assertEquals(null, result.MST.maturityFlag)
+    assertEquals(false, result.MST.isMstApplicable)
+    assertTrue(result.MST.validationError?.size == 1)
+
+    val expectedError = ValidationErrorResponse(
+      ValidationErrorType.NOT_APPLICABLE,
+      "ERR - Does not meet eligibility criteria",
+      listOf("Gender"),
+    )
+    val actualError = result.MST.validationError
+
+    assertTrue(actualError?.size == 1)
+    assertEquals(expectedError, actualError?.first())
+  }
+
+  @Test
+  fun `should return valid MstObject with NOT_APPLICABLE validationError when FEMALE and out of age range`() {
+    val isMstApplicableFalseInput = validMSTRiskScoreRequest().copy(gender = Gender.FEMALE, dateOfBirth = LocalDate.now().minusYears(25))
     // When
     val result = mstRiskProducerService.getRiskScore(isMstApplicableFalseInput, emptyContext())
 

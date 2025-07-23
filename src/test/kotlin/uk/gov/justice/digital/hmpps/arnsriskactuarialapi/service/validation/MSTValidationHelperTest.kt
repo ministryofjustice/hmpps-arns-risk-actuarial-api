@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
@@ -11,8 +12,10 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validMSTRiskScoreReques
 
 class MSTValidationHelperTest {
 
+  private val errors = mutableListOf<ValidationErrorResponse>()
+
   @Test
-  fun `should return list of ValidationErrorResponse with MISSING_INPUT validationError`() {
+  fun `mstInitialValidation should return list of ValidationErrorResponse with MISSING_INPUT validationError`() {
     // Given
     val input = RiskScoreRequest(
       version = "1_0",
@@ -59,8 +62,66 @@ class MSTValidationHelperTest {
   }
 
   @Test
-  fun `should return empty list of ValidationErrorResponse`() {
+  fun `mstInitialValidation should return empty list of ValidationErrorResponse`() {
+    // When
     val result = mstInitialValidation(validMSTRiskScoreRequest())
+
+    // Then
+    assertNotNull(result)
+    assertTrue(result.isEmpty())
+  }
+
+  @Test
+  fun `genderAndAgeValidation should return NOT_APPLICABLE validationError when out of age range`() {
+    // When
+    val result = genderAndAgeValidation(Gender.MALE, 25, errors)
+
+    // Then
+    val expectedError = ValidationErrorResponse(
+      ValidationErrorType.NOT_APPLICABLE,
+      "ERR - Does not meet eligibility criteria",
+      listOf("Date of birth"),
+    )
+
+    assertEquals(expectedError, result.first())
+  }
+
+  @Test
+  fun `genderAndAgeValidation should return NOT_APPLICABLE validationError when FEMALE`() {
+    // When
+    val result = genderAndAgeValidation(Gender.FEMALE, 24, errors)
+
+    // Then
+    val expectedError = ValidationErrorResponse(
+      ValidationErrorType.NOT_APPLICABLE,
+      "ERR - Does not meet eligibility criteria",
+      listOf("Gender"),
+    )
+
+    assertEquals(expectedError, result.first())
+  }
+
+  @Test
+  fun `genderAndAgeValidation should return NOT_APPLICABLE validationError when FEMALE and out of age range`() {
+    // When
+    val result = genderAndAgeValidation(Gender.FEMALE, 25, errors)
+
+    // Then
+    val expectedError = ValidationErrorResponse(
+      ValidationErrorType.NOT_APPLICABLE,
+      "ERR - Does not meet eligibility criteria",
+      listOf("Gender", "Date of birth"),
+    )
+
+    assertEquals(expectedError, result.first())
+  }
+
+  @Test
+  fun `genderAndAgeValidation should return empty list of ValidationErrorResponse`() {
+    // When
+    val result = genderAndAgeValidation(Gender.MALE, 24, errors)
+
+    // Then
     assertNotNull(result)
     assertTrue(result.isEmpty())
   }

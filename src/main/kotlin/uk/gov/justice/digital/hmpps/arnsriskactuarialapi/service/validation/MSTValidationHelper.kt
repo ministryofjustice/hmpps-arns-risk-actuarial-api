@@ -1,5 +1,6 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 
@@ -22,4 +23,13 @@ fun mstInitialValidation(request: RiskScoreRequest): MutableList<ValidationError
   if (request.understandsPeoplesViews == null) missingFields.add("Understands peoples views")
 
   return addMissingFields(missingFields, errors)
+}
+
+fun genderAndAgeValidation(gender: Gender, age: Int, errors: MutableList<ValidationErrorResponse>): MutableList<ValidationErrorResponse> {
+  val criteriaFields = mutableListOf<String>()
+
+  if (gender != Gender.MALE) criteriaFields.add("Gender")
+  if (age !in 18..24) criteriaFields.add("Date of birth")
+
+  return addMissingCriteriaValidation(criteriaFields, errors)
 }

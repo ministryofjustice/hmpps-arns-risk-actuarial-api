@@ -37,6 +37,25 @@ class CommonValidationHelperTest {
     assertEquals(expected, errorResponses)
   }
 
+  @Test
+  fun `addMissingCriteriaValidation no errors present`() {
+    val errorResponses = addMissingCriteriaValidation(mutableListOf(), mutableListOf())
+    assertTrue { errorResponses.isEmpty() }
+  }
+
+  @Test
+  fun `addMissingCriteriaValidation all criteria fields`() {
+    val errorResponses = addMissingCriteriaValidation(mutableListOf("Gender", "Date of birth"), mutableListOf())
+    val expected = listOf(
+      ValidationErrorResponse(
+        ValidationErrorType.NOT_APPLICABLE,
+        "ERR - Does not meet eligibility criteria",
+        listOf("Gender", "Date of birth"),
+      ),
+    )
+    assertEquals(expected, errorResponses)
+  }
+
   @ParameterizedTest()
   @MethodSource("getRiskScoreRequests")
   fun `error responses are found correctly`(request: RiskScoreRequest, expectedFields: List<String>) {

@@ -4,12 +4,12 @@ import org.springframework.stereotype.Service
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.mst.MSTObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.mst.MSTRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.calculateAge
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getMaturityFlag
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getMstApplicable
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.genderAndAgeValidation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.mstInitialValidation
 
 @Service
@@ -81,19 +81,12 @@ class MSTRiskProducerService : RiskScoreProducer {
       )
     }
 
-    errors.add(
-      ValidationErrorResponse(
-        type = ValidationErrorType.NOT_APPLICABLE,
-        message = "ERR - Does not meet eligibility criteria",
-        fields = listOf("Gender", "Date of birth"),
-      ),
-    )
     return MSTObject(
       request.version,
       null,
       null,
       false,
-      errors,
+      genderAndAgeValidation(request.gender, currentAge, errors),
     )
   }
 }
