@@ -39,4 +39,19 @@ data class RiskScoreRequest(
   val difficultiesCoping: ProblemLevel? = null,
   val attitudesTowardsSelf: ProblemLevel? = null,
   val impulsivityBehaviour: ProblemLevel? = null,
+
+  // PNI
+  val community: Boolean? = null,
+  val hasCommittedSexualOffence: Boolean? = null,
+  val riskSexualHarm: Boolean? = null,
+  val sexualPreoccupation: ProblemLevel? = null,
+  val sexualInterestsOffenceRelated: ProblemLevel? = null,
+  val emotionalCongruence: ProblemLevel? = null,
+  val hostileOrientation: ProblemLevel? = null,
+  val relationshipFamilyMembers: ProblemLevel? = null,
+  val previousCloseRelationships: ProblemLevel? = null,
+  val easilyInfluencedByCriminals: ProblemLevel? = null,
+  val controllingBehaviour: ProblemLevel? = null,
+  val saraRiskToPartner: RiskBand? = null,
+  val saraRiskToOthers: RiskBand? = null,
 )

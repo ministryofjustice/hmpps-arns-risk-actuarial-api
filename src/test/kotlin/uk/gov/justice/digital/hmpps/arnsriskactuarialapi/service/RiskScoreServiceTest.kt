@@ -14,6 +14,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyMST
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOGP
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOGRS3
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOVP
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.omittedPNI
 
 @ExtendWith(MockitoExtension::class)
 class RiskScoreServiceTest {
@@ -29,6 +30,9 @@ class RiskScoreServiceTest {
 
   @Mock
   private lateinit var mstRiskProducerService: MSTRiskProducerService
+
+  @Mock
+  private lateinit var pniRiskProducerService: PNIRiskProducerService
 
   @InjectMocks
   private lateinit var riskScoreService: RiskScoreService
@@ -53,6 +57,7 @@ class RiskScoreServiceTest {
       Pair(ovpRiskProducerService, { ctx: RiskScoreContext -> ctx.copy(OVP = emptyOVP()) }),
       Pair(ogpRiskProducerService, { ctx: RiskScoreContext -> ctx.copy(OGP = emptyOGP()) }),
       Pair(mstRiskProducerService, { ctx: RiskScoreContext -> ctx.copy(MST = emptyMST()) }),
+      Pair(pniRiskProducerService, { ctx: RiskScoreContext -> ctx.copy(PNI = omittedPNI()) }),
       // add more Pairs for the other mocked risk producers here
     )
     for ((service, transform) in steps) {
