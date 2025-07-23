@@ -87,6 +87,22 @@ fun addMissingFields(
   return errors
 }
 
+fun addMissingCriteriaValidation(
+  criteriaFields: MutableList<String>,
+  errors: MutableList<ValidationErrorResponse>,
+): MutableList<ValidationErrorResponse> {
+  if (criteriaFields.isNotEmpty()) {
+    errors.add(
+      ValidationErrorResponse(
+        type = ValidationErrorType.NOT_APPLICABLE,
+        message = "ERR - Does not meet eligibility criteria",
+        fields = criteriaFields,
+      ),
+    )
+  }
+  return errors
+}
+
 fun getMissingFieldsValidation(
   request: RiskScoreRequest,
   propertyToErrors: Map<String, String>,
