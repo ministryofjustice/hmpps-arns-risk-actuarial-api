@@ -52,12 +52,6 @@ data class RiskScoreRequest(
   val previousCloseRelationships: ProblemLevel? = null,
   val easilyInfluencedByCriminals: ProblemLevel? = null,
   val controllingBehaviour: ProblemLevel? = null,
-  val ovpRiskBand: RiskBand? = null,
-  val ospDCCRiskBand: RiskBand? = null,
-  val ospIICIRiskBand: RiskBand? = null,
-  val ospRiskBand: RiskBand? = null,
-  val rsrRiskBand: RiskBand? = null,
-  val snsvRiskBand: RiskBand? = null,
   val saraRiskToPartner: RiskBand? = null,
   val saraRiskToOthers: RiskBand? = null,
 )
