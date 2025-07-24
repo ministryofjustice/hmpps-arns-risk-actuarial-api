@@ -16,7 +16,7 @@ fun emptyOVP(): OVPObject = OVPObject("1_0", null, null, null, null)
 
 fun emptyOGRS3(): OGRS3Object = OGRS3Object("1_0", null, null, null, null)
 
-fun emptyOGP(): OGPObject = OGPObject("1_0", null, null, null, null)
+fun emptyOGP(): OGPObject = OGPObject("1_0", null, null, null, null, null)
 
 fun emptyMST(): MSTObject = MSTObject("1_0", null, null, null, null)
 
@@ -28,7 +28,6 @@ object RiskScoreRequestTestConstants {
   val NULL_REQUEST = RiskScoreRequest(version = "1_0")
   val FULL_OGP_REQUEST = RiskScoreRequest(
     version = "1_0",
-    ogrs3TwoYear = 22 as Integer?,
     currentAccommodation = true,
     employmentStatus = false,
     regularOffendingActivities = ProblemLevel.NO_PROBLEMS,
@@ -41,7 +40,6 @@ object RiskScoreRequestTestConstants {
   )
   val ALT_NULL_OGP_REQUEST = RiskScoreRequest(
     version = "1_0",
-    ogrs3TwoYear = 22 as Integer?,
     currentAccommodation = null,
     employmentStatus = false,
     regularOffendingActivities = null,
@@ -54,7 +52,6 @@ object RiskScoreRequestTestConstants {
   )
   val OGP_REQUEST_39 = RiskScoreRequest(
     version = "1_0",
-    ogrs3TwoYear = 22 as Integer?,
     currentAccommodation = true,
     employmentStatus = false,
     regularOffendingActivities = null,
@@ -65,9 +62,8 @@ object RiskScoreRequestTestConstants {
     understandsPeoplesViews = ProblemLevel.NO_PROBLEMS,
     proCriminalAttitudes = null,
   )
-  val OGP_REQUEST_01569 = RiskScoreRequest(
+  val OGP_REQUEST_0458 = RiskScoreRequest(
     version = "1_0",
-    ogrs3TwoYear = null,
     currentAccommodation = null,
     employmentStatus = false,
     regularOffendingActivities = ProblemLevel.NO_PROBLEMS,

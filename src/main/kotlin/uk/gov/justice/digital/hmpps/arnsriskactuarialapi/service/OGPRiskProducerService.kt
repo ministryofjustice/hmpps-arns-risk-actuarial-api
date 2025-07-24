@@ -4,82 +4,143 @@ import org.springframework.stereotype.Service
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPInputValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPObject
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.getMissingFieldsValidation
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.awarenessOfConsequencesOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.bandOGP
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.currentAccommodationOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.currentAccommodationWeighted
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.currentDrugMisuseOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.drugMisuseNonViolentOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.drugMisuseNonViolentWeighted
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.employmentStatusOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.employmentStatusWeighted
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.motivationDrugOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.ogpReoffendingOneYear
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.ogpReoffendingTwoYear
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.ogrs3TwoYearWeighted
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.proCriminalAttitudesOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.proCriminalAttitudesWeighted
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.problemSolvingSkillsOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.regularOffendingActivitiesOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.regularOffendingActivitiesWeighted
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.thinkingAndBehaviourNonViolentOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.thinkingAndBehaviourNonViolentWeighted
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.totalOGPScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.understandsPeoplesViewsOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.OGPValidationHelper.Companion.PROPERTIES_TO_ERRORS
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.OGPValidationHelper.Companion.getMissingFieldsErrorsInContext
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.addMissingFields
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.getMissingPropertiesErrorStrings
 
 @Service
 class OGPRiskProducerService : RiskScoreProducer {
 
-  fun getRiskScore(riskScoreRequest: RiskScoreRequest): OGPObject {
-    val errors = getMissingFieldsValidation(riskScoreRequest, PROPERTIES_TO_ERRORS)
+  override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
+    val errors = ogpInitialValidation(request, context)
 
     if (!errors.isEmpty()) {
-      return OGPObject(riskScoreRequest.version, null, null, null, errors)
+      return context
+        .copy(OGP = OGPObject(request.version, null, null, null, null, errors))
     }
 
-    val validRequest = OGPInputValidated(
-      riskScoreRequest.version,
-      riskScoreRequest.ogrs3TwoYear!!.toInt(),
-      riskScoreRequest.currentAccommodation!!,
-      riskScoreRequest.employmentStatus!!,
-      riskScoreRequest.regularOffendingActivities!!,
-      riskScoreRequest.currentDrugMisuse!!,
-      riskScoreRequest.motivationDrug!!,
-      riskScoreRequest.problemSolvingSkills!!,
-      riskScoreRequest.awarenessOfConsequences!!,
-      riskScoreRequest.understandsPeoplesViews!!,
-      riskScoreRequest.proCriminalAttitudes!!,
+    val validInput = OGPInputValidated(
+      request.version,
+      context.OGRS3?.ogrs3TwoYear!!,
+      request.currentAccommodation!!,
+      request.employmentStatus!!,
+      request.regularOffendingActivities!!,
+      request.currentDrugMisuse!!,
+      request.motivationDrug!!,
+      request.problemSolvingSkills!!,
+      request.awarenessOfConsequences!!,
+      request.understandsPeoplesViews!!,
+      request.proCriminalAttitudes!!,
     )
 
-    return getOGPOutput(validRequest, errors)
+    return context.copy(
+      OGP = getOGPOutput(validInput, errors),
+    )
   }
 
-  override fun getRiskScore(
-    request: RiskScoreRequest,
-    context: RiskScoreContext,
-  ): RiskScoreContext = context.copy(
-    OGP = this.getRiskScore(coalesceForOGP(request, context.OGRS3?.ogrs3TwoYear)),
-  )
-
   companion object {
+    fun getOGPOutput(input: OGPInputValidated, errors: MutableList<ValidationErrorResponse>): OGPObject = runCatching {
+      // Transformation Step
+      val currentAccommodationOffendersScore =
+        currentAccommodationOffendersScore(input.currentAccommodation)
+      val employmentStatusOffendersScore =
+        employmentStatusOffendersScore(input.employmentStatus)
+      val regularOffendingActivitiesOffendersScore =
+        regularOffendingActivitiesOffendersScore(input.regularOffendingActivities)
+      val currentDrugMisuseOffendersScore =
+        currentDrugMisuseOffendersScore(input.currentDrugMisuse)
+      val motivationDrugOffendersScore =
+        motivationDrugOffendersScore(input.motivationDrug)
+      val problemSolvingSkillsOffendersScore =
+        problemSolvingSkillsOffendersScore(input.problemSolvingSkills)
+      val awarenessOfConsequencesOffendersScore =
+        awarenessOfConsequencesOffendersScore(input.awarenessOfConsequences)
+      val understandsPeoplesViewsOffendersScore =
+        understandsPeoplesViewsOffendersScore(input.understandsPeoplesViews)
+      val proCriminalAttitudesOffendersScore =
+        proCriminalAttitudesOffendersScore(input.proCriminalAttitudes)
+      val drugMisuseNonViolentOffendersScore =
+        drugMisuseNonViolentOffendersScore(currentDrugMisuseOffendersScore, motivationDrugOffendersScore)
+      val thinkingAndBehaviourNonViolentOffendersScore =
+        thinkingAndBehaviourNonViolentOffendersScore(
+          problemSolvingSkillsOffendersScore,
+          awarenessOfConsequencesOffendersScore,
+          understandsPeoplesViewsOffendersScore,
+        )
+      // Weighted Scores
+      val ogrs3TwoYearWeighted = ogrs3TwoYearWeighted(input.ogrs3TwoYear)
+      val currentAccommodationWeighted =
+        currentAccommodationWeighted(currentAccommodationOffendersScore)
+      val employmentStatusWeighted =
+        employmentStatusWeighted(employmentStatusOffendersScore)
+      val regularOffendingActivitiesWeighted =
+        regularOffendingActivitiesWeighted(regularOffendingActivitiesOffendersScore)
+      val drugMisuseNonViolentWeighted = drugMisuseNonViolentWeighted(drugMisuseNonViolentOffendersScore)
+      val thinkingAndBehaviourNonViolentWeighted =
+        thinkingAndBehaviourNonViolentWeighted(thinkingAndBehaviourNonViolentOffendersScore)
+      val proCriminalAttitudesWeighted =
+        proCriminalAttitudesWeighted(proCriminalAttitudesOffendersScore)
+      // Final Outputs
+      val totalOGPScore =
+        totalOGPScore(
+          ogrs3TwoYearWeighted,
+          currentAccommodationWeighted,
+          employmentStatusWeighted,
+          regularOffendingActivitiesWeighted,
+          drugMisuseNonViolentWeighted,
+          thinkingAndBehaviourNonViolentWeighted,
+          proCriminalAttitudesWeighted,
+        )
+      val ogpReoffendingOneYear = ogpReoffendingOneYear(totalOGPScore)
+      val ogpReoffendingTwoYear = ogpReoffendingTwoYear(totalOGPScore)
+      val bandOGP = bandOGP(ogpReoffendingTwoYear)
+      // Create OGP Output
+      OGPObject(input.algorithmVersion, ogpReoffendingOneYear, ogpReoffendingTwoYear, bandOGP, totalOGPScore, emptyList())
+    }.getOrElse {
+      errors.add(
+        ValidationErrorResponse(
+          type = ValidationErrorType.UNEXPECTED_VALUE,
+          message = "Error: ${it.message}",
+          fields = null,
+        ),
+      )
+      // Create OGP Output
+      OGPObject(input.algorithmVersion, null, null, null, null, errors)
+    }
 
-    val PROPERTIES_TO_ERRORS = mapOf(
-      "ogrs3TwoYear" to "OGRS3 Two Year",
-      "currentAccommodation" to "Current accommodation",
-      "employmentStatus" to "Employment status",
-      "regularOffendingActivities" to "Regular offending activities",
-      "currentDrugMisuse" to "Current drug misuse",
-      "motivationDrug" to "Motivation drug",
-      "problemSolvingSkills" to "Problem solving skills",
-      "awarenessOfConsequences" to "Awareness of consequences",
-      "understandsPeoplesViews" to "Understands Peoples Views",
-      "proCriminalAttitudes" to "Procriminal attitudes",
-    )
-
-    fun coalesceForOGP(
-      riskScoreRequest: RiskScoreRequest,
-      ogrs3TwoYear: Int?,
-    ): RiskScoreRequest = RiskScoreRequest(
-      version = riskScoreRequest.version,
-      ogrs3TwoYear = ogrs3TwoYear as Integer?,
-      currentAccommodation = riskScoreRequest.currentAccommodation,
-      employmentStatus = riskScoreRequest.employmentStatus,
-      regularOffendingActivities = riskScoreRequest.regularOffendingActivities,
-      currentDrugMisuse = riskScoreRequest.currentDrugMisuse,
-      motivationDrug = riskScoreRequest.motivationDrug,
-      problemSolvingSkills = riskScoreRequest.problemSolvingSkills,
-      awarenessOfConsequences = riskScoreRequest.awarenessOfConsequences,
-      understandsPeoplesViews = riskScoreRequest.understandsPeoplesViews,
-      proCriminalAttitudes = riskScoreRequest.proCriminalAttitudes,
-    )
-
-    fun getOGPOutput(
-      validRequest: OGPInputValidated,
-      errors: MutableList<ValidationErrorResponse>,
-    ): OGPObject {
-      // TODO
-      return OGPObject("1_0", null, null, null, null)
+    fun ogpInitialValidation(
+      request: RiskScoreRequest,
+      context: RiskScoreContext,
+    ): MutableList<ValidationErrorResponse> {
+      val missingFields = getMissingPropertiesErrorStrings(request, PROPERTIES_TO_ERRORS)
+      missingFields.addAll(getMissingFieldsErrorsInContext(context))
+      return addMissingFields(missingFields, mutableListOf())
     }
   }
 }
