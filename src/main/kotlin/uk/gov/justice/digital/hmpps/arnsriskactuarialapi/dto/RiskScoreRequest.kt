@@ -24,7 +24,6 @@ data class RiskScoreRequest(
   val proCriminalAttitudes: ProblemLevel? = null,
 
   // OGP additional properties
-  val ogrs3TwoYear: Integer? = null,
   val regularOffendingActivities: ProblemLevel? = null,
   val currentDrugMisuse: ProblemLevel? = null,
   val motivationDrug: ProblemLevel? = null,
@@ -48,7 +47,7 @@ data class RiskScoreRequest(
   val sexualInterestsOffenceRelated: ProblemLevel? = null,
   val emotionalCongruence: ProblemLevel? = null,
   val hostileOrientation: ProblemLevel? = null,
-  val relationshipFamilyMembers: ProblemLevel? = null,
+  val currentRelationshipFamilyMembers: ProblemLevel? = null,
   val previousCloseRelationships: ProblemLevel? = null,
   val easilyInfluencedByCriminals: ProblemLevel? = null,
   val controllingBehaviour: ProblemLevel? = null,
