@@ -8,7 +8,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResp
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3Object
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3RequestValidated
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getAgeAtCurrentConviction
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getAgeDiffAtOffenceDate
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getAgeGenderScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getConvictionStatusScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getOffenderConvictionStatus
@@ -53,9 +53,14 @@ class OGRS3RiskProducerService : RiskScoreProducer {
     request: OGRS3RequestValidated,
     errors: MutableList<ValidationErrorResponse>,
   ): OGRS3Object = runCatching {
-    val ageAtCurrentConviction = getAgeAtCurrentConviction(
+    val ageAtCurrentConviction = getAgeDiffAtOffenceDate(
       request.dateOfBirth,
       request.dateOfCurrentConviction,
+    )
+
+    val ageAtStartOfFollowup = getAgeDiffAtOffenceDate(
+      request.dateOfBirth,
+      request.dateAtStartOfFollowup,
     )
 
     errors.addAll(validateAge(ageAtCurrentConviction, request.ageAtFirstSanction, errors))
@@ -63,11 +68,11 @@ class OGRS3RiskProducerService : RiskScoreProducer {
     val offenderConvictionStatus = getOffenderConvictionStatus(request.totalNumberOfSanctions)
 
     listOf(
-      getAgeGenderScore(ageAtCurrentConviction, request.gender),
+      getAgeGenderScore(ageAtStartOfFollowup, request.gender),
       getConvictionStatusScore(offenderConvictionStatus),
       getOffenderCopasFinalScore(
         getOffenderCopasScore(
-          request.totalNumberOfSanctions,
+          request.totalNumberOfSanctions - 1,
           ageAtCurrentConviction,
           request.ageAtFirstSanction,
         ),

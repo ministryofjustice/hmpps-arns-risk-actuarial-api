@@ -20,26 +20,26 @@ class OGRS3TransformationHelperTest {
   inner class AgeTest {
 
     @Test
-    fun `getAgeAtCurrentConviction age should be greater than min value`() {
+    fun `getAgeDiffAtOffenceDate age should be greater than min value`() {
       val dob = today.minusYears(10)
-      val result = getAgeAtCurrentConviction(dob, today)
+      val result = getAgeDiffAtOffenceDate(dob, today)
 
       assertEquals(10, result)
     }
 
     @Test
-    fun `getAgeAtCurrentConviction should round down months`() {
+    fun `getAgeDiffAtOffenceDate should round down months`() {
       val dob = today.minusYears(10).minusMonths(3)
-      val result = getAgeAtCurrentConviction(dob, today)
+      val result = getAgeDiffAtOffenceDate(dob, today)
       assertEquals(10, result)
     }
 
     @Test
-    fun `getAgeAtCurrentConviction null dateOfBirth should return error`() {
+    fun `getAgeDiffAtOffenceDate null dateOfBirth should return error`() {
       val result = runCatching {
-        getAgeAtCurrentConviction(
+        getAgeDiffAtOffenceDate(
           dateOfBirth = LocalDate.parse(null),
-          dateOfCurrentConviction = today,
+          offenceDate = today,
         )
       }
       assertTrue(result.isFailure)

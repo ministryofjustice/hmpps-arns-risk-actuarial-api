@@ -27,19 +27,56 @@ class OGRS3RiskProducerServiceTest {
   lateinit var ogrs3RiskProducerService: OGRS3RiskProducerService
 
   @Test
-  fun `should return valid OGRS3Object for valid input`() {
+  fun `should return valid OGRS3Object for valid input ACT-62 scenario 1`() {
     // Given
-    whenever(offenceGroupParametersService.getOGRS3Weighting("05110")).thenReturn(2.0)
+    whenever(offenceGroupParametersService.getOGRS3Weighting("02700")).thenReturn(0.7606)
 
     // When
-    val result = ogrs3RiskProducerService.getRiskScore(validRiskScoreRequest(), emptyContext())
+    val result = ogrs3RiskProducerService.getRiskScore(
+      validRiskScoreRequest().copy(
+        dateOfBirth = LocalDate.of(1965, 12, 7),
+        dateOfCurrentConviction = LocalDate.of(2025, 5, 13),
+        dateAtStartOfFollowup = LocalDate.of(2026, 12, 6),
+        totalNumberOfSanctions = Integer.valueOf(2) as Integer?,
+        ageAtFirstSanction = Integer.valueOf(47) as Integer?,
+        currentOffence = "02700",
+      ),
+      emptyContext(),
+    )
 
     // Then
     assertNotNull(result)
     assertEquals("1_0", result.OGRS3!!.algorithmVersion)
-    assertEquals(64, result.OGRS3.ogrs3OneYear)
-    assertEquals(79, result.OGRS3.ogrs3TwoYear)
-    assertEquals(RiskBand.HIGH, result.OGRS3.band)
+    assertEquals(8, result.OGRS3.ogrs3OneYear)
+    assertEquals(16, result.OGRS3.ogrs3TwoYear)
+    assertEquals(RiskBand.LOW, result.OGRS3.band)
+    assertTrue(result.OGRS3.validationError.isNullOrEmpty())
+  }
+
+  @Test
+  fun `should return valid OGRS3Object for valid input ACT-62 scenario 2`() {
+    // Given
+    whenever(offenceGroupParametersService.getOGRS3Weighting("11618")).thenReturn(0.1599)
+
+    // When
+    val result = ogrs3RiskProducerService.getRiskScore(
+      validRiskScoreRequest().copy(
+        dateOfBirth = LocalDate.of(1991, 7, 17),
+        dateOfCurrentConviction = LocalDate.of(2021, 8, 5),
+        dateAtStartOfFollowup = LocalDate.of(2021, 12, 12),
+        totalNumberOfSanctions = Integer.valueOf(2) as Integer?,
+        ageAtFirstSanction = Integer.valueOf(21) as Integer?,
+        currentOffence = "11618",
+      ),
+      emptyContext(),
+    )
+
+    // Then
+    assertNotNull(result)
+    assertEquals("1_0", result.OGRS3!!.algorithmVersion)
+    assertEquals(11, result.OGRS3.ogrs3OneYear)
+    assertEquals(20, result.OGRS3.ogrs3TwoYear)
+    assertEquals(RiskBand.LOW, result.OGRS3.band)
     assertTrue(result.OGRS3.validationError.isNullOrEmpty())
   }
 
