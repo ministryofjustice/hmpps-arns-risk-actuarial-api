@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validOVPRiskScoreRequest
@@ -20,7 +21,7 @@ class OVPValidationHelperTest {
   @Test
   fun `getMissingFieldsValidation missing field error with all field populated`() {
     val request = RiskScoreRequest(
-      "1_0",
+      RiskScoreVersion.V1_0,
       null,
       null,
       null,

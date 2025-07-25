@@ -15,7 +15,7 @@ class PNIRiskProducerService : RiskScoreProducer {
     // TODO
     return context.copy(
       PNI =
-      PNIObject(request.version, ProgrammeNeedIdentifier.OMISSION, null),
+      PNIObject(ProgrammeNeedIdentifier.OMISSION, null),
     )
   }
 }

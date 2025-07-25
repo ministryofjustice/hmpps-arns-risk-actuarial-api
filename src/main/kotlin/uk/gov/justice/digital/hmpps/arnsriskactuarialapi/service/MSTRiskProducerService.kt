@@ -15,13 +15,12 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.mstI
 @Service
 class MSTRiskProducerService : RiskScoreProducer {
 
-  override fun getRiskScore(riskScoreRequest: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
-    val errors = mstInitialValidation(riskScoreRequest)
+  override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
+    val errors = mstInitialValidation(request)
 
     if (!errors.isEmpty()) {
       return context.copy(
         MST = MSTObject(
-          riskScoreRequest.version,
           null,
           null,
           null,
@@ -31,19 +30,18 @@ class MSTRiskProducerService : RiskScoreProducer {
     }
 
     val validRequest = MSTRequestValidated(
-      riskScoreRequest.version,
-      riskScoreRequest.gender!!,
-      riskScoreRequest.dateOfBirth!!,
-      riskScoreRequest.peerGroupInfluences!!,
-      riskScoreRequest.attitudesPeerPressure!!,
-      riskScoreRequest.attitudesStableBehaviour!!,
-      riskScoreRequest.difficultiesCoping!!,
-      riskScoreRequest.attitudesTowardsSelf!!,
-      riskScoreRequest.impulsivityBehaviour!!,
-      riskScoreRequest.temperControl!!,
-      riskScoreRequest.problemSolvingSkills!!,
-      riskScoreRequest.awarenessOfConsequences!!,
-      riskScoreRequest.understandsPeoplesViews!!,
+      request.gender!!,
+      request.dateOfBirth!!,
+      request.peerGroupInfluences!!,
+      request.attitudesPeerPressure!!,
+      request.attitudesStableBehaviour!!,
+      request.difficultiesCoping!!,
+      request.attitudesTowardsSelf!!,
+      request.impulsivityBehaviour!!,
+      request.temperControl!!,
+      request.problemSolvingSkills!!,
+      request.awarenessOfConsequences!!,
+      request.understandsPeoplesViews!!,
     )
 
     return context.copy(
@@ -73,7 +71,6 @@ class MSTRiskProducerService : RiskScoreProducer {
       ).sum()
 
       return MSTObject(
-        request.version,
         maturityScore,
         getMaturityFlag(maturityScore),
         true,
@@ -82,7 +79,6 @@ class MSTRiskProducerService : RiskScoreProducer {
     }
 
     return MSTObject(
-      request.version,
       null,
       null,
       false,

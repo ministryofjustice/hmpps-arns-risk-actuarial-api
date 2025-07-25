@@ -33,11 +33,10 @@ class OGRS3RiskProducerService : RiskScoreProducer {
 
     if (errors.isNotEmpty()) {
       return context
-        .copy(OGRS3 = OGRS3Object(request.version, null, null, null, errors))
+        .copy(OGRS3 = OGRS3Object(null, null, null, errors))
     }
 
     val validRequest = OGRS3RequestValidated(
-      request.version,
       request.gender!!,
       request.dateOfBirth!!,
       request.dateOfCurrentConviction!!,
@@ -84,7 +83,7 @@ class OGRS3RiskProducerService : RiskScoreProducer {
         val twoYear = getOgrs3TwoYear(totalScore).asPercentage().sanitisePercentage()
         val riskBand = getRiskBand(twoYear)
 
-        OGRS3Object(request.version, oneYear, twoYear, riskBand, emptyList())
+        OGRS3Object(oneYear, twoYear, riskBand, emptyList())
       }
   }.getOrElse {
     errors.add(
@@ -95,6 +94,6 @@ class OGRS3RiskProducerService : RiskScoreProducer {
       ),
     )
 
-    OGRS3Object(request.version, null, null, null, errors)
+    OGRS3Object(null, null, null, errors)
   }
 }

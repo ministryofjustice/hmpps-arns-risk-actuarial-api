@@ -1,6 +1,5 @@
 {
   "ogp": {
-    "algorithmVersion": "1",
     "ogpReoffendingOneYear": 15,
     "ogpReoffendingTwoYear": 24,
     "bandOGP": "LOW",

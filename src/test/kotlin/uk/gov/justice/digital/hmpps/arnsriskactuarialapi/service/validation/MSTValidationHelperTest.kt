@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validMSTRiskScoreRequest
@@ -18,7 +19,7 @@ class MSTValidationHelperTest {
   fun `mstInitialValidation should return list of ValidationErrorResponse with MISSING_INPUT validationError`() {
     // Given
     val input = RiskScoreRequest(
-      version = "1_0",
+      version = RiskScoreVersion.V1_0,
       gender = null,
       dateOfBirth = null,
       peerGroupInfluences = null,
