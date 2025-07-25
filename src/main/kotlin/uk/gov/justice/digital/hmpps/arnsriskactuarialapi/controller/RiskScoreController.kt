@@ -10,7 +10,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.RiskScoreService
 
 @RestController
-@RequestMapping("/risk-scores")
+@RequestMapping("/risk-scores/v1")
 class RiskScoreController(private val riskScoreService: RiskScoreService) {
 
   @PostMapping

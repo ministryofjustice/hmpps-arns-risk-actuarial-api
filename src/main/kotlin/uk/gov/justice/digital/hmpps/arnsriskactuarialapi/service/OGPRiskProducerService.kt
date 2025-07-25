@@ -1,6 +1,7 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
 import org.springframework.stereotype.Service
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.OGPVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
@@ -37,16 +38,16 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.getM
 @Service
 class OGPRiskProducerService : RiskScoreProducer {
 
-  override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
+  fun getRiskScore(riskScoreRequest: RiskScoreRequest): OGPObject {
+    val algorithmVersion = riskScoreRequest.minorVersion.ogpVersion
     val errors = ogpInitialValidation(request, context)
 
     if (!errors.isEmpty()) {
       return context
-        .copy(OGP = OGPObject(request.version, null, null, null, null, errors))
+        .copy(OGP = OGPObject(algorithmVersion, null, null, null, null, errors))
     }
 
     val validInput = OGPInputValidated(
-      request.version,
       context.OGRS3?.ogrs3TwoYear!!,
       request.currentAccommodation!!,
       request.employmentStatus!!,
@@ -60,7 +61,7 @@ class OGPRiskProducerService : RiskScoreProducer {
     )
 
     return context.copy(
-      OGP = getOGPOutput(validInput, errors),
+      OGP = getOGPOutput(validInput, algorithmVersion, errors),
     )
   }
 

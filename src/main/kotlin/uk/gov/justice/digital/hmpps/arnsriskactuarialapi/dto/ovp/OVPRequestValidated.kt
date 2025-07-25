@@ -5,7 +5,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import java.time.LocalDate
 
 data class OVPRequestValidated(
-  val version: String,
   val totalNumberOfSanctions: Int,
   val totalNumberOfViolentSanctions: Int,
   val dateAtStartOfFollowup: LocalDate,

@@ -3,7 +3,6 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 
 data class OGPInputValidated(
-  val algorithmVersion: String,
   val ogrs3TwoYear: Int,
   val currentAccommodation: Boolean,
   val employmentStatus: Boolean,

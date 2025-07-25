@@ -3,7 +3,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto
 import java.time.LocalDate
 
 data class RiskScoreRequest(
-  val version: String,
+  val minorVersion: RiskScoreVersion1 = RiskScoreVersion1.getLatestVersion(),
   val gender: Gender? = null,
   val dateOfBirth: LocalDate? = null,
   val dateOfCurrentConviction: LocalDate? = null,

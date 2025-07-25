@@ -1,6 +1,7 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
 import org.springframework.stereotype.Service
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.MSTVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
@@ -15,13 +16,14 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.mstI
 @Service
 class MSTRiskProducerService : RiskScoreProducer {
 
-  override fun getRiskScore(riskScoreRequest: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
-    val errors = mstInitialValidation(riskScoreRequest)
+  override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
+    val algorithmVersion = request.minorVersion.mstVersion
+    val errors = mstInitialValidation(request)
 
     if (!errors.isEmpty()) {
       return context.copy(
         MST = MSTObject(
-          riskScoreRequest.version,
+          algorithmVersion,
           null,
           null,
           null,
@@ -31,28 +33,28 @@ class MSTRiskProducerService : RiskScoreProducer {
     }
 
     val validRequest = MSTRequestValidated(
-      riskScoreRequest.version,
-      riskScoreRequest.gender!!,
-      riskScoreRequest.dateOfBirth!!,
-      riskScoreRequest.peerGroupInfluences!!,
-      riskScoreRequest.attitudesPeerPressure!!,
-      riskScoreRequest.attitudesStableBehaviour!!,
-      riskScoreRequest.difficultiesCoping!!,
-      riskScoreRequest.attitudesTowardsSelf!!,
-      riskScoreRequest.impulsivityBehaviour!!,
-      riskScoreRequest.temperControl!!,
-      riskScoreRequest.problemSolvingSkills!!,
-      riskScoreRequest.awarenessOfConsequences!!,
-      riskScoreRequest.understandsPeoplesViews!!,
+      request.gender!!,
+      request.dateOfBirth!!,
+      request.peerGroupInfluences!!,
+      request.attitudesPeerPressure!!,
+      request.attitudesStableBehaviour!!,
+      request.difficultiesCoping!!,
+      request.attitudesTowardsSelf!!,
+      request.impulsivityBehaviour!!,
+      request.temperControl!!,
+      request.problemSolvingSkills!!,
+      request.awarenessOfConsequences!!,
+      request.understandsPeoplesViews!!,
     )
 
     return context.copy(
-      MST = getMstObject(validRequest, errors),
+      MST = getMstObject(validRequest, algorithmVersion, errors),
     )
   }
 
   private fun getMstObject(
     request: MSTRequestValidated,
+    algorithmVersion: MSTVersion,
     errors: MutableList<ValidationErrorResponse>,
   ): MSTObject {
     val currentAge = calculateAge(request.dateOfBirth)
@@ -73,7 +75,7 @@ class MSTRiskProducerService : RiskScoreProducer {
       ).sum()
 
       return MSTObject(
-        request.version,
+        algorithmVersion,
         maturityScore,
         getMaturityFlag(maturityScore),
         true,
@@ -82,7 +84,7 @@ class MSTRiskProducerService : RiskScoreProducer {
     }
 
     return MSTObject(
-      request.version,
+      algorithmVersion,
       null,
       null,
       false,
