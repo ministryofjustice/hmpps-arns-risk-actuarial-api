@@ -39,7 +39,7 @@ class PNIRiskProducerServiceTest {
   fun `should calculate HIGH PNI with a valid request`() {
     val context = emptyContext().copy(
       OGRS3 = highOgrs2(),
-      OVP = highOvp()
+      OVP = highOvp(),
     )
     val request = validPNIRiskScoreRequest().copy(
       sexualPreoccupation = ProblemLevel.SIGNIFICANT_PROBLEMS,
@@ -106,7 +106,7 @@ class PNIRiskProducerServiceTest {
       val request = pniRequest().copy(
         custody = true,
         ogrs3TwoYear = 80,
-        ovp = 65
+        ovp = 65,
       )
       val result = service.isHighIntensity(request, NeedScore.MEDIUM, RiskBand.MEDIUM)
       assertTrue(result)
@@ -117,7 +117,7 @@ class PNIRiskProducerServiceTest {
       val request = pniRequest().copy(
         custody = false,
         ogrs3TwoYear = 80,
-        ovp = 65
+        ovp = 65,
       )
       val result = service.isHighIntensity(request, NeedScore.HIGH, RiskBand.HIGH)
       assertFalse(result)
@@ -135,7 +135,7 @@ class PNIRiskProducerServiceTest {
       val request = pniRequest().copy(
         custody = true,
         ogrs3TwoYear = 80,
-        saraRiskToPartner = RiskBand.HIGH
+        saraRiskToPartner = RiskBand.HIGH,
       )
       val result = service.isHighIntensity(request, NeedScore.MEDIUM, RiskBand.MEDIUM)
       assertTrue(result)
@@ -147,7 +147,7 @@ class PNIRiskProducerServiceTest {
         community = true,
         custody = false,
         ogrs3TwoYear = 80,
-        ovp = 65
+        ovp = 65,
       )
       val result = service.isModerateIntensity(request, NeedScore.MEDIUM, RiskBand.MEDIUM)
       assertTrue(result)
@@ -157,7 +157,7 @@ class PNIRiskProducerServiceTest {
     fun `should return true for moderate intensity with high sara`() {
       val request = pniRequest().copy(
         community = true,
-        saraRiskToOthers = RiskBand.HIGH
+        saraRiskToOthers = RiskBand.HIGH,
       )
       val result = service.isModerateIntensity(request, NeedScore.MEDIUM, RiskBand.MEDIUM)
       assertTrue(result)
@@ -178,7 +178,6 @@ class PNIRiskProducerServiceTest {
     }
   }
 
-
   @Nested
   inner class OverallRiskTest {
     @Test
@@ -186,6 +185,7 @@ class PNIRiskProducerServiceTest {
       val result = service.isHighRisk(pniRequest().copy(custody = true, ogrs3TwoYear = 80))
       assertTrue(result)
     }
+
     @Test
     fun `isHighRisk returns true when ovp is high`() {
       val result = service.isHighRisk(pniRequest().copy(ovp = 65))
@@ -230,13 +230,13 @@ class PNIRiskProducerServiceTest {
 
     @Test
     fun `isHighRisk returns false when all risk factors are low or null`() {
-      val result = service.isHighRisk(pniRequest().copy(custody = false, ogrs3TwoYear =40, ovp = 10, rsr = 1))
+      val result = service.isHighRisk(pniRequest().copy(custody = false, ogrs3TwoYear = 40, ovp = 10, rsr = 1))
       assertFalse(result)
     }
 
     @Test
     fun `isMediumRisk returns true for ogrs3 medium`() {
-      val result = service.isMediumRisk(pniRequest().copy(ogrs3TwoYear =60))
+      val result = service.isMediumRisk(pniRequest().copy(ogrs3TwoYear = 60))
       assertTrue(result)
     }
 

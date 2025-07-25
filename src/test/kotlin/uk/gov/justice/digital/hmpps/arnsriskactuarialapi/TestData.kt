@@ -41,14 +41,12 @@ fun highOgrs2() = OGRS3Object(
   emptyList(),
 )
 
-
 fun highOvp() = OVPObject(
   77,
   88,
   RiskBand.VERY_HIGH,
   emptyList(),
 )
-
 
 object RiskScoreRequestTestConstants {
   val NULL_REQUEST = RiskScoreRequest(version = RiskScoreVersion.V1_0)
