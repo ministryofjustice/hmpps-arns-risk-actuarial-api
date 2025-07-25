@@ -42,11 +42,10 @@ class OGPRiskProducerService : RiskScoreProducer {
 
     if (!errors.isEmpty()) {
       return context
-        .copy(OGP = OGPObject(request.version, null, null, null, null, errors))
+        .copy(OGP = OGPObject(null, null, null, null, errors))
     }
 
     val validInput = OGPInputValidated(
-      request.version,
       context.OGRS3?.ogrs3TwoYear!!,
       request.currentAccommodation!!,
       request.employmentStatus!!,
@@ -121,7 +120,7 @@ class OGPRiskProducerService : RiskScoreProducer {
       val ogpReoffendingTwoYear = ogpReoffendingTwoYear(totalOGPScore)
       val bandOGP = bandOGP(ogpReoffendingTwoYear)
       // Create OGP Output
-      OGPObject(input.algorithmVersion, ogpReoffendingOneYear, ogpReoffendingTwoYear, bandOGP, totalOGPScore, emptyList())
+      OGPObject(ogpReoffendingOneYear, ogpReoffendingTwoYear, bandOGP, totalOGPScore, emptyList())
     }.getOrElse {
       errors.add(
         ValidationErrorResponse(
@@ -131,7 +130,7 @@ class OGPRiskProducerService : RiskScoreProducer {
         ),
       )
       // Create OGP Output
-      OGPObject(input.algorithmVersion, null, null, null, null, errors)
+      OGPObject(null, null, null, null, errors)
     }
 
     fun ogpInitialValidation(

@@ -4,6 +4,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.mst.MSTObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3Object
@@ -12,22 +13,22 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.ProgrammeNeedIdentifier
 import java.time.LocalDate
 
-fun emptyOVP(): OVPObject = OVPObject("1_0", null, null, null, null)
+fun emptyOVP(): OVPObject = OVPObject(null, null, null, null)
 
-fun emptyOGRS3(): OGRS3Object = OGRS3Object("1_0", null, null, null, null)
+fun emptyOGRS3(): OGRS3Object = OGRS3Object(null, null, null, null)
 
-fun emptyOGP(): OGPObject = OGPObject("1_0", null, null, null, null, null)
+fun emptyOGP(): OGPObject = OGPObject(null, null, null, null, null)
 
-fun emptyMST(): MSTObject = MSTObject("1_0", null, null, null, null)
+fun emptyMST(): MSTObject = MSTObject(null, null, null, null)
 
-fun omittedPNI(): PNIObject = PNIObject("1_0", ProgrammeNeedIdentifier.OMISSION, null)
+fun omittedPNI(): PNIObject = PNIObject(ProgrammeNeedIdentifier.OMISSION, null)
 
-fun emptyContext() = RiskScoreContext()
+fun emptyContext() = RiskScoreContext(version = RiskScoreVersion.V1_0)
 
 object RiskScoreRequestTestConstants {
-  val NULL_REQUEST = RiskScoreRequest(version = "1_0")
+  val NULL_REQUEST = RiskScoreRequest(version = RiskScoreVersion.V1_0)
   val FULL_OGP_REQUEST = RiskScoreRequest(
-    version = "1_0",
+    version = RiskScoreVersion.V1_0,
     currentAccommodation = true,
     employmentStatus = false,
     regularOffendingActivities = ProblemLevel.NO_PROBLEMS,
@@ -39,7 +40,7 @@ object RiskScoreRequestTestConstants {
     proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
   )
   val ALT_NULL_OGP_REQUEST = RiskScoreRequest(
-    version = "1_0",
+    version = RiskScoreVersion.V1_0,
     currentAccommodation = null,
     employmentStatus = false,
     regularOffendingActivities = null,
@@ -51,7 +52,7 @@ object RiskScoreRequestTestConstants {
     proCriminalAttitudes = null,
   )
   val OGP_REQUEST_39 = RiskScoreRequest(
-    version = "1_0",
+    version = RiskScoreVersion.V1_0,
     currentAccommodation = true,
     employmentStatus = false,
     regularOffendingActivities = null,
@@ -63,7 +64,7 @@ object RiskScoreRequestTestConstants {
     proCriminalAttitudes = null,
   )
   val OGP_REQUEST_0458 = RiskScoreRequest(
-    version = "1_0",
+    version = RiskScoreVersion.V1_0,
     currentAccommodation = null,
     employmentStatus = false,
     regularOffendingActivities = ProblemLevel.NO_PROBLEMS,
@@ -77,7 +78,7 @@ object RiskScoreRequestTestConstants {
 }
 
 fun validOVPRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
-  version = "1_0",
+  version = RiskScoreVersion.V1_0,
   gender = Gender.MALE,
   dateOfBirth = LocalDate.of(1964, 10, 15),
   dateOfCurrentConviction = LocalDate.of(2014, 12, 13),
@@ -97,7 +98,7 @@ fun validOVPRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
 )
 
 fun validMSTRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
-  version = "1_0",
+  version = RiskScoreVersion.V1_0,
   gender = Gender.MALE,
   dateOfBirth = LocalDate.now().minusYears(18),
   peerGroupInfluences = true,

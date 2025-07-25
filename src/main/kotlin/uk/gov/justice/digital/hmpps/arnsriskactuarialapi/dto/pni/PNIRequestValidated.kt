@@ -5,7 +5,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 
 data class PNIRequestValidated(
-  val version: String,
   val gender: Gender,
   val community: Boolean,
   val hasCommittedSexualOffence: Boolean?,

@@ -32,11 +32,10 @@ class OVPRiskProducerService : RiskScoreProducer {
     val errors = ovpInitialValidation(request)
 
     if (errors.isNotEmpty()) {
-      return context.copy(OVP = OVPObject(request.version, null, null, null, errors))
+      return context.copy(OVP = OVPObject(null, null, null, errors))
     }
 
     val validRequest = OVPRequestValidated(
-      request.version,
       request.totalNumberOfSanctions!!.toInt(),
       request.totalNumberOfViolentSanctions!!.toInt(),
       request.dateAtStartOfFollowup!!,
@@ -87,7 +86,6 @@ class OVPRiskProducerService : RiskScoreProducer {
     val band = getOVPBand(twoYear)
 
     return OVPObject(
-      algorithmVersion = request.version,
       provenViolentTypeReoffendingOneYear = oneYear,
       provenViolentTypeReoffendingTwoYear = twoYear,
       band = band,
@@ -102,6 +100,6 @@ class OVPRiskProducerService : RiskScoreProducer {
           fields = emptyList(),
         ),
       )
-      OVPObject(request.version, null, null, null, errors)
+      OVPObject(null, null, null, errors)
     }
 }

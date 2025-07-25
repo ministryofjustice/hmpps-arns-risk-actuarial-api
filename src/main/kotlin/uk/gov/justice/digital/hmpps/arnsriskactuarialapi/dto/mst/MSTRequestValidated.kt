@@ -5,7 +5,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import java.time.LocalDate
 
 data class MSTRequestValidated(
-  val version: String,
   val gender: Gender,
   val dateOfBirth: LocalDate,
   val peerGroupInfluences: Boolean,

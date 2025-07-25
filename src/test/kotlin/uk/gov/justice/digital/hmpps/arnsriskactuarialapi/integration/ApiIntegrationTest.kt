@@ -49,7 +49,7 @@ class ApiIntegrationTest : IntegrationTestBase() {
     val expectedResponseBody = readFileFromClasspath(expectedResponsePath)
 
     val responseBody = webTestClient.post()
-      .uri("/risk-scores")
+      .uri("/risk-scores/v1")
       .contentType(MediaType.APPLICATION_JSON)
       .headers(setAuthorisation(roles = listOf("ARNS_RISK_ACTUARIAL")))
       .bodyValue(requestBody)

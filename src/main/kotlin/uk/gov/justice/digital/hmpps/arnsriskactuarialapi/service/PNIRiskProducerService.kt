@@ -27,11 +27,10 @@ class PNIRiskProducerService : RiskScoreProducer {
 
     if (errors.isNotEmpty()) {
       return context
-        .copy(PNI = PNIObject(request.version, ProgrammeNeedIdentifier.OMISSION, errors))
+        .copy(PNI = PNIObject(ProgrammeNeedIdentifier.OMISSION, errors))
     }
 
     val requestValidated = PNIRequestValidated(
-      version = request.version,
       gender = request.gender!!,
       community = request.community!!,
       hasCommittedSexualOffence = request.hasCommittedSexualOffence,
@@ -68,7 +67,7 @@ class PNIRiskProducerService : RiskScoreProducer {
       errors = addMissingFields(overallNeed.second.toMutableList(), errors)
       return context.copy(
         PNI =
-        PNIObject(request.version, ProgrammeNeedIdentifier.OMISSION, errors),
+        PNIObject(ProgrammeNeedIdentifier.OMISSION, errors),
       )
     }
 
@@ -80,7 +79,7 @@ class PNIRiskProducerService : RiskScoreProducer {
 
     return context.copy(
       PNI =
-      PNIObject(request.version, pni, errors),
+      PNIObject(pni, errors),
     )
   }
 

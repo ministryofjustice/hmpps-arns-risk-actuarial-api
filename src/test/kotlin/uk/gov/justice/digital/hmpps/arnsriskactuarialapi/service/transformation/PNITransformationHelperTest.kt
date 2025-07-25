@@ -25,7 +25,6 @@ class PNITransformationHelperTest {
     problemSolvingSkills: ProblemLevel? = null,
     difficultiesCoping: ProblemLevel? = null,
   ) = PNIRequestValidated(
-    version = "1.0",
     gender = Gender.MALE,
     community = true,
     hasCommittedSexualOffence = null,
