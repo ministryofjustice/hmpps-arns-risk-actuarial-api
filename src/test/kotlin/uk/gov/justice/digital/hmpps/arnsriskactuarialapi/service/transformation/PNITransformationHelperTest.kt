@@ -5,56 +5,10 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertNull
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIRequestValidated
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.pniRequest
 
 class PNITransformationHelperTest {
-  private fun pniRequest(
-    sexualPreoccupation: ProblemLevel? = null,
-    sexualInterestsOffenceRelated: ProblemLevel? = null,
-    emotionalCongruence: ProblemLevel? = null,
-    proCriminalAttitudes: ProblemLevel? = null,
-    hostileOrientation: ProblemLevel? = null,
-    currentRelationshipFamilyMembers: ProblemLevel? = null,
-    previousCloseRelationships: ProblemLevel? = null,
-    easilyInfluencedByCriminals: ProblemLevel? = null,
-    controllingBehaviour: ProblemLevel? = null,
-    impulsivityBehaviour: ProblemLevel? = null,
-    temperControl: ProblemLevel? = null,
-    problemSolvingSkills: ProblemLevel? = null,
-    difficultiesCoping: ProblemLevel? = null,
-  ) = PNIRequestValidated(
-    gender = Gender.MALE,
-    community = true,
-    hasCommittedSexualOffence = null,
-    riskSexualHarm = null,
-    sexualPreoccupation = sexualPreoccupation,
-    sexualInterestsOffenceRelated = sexualInterestsOffenceRelated,
-    emotionalCongruence = emotionalCongruence,
-    problemSolvingSkills = problemSolvingSkills,
-    difficultiesCoping = difficultiesCoping,
-    proCriminalAttitudes = proCriminalAttitudes,
-    hostileOrientation = hostileOrientation,
-    currentRelationshipFamilyMembers = currentRelationshipFamilyMembers,
-    previousCloseRelationships = previousCloseRelationships,
-    easilyInfluencedByCriminals = easilyInfluencedByCriminals,
-    controllingBehaviour = controllingBehaviour,
-    impulsivityBehaviour = impulsivityBehaviour,
-    temperControl = temperControl,
-    ogrs3TwoYear = null,
-    ovpRiskBand = null,
-    ospDCCRiskBand = null,
-    ospIICIRiskBand = null,
-    ospRiskBand = null,
-    rsrRiskBand = null,
-    snsvRiskBand = null,
-    saraRiskToPartner = null,
-    saraRiskToOthers = null,
-    ovp = null,
-    rsr = null,
-    custody = false,
-  )
 
   @Nested
   inner class SexDomainScoreTest {

@@ -81,7 +81,7 @@ class PNIRiskProducerService : RiskScoreProducer {
     val pniPathway = when {
       isHighIntensity(requestValidated, overallNeedScore, risk) -> ProgrammeNeedIdentifier.HIGH
 
-      isModerateIntensity(requestValidated, overallNeedScore, risk) -> ProgrammeNeedIdentifier.HIGH
+      isModerateIntensity(requestValidated, overallNeedScore, risk) -> ProgrammeNeedIdentifier.MODERATE
       else -> ProgrammeNeedIdentifier.ALTERNATIVE
     }
 
@@ -94,7 +94,7 @@ class PNIRiskProducerService : RiskScoreProducer {
   /**
    * High intensity programmes are only available in prisons and will therefore only be provided in these cases.
    */
-  private fun isHighIntensity(
+  internal fun isHighIntensity(
     request: PNIRequestValidated,
     need: NeedScore,
     risk: RiskBand,
@@ -108,7 +108,7 @@ class PNIRiskProducerService : RiskScoreProducer {
   /**
    * Moderate Intensity programmes are available in prisons and community.
    */
-  private fun isModerateIntensity(
+  internal fun isModerateIntensity(
     request: PNIRequestValidated,
     need: NeedScore,
     risk: RiskBand,
@@ -144,7 +144,7 @@ class PNIRiskProducerService : RiskScoreProducer {
     risk: RiskBand,
   ) = need == NeedScore.MEDIUM && risk == RiskBand.MEDIUM
 
-  private fun isHighRisk(
+  internal fun isHighRisk(
     requestValidated: PNIRequestValidated,
   ): Boolean = requestValidated.custody &&
     isHighOgrs3(requestValidated) ||
@@ -154,7 +154,7 @@ class PNIRiskProducerService : RiskScoreProducer {
     isRsrHigh(requestValidated) ||
     isHighSara(requestValidated)
 
-  private fun isMediumRisk(
+  internal fun isMediumRisk(
     requestValidated: PNIRequestValidated,
   ): Boolean = isOgrs3Medium(requestValidated) ||
     isOvpMedium(requestValidated) ||
