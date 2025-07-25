@@ -30,7 +30,7 @@ class OGRS3RiskProducerService : RiskScoreProducer {
   lateinit var offenceGroupParametersService: OffenceGroupParametersService
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
-    val algorithmVersion = request.minorVersion.ogrs3Version
+    val algorithmVersion = request.version.ogrs3Version
     val errors = ogrs3InitialValidation(request)
 
     if (errors.isNotEmpty()) {

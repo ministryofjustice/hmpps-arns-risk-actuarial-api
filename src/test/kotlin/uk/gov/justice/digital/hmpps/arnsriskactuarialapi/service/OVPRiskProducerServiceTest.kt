@@ -5,9 +5,11 @@ import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertNull
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.OVPVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validOVPRiskScoreRequest
@@ -31,7 +33,7 @@ class OVPRiskProducerServiceTest {
 
     assertNotNull(result)
     assertTrue(result.OVP!!.validationError.isNullOrEmpty())
-    assertEquals("1_0", result.OVP.algorithmVersion)
+    assertEquals(OVPVersion.V1_0, result.OVP.algorithmVersion)
     assertEquals(5, result.OVP.provenViolentTypeReoffendingOneYear)
     assertEquals(9, result.OVP.provenViolentTypeReoffendingTwoYear)
     assertEquals(RiskBand.LOW, result.OVP.band)
@@ -44,7 +46,7 @@ class OVPRiskProducerServiceTest {
 
     assertNotNull(result)
     assertTrue(result.OVP!!.validationError.isNullOrEmpty())
-    assertEquals("1_0", result.OVP.algorithmVersion)
+    assertEquals(OVPVersion.V1_0, result.OVP.algorithmVersion)
     assertEquals(15, result.OVP.provenViolentTypeReoffendingOneYear)
     assertEquals(26, result.OVP.provenViolentTypeReoffendingTwoYear)
     assertEquals(RiskBand.LOW, result.OVP.band)
@@ -68,7 +70,7 @@ class OVPRiskProducerServiceTest {
 
     assertNotNull(result)
     assertTrue(result.OVP!!.validationError.isNullOrEmpty())
-    assertEquals("1_0", result.OVP.algorithmVersion)
+    assertEquals(OVPVersion.V1_0, result.OVP.algorithmVersion)
     assertEquals(42, result.OVP.provenViolentTypeReoffendingOneYear)
     assertEquals(58, result.OVP.provenViolentTypeReoffendingTwoYear)
     assertEquals(RiskBand.MEDIUM, result.OVP.band)
@@ -79,7 +81,7 @@ class OVPRiskProducerServiceTest {
   fun `should return null OVPObject with error message for exceptions thrown before calculation`() {
     // Given
     val request = RiskScoreRequest(
-      "1_0",
+      RiskScoreVersion.V1_0,
       null,
       null,
       null,
@@ -109,7 +111,7 @@ class OVPRiskProducerServiceTest {
 
     // Then
     assertNotNull(result)
-    assertEquals("1_0", result.OVP!!.algorithmVersion)
+    assertEquals(OVPVersion.V1_0, result.OVP!!.algorithmVersion)
     assertNull(result.OVP.provenViolentTypeReoffendingOneYear)
     assertNull(result.OVP.provenViolentTypeReoffendingTwoYear)
     assertNull(result.OVP.band)
@@ -133,7 +135,7 @@ class OVPRiskProducerServiceTest {
 
     // Then
     assertNotNull(result)
-    assertEquals("1_0", result.OVP!!.algorithmVersion)
+    assertEquals(OVPVersion.V1_0, result.OVP!!.algorithmVersion)
     assertNull(result.OVP.provenViolentTypeReoffendingTwoYear)
     assertNull(result.OVP.provenViolentTypeReoffendingOneYear)
     assertNull(result.OVP.band)

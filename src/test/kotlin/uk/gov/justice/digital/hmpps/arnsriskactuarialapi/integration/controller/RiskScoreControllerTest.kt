@@ -5,9 +5,11 @@ import org.mockito.kotlin.whenever
 import org.springframework.http.MediaType
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.OGRS3Version
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3Object
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyMST
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOGP
@@ -23,7 +25,7 @@ class RiskScoreControllerTest : IntegrationTestBase() {
   private lateinit var riskScoreService: RiskScoreService
 
   private val basicRequest = RiskScoreRequest(
-    "1_0",
+    RiskScoreVersion.V1_0,
     Gender.MALE,
     LocalDate.of(1964, 10, 15),
     LocalDate.of(2014, 12, 13),
@@ -36,7 +38,7 @@ class RiskScoreControllerTest : IntegrationTestBase() {
   @Test
   fun `postRiskScores returns 200 ok and risk score for correct user role`() {
     val ogrs3 = OGRS3Object(
-      "1_0",
+      OGRS3Version.V3_0,
       1,
       1,
       RiskBand.LOW,
@@ -47,7 +49,7 @@ class RiskScoreControllerTest : IntegrationTestBase() {
       .thenReturn(RiskScoreResponse(ogrs3, emptyOVP(), emptyOGP(), emptyMST(), omittedPNI()))
 
     webTestClient.post()
-      .uri("/risk-scores")
+      .uri("/risk-scores/v1")
       .headers(setAuthorisation(roles = listOf("ARNS_RISK_ACTUARIAL")))
       .bodyValue(basicRequest)
       .exchange()
@@ -64,7 +66,7 @@ class RiskScoreControllerTest : IntegrationTestBase() {
   @Test
   fun `postRiskScores returns 403 forbidden for wrong user role`() {
     webTestClient.post()
-      .uri("/risk-scores")
+      .uri("/risk-scores/v1")
       .headers(setAuthorisation())
       .bodyValue(basicRequest)
       .exchange()
@@ -74,7 +76,7 @@ class RiskScoreControllerTest : IntegrationTestBase() {
   @Test
   fun `postRiskScores returns 401 unauthorised for no auth token`() {
     webTestClient.post()
-      .uri("/risk-scores")
+      .uri("/risk-scores/v1")
       .bodyValue(basicRequest)
       .exchange()
       .expectStatus().isUnauthorized
@@ -83,7 +85,7 @@ class RiskScoreControllerTest : IntegrationTestBase() {
   @Test
   fun `postRiskScores returns 400 if incorrect enum value used`() {
     webTestClient.post()
-      .uri("/risk-scores")
+      .uri("/risk-scores/v1")
       .headers(setAuthorisation(roles = listOf("ARNS_RISK_ACTUARIAL")))
       .contentType(MediaType.APPLICATION_JSON)
       .bodyValue(
@@ -107,7 +109,7 @@ class RiskScoreControllerTest : IntegrationTestBase() {
   @Test
   fun `postRiskScores returns 400 if incorrect type used`() {
     webTestClient.post()
-      .uri("/risk-scores")
+      .uri("/risk-scores/v1")
       .headers(setAuthorisation(roles = listOf("ARNS_RISK_ACTUARIAL")))
       .contentType(MediaType.APPLICATION_JSON)
       .bodyValue(

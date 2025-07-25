@@ -8,8 +8,10 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.junit.jupiter.MockitoExtension
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.MSTVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
@@ -29,7 +31,7 @@ class MSTScoreProducerServiceTest {
 
     // Then
     assertNotNull(result)
-    assertEquals("1_0", result.MST!!.algorithmVersion)
+    assertEquals(MSTVersion.V1_0, result.MST!!.algorithmVersion)
     assertEquals(10, result.MST.maturityScore)
     assertEquals(true, result.MST.maturityFlag)
     assertEquals(true, result.MST.isMstApplicable)
@@ -46,7 +48,7 @@ class MSTScoreProducerServiceTest {
 
     // Then
     assertNotNull(result)
-    assertEquals("1_0", result.MST!!.algorithmVersion)
+    assertEquals(MSTVersion.V1_0, result.MST!!.algorithmVersion)
     assertEquals(9, result.MST.maturityScore)
     assertEquals(false, result.MST.maturityFlag)
     assertEquals(true, result.MST.isMstApplicable)
@@ -57,7 +59,7 @@ class MSTScoreProducerServiceTest {
   fun `should return valid MstObject with MISSING_INPUT validationError`() {
     // Given
     val input = RiskScoreRequest(
-      version = "1_0",
+      version = RiskScoreVersion.V1_0,
       gender = null,
       dateOfBirth = null,
       peerGroupInfluences = null,
@@ -77,7 +79,7 @@ class MSTScoreProducerServiceTest {
 
     // Then
     assertNotNull(result)
-    assertEquals("1_0", result.MST!!.algorithmVersion)
+    assertEquals(MSTVersion.V1_0, result.MST!!.algorithmVersion)
     assertEquals(null, result.MST.maturityScore)
     assertEquals(null, result.MST.maturityFlag)
     assertEquals(null, result.MST.isMstApplicable)
@@ -115,7 +117,7 @@ class MSTScoreProducerServiceTest {
 
     // Then
     assertNotNull(result)
-    assertEquals("1_0", result.MST!!.algorithmVersion)
+    assertEquals(MSTVersion.V1_0, result.MST!!.algorithmVersion)
     assertEquals(null, result.MST.maturityScore)
     assertEquals(null, result.MST.maturityFlag)
     assertEquals(false, result.MST.isMstApplicable)
@@ -140,7 +142,7 @@ class MSTScoreProducerServiceTest {
 
     // Then
     assertNotNull(result)
-    assertEquals("1_0", result.MST!!.algorithmVersion)
+    assertEquals(MSTVersion.V1_0, result.MST!!.algorithmVersion)
     assertEquals(null, result.MST.maturityScore)
     assertEquals(null, result.MST.maturityFlag)
     assertEquals(false, result.MST.isMstApplicable)
@@ -165,7 +167,7 @@ class MSTScoreProducerServiceTest {
 
     // Then
     assertNotNull(result)
-    assertEquals("1_0", result.MST!!.algorithmVersion)
+    assertEquals(MSTVersion.V1_0, result.MST!!.algorithmVersion)
     assertEquals(null, result.MST.maturityScore)
     assertEquals(null, result.MST.maturityFlag)
     assertEquals(false, result.MST.isMstApplicable)

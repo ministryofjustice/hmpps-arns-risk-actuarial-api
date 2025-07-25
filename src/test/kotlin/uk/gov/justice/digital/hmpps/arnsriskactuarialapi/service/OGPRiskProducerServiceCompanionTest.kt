@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.OGPVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPInputValidated
@@ -15,13 +16,12 @@ class OGPRiskProducerServiceCompanionTest {
 
   companion object {
 
-    const val ALGORITHM_VERSION = "1_0"
+    val ALGORITHM_VERSION = OGPVersion.V1_0
 
     @JvmStatic
     fun getOGPTestCases(): List<Arguments> = listOf(
       Arguments.of(
         OGPInputValidated(
-          algorithmVersion = ALGORITHM_VERSION,
           ogrs3TwoYear = 81,
           currentAccommodation = false,
           employmentStatus = true,
@@ -44,7 +44,6 @@ class OGPRiskProducerServiceCompanionTest {
       ),
       Arguments.of(
         OGPInputValidated(
-          algorithmVersion = ALGORITHM_VERSION,
           ogrs3TwoYear = 67,
           currentAccommodation = false,
           employmentStatus = true,
@@ -57,7 +56,7 @@ class OGPRiskProducerServiceCompanionTest {
           proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
         ),
         OGPObject(
-          algorithmVersion = ALGORITHM_VERSION,
+          algorithmVersion = OGPVersion.V1_0,
           ogpReoffendingOneYear = 40,
           ogpReoffendingTwoYear = 55,
           bandOGP = OGPBand.MEDIUM,
@@ -67,7 +66,6 @@ class OGPRiskProducerServiceCompanionTest {
       ),
       Arguments.of(
         OGPInputValidated(
-          algorithmVersion = ALGORITHM_VERSION,
           ogrs3TwoYear = 37,
           currentAccommodation = false,
           employmentStatus = true,
@@ -90,7 +88,6 @@ class OGPRiskProducerServiceCompanionTest {
       ),
       Arguments.of(
         OGPInputValidated(
-          algorithmVersion = ALGORITHM_VERSION,
           ogrs3TwoYear = 17,
           currentAccommodation = false,
           employmentStatus = true,
@@ -116,9 +113,7 @@ class OGPRiskProducerServiceCompanionTest {
 
   @Test
   fun `testing single test case`() {
-    val algorithmVersion = "1_0"
     val input = OGPInputValidated(
-      algorithmVersion = ALGORITHM_VERSION,
       ogrs3TwoYear = 81,
       currentAccommodation = false,
       employmentStatus = true,
@@ -130,7 +125,7 @@ class OGPRiskProducerServiceCompanionTest {
       understandsPeoplesViews = ProblemLevel.NO_PROBLEMS,
       proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
     )
-    val output = getOGPOutput(input, mutableListOf())
+    val output = getOGPOutput(input, ALGORITHM_VERSION, mutableListOf())
     println(output)
     val expected = OGPObject(
       algorithmVersion = ALGORITHM_VERSION,
@@ -146,6 +141,6 @@ class OGPRiskProducerServiceCompanionTest {
   @ParameterizedTest()
   @MethodSource("getOGPTestCases")
   fun `testing from OGP test cases`(input: OGPInputValidated, expected: OGPObject) {
-    assertEquals(expected, getOGPOutput(input, mutableListOf()))
+    assertEquals(expected, getOGPOutput(input, ALGORITHM_VERSION, mutableListOf()))
   }
 }

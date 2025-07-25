@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import java.time.LocalDate
 
@@ -19,7 +20,7 @@ class OGRS3ValidationHelperTest {
   @Test
   fun `getMissingFieldsValidation missing field error with all field populated`() {
     val request = RiskScoreRequest(
-      "1_0",
+      RiskScoreVersion.V1_0,
       null,
       null,
       null,
@@ -47,7 +48,7 @@ class OGRS3ValidationHelperTest {
   }
 
   private fun validRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
-    "1_0",
+    RiskScoreVersion.V1_0,
     Gender.MALE,
     LocalDate.of(1964, 10, 15),
     LocalDate.of(2014, 12, 13),

@@ -17,7 +17,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.mstI
 class MSTRiskProducerService : RiskScoreProducer {
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
-    val algorithmVersion = request.minorVersion.mstVersion
+    val algorithmVersion = request.version.mstVersion
     val errors = mstInitialValidation(request)
 
     if (!errors.isEmpty()) {

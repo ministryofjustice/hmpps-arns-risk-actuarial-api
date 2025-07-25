@@ -38,8 +38,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.getM
 @Service
 class OGPRiskProducerService : RiskScoreProducer {
 
-  fun getRiskScore(riskScoreRequest: RiskScoreRequest): OGPObject {
-    val algorithmVersion = riskScoreRequest.minorVersion.ogpVersion
+  override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
+    val algorithmVersion = request.version.ogpVersion
     val errors = ogpInitialValidation(request, context)
 
     if (!errors.isEmpty()) {
@@ -66,7 +66,7 @@ class OGPRiskProducerService : RiskScoreProducer {
   }
 
   companion object {
-    fun getOGPOutput(input: OGPInputValidated, errors: MutableList<ValidationErrorResponse>): OGPObject = runCatching {
+    fun getOGPOutput(input: OGPInputValidated, algorithmVersion: OGPVersion, errors: MutableList<ValidationErrorResponse>): OGPObject = runCatching {
       // Transformation Step
       val currentAccommodationOffendersScore =
         currentAccommodationOffendersScore(input.currentAccommodation)
@@ -122,7 +122,7 @@ class OGPRiskProducerService : RiskScoreProducer {
       val ogpReoffendingTwoYear = ogpReoffendingTwoYear(totalOGPScore)
       val bandOGP = bandOGP(ogpReoffendingTwoYear)
       // Create OGP Output
-      OGPObject(input.algorithmVersion, ogpReoffendingOneYear, ogpReoffendingTwoYear, bandOGP, totalOGPScore, emptyList())
+      OGPObject(algorithmVersion, ogpReoffendingOneYear, ogpReoffendingTwoYear, bandOGP, totalOGPScore, emptyList())
     }.getOrElse {
       errors.add(
         ValidationErrorResponse(
@@ -132,7 +132,7 @@ class OGPRiskProducerService : RiskScoreProducer {
         ),
       )
       // Create OGP Output
-      OGPObject(input.algorithmVersion, null, null, null, null, errors)
+      OGPObject(algorithmVersion, null, null, null, null, errors)
     }
 
     fun ogpInitialValidation(

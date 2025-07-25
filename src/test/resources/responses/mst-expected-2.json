@@ -1,6 +1,6 @@
 {
   "mst": {
-    "algorithmVersion" : "1_0",
+    "algorithmVersion" : "V1_0",
     "maturityScore" : 10,
     "maturityFlag" : true,
     "isMstApplicable" : true,

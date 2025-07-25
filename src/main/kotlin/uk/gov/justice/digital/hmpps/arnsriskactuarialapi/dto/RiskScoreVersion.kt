@@ -1,6 +1,6 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto
 
-enum class RiskScoreVersion1(val ogrs3Version: OGRS3Version, val ogpVersion: OGPVersion, val ovpVersion: OVPVersion, val mstVersion: MSTVersion, val pniVersion: PNIVersion) {
+enum class RiskScoreVersion(val ogrs3Version: OGRS3Version, val ogpVersion: OGPVersion, val ovpVersion: OVPVersion, val mstVersion: MSTVersion, val pniVersion: PNIVersion) {
   V1_0(
     ogrs3Version = OGRS3Version.V3_0,
     ogpVersion = OGPVersion.V1_0,

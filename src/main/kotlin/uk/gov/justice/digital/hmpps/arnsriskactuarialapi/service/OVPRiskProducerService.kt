@@ -30,7 +30,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.ovpI
 class OVPRiskProducerService : RiskScoreProducer {
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
-    val algorithmVersion = request.minorVersion.ovpVersion
+    val algorithmVersion = request.version.ovpVersion
     val errors = ovpInitialValidation(request)
 
     if (errors.isNotEmpty()) {

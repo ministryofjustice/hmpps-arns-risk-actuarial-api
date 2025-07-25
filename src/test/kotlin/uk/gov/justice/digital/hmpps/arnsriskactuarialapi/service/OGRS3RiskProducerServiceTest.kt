@@ -11,8 +11,10 @@ import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.whenever
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.OGRS3Version
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
 import java.time.LocalDate
@@ -46,7 +48,7 @@ class OGRS3RiskProducerServiceTest {
 
     // Then
     assertNotNull(result)
-    assertEquals("1_0", result.OGRS3!!.algorithmVersion)
+    assertEquals(OGRS3Version.V3_0, result.OGRS3!!.algorithmVersion)
     assertEquals(8, result.OGRS3.ogrs3OneYear)
     assertEquals(16, result.OGRS3.ogrs3TwoYear)
     assertEquals(RiskBand.LOW, result.OGRS3.band)
@@ -73,7 +75,7 @@ class OGRS3RiskProducerServiceTest {
 
     // Then
     assertNotNull(result)
-    assertEquals("1_0", result.OGRS3!!.algorithmVersion)
+    assertEquals(OGRS3Version.V3_0, result.OGRS3!!.algorithmVersion)
     assertEquals(11, result.OGRS3.ogrs3OneYear)
     assertEquals(20, result.OGRS3.ogrs3TwoYear)
     assertEquals(RiskBand.LOW, result.OGRS3.band)
@@ -84,7 +86,7 @@ class OGRS3RiskProducerServiceTest {
   fun `should return null OGRS3Object with error message for exceptions thrown before calculation`() {
     // Given
     val request = RiskScoreRequest(
-      "1_0",
+      RiskScoreVersion.V1_0,
       null,
       null,
       null,
@@ -108,7 +110,7 @@ class OGRS3RiskProducerServiceTest {
 
     // Then
     assertNotNull(result)
-    assertEquals("1_0", result.OGRS3!!.algorithmVersion)
+    assertEquals(OGRS3Version.V3_0, result.OGRS3!!.algorithmVersion)
     assertNull(result.OGRS3.ogrs3OneYear)
     assertNull(result.OGRS3.ogrs3TwoYear)
     assertNull(result.OGRS3.band)
@@ -132,7 +134,7 @@ class OGRS3RiskProducerServiceTest {
 
     // Then
     assertNotNull(result)
-    assertEquals("1_0", result.OGRS3!!.algorithmVersion)
+    assertEquals(OGRS3Version.V3_0, result.OGRS3!!.algorithmVersion)
     assertNull(result.OGRS3.ogrs3OneYear)
     assertNull(result.OGRS3.ogrs3TwoYear)
     assertNull(result.OGRS3.band)
@@ -143,7 +145,7 @@ class OGRS3RiskProducerServiceTest {
   }
 
   private fun validRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
-    "1_0",
+    RiskScoreVersion.V1_0,
     Gender.MALE,
     LocalDate.of(1964, 10, 15),
     LocalDate.of(2014, 12, 13),

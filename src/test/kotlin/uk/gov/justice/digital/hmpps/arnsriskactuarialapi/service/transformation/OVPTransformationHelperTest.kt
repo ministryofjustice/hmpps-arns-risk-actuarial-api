@@ -174,7 +174,6 @@ class OVPTransformationHelperTest {
     dateOfBirth = dateOfBirth,
     dateAtStartOfFollowup = dateAtStartOfFollowup,
     // following don't matter for this tests
-    version = "1_0",
     totalNumberOfViolentSanctions = 1,
     alcoholIsCurrentUseAProblem = ProblemLevel.NO_PROBLEMS,
     alcoholExcessive6Months = ProblemLevel.NO_PROBLEMS,

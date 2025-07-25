@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.RiskScoreRequestTestConstants.FULL_OGP_REQUEST
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.RiskScoreRequestTestConstants.OGP_REQUEST_39
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.OGRS3Version
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
@@ -15,14 +16,14 @@ class OGPValidationHelperTest {
 
   companion object {
     val TEST_OSGR3_OBJECT = OGRS3Object(
-      algorithmVersion = "1_0",
+      algorithmVersion = OGRS3Version.V3_0,
       ogrs3OneYear = null,
       ogrs3TwoYear = 50,
       band = null,
       validationError = null,
     )
     val CONTEXT_WITH_OSGR3_TWO_YEAR = RiskScoreContext(OGRS3 = TEST_OSGR3_OBJECT)
-    val CONTEXT_WITH_NO_OSGR3_TWO_YEAR = RiskScoreContext(OGRS3 = TEST_OSGR3_OBJECT.copy("1_0", ogrs3TwoYear = null))
+    val CONTEXT_WITH_NO_OSGR3_TWO_YEAR = RiskScoreContext(OGRS3 = TEST_OSGR3_OBJECT.copy(OGRS3Version.V3_0, ogrs3TwoYear = null))
   }
 
   @Test

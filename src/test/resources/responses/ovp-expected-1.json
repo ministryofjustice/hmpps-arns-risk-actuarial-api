@@ -1,6 +1,6 @@
 {
   "ovp" : {
-    "algorithmVersion" : "1",
+    "algorithmVersion" : "V1_0",
     "provenViolentTypeReoffendingOneYear" : null,
     "provenViolentTypeReoffendingTwoYear" : null,
     "band" : null,
