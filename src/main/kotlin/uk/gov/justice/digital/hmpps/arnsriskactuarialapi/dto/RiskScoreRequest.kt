@@ -41,13 +41,14 @@ data class RiskScoreRequest(
 
   // PNI
   val community: Boolean? = null,
+  val custody: Boolean? = null,
   val hasCommittedSexualOffence: Boolean? = null,
   val riskSexualHarm: Boolean? = null,
   val sexualPreoccupation: ProblemLevel? = null,
   val sexualInterestsOffenceRelated: ProblemLevel? = null,
   val emotionalCongruence: ProblemLevel? = null,
   val hostileOrientation: ProblemLevel? = null,
-  val relationshipFamilyMembers: ProblemLevel? = null,
+  val currentRelationshipFamilyMembers: ProblemLevel? = null,
   val previousCloseRelationships: ProblemLevel? = null,
   val easilyInfluencedByCriminals: ProblemLevel? = null,
   val controllingBehaviour: ProblemLevel? = null,
