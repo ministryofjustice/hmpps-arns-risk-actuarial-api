@@ -33,6 +33,7 @@ class PNIRiskProducerService : RiskScoreProducer {
     val requestValidated = PNIRequestValidated(
       gender = request.gender!!,
       community = request.community!!,
+      custody = request.custody ?: false,
       hasCommittedSexualOffence = request.hasCommittedSexualOffence,
       riskSexualHarm = request.riskSexualHarm,
       sexualPreoccupation = request.sexualPreoccupation,
@@ -71,39 +72,96 @@ class PNIRiskProducerService : RiskScoreProducer {
       )
     }
 
-    val pni = when {
-      isHighRisk(requestValidated, overallNeedScore) -> ProgrammeNeedIdentifier.HIGH
-      isModerateRisk(requestValidated, overallNeedScore) -> ProgrammeNeedIdentifier.MODERATE
+    val risk = when {
+      isHighRisk(requestValidated) -> RiskBand.HIGH
+      isMediumRisk(requestValidated) -> RiskBand.MEDIUM
+      else -> RiskBand.LOW
+    }
+
+    val pniPathway = when {
+      isHighIntensity(requestValidated, overallNeedScore, risk) -> ProgrammeNeedIdentifier.HIGH
+
+      isModerateIntensity(requestValidated, overallNeedScore, risk) -> ProgrammeNeedIdentifier.HIGH
       else -> ProgrammeNeedIdentifier.ALTERNATIVE
     }
 
     return context.copy(
       PNI =
-      PNIObject(pni, errors),
+      PNIObject(pniPathway, errors),
     )
   }
 
+  /**
+   * High intensity programmes are only available in prisons and will therefore only be provided in these cases.
+   */
+  private fun isHighIntensity(
+    request: PNIRequestValidated,
+    need: NeedScore,
+    risk: RiskBand,
+  ): Boolean {
+    if (request.custody != true) return false
+    return isHighOgrsWithHighOVP(request) ||
+      isHighOgrsWithHighSara(request) ||
+      isHighNeedWithHighRisk(need, risk)
+  }
+
+  /**
+   * Moderate Intensity programmes are available in prisons and community.
+   */
+  private fun isModerateIntensity(
+    request: PNIRequestValidated,
+    need: NeedScore,
+    risk: RiskBand,
+  ): Boolean = (isHighOgrsWithHighOVP(request) && request.community) ||
+    (isHighNeedWithHighRisk(need, risk) && request.community) ||
+    isHighSara(request) ||
+    isMediumSara(request) ||
+    isMediumNeedWithHighRisk(need, risk) ||
+    isHighNeedWithMediumRisk(need, risk) ||
+    isMediumNeedWithMediumRisk(need, risk)
+
+  private fun isHighOgrsWithHighOVP(request: PNIRequestValidated) = isHighOgrs3(request) && isHighOvp(request)
+
+  private fun isHighOgrsWithHighSara(request: PNIRequestValidated) = isHighOgrs3(request) && isHighSara(request)
+
+  private fun isHighNeedWithHighRisk(
+    need: NeedScore,
+    risk: RiskBand,
+  ) = need == NeedScore.HIGH && risk == RiskBand.HIGH
+
+  private fun isMediumNeedWithHighRisk(
+    need: NeedScore,
+    risk: RiskBand,
+  ) = need == NeedScore.MEDIUM && risk == RiskBand.HIGH
+
+  private fun isHighNeedWithMediumRisk(
+    need: NeedScore,
+    risk: RiskBand,
+  ) = need == NeedScore.HIGH && risk == RiskBand.MEDIUM
+
+  private fun isMediumNeedWithMediumRisk(
+    need: NeedScore,
+    risk: RiskBand,
+  ) = need == NeedScore.MEDIUM && risk == RiskBand.MEDIUM
+
   private fun isHighRisk(
     requestValidated: PNIRequestValidated,
-    overallNeed: NeedScore,
-  ): Boolean = isHighOgrs3(requestValidated) ||
+  ): Boolean = requestValidated.custody &&
+    isHighOgrs3(requestValidated) ||
     isHighOvp(requestValidated) ||
     isOspDcHigh(requestValidated) ||
     isOspIicHigh(requestValidated) ||
     isRsrHigh(requestValidated) ||
-    isHighSara(requestValidated) ||
-    overallNeed == NeedScore.HIGH
+    isHighSara(requestValidated)
 
-  private fun isModerateRisk(
+  private fun isMediumRisk(
     requestValidated: PNIRequestValidated,
-    overallNeed: NeedScore,
   ): Boolean = isOgrs3Medium(requestValidated) ||
     isOvpMedium(requestValidated) ||
     isOspDcMedium(requestValidated) ||
     isOspIicMedium(requestValidated) ||
     isRsrMedium(requestValidated) ||
-    isMediumSara(requestValidated) ||
-    overallNeed == NeedScore.MEDIUM
+    isMediumSara(requestValidated)
 
   private fun isHighOgrs3(requestValidated: PNIRequestValidated) = requestValidated.ogrs3TwoYear?.let { it >= 75 } == true
 

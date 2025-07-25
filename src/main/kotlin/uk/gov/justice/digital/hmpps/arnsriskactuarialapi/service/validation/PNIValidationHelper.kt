@@ -11,7 +11,6 @@ private fun getMissingPNIFieldsValidation(request: RiskScoreRequest): MutableLis
   val missingFields = mutableListOf<String>()
 
   if (request.gender == null) missingFields.add("Gender")
-  if (request.community == null) missingFields.add("Community")
 
   return addMissingFields(missingFields, errors)
 }
