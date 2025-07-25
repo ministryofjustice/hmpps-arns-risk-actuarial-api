@@ -32,7 +32,7 @@ class PNIRiskProducerService : RiskScoreProducer {
 
     val requestValidated = PNIRequestValidated(
       gender = request.gender!!,
-      community = request.community!!,
+      community = request.community ?: false,
       custody = request.custody ?: false,
       hasCommittedSexualOffence = request.hasCommittedSexualOffence,
       riskSexualHarm = request.riskSexualHarm,
