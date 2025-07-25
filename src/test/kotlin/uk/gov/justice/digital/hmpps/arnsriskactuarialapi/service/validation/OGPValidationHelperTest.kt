@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.RiskScoreRequestTestConstants.FULL_OGP_REQUEST
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.RiskScoreRequestTestConstants.OGP_REQUEST_39
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.OGRS3Version
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3Object
@@ -16,14 +16,13 @@ class OGPValidationHelperTest {
 
   companion object {
     val TEST_OSGR3_OBJECT = OGRS3Object(
-      algorithmVersion = OGRS3Version.V3_0,
       ogrs3OneYear = null,
       ogrs3TwoYear = 50,
       band = null,
       validationError = null,
     )
-    val CONTEXT_WITH_OSGR3_TWO_YEAR = RiskScoreContext(OGRS3 = TEST_OSGR3_OBJECT)
-    val CONTEXT_WITH_NO_OSGR3_TWO_YEAR = RiskScoreContext(OGRS3 = TEST_OSGR3_OBJECT.copy(OGRS3Version.V3_0, ogrs3TwoYear = null))
+    val CONTEXT_WITH_OSGR3_TWO_YEAR = RiskScoreContext(version = RiskScoreVersion.V1_0, OGRS3 = TEST_OSGR3_OBJECT)
+    val CONTEXT_WITH_NO_OSGR3_TWO_YEAR = RiskScoreContext(version = RiskScoreVersion.V1_0, OGRS3 = TEST_OSGR3_OBJECT.copy(ogrs3TwoYear = null))
   }
 
   @Test

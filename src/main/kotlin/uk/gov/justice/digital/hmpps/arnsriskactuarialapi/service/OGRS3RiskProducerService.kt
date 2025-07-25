@@ -2,7 +2,6 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.OGRS3Version
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
@@ -30,12 +29,11 @@ class OGRS3RiskProducerService : RiskScoreProducer {
   lateinit var offenceGroupParametersService: OffenceGroupParametersService
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
-    val algorithmVersion = request.version.ogrs3Version
     val errors = ogrs3InitialValidation(request)
 
     if (errors.isNotEmpty()) {
       return context
-        .copy(OGRS3 = OGRS3Object(algorithmVersion, null, null, null, errors))
+        .copy(OGRS3 = OGRS3Object(null, null, null, errors))
     }
 
     val validRequest = OGRS3RequestValidated(
@@ -47,12 +45,11 @@ class OGRS3RiskProducerService : RiskScoreProducer {
       request.ageAtFirstSanction!!.toInt(),
       request.currentOffence!!,
     )
-    return context.copy(OGRS3 = getOGRS3Object(validRequest, algorithmVersion, errors))
+    return context.copy(OGRS3 = getOGRS3Object(validRequest, errors))
   }
 
   private fun getOGRS3Object(
     request: OGRS3RequestValidated,
-    algorithmVersion: OGRS3Version,
     errors: MutableList<ValidationErrorResponse>,
   ): OGRS3Object = runCatching {
     val ageAtCurrentConviction = getAgeDiffAtOffenceDate(
@@ -86,7 +83,7 @@ class OGRS3RiskProducerService : RiskScoreProducer {
         val twoYear = getOgrs3TwoYear(totalScore).asPercentage().sanitisePercentage()
         val riskBand = getRiskBand(twoYear)
 
-        OGRS3Object(algorithmVersion, oneYear, twoYear, riskBand, emptyList())
+        OGRS3Object(oneYear, twoYear, riskBand, emptyList())
       }
   }.getOrElse {
     errors.add(
@@ -97,6 +94,6 @@ class OGRS3RiskProducerService : RiskScoreProducer {
       ),
     )
 
-    OGRS3Object(algorithmVersion, null, null, null, errors)
+    OGRS3Object(null, null, null, errors)
   }
 }

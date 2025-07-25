@@ -13,10 +13,9 @@ class PNIRiskProducerService : RiskScoreProducer {
     context: RiskScoreContext,
   ): RiskScoreContext {
     // TODO
-    val algorithmVersion = request.version.pniVersion
     return context.copy(
       PNI =
-      PNIObject(algorithmVersion, ProgrammeNeedIdentifier.OMISSION, null),
+      PNIObject(ProgrammeNeedIdentifier.OMISSION, null),
     )
   }
 }

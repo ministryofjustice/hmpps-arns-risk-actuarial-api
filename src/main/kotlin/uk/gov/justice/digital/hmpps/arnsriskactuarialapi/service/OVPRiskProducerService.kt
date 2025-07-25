@@ -1,7 +1,6 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
 import org.springframework.stereotype.Service
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.OVPVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
@@ -30,11 +29,10 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.ovpI
 class OVPRiskProducerService : RiskScoreProducer {
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
-    val algorithmVersion = request.version.ovpVersion
     val errors = ovpInitialValidation(request)
 
     if (errors.isNotEmpty()) {
-      return context.copy(OVP = OVPObject(algorithmVersion, null, null, null, errors))
+      return context.copy(OVP = OVPObject(null, null, null, errors))
     }
 
     val validRequest = OVPRequestValidated(
@@ -52,12 +50,11 @@ class OVPRiskProducerService : RiskScoreProducer {
       request.temperControl!!,
       request.proCriminalAttitudes!!,
     )
-    return context.copy(OVP = getOVPObject(validRequest, algorithmVersion, errors))
+    return context.copy(OVP = getOVPObject(validRequest, errors))
   }
 
   private fun getOVPObject(
     request: OVPRequestValidated,
-    algorithmVersion: OVPVersion,
     errors: MutableList<ValidationErrorResponse>,
   ): OVPObject = runCatching {
     val alcoholMisuseWeighted = getAlcoholMisuseWeighted(request)
@@ -89,7 +86,6 @@ class OVPRiskProducerService : RiskScoreProducer {
     val band = getOVPBand(twoYear)
 
     return OVPObject(
-      algorithmVersion = algorithmVersion,
       provenViolentTypeReoffendingOneYear = oneYear,
       provenViolentTypeReoffendingTwoYear = twoYear,
       band = band,
@@ -104,6 +100,6 @@ class OVPRiskProducerService : RiskScoreProducer {
           fields = emptyList(),
         ),
       )
-      OVPObject(algorithmVersion, null, null, null, errors)
+      OVPObject(null, null, null, errors)
     }
 }

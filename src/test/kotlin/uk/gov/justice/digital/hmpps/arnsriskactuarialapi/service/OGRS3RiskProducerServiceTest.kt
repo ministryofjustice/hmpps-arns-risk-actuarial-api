@@ -11,7 +11,6 @@ import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.whenever
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.OGRS3Version
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
@@ -48,11 +47,10 @@ class OGRS3RiskProducerServiceTest {
 
     // Then
     assertNotNull(result)
-    assertEquals(OGRS3Version.V3_0, result.OGRS3!!.algorithmVersion)
-    assertEquals(8, result.OGRS3.ogrs3OneYear)
-    assertEquals(16, result.OGRS3.ogrs3TwoYear)
-    assertEquals(RiskBand.LOW, result.OGRS3.band)
-    assertTrue(result.OGRS3.validationError.isNullOrEmpty())
+    assertEquals(8, result.OGRS3?.ogrs3OneYear)
+    assertEquals(16, result.OGRS3?.ogrs3TwoYear)
+    assertEquals(RiskBand.LOW, result.OGRS3?.band)
+    assertTrue(result.OGRS3?.validationError.isNullOrEmpty())
   }
 
   @Test
@@ -75,11 +73,10 @@ class OGRS3RiskProducerServiceTest {
 
     // Then
     assertNotNull(result)
-    assertEquals(OGRS3Version.V3_0, result.OGRS3!!.algorithmVersion)
-    assertEquals(11, result.OGRS3.ogrs3OneYear)
-    assertEquals(20, result.OGRS3.ogrs3TwoYear)
-    assertEquals(RiskBand.LOW, result.OGRS3.band)
-    assertTrue(result.OGRS3.validationError.isNullOrEmpty())
+    assertEquals(11, result.OGRS3?.ogrs3OneYear)
+    assertEquals(20, result.OGRS3?.ogrs3TwoYear)
+    assertEquals(RiskBand.LOW, result.OGRS3?.band)
+    assertTrue(result.OGRS3?.validationError.isNullOrEmpty())
   }
 
   @Test
@@ -110,12 +107,11 @@ class OGRS3RiskProducerServiceTest {
 
     // Then
     assertNotNull(result)
-    assertEquals(OGRS3Version.V3_0, result.OGRS3!!.algorithmVersion)
-    assertNull(result.OGRS3.ogrs3OneYear)
-    assertNull(result.OGRS3.ogrs3TwoYear)
-    assertNull(result.OGRS3.band)
-    assertEquals(1, result.OGRS3.validationError?.size)
-    val error = result.OGRS3.validationError?.first()
+    assertNull(result.OGRS3?.ogrs3OneYear)
+    assertNull(result.OGRS3?.ogrs3TwoYear)
+    assertNull(result.OGRS3?.band)
+    assertEquals(1, result.OGRS3?.validationError?.size)
+    val error = result.OGRS3?.validationError?.first()
     assertEquals(ValidationErrorType.MISSING_INPUT, error?.type)
     assertEquals("ERR5 - Field is Null", error?.message)
     assertEquals(expectedFields, error?.fields)
@@ -134,12 +130,11 @@ class OGRS3RiskProducerServiceTest {
 
     // Then
     assertNotNull(result)
-    assertEquals(OGRS3Version.V3_0, result.OGRS3!!.algorithmVersion)
-    assertNull(result.OGRS3.ogrs3OneYear)
-    assertNull(result.OGRS3.ogrs3TwoYear)
-    assertNull(result.OGRS3.band)
-    assertEquals(1, result.OGRS3.validationError?.size)
-    val error = result.OGRS3.validationError?.first()
+    assertNull(result.OGRS3?.ogrs3OneYear)
+    assertNull(result.OGRS3?.ogrs3TwoYear)
+    assertNull(result.OGRS3?.band)
+    assertEquals(1, result.OGRS3?.validationError?.size)
+    val error = result.OGRS3?.validationError?.first()
     assertEquals(ValidationErrorType.NO_MATCHING_INPUT, error?.type)
     assertEquals("Error: Conviction date cannot be before date of birth.", error?.message)
   }

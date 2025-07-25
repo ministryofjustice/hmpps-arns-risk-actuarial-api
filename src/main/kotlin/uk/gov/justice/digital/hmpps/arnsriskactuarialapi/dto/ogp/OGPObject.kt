@@ -1,10 +1,8 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp
 
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.OGPVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 
 data class OGPObject(
-  val algorithmVersion: OGPVersion,
   val ogpReoffendingOneYear: Int?,
   val ogpReoffendingTwoYear: Int?,
   val bandOGP: OGPBand?,

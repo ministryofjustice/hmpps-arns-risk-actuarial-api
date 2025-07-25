@@ -1,11 +1,6 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi
 
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.MSTVersion
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.OGPVersion
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.OGRS3Version
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.OVPVersion
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.PNIVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
@@ -18,17 +13,17 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.ProgrammeNeedIdentifier
 import java.time.LocalDate
 
-fun emptyOVP(): OVPObject = OVPObject(OVPVersion.V1_0, null, null, null, null)
+fun emptyOVP(): OVPObject = OVPObject(null, null, null, null)
 
-fun emptyOGRS3(): OGRS3Object = OGRS3Object(OGRS3Version.V3_0, null, null, null, null)
+fun emptyOGRS3(): OGRS3Object = OGRS3Object(null, null, null, null)
 
-fun emptyOGP(): OGPObject = OGPObject(OGPVersion.V1_0, null, null, null, null, null)
+fun emptyOGP(): OGPObject = OGPObject(null, null, null, null, null)
 
-fun emptyMST(): MSTObject = MSTObject(MSTVersion.V1_0, null, null, null, null)
+fun emptyMST(): MSTObject = MSTObject(null, null, null, null)
 
-fun omittedPNI(): PNIObject = PNIObject(PNIVersion.V1_0, ProgrammeNeedIdentifier.OMISSION, null)
+fun omittedPNI(): PNIObject = PNIObject(ProgrammeNeedIdentifier.OMISSION, null)
 
-fun emptyContext() = RiskScoreContext()
+fun emptyContext() = RiskScoreContext(version = RiskScoreVersion.V1_0)
 
 object RiskScoreRequestTestConstants {
   val NULL_REQUEST = RiskScoreRequest(version = RiskScoreVersion.V1_0)

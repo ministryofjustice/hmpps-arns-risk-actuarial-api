@@ -8,7 +8,6 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.junit.jupiter.MockitoExtension
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.MSTVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
@@ -31,11 +30,10 @@ class MSTScoreProducerServiceTest {
 
     // Then
     assertNotNull(result)
-    assertEquals(MSTVersion.V1_0, result.MST!!.algorithmVersion)
-    assertEquals(10, result.MST.maturityScore)
-    assertEquals(true, result.MST.maturityFlag)
-    assertEquals(true, result.MST.isMstApplicable)
-    assertTrue(result.MST.validationError.isNullOrEmpty())
+    assertEquals(10, result.MST?.maturityScore)
+    assertEquals(true, result.MST?.maturityFlag)
+    assertEquals(true, result.MST?.isMstApplicable)
+    assertTrue(result.MST?.validationError.isNullOrEmpty())
   }
 
   @Test
@@ -48,11 +46,10 @@ class MSTScoreProducerServiceTest {
 
     // Then
     assertNotNull(result)
-    assertEquals(MSTVersion.V1_0, result.MST!!.algorithmVersion)
-    assertEquals(9, result.MST.maturityScore)
-    assertEquals(false, result.MST.maturityFlag)
-    assertEquals(true, result.MST.isMstApplicable)
-    assertTrue(result.MST.validationError.isNullOrEmpty())
+    assertEquals(9, result.MST?.maturityScore)
+    assertEquals(false, result.MST?.maturityFlag)
+    assertEquals(true, result.MST?.isMstApplicable)
+    assertTrue(result.MST?.validationError.isNullOrEmpty())
   }
 
   @Test
@@ -79,11 +76,10 @@ class MSTScoreProducerServiceTest {
 
     // Then
     assertNotNull(result)
-    assertEquals(MSTVersion.V1_0, result.MST!!.algorithmVersion)
-    assertEquals(null, result.MST.maturityScore)
-    assertEquals(null, result.MST.maturityFlag)
-    assertEquals(null, result.MST.isMstApplicable)
-    assertTrue(result.MST.validationError?.size == 1)
+    assertEquals(null, result.MST?.maturityScore)
+    assertEquals(null, result.MST?.maturityFlag)
+    assertEquals(null, result.MST?.isMstApplicable)
+    assertTrue(result.MST?.validationError?.size == 1)
 
     val expectedError = ValidationErrorResponse(
       ValidationErrorType.MISSING_INPUT,
@@ -103,7 +99,7 @@ class MSTScoreProducerServiceTest {
         "Understands peoples views",
       ),
     )
-    val actualError = result.MST.validationError
+    val actualError = result.MST?.validationError
 
     assertTrue(actualError?.size == 1)
     assertEquals(expectedError, actualError?.first())
@@ -117,18 +113,17 @@ class MSTScoreProducerServiceTest {
 
     // Then
     assertNotNull(result)
-    assertEquals(MSTVersion.V1_0, result.MST!!.algorithmVersion)
-    assertEquals(null, result.MST.maturityScore)
-    assertEquals(null, result.MST.maturityFlag)
-    assertEquals(false, result.MST.isMstApplicable)
-    assertTrue(result.MST.validationError?.size == 1)
+    assertEquals(null, result.MST?.maturityScore)
+    assertEquals(null, result.MST?.maturityFlag)
+    assertEquals(false, result.MST?.isMstApplicable)
+    assertTrue(result.MST?.validationError?.size == 1)
 
     val expectedError = ValidationErrorResponse(
       ValidationErrorType.NOT_APPLICABLE,
       "ERR - Does not meet eligibility criteria",
       listOf("Date of birth"),
     )
-    val actualError = result.MST.validationError
+    val actualError = result.MST?.validationError
 
     assertTrue(actualError?.size == 1)
     assertEquals(expectedError, actualError?.first())
@@ -142,18 +137,17 @@ class MSTScoreProducerServiceTest {
 
     // Then
     assertNotNull(result)
-    assertEquals(MSTVersion.V1_0, result.MST!!.algorithmVersion)
-    assertEquals(null, result.MST.maturityScore)
-    assertEquals(null, result.MST.maturityFlag)
-    assertEquals(false, result.MST.isMstApplicable)
-    assertTrue(result.MST.validationError?.size == 1)
+    assertEquals(null, result.MST?.maturityScore)
+    assertEquals(null, result.MST?.maturityFlag)
+    assertEquals(false, result.MST?.isMstApplicable)
+    assertTrue(result.MST?.validationError?.size == 1)
 
     val expectedError = ValidationErrorResponse(
       ValidationErrorType.NOT_APPLICABLE,
       "ERR - Does not meet eligibility criteria",
       listOf("Gender"),
     )
-    val actualError = result.MST.validationError
+    val actualError = result.MST?.validationError
 
     assertTrue(actualError?.size == 1)
     assertEquals(expectedError, actualError?.first())
@@ -167,18 +161,17 @@ class MSTScoreProducerServiceTest {
 
     // Then
     assertNotNull(result)
-    assertEquals(MSTVersion.V1_0, result.MST!!.algorithmVersion)
-    assertEquals(null, result.MST.maturityScore)
-    assertEquals(null, result.MST.maturityFlag)
-    assertEquals(false, result.MST.isMstApplicable)
-    assertTrue(result.MST.validationError?.size == 1)
+    assertEquals(null, result.MST?.maturityScore)
+    assertEquals(null, result.MST?.maturityFlag)
+    assertEquals(false, result.MST?.isMstApplicable)
+    assertTrue(result.MST?.validationError?.size == 1)
 
     val expectedError = ValidationErrorResponse(
       ValidationErrorType.NOT_APPLICABLE,
       "ERR - Does not meet eligibility criteria",
       listOf("Gender", "Date of birth"),
     )
-    val actualError = result.MST.validationError
+    val actualError = result.MST?.validationError
 
     assertTrue(actualError?.size == 1)
     assertEquals(expectedError, actualError?.first())

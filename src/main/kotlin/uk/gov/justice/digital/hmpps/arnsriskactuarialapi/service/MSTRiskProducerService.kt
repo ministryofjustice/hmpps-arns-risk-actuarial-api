@@ -1,7 +1,6 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
 import org.springframework.stereotype.Service
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.MSTVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
@@ -17,13 +16,11 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.mstI
 class MSTRiskProducerService : RiskScoreProducer {
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
-    val algorithmVersion = request.version.mstVersion
     val errors = mstInitialValidation(request)
 
     if (!errors.isEmpty()) {
       return context.copy(
         MST = MSTObject(
-          algorithmVersion,
           null,
           null,
           null,
@@ -48,13 +45,12 @@ class MSTRiskProducerService : RiskScoreProducer {
     )
 
     return context.copy(
-      MST = getMstObject(validRequest, algorithmVersion, errors),
+      MST = getMstObject(validRequest, errors),
     )
   }
 
   private fun getMstObject(
     request: MSTRequestValidated,
-    algorithmVersion: MSTVersion,
     errors: MutableList<ValidationErrorResponse>,
   ): MSTObject {
     val currentAge = calculateAge(request.dateOfBirth)
@@ -75,7 +71,6 @@ class MSTRiskProducerService : RiskScoreProducer {
       ).sum()
 
       return MSTObject(
-        algorithmVersion,
         maturityScore,
         getMaturityFlag(maturityScore),
         true,
@@ -84,7 +79,6 @@ class MSTRiskProducerService : RiskScoreProducer {
     }
 
     return MSTObject(
-      algorithmVersion,
       null,
       null,
       false,

@@ -1,28 +1,14 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.integration.controller
 
 import org.junit.jupiter.api.Test
-import org.mockito.kotlin.whenever
 import org.springframework.http.MediaType
-import org.springframework.test.context.bean.override.mockito.MockitoBean
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.OGRS3Version
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3Object
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyMST
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOGP
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOVP
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.integration.IntegrationTestBase
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.omittedPNI
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.RiskScoreService
 import java.time.LocalDate
 
 class RiskScoreControllerTest : IntegrationTestBase() {
-
-  @MockitoBean
-  private lateinit var riskScoreService: RiskScoreService
 
   private val basicRequest = RiskScoreRequest(
     RiskScoreVersion.V1_0,
@@ -37,17 +23,6 @@ class RiskScoreControllerTest : IntegrationTestBase() {
 
   @Test
   fun `postRiskScores returns 200 ok and risk score for correct user role`() {
-    val ogrs3 = OGRS3Object(
-      OGRS3Version.V3_0,
-      1,
-      1,
-      RiskBand.LOW,
-      listOf(),
-    )
-
-    whenever(riskScoreService.riskScoreProducer(basicRequest))
-      .thenReturn(RiskScoreResponse(ogrs3, emptyOVP(), emptyOGP(), emptyMST(), omittedPNI()))
-
     webTestClient.post()
       .uri("/risk-scores/v1")
       .headers(setAuthorisation(roles = listOf("ARNS_RISK_ACTUARIAL")))
@@ -56,11 +31,37 @@ class RiskScoreControllerTest : IntegrationTestBase() {
       .expectStatus()
       .isOk
       .expectBody()
-      .jsonPath("$.ogrs3.algorithmVersion").isEqualTo(ogrs3.algorithmVersion)
-      .jsonPath("$.ogrs3.ogrs3OneYear").isEqualTo(ogrs3.ogrs3OneYear)
-      .jsonPath("$.ogrs3.ogrs3TwoYear").isEqualTo(ogrs3.ogrs3TwoYear)
-      .jsonPath("$.ogrs3.band").isEqualTo(ogrs3.band)
+      .jsonPath("$.version").isEqualTo(RiskScoreVersion.V1_0)
+      .jsonPath("$.ogrs3.ogrs3OneYear").isEqualTo(20)
+      .jsonPath("$.ogrs3.ogrs3TwoYear").isEqualTo(34)
+      .jsonPath("$.ogrs3.band").isEqualTo("LOW")
       .jsonPath("$.ogrs3.validationError").isEmpty()
+  }
+
+  @Test
+  fun `postRiskScores returns 200 ok and risk score for correct user role - default version`() {
+    webTestClient.post()
+      .uri("/risk-scores/v1")
+      .headers(setAuthorisation(roles = listOf("ARNS_RISK_ACTUARIAL")))
+      .contentType(MediaType.APPLICATION_JSON)
+      .bodyValue(
+        """
+        {
+          "gender": "MALE",
+          "dateOfBirth": "1965-01-01",
+          "dateOfCurrentConviction": "2024-01-01",
+          "dateAtStartOfFollowup": "2027-01-01",
+          "totalNumberOfSanctions": 3,
+          "ageAtFirstSanction": 50,
+          "currentOffence": "05101"
+        }
+        """.trimIndent(),
+      )
+      .exchange()
+      .expectStatus()
+      .isOk
+      .expectBody()
+      .jsonPath("$.version").isEqualTo(RiskScoreVersion.V1_0)
   }
 
   @Test
@@ -91,7 +92,7 @@ class RiskScoreControllerTest : IntegrationTestBase() {
       .bodyValue(
         """
         {
-          "version": 1,
+          "version": "V1_0",
           "gender": "INVALID_OPTION",
           "dateOfBirth": null,
           "dateOfCurrentConviction": null,

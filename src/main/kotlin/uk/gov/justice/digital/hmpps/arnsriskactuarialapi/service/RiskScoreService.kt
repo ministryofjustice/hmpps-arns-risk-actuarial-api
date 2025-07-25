@@ -31,7 +31,7 @@ class RiskScoreService {
     ogpRiskProducerService,
     mstRiskProducerService,
     pniRiskProducerService,
-  ).fold(RiskScoreContext()) { context, service ->
+  ).fold(RiskScoreContext(riskScoreRequest.version)) { context, service ->
     service.getRiskScore(riskScoreRequest, context)
   }.toRiskScoreResponse()
 }

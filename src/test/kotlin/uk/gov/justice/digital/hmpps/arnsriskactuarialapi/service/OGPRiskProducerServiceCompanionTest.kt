@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.OGPVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPInputValidated
@@ -15,8 +14,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.OGPRiskProducer
 class OGPRiskProducerServiceCompanionTest {
 
   companion object {
-
-    val ALGORITHM_VERSION = OGPVersion.V1_0
 
     @JvmStatic
     fun getOGPTestCases(): List<Arguments> = listOf(
@@ -34,7 +31,6 @@ class OGPRiskProducerServiceCompanionTest {
           proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
         ),
         OGPObject(
-          algorithmVersion = ALGORITHM_VERSION,
           ogpReoffendingOneYear = 53,
           ogpReoffendingTwoYear = 68,
           bandOGP = OGPBand.HIGH,
@@ -56,7 +52,6 @@ class OGPRiskProducerServiceCompanionTest {
           proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
         ),
         OGPObject(
-          algorithmVersion = OGPVersion.V1_0,
           ogpReoffendingOneYear = 40,
           ogpReoffendingTwoYear = 55,
           bandOGP = OGPBand.MEDIUM,
@@ -78,7 +73,6 @@ class OGPRiskProducerServiceCompanionTest {
           proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
         ),
         OGPObject(
-          algorithmVersion = ALGORITHM_VERSION,
           ogpReoffendingOneYear = 26,
           ogpReoffendingTwoYear = 39,
           bandOGP = OGPBand.MEDIUM,
@@ -100,7 +94,6 @@ class OGPRiskProducerServiceCompanionTest {
           proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
         ),
         OGPObject(
-          algorithmVersion = ALGORITHM_VERSION,
           ogpReoffendingOneYear = 15,
           ogpReoffendingTwoYear = 24,
           bandOGP = OGPBand.LOW,
@@ -125,10 +118,9 @@ class OGPRiskProducerServiceCompanionTest {
       understandsPeoplesViews = ProblemLevel.NO_PROBLEMS,
       proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
     )
-    val output = getOGPOutput(input, ALGORITHM_VERSION, mutableListOf())
+    val output = getOGPOutput(input, mutableListOf())
     println(output)
     val expected = OGPObject(
-      algorithmVersion = ALGORITHM_VERSION,
       ogpReoffendingOneYear = 53,
       ogpReoffendingTwoYear = 68,
       bandOGP = OGPBand.HIGH,
@@ -141,6 +133,6 @@ class OGPRiskProducerServiceCompanionTest {
   @ParameterizedTest()
   @MethodSource("getOGPTestCases")
   fun `testing from OGP test cases`(input: OGPInputValidated, expected: OGPObject) {
-    assertEquals(expected, getOGPOutput(input, ALGORITHM_VERSION, mutableListOf()))
+    assertEquals(expected, getOGPOutput(input, mutableListOf()))
   }
 }

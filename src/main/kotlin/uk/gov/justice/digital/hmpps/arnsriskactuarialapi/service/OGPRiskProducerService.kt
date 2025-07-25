@@ -1,7 +1,6 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
 import org.springframework.stereotype.Service
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.OGPVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
@@ -39,12 +38,11 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.getM
 class OGPRiskProducerService : RiskScoreProducer {
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
-    val algorithmVersion = request.version.ogpVersion
     val errors = ogpInitialValidation(request, context)
 
     if (!errors.isEmpty()) {
       return context
-        .copy(OGP = OGPObject(algorithmVersion, null, null, null, null, errors))
+        .copy(OGP = OGPObject(null, null, null, null, errors))
     }
 
     val validInput = OGPInputValidated(
@@ -61,12 +59,12 @@ class OGPRiskProducerService : RiskScoreProducer {
     )
 
     return context.copy(
-      OGP = getOGPOutput(validInput, algorithmVersion, errors),
+      OGP = getOGPOutput(validInput, errors),
     )
   }
 
   companion object {
-    fun getOGPOutput(input: OGPInputValidated, algorithmVersion: OGPVersion, errors: MutableList<ValidationErrorResponse>): OGPObject = runCatching {
+    fun getOGPOutput(input: OGPInputValidated, errors: MutableList<ValidationErrorResponse>): OGPObject = runCatching {
       // Transformation Step
       val currentAccommodationOffendersScore =
         currentAccommodationOffendersScore(input.currentAccommodation)
@@ -122,7 +120,7 @@ class OGPRiskProducerService : RiskScoreProducer {
       val ogpReoffendingTwoYear = ogpReoffendingTwoYear(totalOGPScore)
       val bandOGP = bandOGP(ogpReoffendingTwoYear)
       // Create OGP Output
-      OGPObject(algorithmVersion, ogpReoffendingOneYear, ogpReoffendingTwoYear, bandOGP, totalOGPScore, emptyList())
+      OGPObject(ogpReoffendingOneYear, ogpReoffendingTwoYear, bandOGP, totalOGPScore, emptyList())
     }.getOrElse {
       errors.add(
         ValidationErrorResponse(
@@ -132,7 +130,7 @@ class OGPRiskProducerService : RiskScoreProducer {
         ),
       )
       // Create OGP Output
-      OGPObject(algorithmVersion, null, null, null, null, errors)
+      OGPObject(null, null, null, null, errors)
     }
 
     fun ogpInitialValidation(
