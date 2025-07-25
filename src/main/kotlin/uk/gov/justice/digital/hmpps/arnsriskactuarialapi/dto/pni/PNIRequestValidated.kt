@@ -24,6 +24,8 @@ data class PNIRequestValidated(
   val impulsivityBehaviour: ProblemLevel?,
   val temperControl: ProblemLevel?,
   val ogrs3TwoYear: Int?,
+  val ovp: Int?,
+  val rsr: Int?,
   val ovpRiskBand: RiskBand?,
   val ospDCCRiskBand: RiskBand?,
   val ospIICIRiskBand: RiskBand?,

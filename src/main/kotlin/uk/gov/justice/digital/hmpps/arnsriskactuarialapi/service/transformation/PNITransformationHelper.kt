@@ -1,28 +1,37 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.NeedScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIRequestValidated
+
+fun getOverallNeedClassification(overallNeedsScore: Int): NeedScore? = when (overallNeedsScore) {
+  in 0..2 -> NeedScore.LOW
+  in 3..5 -> NeedScore.MEDIUM
+  in 6..8 -> NeedScore.HIGH
+  else -> null
+}
 
 object SexDomainScore {
   private fun getMissingFields(request: PNIRequestValidated) = mutableListOf<String>().apply {
     if (request.sexualPreoccupation == null) {
-      add("sexualPreoccupation in SexDomainScore is null")
+      add("sexualPreoccupation")
     }
     if (request.sexualInterestsOffenceRelated == null) {
-      add("sexualInterestsOffenceRelated in SexDomainScore is null")
+      add("sexualInterestsOffenceRelated")
     }
     if (request.emotionalCongruence == null) {
-      add("emotionalCongruence in SexDomainScore is null")
+      add("emotionalCongruence")
     }
   }
 
   private fun totalScore(request: PNIRequestValidated): Int? {
+    val hasNoMissingFields = getMissingFields(request).isEmpty()
     val interimScore = listOfNotNull(
       request.sexualPreoccupation?.score,
       request.sexualInterestsOffenceRelated?.score,
       request.emotionalCongruence?.score,
     ).sum()
-    return if (interimScore >= 4) {
+    return if (interimScore >= 4 || hasNoMissingFields) {
       interimScore
     } else {
       null // cannot be calculated
@@ -45,19 +54,20 @@ object SexDomainScore {
 object ThinkingDomainScore {
   private fun getMissingFields(request: PNIRequestValidated) = mutableListOf<String>().apply {
     if (request.proCriminalAttitudes == null) {
-      add("proCriminalAttitudes in SelfManagementDomainScore is null")
+      add("proCriminalAttitudes")
     }
     if (request.hostileOrientation == null) {
-      add("hostileOrientation in SelfManagementDomainScore is null")
+      add("hostileOrientation")
     }
   }
 
   private fun totalScore(request: PNIRequestValidated): Int? {
+    val hasNoMissingFields = getMissingFields(request).isEmpty()
     val interimScore = listOfNotNull(
       request.proCriminalAttitudes?.score,
       request.hostileOrientation?.score,
     ).sum()
-    return if (request.proCriminalAttitudes == ProblemLevel.SIGNIFICANT_PROBLEMS) {
+    return if (request.proCriminalAttitudes == ProblemLevel.SIGNIFICANT_PROBLEMS || hasNoMissingFields) {
       interimScore
     } else {
       null // cannot be calculated
@@ -80,27 +90,28 @@ object ThinkingDomainScore {
 object RelationshipDomainScore {
   private fun getMissingFields(request: PNIRequestValidated) = mutableListOf<String>().apply {
     if (request.currentRelationshipFamilyMembers == null) {
-      add("currentRelationshipFamilyMembers in RelationshipDomainScore is null")
+      add("currentRelationshipFamilyMembers")
     }
     if (request.previousCloseRelationships == null) {
-      add("previousCloseRelationships in RelationshipDomainScore is null")
+      add("previousCloseRelationships")
     }
     if (request.easilyInfluencedByCriminals == null) {
-      add("easilyInfluencedByCriminals in RelationshipDomainScore is null")
+      add("easilyInfluencedByCriminals")
     }
     if (request.controllingBehaviour == null) {
-      add("controllingBehaviour in RelationshipDomainScore is null")
+      add("controllingBehaviour")
     }
   }
 
   private fun totalScore(request: PNIRequestValidated): Int? {
+    val hasNoMissingFields = getMissingFields(request).isEmpty()
     val interimScore = listOfNotNull(
       request.currentRelationshipFamilyMembers?.score,
       request.previousCloseRelationships?.score,
       request.easilyInfluencedByCriminals?.score,
       request.controllingBehaviour?.score,
     ).sum()
-    return if (interimScore >= 5) {
+    return if (interimScore >= 5 || hasNoMissingFields) {
       interimScore
     } else {
       null // cannot be calculated
@@ -123,27 +134,28 @@ object RelationshipDomainScore {
 object SelfManagementDomainScore {
   private fun getMissingFields(request: PNIRequestValidated) = mutableListOf<String>().apply {
     if (request.impulsivityBehaviour == null) {
-      add("impulsivityBehaviour in SelfManagementDomainScore is null")
+      add("impulsivityBehaviour")
     }
     if (request.temperControl == null) {
-      add("temperControl in SelfManagementDomainScore is null")
+      add("temperControl")
     }
     if (request.problemSolvingSkills == null) {
-      add("problemSolvingSkills in SelfManagementDomainScore is null")
+      add("problemSolvingSkills")
     }
     if (request.difficultiesCoping == null) {
-      add("difficultiesCoping in SelfManagementDomainScore is null")
+      add("difficultiesCoping")
     }
   }
 
   private fun totalScore(request: PNIRequestValidated): Int? {
+    val hasNoMissingFields = getMissingFields(request).isEmpty()
     val interimScore = listOfNotNull(
       request.impulsivityBehaviour?.score,
       request.temperControl?.score,
       request.problemSolvingSkills?.score,
       request.difficultiesCoping?.score,
     ).sum()
-    return if (interimScore >= 5) {
+    return if (interimScore >= 5 || hasNoMissingFields) {
       interimScore
     } else {
       null // cannot be calculated
