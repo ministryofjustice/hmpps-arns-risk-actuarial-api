@@ -87,6 +87,22 @@ fun addMissingFields(
   return errors
 }
 
+fun addUnexpectedFields(
+  unexpectedFields: MutableList<String>,
+  errors: MutableList<ValidationErrorResponse>,
+): MutableList<ValidationErrorResponse> {
+  if (unexpectedFields.isNotEmpty()) {
+    errors.add(
+      ValidationErrorResponse(
+        type = ValidationErrorType.UNEXPECTED_VALUE,
+        message = "ERR - Field is unexpected",
+        fields = unexpectedFields,
+      ),
+    )
+  }
+  return errors
+}
+
 fun addMissingCriteriaValidation(
   criteriaFields: MutableList<String>,
   errors: MutableList<ValidationErrorResponse>,
