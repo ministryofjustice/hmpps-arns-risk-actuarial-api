@@ -28,7 +28,7 @@ data class OPDRequestValidated(
   val currentPsychologicalProblems: ProblemLevel? = null,
   val wellbeingEmotionalLinkedRiskOfSeriousHarm: Boolean,
   val thinkingAndBehaviourLinedToRiskOfSeriousHarm: Boolean,
-  val custodialSentence: Boolean, // TBC check if this is the same as 'custody'
+  val custodialSentence: Boolean,
   val financialRelianceOnOthers: ProblemLevel? = null,
   val manipulativePredatoryBehaviour: ProblemLevel? = null,
   val childhoodBehaviour: ProblemLevel? = null,

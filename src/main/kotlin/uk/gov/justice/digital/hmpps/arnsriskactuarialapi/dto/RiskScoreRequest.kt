@@ -73,7 +73,7 @@ data class RiskScoreRequest(
   val currentPsychologicalProblems: ProblemLevel? = null,
   val wellbeingEmotionalLinkedRiskOfSeriousHarm: Boolean? = null,
   val thinkingAndBehaviourLinedToRiskOfSeriousHarm: Boolean? = null,
-  val custodialSentence: Boolean? = null, // TBC check if this is the same as 'custody'
+  val custodialSentence: Boolean? = null,
   val financialRelianceOnOthers: ProblemLevel? = null,
   val manipulativePredatoryBehaviour: ProblemLevel? = null,
   val childhoodBehaviour: ProblemLevel? = null,
