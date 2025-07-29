@@ -6,8 +6,26 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.opd.OPDObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.opd.OPDRequestValidated
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.opd.OPDResult
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.ageAtFirstSanctionOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.allUnansweredQuestion
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.attitudesStableBehaviourOffendersScoreOpd
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.childhoodBehaviourOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.controllingBehaviourOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.excessiveOrSadisticViolenceOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.financialRelianceOnOthersOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.historyOfMentalHealthDifficultiesOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.impactOfOffendingOnOthersOffendersScoreOpd
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.impulsivityBehaviourOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.manipulativePredatoryBehaviourOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.presenceOfChildhoodDifficultiesOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.selfHarmSuicideAttemptOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.severeChallengingBehavioursOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.violenceOrThreatOfViolenceOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.opdInitialValidation
 
 @Service
@@ -24,7 +42,7 @@ class OPDRiskProducerService : RiskScoreProducer {
 
     if (errors.isNotEmpty()) {
       return context
-        .copy(OPD = OPDObject(opdEligibility = false, opdCheck = null, errors))
+        .copy(OPD = OPDObject(opdResult = null, opdCheck = false, validationError = errors))
     }
 
     // request validated
@@ -39,7 +57,7 @@ class OPDRiskProducerService : RiskScoreProducer {
       difficultiesCoping = request.difficultiesCoping,
       domesticAbusePartner = request.domesticAbusePartner,
       domesticAbuseFamily = request.domesticAbuseFamily,
-      ageAtFirstSanction = request.ageAtFirstSanction,
+      ageAtFirstSanction = request.ageAtFirstSanction?.toInt(),
       financialRelianceOnOthers = request.financialRelianceOnOthers,
       manipulativePredatoryBehaviour = request.manipulativePredatoryBehaviour,
       childhoodBehaviour = request.childhoodBehaviour,
@@ -47,6 +65,8 @@ class OPDRiskProducerService : RiskScoreProducer {
       attitudesStableBehaviour = request.attitudesStableBehaviour,
       impulsivityBehaviour = request.impulsivityBehaviour,
       attitudeTowardsSupervision = request.attitudeTowardsSupervision,
+      currentPsychiatricTreatmentOrPending = request.currentPsychiatricTreatmentOrPending,
+      controllingBehaviour = request.controllingBehaviour,
       opdOverride = request.opdOverride ?: false,
       eligibleForMappa = request.eligibleForMappa ?: false,
       carryingOrUsingWeapon = request.carryingOrUsingWeapon ?: false,
@@ -75,7 +95,7 @@ class OPDRiskProducerService : RiskScoreProducer {
       impactOfOffendingOnOthers = request.impactOfOffendingOnOthers ?: false,
     )
 
-    // transformation
+    // checks
     val isViolentOrSexualType =
       offenceGroupParametersService.isViolentOrSexualType(validatedRequest.currentOffence)
 
@@ -83,27 +103,153 @@ class OPDRiskProducerService : RiskScoreProducer {
       Gender.MALE -> isOpdApplicableMale(validatedRequest, isViolentOrSexualType)
       Gender.FEMALE -> isOpdApplicableFemale(validatedRequest)
     }
-
     if (!isOpdApplicable) {
       return context.copy(
         OPD = OPDObject(
-          opdEligibility = false,
-          opdCheck = null,
-          validationError = emptyList(),
+          opdCheck = false,
+          opdResult = null,
+          validationError = errors,
         ),
       )
     }
 
-    // proceed with score
+    // calculations
+    val allMaleQuestionsUnanswered: Boolean = hasAllMaleQuestionsUnanswered(request)
+    val allFemaleQuestionsUnanswered: Boolean = hasAllFemaleQuestionsUnanswered(request)
+    if (allMaleQuestionsUnanswered || allFemaleQuestionsUnanswered) {
+      return context.copy(
+        OPD = OPDObject(
+          opdCheck = true,
+          opdResult = null,
+          validationError = errors,
+        ),
+      )
+    }
+
+    return getOPDResult(validatedRequest, context, errors)
+  }
+
+  private fun getOPDResult(
+    validatedRequest: OPDRequestValidated,
+    context: RiskScoreContext,
+    errors: List<ValidationErrorResponse>,
+  ): RiskScoreContext = runCatching {
+    val opdResult: OPDResult? = when (validatedRequest.gender) {
+      Gender.MALE -> {
+        val opdMalePersonalityScore =
+          listOf(
+            ageAtFirstSanctionOffendersScore(validatedRequest),
+            violenceOrThreatOfViolenceOffendersScore(validatedRequest),
+            excessiveOrSadisticViolenceOffendersScore(validatedRequest),
+            impactOfOffendingOnOthersOffendersScoreOpd(validatedRequest),
+            financialRelianceOnOthersOffendersScore(validatedRequest),
+            manipulativePredatoryBehaviourOffendersScore(validatedRequest),
+            attitudesStableBehaviourOffendersScoreOpd(validatedRequest),
+            childhoodBehaviourOffendersScore(validatedRequest),
+            impulsivityBehaviourOffendersScore(validatedRequest),
+            controllingBehaviourOffendersScore(validatedRequest),
+          ).sum()
+
+        val opdMaleIndicatorScore =
+          listOf(
+            presenceOfChildhoodDifficultiesOffendersScore(validatedRequest),
+            historyOfMentalHealthDifficultiesOffendersScore(validatedRequest),
+            selfHarmSuicideAttemptOffendersScore(validatedRequest),
+            severeChallengingBehavioursOffendersScore(validatedRequest),
+          ).sum()
+
+        if (opdMalePersonalityScore >= 7 || opdMaleIndicatorScore >= 2 || validatedRequest.opdOverride) {
+          OPDResult.SCREEN_IN
+        } else {
+          OPDResult.SCREEN_OUT
+        }
+      }
+
+      Gender.FEMALE -> {
+        val opdFemaleScore = null
+        OPDResult.SCREEN_OUT // temp
+      }
+    }
 
     return context.copy(
       OPD = OPDObject(
-        opdEligibility = true,
-        opdCheck = null,
+        opdCheck = true,
+        opdResult = opdResult,
         validationError = emptyList(),
       ),
     )
+  }.getOrElse {
+    errors +
+      ValidationErrorResponse(
+        type = ValidationErrorType.NO_MATCHING_INPUT,
+        message = "Error: ${it.message}",
+        fields = null,
+      )
+    context.copy(
+      OPD = OPDObject(
+        opdCheck = false,
+        opdResult = null,
+        validationError = errors,
+      ),
+    )
   }
+
+  /**
+   * All female related questions are unanswered aka null
+   */
+  private fun hasAllFemaleQuestionsUnanswered(request: RiskScoreRequest): Boolean = request.gender == Gender.MALE &&
+    allUnansweredQuestion(
+      listOf(
+        request.carryingOrUsingWeapon,
+        request.violenceOrThreatOfViolence,
+        request.excessiveOrSadisticViolence,
+        request.offenceArson,
+        request.offenderMotivations,
+        request.offenceLinkedRiskOfSeriousHarm,
+        request.accommodationLinkedRiskOfSeriousHarm,
+        request.experienceOfChildhood,
+        request.domesticAbuse,
+        request.relationshipLinkedSeriousHarm,
+      ),
+    )
+
+  /**
+   * All male related questions are unanswered aka null
+   */
+  private fun hasAllMaleQuestionsUnanswered(
+    request: RiskScoreRequest,
+  ): Boolean = request.gender == Gender.MALE &&
+    allUnansweredQuestion(
+      listOf(
+        request.ageAtFirstSanction,
+        request.violenceOrThreatOfViolence,
+        request.excessiveOrSadisticViolence,
+        request.impactOfOffendingOnOthers,
+        request.financialRelianceOnOthers,
+        request.manipulativePredatoryBehaviour,
+        request.attitudesStableBehaviour,
+        request.childhoodBehaviour,
+        request.impulsivityBehaviour,
+        request.controllingBehaviour,
+        request.experienceOfChildhood,
+        request.childhoodBehaviour,
+        request.currentPsychologicalProblems,
+        request.currentPsychiatricProblems,
+        request.historyOfPsychiatricTreatment,
+        request.medicationMentalHealth,
+        request.patientSecureUnitOrHospital,
+        request.currentPsychiatricTreatmentOrPending,
+        request.obsessiveBehaviour,
+        request.selfHarmSuicideAttempt,
+        request.concernsAboutSuicidePast,
+        request.concernsAboutSelfHarmPast,
+        request.attitudeTowardsSupervision,
+        request.assaultedOrThreatenedStaff,
+        request.escapeOrAbsconded,
+        request.controlIssues,
+        request.breachOfTrust,
+      ),
+    )
 
   fun isOpdApplicableMale(
     request: OPDRequestValidated,

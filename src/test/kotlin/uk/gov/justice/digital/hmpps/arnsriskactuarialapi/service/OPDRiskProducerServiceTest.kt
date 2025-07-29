@@ -3,7 +3,6 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertNotNull
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
@@ -12,6 +11,7 @@ import org.mockito.kotlin.whenever
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.opd.OPDResult
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOPD
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validOPDRiskScoreRequest
@@ -26,7 +26,7 @@ class OPDRiskProducerServiceTest {
   lateinit var service: OPDRiskProducerService
 
   @Test
-  fun `should calculate OPD with an valid request, eligible  male`() {
+  fun `should calculate OPD with an valid request, eligible male SCREEN_OUT`() {
     whenever(offenceGroupParametersService.isViolentOrSexualType("02504")).thenReturn(true)
 
     val context = emptyContext().copy(
@@ -39,15 +39,58 @@ class OPDRiskProducerServiceTest {
       custodialSentence = true,
     )
 
-    val result = service.getRiskScore(request, context).OPD
-    assertNotNull(result)
-    assertEquals(true, result.opdEligibility)
+    val result = service.getRiskScore(request, context).OPD!!
+    assertEquals(true, result.opdCheck)
+    assertEquals(OPDResult.SCREEN_OUT, result.opdResult)
     assertTrue(result.validationError?.isEmpty() == true)
-    // TODO: check score
   }
 
   @Test
-  fun `should calculate OPD with an valid request, eligible  female`() {
+  fun `should calculate OPD with an valid request, eligible male SCREEN_IN with override`() {
+    whenever(offenceGroupParametersService.isViolentOrSexualType("02504")).thenReturn(true)
+
+    val context = emptyContext().copy(
+      OPD = emptyOPD(),
+    )
+    val request = validOPDRiskScoreRequest().copy(
+      currentOffence = "02504",
+      gender = Gender.MALE,
+      overallRiskForAssessment = RiskBand.HIGH,
+      custodialSentence = true,
+      opdOverride = true,
+    )
+
+    val result = service.getRiskScore(request, context).OPD!!
+    assertEquals(true, result.opdCheck)
+    assertEquals(OPDResult.SCREEN_IN, result.opdResult)
+  }
+
+  @Test
+  fun `should calculate OPD with an valid request, eligible male SCREEN_IN`() {
+    whenever(offenceGroupParametersService.isViolentOrSexualType("02504")).thenReturn(true)
+
+    val context = emptyContext().copy(
+      OPD = emptyOPD(),
+    )
+    val request = validOPDRiskScoreRequest().copy(
+      currentOffence = "02504",
+      gender = Gender.MALE,
+      overallRiskForAssessment = RiskBand.HIGH,
+      custodialSentence = true,
+      medicationMentalHealth = true,
+      historyOfPsychiatricTreatment = true,
+      currentPsychiatricTreatmentOrPending = true,
+      selfHarmSuicideAttempt = true,
+    )
+
+    val result = service.getRiskScore(request, context).OPD!!
+    assertEquals(true, result.opdCheck)
+    assertEquals(OPDResult.SCREEN_IN, result.opdResult)
+    assertTrue(result.validationError?.isEmpty() == true)
+  }
+
+  @Test
+  fun `should calculate OPD with an valid request, eligible female SCREEN_OUT`() {
     whenever(offenceGroupParametersService.isViolentOrSexualType("02504")).thenReturn(true)
 
     val context = emptyContext().copy(
@@ -60,11 +103,10 @@ class OPDRiskProducerServiceTest {
       eligibleForMappa = true,
     )
 
-    val result = service.getRiskScore(request, context).OPD
-    assertNotNull(result)
-    assertEquals(true, result.opdEligibility)
+    val result = service.getRiskScore(request, context).OPD!!
+    assertEquals(true, result.opdCheck)
+    assertEquals(OPDResult.SCREEN_OUT, result.opdResult)
     assertTrue(result.validationError?.isEmpty() == true)
-    // TODO: check score
   }
 
   @Test
@@ -81,8 +123,8 @@ class OPDRiskProducerServiceTest {
       eligibleForMappa = false,
     )
 
-    val result = service.getRiskScore(request, context).OPD
-    assertEquals(false, result?.opdEligibility)
+    val result = service.getRiskScore(request, context).OPD!!
+    assertEquals(false, result.opdCheck)
   }
 
   @Test
@@ -99,8 +141,8 @@ class OPDRiskProducerServiceTest {
       custodialSentence = false,
     )
 
-    val result = service.getRiskScore(request, context).OPD
-    assertEquals(false, result?.opdEligibility)
+    val result = service.getRiskScore(request, context).OPD!!
+    assertEquals(false, result.opdCheck)
   }
 
   @Test
@@ -112,9 +154,8 @@ class OPDRiskProducerServiceTest {
       gender = null,
     )
 
-    val result = service.getRiskScore(request, context).OPD
-    assertNotNull(result)
-    assertEquals(false, result.opdEligibility)
+    val result = service.getRiskScore(request, context).OPD!!
+    assertEquals(false, result.opdCheck)
     assertTrue(result.validationError?.isNotEmpty() == true)
     val error = result.validationError?.first()
     assertEquals(ValidationErrorType.MISSING_INPUT, error?.type)
