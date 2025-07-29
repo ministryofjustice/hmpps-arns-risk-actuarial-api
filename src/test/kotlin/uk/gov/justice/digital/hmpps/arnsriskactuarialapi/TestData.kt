@@ -9,6 +9,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.mst.MSTObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3Object
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.opd.OPDObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ovp.OVPObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIRequestValidated
@@ -22,6 +23,8 @@ fun emptyOGRS3(): OGRS3Object = OGRS3Object(null, null, null, null)
 fun emptyOGP(): OGPObject = OGPObject(null, null, null, null, null)
 
 fun emptyMST(): MSTObject = MSTObject(null, null, null, null)
+
+fun emptyOPD(): OPDObject = OPDObject(false, null, emptyList())
 
 fun omittedPNI(): PNIObject = PNIObject(ProgrammeNeedIdentifier.OMISSION, null)
 
@@ -163,6 +166,53 @@ fun validPNIRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
   community = true,
   saraRiskToPartner = RiskBand.LOW,
   saraRiskToOthers = RiskBand.LOW,
+)
+
+fun validOPDRiskScoreRequest() = RiskScoreRequest(
+  version = RiskScoreVersion.V1_0,
+  overallRiskForAssessment = RiskBand.HIGH,
+  highestRiskLevel = RiskBand.HIGH,
+  currentOffence = "02700",
+  opdOverride = false,
+  eligibleForMappa = false,
+  carryingOrUsingWeapon = false,
+  violenceOrThreatOfViolence = false,
+  excessiveOrSadisticViolence = false,
+  offenceArson = false,
+  offenceLinkedRiskOfSeriousHarm = false,
+  offenderMotivations = false,
+  gender = Gender.MALE,
+  accommodationLinkedRiskOfSeriousHarm = false,
+  experienceOfChildhood = ProblemLevel.NO_PROBLEMS,
+  difficultiesCoping = ProblemLevel.NO_PROBLEMS,
+  domesticAbuse = false,
+  domesticAbusePartner = null,
+  domesticAbuseFamily = null,
+  relationshipLinkedSeriousHarm = false,
+  currentPsychologicalProblems = ProblemLevel.NO_PROBLEMS,
+  wellbeingEmotionalLinkedRiskOfSeriousHarm = false,
+  thinkingAndBehaviourLinedToRiskOfSeriousHarm = false,
+  custodialSentence = false,
+  financialRelianceOnOthers = ProblemLevel.NO_PROBLEMS,
+  manipulativePredatoryBehaviour = ProblemLevel.NO_PROBLEMS,
+  childhoodBehaviour = ProblemLevel.NO_PROBLEMS,
+  currentPsychiatricProblems = ProblemLevel.NO_PROBLEMS,
+  historyOfPsychiatricTreatment = false,
+  medicationMentalHealth = false,
+  patientSecureUnitOrHospital = false,
+  obsessiveBehaviour = false,
+  selfHarmSuicideAttempt = false,
+  concernsAboutSuicidePast = false,
+  concernsAboutSelfHarmPast = false,
+  attitudeTowardsSupervision = ProblemLevel.NO_PROBLEMS,
+  assaultedOrThreatenedStaff = false,
+  escapeOrAbsconded = false,
+  controlIssues = false,
+  breachOfTrust = false,
+  impactOfOffendingOnOthers = false,
+  attitudesStableBehaviour = ProblemLevel.NO_PROBLEMS,
+  impulsivityBehaviour = ProblemLevel.NO_PROBLEMS,
+
 )
 
 fun pniRequest(

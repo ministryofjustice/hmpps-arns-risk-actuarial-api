@@ -50,6 +50,19 @@ class CommonValidationHelperTest {
     assertEquals(expected, errorResponses)
   }
 
+  @Test
+  fun `addUnexpectedFields should add unexpected errors`() {
+    val errorResponses = addUnexpectedFields(mutableListOf("Domestic abuse partner", "Domestic abuse family"), mutableListOf())
+    val expected = listOf(
+      ValidationErrorResponse(
+        ValidationErrorType.UNEXPECTED_VALUE,
+        "ERR - Field is unexpected",
+        listOf("Domestic abuse partner", "Domestic abuse family"),
+      ),
+    )
+    assertEquals(expected, errorResponses)
+  }
+
   @ParameterizedTest()
   @MethodSource("getRiskScoreRequests")
   fun `error responses are found correctly`(request: RiskScoreRequest, expected: List<String>) {

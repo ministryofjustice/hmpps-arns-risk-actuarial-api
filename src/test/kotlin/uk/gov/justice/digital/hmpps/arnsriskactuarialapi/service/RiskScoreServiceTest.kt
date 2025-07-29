@@ -14,6 +14,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyMST
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOGP
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOGRS3
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOPD
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOVP
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.omittedPNI
 
@@ -31,6 +32,9 @@ class RiskScoreServiceTest {
 
   @Mock
   private lateinit var mstRiskProducerService: MSTRiskProducerService
+
+  @Mock
+  private lateinit var opdRiskProducerService: OPDRiskProducerService
 
   @Mock
   private lateinit var pniRiskProducerService: PNIRiskProducerService
@@ -58,6 +62,7 @@ class RiskScoreServiceTest {
       Pair(ovpRiskProducerService, { ctx: RiskScoreContext -> ctx.copy(OVP = emptyOVP()) }),
       Pair(ogpRiskProducerService, { ctx: RiskScoreContext -> ctx.copy(OGP = emptyOGP()) }),
       Pair(mstRiskProducerService, { ctx: RiskScoreContext -> ctx.copy(MST = emptyMST()) }),
+      Pair(opdRiskProducerService, { ctx: RiskScoreContext -> ctx.copy(OPD = emptyOPD()) }),
       Pair(pniRiskProducerService, { ctx: RiskScoreContext -> ctx.copy(PNI = omittedPNI()) }),
       // add more Pairs for the other mocked risk producers here
     )
@@ -72,5 +77,6 @@ class RiskScoreServiceTest {
     Assertions.assertNotNull(result.OVP)
     Assertions.assertNotNull(result.OGP)
     Assertions.assertNotNull(result.MST)
+    Assertions.assertNotNull(result.OPD)
   }
 }

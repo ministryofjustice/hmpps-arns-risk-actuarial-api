@@ -23,6 +23,9 @@ class RiskScoreService {
   lateinit var mstRiskProducerService: MSTRiskProducerService
 
   @Autowired
+  lateinit var opdRiskProducerService: OPDRiskProducerService
+
+  @Autowired
   lateinit var pniRiskProducerService: PNIRiskProducerService
 
   fun riskScoreProducer(riskScoreRequest: RiskScoreRequest): RiskScoreResponse = listOf(
@@ -30,6 +33,7 @@ class RiskScoreService {
     ovpRiskProducerService,
     ogpRiskProducerService,
     mstRiskProducerService,
+    opdRiskProducerService,
     pniRiskProducerService,
   ).fold(RiskScoreContext(riskScoreRequest.version)) { context, service ->
     service.getRiskScore(riskScoreRequest, context)

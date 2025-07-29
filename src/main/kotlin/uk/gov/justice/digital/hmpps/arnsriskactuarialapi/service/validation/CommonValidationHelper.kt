@@ -72,7 +72,7 @@ fun validateAge(
 }
 
 fun addMissingFields(
-  missingFields: MutableList<String>,
+  missingFields: List<String>,
   errors: MutableList<ValidationErrorResponse>,
 ): MutableList<ValidationErrorResponse> {
   if (missingFields.isNotEmpty()) {
@@ -87,8 +87,24 @@ fun addMissingFields(
   return errors
 }
 
+fun addUnexpectedFields(
+  unexpectedFields: List<String>,
+  errors: MutableList<ValidationErrorResponse>,
+): MutableList<ValidationErrorResponse> {
+  if (unexpectedFields.isNotEmpty()) {
+    errors.add(
+      ValidationErrorResponse(
+        type = ValidationErrorType.UNEXPECTED_VALUE,
+        message = "ERR - Field is unexpected",
+        fields = unexpectedFields,
+      ),
+    )
+  }
+  return errors
+}
+
 fun addMissingCriteriaValidation(
-  criteriaFields: MutableList<String>,
+  criteriaFields: List<String>,
   errors: MutableList<ValidationErrorResponse>,
 ): MutableList<ValidationErrorResponse> {
   if (criteriaFields.isNotEmpty()) {
