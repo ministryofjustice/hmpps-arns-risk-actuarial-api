@@ -37,21 +37,13 @@ fun presenceOfChildhoodDifficultiesOffendersScore(request: OPDRequestValidated) 
 fun controllingBehaviourOffendersScore(request: OPDRequestValidated) = scoreFromProblemLevel(request.controllingBehaviour)
 
 fun historyOfMentalHealthDifficultiesOffendersScore(request: OPDRequestValidated): Int {
-  val psychological = request.currentPsychologicalProblems
-  val psychiatric = request.currentPsychiatricProblems
-  val psychiatricHistory = request.historyOfPsychiatricTreatment
-  val onMedication = request.medicationMentalHealth
-  val inSecureUnit = request.patientSecureUnitOrHospital
-  val receivingTreatment = request.currentPsychiatricTreatmentOrPending
-  val hasObsessiveBehaviour = request.obsessiveBehaviour
-
-  val hasProblems = psychological in listOf(ProblemLevel.SOME_PROBLEMS, ProblemLevel.SIGNIFICANT_PROBLEMS) ||
-    psychiatric in listOf(ProblemLevel.SOME_PROBLEMS, ProblemLevel.SIGNIFICANT_PROBLEMS) ||
-    psychiatricHistory ||
-    onMedication ||
-    inSecureUnit ||
-    receivingTreatment == true ||
-    hasObsessiveBehaviour
+  val hasProblems = request.currentPsychologicalProblems in listOf(ProblemLevel.SOME_PROBLEMS, ProblemLevel.SIGNIFICANT_PROBLEMS) ||
+    request.currentPsychiatricProblems in listOf(ProblemLevel.SOME_PROBLEMS, ProblemLevel.SIGNIFICANT_PROBLEMS) ||
+    request.historyOfPsychiatricTreatment ||
+    request.medicationMentalHealth ||
+    request.patientSecureUnitOrHospital ||
+    request.currentPsychiatricTreatmentOrPending == true ||
+    request.obsessiveBehaviour
 
   return if (hasProblems) 1 else 0
 }
@@ -67,14 +59,6 @@ fun selfHarmSuicideAttemptOffendersScore(input: OPDRequestValidated): Int {
 }
 
 fun severeChallengingBehavioursOffendersScore(input: OPDRequestValidated): Int {
-  val fields = listOf(
-    input.attitudeTowardsSupervision,
-    input.assaultedOrThreatenedStaff,
-    input.escapeOrAbsconded,
-    input.controlIssues,
-    input.breachOfTrust,
-  )
-
   val hasAttitudeProblems =
     input.attitudeTowardsSupervision in listOf(ProblemLevel.SOME_PROBLEMS, ProblemLevel.SIGNIFICANT_PROBLEMS)
 

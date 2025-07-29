@@ -69,25 +69,43 @@ class OPDTransformationHelperTest {
 
   @Test
   fun `historyOfMentalHealthDifficultiesOffendersScore returns 1 if any problem present`() {
-    val request = opdRequestValidated().copy(currentPsychiatricProblems = ProblemLevel.SOME_PROBLEMS)
+    val request = opdRequestValidated()
+      .copy(currentPsychiatricProblems = ProblemLevel.SOME_PROBLEMS)
     assertEquals(1, historyOfMentalHealthDifficultiesOffendersScore(request))
   }
 
   @Test
   fun `historyOfMentalHealthDifficultiesOffendersScore returns 0 if no problem`() {
     val request = opdRequestValidated()
+      .copy(
+        currentPsychologicalProblems = ProblemLevel.NO_PROBLEMS,
+        currentPsychiatricProblems = ProblemLevel.NO_PROBLEMS,
+        historyOfPsychiatricTreatment = false,
+        medicationMentalHealth = false,
+        patientSecureUnitOrHospital = false,
+        currentPsychiatricTreatmentOrPending = false,
+        obsessiveBehaviour = false,
+      )
     assertEquals(0, historyOfMentalHealthDifficultiesOffendersScore(request))
   }
 
   @Test
   fun `selfHarmSuicideAttemptOffendersScore returns 1 if any true`() {
-    val request = opdRequestValidated().copy(selfHarmSuicideAttempt = true)
+    val request = opdRequestValidated().copy(
+      selfHarmSuicideAttempt = true,
+      concernsAboutSuicidePast = false,
+      concernsAboutSelfHarmPast = false,
+    )
     assertEquals(1, selfHarmSuicideAttemptOffendersScore(request))
   }
 
   @Test
   fun `selfHarmSuicideAttemptOffendersScore returns 0 if all false`() {
-    val request = opdRequestValidated()
+    val request = opdRequestValidated().copy(
+      selfHarmSuicideAttempt = false,
+      concernsAboutSuicidePast = false,
+      concernsAboutSelfHarmPast = false,
+    )
     assertEquals(0, selfHarmSuicideAttemptOffendersScore(request))
   }
 
@@ -105,7 +123,13 @@ class OPDTransformationHelperTest {
 
   @Test
   fun `severeChallengingBehavioursOffendersScore returns 0 for no issues`() {
-    val request = opdRequestValidated()
+    val request = opdRequestValidated().copy(
+      attitudeTowardsSupervision = ProblemLevel.NO_PROBLEMS,
+      assaultedOrThreatenedStaff = false,
+      escapeOrAbsconded = false,
+      controlIssues = false,
+      breachOfTrust = false,
+    )
     assertEquals(0, severeChallengingBehavioursOffendersScore(request))
   }
 

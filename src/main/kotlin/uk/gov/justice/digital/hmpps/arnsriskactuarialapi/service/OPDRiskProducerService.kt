@@ -28,6 +28,9 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.violenceOrThreatOfViolenceOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.opdInitialValidation
 
+private const val ODP_PERSONALITY_SCORE_MIN = 7
+private const val ODP_MALE_INDICATOR_SCORE_MIN = 2
+
 @Service
 class OPDRiskProducerService : RiskScoreProducer {
 
@@ -41,8 +44,7 @@ class OPDRiskProducerService : RiskScoreProducer {
     val errors = opdInitialValidation(request)
 
     if (errors.isNotEmpty()) {
-      return context
-        .copy(OPD = OPDObject(opdResult = null, opdCheck = false, validationError = errors))
+      return invalidInformationResult(context, errors)
     }
 
     // request validated
@@ -96,6 +98,20 @@ class OPDRiskProducerService : RiskScoreProducer {
     )
 
     // checks
+    if (!isOpdApplicable(validatedRequest)) {
+      return notApplicableResult(context)
+    }
+    if (hasAllMaleQuestionsUnanswered(request) || hasAllFemaleQuestionsUnanswered(request)) {
+      return notApplicableResult(context)
+    }
+
+    return getOPDResult(validatedRequest, context, errors)
+  }
+
+  /**
+   * Minimum set of criteria to progress with scoring
+   */
+  private fun isOpdApplicable(validatedRequest: OPDRequestValidated): Boolean {
     val isViolentOrSexualType =
       offenceGroupParametersService.isViolentOrSexualType(validatedRequest.currentOffence)
 
@@ -103,32 +119,51 @@ class OPDRiskProducerService : RiskScoreProducer {
       Gender.MALE -> isOpdApplicableMale(validatedRequest, isViolentOrSexualType)
       Gender.FEMALE -> isOpdApplicableFemale(validatedRequest)
     }
-    if (!isOpdApplicable) {
-      return context.copy(
-        OPD = OPDObject(
-          opdCheck = false,
-          opdResult = null,
-          validationError = errors,
-        ),
-      )
-    }
-
-    // calculations
-    val allMaleQuestionsUnanswered: Boolean = hasAllMaleQuestionsUnanswered(request)
-    val allFemaleQuestionsUnanswered: Boolean = hasAllFemaleQuestionsUnanswered(request)
-    if (allMaleQuestionsUnanswered || allFemaleQuestionsUnanswered) {
-      return context.copy(
-        OPD = OPDObject(
-          opdCheck = true,
-          opdResult = null,
-          validationError = errors,
-        ),
-      )
-    }
-
-    return getOPDResult(validatedRequest, context, errors)
+    return isOpdApplicable
   }
 
+  private fun isOpdApplicableMale(
+    request: OPDRequestValidated,
+    isViolentOrSexualType: Boolean,
+  ): Boolean = (request.overallRiskForAssessment in arrayOf(RiskBand.HIGH, RiskBand.VERY_HIGH)) &&
+    isViolentOrSexualType &&
+    request.custodialSentence
+
+  private fun isOpdApplicableFemale(
+    request: OPDRequestValidated,
+  ): Boolean = (request.overallRiskForAssessment in arrayOf(RiskBand.HIGH, RiskBand.VERY_HIGH)) ||
+    request.eligibleForMappa
+
+  /**
+   * Validation failed, will contain errors.
+   */
+  private fun invalidInformationResult(
+    context: RiskScoreContext,
+    errors: List<ValidationErrorResponse>,
+  ): RiskScoreContext = context.copy(
+    OPD = OPDObject(
+      opdCheck = false,
+      opdResult = null,
+      validationError = errors,
+    ),
+  )
+
+  /**
+   * Based on information provided or lack thereof, the OPD is not applicable, does not contain errors.
+   */
+  private fun notApplicableResult(
+    context: RiskScoreContext,
+  ): RiskScoreContext = context.copy(
+    OPD = OPDObject(
+      opdCheck = false,
+      opdResult = null,
+      validationError = emptyList(),
+    ),
+  )
+
+  /**
+   * OPD calculations for both MALE and FEMALE.
+   */
   private fun getOPDResult(
     validatedRequest: OPDRequestValidated,
     context: RiskScoreContext,
@@ -158,7 +193,10 @@ class OPDRiskProducerService : RiskScoreProducer {
             severeChallengingBehavioursOffendersScore(validatedRequest),
           ).sum()
 
-        if (opdMalePersonalityScore >= 7 || opdMaleIndicatorScore >= 2 || validatedRequest.opdOverride) {
+        if (opdMalePersonalityScore >= ODP_PERSONALITY_SCORE_MIN ||
+          opdMaleIndicatorScore >= ODP_MALE_INDICATOR_SCORE_MIN ||
+          validatedRequest.opdOverride
+        ) {
           OPDResult.SCREEN_IN
         } else {
           OPDResult.SCREEN_OUT
@@ -195,7 +233,7 @@ class OPDRiskProducerService : RiskScoreProducer {
   }
 
   /**
-   * All female related questions are unanswered aka null
+   * All female related questions are unanswered / null
    */
   private fun hasAllFemaleQuestionsUnanswered(request: RiskScoreRequest): Boolean = request.gender == Gender.MALE &&
     allUnansweredQuestion(
@@ -214,7 +252,7 @@ class OPDRiskProducerService : RiskScoreProducer {
     )
 
   /**
-   * All male related questions are unanswered aka null
+   * All male related questions are unanswered / null
    */
   private fun hasAllMaleQuestionsUnanswered(
     request: RiskScoreRequest,
@@ -250,16 +288,4 @@ class OPDRiskProducerService : RiskScoreProducer {
         request.breachOfTrust,
       ),
     )
-
-  fun isOpdApplicableMale(
-    request: OPDRequestValidated,
-    isViolentOrSexualType: Boolean,
-  ): Boolean = (request.overallRiskForAssessment in arrayOf(RiskBand.HIGH, RiskBand.VERY_HIGH)) &&
-    isViolentOrSexualType &&
-    request.custodialSentence
-
-  fun isOpdApplicableFemale(
-    request: OPDRequestValidated,
-  ): Boolean = (request.overallRiskForAssessment in arrayOf(RiskBand.HIGH, RiskBand.VERY_HIGH)) ||
-    request.eligibleForMappa
 }
