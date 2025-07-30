@@ -3,7 +3,10 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.CsvSource
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.opdRequestValidated
 
@@ -205,5 +208,33 @@ class OPDTransformationHelperTest {
 
     assertEquals(1, controllingBehaviourOffendersScore(sig))
     assertEquals(0, controllingBehaviourOffendersScore(nullValue))
+  }
+
+  @DisplayName("Test domesticAbuseOffendersScore using CsvSource")
+  @ParameterizedTest(name = "domesticAbuse={0}, partner={1}, family={2} => expectedScore={3}")
+  @CsvSource(
+    // domesticAbuse, partner, family, expectedScore
+    "false, , , 0",
+    "false, true, true, 0", // this should never happen but testing anyway
+    "true, , , 0",
+    "true, false, false, 0",
+    "true, true, false, 1",
+    "true, false, true, 1",
+    "true, true, true, 1",
+    "true, , true, 1",
+    "true, true, , 1",
+  )
+  fun testDomesticAbuseOffendersScore(
+    domesticAbuse: Boolean,
+    partner: Boolean?,
+    family: Boolean?,
+    expected: Int,
+  ) {
+    val request = opdRequestValidated().copy(
+      domesticAbuse = domesticAbuse,
+      domesticAbusePartner = partner,
+      domesticAbuseFamily = family,
+    )
+    assertEquals(expected, domesticAbuseOffendersScore(request))
   }
 }

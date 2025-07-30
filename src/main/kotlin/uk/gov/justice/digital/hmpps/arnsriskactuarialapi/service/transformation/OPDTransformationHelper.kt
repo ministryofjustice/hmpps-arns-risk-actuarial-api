@@ -37,13 +37,14 @@ fun presenceOfChildhoodDifficultiesOffendersScore(request: OPDRequestValidated) 
 fun controllingBehaviourOffendersScore(request: OPDRequestValidated) = scoreFromProblemLevel(request.controllingBehaviour)
 
 fun historyOfMentalHealthDifficultiesOffendersScore(request: OPDRequestValidated): Int {
-  val hasProblems = request.currentPsychologicalProblems in listOf(ProblemLevel.SOME_PROBLEMS, ProblemLevel.SIGNIFICANT_PROBLEMS) ||
-    request.currentPsychiatricProblems in listOf(ProblemLevel.SOME_PROBLEMS, ProblemLevel.SIGNIFICANT_PROBLEMS) ||
-    request.historyOfPsychiatricTreatment ||
-    request.medicationMentalHealth ||
-    request.patientSecureUnitOrHospital ||
-    request.currentPsychiatricTreatmentOrPending == true ||
-    request.obsessiveBehaviour
+  val hasProblems =
+    request.currentPsychologicalProblems in listOf(ProblemLevel.SOME_PROBLEMS, ProblemLevel.SIGNIFICANT_PROBLEMS) ||
+      request.currentPsychiatricProblems in listOf(ProblemLevel.SOME_PROBLEMS, ProblemLevel.SIGNIFICANT_PROBLEMS) ||
+      request.historyOfPsychiatricTreatment ||
+      request.medicationMentalHealth ||
+      request.patientSecureUnitOrHospital ||
+      request.currentPsychiatricTreatmentOrPending == true ||
+      request.obsessiveBehaviour
 
   return if (hasProblems) 1 else 0
 }
@@ -70,6 +71,34 @@ fun severeChallengingBehavioursOffendersScore(input: OPDRequestValidated): Int {
   ).any { it == true }
 
   return if (hasAttitudeProblems || hasOtherRiskFlags) 1 else 0
+}
+
+fun carryingOrUsingWeaponOffendersScore(request: OPDRequestValidated) = scoreFromBoolean(request.carryingOrUsingWeapon)
+
+fun offenceArsonOffendersScore(request: OPDRequestValidated) = scoreFromBoolean(request.offenceArson)
+
+fun offenderMotivationsOffendersScore(request: OPDRequestValidated) = scoreFromBoolean(request.offenderMotivations)
+
+fun offenceLinkedRiskOfSeriousHarmOffendersScore(request: OPDRequestValidated) = scoreFromBoolean(request.offenceLinkedRiskOfSeriousHarm)
+
+fun accommodationLinkedRiskOfSeriousHarmOffendersScore(request: OPDRequestValidated) = scoreFromBoolean(request.accommodationLinkedRiskOfSeriousHarm)
+
+fun experienceOfChildhoodOffendersScore(request: OPDRequestValidated) = scoreFromProblemLevel(request.experienceOfChildhood)
+
+fun relationshipLinkedSeriousHarmOffendersScore(request: OPDRequestValidated) = scoreFromBoolean(request.relationshipLinkedSeriousHarm)
+
+fun difficultiesCopingOffendersScore(request: OPDRequestValidated) = scoreFromProblemLevel(request.difficultiesCoping)
+
+fun currentPsychologicalProblemsOffendersScore(request: OPDRequestValidated) = scoreFromProblemLevel(request.currentPsychologicalProblems)
+
+fun wellbeingEmotionalLinkedRiskOfSeriousHarmOffendersScore(request: OPDRequestValidated) = scoreFromBoolean(request.wellbeingEmotionalLinkedRiskOfSeriousHarm)
+
+fun thinkingAndBehaviourLinedToRiskOfSeriousHarmOffendersScore(request: OPDRequestValidated) = scoreFromBoolean(request.thinkingAndBehaviourLinedToRiskOfSeriousHarm)
+
+fun domesticAbuseOffendersScore(request: OPDRequestValidated): Int = when {
+  !request.domesticAbuse -> 0
+  request.domesticAbusePartner == true || request.domesticAbuseFamily == true -> 1
+  else -> 0
 }
 
 fun allUnansweredQuestion(fields: List<Any?>): Boolean = fields.all { it == null }
