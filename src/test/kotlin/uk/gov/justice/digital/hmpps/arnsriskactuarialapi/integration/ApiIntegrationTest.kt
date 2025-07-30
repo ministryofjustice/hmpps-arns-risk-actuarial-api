@@ -33,6 +33,8 @@ class ApiIntegrationTest : IntegrationTestBase() {
       arrayOf("ogp", "requests/ogp-input-1-valid.json", "responses/ogp-expected-1.json"),
       arrayOf("pni", "requests/pni-input-1-valid.json", "responses/pni-expected-1.json"),
       arrayOf("pni", "requests/pni-input-2-missing-fields.json", "responses/pni-expected-2.json"),
+      arrayOf("lds", "requests/lds-input-1-valid.json", "responses/lds-expected-1.json"),
+      arrayOf("lds", "requests/lds-input-2-missing-fields.json", "responses/lds-expected-2.json"),
       // Add more as needed
     )
 

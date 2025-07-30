@@ -1,5 +1,6 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto
 
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds.LDSObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.mst.MSTObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3Object
@@ -15,6 +16,7 @@ data class RiskScoreContext(
   val MST: MSTObject? = null,
   val OPD: OPDObject? = null,
   val PNI: PNIObject? = null,
+  val LDS: LDSObject? = null,
 )
 
 fun RiskScoreContext.toRiskScoreResponse(): RiskScoreResponse = RiskScoreResponse(
@@ -25,4 +27,5 @@ fun RiskScoreContext.toRiskScoreResponse(): RiskScoreResponse = RiskScoreRespons
   this.MST,
   this.OPD,
   this.PNI,
+  this.LDS,
 )

@@ -1,0 +1,14 @@
+currentAccommodation,transferableSkills,educationDifficulties,readingDifficulties,numeracyDifficulties,learningDifficulties,professionalOrVocationalQualifications,ldsSubTotal,ldsScore,Comments
+Yes,SIGNIFICANT_PROBLEMS,SIGNIFICANT_PROBLEMS,Yes,Yes,SIGNIFICANT_PROBLEMS,ANY_QUALIFICATION,11,2,All items scored - highest score
+Null,SOME_PROBLEMS,Null,Null,Null,Null,Null,Null,Null,Not enough items scored
+No,SOME_PROBLEMS,SOME_PROBLEMS,Null,Yes,Null,NO_QUALIFICATIONS,5,2,4 items scored
+Missing,NO_PROBLEMS,SOME_PROBLEMS,Null,Null,Missing,Missing,Null,Null,Not enough items scored
+No,NO_PROBLEMS,Missing,Null,Null,SOME_PROBLEMS,NO_QUALIFICATIONS,3,1,4 items scored
+Yes,SOME_PROBLEMS,Null,Null,Null,SOME_PROBLEMS,ANY_QUALIFICATION,3,1,4 items scored
+No,SOME_PROBLEMS,SOME_PROBLEMS,Null,Null,NO_PROBLEMS,ANY_QUALIFICATION,2,0,5 items scored
+Null,NO_PROBLEMS,NO_PROBLEMS,Null,Null,SOME_PROBLEMS,ANY_QUALIFICATION,1,0,5 items scored
+No,NO_PROBLEMS,NO_PROBLEMS,Null,Null,NO_PROBLEMS,ANY_QUALIFICATION,0,0,5 items scored
+Yes,SOME_PROBLEMS,SOME_PROBLEMS,Yes,Null,SOME_PROBLEMS,NO_QUALIFICATIONS,7,2,5 items scored
+No,SIGNIFICANT_PROBLEMS,SIGNIFICANT_PROBLEMS,Yes,Yes,SIGNIFICANT_PROBLEMS,ANY_QUALIFICATION,8,2,5 items scored
+No,Missing,Null,Null,Null,SOME_PROBLEMS,Null,Null,Null,Not enough items scored
+Null,Null,Null,Null,Null,Null,Null,Null,Null,Not enough items scored
