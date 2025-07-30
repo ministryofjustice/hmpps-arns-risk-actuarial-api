@@ -1,5 +1,5 @@
 plugins {
-  id("uk.gov.justice.hmpps.gradle-spring-boot") version "8.3.0"
+  id("uk.gov.justice.hmpps.gradle-spring-boot") version "8.3.4"
   id("org.jetbrains.kotlinx.kover") version "0.9.1"
   kotlin("plugin.spring") version "2.1.21"
 }
@@ -9,18 +9,13 @@ configurations {
 }
 
 dependencies {
-  implementation("uk.gov.justice.service.hmpps:hmpps-kotlin-spring-boot-starter:1.4.7")
+  implementation("uk.gov.justice.service.hmpps:hmpps-kotlin-spring-boot-starter:1.4.11")
   implementation("org.springframework.boot:spring-boot-starter-webflux")
   implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9")
   implementation("org.apache.commons:commons-csv:1.9.0")
   implementation(kotlin("reflect"))
 
-  //  Add fixed versions to override transitive vulnerabilities
-  implementation("com.nimbusds:nimbus-jose-jwt:10.3.1")
-  implementation("org.apache.commons:commons-lang3:3.18.0")
-  implementation("io.projectreactor.netty:reactor-netty-http:1.2.8")
-
-  testImplementation("uk.gov.justice.service.hmpps:hmpps-kotlin-spring-boot-starter-test:1.4.7")
+  testImplementation("uk.gov.justice.service.hmpps:hmpps-kotlin-spring-boot-starter-test:1.4.11")
   testImplementation("org.wiremock:wiremock-standalone:3.13.1")
   testImplementation("io.swagger.parser.v3:swagger-parser:2.1.30") {
     exclude(group = "io.swagger.core.v3")
