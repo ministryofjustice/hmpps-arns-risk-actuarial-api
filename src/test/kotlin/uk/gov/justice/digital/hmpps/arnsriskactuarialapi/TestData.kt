@@ -6,6 +6,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds.HasQualifications
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds.LDSObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.mst.MSTObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3Object
@@ -28,6 +30,8 @@ fun emptyMST(): MSTObject = MSTObject(null, null, null, null)
 fun emptyOPD(): OPDObject = OPDObject(false, null, emptyList())
 
 fun omittedPNI(): PNIObject = PNIObject(ProgrammeNeedIdentifier.OMISSION, null)
+
+fun emptyLDS(): LDSObject = LDSObject(null, null)
 
 fun emptyContext() = RiskScoreContext(version = RiskScoreVersion.V1_0)
 
@@ -101,6 +105,36 @@ object RiskScoreRequestTestConstants {
     awarenessOfConsequences = ProblemLevel.NO_PROBLEMS,
     understandsPeoplesViews = ProblemLevel.NO_PROBLEMS,
     proCriminalAttitudes = null,
+  )
+  val FULL_LDS_REQUEST = RiskScoreRequest(
+    version = RiskScoreVersion.V1_0,
+    currentAccommodation = true,
+    transferableSkills = ProblemLevel.SOME_PROBLEMS,
+    educationDifficulties = ProblemLevel.SOME_PROBLEMS,
+    readingDifficulties = true,
+    numeracyDifficulties = false,
+    learningDifficulties = ProblemLevel.SOME_PROBLEMS,
+    professionalOrVocationalQualifications = HasQualifications.ANY_QUALIFICATION,
+  )
+  val INELIGIBLE_LDS_REQUEST = RiskScoreRequest(
+    version = RiskScoreVersion.V1_0,
+    currentAccommodation = true,
+    transferableSkills = ProblemLevel.SOME_PROBLEMS,
+    educationDifficulties = null,
+    readingDifficulties = true,
+    numeracyDifficulties = false,
+    learningDifficulties = null,
+    professionalOrVocationalQualifications = HasQualifications.ANY_QUALIFICATION,
+  )
+  val BAD_READING_DIFFICULTY_LDS_REQUEST = RiskScoreRequest(
+    version = RiskScoreVersion.V1_0,
+    currentAccommodation = true,
+    transferableSkills = ProblemLevel.SOME_PROBLEMS,
+    educationDifficulties = null,
+    readingDifficulties = true,
+    numeracyDifficulties = null,
+    learningDifficulties = ProblemLevel.SOME_PROBLEMS,
+    professionalOrVocationalQualifications = HasQualifications.ANY_QUALIFICATION,
   )
 }
 

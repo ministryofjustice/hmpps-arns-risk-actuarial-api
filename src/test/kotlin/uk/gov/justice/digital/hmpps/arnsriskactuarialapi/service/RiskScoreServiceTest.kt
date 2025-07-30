@@ -11,6 +11,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyLDS
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyMST
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOGP
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOGRS3
@@ -39,6 +40,9 @@ class RiskScoreServiceTest {
   @Mock
   private lateinit var pniRiskProducerService: PNIRiskProducerService
 
+  @Mock
+  private lateinit var ldsRiskProducerService: LDSRiskProducerService
+
   @InjectMocks
   private lateinit var riskScoreService: RiskScoreService
 
@@ -64,6 +68,7 @@ class RiskScoreServiceTest {
       Pair(mstRiskProducerService, { ctx: RiskScoreContext -> ctx.copy(MST = emptyMST()) }),
       Pair(opdRiskProducerService, { ctx: RiskScoreContext -> ctx.copy(OPD = emptyOPD()) }),
       Pair(pniRiskProducerService, { ctx: RiskScoreContext -> ctx.copy(PNI = omittedPNI()) }),
+      Pair(ldsRiskProducerService, { ctx: RiskScoreContext -> ctx.copy(LDS = emptyLDS()) }),
       // add more Pairs for the other mocked risk producers here
     )
     for ((service, transform) in steps) {
@@ -78,5 +83,6 @@ class RiskScoreServiceTest {
     Assertions.assertNotNull(result.OGP)
     Assertions.assertNotNull(result.MST)
     Assertions.assertNotNull(result.OPD)
+    Assertions.assertNotNull(result.LDS)
   }
 }
