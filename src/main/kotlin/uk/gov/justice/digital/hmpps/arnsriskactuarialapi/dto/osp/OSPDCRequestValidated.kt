@@ -7,6 +7,7 @@ import java.time.LocalDate
 data class OSPDCRequestValidated(
   val gender: Gender,
   val dateOfBirth: LocalDate,
+  val assessmentDate: LocalDate,
   val hasCommittedSexualOffence: Boolean,
   val dateOfCurrentConviction: LocalDate,
   val totalContactAdultSexualSanctions: Int,
