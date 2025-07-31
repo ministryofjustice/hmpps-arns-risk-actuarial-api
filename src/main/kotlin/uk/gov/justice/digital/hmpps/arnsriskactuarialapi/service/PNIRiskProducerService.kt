@@ -49,13 +49,10 @@ class PNIRiskProducerService : RiskScoreProducer {
       temperControl = request.temperControl,
       ogrs3TwoYear = context.OGRS3?.ogrs3TwoYear,
       ovp = context.OVP?.provenViolentTypeReoffendingTwoYear,
-      ovpRiskBand = context.OVP?.band,
+      ovpBand = context.OVP?.band,
+      ospDCBand = null, // TODO
+      ospIICBand = null, // TODO
       rsr = null, // TODO
-      ospDCCRiskBand = null, // TODO
-      ospIICIRiskBand = null, // TODO
-      ospRiskBand = null, // TODO
-      rsrRiskBand = null, // TODO
-      snsvRiskBand = null, // TODO
       saraRiskToPartner = request.saraRiskToPartner,
       saraRiskToOthers = request.saraRiskToOthers,
       problemSolvingSkills = request.problemSolvingSkills,
@@ -168,10 +165,10 @@ class PNIRiskProducerService : RiskScoreProducer {
   private fun isHighOvp(requestValidated: PNIRequestValidated) = requestValidated.ovp?.let { it >= 60.00 } == true
 
   private fun isOspDcHigh(requestValidated: PNIRequestValidated): Boolean = requestValidated.gender == Gender.MALE &&
-    requestValidated.ospDCCRiskBand == RiskBand.HIGH
+    requestValidated.ospDCBand == RiskBand.HIGH
 
   private fun isOspIicHigh(requestValidated: PNIRequestValidated): Boolean = requestValidated.gender == Gender.MALE &&
-    requestValidated.ospIICIRiskBand == RiskBand.HIGH
+    requestValidated.ospIICBand == RiskBand.HIGH
 
   fun isHighSara(requestValidated: PNIRequestValidated) = requestValidated.saraRiskToOthers == RiskBand.HIGH ||
     requestValidated.saraRiskToPartner == RiskBand.HIGH
@@ -182,7 +179,7 @@ class PNIRiskProducerService : RiskScoreProducer {
       return rsrMediumRsr
     }
     // osp scores needs to be ignored for females
-    return rsrMediumRsr && requestValidated.ospDCCRiskBand == null && requestValidated.ospIICIRiskBand == null
+    return rsrMediumRsr && requestValidated.ospDCBand == null && requestValidated.ospIICBand == null
   }
 
   private fun isRsrHigh(requestValidated: PNIRequestValidated): Boolean {
@@ -191,7 +188,7 @@ class PNIRiskProducerService : RiskScoreProducer {
     if (requestValidated.gender == Gender.FEMALE) {
       return isHighRsr
     }
-    return isHighRsr && requestValidated.ospDCCRiskBand == null && requestValidated.ospIICIRiskBand == null
+    return isHighRsr && requestValidated.ospDCBand == null && requestValidated.ospIICBand == null
   }
 
   private fun isOgrs3Medium(requestValidated: PNIRequestValidated) = requestValidated.ogrs3TwoYear?.let { it in 50..74 } == true
@@ -199,10 +196,10 @@ class PNIRiskProducerService : RiskScoreProducer {
   private fun isOvpMedium(requestValidated: PNIRequestValidated) = requestValidated.ovp?.let { it in 30..59 } == true
 
   private fun isOspDcMedium(requestValidated: PNIRequestValidated): Boolean = requestValidated.gender == Gender.MALE &&
-    requestValidated.ospDCCRiskBand == RiskBand.MEDIUM
+    requestValidated.ospDCBand == RiskBand.MEDIUM
 
   private fun isOspIicMedium(requestValidated: PNIRequestValidated): Boolean = requestValidated.gender == Gender.MALE &&
-    requestValidated.ospIICIRiskBand == RiskBand.MEDIUM
+    requestValidated.ospIICBand == RiskBand.MEDIUM
 
   fun isMediumSara(requestValidated: PNIRequestValidated) = requestValidated.saraRiskToOthers == RiskBand.MEDIUM ||
     requestValidated.saraRiskToPartner == RiskBand.MEDIUM
