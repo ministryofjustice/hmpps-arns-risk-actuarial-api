@@ -194,19 +194,19 @@ class PNIRiskProducerServiceTest {
 
     @Test
     fun `isHighRisk returns true when ospDc is high for male`() {
-      val result = service.isHighRisk(pniRequest().copy(gender = Gender.MALE, ospDCCRiskBand = RiskBand.HIGH))
+      val result = service.isHighRisk(pniRequest().copy(gender = Gender.MALE, ospDCBand = RiskBand.HIGH))
       assertTrue(result)
     }
 
     @Test
     fun `isHighRisk returns false when ospDc is high but gender is female`() {
-      val result = service.isHighRisk(pniRequest().copy(gender = Gender.FEMALE, ospDCCRiskBand = RiskBand.HIGH))
+      val result = service.isHighRisk(pniRequest().copy(gender = Gender.FEMALE, ospDCBand = RiskBand.HIGH))
       assertFalse(result)
     }
 
     @Test
     fun `isHighRisk returns true when ospIic is high for male`() {
-      val result = service.isHighRisk(pniRequest().copy(gender = Gender.MALE, ospIICIRiskBand = RiskBand.HIGH))
+      val result = service.isHighRisk(pniRequest().copy(gender = Gender.MALE, ospIICBand = RiskBand.HIGH))
       assertTrue(result)
     }
 
@@ -248,19 +248,19 @@ class PNIRiskProducerServiceTest {
 
     @Test
     fun `isMediumRisk returns true for ospDc medium for male`() {
-      val result = service.isMediumRisk(pniRequest().copy(gender = Gender.MALE, ospDCCRiskBand = RiskBand.MEDIUM))
+      val result = service.isMediumRisk(pniRequest().copy(gender = Gender.MALE, ospDCBand = RiskBand.MEDIUM))
       assertTrue(result)
     }
 
     @Test
     fun `isMediumRisk returns false for ospDc medium for female`() {
-      val result = service.isMediumRisk(pniRequest().copy(gender = Gender.FEMALE, ospDCCRiskBand = RiskBand.MEDIUM))
+      val result = service.isMediumRisk(pniRequest().copy(gender = Gender.FEMALE, ospDCBand = RiskBand.MEDIUM))
       assertFalse(result)
     }
 
     @Test
     fun `isMediumRisk returns true for ospIic medium for male`() {
-      val result = service.isMediumRisk(pniRequest().copy(gender = Gender.MALE, ospIICIRiskBand = RiskBand.MEDIUM))
+      val result = service.isMediumRisk(pniRequest().copy(gender = Gender.MALE, ospIICBand = RiskBand.MEDIUM))
       assertTrue(result)
     }
 
@@ -272,7 +272,7 @@ class PNIRiskProducerServiceTest {
 
     @Test
     fun `isMediumRisk returns false for rsr medium when male and osp scores are present`() {
-      val result = service.isMediumRisk(pniRequest().copy(gender = Gender.MALE, rsr = 2, ospDCCRiskBand = RiskBand.HIGH))
+      val result = service.isMediumRisk(pniRequest().copy(gender = Gender.MALE, rsr = 2, ospDCBand = RiskBand.HIGH))
       assertFalse(result)
     }
 
