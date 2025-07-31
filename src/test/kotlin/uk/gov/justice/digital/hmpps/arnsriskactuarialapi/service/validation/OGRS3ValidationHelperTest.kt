@@ -3,6 +3,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.FIXED_TEST_DATE
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
@@ -22,6 +23,7 @@ class OGRS3ValidationHelperTest {
     val request = RiskScoreRequest(
       RiskScoreVersion.V1_0,
       null,
+      FIXED_TEST_DATE,
       null,
       null,
       null,
@@ -50,6 +52,7 @@ class OGRS3ValidationHelperTest {
   private fun validRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
     RiskScoreVersion.V1_0,
     Gender.MALE,
+    FIXED_TEST_DATE,
     LocalDate.of(1964, 10, 15),
     LocalDate.of(2014, 12, 13),
     LocalDate.of(2027, 12, 12),

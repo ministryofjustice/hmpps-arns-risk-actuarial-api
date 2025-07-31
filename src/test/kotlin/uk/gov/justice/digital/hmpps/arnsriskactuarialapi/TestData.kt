@@ -56,6 +56,8 @@ fun highOvp() = OVPObject(
   emptyList(),
 )
 
+val FIXED_TEST_DATE: LocalDate = LocalDate.of(2025, 1, 1)
+
 object RiskScoreRequestTestConstants {
   val NULL_REQUEST = RiskScoreRequest(version = RiskScoreVersion.V1_0)
   val FULL_OGP_REQUEST = RiskScoreRequest(
@@ -161,7 +163,8 @@ fun validOVPRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
 fun validMSTRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
   version = RiskScoreVersion.V1_0,
   gender = Gender.MALE,
-  dateOfBirth = LocalDate.now().minusYears(18),
+  dateOfBirth = FIXED_TEST_DATE.minusYears(18),
+  assessmentDate = FIXED_TEST_DATE,
   peerGroupInfluences = true,
   attitudesPeerPressure = ProblemLevel.SOME_PROBLEMS,
   attitudesStableBehaviour = ProblemLevel.SOME_PROBLEMS,
@@ -177,7 +180,8 @@ fun validMSTRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
 fun validPNIRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
   version = RiskScoreVersion.V1_0,
   gender = Gender.MALE,
-  dateOfBirth = LocalDate.now().minusYears(18),
+  assessmentDate = FIXED_TEST_DATE,
+  dateOfBirth = FIXED_TEST_DATE.minusYears(18),
   peerGroupInfluences = true,
   attitudesPeerPressure = ProblemLevel.SOME_PROBLEMS,
   attitudesStableBehaviour = ProblemLevel.SOME_PROBLEMS,

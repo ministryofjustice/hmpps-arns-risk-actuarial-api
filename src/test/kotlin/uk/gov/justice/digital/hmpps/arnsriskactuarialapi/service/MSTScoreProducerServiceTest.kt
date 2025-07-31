@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.junit.jupiter.MockitoExtension
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.FIXED_TEST_DATE
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
@@ -15,7 +16,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResp
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validMSTRiskScoreRequest
-import java.time.LocalDate
 
 @ExtendWith(MockitoExtension::class)
 class MSTScoreProducerServiceTest {
@@ -107,7 +107,7 @@ class MSTScoreProducerServiceTest {
 
   @Test
   fun `should return valid MstObject with NOT_APPLICABLE validationError when out of age range`() {
-    val isMstApplicableFalseInput = validMSTRiskScoreRequest().copy(dateOfBirth = LocalDate.now().minusYears(25))
+    val isMstApplicableFalseInput = validMSTRiskScoreRequest().copy(dateOfBirth = FIXED_TEST_DATE.minusYears(25))
     // When
     val result = mstRiskProducerService.getRiskScore(isMstApplicableFalseInput, emptyContext())
 
@@ -155,7 +155,8 @@ class MSTScoreProducerServiceTest {
 
   @Test
   fun `should return valid MstObject with NOT_APPLICABLE validationError when FEMALE and out of age range`() {
-    val isMstApplicableFalseInput = validMSTRiskScoreRequest().copy(gender = Gender.FEMALE, dateOfBirth = LocalDate.now().minusYears(25))
+    val isMstApplicableFalseInput =
+      validMSTRiskScoreRequest().copy(gender = Gender.FEMALE, dateOfBirth = FIXED_TEST_DATE.minusYears(25))
     // When
     val result = mstRiskProducerService.getRiskScore(isMstApplicableFalseInput, emptyContext())
 

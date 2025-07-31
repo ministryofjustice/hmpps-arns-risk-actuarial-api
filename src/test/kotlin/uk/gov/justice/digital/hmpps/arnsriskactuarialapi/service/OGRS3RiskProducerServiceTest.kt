@@ -10,6 +10,7 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.whenever
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.FIXED_TEST_DATE
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
@@ -85,6 +86,7 @@ class OGRS3RiskProducerServiceTest {
     val request = RiskScoreRequest(
       RiskScoreVersion.V1_0,
       null,
+      FIXED_TEST_DATE,
       null,
       null,
       null,
@@ -142,6 +144,7 @@ class OGRS3RiskProducerServiceTest {
   private fun validRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
     RiskScoreVersion.V1_0,
     Gender.MALE,
+    FIXED_TEST_DATE,
     LocalDate.of(1964, 10, 15),
     LocalDate.of(2014, 12, 13),
     LocalDate.of(2027, 12, 12),

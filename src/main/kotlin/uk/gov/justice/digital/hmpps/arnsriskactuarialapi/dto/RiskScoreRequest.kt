@@ -6,6 +6,7 @@ import java.time.LocalDate
 data class RiskScoreRequest(
   val version: RiskScoreVersion = RiskScoreVersion.getLatestVersion(),
   val gender: Gender? = null,
+  val assessmentDate: LocalDate = LocalDate.now(),
   val dateOfBirth: LocalDate? = null,
   val dateOfCurrentConviction: LocalDate? = null,
   val dateAtStartOfFollowup: LocalDate? = null,

@@ -1,0 +1,8 @@
+{
+  "mst": {
+    "maturityScore" : 10,
+    "maturityFlag" : true,
+    "isMstApplicable" : true,
+    "validationError" : [ ]
+  }
+}
