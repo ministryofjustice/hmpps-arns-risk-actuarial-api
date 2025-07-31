@@ -3,6 +3,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.CsvSource
 import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -30,5 +31,25 @@ class OffenceGroupParametersServiceTest {
       block = { service.getOGRS3Weighting(exceptionCode) },
     )
     assertEquals(exception.message, "No Match found on lookup: '$exceptionCode'")
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = ["XX", "ABC", ""])
+  fun `isViolentOrSexualType should throw when values not found`(exceptionCode: String) {
+    val exception = assertFailsWith<NoSuchElementException>(
+      block = { service.isViolentOrSexualType(exceptionCode) },
+    )
+    assertEquals(exception.message, "No Match found on lookup: '$exceptionCode'")
+  }
+
+  @ParameterizedTest
+  @CsvSource(
+    "00000, false",
+    "00001, true",
+    "99968, false",
+    "99959, true",
+  )
+  fun `isViolentOrSexualType should return when values are found`(offenceCode: String, expected: Boolean) {
+    assertEquals(expected, service.isViolentOrSexualType(offenceCode))
   }
 }
