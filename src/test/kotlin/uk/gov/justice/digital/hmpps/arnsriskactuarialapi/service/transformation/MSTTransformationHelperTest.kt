@@ -3,18 +3,18 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.FIXED_TEST_DATE
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
-import java.time.LocalDate
 import kotlin.test.assertFalse
 
 class MSTTransformationHelperTest {
 
-  private val today = LocalDate.now()
+  private val today = FIXED_TEST_DATE
 
   @Test
   fun `calculateAge should return correct age`() {
     val dob = today.minusYears(30)
-    val result = calculateAge(dob)
+    val result = calculateAge(dob, today)
     assertEquals(30, result)
   }
 

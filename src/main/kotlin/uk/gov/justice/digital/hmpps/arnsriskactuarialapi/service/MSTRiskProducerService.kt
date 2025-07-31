@@ -30,18 +30,19 @@ class MSTRiskProducerService : RiskScoreProducer {
     }
 
     val validRequest = MSTRequestValidated(
-      request.gender!!,
-      request.dateOfBirth!!,
-      request.peerGroupInfluences!!,
-      request.attitudesPeerPressure!!,
-      request.attitudesStableBehaviour!!,
-      request.difficultiesCoping!!,
-      request.attitudesTowardsSelf!!,
-      request.impulsivityBehaviour!!,
-      request.temperControl!!,
-      request.problemSolvingSkills!!,
-      request.awarenessOfConsequences!!,
-      request.understandsPeoplesViews!!,
+      gender = request.gender!!,
+      assessmentDate = request.assessmentDate,
+      dateOfBirth = request.dateOfBirth!!,
+      peerGroupInfluences = request.peerGroupInfluences!!,
+      attitudesPeerPressure = request.attitudesPeerPressure!!,
+      attitudesStableBehaviour = request.attitudesStableBehaviour!!,
+      difficultiesCoping = request.difficultiesCoping!!,
+      attitudesTowardsSelf = request.attitudesTowardsSelf!!,
+      impulsivityBehaviour = request.impulsivityBehaviour!!,
+      temperControl = request.temperControl!!,
+      problemSolvingSkills = request.problemSolvingSkills!!,
+      awarenessOfConsequences = request.awarenessOfConsequences!!,
+      understandsPeoplesViews = request.understandsPeoplesViews!!,
     )
 
     return context.copy(
@@ -53,7 +54,7 @@ class MSTRiskProducerService : RiskScoreProducer {
     request: MSTRequestValidated,
     errors: MutableList<ValidationErrorResponse>,
   ): MSTObject {
-    val currentAge = calculateAge(request.dateOfBirth)
+    val currentAge = calculateAge(request.dateOfBirth, request.assessmentDate)
     val isMstApplicable = getMstApplicable(request.gender, currentAge)
 
     if (isMstApplicable) {

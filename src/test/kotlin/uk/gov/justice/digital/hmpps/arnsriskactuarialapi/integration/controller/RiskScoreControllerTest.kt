@@ -13,6 +13,7 @@ class RiskScoreControllerTest : IntegrationTestBase() {
   private val basicRequest = RiskScoreRequest(
     RiskScoreVersion.V1_0,
     Gender.MALE,
+    assessmentDate = LocalDate.of(2025, 1, 1),
     LocalDate.of(1964, 10, 15),
     LocalDate.of(2014, 12, 13),
     LocalDate.of(2027, 12, 12),

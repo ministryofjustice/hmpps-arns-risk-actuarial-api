@@ -7,6 +7,7 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.whenever
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.FIXED_TEST_DATE
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
@@ -51,6 +52,7 @@ class RiskScoreServiceTest {
     val request = RiskScoreRequest(
       RiskScoreVersion.V1_0,
       null,
+      FIXED_TEST_DATE,
       null,
       null,
       null,
