@@ -8,6 +8,7 @@ import java.time.LocalDate
 data class SNSVDynamicRequestValidated(
   val gender: Gender,
   val dateOfBirth: LocalDate,
+  val assessmentDate: LocalDate,
   val dateOfCurrentConviction: LocalDate,
   val currentOffence: String,
   val totalNumberOfSanctions: Int,
