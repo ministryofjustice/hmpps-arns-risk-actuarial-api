@@ -1,5 +1,6 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto
 
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds.HasQualifications
 import java.time.LocalDate
 
 data class RiskScoreRequest(
@@ -92,4 +93,12 @@ data class RiskScoreRequest(
   val breachOfTrust: Boolean? = null,
   val overallRiskForAssessment: RiskBand? = null,
   val highestRiskLevel: RiskBand? = null,
+
+  // LDS
+  val transferableSkills: ProblemLevel? = null,
+  val educationDifficulties: ProblemLevel? = null,
+  val readingDifficulties: Boolean? = null,
+  val numeracyDifficulties: Boolean? = null,
+  val learningDifficulties: ProblemLevel? = null,
+  val professionalOrVocationalQualifications: HasQualifications? = null,
 )

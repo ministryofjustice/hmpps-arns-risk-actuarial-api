@@ -1,9 +1,8 @@
-package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.opd
+package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds
 
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 
-data class OPDObject(
-  val opdCheck: Boolean,
-  val opdResult: OPDResult?,
+data class LDSObject(
+  val ldsScore: Int?,
   val validationError: List<ValidationErrorResponse>?,
 )

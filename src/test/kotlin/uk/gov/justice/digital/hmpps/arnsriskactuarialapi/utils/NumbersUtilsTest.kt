@@ -55,8 +55,8 @@ class NumbersUtilsTest {
     assertTrue(0.5.equalsDelta(0.0.softScale()))
     // should be true for any x (but delta may have to be tweaked)
     val x = Math.PI
-    val expected = x.let { exp(it) / (2 * cosh(it)) }
-    val actual = (2 * x).softScale()
-    assertTrue(expected.equalsDelta(actual))
+    val g = { x: Double -> (x / 2).let { u -> exp(u) / (2 * cosh(u)) } }
+    val f = { x: Double -> x.softScale() }
+    assertTrue(f(x).equalsDelta(g(x)))
   }
 }

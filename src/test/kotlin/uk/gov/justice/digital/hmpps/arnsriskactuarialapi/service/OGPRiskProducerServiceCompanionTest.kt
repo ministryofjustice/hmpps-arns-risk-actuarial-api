@@ -119,7 +119,6 @@ class OGPRiskProducerServiceCompanionTest {
       proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
     )
     val output = getOGPOutput(input, mutableListOf())
-    println(output)
     val expected = OGPObject(
       ogpReoffendingOneYear = 53,
       ogpReoffendingTwoYear = 68,
