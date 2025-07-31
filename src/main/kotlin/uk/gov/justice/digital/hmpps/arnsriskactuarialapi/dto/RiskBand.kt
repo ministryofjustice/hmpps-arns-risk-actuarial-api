@@ -5,4 +5,5 @@ enum class RiskBand {
   MEDIUM,
   HIGH,
   VERY_HIGH,
+  NOT_APPLICABLE,
 }

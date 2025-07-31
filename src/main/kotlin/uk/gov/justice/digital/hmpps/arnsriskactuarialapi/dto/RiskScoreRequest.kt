@@ -101,4 +101,17 @@ data class RiskScoreRequest(
   val numeracyDifficulties: Boolean? = null,
   val learningDifficulties: ProblemLevel? = null,
   val professionalOrVocationalQualifications: HasQualifications? = null,
+
+  // RSR
+  val totalContactAdultSexualSanctions: Int? = null,
+  val totalContactChildSexualSanctions: Int? = null,
+  val totalIndecentImageSanctions: Int? = null,
+  val totalNonContactSexualOffences: Int? = null,
+  val dateOfCommunitySentenceOrEarliestRelease: LocalDate? = null,
+  val dateOfMostRecentSexualOffence: LocalDate? = null,
+  val victimStranger: Boolean? = null,
+  val suitabilityOfAccommodation: ProblemLevel? = null,
+  val currentRelationshipWithPartner: ProblemLevel? = null,
+  val previousConvictions: List<PreviousConviction>? = null,
+  val currentOffenceSexuallyMotivated: Boolean? = null,
 )
