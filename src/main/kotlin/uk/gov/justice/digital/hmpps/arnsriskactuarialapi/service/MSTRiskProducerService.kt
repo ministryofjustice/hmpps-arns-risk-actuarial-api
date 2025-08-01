@@ -19,14 +19,14 @@ class MSTRiskProducerService : RiskScoreProducer {
     val errors = mstInitialValidation(request)
 
     if (!errors.isEmpty()) {
-      return context.copy(
+      return context.apply {
         MST = MSTObject(
           maturityScore = null,
           maturityFlag = null,
           isMstApplicable = false,
           validationError = errors,
-        ),
-      )
+        )
+      }
     }
 
     val validRequest = MSTRequestValidated(
@@ -45,9 +45,7 @@ class MSTRiskProducerService : RiskScoreProducer {
       understandsPeoplesViews = request.understandsPeoplesViews,
     )
 
-    return context.copy(
-      MST = getMstObject(validRequest, errors),
-    )
+    return context.apply { MST = getMstObject(validRequest, errors) }
   }
 
   private fun getMstObject(

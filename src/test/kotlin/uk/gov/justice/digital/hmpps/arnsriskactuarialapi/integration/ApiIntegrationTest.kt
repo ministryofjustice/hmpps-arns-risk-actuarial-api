@@ -33,6 +33,8 @@ class ApiIntegrationTest : IntegrationTestBase() {
       arrayOf("mst", "requests/mst-input-4-valid-custom-assessment-date.json", "responses/mst-expected-4.json"),
       arrayOf("mst", "requests/mst-input-5-valid-missing-fields.json", "responses/mst-expected-5.json"),
       arrayOf("ogp", "requests/ogp-input-1-valid.json", "responses/ogp-expected-1.json"),
+      arrayOf("ogp", "requests/ogp-input-2-missing-fields.json", "responses/ogp-expected-2.json"),
+      arrayOf("ogp", "requests/ogp-input-3-missing-fields.json", "responses/ogp-expected-3.json"),
       arrayOf("pni", "requests/pni-input-1-valid.json", "responses/pni-expected-1.json"),
       arrayOf("pni", "requests/pni-input-2-missing-fields.json", "responses/pni-expected-2.json"),
       arrayOf("opd", "requests/opd-input-1-male-valid.json", "responses/opd-expected-1.json"),
