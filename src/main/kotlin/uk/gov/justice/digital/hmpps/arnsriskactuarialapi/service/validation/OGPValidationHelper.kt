@@ -17,7 +17,7 @@ class OGPValidationHelper {
       "proCriminalAttitudes" to "Procriminal attitudes",
     )
 
-    fun getMissingFieldsErrorsInContext(context: RiskScoreContext): List<String> = if (context.OGRS3 == null || context.OGRS3.ogrs3TwoYear == null) {
+    fun getMissingFieldsErrorsInContext(context: RiskScoreContext): List<String> = if (context.OGRS3 == null || context.OGRS3!!.ogrs3TwoYear == null) {
       listOf("OGRS3 Two Year")
     } else {
       emptyList()

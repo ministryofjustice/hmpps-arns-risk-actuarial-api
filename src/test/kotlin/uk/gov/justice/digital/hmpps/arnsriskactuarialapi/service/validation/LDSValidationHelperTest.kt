@@ -55,7 +55,7 @@ class LDSValidationHelperTest {
   }
 
   @Test
-  fun `fields not eligible but some present`() {
+  fun `fields not eligible but some present error`() {
     val result = ldsInitialValidation(INELIGIBLE_LDS_REQUEST)
     assertEquals(
       listOf(
@@ -84,7 +84,7 @@ class LDSValidationHelperTest {
   }
 
   @Test
-  fun `fields not eligible -`() {
+  fun `fields not eligible and none present`() {
     val result = mutableListOf<ValidationErrorResponse>().addEnoughFieldsPresent(NULL_REQUEST)
     assertEquals(
       listOf(
@@ -99,7 +99,7 @@ class LDSValidationHelperTest {
   }
 
   @Test
-  fun `fields not eligible but some present -`() {
+  fun `fields not eligible but some present`() {
     val result = mutableListOf<ValidationErrorResponse>().addEnoughFieldsPresent(INELIGIBLE_LDS_REQUEST)
     assertEquals(
       listOf(

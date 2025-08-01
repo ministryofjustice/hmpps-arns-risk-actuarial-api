@@ -11,14 +11,14 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.rsr.RSRObject
 
 data class RiskScoreContext(
   val version: RiskScoreVersion,
-  val OGRS3: OGRS3Object? = null,
-  val OVP: OVPObject? = null,
-  val OGP: OGPObject? = null,
-  val MST: MSTObject? = null,
-  val OPD: OPDObject? = null,
-  val PNI: PNIObject? = null,
-  val LDS: LDSObject? = null,
-  val RSR: RSRObject? = null,
+  var OGRS3: OGRS3Object? = null,
+  var OVP: OVPObject? = null,
+  var OGP: OGPObject? = null,
+  var MST: MSTObject? = null,
+  var OPD: OPDObject? = null,
+  var PNI: PNIObject? = null,
+  var LDS: LDSObject? = null,
+  var RSR: RSRObject? = null,
 )
 
 fun RiskScoreContext.toRiskScoreResponse(): RiskScoreResponse = RiskScoreResponse(

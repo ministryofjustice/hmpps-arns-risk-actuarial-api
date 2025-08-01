@@ -33,10 +33,10 @@ class OVPRiskProducerServiceTest {
 
     assertNotNull(result)
     assertTrue(result.OVP!!.validationError.isNullOrEmpty())
-    assertEquals(5, result.OVP.provenViolentTypeReoffendingOneYear)
-    assertEquals(9, result.OVP.provenViolentTypeReoffendingTwoYear)
-    assertEquals(RiskBand.LOW, result.OVP.band)
-    assertTrue(result.OVP.validationError.isNullOrEmpty())
+    assertEquals(5, result.OVP!!.provenViolentTypeReoffendingOneYear)
+    assertEquals(9, result.OVP!!.provenViolentTypeReoffendingTwoYear)
+    assertEquals(RiskBand.LOW, result.OVP!!.band)
+    assertTrue(result.OVP!!.validationError.isNullOrEmpty())
   }
 
   @Test
@@ -45,10 +45,10 @@ class OVPRiskProducerServiceTest {
 
     assertNotNull(result)
     assertTrue(result.OVP!!.validationError.isNullOrEmpty())
-    assertEquals(15, result.OVP.provenViolentTypeReoffendingOneYear)
-    assertEquals(26, result.OVP.provenViolentTypeReoffendingTwoYear)
-    assertEquals(RiskBand.LOW, result.OVP.band)
-    assertTrue(result.OVP.validationError.isNullOrEmpty())
+    assertEquals(15, result.OVP!!.provenViolentTypeReoffendingOneYear)
+    assertEquals(26, result.OVP!!.provenViolentTypeReoffendingTwoYear)
+    assertEquals(RiskBand.LOW, result.OVP!!.band)
+    assertTrue(result.OVP!!.validationError.isNullOrEmpty())
   }
 
   @Test
@@ -68,10 +68,10 @@ class OVPRiskProducerServiceTest {
 
     assertNotNull(result)
     assertTrue(result.OVP!!.validationError.isNullOrEmpty())
-    assertEquals(42, result.OVP.provenViolentTypeReoffendingOneYear)
-    assertEquals(58, result.OVP.provenViolentTypeReoffendingTwoYear)
-    assertEquals(RiskBand.MEDIUM, result.OVP.band)
-    assertTrue(result.OVP.validationError.isNullOrEmpty())
+    assertEquals(42, result.OVP!!.provenViolentTypeReoffendingOneYear)
+    assertEquals(58, result.OVP!!.provenViolentTypeReoffendingTwoYear)
+    assertEquals(RiskBand.MEDIUM, result.OVP!!.band)
+    assertTrue(result.OVP!!.validationError.isNullOrEmpty())
   }
 
   @Test

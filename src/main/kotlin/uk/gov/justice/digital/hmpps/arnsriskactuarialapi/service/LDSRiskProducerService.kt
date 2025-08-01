@@ -25,8 +25,7 @@ class LDSRiskProducerService : RiskScoreProducer {
     val errors = ldsInitialValidation(request)
 
     if (!errors.isEmpty()) {
-      return context
-        .copy(LDS = LDSObject(null, errors))
+      return context.apply { LDS = LDSObject(null, errors) }
     }
 
     val validInput = LDSInputValidated(
@@ -39,9 +38,7 @@ class LDSRiskProducerService : RiskScoreProducer {
       request.professionalOrVocationalQualifications,
     )
 
-    return context.copy(
-      LDS = getLDSOutput(validInput, errors),
-    )
+    return context.apply { LDS = getLDSOutput(validInput, errors) }
   }
 
   companion object {

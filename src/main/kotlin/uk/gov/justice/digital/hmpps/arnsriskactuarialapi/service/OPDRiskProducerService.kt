@@ -158,26 +158,16 @@ class OPDRiskProducerService : RiskScoreProducer {
   private fun invalidInformationResult(
     context: RiskScoreContext,
     errors: List<ValidationErrorResponse>,
-  ): RiskScoreContext = context.copy(
-    OPD = OPDObject(
-      opdCheck = false,
-      opdResult = null,
-      validationError = errors,
-    ),
-  )
+  ): RiskScoreContext = context.apply { OPD = OPDObject(opdCheck = false, opdResult = null, validationError = errors) }
 
   /**
    * Based on information provided or lack thereof, the OPD is not applicable, does not contain errors.
    */
   private fun notApplicableResult(
     context: RiskScoreContext,
-  ): RiskScoreContext = context.copy(
-    OPD = OPDObject(
-      opdCheck = false,
-      opdResult = null,
-      validationError = emptyList(),
-    ),
-  )
+  ): RiskScoreContext = context.apply {
+    OPD = OPDObject(opdCheck = false, opdResult = null, validationError = emptyList())
+  }
 
   /**
    * OPD calculations for both MALE and FEMALE.
@@ -249,13 +239,7 @@ class OPDRiskProducerService : RiskScoreProducer {
       }
     }
 
-    return context.copy(
-      OPD = OPDObject(
-        opdCheck = true,
-        opdResult = opdResult,
-        validationError = emptyList(),
-      ),
-    )
+    return context.apply { OPD = OPDObject(opdCheck = true, opdResult = opdResult, validationError = emptyList()) }
   }
 
   private fun errorResult(
@@ -269,13 +253,7 @@ class OPDRiskProducerService : RiskScoreProducer {
         fields = emptyList(),
       ),
     )
-    return context.copy(
-      OPD = OPDObject(
-        opdCheck = false,
-        opdResult = null,
-        validationError = errors,
-      ),
-    )
+    return context.apply { OPD = OPDObject(opdCheck = false, opdResult = null, validationError = errors) }
   }
 
   /**

@@ -1,0 +1,18 @@
+{
+  "version": "V1_0",
+  "dateOfBirth": "1991-07-17",
+  "dateOfCurrentConviction": "2021-08-05",
+  "dateAtStartOfFollowup": "2021-12-12",
+  "totalNumberOfSanctions": 2,
+  "ageAtFirstSanction": 21,
+  "currentOffence": "11618",
+  "currentAccommodation": false,
+  "employmentStatus": true,
+  "regularOffendingActivities": "SOME_PROBLEMS",
+  "currentDrugMisuse": "SIGNIFICANT_PROBLEMS",
+  "motivationDrug": "NO_PROBLEMS",
+  "problemSolvingSkills": "SOME_PROBLEMS",
+  "awarenessOfConsequences": "SOME_PROBLEMS",
+  "understandsPeoplesViews": "NO_PROBLEMS",
+  "proCriminalAttitudes": "SOME_PROBLEMS"
+}

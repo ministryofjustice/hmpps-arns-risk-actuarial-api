@@ -32,7 +32,7 @@ class OVPRiskProducerService : RiskScoreProducer {
     val errors = ovpInitialValidation(request)
 
     if (errors.isNotEmpty()) {
-      return context.copy(OVP = OVPObject(null, null, null, errors))
+      return context.apply { OVP = OVPObject(null, null, null, errors) }
     }
 
     val validRequest = OVPRequestValidated(
@@ -50,7 +50,7 @@ class OVPRiskProducerService : RiskScoreProducer {
       request.temperControl!!,
       request.proCriminalAttitudes!!,
     )
-    return context.copy(OVP = getOVPObject(validRequest, errors))
+    return context.apply { OVP = getOVPObject(validRequest, errors) }
   }
 
   private fun getOVPObject(
