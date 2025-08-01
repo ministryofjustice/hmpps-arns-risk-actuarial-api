@@ -6,8 +6,6 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
-import org.mockito.kotlin.any
-import org.mockito.kotlin.eq
 import org.mockito.kotlin.whenever
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.FIXED_TEST_DATE
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
@@ -79,8 +77,7 @@ class RiskScoreServiceTest {
     for ((service, transform) in steps) {
       val contextBefore = context.copy()
       transform(context)
-      whenever(service.getRiskScore(any(), eq(contextBefore)))
-        .thenReturn(context.copy())
+      whenever(service.getRiskScore(request, contextBefore)).thenReturn(context.copy())
     }
 
     val result = riskScoreService.riskScoreProducer(request)
