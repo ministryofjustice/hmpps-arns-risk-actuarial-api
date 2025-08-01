@@ -77,8 +77,8 @@ class MSTScoreProducerServiceTest {
     // Then
     assertNotNull(result)
     assertEquals(null, result.MST?.maturityScore)
-    assertEquals(null, result.MST?.maturityFlag)
-    assertEquals(null, result.MST?.isMstApplicable)
+    assertEquals(false, result.MST?.maturityFlag)
+    assertEquals(false, result.MST?.isMstApplicable)
     assertTrue(result.MST?.validationError?.size == 1)
 
     val expectedError = ValidationErrorResponse(
@@ -88,15 +88,6 @@ class MSTScoreProducerServiceTest {
         "Gender",
         "Date of birth",
         "Peer group influences",
-        "Attitudes peer pressure",
-        "Attitudes stable behaviour",
-        "Difficulties coping",
-        "Attitudes towards self",
-        "Impulsivity behaviour",
-        "Temper control",
-        "Problem solving skills",
-        "Aweness of consequences",
-        "Understands peoples views",
       ),
     )
     val actualError = result.MST?.validationError
@@ -114,7 +105,7 @@ class MSTScoreProducerServiceTest {
     // Then
     assertNotNull(result)
     assertEquals(null, result.MST?.maturityScore)
-    assertEquals(null, result.MST?.maturityFlag)
+    assertEquals(false, result.MST?.maturityFlag)
     assertEquals(false, result.MST?.isMstApplicable)
     assertTrue(result.MST?.validationError?.size == 1)
 
@@ -138,7 +129,7 @@ class MSTScoreProducerServiceTest {
     // Then
     assertNotNull(result)
     assertEquals(null, result.MST?.maturityScore)
-    assertEquals(null, result.MST?.maturityFlag)
+    assertEquals(false, result.MST?.maturityFlag)
     assertEquals(false, result.MST?.isMstApplicable)
     assertTrue(result.MST?.validationError?.size == 1)
 
@@ -163,7 +154,7 @@ class MSTScoreProducerServiceTest {
     // Then
     assertNotNull(result)
     assertEquals(null, result.MST?.maturityScore)
-    assertEquals(null, result.MST?.maturityFlag)
+    assertEquals(false, result.MST?.maturityFlag)
     assertEquals(false, result.MST?.isMstApplicable)
     assertTrue(result.MST?.validationError?.size == 1)
 
