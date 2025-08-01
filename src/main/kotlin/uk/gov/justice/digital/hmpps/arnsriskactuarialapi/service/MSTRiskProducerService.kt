@@ -22,7 +22,7 @@ class MSTRiskProducerService : RiskScoreProducer {
       return context.copy(
         MST = MSTObject(
           maturityScore = null,
-          maturityFlag = false,
+          maturityFlag = null,
           isMstApplicable = false,
           validationError = errors,
         ),

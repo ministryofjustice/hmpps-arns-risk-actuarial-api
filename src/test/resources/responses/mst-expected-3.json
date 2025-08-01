@@ -1,7 +1,7 @@
 {
   "mst": {
     "maturityScore" : null,
-    "maturityFlag" : false,
+    "maturityFlag" : null,
     "isMstApplicable" : false,
     "validationError" : [ {
       "type" : "MISSING_INPUT",

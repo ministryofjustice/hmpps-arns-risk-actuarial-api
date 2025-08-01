@@ -77,7 +77,7 @@ class MSTScoreProducerServiceTest {
     // Then
     assertNotNull(result)
     assertEquals(null, result.MST?.maturityScore)
-    assertEquals(false, result.MST?.maturityFlag)
+    assertEquals(null, result.MST?.maturityFlag)
     assertEquals(false, result.MST?.isMstApplicable)
     assertTrue(result.MST?.validationError?.size == 1)
 
