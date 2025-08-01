@@ -29,7 +29,7 @@ fun genderAndAgeValidation(gender: Gender, age: Int, errors: MutableList<Validat
   val criteriaFields = mutableListOf<String>()
 
   if (gender != Gender.MALE) criteriaFields.add("Gender")
-  if (age !in 18..24) criteriaFields.add("Date of birth")
+  if (age !in 18..25) criteriaFields.add("Date of birth")
 
   return addMissingCriteriaValidation(criteriaFields, errors)
 }
