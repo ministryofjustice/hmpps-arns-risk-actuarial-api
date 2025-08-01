@@ -12,6 +12,6 @@ data class SNSVStaticRequestValidated(
   val totalNumberOfSanctions: Int,
   val ageAtFirstSanction: Int,
   val custody: Boolean,
-  val dateOfCommunitySentenceOrEarliestRelease: LocalDate,
+  val dateAtStartOfFollowup: LocalDate,
   val totalNumberOfViolentSanctions: Int,
 )

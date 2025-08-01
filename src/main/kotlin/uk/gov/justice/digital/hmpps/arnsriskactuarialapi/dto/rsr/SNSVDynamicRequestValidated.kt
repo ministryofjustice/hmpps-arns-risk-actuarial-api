@@ -14,7 +14,7 @@ data class SNSVDynamicRequestValidated(
   val totalNumberOfSanctions: Int,
   val ageAtFirstSanction: Int,
   val custody: Boolean,
-  val dateOfCommunitySentenceOrEarliestRelease: LocalDate,
+  val dateAtStartOfFollowup: LocalDate,
   val totalNumberOfViolentSanctions: Int,
   val carryingOrUsingWeapon: Boolean?,
   val suitabilityOfAccommodation: ProblemLevel?,
