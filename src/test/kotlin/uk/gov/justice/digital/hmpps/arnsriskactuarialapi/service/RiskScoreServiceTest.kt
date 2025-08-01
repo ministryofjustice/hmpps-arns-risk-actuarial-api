@@ -9,10 +9,18 @@ import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.any
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.whenever
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.*
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.FIXED_TEST_DATE
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyLDS
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyMST
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOGP
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOGRS3
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOPD
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOVP
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.omittedPNI
 
 @ExtendWith(MockitoExtension::class)
 class RiskScoreServiceTest {
