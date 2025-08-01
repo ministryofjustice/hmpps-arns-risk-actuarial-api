@@ -32,7 +32,7 @@ class MSTTransformationHelperTest {
     val resultLowerLimit = getMstApplicable(Gender.MALE, 17)
     assertFalse(resultLowerLimit)
 
-    val resultUpperLimit = getMstApplicable(Gender.MALE, 25)
+    val resultUpperLimit = getMstApplicable(Gender.MALE, 26)
     assertFalse(resultUpperLimit)
 
     val resultForFemale = getMstApplicable(Gender.FEMALE, 18)

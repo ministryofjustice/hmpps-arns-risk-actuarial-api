@@ -6,6 +6,10 @@ import java.time.Period
 
 fun calculateAge(birthDate: LocalDate, assessmentDate: LocalDate): Int = Period.between(birthDate, assessmentDate).years
 
-fun getMstApplicable(gender: Gender, age: Int): Boolean = gender == Gender.MALE && age in 18..24
+fun getMstApplicable(gender: Gender, age: Int): Boolean = isValidMstGender(gender) && isValidMstAge(age)
+
+fun isValidMstAge(age: Int): Boolean = age in 18..25
+
+fun isValidMstGender(gender: Gender): Boolean = gender == Gender.MALE
 
 fun getMaturityFlag(maturityScore: Int): Boolean = maturityScore >= 10
