@@ -96,7 +96,7 @@ class PNIRiskProducerService : RiskScoreProducer {
     need: NeedScore,
     risk: RiskBand,
   ): Boolean {
-    if (request.inCustodyOrCommunity == CustodyOrCommunity.COMMUNITY) return false
+    if (request.inCustodyOrCommunity != CustodyOrCommunity.CUSTODY) return false
     return isHighOgrsWithHighOVP(request) ||
       isHighOgrsWithHighSara(request) ||
       isHighNeedWithHighRisk(need, risk)
