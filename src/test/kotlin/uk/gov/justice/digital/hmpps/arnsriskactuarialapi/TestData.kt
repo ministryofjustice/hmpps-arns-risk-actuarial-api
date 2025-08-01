@@ -1,5 +1,6 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi
 
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CustodyOrCommunity
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
@@ -201,8 +202,7 @@ fun validPNIRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
   previousCloseRelationships = ProblemLevel.SOME_PROBLEMS,
   easilyInfluencedByCriminals = ProblemLevel.SOME_PROBLEMS,
   controllingBehaviour = ProblemLevel.SOME_PROBLEMS,
-  custody = false,
-  community = true,
+  inCustodyOrCommunity = CustodyOrCommunity.COMMUNITY,
   saraRiskToPartner = RiskBand.LOW,
   saraRiskToOthers = RiskBand.LOW,
 )
@@ -318,7 +318,7 @@ fun pniRequest(
   difficultiesCoping: ProblemLevel? = null,
 ) = PNIRequestValidated(
   gender = Gender.MALE,
-  community = true,
+  inCustodyOrCommunity = CustodyOrCommunity.COMMUNITY,
   hasCommittedSexualOffence = null,
   riskSexualHarm = null,
   sexualPreoccupation = sexualPreoccupation,
@@ -342,5 +342,4 @@ fun pniRequest(
   saraRiskToOthers = null,
   ovp = null,
   rsr = null,
-  custody = false,
 )

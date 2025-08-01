@@ -1,5 +1,6 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.rsr
 
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CustodyOrCommunity
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import java.time.LocalDate
 
@@ -11,7 +12,7 @@ data class SNSVStaticRequestValidated(
   val currentOffence: String,
   val totalNumberOfSanctions: Int,
   val ageAtFirstSanction: Int,
-  val custody: Boolean,
+  val inCustodyOrCommunity: CustodyOrCommunity,
   val dateAtStartOfFollowup: LocalDate,
   val totalNumberOfViolentSanctions: Int,
 )

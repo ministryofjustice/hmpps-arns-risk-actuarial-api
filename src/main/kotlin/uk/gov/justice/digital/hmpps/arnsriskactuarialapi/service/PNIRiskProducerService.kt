@@ -1,6 +1,7 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
 import org.springframework.stereotype.Service
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CustodyOrCommunity
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.NeedScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
@@ -32,8 +33,7 @@ class PNIRiskProducerService : RiskScoreProducer {
 
     val requestValidated = PNIRequestValidated(
       gender = request.gender!!,
-      community = request.community ?: false,
-      custody = request.custody ?: false,
+      inCustodyOrCommunity = request.inCustodyOrCommunity,
       hasCommittedSexualOffence = request.hasCommittedSexualOffence,
       riskSexualHarm = request.riskSexualHarm,
       sexualPreoccupation = request.sexualPreoccupation,
@@ -96,7 +96,7 @@ class PNIRiskProducerService : RiskScoreProducer {
     need: NeedScore,
     risk: RiskBand,
   ): Boolean {
-    if (request.custody != true) return false
+    if (request.inCustodyOrCommunity == CustodyOrCommunity.COMMUNITY) return false
     return isHighOgrsWithHighOVP(request) ||
       isHighOgrsWithHighSara(request) ||
       isHighNeedWithHighRisk(need, risk)
@@ -109,8 +109,8 @@ class PNIRiskProducerService : RiskScoreProducer {
     request: PNIRequestValidated,
     need: NeedScore,
     risk: RiskBand,
-  ): Boolean = (isHighOgrsWithHighOVP(request) && request.community) ||
-    (isHighNeedWithHighRisk(need, risk) && request.community) ||
+  ): Boolean = (isHighOgrsWithHighOVP(request) && request.inCustodyOrCommunity == CustodyOrCommunity.COMMUNITY) ||
+    (isHighNeedWithHighRisk(need, risk) && request.inCustodyOrCommunity == CustodyOrCommunity.COMMUNITY) ||
     isHighSara(request) ||
     isMediumSara(request) ||
     isMediumNeedWithHighRisk(need, risk) ||
@@ -143,7 +143,7 @@ class PNIRiskProducerService : RiskScoreProducer {
 
   internal fun isHighRisk(
     requestValidated: PNIRequestValidated,
-  ): Boolean = requestValidated.custody &&
+  ): Boolean = requestValidated.inCustodyOrCommunity == CustodyOrCommunity.CUSTODY &&
     isHighOgrs3(requestValidated) ||
     isHighOvp(requestValidated) ||
     isOspDcHigh(requestValidated) ||

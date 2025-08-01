@@ -1,5 +1,6 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.osp
 
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CustodyOrCommunity
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import java.time.LocalDate
@@ -18,6 +19,6 @@ data class OSPDCRequestValidated(
   val dateOfMostRecentSexualOffence: LocalDate,
   val totalNumberOfSanctions: Int,
   val victimStranger: Boolean,
-  val custody: Boolean,
+  val inCustodyOrCommunity: CustodyOrCommunity,
   val mostRecentOffenceDate: LocalDate,
 )
