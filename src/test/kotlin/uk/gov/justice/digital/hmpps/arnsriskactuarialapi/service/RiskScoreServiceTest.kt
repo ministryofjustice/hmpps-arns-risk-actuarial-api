@@ -17,7 +17,9 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyMST
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOGP
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOGRS3
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOPD
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOSPDC
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOVP
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyRSR
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.omittedPNI
 
 @ExtendWith(MockitoExtension::class)
@@ -43,6 +45,12 @@ class RiskScoreServiceTest {
 
   @Mock
   private lateinit var ldsRiskProducerService: LDSRiskProducerService
+
+  @Mock
+  private lateinit var ospdcRiskProducerService: OSPDCRiskProducerService
+
+  @Mock
+  private lateinit var rsrRiskProducerService: RSRRiskProducerService
 
   @InjectMocks
   private lateinit var riskScoreService: RiskScoreService
@@ -71,6 +79,9 @@ class RiskScoreServiceTest {
       Pair(opdRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { OPD = emptyOPD() } },
       Pair(pniRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { PNI = omittedPNI() } },
       Pair(ldsRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { LDS = emptyLDS() } },
+      Pair(ospdcRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { OSPDC = emptyOSPDC() } },
+      Pair(rsrRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { RSR = emptyRSR() } },
+
       // add more Pairs for the other mocked risk producers here
     )
 
@@ -88,5 +99,6 @@ class RiskScoreServiceTest {
     Assertions.assertNotNull(result.MST)
     Assertions.assertNotNull(result.OPD)
     Assertions.assertNotNull(result.LDS)
+    Assertions.assertNotNull(result.RSR)
   }
 }

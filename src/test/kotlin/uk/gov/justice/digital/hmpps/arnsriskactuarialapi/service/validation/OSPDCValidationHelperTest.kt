@@ -1,0 +1,85 @@
+package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
+
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validOSPDCRiskScoreRequest
+
+class OSPDCValidationHelperTest {
+
+  @Test
+  fun `oospdcInitialValidation no errors`() {
+    val result = ospdcInitialValidation(validOSPDCRiskScoreRequest())
+    assertTrue(result.isEmpty())
+  }
+
+  @Test
+  fun `oospdcInitialValidation missing field error with all field populated`() {
+    val request = validOSPDCRiskScoreRequest().copy(
+      gender = null,
+      dateOfBirth = null,
+      hasCommittedSexualOffence = null,
+      totalContactAdultSexualSanctions = null,
+      totalContactChildSexualSanctions = null,
+      totalNonContactSexualOffences = null,
+      totalIndecentImageSanctions = null,
+      dateAtStartOfFollowup = null,
+      dateOfMostRecentSexualOffence = null,
+      totalNumberOfSanctions = null,
+      inCustodyOrCommunity = null,
+      mostRecentOffenceDate = null,
+    )
+
+    val result = ospdcInitialValidation(request)
+
+    val expectedFields = listOf(
+      "Gender",
+      "Date of birth",
+      "Has commited sexual offence",
+      "Total contact adult sexual sanctions",
+      "Total contact child sexual sanctions",
+      "Total non contact sexual offences",
+      "Total indecent image sanctions",
+      "Date at start of followup",
+      "Date of most recent sexual offence",
+      "Total number of sanctions",
+    )
+
+    val error = result.first()
+    assertEquals(ValidationErrorType.MISSING_INPUT, error.type)
+    assertEquals("ERR5 - Field is Null", error.message)
+    assertEquals(expectedFields, error.fields)
+  }
+
+  @Test
+  fun `oospdcInitialValidation not applicable error when hasCommittedSexualOffence is false`() {
+    val request = validOSPDCRiskScoreRequest().copy(
+      hasCommittedSexualOffence = false,
+    )
+
+    val result = ospdcInitialValidation(request)
+    val expectedFields = listOf("hasCommittedSexualOffence")
+
+    val error = result.first()
+    assertEquals(ValidationErrorType.NOT_APPLICABLE, error.type)
+    assertEquals("ERR - Does not meet eligibility criteria", error.message)
+    assertEquals(expectedFields, error.fields)
+  }
+
+  @Test
+  fun `oospdcInitialValidation not applicable error when female offender`() {
+    val request = validOSPDCRiskScoreRequest().copy(
+      gender = Gender.FEMALE,
+    )
+
+    val result = ospdcInitialValidation(request)
+    val expectedFields = listOf("Gender")
+
+    val error = result.first()
+    assertEquals(ValidationErrorType.NOT_APPLICABLE, error.type)
+    assertEquals("ERR - Does not meet eligibility criteria", error.message)
+    assertEquals(expectedFields, error.fields)
+  }
+}
