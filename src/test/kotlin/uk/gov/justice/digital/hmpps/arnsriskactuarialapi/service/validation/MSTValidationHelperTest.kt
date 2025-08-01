@@ -75,7 +75,7 @@ class MSTValidationHelperTest {
   @Test
   fun `genderAndAgeValidation should return NOT_APPLICABLE validationError when out of age range`() {
     // When
-    val result = genderAndAgeValidation(Gender.MALE, 25, errors)
+    val result = genderAndAgeValidation(Gender.MALE, 26, errors)
 
     // Then
     val expectedError = ValidationErrorResponse(
@@ -105,7 +105,7 @@ class MSTValidationHelperTest {
   @Test
   fun `genderAndAgeValidation should return NOT_APPLICABLE validationError when FEMALE and out of age range`() {
     // When
-    val result = genderAndAgeValidation(Gender.FEMALE, 25, errors)
+    val result = genderAndAgeValidation(Gender.FEMALE, 26, errors)
 
     // Then
     val expectedError = ValidationErrorResponse(
@@ -120,7 +120,7 @@ class MSTValidationHelperTest {
   @Test
   fun `genderAndAgeValidation should return empty list of ValidationErrorResponse`() {
     // When
-    val result = genderAndAgeValidation(Gender.MALE, 24, errors)
+    val result = genderAndAgeValidation(Gender.MALE, 25, errors)
 
     // Then
     assertNotNull(result)

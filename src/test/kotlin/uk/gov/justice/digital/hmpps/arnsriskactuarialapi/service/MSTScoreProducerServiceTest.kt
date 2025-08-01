@@ -107,7 +107,7 @@ class MSTScoreProducerServiceTest {
 
   @Test
   fun `should return valid MstObject with NOT_APPLICABLE validationError when out of age range`() {
-    val isMstApplicableFalseInput = validMSTRiskScoreRequest().copy(dateOfBirth = FIXED_TEST_DATE.minusYears(25))
+    val isMstApplicableFalseInput = validMSTRiskScoreRequest().copy(dateOfBirth = FIXED_TEST_DATE.minusYears(26))
     // When
     val result = mstRiskProducerService.getRiskScore(isMstApplicableFalseInput, emptyContext())
 
@@ -156,7 +156,7 @@ class MSTScoreProducerServiceTest {
   @Test
   fun `should return valid MstObject with NOT_APPLICABLE validationError when FEMALE and out of age range`() {
     val isMstApplicableFalseInput =
-      validMSTRiskScoreRequest().copy(gender = Gender.FEMALE, dateOfBirth = FIXED_TEST_DATE.minusYears(25))
+      validMSTRiskScoreRequest().copy(gender = Gender.FEMALE, dateOfBirth = FIXED_TEST_DATE.minusYears(26))
     // When
     val result = mstRiskProducerService.getRiskScore(isMstApplicableFalseInput, emptyContext())
 
