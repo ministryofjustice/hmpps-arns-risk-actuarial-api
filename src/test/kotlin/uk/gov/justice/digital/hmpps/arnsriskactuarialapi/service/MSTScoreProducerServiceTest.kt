@@ -78,7 +78,7 @@ class MSTScoreProducerServiceTest {
     assertNotNull(result)
     assertEquals(null, result.MST?.maturityScore)
     assertEquals(null, result.MST?.maturityFlag)
-    assertEquals(null, result.MST?.isMstApplicable)
+    assertEquals(false, result.MST?.isMstApplicable)
     assertTrue(result.MST?.validationError?.size == 1)
 
     val expectedError = ValidationErrorResponse(
@@ -95,7 +95,7 @@ class MSTScoreProducerServiceTest {
         "Impulsivity behaviour",
         "Temper control",
         "Problem solving skills",
-        "Aweness of consequences",
+        "Awareness of consequences",
         "Understands peoples views",
       ),
     )
@@ -114,7 +114,7 @@ class MSTScoreProducerServiceTest {
     // Then
     assertNotNull(result)
     assertEquals(null, result.MST?.maturityScore)
-    assertEquals(null, result.MST?.maturityFlag)
+    assertEquals(false, result.MST?.maturityFlag)
     assertEquals(false, result.MST?.isMstApplicable)
     assertTrue(result.MST?.validationError?.size == 1)
 
@@ -138,7 +138,7 @@ class MSTScoreProducerServiceTest {
     // Then
     assertNotNull(result)
     assertEquals(null, result.MST?.maturityScore)
-    assertEquals(null, result.MST?.maturityFlag)
+    assertEquals(false, result.MST?.maturityFlag)
     assertEquals(false, result.MST?.isMstApplicable)
     assertTrue(result.MST?.validationError?.size == 1)
 
@@ -163,7 +163,7 @@ class MSTScoreProducerServiceTest {
     // Then
     assertNotNull(result)
     assertEquals(null, result.MST?.maturityScore)
-    assertEquals(null, result.MST?.maturityFlag)
+    assertEquals(false, result.MST?.maturityFlag)
     assertEquals(false, result.MST?.isMstApplicable)
     assertTrue(result.MST?.validationError?.size == 1)
 
