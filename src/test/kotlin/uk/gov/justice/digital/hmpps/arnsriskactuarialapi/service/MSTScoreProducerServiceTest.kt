@@ -88,6 +88,15 @@ class MSTScoreProducerServiceTest {
         "Gender",
         "Date of birth",
         "Peer group influences",
+        "Attitudes peer pressure",
+        "Attitudes stable behaviour",
+        "Difficulties coping",
+        "Attitudes towards self",
+        "Impulsivity behaviour",
+        "Temper control",
+        "Problem solving skills",
+        "Awareness of consequences",
+        "Understands peoples views",
       ),
     )
     val actualError = result.MST?.validationError

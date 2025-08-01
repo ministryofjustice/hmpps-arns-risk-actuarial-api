@@ -59,7 +59,7 @@ class MSTRiskProducerService : RiskScoreProducer {
 
     if (isMstApplicable) {
       val maturityScore = listOf(
-        if (request.peerGroupInfluences) 1 else 0,
+        if (request.peerGroupInfluences == true) 1 else 0,
         request.attitudesPeerPressure?.score ?: 0,
         request.attitudesStableBehaviour?.score ?: 0,
         request.difficultiesCoping?.score ?: 0,

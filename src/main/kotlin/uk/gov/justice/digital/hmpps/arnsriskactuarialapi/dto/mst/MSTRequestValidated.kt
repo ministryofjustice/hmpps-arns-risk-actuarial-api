@@ -8,7 +8,7 @@ data class MSTRequestValidated(
   val gender: Gender,
   val assessmentDate: LocalDate,
   val dateOfBirth: LocalDate,
-  val peerGroupInfluences: Boolean,
+  val peerGroupInfluences: Boolean?,
   val attitudesPeerPressure: ProblemLevel?,
   val attitudesStableBehaviour: ProblemLevel?,
   val difficultiesCoping: ProblemLevel?,
