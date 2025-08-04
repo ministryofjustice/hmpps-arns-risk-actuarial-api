@@ -6,9 +6,9 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.mst.MSTObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.mst.MSTRequestValidated
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.calculateAge
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getMaturityFlag
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getMstApplicable
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.roundedAge
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.genderAndAgeValidation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.mstInitialValidation
 
@@ -33,7 +33,7 @@ class MSTRiskProducerService : RiskScoreProducer {
       gender = request.gender!!,
       assessmentDate = request.assessmentDate,
       dateOfBirth = request.dateOfBirth!!,
-      peerGroupInfluences = request.peerGroupInfluences!!,
+      peerGroupInfluences = request.peerGroupInfluences,
       attitudesPeerPressure = request.attitudesPeerPressure,
       attitudesStableBehaviour = request.attitudesStableBehaviour,
       difficultiesCoping = request.difficultiesCoping,
@@ -54,7 +54,7 @@ class MSTRiskProducerService : RiskScoreProducer {
     request: MSTRequestValidated,
     errors: MutableList<ValidationErrorResponse>,
   ): MSTObject {
-    val currentAge = calculateAge(request.dateOfBirth, request.assessmentDate)
+    val currentAge = roundedAge(request.dateOfBirth, request.assessmentDate)
     val isMstApplicable = getMstApplicable(request.gender, currentAge)
 
     if (isMstApplicable) {
