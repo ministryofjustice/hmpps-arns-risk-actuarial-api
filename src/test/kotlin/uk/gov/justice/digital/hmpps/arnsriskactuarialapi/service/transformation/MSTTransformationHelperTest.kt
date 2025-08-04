@@ -13,17 +13,24 @@ class MSTTransformationHelperTest {
   private val today = FIXED_TEST_DATE
 
   @Test
-  fun `roundedAge should return correct age`() {
+  fun `calculateAge should return correct age`() {
     val dob = today.minusYears(30)
-    val result = roundedAge(dob, today)
+    val result = calculateAge(dob, today)
     assertEquals(30, result)
   }
 
   @Test
-  fun `roundedAge should return ignore days of month`() {
+  fun `calculateAge should return exact years when short of 2 days`() {
     val dob = LocalDate.of(2007, 7, 10)
-    val result = roundedAge(dob, LocalDate.of(2025, 7, 8))
-    assertEquals(18, result)
+    val result = calculateAge(dob, LocalDate.of(2025, 7, 8))
+    assertEquals(17, result)
+  }
+
+  @Test
+  fun `calculateAge should return 25`() {
+    val dob = LocalDate.of(1999, 6, 23)
+    val result = calculateAge(dob, LocalDate.of(2025, 6, 18))
+    assertEquals(25, result)
   }
 
   @Test
