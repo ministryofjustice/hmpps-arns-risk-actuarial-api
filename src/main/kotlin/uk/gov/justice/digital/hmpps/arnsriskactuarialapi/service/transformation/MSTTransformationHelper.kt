@@ -4,9 +4,9 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import java.time.LocalDate
 import java.time.Period
 
-fun roundedAge(dob: LocalDate, today: LocalDate = LocalDate.now()): Int {
-  val dobTruncated = dob.withDayOfMonth(1)
-  val todayTruncated = today.withDayOfMonth(1)
+fun roundedAge(birthDate: LocalDate, assessmentDate: LocalDate): Int {
+  val dobTruncated = birthDate.withDayOfMonth(1)
+  val todayTruncated = assessmentDate.withDayOfMonth(1)
   return Period.between(dobTruncated, todayTruncated).years
 }
 
