@@ -41,8 +41,9 @@ class OGPRiskProducerService : RiskScoreProducer {
     val errors = ogpInitialValidation(request, context)
 
     if (!errors.isEmpty()) {
-      return context
-        .copy(OGP = OGPObject(null, null, null, null, errors))
+      return context.apply {
+        OGP = OGPObject(null, null, null, null, errors)
+      }
     }
 
     val validInput = OGPInputValidated(
@@ -58,9 +59,7 @@ class OGPRiskProducerService : RiskScoreProducer {
       request.proCriminalAttitudes!!,
     )
 
-    return context.copy(
-      OGP = getOGPOutput(validInput, errors),
-    )
+    return context.apply { OGP = getOGPOutput(validInput, errors) }
   }
 
   companion object {
