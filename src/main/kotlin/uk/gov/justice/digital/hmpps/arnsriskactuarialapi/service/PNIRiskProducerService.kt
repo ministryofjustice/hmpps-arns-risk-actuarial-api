@@ -27,8 +27,7 @@ class PNIRiskProducerService : RiskScoreProducer {
     var errors = pniInitialValidation(request)
 
     if (errors.isNotEmpty()) {
-      return context
-        .copy(PNI = PNIObject(ProgrammeNeedIdentifier.OMISSION, errors))
+      return context.apply { PNI = PNIObject(ProgrammeNeedIdentifier.OMISSION, errors) }
     }
 
     val requestValidated = PNIRequestValidated(
@@ -63,10 +62,7 @@ class PNIRiskProducerService : RiskScoreProducer {
     val overallNeedScore = overallNeed.first
     if (overallNeedScore == null) {
       errors = addMissingFields(overallNeed.second.toMutableList(), errors)
-      return context.copy(
-        PNI =
-        PNIObject(ProgrammeNeedIdentifier.OMISSION, errors),
-      )
+      return context.apply { PNI = PNIObject(ProgrammeNeedIdentifier.OMISSION, errors) }
     }
 
     val risk = when {
@@ -82,10 +78,7 @@ class PNIRiskProducerService : RiskScoreProducer {
       else -> ProgrammeNeedIdentifier.ALTERNATIVE
     }
 
-    return context.copy(
-      PNI =
-      PNIObject(pniPathway, errors),
-    )
+    return context.apply { PNI = PNIObject(pniPathway, errors) }
   }
 
   /**
