@@ -21,10 +21,10 @@ class MSTRiskProducerService : RiskScoreProducer {
     if (!errors.isEmpty()) {
       return context.copy(
         MST = MSTObject(
-          null,
-          null,
-          null,
-          errors,
+          maturityScore = null,
+          maturityFlag = null,
+          isMstApplicable = false,
+          validationError = errors,
         ),
       )
     }
@@ -34,15 +34,15 @@ class MSTRiskProducerService : RiskScoreProducer {
       assessmentDate = request.assessmentDate,
       dateOfBirth = request.dateOfBirth!!,
       peerGroupInfluences = request.peerGroupInfluences!!,
-      attitudesPeerPressure = request.attitudesPeerPressure!!,
-      attitudesStableBehaviour = request.attitudesStableBehaviour!!,
-      difficultiesCoping = request.difficultiesCoping!!,
-      attitudesTowardsSelf = request.attitudesTowardsSelf!!,
-      impulsivityBehaviour = request.impulsivityBehaviour!!,
-      temperControl = request.temperControl!!,
-      problemSolvingSkills = request.problemSolvingSkills!!,
-      awarenessOfConsequences = request.awarenessOfConsequences!!,
-      understandsPeoplesViews = request.understandsPeoplesViews!!,
+      attitudesPeerPressure = request.attitudesPeerPressure,
+      attitudesStableBehaviour = request.attitudesStableBehaviour,
+      difficultiesCoping = request.difficultiesCoping,
+      attitudesTowardsSelf = request.attitudesTowardsSelf,
+      impulsivityBehaviour = request.impulsivityBehaviour,
+      temperControl = request.temperControl,
+      problemSolvingSkills = request.problemSolvingSkills,
+      awarenessOfConsequences = request.awarenessOfConsequences,
+      understandsPeoplesViews = request.understandsPeoplesViews,
     )
 
     return context.copy(
@@ -59,16 +59,16 @@ class MSTRiskProducerService : RiskScoreProducer {
 
     if (isMstApplicable) {
       val maturityScore = listOf(
-        if (request.peerGroupInfluences) 1 else 0,
-        request.attitudesPeerPressure.score,
-        request.attitudesStableBehaviour.score,
-        request.difficultiesCoping.score,
-        request.attitudesTowardsSelf.score,
-        request.impulsivityBehaviour.score,
-        request.temperControl.score,
-        request.problemSolvingSkills.score,
-        request.awarenessOfConsequences.score,
-        request.understandsPeoplesViews.score,
+        if (request.peerGroupInfluences == true) 1 else 0,
+        request.attitudesPeerPressure?.score ?: 0,
+        request.attitudesStableBehaviour?.score ?: 0,
+        request.difficultiesCoping?.score ?: 0,
+        request.attitudesTowardsSelf?.score ?: 0,
+        request.impulsivityBehaviour?.score ?: 0,
+        request.temperControl?.score ?: 0,
+        request.problemSolvingSkills?.score ?: 0,
+        request.awarenessOfConsequences?.score ?: 0,
+        request.understandsPeoplesViews?.score ?: 0,
       ).sum()
 
       return MSTObject(
@@ -80,9 +80,9 @@ class MSTRiskProducerService : RiskScoreProducer {
     }
 
     return MSTObject(
-      null,
-      null,
-      false,
+      maturityScore = null,
+      maturityFlag = false,
+      isMstApplicable = false,
       genderAndAgeValidation(request.gender, currentAge, errors),
     )
   }

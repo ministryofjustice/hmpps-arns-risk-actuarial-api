@@ -1,0 +1,16 @@
+{
+  "version": "V1_0",
+  "gender": "MALE",
+  "dateOfBirth": "2003-04-06",
+  "assessmentDate": "2025-06-18",
+  "attitudesPeerPressure": "SIGNIFICANT_PROBLEMS",
+  "attitudesStableBehaviour": null,
+  "difficultiesCoping": "NO_PROBLEMS",
+  "attitudesTowardsSelf": "NO_PROBLEMS",
+  "impulsivityBehaviour": "NO_PROBLEMS",
+  "temperControl": "NO_PROBLEMS",
+  "problemSolvingSkills": "SOME_PROBLEMS",
+  "awarenessOfConsequences": "SOME_PROBLEMS",
+  "understandsPeoplesViews": "NO_PROBLEMS",
+  "peerGroupInfluences": false
+}

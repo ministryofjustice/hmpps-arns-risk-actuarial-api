@@ -52,7 +52,7 @@ class MSTValidationHelperTest {
         "Impulsivity behaviour",
         "Temper control",
         "Problem solving skills",
-        "Aweness of consequences",
+        "Awareness of consequences",
         "Understands peoples views",
       ),
     )
@@ -70,6 +70,43 @@ class MSTValidationHelperTest {
     // Then
     assertNotNull(result)
     assertTrue(result.isEmpty())
+  }
+
+  @Test
+  fun `mstInitialValidation should return empty list of ValidationErrorResponse when only 1 null answer`() {
+    // When
+    val result = mstInitialValidation(
+      validMSTRiskScoreRequest().copy(
+        difficultiesCoping = null,
+      ),
+    )
+
+    // Then
+    assertNotNull(result)
+    assertTrue(result.isEmpty())
+  }
+
+  @Test
+  fun `mstInitialValidation should return a list of ValidationErrorResponse when 2 null answer`() {
+    // When
+    val result = mstInitialValidation(
+      validMSTRiskScoreRequest().copy(
+        difficultiesCoping = null,
+        temperControl = null,
+      ),
+    )
+    val expectedError = ValidationErrorResponse(
+      ValidationErrorType.MISSING_INPUT,
+      "ERR5 - Field is Null",
+      listOf(
+        "Difficulties coping",
+        "Temper control",
+      ),
+    )
+
+    assertNotNull(result)
+    assertTrue(result.size == 1)
+    assertEquals(expectedError, result.first())
   }
 
   @Test
