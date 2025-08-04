@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.FIXED_TEST_DATE
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
+import java.time.LocalDate
 import kotlin.test.assertFalse
 
 class MSTTransformationHelperTest {
@@ -12,10 +13,17 @@ class MSTTransformationHelperTest {
   private val today = FIXED_TEST_DATE
 
   @Test
-  fun `calculateAge should return correct age`() {
+  fun `roundedAge should return correct age`() {
     val dob = today.minusYears(30)
-    val result = calculateAge(dob, today)
+    val result = roundedAge(dob, today)
     assertEquals(30, result)
+  }
+
+  @Test
+  fun `roundedAge should return ignore days of month`() {
+    val dob = LocalDate.of(2007, 7, 10)
+    val result = roundedAge(dob, LocalDate.of(2025, 7, 8))
+    assertEquals(18, result)
   }
 
   @Test

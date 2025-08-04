@@ -4,7 +4,11 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import java.time.LocalDate
 import java.time.Period
 
-fun calculateAge(birthDate: LocalDate, assessmentDate: LocalDate): Int = Period.between(birthDate, assessmentDate).years
+fun roundedAge(birthDate: LocalDate, assessmentDate: LocalDate): Int {
+  val dobTruncated = birthDate.withDayOfMonth(1)
+  val todayTruncated = assessmentDate.withDayOfMonth(1)
+  return Period.between(dobTruncated, todayTruncated).years
+}
 
 fun getMstApplicable(gender: Gender, age: Int): Boolean = isValidMstGender(gender) && isValidMstAge(age)
 
