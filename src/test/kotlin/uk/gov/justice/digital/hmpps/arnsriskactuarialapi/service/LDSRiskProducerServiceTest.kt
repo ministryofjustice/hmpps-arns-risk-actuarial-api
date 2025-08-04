@@ -107,7 +107,7 @@ class LDSRiskProducerServiceTest {
     numeracyDifficultiesCSV: String?,
     learningDifficultiesCSV: String?,
     professionalOrVocationalQualificationsCSV: String?,
-    ldsSubTotalCSV: String?,
+    @Suppress("UNUSED_PARAMETER") ldsSubTotalCSV: String?,
     ldsScoreCSV: String?,
     commentsCSV: String?,
   ) {

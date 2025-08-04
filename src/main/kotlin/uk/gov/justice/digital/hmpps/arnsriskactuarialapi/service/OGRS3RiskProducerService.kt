@@ -32,8 +32,9 @@ class OGRS3RiskProducerService : RiskScoreProducer {
     val errors = ogrs3InitialValidation(request)
 
     if (errors.isNotEmpty()) {
-      return context
-        .copy(OGRS3 = OGRS3Object(null, null, null, errors))
+      return context.apply {
+        OGRS3 = OGRS3Object(null, null, null, errors)
+      }
     }
 
     val validRequest = OGRS3RequestValidated(
@@ -45,7 +46,7 @@ class OGRS3RiskProducerService : RiskScoreProducer {
       request.ageAtFirstSanction!!.toInt(),
       request.currentOffence!!,
     )
-    return context.copy(OGRS3 = getOGRS3Object(validRequest, errors))
+    return context.apply { OGRS3 = getOGRS3Object(validRequest, errors) }
   }
 
   private fun getOGRS3Object(
