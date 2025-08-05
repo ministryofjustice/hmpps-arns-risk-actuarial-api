@@ -3,6 +3,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validOPDRiskScoreRequest
 
@@ -31,9 +32,36 @@ class OPDValidationHelperTest {
       "Gender",
       "Overall risk for assessment",
       "Highest risk level",
-      "Eligible for mappa",
       "Current offence",
       "Custodial sentence",
+    )
+
+    val error = result.first()
+    assertEquals(ValidationErrorType.MISSING_INPUT, error.type)
+    assertEquals("ERR5 - Field is Null", error.message)
+    assertEquals(expectedFields, error.fields)
+  }
+
+  @Test
+  fun `opdInitialValidation missing eligibleForMappa MALE`() {
+    val request = validOPDRiskScoreRequest().copy(
+      gender = Gender.MALE,
+      eligibleForMappa = null,
+    )
+    val result = opdInitialValidation(request)
+    assertTrue(result.isEmpty())
+  }
+
+  @Test
+  fun `opdInitialValidation missing eligibleForMappa FEMALE`() {
+    val request = validOPDRiskScoreRequest().copy(
+      gender = Gender.FEMALE,
+      eligibleForMappa = null,
+    )
+    val result = opdInitialValidation(request)
+
+    val expectedFields = listOf(
+      "Eligible for mappa",
     )
 
     val error = result.first()

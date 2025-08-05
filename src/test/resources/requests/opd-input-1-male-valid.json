@@ -6,7 +6,7 @@
   "highestRiskLevel": "HIGH",
   "currentOffence": "02505",
   "opdOverride": false,
-  "eligibleForMappa": true,
+  "eligibleForMappa": null,
   "experienceOfChildhood": "SOME_PROBLEMS",
   "difficultiesCoping": "SOME_PROBLEMS",
   "domesticAbuse": true,

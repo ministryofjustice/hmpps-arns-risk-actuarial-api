@@ -1,5 +1,6 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 
@@ -33,7 +34,7 @@ private fun getMissingOPDFieldsValidation(
   if (request.gender == null) missingFields.add("Gender")
   if (request.overallRiskForAssessment == null) missingFields.add("Overall risk for assessment")
   if (request.highestRiskLevel == null) missingFields.add("Highest risk level")
-  if (request.eligibleForMappa == null) missingFields.add("Eligible for mappa")
+  if (request.eligibleForMappa == null && request.gender == Gender.FEMALE) missingFields.add("Eligible for mappa")
   if (request.currentOffence == null) missingFields.add("Current offence")
   if (request.custodialSentence == null) missingFields.add("Custodial sentence")
   if (request.domesticAbuse == true) {
