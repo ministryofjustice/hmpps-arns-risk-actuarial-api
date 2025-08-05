@@ -27,6 +27,5 @@
   "impulsivityBehaviour": "NO_PROBLEMS",
   "problemSolvingSkills": "NO_PROBLEMS",
   "difficultiesCoping": "NO_PROBLEMS",
-  "custody": true,
-  "community": false
+  "inCustodyOrCommunity": "COMMUNITY"
 }
