@@ -86,6 +86,9 @@ class RiskScoreControllerTest : IntegrationTestBase() {
 
   @Test
   fun `postRiskScores returns 400 if incorrect enum text value used`() {
+    val expectedError =
+      "JSON parse error: Cannot deserialize value of type `uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender` from String \"INVALID_OPTION\": not one of the values accepted for Enum class: [FEMALE, MALE]"
+
     webTestClient.post()
       .uri("/risk-scores/v1")
       .headers(setAuthorisation(roles = listOf("ARNS_RISK_ACTUARIAL")))
@@ -93,7 +96,6 @@ class RiskScoreControllerTest : IntegrationTestBase() {
       .bodyValue(
         """
         {
-          "version": "V1_0",
           "gender": "INVALID_OPTION"
         }
         """.trimIndent(),
@@ -101,11 +103,13 @@ class RiskScoreControllerTest : IntegrationTestBase() {
       .exchange()
       .expectStatus().isBadRequest
       .expectBody()
-      .jsonPath("$.message").isEqualTo("JSON parse error: Cannot deserialize value of type `uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender` from String \"INVALID_OPTION\": not one of the values accepted for Enum class: [FEMALE, MALE]")
+      .jsonPath("$.message").isEqualTo(expectedError)
   }
 
   @Test
   fun `postRiskScores returns 400 if incorrect enum numeric value used`() {
+    val expectedError =
+      "JSON parse error: Cannot deserialize value of type `uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender` from number 1: not allowed to deserialize Enum value out of number: disable DeserializationConfig.DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS to allow"
     webTestClient.post()
       .uri("/risk-scores/v1")
       .headers(setAuthorisation(roles = listOf("ARNS_RISK_ACTUARIAL")))
@@ -113,25 +117,20 @@ class RiskScoreControllerTest : IntegrationTestBase() {
       .bodyValue(
         """
         {
-          "version": "V1_0",
-          "gender": 1,
-          "dateOfBirth": null,
-          "dateOfCurrentConviction": null,
-          "dateAtStartOfFollowup": null,
-          "totalNumberOfSanctions": null,
-          "ageAtFirstSanction": null,
-          "currentOffence": null
+          "gender": 1
         }
         """.trimIndent(),
       )
       .exchange()
       .expectStatus().isBadRequest
       .expectBody()
-      .jsonPath("$.message").isEqualTo("JSON parse error: Cannot deserialize value of type `uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender` from number 1: not allowed to deserialize Enum value out of number: disable DeserializationConfig.DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS to allow")
+      .jsonPath("$.message").isEqualTo(expectedError)
   }
 
   @Test
   fun `postRiskScores returns 400 if incorrect boolean numeric value used like 123 instead of true, false`() {
+    val expectedError =
+      "JSON parse error: Cannot coerce Integer value (123) to `java.lang.Boolean` value (but could if coercion was enabled using `CoercionConfig`)"
     webTestClient.post()
       .uri("/risk-scores/v1")
       .headers(setAuthorisation(roles = listOf("ARNS_RISK_ACTUARIAL")))
@@ -139,8 +138,6 @@ class RiskScoreControllerTest : IntegrationTestBase() {
       .bodyValue(
         """
         {
-          "version": "V1_0",
-          "gender": "MALE",
           "employmentStatus": 123
         }
         """.trimIndent(),
@@ -148,11 +145,13 @@ class RiskScoreControllerTest : IntegrationTestBase() {
       .exchange()
       .expectStatus().isBadRequest
       .expectBody()
-      .jsonPath("$.message").isEqualTo("JSON parse error: Cannot coerce Integer value (123) to `java.lang.Boolean` value (but could if coercion was enabled using `CoercionConfig`)")
+      .jsonPath("$.message").isEqualTo(expectedError)
   }
 
   @Test
   fun `postRiskScores returns 400 if incorrect type used`() {
+    val expectedError =
+      "JSON parse error: Cannot deserialize value of type `java.lang.Integer` from String \"not a number\": not a valid `java.lang.Integer` value"
     webTestClient.post()
       .uri("/risk-scores/v1")
       .headers(setAuthorisation(roles = listOf("ARNS_RISK_ACTUARIAL")))
@@ -160,20 +159,13 @@ class RiskScoreControllerTest : IntegrationTestBase() {
       .bodyValue(
         """
         {
-          "version": "V1_0",
-          "gender": "MALE",
-          "dateOfBirth": null,
-          "dateOfCurrentConviction": null,
-          "dateAtStartOfFollowup": null,
           "totalNumberOfSanctions": "not a number",
-          "ageAtFirstSanction": null,
-          "currentOffence": null
         }
         """.trimIndent(),
       )
       .exchange()
       .expectStatus().isBadRequest
       .expectBody()
-      .jsonPath("$.message").isEqualTo("JSON parse error: Cannot deserialize value of type `java.lang.Integer` from String \"not a number\": not a valid `java.lang.Integer` value")
+      .jsonPath("$.message").isEqualTo(expectedError)
   }
 }
