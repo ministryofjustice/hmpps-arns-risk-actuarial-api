@@ -8,7 +8,6 @@ import kotlin.reflect.KProperty1
 
 private const val MIN_CONVICTION_AGE = 10
 
-
 fun ArrayList<String>.addIfNull(request: RiskScoreRequest, prop: KProperty1<RiskScoreRequest, Any?>) {
   if (prop.get(request) == null) this.add(prop.name)
 }
@@ -22,7 +21,7 @@ fun getTotalNumberOfSanctionsValidation(
       ValidationErrorResponse(
         type = ValidationErrorType.BELOW_MIN_VALUE,
         message = "ERR2 - Below minimum value",
-        fields = listOf("totalNumberOfSanctions"),
+        fields = listOf(RiskScoreRequest::totalNumberOfSanctions.name),
       )
   }
 
@@ -38,7 +37,7 @@ fun getCurrentOffenceValidation(
       ValidationErrorResponse(
         type = ValidationErrorType.NO_MATCHING_INPUT,
         message = "ERR4 - Does not match agreed input",
-        fields = listOf("currentOffence"),
+        fields = listOf(RiskScoreRequest::currentOffence.name),
       )
   }
   return errors
@@ -72,7 +71,7 @@ private fun validateAgeAtFirstSanction(
   ValidationErrorResponse(
     type = ValidationErrorType.BELOW_MIN_VALUE,
     message = "ERR2 - Below minimum value",
-    fields = listOf("ageAtCurrentConviction", "ageAtFirstSanction"),
+    fields = listOf("ageAtCurrentConviction", RiskScoreRequest::ageAtFirstSanction.name),
   )
 } else {
   null
@@ -122,16 +121,15 @@ fun addMissingCriteriaValidation(
 fun getMissingPropertiesErrorStrings(
   request: RiskScoreRequest,
   properties: List<String>,
-): List<String> =
-  properties
-    .fold(arrayListOf<String>()) { acc, propertyName ->
-      acc.apply {
-        val value = readInstanceProperty<Object>(request, propertyName)
-        if (isNull(value)) {
-          acc.add(propertyName)
-        }
+): List<String> = properties
+  .fold(arrayListOf<String>()) { acc, propertyName ->
+    acc.apply {
+      val value = readInstanceProperty<Object>(request, propertyName)
+      if (isNull(value)) {
+        acc.add(propertyName)
       }
     }
+  }
 
 @Suppress("UNCHECKED_CAST")
 fun <R> readInstanceProperty(instance: Any, propertyName: String): R {

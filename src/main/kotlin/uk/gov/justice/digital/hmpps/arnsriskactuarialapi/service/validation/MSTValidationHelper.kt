@@ -5,7 +5,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isValidMstAge
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isValidMstGender
-import kotlin.reflect.KProperty1
 
 const val MIN_MST_ANSWERS_SIZE = 9
 
@@ -14,8 +13,9 @@ fun mstInitialValidation(request: RiskScoreRequest): List<ValidationErrorRespons
 
   val missingFields = arrayListOf<String>()
 
-  if (request.gender == null) missingFields.add("gender")
-  if (request.dateOfBirth == null) missingFields.add("dateOfBirth")
+  missingFields.addIfNull(request, RiskScoreRequest::gender)
+  missingFields.addIfNull(request, RiskScoreRequest::dateOfBirth)
+
   val answersCount = listOfNotNull(
     request.peerGroupInfluences,
     request.attitudesPeerPressure,
@@ -44,7 +44,6 @@ fun mstInitialValidation(request: RiskScoreRequest): List<ValidationErrorRespons
   return addMissingFields(missingFields, errors)
 }
 
-
 fun genderAndAgeValidation(
   gender: Gender,
   age: Int,
@@ -52,8 +51,8 @@ fun genderAndAgeValidation(
 ): List<ValidationErrorResponse> {
   val criteriaFields = arrayListOf<String>()
 
-  if (!isValidMstGender(gender)) criteriaFields.add("gender")
-  if (!isValidMstAge(age)) criteriaFields.add("dateOfBirth")
+  if (!isValidMstGender(gender)) criteriaFields.add(RiskScoreRequest::gender.name)
+  if (!isValidMstAge(age)) criteriaFields.add(RiskScoreRequest::dateOfBirth.name)
 
   return addMissingCriteriaValidation(criteriaFields, errors)
 }

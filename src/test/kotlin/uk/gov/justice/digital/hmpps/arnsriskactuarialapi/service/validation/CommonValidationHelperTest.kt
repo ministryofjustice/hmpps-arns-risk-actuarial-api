@@ -12,7 +12,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.RiskScoreRequestTestCon
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.RiskScoreRequestTestConstants.NULL_REQUEST
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.RiskScoreRequestTestConstants.OGP_REQUEST_0458
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.RiskScoreRequestTestConstants.OGP_REQUEST_39
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
@@ -100,15 +99,17 @@ class CommonValidationHelperTest {
     fun getRiskScoreRequests(): List<Arguments> = listOf(
       Arguments.of(
         ALT_NULL_OGP_REQUEST,
-        (0..4).map { i -> "${2 * i}" },
+        listOf("currentAccommodation", "regularOffendingActivities", "motivationDrug", "awarenessOfConsequences", "proCriminalAttitudes"),
       ),
       Arguments.of(
         OGP_REQUEST_39,
-        listOf("2", "8"),
+        listOf("regularOffendingActivities", "proCriminalAttitudes"),
+
       ),
       Arguments.of(
         OGP_REQUEST_0458,
-        listOf("0", "4", "5", "8"),
+        listOf("currentAccommodation", "motivationDrug", "problemSolvingSkills", "proCriminalAttitudes"),
+
       ),
     )
   }
@@ -243,5 +244,4 @@ class CommonValidationHelperTest {
     missingFields.addIfNull(request, RiskScoreRequest::peerGroupInfluences)
     assertEquals(emptyList<String>(), missingFields)
   }
-
 }

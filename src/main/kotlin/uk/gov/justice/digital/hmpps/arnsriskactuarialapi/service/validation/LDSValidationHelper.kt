@@ -9,10 +9,10 @@ class LDSValidationHelper {
 
     const val ERR_LESS_THAN_THREE_FIELDS = "ERR - Less than three fields set"
     val ELIGIBLE_FIELDS = listOf(
-      "transferableSkills",
-      "educationDifficulties",
-      "learningDifficulties",
-      "professionalOrVocationalQualifications",
+      RiskScoreRequest::transferableSkills.name,
+      RiskScoreRequest::educationDifficulties.name,
+      RiskScoreRequest::learningDifficulties.name,
+      RiskScoreRequest::professionalOrVocationalQualifications.name,
     )
 
     fun ldsInitialValidation(request: RiskScoreRequest): List<ValidationErrorResponse> {
@@ -23,8 +23,8 @@ class LDSValidationHelper {
 
     fun getMissingLDSFieldsValidation(request: RiskScoreRequest): List<String> = if (request.educationDifficulties == null) {
       arrayListOf<String>()
-        .addEducationDifficultiesSubfield(request.readingDifficulties, "readingDifficulties")
-        .addEducationDifficultiesSubfield(request.numeracyDifficulties, "numeracyDifficulties")
+        .addEducationDifficultiesSubfield(request.readingDifficulties, RiskScoreRequest::readingDifficulties.name)
+        .addEducationDifficultiesSubfield(request.numeracyDifficulties, RiskScoreRequest::numeracyDifficulties.name)
     } else {
       emptyList()
     }
@@ -33,7 +33,7 @@ class LDSValidationHelper {
       difficulties: Boolean?,
       message: String,
     ): List<String> = if (difficulties != null) {
-      this + "educationDifficulties Field Not Present But $message Present"
+      this + "${RiskScoreRequest::educationDifficulties.name} Field Not Present But $message Present"
     } else {
       this
     }

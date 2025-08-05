@@ -17,13 +17,13 @@ fun getMissingOGRS3FieldsValidation(request: RiskScoreRequest): List<ValidationE
 
   val missingFields = arrayListOf<String>()
 
-  if (request.gender == null) missingFields.add("gender")
-  if (request.dateOfBirth == null) missingFields.add("dateOfBirth")
-  if (request.dateOfCurrentConviction == null) missingFields.add("dateOfCurrentConviction")
-  if (request.dateAtStartOfFollowup == null) missingFields.add("dateAtStartOfFollowup")
-  if (request.totalNumberOfSanctions == null) missingFields.add("totalNumberOfSanctions")
-  if (request.ageAtFirstSanction == null) missingFields.add("ageAtFirstSanction")
-  if (request.currentOffence == null) missingFields.add("currentOffence")
+  missingFields.addIfNull(request, RiskScoreRequest::gender)
+  missingFields.addIfNull(request, RiskScoreRequest::dateOfBirth)
+  missingFields.addIfNull(request, RiskScoreRequest::dateOfCurrentConviction)
+  missingFields.addIfNull(request, RiskScoreRequest::dateAtStartOfFollowup)
+  missingFields.addIfNull(request, RiskScoreRequest::totalNumberOfSanctions)
+  missingFields.addIfNull(request, RiskScoreRequest::ageAtFirstSanction)
+  missingFields.addIfNull(request, RiskScoreRequest::currentOffence)
 
   return addMissingFields(missingFields, errors)
 }
