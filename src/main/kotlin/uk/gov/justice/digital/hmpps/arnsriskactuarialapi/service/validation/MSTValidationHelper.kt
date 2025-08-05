@@ -5,6 +5,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isValidMstAge
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isValidMstGender
+import kotlin.reflect.KProperty1
 
 const val MIN_MST_ANSWERS_SIZE = 9
 
@@ -13,8 +14,8 @@ fun mstInitialValidation(request: RiskScoreRequest): List<ValidationErrorRespons
 
   val missingFields = arrayListOf<String>()
 
-  if (request.gender == null) missingFields.add("Gender")
-  if (request.dateOfBirth == null) missingFields.add("Date of birth")
+  if (request.gender == null) missingFields.add("gender")
+  if (request.dateOfBirth == null) missingFields.add("dateOfBirth")
   val answersCount = listOfNotNull(
     request.peerGroupInfluences,
     request.attitudesPeerPressure,
@@ -29,19 +30,20 @@ fun mstInitialValidation(request: RiskScoreRequest): List<ValidationErrorRespons
   ).size
 
   if (answersCount < MIN_MST_ANSWERS_SIZE) {
-    if (request.peerGroupInfluences == null) missingFields.add("Peer group influences")
-    if (request.attitudesPeerPressure == null) missingFields.add("Attitudes peer pressure")
-    if (request.attitudesStableBehaviour == null) missingFields.add("Attitudes stable behaviour")
-    if (request.difficultiesCoping == null) missingFields.add("Difficulties coping")
-    if (request.attitudesTowardsSelf == null) missingFields.add("Attitudes towards self")
-    if (request.impulsivityBehaviour == null) missingFields.add("Impulsivity behaviour")
-    if (request.temperControl == null) missingFields.add("Temper control")
-    if (request.problemSolvingSkills == null) missingFields.add("Problem solving skills")
-    if (request.awarenessOfConsequences == null) missingFields.add("Awareness of consequences")
-    if (request.understandsPeoplesViews == null) missingFields.add("Understands peoples views")
+    missingFields.addIfNull(request, RiskScoreRequest::peerGroupInfluences)
+    missingFields.addIfNull(request, RiskScoreRequest::attitudesPeerPressure)
+    missingFields.addIfNull(request, RiskScoreRequest::attitudesStableBehaviour)
+    missingFields.addIfNull(request, RiskScoreRequest::difficultiesCoping)
+    missingFields.addIfNull(request, RiskScoreRequest::attitudesTowardsSelf)
+    missingFields.addIfNull(request, RiskScoreRequest::impulsivityBehaviour)
+    missingFields.addIfNull(request, RiskScoreRequest::temperControl)
+    missingFields.addIfNull(request, RiskScoreRequest::problemSolvingSkills)
+    missingFields.addIfNull(request, RiskScoreRequest::awarenessOfConsequences)
+    missingFields.addIfNull(request, RiskScoreRequest::understandsPeoplesViews)
   }
   return addMissingFields(missingFields, errors)
 }
+
 
 fun genderAndAgeValidation(
   gender: Gender,
@@ -50,8 +52,8 @@ fun genderAndAgeValidation(
 ): List<ValidationErrorResponse> {
   val criteriaFields = arrayListOf<String>()
 
-  if (!isValidMstGender(gender)) criteriaFields.add("Gender")
-  if (!isValidMstAge(age)) criteriaFields.add("Date of birth")
+  if (!isValidMstGender(gender)) criteriaFields.add("gender")
+  if (!isValidMstAge(age)) criteriaFields.add("dateOfBirth")
 
   return addMissingCriteriaValidation(criteriaFields, errors)
 }

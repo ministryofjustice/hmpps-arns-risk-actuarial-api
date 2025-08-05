@@ -34,13 +34,13 @@ class OGRS3ValidationHelperTest {
     val result = getMissingOGRS3FieldsValidation(request)
 
     val expectedFields = listOf(
-      "Gender",
-      "Date of birth",
-      "Date of current conviction",
-      "Date at start of followup",
-      "Total number of sanctions",
-      "Age at first sanction",
-      "Current offence",
+      "gender",
+      "dateOfBirth",
+      "dateOfCurrentConviction",
+      "dateAtStartOfFollowup",
+      "totalNumberOfSanctions",
+      "ageAtFirstSanction",
+      "currentOffence",
     )
 
     val error = result.first()

@@ -40,7 +40,7 @@ class OGPValidationHelperTest {
         ValidationErrorResponse(
           type = ValidationErrorType.MISSING_INPUT,
           message = "ERR5 - Field is Null",
-          fields = listOf("OGRS3 Two Year"),
+          fields = listOf("ogrs3TwoYear"),
         ),
       ),
     )
@@ -55,7 +55,7 @@ class OGPValidationHelperTest {
         ValidationErrorResponse(
           type = ValidationErrorType.MISSING_INPUT,
           message = "ERR5 - Field is Null",
-          fields = listOf("Regular offending activities", "Procriminal attitudes"),
+          fields = listOf("regularOffendingActivities", "proCriminalAttitudes"),
         ),
       ),
     )
@@ -70,7 +70,7 @@ class OGPValidationHelperTest {
         ValidationErrorResponse(
           type = ValidationErrorType.MISSING_INPUT,
           message = "ERR5 - Field is Null",
-          fields = listOf("Regular offending activities", "Procriminal attitudes", "OGRS3 Two Year"),
+          fields = listOf("regularOffendingActivities", "proCriminalAttitudes", "ogrs3TwoYear"),
         ),
       ),
     )

@@ -29,11 +29,11 @@ class OPDValidationHelperTest {
     val result = opdInitialValidation(request)
 
     val expectedFields = listOf(
-      "Gender",
-      "Overall risk for assessment",
-      "Highest risk level",
-      "Current offence",
-      "Custodial sentence",
+      "gender",
+      "overallRiskForAssessment",
+      "highestRiskLevel",
+      "currentOffence",
+      "custodialSentence",
     )
 
     val error = result.first()
@@ -61,7 +61,7 @@ class OPDValidationHelperTest {
     val result = opdInitialValidation(request)
 
     val expectedFields = listOf(
-      "Eligible for mappa",
+      "eligibleForMappa",
     )
 
     val error = result.first()
@@ -80,8 +80,8 @@ class OPDValidationHelperTest {
     val result = opdInitialValidation(request)
 
     val expectedFields = listOf(
-      "Domestic abuse partner",
-      "Domestic abuse family",
+      "domesticAbusePartner",
+      "domesticAbuseFamily",
     )
 
     val error = result.first()
@@ -100,8 +100,8 @@ class OPDValidationHelperTest {
     val result = opdInitialValidation(request)
 
     val expectedFields = listOf(
-      "Domestic abuse partner",
-      "Domestic abuse family",
+      "domesticAbusePartner",
+      "domesticAbuseFamily",
     )
 
     val error = result.first()
@@ -118,7 +118,7 @@ class OPDValidationHelperTest {
     val result = opdInitialValidation(request)
 
     val expectedFields = listOf(
-      "Current offence",
+      "currentOffence",
     )
 
     val error = result.first()

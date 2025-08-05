@@ -23,8 +23,8 @@ class LDSValidationHelper {
 
     fun getMissingLDSFieldsValidation(request: RiskScoreRequest): List<String> = if (request.educationDifficulties == null) {
       arrayListOf<String>()
-        .addEducationDifficultiesSubfield(request.readingDifficulties, "Reading Difficulties")
-        .addEducationDifficultiesSubfield(request.numeracyDifficulties, "Numeracy Difficulties")
+        .addEducationDifficultiesSubfield(request.readingDifficulties, "readingDifficulties")
+        .addEducationDifficultiesSubfield(request.numeracyDifficulties, "numeracyDifficulties")
     } else {
       emptyList()
     }
@@ -33,7 +33,7 @@ class LDSValidationHelper {
       difficulties: Boolean?,
       message: String,
     ): List<String> = if (difficulties != null) {
-      this + "Education Difficulties Field Not Present But $message Present"
+      this + "educationDifficulties Field Not Present But $message Present"
     } else {
       this
     }

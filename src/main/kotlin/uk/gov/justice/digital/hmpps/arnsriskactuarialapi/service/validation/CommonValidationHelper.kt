@@ -8,6 +8,11 @@ import kotlin.reflect.KProperty1
 
 private const val MIN_CONVICTION_AGE = 10
 
+
+fun ArrayList<String>.addIfNull(request: RiskScoreRequest, prop: KProperty1<RiskScoreRequest, Any?>) {
+  if (prop.get(request) == null) this.add(prop.name)
+}
+
 fun getTotalNumberOfSanctionsValidation(
   totalNumberOfSanctions: Integer?,
   errors: List<ValidationErrorResponse>,
@@ -17,7 +22,7 @@ fun getTotalNumberOfSanctionsValidation(
       ValidationErrorResponse(
         type = ValidationErrorType.BELOW_MIN_VALUE,
         message = "ERR2 - Below minimum value",
-        fields = listOf("Total number of sanctions"),
+        fields = listOf("totalNumberOfSanctions"),
       )
   }
 
@@ -33,7 +38,7 @@ fun getCurrentOffenceValidation(
       ValidationErrorResponse(
         type = ValidationErrorType.NO_MATCHING_INPUT,
         message = "ERR4 - Does not match agreed input",
-        fields = listOf("Current offence"),
+        fields = listOf("currentOffence"),
       )
   }
   return errors
@@ -54,7 +59,7 @@ private fun validateAgeAtCurrentConviction(
   ValidationErrorResponse(
     type = ValidationErrorType.BELOW_MIN_VALUE,
     message = "ERR2 - Below minimum value",
-    fields = listOf("Age at current conviction"),
+    fields = listOf("ageAtCurrentConviction"),
   )
 } else {
   null
@@ -67,7 +72,7 @@ private fun validateAgeAtFirstSanction(
   ValidationErrorResponse(
     type = ValidationErrorType.BELOW_MIN_VALUE,
     message = "ERR2 - Below minimum value",
-    fields = listOf("Age at current conviction", "Age at first sanction"),
+    fields = listOf("ageAtCurrentConviction", "ageAtFirstSanction"),
   )
 } else {
   null
@@ -116,19 +121,17 @@ fun addMissingCriteriaValidation(
 
 fun getMissingPropertiesErrorStrings(
   request: RiskScoreRequest,
-  propertyToErrors: Map<String, String>,
-): List<String> {
-  val missingFields = propertyToErrors.keys
+  properties: List<String>,
+): List<String> =
+  properties
     .fold(arrayListOf<String>()) { acc, propertyName ->
       acc.apply {
         val value = readInstanceProperty<Object>(request, propertyName)
         if (isNull(value)) {
-          acc.add(propertyToErrors[propertyName]!!)
+          acc.add(propertyName)
         }
       }
     }
-  return missingFields
-}
 
 @Suppress("UNCHECKED_CAST")
 fun <R> readInstanceProperty(instance: Any, propertyName: String): R {

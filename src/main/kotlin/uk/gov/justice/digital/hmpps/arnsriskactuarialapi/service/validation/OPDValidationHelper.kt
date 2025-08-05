@@ -16,8 +16,8 @@ private fun validateDomesticAbuse(
   val unexpectedFields = arrayListOf<String>()
   when (request.domesticAbuse) {
     null, false -> {
-      if (request.domesticAbusePartner != null) unexpectedFields.add("Domestic abuse partner")
-      if (request.domesticAbuseFamily != null) unexpectedFields.add("Domestic abuse family")
+      if (request.domesticAbusePartner != null) unexpectedFields.add("domesticAbusePartner")
+      if (request.domesticAbuseFamily != null) unexpectedFields.add("domesticAbuseFamily")
     }
 
     true -> return errors
@@ -31,15 +31,15 @@ private fun getMissingOPDFieldsValidation(
   errors: List<ValidationErrorResponse>,
 ): List<ValidationErrorResponse> {
   val missingFields = mutableListOf<String>()
-  if (request.gender == null) missingFields.add("Gender")
-  if (request.overallRiskForAssessment == null) missingFields.add("Overall risk for assessment")
-  if (request.highestRiskLevel == null) missingFields.add("Highest risk level")
-  if (request.eligibleForMappa == null && request.gender == Gender.FEMALE) missingFields.add("Eligible for mappa")
-  if (request.currentOffence == null) missingFields.add("Current offence")
-  if (request.custodialSentence == null) missingFields.add("Custodial sentence")
+  if (request.gender == null) missingFields.add("gender")
+  if (request.overallRiskForAssessment == null) missingFields.add("overallRiskForAssessment")
+  if (request.highestRiskLevel == null) missingFields.add("highestRiskLevel")
+  if (request.eligibleForMappa == null && request.gender == Gender.FEMALE) missingFields.add("eligibleForMappa")
+  if (request.currentOffence == null) missingFields.add("currentOffence")
+  if (request.custodialSentence == null) missingFields.add("custodialSentence")
   if (request.domesticAbuse == true) {
-    if (request.domesticAbusePartner == null) missingFields.add("Domestic abuse partner")
-    if (request.domesticAbuseFamily == null) missingFields.add("Domestic abuse family")
+    if (request.domesticAbusePartner == null) missingFields.add("domesticAbusePartner")
+    if (request.domesticAbuseFamily == null) missingFields.add("domesticAbuseFamily")
   }
   return addMissingFields(missingFields, errors)
 }

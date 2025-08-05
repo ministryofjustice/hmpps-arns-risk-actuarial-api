@@ -92,19 +92,19 @@ class OVPRiskProducerServiceTest {
     val result = service.getRiskScore(request, emptyContext())
 
     val expectedFields = listOf(
-      "Gender",
-      "Date of birth",
-      "Date at start of followup",
-      "Total number of sanctions",
-      "Total number of violent sanctions",
-      "Impact of offending on others",
-      "Current accommodation",
-      "Employment status",
-      "Alcohol is current use a problem",
-      "Alcohol excessive 6 months",
-      "Current psychiatric treatment or pending",
-      "Temper control",
-      "Pro criminal attitudes",
+      "gender",
+      "dateOfBirth",
+      "dateAtStartOfFollowup",
+      "totalNumberOfSanctions",
+      "totalNumberOfViolentSanctions",
+      "impactOfOffendingOnOthers",
+      "currentAccommodation",
+      "employmentStatus",
+      "alcoholIsCurrentUseAProblem",
+      "alcoholExcessive6Months",
+      "currentPsychiatricTreatmentOrPending",
+      "temperControl",
+      "proCriminalAttitudes",
     )
 
     // Then

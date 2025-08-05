@@ -98,13 +98,13 @@ class OGRS3RiskProducerServiceTest {
     val result = ogrs3RiskProducerService.getRiskScore(request, emptyContext())
 
     val expectedFields = listOf(
-      "Gender",
-      "Date of birth",
-      "Date of current conviction",
-      "Date at start of followup",
-      "Total number of sanctions",
-      "Age at first sanction",
-      "Current offence",
+      "gender",
+      "dateOfBirth",
+      "dateOfCurrentConviction",
+      "dateAtStartOfFollowup",
+      "totalNumberOfSanctions",
+      "ageAtFirstSanction",
+      "currentOffence",
     )
 
     // Then

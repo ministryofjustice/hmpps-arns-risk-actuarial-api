@@ -246,7 +246,7 @@ class OPDRiskProducerServiceTest {
       ValidationErrorResponse(
         type = ValidationErrorType.MISSING_INPUT,
         message = "ERR5 - Field is Null",
-        fields = listOf("Gender"),
+        fields = listOf("gender"),
       ),
       result.validationError?.first(),
     )

@@ -29,7 +29,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.thinkingAndBehaviourNonViolentWeighted
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.totalOGPScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.understandsPeoplesViewsOffendersScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.OGPValidationHelper.Companion.PROPERTIES_TO_ERRORS
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.OGPValidationHelper.Companion.OGP_PROPERTIES
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.OGPValidationHelper.Companion.getMissingFieldsErrorsInContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.addMissingFields
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.getMissingPropertiesErrorStrings
@@ -135,7 +135,7 @@ class OGPRiskProducerService : RiskScoreProducer {
       request: RiskScoreRequest,
       context: RiskScoreContext,
     ): List<ValidationErrorResponse> {
-      val missingProperties = getMissingPropertiesErrorStrings(request, PROPERTIES_TO_ERRORS)
+      val missingProperties = getMissingPropertiesErrorStrings(request, OGP_PROPERTIES)
       val missingFields = getMissingFieldsErrorsInContext(context)
       return addMissingFields(missingProperties + missingFields, listOf())
     }
