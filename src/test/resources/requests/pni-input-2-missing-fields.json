@@ -19,6 +19,5 @@
   "sexualInterestsOffenceRelated": null,
   "emotionalCongruence": null,
   "saraRiskToOthers": null,
-  "custody": true,
-  "community": false
+  "inCustodyOrCommunity": "CUSTODY"
 }
