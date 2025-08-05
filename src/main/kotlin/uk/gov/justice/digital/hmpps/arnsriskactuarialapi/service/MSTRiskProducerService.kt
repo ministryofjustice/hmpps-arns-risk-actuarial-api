@@ -50,7 +50,7 @@ class MSTRiskProducerService : RiskScoreProducer {
 
   private fun getMstObject(
     request: MSTRequestValidated,
-    errors: MutableList<ValidationErrorResponse>,
+    errors: List<ValidationErrorResponse>,
   ): MSTObject {
     val currentAge = calculateAge(request.dateOfBirth, request.assessmentDate)
     val isMstApplicable = getMstApplicable(request.gender, currentAge)

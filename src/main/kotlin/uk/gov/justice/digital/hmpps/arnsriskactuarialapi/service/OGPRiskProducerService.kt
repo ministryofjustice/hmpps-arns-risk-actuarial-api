@@ -63,7 +63,7 @@ class OGPRiskProducerService : RiskScoreProducer {
   }
 
   companion object {
-    fun getOGPOutput(input: OGPInputValidated, errors: MutableList<ValidationErrorResponse>): OGPObject = runCatching {
+    fun getOGPOutput(input: OGPInputValidated, errors: List<ValidationErrorResponse>): OGPObject = runCatching {
       // Transformation Step
       val currentAccommodationOffendersScore =
         currentAccommodationOffendersScore(input.currentAccommodation)
@@ -121,13 +121,12 @@ class OGPRiskProducerService : RiskScoreProducer {
       // Create OGP Output
       OGPObject(ogpReoffendingOneYear, ogpReoffendingTwoYear, bandOGP, totalOGPScore, emptyList())
     }.getOrElse {
-      errors.add(
+      errors +
         ValidationErrorResponse(
           type = ValidationErrorType.UNEXPECTED_VALUE,
           message = "Error: ${it.message}",
           fields = null,
-        ),
-      )
+        )
       // Create OGP Output
       OGPObject(null, null, null, null, errors)
     }
@@ -135,10 +134,10 @@ class OGPRiskProducerService : RiskScoreProducer {
     fun ogpInitialValidation(
       request: RiskScoreRequest,
       context: RiskScoreContext,
-    ): MutableList<ValidationErrorResponse> {
-      val missingFields = getMissingPropertiesErrorStrings(request, PROPERTIES_TO_ERRORS)
-      missingFields.addAll(getMissingFieldsErrorsInContext(context))
-      return addMissingFields(missingFields, mutableListOf())
+    ): List<ValidationErrorResponse> {
+      val missingProperties = getMissingPropertiesErrorStrings(request, PROPERTIES_TO_ERRORS)
+      val missingFields = getMissingFieldsErrorsInContext(context)
+      return addMissingFields(missingProperties + missingFields, listOf())
     }
   }
 }

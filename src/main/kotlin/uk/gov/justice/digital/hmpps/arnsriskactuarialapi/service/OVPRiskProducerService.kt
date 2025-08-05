@@ -50,12 +50,11 @@ class OVPRiskProducerService : RiskScoreProducer {
       request.temperControl!!,
       request.proCriminalAttitudes!!,
     )
-    return context.apply { OVP = getOVPObject(validRequest, errors) }
+    return context.apply { OVP = getOVPObject(validRequest) }
   }
 
   private fun getOVPObject(
     request: OVPRequestValidated,
-    errors: MutableList<ValidationErrorResponse>,
   ): OVPObject = runCatching {
     val alcoholMisuseWeighted = getAlcoholMisuseWeighted(request)
 
@@ -89,17 +88,21 @@ class OVPRiskProducerService : RiskScoreProducer {
       provenViolentTypeReoffendingOneYear = oneYear,
       provenViolentTypeReoffendingTwoYear = twoYear,
       band = band,
-      validationError = errors,
+      validationError = emptyList(),
     )
   }
     .getOrElse {
-      errors.add(
-        ValidationErrorResponse(
-          type = ValidationErrorType.NO_MATCHING_INPUT,
-          message = "Error: ${it.message}",
-          fields = emptyList(),
+      OVPObject(
+        null,
+        null,
+        null,
+        arrayListOf(
+          ValidationErrorResponse(
+            type = ValidationErrorType.NO_MATCHING_INPUT,
+            message = "Error: ${it.message}",
+            fields = emptyList(),
+          ),
         ),
       )
-      OVPObject(null, null, null, errors)
     }
 }

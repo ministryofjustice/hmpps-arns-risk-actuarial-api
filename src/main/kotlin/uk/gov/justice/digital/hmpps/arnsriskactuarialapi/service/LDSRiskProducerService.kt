@@ -42,7 +42,7 @@ class LDSRiskProducerService : RiskScoreProducer {
   }
 
   companion object {
-    fun getLDSOutput(input: LDSInputValidated, errors: MutableList<ValidationErrorResponse>): LDSObject = runCatching {
+    fun getLDSOutput(input: LDSInputValidated, errors: List<ValidationErrorResponse>): LDSObject = runCatching {
       // Transformation Steps
       val currentAccommodationOffendersScoreLDS =
         currentAccommodationOffendersScoreLDS(input.currentAccommodation)
@@ -71,13 +71,12 @@ class LDSRiskProducerService : RiskScoreProducer {
       val ldsScore = ldsScore(ldsSubTotal)
       LDSObject(ldsScore, emptyList())
     }.getOrElse {
-      errors.add(
+      errors +
         ValidationErrorResponse(
           type = ValidationErrorType.UNEXPECTED_VALUE,
           message = "Error: ${it.message}",
           fields = null,
-        ),
-      )
+        )
       // Create OGP Output
       LDSObject(null, errors)
     }

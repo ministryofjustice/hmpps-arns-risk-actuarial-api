@@ -46,12 +46,11 @@ class OGRS3RiskProducerService : RiskScoreProducer {
       request.ageAtFirstSanction!!.toInt(),
       request.currentOffence!!,
     )
-    return context.apply { OGRS3 = getOGRS3Object(validRequest, errors) }
+    return context.apply { OGRS3 = getOGRS3Object(validRequest) }
   }
 
   private fun getOGRS3Object(
     request: OGRS3RequestValidated,
-    errors: MutableList<ValidationErrorResponse>,
   ): OGRS3Object = runCatching {
     val ageAtCurrentConviction = getAgeDiffAtOffenceDate(
       request.dateOfBirth,
@@ -63,7 +62,10 @@ class OGRS3RiskProducerService : RiskScoreProducer {
       request.dateAtStartOfFollowup,
     )
 
-    errors.addAll(validateAge(ageAtCurrentConviction, request.ageAtFirstSanction, errors))
+    val ageValidationErrors = validateAge(ageAtCurrentConviction, request.ageAtFirstSanction, emptyList())
+    if (!ageValidationErrors.isEmpty()) {
+      OGRS3Object(null, null, null, ageValidationErrors)
+    }
 
     val offenderConvictionStatus = getOffenderConvictionStatus(request.totalNumberOfSanctions)
 
@@ -87,14 +89,17 @@ class OGRS3RiskProducerService : RiskScoreProducer {
         OGRS3Object(oneYear, twoYear, riskBand, emptyList())
       }
   }.getOrElse {
-    errors.add(
-      ValidationErrorResponse(
-        type = ValidationErrorType.NO_MATCHING_INPUT,
-        message = "Error: ${it.message}",
-        fields = null,
+    OGRS3Object(
+      null,
+      null,
+      null,
+      arrayListOf(
+        ValidationErrorResponse(
+          type = ValidationErrorType.NO_MATCHING_INPUT,
+          message = "Error: ${it.message}",
+          fields = null,
+        ),
       ),
     )
-
-    OGRS3Object(null, null, null, errors)
   }
 }

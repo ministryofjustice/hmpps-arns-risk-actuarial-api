@@ -3,19 +3,19 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 
-fun ogrs3InitialValidation(request: RiskScoreRequest): MutableList<ValidationErrorResponse> {
+fun ogrs3InitialValidation(request: RiskScoreRequest): List<ValidationErrorResponse> {
   val missingFieldValidationErrorStep = getMissingOGRS3FieldsValidation(request)
   val totalSanctionsValidationErrorStep =
-    getTotalNumberOfSanctionsValidation(request.totalNumberOfSanctions, missingFieldValidationErrorStep)
+    getTotalNumberOfSanctionsValidation(request.totalNumberOfSanctions, emptyList())
   val currentOffenceValidationErrorStep =
-    getCurrentOffenceValidation(request.currentOffence, totalSanctionsValidationErrorStep)
-  return currentOffenceValidationErrorStep
+    getCurrentOffenceValidation(request.currentOffence, emptyList())
+  return missingFieldValidationErrorStep + totalSanctionsValidationErrorStep + currentOffenceValidationErrorStep
 }
 
-fun getMissingOGRS3FieldsValidation(request: RiskScoreRequest): MutableList<ValidationErrorResponse> {
-  val errors = mutableListOf<ValidationErrorResponse>()
+fun getMissingOGRS3FieldsValidation(request: RiskScoreRequest): List<ValidationErrorResponse> {
+  val errors = arrayListOf<ValidationErrorResponse>()
 
-  val missingFields = mutableListOf<String>()
+  val missingFields = arrayListOf<String>()
 
   if (request.gender == null) missingFields.add("Gender")
   if (request.dateOfBirth == null) missingFields.add("Date of birth")

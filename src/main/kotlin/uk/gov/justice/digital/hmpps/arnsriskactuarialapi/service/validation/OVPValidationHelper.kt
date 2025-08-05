@@ -3,17 +3,17 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 
-fun ovpInitialValidation(request: RiskScoreRequest): MutableList<ValidationErrorResponse> {
+fun ovpInitialValidation(request: RiskScoreRequest): List<ValidationErrorResponse> {
   val missingFieldValidationErrorStep = getMissingOVPFieldsValidation(request)
   val totalSanctionsValidationErrorStep =
     getTotalNumberOfSanctionsValidation(request.totalNumberOfSanctions, missingFieldValidationErrorStep)
   return totalSanctionsValidationErrorStep
 }
 
-fun getMissingOVPFieldsValidation(request: RiskScoreRequest): MutableList<ValidationErrorResponse> {
-  val errors = mutableListOf<ValidationErrorResponse>()
+fun getMissingOVPFieldsValidation(request: RiskScoreRequest): List<ValidationErrorResponse> {
+  val errors = arrayListOf<ValidationErrorResponse>()
 
-  val missingFields = mutableListOf<String>()
+  val missingFields = arrayListOf<String>()
 
   if (request.gender == null) missingFields.add("Gender")
   if (request.dateOfBirth == null) missingFields.add("Date of birth")

@@ -15,46 +15,41 @@ class LDSValidationHelper {
       "professionalOrVocationalQualifications",
     )
 
-    fun ldsInitialValidation(request: RiskScoreRequest): MutableList<ValidationErrorResponse> {
+    fun ldsInitialValidation(request: RiskScoreRequest): List<ValidationErrorResponse> {
       val missingFields = getMissingLDSFieldsValidation(request)
       return addMissingFields(missingFields, mutableListOf())
         .addEnoughFieldsPresent(request)
     }
 
-    fun getMissingLDSFieldsValidation(request: RiskScoreRequest): MutableList<String> {
-      val missingFields = mutableListOf<String>()
-      if (request.educationDifficulties == null) {
-        missingFields
-          .addEducationDifficultiesSubfield(request.readingDifficulties, "Reading Difficulties")
-          .addEducationDifficultiesSubfield(request.numeracyDifficulties, "Numeracy Difficulties")
-      }
-      return missingFields
+    fun getMissingLDSFieldsValidation(request: RiskScoreRequest): List<String> = if (request.educationDifficulties == null) {
+      arrayListOf<String>()
+        .addEducationDifficultiesSubfield(request.readingDifficulties, "Reading Difficulties")
+        .addEducationDifficultiesSubfield(request.numeracyDifficulties, "Numeracy Difficulties")
+    } else {
+      emptyList()
     }
 
-    private fun MutableList<String>.addEducationDifficultiesSubfield(
+    private fun List<String>.addEducationDifficultiesSubfield(
       difficulties: Boolean?,
       message: String,
-    ): MutableList<String> {
-      if (difficulties != null) {
-        this.add("Education Difficulties Field Not Present But $message Present")
-      }
-      return this
+    ): List<String> = if (difficulties != null) {
+      this + "Education Difficulties Field Not Present But $message Present"
+    } else {
+      this
     }
 
-    fun MutableList<ValidationErrorResponse>.addEnoughFieldsPresent(request: RiskScoreRequest): MutableList<ValidationErrorResponse> {
-      if (ELIGIBLE_FIELDS
-          .mapNotNull { field -> readInstanceProperty(request, field) as Any? }
-          .size < 3
-      ) {
-        this.add(
-          ValidationErrorResponse(
-            type = ValidationErrorType.NOT_APPLICABLE,
-            message = ERR_LESS_THAN_THREE_FIELDS,
-            fields = ELIGIBLE_FIELDS,
-          ),
+    fun List<ValidationErrorResponse>.addEnoughFieldsPresent(request: RiskScoreRequest): List<ValidationErrorResponse> = if (ELIGIBLE_FIELDS
+        .mapNotNull { field -> readInstanceProperty(request, field) as Any? }
+        .size < 3
+    ) {
+      this +
+        ValidationErrorResponse(
+          type = ValidationErrorType.NOT_APPLICABLE,
+          message = ERR_LESS_THAN_THREE_FIELDS,
+          fields = ELIGIBLE_FIELDS,
         )
-      }
-      return this
+    } else {
+      this
     }
   }
 }

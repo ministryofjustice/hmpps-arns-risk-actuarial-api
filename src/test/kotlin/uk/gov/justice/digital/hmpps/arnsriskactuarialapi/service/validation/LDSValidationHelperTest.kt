@@ -100,7 +100,7 @@ class LDSValidationHelperTest {
 
   @Test
   fun `fields not eligible but some present`() {
-    val result = mutableListOf<ValidationErrorResponse>().addEnoughFieldsPresent(INELIGIBLE_LDS_REQUEST)
+    val result = listOf<ValidationErrorResponse>().addEnoughFieldsPresent(INELIGIBLE_LDS_REQUEST)
     assertEquals(
       listOf(
         ValidationErrorResponse(

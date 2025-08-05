@@ -61,7 +61,7 @@ class PNIRiskProducerService : RiskScoreProducer {
     val overallNeed = overallNeedsGroupingCalculation(requestValidated)
     val overallNeedScore = overallNeed.first
     if (overallNeedScore == null) {
-      errors = addMissingFields(overallNeed.second.toMutableList(), errors)
+      errors = addMissingFields(overallNeed.second.toList(), errors)
       return context.apply { PNI = PNIObject(ProgrammeNeedIdentifier.OMISSION, errors) }
     }
 
