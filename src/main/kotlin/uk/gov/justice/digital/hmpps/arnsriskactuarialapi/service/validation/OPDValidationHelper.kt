@@ -11,8 +11,8 @@ fun opdInitialValidation(request: RiskScoreRequest): List<ValidationErrorRespons
 
 private fun validateDomesticAbuse(
   request: RiskScoreRequest,
-  errors: MutableList<ValidationErrorResponse>,
-): MutableList<ValidationErrorResponse> {
+  errors: List<ValidationErrorResponse>,
+): List<ValidationErrorResponse> {
   val unexpectedFields = arrayListOf<String>()
   when (request.domesticAbuse) {
     null, false -> {
@@ -28,8 +28,8 @@ private fun validateDomesticAbuse(
 
 private fun getMissingOPDFieldsValidation(
   request: RiskScoreRequest,
-  errors: MutableList<ValidationErrorResponse>,
-): MutableList<ValidationErrorResponse> {
+  errors: List<ValidationErrorResponse>,
+): List<ValidationErrorResponse> {
   val missingFields = mutableListOf<String>()
   if (request.gender == null) missingFields.add("Gender")
   if (request.overallRiskForAssessment == null) missingFields.add("Overall risk for assessment")

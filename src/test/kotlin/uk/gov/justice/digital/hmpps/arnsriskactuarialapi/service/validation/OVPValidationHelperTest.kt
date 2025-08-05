@@ -58,13 +58,13 @@ class OVPValidationHelperTest {
 
   @Test
   fun `getTotalNumberOfSanctionsValidation no errors`() {
-    val result = getTotalNumberOfSanctionsValidation(1 as Integer?, mutableListOf())
+    val result = getTotalNumberOfSanctionsValidation(1 as Integer?, arrayListOf())
     assertTrue(result.isEmpty())
   }
 
   @Test
   fun `getTotalNumberOfSanctionsValidation no error added when number of sanctions is null`() {
-    val missingFieldError = mutableListOf(
+    val missingFieldError = arrayListOf(
       ValidationErrorResponse(
         type = ValidationErrorType.MISSING_INPUT,
         message = "Unable to produce OVP score due to missing field(s)",
@@ -78,7 +78,7 @@ class OVPValidationHelperTest {
 
   @Test
   fun `getTotalNumberOfSanctionsValidation below min value error`() {
-    val result = getTotalNumberOfSanctionsValidation(0 as Integer?, mutableListOf())
+    val result = getTotalNumberOfSanctionsValidation(0 as Integer?, arrayListOf())
     val error = result.first()
     assertEquals(ValidationErrorType.BELOW_MIN_VALUE, error.type)
     assertEquals("ERR2 - Below minimum value", error.message)
@@ -87,13 +87,13 @@ class OVPValidationHelperTest {
 
   @Test
   fun `getCurrentOffenceValidation no errors`() {
-    val result = getCurrentOffenceValidation("00101", mutableListOf())
+    val result = getCurrentOffenceValidation("00101", arrayListOf())
     assertTrue(result.isEmpty())
   }
 
   @Test
   fun `getCurrentOffenceValidation no error added when current offence null`() {
-    val missingFieldError = mutableListOf(
+    val missingFieldError = arrayListOf(
       ValidationErrorResponse(
         type = ValidationErrorType.MISSING_INPUT,
         message = "Unable to produce OGRS3 score due to missing field(s)",
@@ -107,7 +107,7 @@ class OVPValidationHelperTest {
 
   @Test
   fun `getCurrentOffenceValidation char count error`() {
-    val result = getCurrentOffenceValidation("001010", mutableListOf())
+    val result = getCurrentOffenceValidation("001010", arrayListOf())
     val error = result.first()
     assertEquals(ValidationErrorType.NO_MATCHING_INPUT, error.type)
     assertEquals("ERR4 - Does not match agreed input", error.message)

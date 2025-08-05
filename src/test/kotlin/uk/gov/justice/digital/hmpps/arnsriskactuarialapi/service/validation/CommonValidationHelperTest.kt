@@ -200,7 +200,7 @@ class CommonValidationHelperTest {
 
   @Test
   fun `validateAge should add errors to existing list of errors`() {
-    val existingErrors = mutableListOf(
+    val existingErrors = arrayListOf(
       ValidationErrorResponse(
         type = ValidationErrorType.MISSING_INPUT,
         message = "Unable to produce OGRS3 score due to missing field(s)",

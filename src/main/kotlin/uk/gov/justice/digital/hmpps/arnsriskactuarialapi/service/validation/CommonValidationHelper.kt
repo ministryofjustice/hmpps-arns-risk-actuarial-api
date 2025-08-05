@@ -10,36 +10,31 @@ private const val MIN_CONVICTION_AGE = 10
 
 fun getTotalNumberOfSanctionsValidation(
   totalNumberOfSanctions: Integer?,
-  errors: MutableList<ValidationErrorResponse>,
-): MutableList<ValidationErrorResponse> {
-  if (totalNumberOfSanctions != null) {
-    if (totalNumberOfSanctions < 1) {
-      errors.add(
-        ValidationErrorResponse(
-          type = ValidationErrorType.BELOW_MIN_VALUE,
-          message = "ERR2 - Below minimum value",
-          fields = listOf("Total number of sanctions"),
-        ),
+  errors: List<ValidationErrorResponse>,
+): List<ValidationErrorResponse> {
+  if (totalNumberOfSanctions != null && totalNumberOfSanctions < 1) {
+    return errors +
+      ValidationErrorResponse(
+        type = ValidationErrorType.BELOW_MIN_VALUE,
+        message = "ERR2 - Below minimum value",
+        fields = listOf("Total number of sanctions"),
       )
-    }
   }
+
   return errors
 }
 
 fun getCurrentOffenceValidation(
   currentOffence: String?,
-  errors: MutableList<ValidationErrorResponse>,
-): MutableList<ValidationErrorResponse> {
-  if (currentOffence != null) {
-    if (currentOffence.length != 5) {
-      errors.add(
-        ValidationErrorResponse(
-          type = ValidationErrorType.NO_MATCHING_INPUT,
-          message = "ERR4 - Does not match agreed input",
-          fields = listOf("Current offence"),
-        ),
+  errors: List<ValidationErrorResponse>,
+): List<ValidationErrorResponse> {
+  if (currentOffence != null && currentOffence.length != 5) {
+    return errors +
+      ValidationErrorResponse(
+        type = ValidationErrorType.NO_MATCHING_INPUT,
+        message = "ERR4 - Does not match agreed input",
+        fields = listOf("Current offence"),
       )
-    }
   }
   return errors
 }
@@ -47,84 +42,84 @@ fun getCurrentOffenceValidation(
 fun validateAge(
   ageAtCurrentConviction: Int,
   ageAtFirstSanction: Int,
-  errors: MutableList<ValidationErrorResponse>,
-): MutableList<ValidationErrorResponse> {
-  if (ageAtCurrentConviction < MIN_CONVICTION_AGE) {
-    errors.add(
-      ValidationErrorResponse(
-        type = ValidationErrorType.BELOW_MIN_VALUE,
-        message = "ERR2 - Below minimum value",
-        fields = listOf("Age at current conviction"),
-      ),
-    )
-  }
+  errors: List<ValidationErrorResponse>,
+): List<ValidationErrorResponse> = errors + listOfNotNull(
+  validateAgeAtCurrentConviction(ageAtCurrentConviction),
+  validateAgeAtFirstSanction(ageAtCurrentConviction, ageAtFirstSanction),
+)
 
-  if (ageAtFirstSanction > ageAtCurrentConviction) {
-    errors.add(
-      ValidationErrorResponse(
-        type = ValidationErrorType.BELOW_MIN_VALUE,
-        message = "ERR2 - Below minimum value",
-        fields = listOf("Age at current conviction", "Age at first sanction"),
-      ),
-    )
-  }
-  return errors
+private fun validateAgeAtCurrentConviction(
+  ageAtCurrentConviction: Int,
+): ValidationErrorResponse? = if (ageAtCurrentConviction < MIN_CONVICTION_AGE) {
+  ValidationErrorResponse(
+    type = ValidationErrorType.BELOW_MIN_VALUE,
+    message = "ERR2 - Below minimum value",
+    fields = listOf("Age at current conviction"),
+  )
+} else {
+  null
+}
+
+private fun validateAgeAtFirstSanction(
+  ageAtCurrentConviction: Int,
+  ageAtFirstSanction: Int,
+): ValidationErrorResponse? = if (ageAtFirstSanction > ageAtCurrentConviction) {
+  ValidationErrorResponse(
+    type = ValidationErrorType.BELOW_MIN_VALUE,
+    message = "ERR2 - Below minimum value",
+    fields = listOf("Age at current conviction", "Age at first sanction"),
+  )
+} else {
+  null
 }
 
 fun addMissingFields(
   missingFields: List<String>,
-  errors: MutableList<ValidationErrorResponse>,
-): MutableList<ValidationErrorResponse> {
-  if (missingFields.isNotEmpty()) {
-    errors.add(
-      ValidationErrorResponse(
-        type = ValidationErrorType.MISSING_INPUT,
-        message = "ERR5 - Field is Null",
-        fields = missingFields,
-      ),
+  errors: List<ValidationErrorResponse>,
+): List<ValidationErrorResponse> = if (missingFields.isNotEmpty()) {
+  errors +
+    ValidationErrorResponse(
+      type = ValidationErrorType.MISSING_INPUT,
+      message = "ERR5 - Field is Null",
+      fields = missingFields,
     )
-  }
-  return errors
+} else {
+  errors
 }
 
 fun addUnexpectedFields(
   unexpectedFields: List<String>,
-  errors: MutableList<ValidationErrorResponse>,
-): MutableList<ValidationErrorResponse> {
-  if (unexpectedFields.isNotEmpty()) {
-    errors.add(
-      ValidationErrorResponse(
-        type = ValidationErrorType.UNEXPECTED_VALUE,
-        message = "ERR - Field is unexpected",
-        fields = unexpectedFields,
-      ),
+  errors: List<ValidationErrorResponse>,
+): List<ValidationErrorResponse> = if (unexpectedFields.isNotEmpty()) {
+  errors +
+    ValidationErrorResponse(
+      type = ValidationErrorType.UNEXPECTED_VALUE,
+      message = "ERR - Field is unexpected",
+      fields = unexpectedFields,
     )
-  }
-  return errors
+} else {
+  errors
 }
 
 fun addMissingCriteriaValidation(
   criteriaFields: List<String>,
-  errors: MutableList<ValidationErrorResponse>,
-): MutableList<ValidationErrorResponse> {
-  if (criteriaFields.isNotEmpty()) {
-    errors.add(
-      ValidationErrorResponse(
-        type = ValidationErrorType.NOT_APPLICABLE,
-        message = "ERR - Does not meet eligibility criteria",
-        fields = criteriaFields,
-      ),
-    )
-  }
-  return errors
+  errors: List<ValidationErrorResponse>,
+): List<ValidationErrorResponse> = if (criteriaFields.isNotEmpty()) {
+  errors + ValidationErrorResponse(
+    type = ValidationErrorType.NOT_APPLICABLE,
+    message = "ERR - Does not meet eligibility criteria",
+    fields = criteriaFields,
+  )
+} else {
+  errors
 }
 
 fun getMissingPropertiesErrorStrings(
   request: RiskScoreRequest,
   propertyToErrors: Map<String, String>,
-): MutableList<String> {
+): List<String> {
   val missingFields = propertyToErrors.keys
-    .fold(mutableListOf<String>()) { acc, propertyName ->
+    .fold(arrayListOf<String>()) { acc, propertyName ->
       acc.apply {
         val value = readInstanceProperty<Object>(request, propertyName)
         if (isNull(value)) {

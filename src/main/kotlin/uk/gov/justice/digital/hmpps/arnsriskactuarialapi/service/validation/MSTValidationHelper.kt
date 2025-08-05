@@ -8,10 +8,10 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 
 const val MIN_MST_ANSWERS_SIZE = 9
 
-fun mstInitialValidation(request: RiskScoreRequest): MutableList<ValidationErrorResponse> {
-  val errors = mutableListOf<ValidationErrorResponse>()
+fun mstInitialValidation(request: RiskScoreRequest): List<ValidationErrorResponse> {
+  val errors = arrayListOf<ValidationErrorResponse>()
 
-  val missingFields = mutableListOf<String>()
+  val missingFields = arrayListOf<String>()
 
   if (request.gender == null) missingFields.add("Gender")
   if (request.dateOfBirth == null) missingFields.add("Date of birth")
@@ -46,9 +46,9 @@ fun mstInitialValidation(request: RiskScoreRequest): MutableList<ValidationError
 fun genderAndAgeValidation(
   gender: Gender,
   age: Int,
-  errors: MutableList<ValidationErrorResponse>,
-): MutableList<ValidationErrorResponse> {
-  val criteriaFields = mutableListOf<String>()
+  errors: List<ValidationErrorResponse>,
+): List<ValidationErrorResponse> {
+  val criteriaFields = arrayListOf<String>()
 
   if (!isValidMstGender(gender)) criteriaFields.add("Gender")
   if (!isValidMstAge(age)) criteriaFields.add("Date of birth")

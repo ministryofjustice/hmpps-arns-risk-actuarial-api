@@ -13,7 +13,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validMSTRiskScoreReques
 
 class MSTValidationHelperTest {
 
-  private val errors = mutableListOf<ValidationErrorResponse>()
+  private val errors = arrayListOf<ValidationErrorResponse>()
 
   @Test
   fun `mstInitialValidation should return list of ValidationErrorResponse with MISSING_INPUT validationError`() {
