@@ -9,6 +9,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.osp.OSPDCObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ovp.OVPObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.rsr.RSRObject
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.SNSVObject
 
 data class RiskScoreContext(
   val version: RiskScoreVersion,
@@ -20,6 +21,7 @@ data class RiskScoreContext(
   var PNI: PNIObject? = null,
   var LDS: LDSObject? = null,
   var OSPDC: OSPDCObject? = null,
+  var SNSV: SNSVObject? = null,
   var RSR: RSRObject? = null,
 )
 

@@ -12,7 +12,9 @@ class RSRRiskProducerService : RiskScoreProducer {
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
     val ospdc = context.OSPDC!!
     val errors = ospdc.validationError
-    val rsr = RSRObject(ospdc.ospdcBand, ospdc.ospdcScore, null, null, null, null, null, errors)
+    val snsv = context.SNSV!! // todo get the snsvScore and use this as part of the rsrBand calculation
+    val snsvScoreType = snsv.scoreType
+    val rsr = RSRObject(ospdc.ospdcBand, ospdc.ospdcScore, null, null, null, snsvScoreType, null, errors)
 
     return context.apply { RSR = rsr }
   }

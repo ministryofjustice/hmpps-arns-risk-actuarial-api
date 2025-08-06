@@ -1,4 +1,4 @@
-package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.rsr
+package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv
 
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CustodyOrCommunity
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
