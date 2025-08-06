@@ -110,7 +110,7 @@ class OSPDCRiskProducerServiceTest {
     val error = result.OSPDC?.validationError?.first()
     assertEquals(ValidationErrorType.NOT_APPLICABLE, error?.type)
     assertEquals("ERR - Does not meet eligibility criteria", error?.message)
-    assertEquals(listOf("Gender"), error?.fields)
+    assertEquals(listOf("gender"), error?.fields)
   }
 
   @Test

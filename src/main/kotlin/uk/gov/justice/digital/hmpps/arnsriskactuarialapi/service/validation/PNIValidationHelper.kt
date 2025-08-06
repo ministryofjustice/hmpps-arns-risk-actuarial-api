@@ -7,11 +7,10 @@ fun pniInitialValidation(request: RiskScoreRequest): List<ValidationErrorRespons
 
 private fun getMissingPNIFieldsValidation(request: RiskScoreRequest): List<ValidationErrorResponse> {
   val errors = arrayListOf<ValidationErrorResponse>()
-
   val missingFields = arrayListOf<String>()
 
-  if (request.gender == null) missingFields.add("gender")
-  if (request.inCustodyOrCommunity == null) missingFields.add("inCustodyOrCommunity")
+  missingFields.addIfNull(request, RiskScoreRequest::gender)
+  missingFields.addIfNull(request, RiskScoreRequest::inCustodyOrCommunity)
 
   return addMissingFields(missingFields, errors)
 }

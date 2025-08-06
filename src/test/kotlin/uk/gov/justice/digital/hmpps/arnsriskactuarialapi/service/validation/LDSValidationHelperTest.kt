@@ -46,7 +46,7 @@ class LDSValidationHelperTest {
           type = ValidationErrorType.MISSING_INPUT,
           message = "ERR5 - Field is Null",
           fields = listOf(
-            "Education Difficulties Field Not Present But Reading Difficulties Present",
+            "educationDifficulties Field Not Present But readingDifficulties Present",
           ),
         ),
       ),
@@ -63,8 +63,8 @@ class LDSValidationHelperTest {
           type = ValidationErrorType.MISSING_INPUT,
           message = "ERR5 - Field is Null",
           fields = listOf(
-            "Education Difficulties Field Not Present But Reading Difficulties Present",
-            "Education Difficulties Field Not Present But Numeracy Difficulties Present",
+            "educationDifficulties Field Not Present But readingDifficulties Present",
+            "educationDifficulties Field Not Present But numeracyDifficulties Present",
           ),
         ),
         ValidationErrorResponse(

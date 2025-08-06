@@ -16,8 +16,8 @@ private fun validateDomesticAbuse(
   val unexpectedFields = arrayListOf<String>()
   when (request.domesticAbuse) {
     null, false -> {
-      if (request.domesticAbusePartner != null) unexpectedFields.add("Domestic abuse partner")
-      if (request.domesticAbuseFamily != null) unexpectedFields.add("Domestic abuse family")
+      if (request.domesticAbusePartner != null) unexpectedFields.add(RiskScoreRequest::domesticAbusePartner.name)
+      if (request.domesticAbuseFamily != null) unexpectedFields.add(RiskScoreRequest::domesticAbuseFamily.name)
     }
 
     true -> return errors
@@ -30,16 +30,17 @@ private fun getMissingOPDFieldsValidation(
   request: RiskScoreRequest,
   errors: List<ValidationErrorResponse>,
 ): List<ValidationErrorResponse> {
-  val missingFields = mutableListOf<String>()
-  if (request.gender == null) missingFields.add("Gender")
-  if (request.overallRiskForAssessment == null) missingFields.add("Overall risk for assessment")
-  if (request.highestRiskLevel == null) missingFields.add("Highest risk level")
-  if (request.eligibleForMappa == null && request.gender == Gender.FEMALE) missingFields.add("Eligible for mappa")
-  if (request.currentOffence == null) missingFields.add("Current offence")
-  if (request.custodialSentence == null) missingFields.add("Custodial sentence")
+  val missingFields = arrayListOf<String>()
+
+  missingFields.addIfNull(request, RiskScoreRequest::gender)
+  missingFields.addIfNull(request, RiskScoreRequest::overallRiskForAssessment)
+  missingFields.addIfNull(request, RiskScoreRequest::highestRiskLevel)
+  missingFields.addIfNull(request, RiskScoreRequest::currentOffence)
+  missingFields.addIfNull(request, RiskScoreRequest::custodialSentence)
+  if (request.eligibleForMappa == null && request.gender == Gender.FEMALE) missingFields.add(RiskScoreRequest::eligibleForMappa.name)
   if (request.domesticAbuse == true) {
-    if (request.domesticAbusePartner == null) missingFields.add("Domestic abuse partner")
-    if (request.domesticAbuseFamily == null) missingFields.add("Domestic abuse family")
+    missingFields.addIfNull(request, RiskScoreRequest::domesticAbusePartner)
+    missingFields.addIfNull(request, RiskScoreRequest::domesticAbuseFamily)
   }
   return addMissingFields(missingFields, errors)
 }

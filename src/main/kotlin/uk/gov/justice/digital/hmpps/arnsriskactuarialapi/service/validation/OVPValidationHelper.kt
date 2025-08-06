@@ -12,22 +12,21 @@ fun ovpInitialValidation(request: RiskScoreRequest): List<ValidationErrorRespons
 
 fun getMissingOVPFieldsValidation(request: RiskScoreRequest): List<ValidationErrorResponse> {
   val errors = arrayListOf<ValidationErrorResponse>()
-
   val missingFields = arrayListOf<String>()
 
-  if (request.gender == null) missingFields.add("Gender")
-  if (request.dateOfBirth == null) missingFields.add("Date of birth")
-  if (request.dateAtStartOfFollowup == null) missingFields.add("Date at start of followup")
-  if (request.totalNumberOfSanctions == null) missingFields.add("Total number of sanctions")
-  if (request.totalNumberOfViolentSanctions == null) missingFields.add("Total number of violent sanctions")
-  if (request.impactOfOffendingOnOthers == null) missingFields.add("Impact of offending on others")
-  if (request.currentAccommodation == null) missingFields.add("Current accommodation")
-  if (request.employmentStatus == null) missingFields.add("Employment status")
-  if (request.alcoholIsCurrentUseAProblem == null) missingFields.add("Alcohol is current use a problem")
-  if (request.alcoholExcessive6Months == null) missingFields.add("Alcohol excessive 6 months")
-  if (request.currentPsychiatricTreatmentOrPending == null) missingFields.add("Current psychiatric treatment or pending")
-  if (request.temperControl == null) missingFields.add("Temper control")
-  if (request.proCriminalAttitudes == null) missingFields.add("Pro criminal attitudes")
+  missingFields.addIfNull(request, RiskScoreRequest::gender)
+  missingFields.addIfNull(request, RiskScoreRequest::dateOfBirth)
+  missingFields.addIfNull(request, RiskScoreRequest::dateAtStartOfFollowup)
+  missingFields.addIfNull(request, RiskScoreRequest::totalNumberOfSanctions)
+  missingFields.addIfNull(request, RiskScoreRequest::totalNumberOfViolentSanctions)
+  missingFields.addIfNull(request, RiskScoreRequest::impactOfOffendingOnOthers)
+  missingFields.addIfNull(request, RiskScoreRequest::currentAccommodation)
+  missingFields.addIfNull(request, RiskScoreRequest::employmentStatus)
+  missingFields.addIfNull(request, RiskScoreRequest::alcoholIsCurrentUseAProblem)
+  missingFields.addIfNull(request, RiskScoreRequest::alcoholExcessive6Months)
+  missingFields.addIfNull(request, RiskScoreRequest::currentPsychiatricTreatmentOrPending)
+  missingFields.addIfNull(request, RiskScoreRequest::temperControl)
+  missingFields.addIfNull(request, RiskScoreRequest::proCriminalAttitudes)
 
   return addMissingFields(missingFields, errors)
 }

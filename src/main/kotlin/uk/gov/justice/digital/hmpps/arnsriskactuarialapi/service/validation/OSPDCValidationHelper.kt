@@ -8,33 +8,44 @@ fun ospdcInitialValidation(request: RiskScoreRequest): List<ValidationErrorRespo
   val errors = arrayListOf<ValidationErrorResponse>()
 
   val genderWithSexualHistoryValidationErrors = getGenderWithSexualHistoryValidation(request, errors)
-  val missingOSPDCFieldsValidationErrors = getMissingOSPDCFieldsValidation(request, genderWithSexualHistoryValidationErrors)
+  val missingOSPDCFieldsValidationErrors =
+    getMissingOSPDCFieldsValidation(request, genderWithSexualHistoryValidationErrors)
 
   return missingOSPDCFieldsValidationErrors
 }
 
-fun getGenderWithSexualHistoryValidation(request: RiskScoreRequest, errors: List<ValidationErrorResponse>): List<ValidationErrorResponse> {
+fun getGenderWithSexualHistoryValidation(
+  request: RiskScoreRequest,
+  errors: List<ValidationErrorResponse>,
+): List<ValidationErrorResponse> {
   val criteriaFields = arrayListOf<String>()
 
-  if (request.hasCommittedSexualOffence == false) criteriaFields.add("hasCommittedSexualOffence")
-  if (request.hasCommittedSexualOffence == true && request.gender == Gender.FEMALE) criteriaFields.add("Gender")
+  if (request.hasCommittedSexualOffence == false) criteriaFields.add(RiskScoreRequest::hasCommittedSexualOffence.name)
+  if (request.hasCommittedSexualOffence == true && request.gender == Gender.FEMALE) {
+    criteriaFields.add(
+      RiskScoreRequest::gender.name,
+    )
+  }
 
   return addMissingCriteriaValidation(criteriaFields, errors)
 }
 
-fun getMissingOSPDCFieldsValidation(request: RiskScoreRequest, errors: List<ValidationErrorResponse>): List<ValidationErrorResponse> {
+fun getMissingOSPDCFieldsValidation(
+  request: RiskScoreRequest,
+  errors: List<ValidationErrorResponse>,
+): List<ValidationErrorResponse> {
   val missingFields = arrayListOf<String>()
 
-  if (request.gender == null) missingFields.add("Gender")
-  if (request.dateOfBirth == null) missingFields.add("Date of birth")
-  if (request.hasCommittedSexualOffence == null) missingFields.add("Has commited sexual offence")
-  if (request.totalContactAdultSexualSanctions == null) missingFields.add("Total contact adult sexual sanctions")
-  if (request.totalContactChildSexualSanctions == null) missingFields.add("Total contact child sexual sanctions")
-  if (request.totalNonContactSexualOffences == null) missingFields.add("Total non contact sexual offences")
-  if (request.totalIndecentImageSanctions == null) missingFields.add("Total indecent image sanctions")
-  if (request.dateAtStartOfFollowup == null) missingFields.add("Date at start of followup")
-  if (request.dateOfMostRecentSexualOffence == null) missingFields.add("Date of most recent sexual offence")
-  if (request.totalNumberOfSanctions == null) missingFields.add("Total number of sanctions")
+  missingFields.addIfNull(request, RiskScoreRequest::gender)
+  missingFields.addIfNull(request, RiskScoreRequest::dateOfBirth)
+  missingFields.addIfNull(request, RiskScoreRequest::hasCommittedSexualOffence)
+  missingFields.addIfNull(request, RiskScoreRequest::totalContactAdultSexualSanctions)
+  missingFields.addIfNull(request, RiskScoreRequest::totalContactChildSexualSanctions)
+  missingFields.addIfNull(request, RiskScoreRequest::totalNonContactSexualOffences)
+  missingFields.addIfNull(request, RiskScoreRequest::totalIndecentImageSanctions)
+  missingFields.addIfNull(request, RiskScoreRequest::dateAtStartOfFollowup)
+  missingFields.addIfNull(request, RiskScoreRequest::dateOfMostRecentSexualOffence)
+  missingFields.addIfNull(request, RiskScoreRequest::totalNumberOfSanctions)
 
   return addMissingFields(missingFields, errors)
 }

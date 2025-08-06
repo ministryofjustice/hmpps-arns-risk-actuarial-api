@@ -85,18 +85,18 @@ class MSTScoreProducerServiceTest {
       ValidationErrorType.MISSING_INPUT,
       "ERR5 - Field is Null",
       listOf(
-        "Gender",
-        "Date of birth",
-        "Peer group influences",
-        "Attitudes peer pressure",
-        "Attitudes stable behaviour",
-        "Difficulties coping",
-        "Attitudes towards self",
-        "Impulsivity behaviour",
-        "Temper control",
-        "Problem solving skills",
-        "Awareness of consequences",
-        "Understands peoples views",
+        "gender",
+        "dateOfBirth",
+        "peerGroupInfluences",
+        "attitudesPeerPressure",
+        "attitudesStableBehaviour",
+        "difficultiesCoping",
+        "attitudesTowardsSelf",
+        "impulsivityBehaviour",
+        "temperControl",
+        "problemSolvingSkills",
+        "awarenessOfConsequences",
+        "understandsPeoplesViews",
       ),
     )
     val actualError = result.MST?.validationError
@@ -121,7 +121,7 @@ class MSTScoreProducerServiceTest {
     val expectedError = ValidationErrorResponse(
       ValidationErrorType.NOT_APPLICABLE,
       "ERR - Does not meet eligibility criteria",
-      listOf("Date of birth"),
+      listOf("dateOfBirth"),
     )
     val actualError = result.MST?.validationError
 
@@ -145,7 +145,7 @@ class MSTScoreProducerServiceTest {
     val expectedError = ValidationErrorResponse(
       ValidationErrorType.NOT_APPLICABLE,
       "ERR - Does not meet eligibility criteria",
-      listOf("Gender"),
+      listOf("gender"),
     )
     val actualError = result.MST?.validationError
 
@@ -170,7 +170,7 @@ class MSTScoreProducerServiceTest {
     val expectedError = ValidationErrorResponse(
       ValidationErrorType.NOT_APPLICABLE,
       "ERR - Does not meet eligibility criteria",
-      listOf("Gender", "Date of birth"),
+      listOf("gender", "dateOfBirth"),
     )
     val actualError = result.MST?.validationError
 

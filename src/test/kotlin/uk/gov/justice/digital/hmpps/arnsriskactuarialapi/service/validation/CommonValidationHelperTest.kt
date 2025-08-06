@@ -27,7 +27,17 @@ class CommonValidationHelperTest {
   @Test
   fun `all test fields absent`() {
     val errorStrings = getMissingPropertiesErrorStrings(NULL_REQUEST, TEST_OGP_PROPERTIES_TO_ERRORS)
-    val expected = (0..8).map { i -> "$i" }
+    val expected = listOf(
+      "currentAccommodation",
+      "employmentStatus",
+      "regularOffendingActivities",
+      "currentDrugMisuse",
+      "motivationDrug",
+      "problemSolvingSkills",
+      "awarenessOfConsequences",
+      "understandsPeoplesViews",
+      "proCriminalAttitudes",
+    )
     assertEquals(expected, errorStrings)
   }
 
@@ -39,12 +49,12 @@ class CommonValidationHelperTest {
 
   @Test
   fun `addMissingCriteriaValidation all criteria fields`() {
-    val errorResponses = addMissingCriteriaValidation(mutableListOf("Gender", "Date of birth"), mutableListOf())
+    val errorResponses = addMissingCriteriaValidation(mutableListOf("Gender", "dateOfBirth"), mutableListOf())
     val expected = listOf(
       ValidationErrorResponse(
         ValidationErrorType.NOT_APPLICABLE,
         "ERR - Does not meet eligibility criteria",
-        listOf("Gender", "Date of birth"),
+        listOf("Gender", "dateOfBirth"),
       ),
     )
     assertEquals(expected, errorResponses)
@@ -52,12 +62,13 @@ class CommonValidationHelperTest {
 
   @Test
   fun `addUnexpectedFields should add unexpected errors`() {
-    val errorResponses = addUnexpectedFields(mutableListOf("Domestic abuse partner", "Domestic abuse family"), mutableListOf())
+    val errorResponses =
+      addUnexpectedFields(mutableListOf("domesticAbusePartner", "domesticAbuseFamily"), mutableListOf())
     val expected = listOf(
       ValidationErrorResponse(
         ValidationErrorType.UNEXPECTED_VALUE,
         "ERR - Field is unexpected",
-        listOf("Domestic abuse partner", "Domestic abuse family"),
+        listOf("domesticAbusePartner", "domesticAbuseFamily"),
       ),
     )
     assertEquals(expected, errorResponses)
@@ -72,31 +83,33 @@ class CommonValidationHelperTest {
 
   companion object {
 
-    val TEST_OGP_PROPERTIES_TO_ERRORS = mapOf(
-      "currentAccommodation" to "0",
-      "employmentStatus" to "1",
-      "regularOffendingActivities" to "2",
-      "currentDrugMisuse" to "3",
-      "motivationDrug" to "4",
-      "problemSolvingSkills" to "5",
-      "awarenessOfConsequences" to "6",
-      "understandsPeoplesViews" to "7",
-      "proCriminalAttitudes" to "8",
+    val TEST_OGP_PROPERTIES_TO_ERRORS = listOf(
+      "currentAccommodation",
+      "employmentStatus",
+      "regularOffendingActivities",
+      "currentDrugMisuse",
+      "motivationDrug",
+      "problemSolvingSkills",
+      "awarenessOfConsequences",
+      "understandsPeoplesViews",
+      "proCriminalAttitudes",
     )
 
     @JvmStatic
     fun getRiskScoreRequests(): List<Arguments> = listOf(
       Arguments.of(
         ALT_NULL_OGP_REQUEST,
-        (0..4).map { i -> "${2 * i}" },
+        listOf("currentAccommodation", "regularOffendingActivities", "motivationDrug", "awarenessOfConsequences", "proCriminalAttitudes"),
       ),
       Arguments.of(
         OGP_REQUEST_39,
-        listOf("2", "8"),
+        listOf("regularOffendingActivities", "proCriminalAttitudes"),
+
       ),
       Arguments.of(
         OGP_REQUEST_0458,
-        listOf("0", "4", "5", "8"),
+        listOf("currentAccommodation", "motivationDrug", "problemSolvingSkills", "proCriminalAttitudes"),
+
       ),
     )
   }
@@ -113,7 +126,7 @@ class CommonValidationHelperTest {
       ValidationErrorResponse(
         type = ValidationErrorType.MISSING_INPUT,
         message = "Unable to produce OGRS3 score due to missing field(s)",
-        fields = listOf("Total number of sanctions"),
+        fields = listOf("totalNumberOfSanctions"),
       ),
     )
     val result = getTotalNumberOfSanctionsValidation(null, missingFieldError)
@@ -127,7 +140,7 @@ class CommonValidationHelperTest {
     val error = result.first()
     assertEquals(ValidationErrorType.BELOW_MIN_VALUE, error.type)
     assertEquals("ERR2 - Below minimum value", error.message)
-    assertEquals("Total number of sanctions", error.fields?.first())
+    assertEquals("totalNumberOfSanctions", error.fields?.first())
   }
 
   @Test
@@ -142,7 +155,7 @@ class CommonValidationHelperTest {
       ValidationErrorResponse(
         type = ValidationErrorType.MISSING_INPUT,
         message = "Unable to produce OGRS3 score due to missing field(s)",
-        fields = listOf("Current offence"),
+        fields = listOf("currentOffence"),
       ),
     )
     val result = getCurrentOffenceValidation(null, missingFieldError)
@@ -156,7 +169,7 @@ class CommonValidationHelperTest {
     val error = result.first()
     assertEquals(ValidationErrorType.NO_MATCHING_INPUT, error.type)
     assertEquals("ERR4 - Does not match agreed input", error.message)
-    assertEquals("Current offence", error.fields?.first())
+    assertEquals("currentOffence", error.fields?.first())
   }
 
   @Test
@@ -171,7 +184,7 @@ class CommonValidationHelperTest {
     val error = result.first()
     assertEquals(ValidationErrorType.BELOW_MIN_VALUE, error.type)
     assertEquals("ERR2 - Below minimum value", error.message)
-    assertEquals("Age at current conviction", error.fields?.first())
+    assertEquals("dateOfBirth", error.fields?.first())
   }
 
   @Test
@@ -180,8 +193,8 @@ class CommonValidationHelperTest {
     val error = result.first()
     assertEquals(ValidationErrorType.BELOW_MIN_VALUE, error.type)
     assertEquals("ERR2 - Below minimum value", error.message)
-    assertEquals("Age at current conviction", error.fields?.first())
-    assertEquals("Age at first sanction", error.fields?.last())
+    assertEquals("dateOfBirth", error.fields?.first())
+    assertEquals("ageAtFirstSanction", error.fields?.last())
   }
 
   @Test
@@ -209,5 +222,26 @@ class CommonValidationHelperTest {
     )
     val result = validateAge(11, 15, existingErrors)
     assertEquals(2, result.size)
+  }
+
+  @Test
+  fun `addIfNull should field name when property is null`() {
+    val request = RiskScoreRequest(peerGroupInfluences = null)
+    val missingFields = arrayListOf<String>()
+
+    missingFields.addIfNull(request, RiskScoreRequest::peerGroupInfluences)
+    assertEquals(listOf("peerGroupInfluences"), missingFields)
+
+    missingFields.addIfNull(request, RiskScoreRequest::gender)
+    assertEquals(listOf("peerGroupInfluences", "gender"), missingFields)
+  }
+
+  @Test
+  fun `addIfNull should not add field name when property is not null`() {
+    val request = RiskScoreRequest(peerGroupInfluences = true)
+    val missingFields = arrayListOf<String>()
+
+    missingFields.addIfNull(request, RiskScoreRequest::peerGroupInfluences)
+    assertEquals(emptyList<String>(), missingFields)
   }
 }

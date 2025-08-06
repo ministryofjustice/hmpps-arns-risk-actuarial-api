@@ -35,16 +35,16 @@ class OSPDCValidationHelperTest {
     val result = ospdcInitialValidation(request)
 
     val expectedFields = listOf(
-      "Gender",
-      "Date of birth",
-      "Has commited sexual offence",
-      "Total contact adult sexual sanctions",
-      "Total contact child sexual sanctions",
-      "Total non contact sexual offences",
-      "Total indecent image sanctions",
-      "Date at start of followup",
-      "Date of most recent sexual offence",
-      "Total number of sanctions",
+      "gender",
+      "dateOfBirth",
+      "hasCommittedSexualOffence",
+      "totalContactAdultSexualSanctions",
+      "totalContactChildSexualSanctions",
+      "totalNonContactSexualOffences",
+      "totalIndecentImageSanctions",
+      "dateAtStartOfFollowup",
+      "dateOfMostRecentSexualOffence",
+      "totalNumberOfSanctions",
     )
 
     val error = result.first()
@@ -75,7 +75,7 @@ class OSPDCValidationHelperTest {
     )
 
     val result = ospdcInitialValidation(request)
-    val expectedFields = listOf("Gender")
+    val expectedFields = listOf("gender")
 
     val error = result.first()
     assertEquals(ValidationErrorType.NOT_APPLICABLE, error.type)

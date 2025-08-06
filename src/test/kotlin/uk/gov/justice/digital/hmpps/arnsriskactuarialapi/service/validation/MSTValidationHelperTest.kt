@@ -42,18 +42,18 @@ class MSTValidationHelperTest {
       ValidationErrorType.MISSING_INPUT,
       "ERR5 - Field is Null",
       listOf(
-        "Gender",
-        "Date of birth",
-        "Peer group influences",
-        "Attitudes peer pressure",
-        "Attitudes stable behaviour",
-        "Difficulties coping",
-        "Attitudes towards self",
-        "Impulsivity behaviour",
-        "Temper control",
-        "Problem solving skills",
-        "Awareness of consequences",
-        "Understands peoples views",
+        "gender",
+        "dateOfBirth",
+        "peerGroupInfluences",
+        "attitudesPeerPressure",
+        "attitudesStableBehaviour",
+        "difficultiesCoping",
+        "attitudesTowardsSelf",
+        "impulsivityBehaviour",
+        "temperControl",
+        "problemSolvingSkills",
+        "awarenessOfConsequences",
+        "understandsPeoplesViews",
       ),
     )
 
@@ -99,8 +99,8 @@ class MSTValidationHelperTest {
       ValidationErrorType.MISSING_INPUT,
       "ERR5 - Field is Null",
       listOf(
-        "Difficulties coping",
-        "Temper control",
+        "difficultiesCoping",
+        "temperControl",
       ),
     )
 
@@ -118,7 +118,7 @@ class MSTValidationHelperTest {
     val expectedError = ValidationErrorResponse(
       ValidationErrorType.NOT_APPLICABLE,
       "ERR - Does not meet eligibility criteria",
-      listOf("Date of birth"),
+      listOf("dateOfBirth"),
     )
 
     assertEquals(expectedError, result.first())
@@ -133,7 +133,7 @@ class MSTValidationHelperTest {
     val expectedError = ValidationErrorResponse(
       ValidationErrorType.NOT_APPLICABLE,
       "ERR - Does not meet eligibility criteria",
-      listOf("Gender"),
+      listOf("gender"),
     )
 
     assertEquals(expectedError, result.first())
@@ -148,7 +148,7 @@ class MSTValidationHelperTest {
     val expectedError = ValidationErrorResponse(
       ValidationErrorType.NOT_APPLICABLE,
       "ERR - Does not meet eligibility criteria",
-      listOf("Gender", "Date of birth"),
+      listOf("gender", "dateOfBirth"),
     )
 
     assertEquals(expectedError, result.first())
