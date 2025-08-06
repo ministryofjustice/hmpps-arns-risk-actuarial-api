@@ -32,7 +32,7 @@ class JacksonConfig {
           mapper.coercionConfigFor(booleanType)
             .setCoercion(CoercionInputShape.Integer, CoercionAction.Fail)
             .setCoercion(CoercionInputShape.Float, CoercionAction.Fail)
-            .setCoercion(CoercionInputShape.String, CoercionAction.TryConvert)
+            .setCoercion(CoercionInputShape.String, CoercionAction.Fail)
         }
       }
   }

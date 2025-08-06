@@ -149,6 +149,27 @@ class RiskScoreControllerTest : IntegrationTestBase() {
   }
 
   @Test
+  fun `postRiskScores returns 400 if incorrect boolean string value used instead of true, false`() {
+    val expectedError =
+      "JSON parse error: Cannot coerce String value (\"true\") to `java.lang.Boolean` value (but might if coercion using `CoercionConfig` was enabled)"
+    webTestClient.post()
+      .uri("/risk-scores/v1")
+      .headers(setAuthorisation(roles = listOf("ARNS_RISK_ACTUARIAL")))
+      .contentType(MediaType.APPLICATION_JSON)
+      .bodyValue(
+        """
+        {
+          "medicationMentalHealth": "true"
+        }
+        """.trimIndent(),
+      )
+      .exchange()
+      .expectStatus().isBadRequest
+      .expectBody()
+      .jsonPath("$.message").isEqualTo(expectedError)
+  }
+
+  @Test
   fun `postRiskScores returns 400 if incorrect type used`() {
     val expectedError =
       "JSON parse error: Cannot deserialize value of type `java.lang.Integer` from String \"not a number\": not a valid `java.lang.Integer` value"
