@@ -58,7 +58,7 @@ private fun validateAgeAtCurrentConviction(
   ValidationErrorResponse(
     type = ValidationErrorType.BELOW_MIN_VALUE,
     message = "ERR2 - Below minimum value",
-    fields = listOf("ageAtCurrentConviction"),
+    fields = listOf(RiskScoreRequest::dateOfBirth.name),
   )
 } else {
   null
@@ -71,7 +71,7 @@ private fun validateAgeAtFirstSanction(
   ValidationErrorResponse(
     type = ValidationErrorType.BELOW_MIN_VALUE,
     message = "ERR2 - Below minimum value",
-    fields = listOf("ageAtCurrentConviction", RiskScoreRequest::ageAtFirstSanction.name),
+    fields = listOf(RiskScoreRequest::dateOfBirth.name, RiskScoreRequest::ageAtFirstSanction.name),
   )
 } else {
   null

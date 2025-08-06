@@ -184,7 +184,7 @@ class CommonValidationHelperTest {
     val error = result.first()
     assertEquals(ValidationErrorType.BELOW_MIN_VALUE, error.type)
     assertEquals("ERR2 - Below minimum value", error.message)
-    assertEquals("ageAtCurrentConviction", error.fields?.first())
+    assertEquals("dateOfBirth", error.fields?.first())
   }
 
   @Test
@@ -193,7 +193,7 @@ class CommonValidationHelperTest {
     val error = result.first()
     assertEquals(ValidationErrorType.BELOW_MIN_VALUE, error.type)
     assertEquals("ERR2 - Below minimum value", error.message)
-    assertEquals("ageAtCurrentConviction", error.fields?.first())
+    assertEquals("dateOfBirth", error.fields?.first())
     assertEquals("ageAtFirstSanction", error.fields?.last())
   }
 
