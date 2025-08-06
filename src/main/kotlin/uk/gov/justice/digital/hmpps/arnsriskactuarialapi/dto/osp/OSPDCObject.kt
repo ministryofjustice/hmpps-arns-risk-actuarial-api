@@ -4,7 +4,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 
 data class OSPDCObject(
-  val ospdcBand: RiskBand,
-  val ospdcScore: Int,
+  val ospdcBand: RiskBand?,
+  val ospdcScore: Double?,
   val validationError: List<ValidationErrorResponse>?,
 )

@@ -1,0 +1,163 @@
+package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
+
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertNull
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validOSPDCRiskScoreRequest
+import java.time.LocalDate
+
+class OSPDCRiskProducerServiceTest {
+
+  private val service: OSPDCRiskProducerService = OSPDCRiskProducerService()
+
+  @Test
+  fun `should return valid OVPObject for valid input LOW risk`() {
+    val result = service.getRiskScore(
+      validOSPDCRiskScoreRequest()
+        .copy(
+          totalNumberOfSanctions = 1 as Integer,
+          totalContactAdultSexualSanctions = 0,
+          totalContactChildSexualSanctions = 0,
+          totalNonContactSexualOffences = 1,
+          totalIndecentImageSanctions = 0,
+        ),
+      emptyContext(),
+    )
+
+    assertNotNull(result)
+    assertEquals(RiskBand.LOW, result.OSPDC!!.ospdcBand)
+    assertTrue(result.OSPDC!!.validationError.isNullOrEmpty())
+  }
+
+  @Test
+  fun `should return valid OVPObject for valid input MEDIUM risk`() {
+    val result = service.getRiskScore(
+      validOSPDCRiskScoreRequest()
+        .copy(
+          totalNumberOfSanctions = 1 as Integer,
+          totalContactAdultSexualSanctions = 1,
+          totalContactChildSexualSanctions = 1,
+          totalNonContactSexualOffences = 1,
+          totalIndecentImageSanctions = 0,
+        ),
+      emptyContext(),
+    )
+
+    assertNotNull(result)
+    assertEquals(RiskBand.MEDIUM, result.OSPDC!!.ospdcBand)
+    assertTrue(result.OSPDC!!.validationError.isNullOrEmpty())
+  }
+
+  @Test
+  fun `should return valid OVPObject for valid input HIGH risk`() {
+    val result = service.getRiskScore(
+      validOSPDCRiskScoreRequest()
+        .copy(
+          totalNumberOfSanctions = 1 as Integer,
+          totalContactAdultSexualSanctions = 2,
+          totalContactChildSexualSanctions = 2,
+          totalNonContactSexualOffences = 1,
+          totalIndecentImageSanctions = 0,
+        ),
+      emptyContext(),
+    )
+
+    assertNotNull(result)
+    assertEquals(RiskBand.HIGH, result.OSPDC!!.ospdcBand)
+    assertTrue(result.OSPDC!!.validationError.isNullOrEmpty())
+  }
+
+  @Test
+  fun `should return valid OVPObject for valid input VERY_HIGH risk`() {
+    val result = service.getRiskScore(
+      validOSPDCRiskScoreRequest()
+        .copy(
+          totalNumberOfSanctions = 1 as Integer,
+          totalContactAdultSexualSanctions = 3,
+          totalContactChildSexualSanctions = 3,
+          totalNonContactSexualOffences = 1,
+          totalIndecentImageSanctions = 0,
+        ),
+      emptyContext(),
+    )
+
+    assertNotNull(result)
+    assertEquals(RiskBand.VERY_HIGH, result.OSPDC!!.ospdcBand)
+    assertTrue(result.OSPDC!!.validationError.isNullOrEmpty())
+  }
+
+  @Test
+  fun `should return NOT_APPLICABLE OSPDCObject when initial validation returns na with error message for exceptions thrown`() {
+    // When
+    val result = service.getRiskScore(
+      validOSPDCRiskScoreRequest().copy(
+        gender = Gender.FEMALE,
+      ),
+      emptyContext(),
+    )
+
+    // Then
+    assertNotNull(result)
+    assertEquals(0.00383142, result.OSPDC?.ospdcScore)
+    assertEquals(RiskBand.NOT_APPLICABLE, result.OSPDC?.ospdcBand)
+    assertEquals(1, result.OSPDC?.validationError?.size)
+    val error = result.OSPDC?.validationError?.first()
+    assertEquals(ValidationErrorType.NOT_APPLICABLE, error?.type)
+    assertEquals("ERR - Does not meet eligibility criteria", error?.message)
+    assertEquals(listOf("Gender"), error?.fields)
+  }
+
+  @Test
+  fun `should return NOT_APPLICABLE OSPDCObject when 64 point score is 0`() {
+    // When
+    val result = service.getRiskScore(
+      validOSPDCRiskScoreRequest().copy(
+        dateOfBirth = LocalDate.of(1950, 1, 1),
+        totalContactAdultSexualSanctions = 0,
+        totalContactChildSexualSanctions = 0,
+        totalNonContactSexualOffences = 0,
+        totalIndecentImageSanctions = 0,
+        dateOfMostRecentSexualOffence = LocalDate.of(1963, 1, 1),
+        totalNumberOfSanctions = 1 as Integer,
+        victimStranger = false,
+      ),
+      emptyContext(),
+    )
+
+    // Then
+    assertNotNull(result)
+    assertEquals(0.0, result.OSPDC?.ospdcScore)
+    assertEquals(RiskBand.NOT_APPLICABLE, result.OSPDC?.ospdcBand)
+    assertEquals(1, result.OSPDC?.validationError?.size)
+    val error = result.OSPDC?.validationError?.first()
+    assertEquals(ValidationErrorType.NOT_APPLICABLE, error?.type)
+    assertEquals("OSP/DC band not applicable, 64 point score value: 0", error?.message)
+  }
+
+  @Test
+  fun `should return UNEXPECTED_VALUE OSPDCObject when calculation error`() {
+    // When
+    val result = service.getRiskScore(
+      validOSPDCRiskScoreRequest().copy(
+        totalNonContactSexualOffences = 0,
+        totalIndecentImageSanctions = 1,
+      ),
+      emptyContext(),
+    )
+
+    // Then
+    assertNotNull(result)
+    assertNull(result.OSPDC?.ospdcScore)
+    assertNull(result.OSPDC?.ospdcBand)
+    assertEquals(1, result.OSPDC?.validationError?.size)
+    val error = result.OSPDC?.validationError?.first()
+    assertEquals(ValidationErrorType.UNEXPECTED_VALUE, error?.type)
+    assertEquals("Error: Invalid total non-contact sexual offences excluding indecent images value: -1", error?.message)
+  }
+}
