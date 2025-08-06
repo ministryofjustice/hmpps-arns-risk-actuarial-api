@@ -18,6 +18,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOGP
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOGRS3
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOPD
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOSPDC
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOSPIIC
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOVP
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyRSR
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptySNSV
@@ -56,6 +57,9 @@ class RiskScoreServiceTest {
   @Mock
   private lateinit var rsrRiskProducerService: RSRRiskProducerService
 
+  @Mock
+  private lateinit var ospiicRiskProducerService: OSPIICRiskProducerService
+
   @InjectMocks
   private lateinit var riskScoreService: RiskScoreService
 
@@ -85,6 +89,7 @@ class RiskScoreServiceTest {
       Pair(ldsRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { LDS = emptyLDS() } },
       Pair(ospdcRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { OSPDC = emptyOSPDC() } },
       Pair(snsvRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { SNSV = emptySNSV() } },
+      Pair(ospiicRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { OSPIIC = emptyOSPIIC() } },
       Pair(rsrRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { RSR = emptyRSR() } },
 
       // add more Pairs for the other mocked risk producers here

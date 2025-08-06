@@ -6,7 +6,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.ConversionUtils.C
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asPercentage
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.roundToInt
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sanitisePercentage
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.softScale
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sigmoid
 
 class OGPTransformationHelper {
 
@@ -89,12 +89,12 @@ class OGPTransformationHelper {
       )
 
     fun ogpReoffendingOneYear(totalOGPScore: Int): Int = (REOFFENDING_SCALE * totalOGPScore - REOFFENDING_ONE_YEAR_SHIFT)
-      .softScale()
+      .sigmoid()
       .asPercentage()
       .sanitisePercentage()
 
     fun ogpReoffendingTwoYear(totalOGPScore: Int): Int = (REOFFENDING_SCALE * totalOGPScore - REOFFENDING_TWO_YEAR_SHIFT)
-      .softScale()
+      .sigmoid()
       .asPercentage()
       .sanitisePercentage()
 
