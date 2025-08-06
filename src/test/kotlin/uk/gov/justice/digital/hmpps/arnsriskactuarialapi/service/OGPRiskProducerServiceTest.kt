@@ -15,7 +15,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3Object
 class OGPRiskProducerServiceTest {
 
   private val service = OGPRiskProducerService()
-  private val context = RiskScoreContext(RiskScoreVersion.V1_0)
 
   @Test
   fun `single request`() {

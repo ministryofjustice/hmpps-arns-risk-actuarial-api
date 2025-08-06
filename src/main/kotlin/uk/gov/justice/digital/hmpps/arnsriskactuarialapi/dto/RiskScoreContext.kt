@@ -6,6 +6,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3Object
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.opd.OPDObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.osp.OSPDCObject
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ospiic.OSPIICOutput
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ovp.OVPObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.rsr.RSRObject
@@ -23,6 +24,7 @@ data class RiskScoreContext(
   var OSPDC: OSPDCObject? = null,
   var SNSV: SNSVObject? = null,
   var RSR: RSRObject? = null,
+  var OSPIIC: OSPIICOutput? = null,
 )
 
 fun RiskScoreContext.toRiskScoreResponse(): RiskScoreResponse = RiskScoreResponse(
@@ -35,4 +37,5 @@ fun RiskScoreContext.toRiskScoreResponse(): RiskScoreResponse = RiskScoreRespons
   this.PNI,
   this.LDS,
   this.RSR,
+  this.OSPIIC,
 )

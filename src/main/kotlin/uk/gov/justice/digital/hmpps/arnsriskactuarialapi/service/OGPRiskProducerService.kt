@@ -29,10 +29,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.thinkingAndBehaviourNonViolentWeighted
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.totalOGPScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.understandsPeoplesViewsOffendersScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.OGPValidationHelper.Companion.OGP_PROPERTIES
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.OGPValidationHelper.Companion.getMissingFieldsErrorsInContext
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.addMissingFields
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.getMissingPropertiesErrorStrings
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.OGPValidationHelper.Companion.ogpInitialValidation
 
 @Service
 class OGPRiskProducerService : RiskScoreProducer {
@@ -129,15 +126,6 @@ class OGPRiskProducerService : RiskScoreProducer {
         )
       // Create OGP Output
       OGPObject(null, null, null, null, errors)
-    }
-
-    fun ogpInitialValidation(
-      request: RiskScoreRequest,
-      context: RiskScoreContext,
-    ): List<ValidationErrorResponse> {
-      val missingProperties = getMissingPropertiesErrorStrings(request, OGP_PROPERTIES)
-      val missingFields = getMissingFieldsErrorsInContext(context)
-      return addMissingFields(missingProperties + missingFields, listOf())
     }
   }
 }

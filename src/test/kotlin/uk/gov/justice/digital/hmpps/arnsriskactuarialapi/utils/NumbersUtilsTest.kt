@@ -52,11 +52,11 @@ class NumbersUtilsTest {
 
   @Test
   fun `softScale should scale correctly`() {
-    assertTrue(0.5.equalsDelta(0.0.softScale()))
+    assertTrue(0.5.equalsDelta(0.0.sigmoid()))
     // should be true for any x (but delta may have to be tweaked)
     val x = Math.PI
     val g = { x: Double -> (x / 2).let { u -> exp(u) / (2 * cosh(u)) } }
-    val f = { x: Double -> x.softScale() }
+    val f = { x: Double -> x.sigmoid() }
     assertTrue(f(x).equalsDelta(g(x)))
   }
 }

@@ -17,5 +17,4 @@ fun Int.sanitisePercentage(): Int = when {
   else -> this
 }
 
-// TODO Error Checking
-fun Double.softScale(): Double = exp(this).let { it / (1 + it) }
+fun Double.sigmoid(): Double = exp(this).let { it / (1 + it) }

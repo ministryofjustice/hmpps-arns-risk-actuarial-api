@@ -42,6 +42,8 @@ class ApiIntegrationTest : IntegrationTestBase() {
       arrayOf("opd", "requests/opd-input-3-invalid-missing.json", "responses/opd-expected-3.json"),
       arrayOf("lds", "requests/lds-input-1-valid.json", "responses/lds-expected-1.json"),
       arrayOf("lds", "requests/lds-input-2-missing-fields.json", "responses/lds-expected-2.json"),
+      arrayOf("lds", "requests/lds-input-2-missing-fields.json", "responses/lds-expected-2.json"),
+
       // Add more as needed
     )
 
