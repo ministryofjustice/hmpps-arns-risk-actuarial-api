@@ -10,7 +10,7 @@ private fun getMissingPNIFieldsValidation(request: RiskScoreRequest): List<Valid
 
   val missingFields = arrayListOf<String>()
 
-  if (request.gender == null) missingFields.add("Gender")
+  if (request.gender == null) missingFields.add("gender")
   if (request.inCustodyOrCommunity == null) missingFields.add("inCustodyOrCommunity")
 
   return addMissingFields(missingFields, errors)
