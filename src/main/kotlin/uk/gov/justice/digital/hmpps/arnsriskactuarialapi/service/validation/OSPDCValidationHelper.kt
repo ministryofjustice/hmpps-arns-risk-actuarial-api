@@ -1,36 +1,30 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 
 fun ospdcInitialValidation(request: RiskScoreRequest): List<ValidationErrorResponse> {
   val errors = arrayListOf<ValidationErrorResponse>()
 
-  val genderWithSexualHistoryValidationErrors = getGenderWithSexualHistoryValidation(request, errors)
+  val genderWithSexualHistoryValidationErrors = getSexualHistoryValidation(request, errors)
   val missingOSPDCFieldsValidationErrors =
     getMissingOSPDCFieldsValidation(request, genderWithSexualHistoryValidationErrors)
 
   return missingOSPDCFieldsValidationErrors
 }
 
-fun getGenderWithSexualHistoryValidation(
+internal fun getSexualHistoryValidation(
   request: RiskScoreRequest,
   errors: List<ValidationErrorResponse>,
 ): List<ValidationErrorResponse> {
   val criteriaFields = arrayListOf<String>()
 
   if (request.hasCommittedSexualOffence == false) criteriaFields.add(RiskScoreRequest::hasCommittedSexualOffence.name)
-  if (request.hasCommittedSexualOffence == true && request.gender == Gender.FEMALE) {
-    criteriaFields.add(
-      RiskScoreRequest::gender.name,
-    )
-  }
 
   return addMissingCriteriaValidation(criteriaFields, errors)
 }
 
-fun getMissingOSPDCFieldsValidation(
+internal fun getMissingOSPDCFieldsValidation(
   request: RiskScoreRequest,
   errors: List<ValidationErrorResponse>,
 ): List<ValidationErrorResponse> {

@@ -3,7 +3,6 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validOSPDCRiskScoreRequest
 
@@ -61,21 +60,6 @@ class OSPDCValidationHelperTest {
 
     val result = ospdcInitialValidation(request)
     val expectedFields = listOf("hasCommittedSexualOffence")
-
-    val error = result.first()
-    assertEquals(ValidationErrorType.NOT_APPLICABLE, error.type)
-    assertEquals("ERR - Does not meet eligibility criteria", error.message)
-    assertEquals(expectedFields, error.fields)
-  }
-
-  @Test
-  fun `oospdcInitialValidation not applicable error when female offender`() {
-    val request = validOSPDCRiskScoreRequest().copy(
-      gender = Gender.FEMALE,
-    )
-
-    val result = ospdcInitialValidation(request)
-    val expectedFields = listOf("gender")
 
     val error = result.first()
     assertEquals(ValidationErrorType.NOT_APPLICABLE, error.type)

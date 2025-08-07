@@ -93,11 +93,12 @@ class OSPDCRiskProducerServiceTest {
   }
 
   @Test
-  fun `should return NOT_APPLICABLE OSPDCObject when initial validation returns na with error message for exceptions thrown`() {
+  fun `should return NOT_APPLICABLE when FEMALE with sexual offences`() {
     // When
     val result = service.getRiskScore(
       validOSPDCRiskScoreRequest().copy(
         gender = Gender.FEMALE,
+        hasCommittedSexualOffence = true,
       ),
       emptyContext(),
     )
@@ -106,11 +107,25 @@ class OSPDCRiskProducerServiceTest {
     assertNotNull(result)
     assertEquals(0.00383142, result.OSPDC?.ospdcScore)
     assertEquals(RiskBand.NOT_APPLICABLE, result.OSPDC?.ospdcBand)
-    assertEquals(1, result.OSPDC?.validationError?.size)
-    val error = result.OSPDC?.validationError?.first()
-    assertEquals(ValidationErrorType.NOT_APPLICABLE, error?.type)
-    assertEquals("ERR - Does not meet eligibility criteria", error?.message)
-    assertEquals(listOf("gender"), error?.fields)
+    assertEquals(0, result.OSPDC?.validationError?.size)
+  }
+
+  @Test
+  fun `should return NOT_APPLICABLE when FEMALE with no sexual offences`() {
+    // When
+    val result = service.getRiskScore(
+      validOSPDCRiskScoreRequest().copy(
+        gender = Gender.FEMALE,
+        hasCommittedSexualOffence = false,
+      ),
+      emptyContext(),
+    )
+
+    // Then
+    assertNotNull(result)
+    assertEquals(null, result.OSPDC?.ospdcScore)
+    assertEquals(RiskBand.NOT_APPLICABLE, result.OSPDC?.ospdcBand)
+    assertEquals(0, result.OSPDC?.validationError?.size)
   }
 
   @Test
