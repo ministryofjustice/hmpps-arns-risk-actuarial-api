@@ -304,10 +304,9 @@ class PNIRiskProducerServiceTest {
     }
   }
 
-  @Disabled
   @ParameterizedTest(name = "[{index}] {arguments}")
   @CsvFileSource(
-    resources = ["/data/PNI/PNI_test_data.csv"],
+    resources = ["/data/PNI/PNI_test_data_small.csv"],
     useHeadersInDisplayName = true,
     nullValues = ["Null", "Missing", "M"],
     ignoreLeadingAndTrailingWhitespace = true,
@@ -408,8 +407,8 @@ class PNIRiskProducerServiceTest {
       sexualPreoccupation = s11U11.toProblemScore(),
       sexualInterestsOffenceRelated = s11U12.toProblemScore(),
       emotionalCongruence = s6U12.toProblemScore(),
-      saraRiskToPartner = saraRiskLevelToPartner.toRiskBand(),
-      saraRiskToOthers = saraRiskLevelToOther.toRiskBand(),
+      saraRiskToPartner = saraRiskLevelToPartner.toSaraRiskBand(),
+      saraRiskToOthers = saraRiskLevelToOther.toSaraRiskBand(),
       hostileOrientation = s12U9.toProblemScore(),
       currentRelationshipFamilyMembers = s6U1.toProblemScore(),
       previousCloseRelationships = s6U6.toProblemScore(),
@@ -465,6 +464,15 @@ private fun String?.toProblemScore(): ProblemLevel? = when (this?.toIntOrNull())
   else -> null
 }
 
+
+private fun String?.toSaraRiskBand(): RiskBand? = when (this?.toIntOrNull()) {
+  1 -> RiskBand.LOW
+  2 -> RiskBand.MEDIUM
+  3 -> RiskBand.HIGH
+  4 -> RiskBand.VERY_HIGH
+  else -> null
+}
+
 private fun String?.toRiskBand(): RiskBand? = when (this) {
   "'H'" -> RiskBand.HIGH
   "'V'" -> RiskBand.VERY_HIGH
@@ -494,8 +502,8 @@ private fun String?.bandToOGRSScore(): Int? = when (this.toRiskBand()) {
 }
 
 private fun String?.toCustodyOrCommunity(): CustodyOrCommunity = when (this) {
-  "'YES'" -> CustodyOrCommunity.CUSTODY
-  else -> CustodyOrCommunity.COMMUNITY
+  "'YES'" -> CustodyOrCommunity.COMMUNITY
+  else -> CustodyOrCommunity.CUSTODY
 }
 
 private fun String?.toBoolean(): Boolean? = when (this) {
