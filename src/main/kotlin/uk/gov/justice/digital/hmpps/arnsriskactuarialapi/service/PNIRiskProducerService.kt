@@ -158,13 +158,13 @@ class PNIRiskProducerService : RiskScoreProducer {
   // OSP DC can never be HIGH for gender FEMALE because female always OSPDC = NA
   private fun isOspDcHigh(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospDCBand == RiskBand.HIGH
 
-  // OSP IIC can never be HIGH for gender FEMALE because female always OSPIIC = LOW
+  // OSP IIC can never be HIGH for gender FEMALE because female always OSPIIC = LOW or NA
   private fun isOspIicHigh(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospIICBand == RiskBand.HIGH
 
   // OSP DC can never be MEDIUM for gender FEMALE because female always OSPDC = NA
   private fun isOspDcMedium(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospDCBand == RiskBand.MEDIUM
 
-  // OSP IIC can never be MEDIUM for gender FEMALE because female always OSPIIC = LOW
+  // OSP IIC can never be MEDIUM for gender FEMALE because female always OSPIIC = LOW or NA
   private fun isOspIicMedium(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospIICBand == RiskBand.MEDIUM
 
   fun isHighSara(requestValidated: PNIRequestValidated) = requestValidated.saraRiskToOthers == RiskBand.HIGH ||
@@ -173,8 +173,7 @@ class PNIRiskProducerService : RiskScoreProducer {
   private fun isRsrMedium(request: PNIRequestValidated): Boolean {
     val rsrIsMedium = request.rsr in 1..2
 
-    return if (request.ospDCBand == RiskBand.NOT_APPLICABLE && request.ospIICBand == RiskBand.LOW) {
-      // is Female
+    return if (isFemaleGivenRiskBandCombination(request)) {
       rsrIsMedium
     } else {
       rsrIsMedium && request.ospDCBand == null && request.ospIICBand == null
@@ -184,13 +183,16 @@ class PNIRiskProducerService : RiskScoreProducer {
   private fun isRsrHigh(requestValidated: PNIRequestValidated): Boolean {
     val isHighRsr = requestValidated.rsr?.let { it >= 3 } == true
 
-    return if (requestValidated.ospDCBand == RiskBand.NOT_APPLICABLE && requestValidated.ospIICBand == RiskBand.LOW) {
-      // is Female
+    return if (isFemaleGivenRiskBandCombination(requestValidated)) {
       isHighRsr
     } else {
       isHighRsr && requestValidated.ospDCBand == null && requestValidated.ospIICBand == null
     }
   }
+
+  // This risk band combination can only mean the gender = FEMALE
+  private fun isFemaleGivenRiskBandCombination(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospDCBand == RiskBand.NOT_APPLICABLE &&
+    (requestValidated.ospIICBand in listOf(RiskBand.LOW, RiskBand.NOT_APPLICABLE))
 
   private fun isOgrs3Medium(requestValidated: PNIRequestValidated) = requestValidated.ogrs3TwoYear?.let { it in 50..74 } == true
 

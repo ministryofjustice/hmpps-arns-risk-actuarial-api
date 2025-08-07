@@ -29,21 +29,21 @@ class OSPDCRiskProducerService : RiskScoreProducer {
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
     val errors = ospdcInitialValidation(request)
 
+    if (errors.isNotEmpty()) {
+      return context.apply {
+        OSPDC = OSPDCObject(null, null, errors)
+      }
+    }
+
     // When female, there is no score or band produced
     if (request.gender == Gender.FEMALE) {
       val rsrContribution = if (request.hasCommittedSexualOffence == true) {
         FIXED_RSR_CONTRIBUTION
       } else {
-        null
+        0.0
       }
       return context.apply {
         OSPDC = OSPDCObject(RiskBand.NOT_APPLICABLE, rsrContribution, emptyList())
-      }
-    }
-
-    if (errors.isNotEmpty()) {
-      return context.apply {
-        OSPDC = OSPDCObject(null, null, errors)
       }
     }
 

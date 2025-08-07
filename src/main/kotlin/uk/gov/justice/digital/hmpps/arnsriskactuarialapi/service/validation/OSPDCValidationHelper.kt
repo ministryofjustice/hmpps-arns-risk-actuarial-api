@@ -1,32 +1,25 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 
-fun ospdcInitialValidation(request: RiskScoreRequest): List<ValidationErrorResponse> {
-  val errors = arrayListOf<ValidationErrorResponse>()
-
-  val genderWithSexualHistoryValidationErrors = getSexualHistoryValidation(request, errors)
-  val missingOSPDCFieldsValidationErrors =
-    getMissingOSPDCFieldsValidation(request, genderWithSexualHistoryValidationErrors)
-
-  return missingOSPDCFieldsValidationErrors
+fun ospdcInitialValidation(request: RiskScoreRequest): List<ValidationErrorResponse> = when (request.gender) {
+  null -> addMissingFields(listOf(RiskScoreRequest::gender.name), emptyList())
+  Gender.MALE -> ospdcValidationForMale(request) + sexualHistoryValidation(request)
+  else -> emptyList()
 }
 
-internal fun getSexualHistoryValidation(
+internal fun sexualHistoryValidation(
   request: RiskScoreRequest,
-  errors: List<ValidationErrorResponse>,
-): List<ValidationErrorResponse> {
-  val criteriaFields = arrayListOf<String>()
-
-  if (request.hasCommittedSexualOffence == false) criteriaFields.add(RiskScoreRequest::hasCommittedSexualOffence.name)
-
-  return addMissingCriteriaValidation(criteriaFields, errors)
+): List<ValidationErrorResponse> = if (request.hasCommittedSexualOffence == false) {
+  addMissingCriteriaValidation(arrayListOf(RiskScoreRequest::hasCommittedSexualOffence.name), emptyList())
+} else {
+  emptyList()
 }
 
-internal fun getMissingOSPDCFieldsValidation(
+internal fun ospdcValidationForMale(
   request: RiskScoreRequest,
-  errors: List<ValidationErrorResponse>,
 ): List<ValidationErrorResponse> {
   val missingFields = arrayListOf<String>()
 
@@ -41,5 +34,5 @@ internal fun getMissingOSPDCFieldsValidation(
   missingFields.addIfNull(request, RiskScoreRequest::dateOfMostRecentSexualOffence)
   missingFields.addIfNull(request, RiskScoreRequest::totalNumberOfSanctions)
 
-  return addMissingFields(missingFields, errors)
+  return addMissingFields(missingFields, emptyList())
 }
