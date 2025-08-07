@@ -82,7 +82,28 @@ class OSPDCValidationHelperTest {
   }
 
   @Test
-  fun `oospdcInitialValidation missing field error with all field populated for FEMALE`() {
+  fun `oospdcInitialValidation missing field error with all field populated for FEMALE and hasCommittedSexualOffence not null`() {
+    val request = validOSPDCRiskScoreRequest().copy(
+      gender = Gender.FEMALE,
+      dateOfBirth = null,
+      hasCommittedSexualOffence = false,
+      totalContactAdultSexualSanctions = null,
+      totalContactChildSexualSanctions = null,
+      totalNonContactSexualOffences = null,
+      totalIndecentImageSanctions = null,
+      dateAtStartOfFollowup = null,
+      dateOfMostRecentSexualOffence = null,
+      totalNumberOfSanctions = null,
+      inCustodyOrCommunity = null,
+      mostRecentOffenceDate = null,
+    )
+
+    val result = ospdcInitialValidation(request)
+    assertTrue(result.isEmpty())
+  }
+
+  @Test
+  fun `oospdcInitialValidation missing field error with all field populated for FEMALE and hasCommittedSexualOffence null`() {
     val request = validOSPDCRiskScoreRequest().copy(
       gender = Gender.FEMALE,
       dateOfBirth = null,
@@ -99,7 +120,15 @@ class OSPDCValidationHelperTest {
     )
 
     val result = ospdcInitialValidation(request)
-    assertTrue(result.isEmpty())
+
+    val expectedFields = listOf(
+      "hasCommittedSexualOffence",
+    )
+
+    val error = result.first()
+    assertEquals(ValidationErrorType.MISSING_INPUT, error.type)
+    assertEquals("ERR5 - Field is Null", error.message)
+    assertEquals(expectedFields, error.fields)
   }
 
   @Test
