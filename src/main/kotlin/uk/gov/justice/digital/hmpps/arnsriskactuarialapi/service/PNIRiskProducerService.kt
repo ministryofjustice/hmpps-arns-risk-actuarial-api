@@ -2,7 +2,6 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
 import org.springframework.stereotype.Service
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CustodyOrCommunity
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.NeedScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
@@ -31,7 +30,6 @@ class PNIRiskProducerService : RiskScoreProducer {
     }
 
     val requestValidated = PNIRequestValidated(
-      gender = request.gender!!,
       inCustodyOrCommunity = request.inCustodyOrCommunity!!,
       hasCommittedSexualOffence = request.hasCommittedSexualOffence,
       riskSexualHarm = request.riskSexualHarm,
@@ -157,42 +155,48 @@ class PNIRiskProducerService : RiskScoreProducer {
 
   private fun isHighOvp(requestValidated: PNIRequestValidated) = requestValidated.ovp?.let { it >= 60.00 } == true
 
-  private fun isOspDcHigh(requestValidated: PNIRequestValidated): Boolean = requestValidated.gender == Gender.MALE &&
-    requestValidated.ospDCBand == RiskBand.HIGH
+  // OSP DC can never be HIGH for gender FEMALE because female always OSPDC = NA
+  private fun isOspDcHigh(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospDCBand == RiskBand.HIGH
 
-  private fun isOspIicHigh(requestValidated: PNIRequestValidated): Boolean = requestValidated.gender == Gender.MALE &&
-    requestValidated.ospIICBand == RiskBand.HIGH
+  // OSP IIC can never be HIGH for gender FEMALE because female always OSPIIC = LOW or NA
+  private fun isOspIicHigh(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospIICBand == RiskBand.HIGH
+
+  // OSP DC can never be MEDIUM for gender FEMALE because female always OSPDC = NA
+  private fun isOspDcMedium(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospDCBand == RiskBand.MEDIUM
+
+  // OSP IIC can never be MEDIUM for gender FEMALE because female always OSPIIC = LOW or NA
+  private fun isOspIicMedium(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospIICBand == RiskBand.MEDIUM
 
   fun isHighSara(requestValidated: PNIRequestValidated) = requestValidated.saraRiskToOthers == RiskBand.HIGH ||
     requestValidated.saraRiskToPartner == RiskBand.HIGH
 
-  private fun isRsrMedium(requestValidated: PNIRequestValidated): Boolean {
-    val rsrMediumRsr = requestValidated.rsr?.let { it in 1..2 } == true
-    if (requestValidated.gender == Gender.FEMALE) {
-      return rsrMediumRsr
+  private fun isRsrMedium(request: PNIRequestValidated): Boolean {
+    val rsrIsMedium = request.rsr in 1..2
+
+    return if (isFemaleGivenRiskBandCombination(request)) {
+      rsrIsMedium
+    } else {
+      rsrIsMedium && request.ospDCBand == null && request.ospIICBand == null
     }
-    // osp scores needs to be ignored for females
-    return rsrMediumRsr && requestValidated.ospDCBand == null && requestValidated.ospIICBand == null
   }
 
   private fun isRsrHigh(requestValidated: PNIRequestValidated): Boolean {
     val isHighRsr = requestValidated.rsr?.let { it >= 3 } == true
 
-    if (requestValidated.gender == Gender.FEMALE) {
-      return isHighRsr
+    return if (isFemaleGivenRiskBandCombination(requestValidated)) {
+      isHighRsr
+    } else {
+      isHighRsr && requestValidated.ospDCBand == null && requestValidated.ospIICBand == null
     }
-    return isHighRsr && requestValidated.ospDCBand == null && requestValidated.ospIICBand == null
   }
+
+  // This risk band combination can only mean the gender = FEMALE
+  private fun isFemaleGivenRiskBandCombination(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospDCBand == RiskBand.NOT_APPLICABLE &&
+    (requestValidated.ospIICBand in listOf(RiskBand.LOW, RiskBand.NOT_APPLICABLE))
 
   private fun isOgrs3Medium(requestValidated: PNIRequestValidated) = requestValidated.ogrs3TwoYear?.let { it in 50..74 } == true
 
   private fun isOvpMedium(requestValidated: PNIRequestValidated) = requestValidated.ovp?.let { it in 30..59 } == true
-
-  private fun isOspDcMedium(requestValidated: PNIRequestValidated): Boolean = requestValidated.gender == Gender.MALE &&
-    requestValidated.ospDCBand == RiskBand.MEDIUM
-
-  private fun isOspIicMedium(requestValidated: PNIRequestValidated): Boolean = requestValidated.gender == Gender.MALE &&
-    requestValidated.ospIICBand == RiskBand.MEDIUM
 
   fun isMediumSara(requestValidated: PNIRequestValidated) = requestValidated.saraRiskToOthers == RiskBand.MEDIUM ||
     requestValidated.saraRiskToPartner == RiskBand.MEDIUM

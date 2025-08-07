@@ -23,7 +23,6 @@ class PNIValidationHelperTest {
     val result = pniInitialValidation(request)
 
     val expectedFields = listOf(
-      "gender",
       "inCustodyOrCommunity",
     )
 

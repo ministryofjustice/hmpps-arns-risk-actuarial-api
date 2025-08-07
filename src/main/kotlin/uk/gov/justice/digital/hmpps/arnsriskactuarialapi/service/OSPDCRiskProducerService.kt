@@ -21,6 +21,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.ospdcInitialValidation
 import kotlin.getOrElse
 
+const val FIXED_RSR_CONTRIBUTION = 0.00383142
+
 @Service
 class OSPDCRiskProducerService : RiskScoreProducer {
 
@@ -28,14 +30,20 @@ class OSPDCRiskProducerService : RiskScoreProducer {
     val errors = ospdcInitialValidation(request)
 
     if (errors.isNotEmpty()) {
-      if (request.hasCommittedSexualOffence == true && request.gender == Gender.FEMALE) {
-        return context.apply {
-          OSPDC = OSPDCObject(RiskBand.NOT_APPLICABLE, 0.00383142, errors)
-        }
-      }
-
       return context.apply {
         OSPDC = OSPDCObject(null, null, errors)
+      }
+    }
+
+    // When female, there is no score or band produced
+    if (request.gender == Gender.FEMALE) {
+      val rsrContribution = if (request.hasCommittedSexualOffence == true) {
+        FIXED_RSR_CONTRIBUTION
+      } else {
+        0.0
+      }
+      return context.apply {
+        OSPDC = OSPDCObject(RiskBand.NOT_APPLICABLE, rsrContribution, emptyList())
       }
     }
 
@@ -64,7 +72,10 @@ class OSPDCRiskProducerService : RiskScoreProducer {
     listOf(
       getTotalContactAdultSexualSanctionsWeight(request.totalContactAdultSexualSanctions),
       getTotalContactChildSexualSanctionsWeight(request.totalContactChildSexualSanctions),
-      getTotalNonContactSexualOffencesExcludingIndecentImagesWeight(request.totalNonContactSexualOffences, request.totalIndecentImageSanctions),
+      getTotalNonContactSexualOffencesExcludingIndecentImagesWeight(
+        request.totalNonContactSexualOffences,
+        request.totalIndecentImageSanctions,
+      ),
       getAgeAtStartOfFollowupWeight(request.dateOfBirth, request.dateAtStartOfFollowup),
       getAgeAtLastSanctionForSexualOffenceWeight(request.dateOfBirth, request.dateOfMostRecentSexualOffence),
       getTotalNumberOfSanctionsWeight(request.totalNumberOfSanctions),

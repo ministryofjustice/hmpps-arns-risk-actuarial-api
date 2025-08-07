@@ -1,12 +1,10 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni
 
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CustodyOrCommunity
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 
 data class PNIRequestValidated(
-  val gender: Gender,
   val inCustodyOrCommunity: CustodyOrCommunity,
   val hasCommittedSexualOffence: Boolean?,
   val riskSexualHarm: Boolean?,

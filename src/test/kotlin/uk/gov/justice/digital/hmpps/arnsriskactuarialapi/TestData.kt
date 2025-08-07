@@ -379,7 +379,6 @@ fun pniRequest(
   problemSolvingSkills: ProblemLevel? = null,
   difficultiesCoping: ProblemLevel? = null,
 ) = PNIRequestValidated(
-  gender = Gender.MALE,
   inCustodyOrCommunity = CustodyOrCommunity.COMMUNITY,
   hasCommittedSexualOffence = null,
   riskSexualHarm = null,
