@@ -42,7 +42,7 @@ fun emptyOSPDC(): OSPDCObject = OSPDCObject(null, null, null)
 
 fun emptySNSV(): SNSVObject = SNSVObject(null, null, null)
 
-fun emptyRSR(): RSRObject = RSRObject(null, null, null, null, null, null, null, null)
+fun emptyRSR(): RSRObject = RSRObject(null, null, null, null, null, null, null, null, null)
 
 fun emptyContext() = RiskScoreContext(version = RiskScoreVersion.V1_0)
 
