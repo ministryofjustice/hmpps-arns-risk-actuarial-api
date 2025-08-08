@@ -56,6 +56,9 @@ class RiskScoreServiceTest {
   @Mock
   private lateinit var rsrRiskProducerService: RSRRiskProducerService
 
+  @Mock
+  private lateinit var ospiicRiskProducerService: OSPIICRiskProducerService
+
   @InjectMocks
   private lateinit var riskScoreService: RiskScoreService
 
@@ -86,6 +89,7 @@ class RiskScoreServiceTest {
       Pair(ospdcRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { OSPDC = emptyOSPDC() } },
       Pair(snsvRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { SNSV = emptySNSV() } },
       Pair(rsrRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { RSR = emptyRSR() } },
+      Pair(ospiicRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { RSR = emptyRSR() } },
 
       // add more Pairs for the other mocked risk producers here
     )
