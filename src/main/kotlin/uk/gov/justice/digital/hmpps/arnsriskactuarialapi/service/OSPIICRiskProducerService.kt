@@ -8,6 +8,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ospiic.OSPIICInputValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ospiic.OSPIICOutput
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.rsr.RSRObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OSPIICTransformationHelper.Companion.ospiicHierarchyBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OSPIICTransformationHelper.Companion.toOSPIICOutput
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.OSPIICValidationHelper.Companion.ospiicInitialValidation
@@ -27,7 +28,7 @@ class OSPIICRiskProducerService : RiskScoreProducer {
   companion object {
 
     fun getOSPIICOutput(request: RiskScoreRequest): OSPIICOutput = when (request.gender!!) {
-      Gender.FEMALE -> OSPIICOutput(RiskBand.LOW, 0.0, emptyList())
+      Gender.FEMALE -> OSPIICOutput(RiskBand.LOW, 0.0)
       Gender.MALE -> {
         val validInput = OSPIICInputValidated(
           totalContactAdultSexualSanctions = request.totalContactAdultSexualSanctions!!,
@@ -40,7 +41,18 @@ class OSPIICRiskProducerService : RiskScoreProducer {
     }
   }
 
-  private fun RiskScoreContext.updateRSR(ospiicOutput: OSPIICOutput): RiskScoreContext = this.apply { OSPIIC = ospiicOutput }
+  private fun RiskScoreContext.updateRSR(ospiicOutput: OSPIICOutput): RiskScoreContext = this.apply {
+    RSR = when {
+      RSR == null -> RSRObject(ospiicBand = ospiicOutput.band, ospiicScore = ospiicOutput.score, validationError = emptyList())
+      else -> RSR!!.copy(ospiicBand = ospiicOutput.band, ospiicScore = ospiicOutput.score)
+    }
+  }
 
-  private fun RiskScoreContext.updateRSR(errors: List<ValidationErrorResponse>): RiskScoreContext = this.apply { OSPIIC = OSPIICOutput(null, null, errors) }
+  private fun RiskScoreContext.updateRSR(errors: List<ValidationErrorResponse>): RiskScoreContext = this.apply {
+    RSR = when {
+      RSR == null -> RSRObject(validationError = errors)
+      RSR!!.validationError == null -> RSR!!.copy(validationError = errors)
+      else -> RSR!!.copy(validationError = RSR!!.validationError!! + errors)
+    }
+  }
 }

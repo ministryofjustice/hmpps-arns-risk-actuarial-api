@@ -35,6 +35,6 @@ class OSPIICTransformationHelper {
 
     // outputs
 
-    fun toOSPIICOutput(hierarchyBand: OSPIICHierarchyBand): OSPIICOutput = OSPIICOutput(hierarchyBand.band, hierarchyBand.rsrContribution, emptyList())
+    fun toOSPIICOutput(hierarchyBand: OSPIICHierarchyBand): OSPIICOutput = OSPIICOutput(hierarchyBand.band, hierarchyBand.rsrContribution)
   }
 }

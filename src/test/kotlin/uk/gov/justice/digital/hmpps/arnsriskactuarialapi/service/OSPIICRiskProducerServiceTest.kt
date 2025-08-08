@@ -10,7 +10,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ospiic.OSPIICOutput
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.rsr.RSRObject
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class OSPIICRiskProducerServiceTest {
@@ -30,9 +30,9 @@ class OSPIICRiskProducerServiceTest {
       totalNonContactSexualOffences = 6,
     )
     val result = service.getRiskScore(request, context)
-    val output = result.OSPIIC
-    assertEquals(RiskBand.VERY_HIGH, output!!.band)
-    assertEquals(0.1031, output.score!!, 0.00001)
+    val output = result.RSR
+    assertEquals(RiskBand.VERY_HIGH, output!!.ospiicBand)
+    assertEquals(0.1031, output.ospiicScore!!, 0.00001)
     assertEquals(emptyList<ValidationErrorResponse>(), output.validationError)
   }
 
@@ -45,9 +45,9 @@ class OSPIICRiskProducerServiceTest {
       gender = Gender.FEMALE,
     )
     val result = service.getRiskScore(request, context)
-    val output = result.OSPIIC
-    assertEquals(RiskBand.LOW, output!!.band)
-    assertEquals(0.0, output.score!!, 0.00001)
+    val output = result.RSR
+    assertEquals(RiskBand.LOW, output!!.ospiicBand)
+    assertEquals(0.0, output.ospiicScore!!, 0.00001)
     assertEquals(emptyList<ValidationErrorResponse>(), output.validationError)
   }
 
@@ -62,11 +62,9 @@ class OSPIICRiskProducerServiceTest {
       totalIndecentImageSanctions = 4,
     )
     val result = service.getRiskScore(request, context)
-    val output = result.OSPIIC
-    val expected = OSPIICOutput(
-      null,
-      null,
-      listOf(
+    val output = result.RSR
+    val expected = RSRObject(
+      validationError = listOf(
         ValidationErrorResponse(
           type = ValidationErrorType.MISSING_INPUT,
           message = "ERR5 - Field is Null",
@@ -87,11 +85,9 @@ class OSPIICRiskProducerServiceTest {
       totalIndecentImageSanctions = 4,
     )
     val result = service.getRiskScore(request, context)
-    val output = result.OSPIIC
-    val expected = OSPIICOutput(
-      null,
-      null,
-      listOf(
+    val output = result.RSR
+    val expected = RSRObject(
+      validationError = listOf(
         ValidationErrorResponse(
           type = ValidationErrorType.MISSING_INPUT,
           message = "ERR5 - Field is Null",

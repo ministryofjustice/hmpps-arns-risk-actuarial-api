@@ -45,7 +45,7 @@ fun emptySNSV(): SNSVObject = SNSVObject(null, null, null)
 
 fun emptyRSR(): RSRObject = RSRObject(null, null, null, null, null, null, null, null)
 
-fun emptyOSPIIC(): OSPIICOutput = OSPIICOutput(null, null, null)
+fun emptyOSPIIC(): OSPIICOutput = OSPIICOutput(null, null)
 
 fun emptyContext() = RiskScoreContext(version = RiskScoreVersion.V1_0)
 

@@ -18,7 +18,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOGP
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOGRS3
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOPD
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOSPDC
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOSPIIC
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOVP
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyRSR
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptySNSV
@@ -90,7 +89,7 @@ class RiskScoreServiceTest {
       Pair(ospdcRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { OSPDC = emptyOSPDC() } },
       Pair(snsvRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { SNSV = emptySNSV() } },
       Pair(rsrRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { RSR = emptyRSR() } },
-      Pair(ospiicRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { OSPIIC = emptyOSPIIC() } },
+      Pair(ospiicRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { RSR = emptyRSR() } },
 
       // add more Pairs for the other mocked risk producers here
     )
