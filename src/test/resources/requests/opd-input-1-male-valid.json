@@ -26,8 +26,6 @@
   "patientSecureUnitOrHospital": true,
   "obsessiveBehaviour": true,
   "selfHarmSuicideAttempt": true,
-  "concernsAboutSuicidePast": true,
-  "concernsAboutSelfHarmPast": true,
   "attitudeTowardsSupervision": "SOME_PROBLEMS",
   "assaultedOrThreatenedStaff": true,
   "escapeOrAbsconded": true,
