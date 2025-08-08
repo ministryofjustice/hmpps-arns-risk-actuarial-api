@@ -121,8 +121,7 @@ class OPDRiskProducerService : RiskScoreProducer {
     concernsAboutSelfHarmPast = request.concernsAboutSelfHarmPast ?: false,
     assaultedOrThreatenedStaff = request.assaultedOrThreatenedStaff ?: false,
     escapeOrAbsconded = request.escapeOrAbsconded ?: false,
-    controlIssues = request.controlIssues ?: false,
-    breachOfTrust = request.breachOfTrust ?: false,
+    controlIssuesOrBreachOfTrust = request.controlIssuesOrBreachOfTrust ?: false,
     impactOfOffendingOnOthers = request.impactOfOffendingOnOthers ?: false,
   )
 
@@ -307,8 +306,7 @@ class OPDRiskProducerService : RiskScoreProducer {
         request.attitudeTowardsSupervision,
         request.assaultedOrThreatenedStaff,
         request.escapeOrAbsconded,
-        request.controlIssues,
-        request.breachOfTrust,
+        request.controlIssuesOrBreachOfTrust,
       ),
     )
 }

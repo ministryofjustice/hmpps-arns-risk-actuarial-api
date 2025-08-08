@@ -89,8 +89,7 @@ data class RiskScoreRequest(
   val attitudeTowardsSupervision: ProblemLevel? = null,
   val assaultedOrThreatenedStaff: Boolean? = null,
   val escapeOrAbsconded: Boolean? = null,
-  val controlIssues: Boolean? = null,
-  val breachOfTrust: Boolean? = null,
+  val controlIssuesOrBreachOfTrust: Boolean? = null,
   val overallRiskForAssessment: RiskBand? = null,
   val highestRiskLevel: RiskBand? = null,
 

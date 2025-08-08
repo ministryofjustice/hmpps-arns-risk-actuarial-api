@@ -31,8 +31,7 @@
   "attitudeTowardsSupervision": "SOME_PROBLEMS",
   "assaultedOrThreatenedStaff": true,
   "escapeOrAbsconded": true,
-  "controlIssues": true,
-  "breachOfTrust": true,
+  "controlIssuesOrBreachOfTrust": true,
   "impactOfOffendingOnOthers": true,
   "attitudesStableBehaviour": "SOME_PROBLEMS",
   "impulsivityBehaviour": "SOME_PROBLEMS"

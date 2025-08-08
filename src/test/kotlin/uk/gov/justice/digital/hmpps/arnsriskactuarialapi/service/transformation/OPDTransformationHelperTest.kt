@@ -120,7 +120,7 @@ class OPDTransformationHelperTest {
 
   @Test
   fun `severeChallengingBehavioursOffendersScore returns 1 for other risk flags`() {
-    val request = opdRequestValidated().copy(breachOfTrust = true)
+    val request = opdRequestValidated().copy(controlIssuesOrBreachOfTrust = true)
     assertEquals(1, severeChallengingBehavioursOffendersScore(request))
   }
 
@@ -130,8 +130,7 @@ class OPDTransformationHelperTest {
       attitudeTowardsSupervision = ProblemLevel.NO_PROBLEMS,
       assaultedOrThreatenedStaff = false,
       escapeOrAbsconded = false,
-      controlIssues = false,
-      breachOfTrust = false,
+      controlIssuesOrBreachOfTrust = false,
     )
     assertEquals(0, severeChallengingBehavioursOffendersScore(request))
   }
