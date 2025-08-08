@@ -66,8 +66,7 @@ fun severeChallengingBehavioursOffendersScore(input: OPDRequestValidated): Int {
   val hasOtherRiskFlags = listOf(
     input.assaultedOrThreatenedStaff,
     input.escapeOrAbsconded,
-    input.controlIssues,
-    input.breachOfTrust,
+    input.controlIssuesOrBreachOfTrust,
   ).any { it == true }
 
   return if (hasAttitudeProblems || hasOtherRiskFlags) 1 else 0
