@@ -22,7 +22,6 @@ import java.nio.file.Paths
 private const val TEST_CSV_FILE = "/data/PNI/PNI_test_data.csv"
 private const val WRITE_FAILED_OUTPUTS = false
 
-@Disabled
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PNIRegressionTest {
 

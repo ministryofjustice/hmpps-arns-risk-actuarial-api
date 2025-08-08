@@ -1,15 +1,40 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CustodyOrCommunity
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.NeedScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIRequestValidated
 
-fun getOverallNeedClassification(overallNeedsScore: Int): NeedScore? = when (overallNeedsScore) {
-  in 0..2 -> NeedScore.LOW
-  in 3..5 -> NeedScore.MEDIUM
-  in 6..8 -> NeedScore.HIGH
-  else -> null
+fun getOverallNeedClassification(
+  overallNeedsScore: Int,
+  inCustodyOrCommunity: CustodyOrCommunity,
+  saraRiskToPartner: RiskBand?,
+  allMissingFields: List<String>,
+): NeedScore? {
+
+  if (overallNeedsScore >= 6) return NeedScore.HIGH
+  if (overallNeedsScore >= 3 && inCustodyOrCommunity == CustodyOrCommunity.COMMUNITY) return NeedScore.MEDIUM
+
+  if (allMissingFields.isEmpty()) {
+    val validScore = when (overallNeedsScore) {
+      in 0..2 -> NeedScore.LOW
+      in 3..5 -> NeedScore.MEDIUM
+      in 6..8 -> NeedScore.HIGH
+      else -> null
+    }
+    return validScore
+  }
+
+  if (inCustodyOrCommunity == CustodyOrCommunity.COMMUNITY && (saraRiskToPartner == RiskBand.MEDIUM || saraRiskToPartner == RiskBand.HIGH)) {
+    return NeedScore.MEDIUM
+  }
+  if (inCustodyOrCommunity != CustodyOrCommunity.COMMUNITY && saraRiskToPartner == RiskBand.HIGH) {
+    return NeedScore.HIGH
+  }
+  return null
 }
+
 
 object SexDomainScore {
   private fun getMissingFields(request: PNIRequestValidated) = mutableListOf<String>().apply {
@@ -55,7 +80,8 @@ object SexDomainScore {
   }
 
   // The sex domain will only be calculated if hasCommittedSexualOffence or riskSexualHarm is Yes
-  private fun preCheckValid(request: PNIRequestValidated): Boolean = request.hasCommittedSexualOffence == true || request.riskSexualHarm == true
+  private fun preCheckValid(request: PNIRequestValidated): Boolean =
+    request.hasCommittedSexualOffence == true || request.riskSexualHarm == true
 }
 
 object ThinkingDomainScore {

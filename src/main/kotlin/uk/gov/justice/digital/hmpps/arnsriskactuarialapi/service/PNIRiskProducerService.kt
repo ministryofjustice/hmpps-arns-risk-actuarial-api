@@ -222,8 +222,8 @@ fun overallNeedsGroupingCalculation(request: PNIRequestValidated): Pair<NeedScor
     overallRelationshipDomain,
     overallSelfManagementDomain,
   ).sum()
-  if (allMissingFields.isNotEmpty()) {
-    return Pair(null, allMissingFields)
-  }
-  return Pair(getOverallNeedClassification(overallNeedsScore), emptyList())
+  return Pair(getOverallNeedClassification(overallNeedsScore,
+    request.inCustodyOrCommunity,
+    request.saraRiskToPartner,
+    allMissingFields), emptyList())
 }
