@@ -1,15 +1,40 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CustodyOrCommunity
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.NeedScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIRequestValidated
 
-fun getOverallNeedClassification(overallNeedsScore: Int): NeedScore? = when (overallNeedsScore) {
-  in 0..2 -> NeedScore.LOW
-  in 3..5 -> NeedScore.MEDIUM
-  in 6..8 -> NeedScore.HIGH
-  else -> null
+fun getOverallNeedClassification(
+  overallNeedsScore: Int,
+  inCustodyOrCommunity: CustodyOrCommunity,
+  saraRiskToPartner: RiskBand?,
+  allMissingFields: List<String>,
+): NeedScore? {
+
+  if (overallNeedsScore >= 6) return NeedScore.HIGH
+  if (overallNeedsScore >= 3 && inCustodyOrCommunity == CustodyOrCommunity.COMMUNITY) return NeedScore.MEDIUM
+
+  if (allMissingFields.isEmpty()) {
+    val validScore = when (overallNeedsScore) {
+      in 0..2 -> NeedScore.LOW
+      in 3..5 -> NeedScore.MEDIUM
+      in 6..8 -> NeedScore.HIGH
+      else -> null
+    }
+    return validScore
+  }
+
+  if (inCustodyOrCommunity == CustodyOrCommunity.COMMUNITY && (saraRiskToPartner == RiskBand.MEDIUM || saraRiskToPartner == RiskBand.HIGH)) {
+    return NeedScore.MEDIUM
+  }
+  if (inCustodyOrCommunity != CustodyOrCommunity.COMMUNITY && saraRiskToPartner == RiskBand.HIGH) {
+    return NeedScore.HIGH
+  }
+  return null
 }
+
 
 object SexDomainScore {
   private fun getMissingFields(request: PNIRequestValidated) = mutableListOf<String>().apply {
@@ -39,16 +64,24 @@ object SexDomainScore {
   }
 
   fun overallDomainScore(request: PNIRequestValidated): Pair<Int?, List<String>> {
+    if (!preCheckValid(request)) {
+      return Pair(0, emptyList<String>())
+    }
     val totalScore = totalScore(request)
     val overallScore = when {
+      (request.sexualInterestsOffenceRelated?.score == 2) -> 2
       totalScore in 0..1 -> 0
       totalScore in 2..3 -> 1
-      totalScore in 4..6 || (request.sexualInterestsOffenceRelated?.score == 2) -> 2
+      totalScore in 4..6 -> 2
       else -> null
     }
     val missingFields = if (overallScore == null) getMissingFields(request) else emptyList<String>()
     return Pair(overallScore, missingFields)
   }
+
+  // The sex domain will only be calculated if hasCommittedSexualOffence or riskSexualHarm is Yes
+  private fun preCheckValid(request: PNIRequestValidated): Boolean =
+    request.hasCommittedSexualOffence == true || request.riskSexualHarm == true
 }
 
 object ThinkingDomainScore {
@@ -77,8 +110,9 @@ object ThinkingDomainScore {
   fun overallDomainScore(request: PNIRequestValidated): Pair<Int?, List<String>> {
     val totalScore = totalScore(request)
     val overallScore = when {
+      (request.proCriminalAttitudes?.score == 2) -> 2
       totalScore == 0 -> 0
-      totalScore in 3..4 || (request.proCriminalAttitudes?.score == 2) -> 2
+      totalScore in 3..4 -> 2
       totalScore in 1..2 -> 1
       else -> null
     }

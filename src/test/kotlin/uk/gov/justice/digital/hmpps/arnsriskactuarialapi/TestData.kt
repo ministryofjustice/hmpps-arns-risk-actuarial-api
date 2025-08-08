@@ -42,7 +42,7 @@ fun emptyOSPDC(): OSPDCObject = OSPDCObject(null, null, null)
 
 fun emptySNSV(): SNSVObject = SNSVObject(null, null, null)
 
-fun emptyRSR(): RSRObject = RSRObject(null, null, null, null, null, null, null, null)
+fun emptyRSR(): RSRObject = RSRObject(null, null, null, null, null, null, null, null, null)
 
 fun emptyContext() = RiskScoreContext(version = RiskScoreVersion.V1_0)
 
@@ -378,10 +378,12 @@ fun pniRequest(
   temperControl: ProblemLevel? = null,
   problemSolvingSkills: ProblemLevel? = null,
   difficultiesCoping: ProblemLevel? = null,
+  hasCommittedSexualOffence: Boolean? = null,
+  riskSexualHarm: Boolean? = null,
 ) = PNIRequestValidated(
   inCustodyOrCommunity = CustodyOrCommunity.COMMUNITY,
-  hasCommittedSexualOffence = null,
-  riskSexualHarm = null,
+  hasCommittedSexualOffence = hasCommittedSexualOffence,
+  riskSexualHarm = riskSexualHarm,
   sexualPreoccupation = sexualPreoccupation,
   sexualInterestsOffenceRelated = sexualInterestsOffenceRelated,
   emotionalCongruence = emotionalCongruence,

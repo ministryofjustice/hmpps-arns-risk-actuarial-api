@@ -30,6 +30,7 @@ class PNITransformationHelperTest {
         sexualPreoccupation = ProblemLevel.SIGNIFICANT_PROBLEMS,
         sexualInterestsOffenceRelated = ProblemLevel.SIGNIFICANT_PROBLEMS,
         emotionalCongruence = ProblemLevel.SIGNIFICANT_PROBLEMS,
+        hasCommittedSexualOffence = true,
       )
       val (score, missing) = SexDomainScore.overallDomainScore(request)
       assertEquals(2, score)
@@ -42,6 +43,7 @@ class PNITransformationHelperTest {
         sexualPreoccupation = ProblemLevel.SIGNIFICANT_PROBLEMS, // 2
         sexualInterestsOffenceRelated = ProblemLevel.SIGNIFICANT_PROBLEMS, // 2
         emotionalCongruence = null,
+        hasCommittedSexualOffence = true,
       )
       val (score, missing) = SexDomainScore.overallDomainScore(request)
       assertEquals(2, score)
@@ -54,6 +56,7 @@ class PNITransformationHelperTest {
         sexualPreoccupation = ProblemLevel.SIGNIFICANT_PROBLEMS,
         sexualInterestsOffenceRelated = null,
         emotionalCongruence = null,
+        hasCommittedSexualOffence = true,
       )
       val (score, missing) = SexDomainScore.overallDomainScore(request)
       assertNull(score)
@@ -64,12 +67,24 @@ class PNITransformationHelperTest {
 
     @Test
     fun `should return null and report all missing fields`() {
-      val request = pniRequest()
+      val request = pniRequest().copy(
+        hasCommittedSexualOffence = true,
+      )
       val (score, missing) = SexDomainScore.overallDomainScore(request)
       assertNull(score)
       assertEquals(3, missing.size)
       assertTrue(missing.contains("sexualPreoccupation"))
     }
+  }
+
+  @Test
+  fun `should return 0 and when sexual domain precheck not met`() {
+    val request = pniRequest().copy(
+      hasCommittedSexualOffence = false,
+    )
+    val (score, missing) = SexDomainScore.overallDomainScore(request)
+    assertEquals(0, score)
+    assertEquals(0, missing.size)
   }
 
   @Nested

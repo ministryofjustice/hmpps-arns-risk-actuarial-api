@@ -47,9 +47,9 @@ class PNIRiskProducerService : RiskScoreProducer {
       ogrs3TwoYear = context.OGRS3?.ogrs3TwoYear,
       ovp = context.OVP?.provenViolentTypeReoffendingTwoYear,
       ovpBand = context.OVP?.band,
-      ospDCBand = null, // TODO
-      ospIICBand = null, // TODO
-      rsr = null, // TODO
+      ospDCBand = context.RSR?.ospdcBand,
+      ospIICBand = context.RSR?.ospiicBand,
+      rsr = context.RSR?.rsrScore,
       saraRiskToPartner = request.saraRiskToPartner,
       saraRiskToOthers = request.saraRiskToOthers,
       problemSolvingSkills = request.problemSolvingSkills,
@@ -222,8 +222,8 @@ fun overallNeedsGroupingCalculation(request: PNIRequestValidated): Pair<NeedScor
     overallRelationshipDomain,
     overallSelfManagementDomain,
   ).sum()
-  if (allMissingFields.isNotEmpty()) {
-    return Pair(null, allMissingFields)
-  }
-  return Pair(getOverallNeedClassification(overallNeedsScore), emptyList())
+  return Pair(getOverallNeedClassification(overallNeedsScore,
+    request.inCustodyOrCommunity,
+    request.saraRiskToPartner,
+    allMissingFields), emptyList())
 }

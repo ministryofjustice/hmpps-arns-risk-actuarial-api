@@ -14,7 +14,17 @@ class RSRRiskProducerService : RiskScoreProducer {
     val errors = ospdc.validationError
     val snsv = context.SNSV!! // todo get the snsvScore and use this as part of the rsrBand calculation
     val snsvScoreType = snsv.scoreType
-    val rsr = RSRObject(ospdc.ospdcBand, ospdc.ospdcScore, null, null, null, snsvScoreType, null, errors)
+    val rsr = RSRObject(
+      ospdcBand = ospdc.ospdcBand,
+      ospdcScore = ospdc.ospdcScore,
+      ospiicBand = null,
+      ospiicScore = null,
+      rsrBand = null,
+      rsrScore = null,
+      scoreType = snsvScoreType,
+      ospRiskReduction = null,
+      validationError = errors,
+    )
 
     return context.apply { RSR = rsr }
   }

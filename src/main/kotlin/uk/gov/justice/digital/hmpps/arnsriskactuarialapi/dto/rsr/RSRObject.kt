@@ -10,6 +10,7 @@ data class RSRObject(
   val ospiicBand: RiskBand?,
   val ospiicScore: Double?,
   val rsrBand: RiskBand?,
+  val rsrScore: Int?,
   val scoreType: ScoreType?,
   val ospRiskReduction: Boolean?,
   val validationError: List<ValidationErrorResponse>?,
