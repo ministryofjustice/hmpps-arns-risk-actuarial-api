@@ -84,8 +84,6 @@ data class RiskScoreRequest(
   val patientSecureUnitOrHospital: Boolean? = null,
   val obsessiveBehaviour: Boolean? = null,
   val selfHarmSuicideAttempt: Boolean? = null,
-  val concernsAboutSuicidePast: Boolean? = null,
-  val concernsAboutSelfHarmPast: Boolean? = null,
   val attitudeTowardsSupervision: ProblemLevel? = null,
   val assaultedOrThreatenedStaff: Boolean? = null,
   val escapeOrAbsconded: Boolean? = null,

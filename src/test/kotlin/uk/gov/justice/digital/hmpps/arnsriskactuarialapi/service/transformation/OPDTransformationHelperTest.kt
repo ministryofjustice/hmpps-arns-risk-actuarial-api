@@ -93,21 +93,17 @@ class OPDTransformationHelperTest {
   }
 
   @Test
-  fun `selfHarmSuicideAttemptOffendersScore returns 1 if any true`() {
+  fun `selfHarmSuicideAttemptOffendersScore returns 1 if selfHarmSuicideAttempt is true`() {
     val request = opdRequestValidated().copy(
       selfHarmSuicideAttempt = true,
-      concernsAboutSuicidePast = false,
-      concernsAboutSelfHarmPast = false,
     )
     assertEquals(1, selfHarmSuicideAttemptOffendersScore(request))
   }
 
   @Test
-  fun `selfHarmSuicideAttemptOffendersScore returns 0 if all false`() {
+  fun `selfHarmSuicideAttemptOffendersScore returns 0 if selfHarmSuicideAttempt false`() {
     val request = opdRequestValidated().copy(
       selfHarmSuicideAttempt = false,
-      concernsAboutSuicidePast = false,
-      concernsAboutSelfHarmPast = false,
     )
     assertEquals(0, selfHarmSuicideAttemptOffendersScore(request))
   }

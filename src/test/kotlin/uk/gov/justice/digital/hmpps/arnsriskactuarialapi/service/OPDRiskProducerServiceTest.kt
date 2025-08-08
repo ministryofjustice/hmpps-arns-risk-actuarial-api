@@ -189,8 +189,6 @@ class OPDRiskProducerServiceTest {
       currentPsychiatricTreatmentOrPending = null,
       obsessiveBehaviour = null,
       selfHarmSuicideAttempt = null,
-      concernsAboutSuicidePast = null,
-      concernsAboutSelfHarmPast = null,
       attitudeTowardsSupervision = null,
       assaultedOrThreatenedStaff = null,
       escapeOrAbsconded = null,
