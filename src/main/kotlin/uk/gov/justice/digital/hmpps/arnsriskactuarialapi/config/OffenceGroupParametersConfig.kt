@@ -39,6 +39,11 @@ class OffenseGroupParametersConfig(
           OffenceGroupParameters(
             ogrs3Weighting = csvRecord.get("OGRS3_WEIGHTING").toDoubleOrNull(),
             opdViolSex = csvRecord.get("OPD_VIOL_SEX").toStrictlyBooleanAt(csvRecord.recordNumber),
+            snsvStaticWeighting = csvRecord.get("SNSV_STATIC_WEIGHTING").toDoubleOrNull(),
+            snsvDynamicWeighting = csvRecord.get("SNSV_DYNAMIC_WEIGHTING").toDoubleOrNull(),
+            snsvVATPStaticWeighting = csvRecord.get("SNSV_VATP_STATIC_WEIGHTING").toDoubleOrNull(),
+            snsvVATPDynamicWeighting = csvRecord.get("SNSV_VATP_DYNAMIC_WEIGHTING").toDoubleOrNull(),
+
           )
       }
     }
@@ -48,4 +53,8 @@ class OffenseGroupParametersConfig(
 data class OffenceGroupParameters(
   val ogrs3Weighting: Double?,
   val opdViolSex: Boolean,
+  val snsvStaticWeighting: Double?,
+  val snsvDynamicWeighting: Double?,
+  val snsvVATPStaticWeighting: Double?,
+  val snsvVATPDynamicWeighting: Double?,
 )

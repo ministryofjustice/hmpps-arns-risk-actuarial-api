@@ -60,7 +60,7 @@ class PNIRiskProducerService : RiskScoreProducer {
       ovpBand = context.OVP?.band,
       ospDCBand = context.RSR?.ospdcBand,
       ospIICBand = context.RSR?.ospiicBand,
-      rsr = context.RSR?.rsrScore,
+      rsr = context.RSR?.rsrScore?.toInt(),
       saraRiskToPartner = request.saraRiskToPartner,
       saraRiskToOthers = request.saraRiskToOthers,
       problemSolvingSkills = request.problemSolvingSkills,

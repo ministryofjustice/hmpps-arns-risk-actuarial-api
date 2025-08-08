@@ -295,7 +295,7 @@ fun validSNSVStaticRiskScoreRequest() = RiskScoreRequest(
   totalNumberOfSanctions = 1 as Integer,
   ageAtFirstSanction = 40 as Integer,
   inCustodyOrCommunity = CustodyOrCommunity.COMMUNITY,
-  dateAtStartOfFollowup = LocalDate.of(2027, 1, 1),
+  dateAtStartOfFollowup = LocalDate.of(2024, 1, 1),
   totalNumberOfViolentSanctions = 1 as Integer,
 )
 
