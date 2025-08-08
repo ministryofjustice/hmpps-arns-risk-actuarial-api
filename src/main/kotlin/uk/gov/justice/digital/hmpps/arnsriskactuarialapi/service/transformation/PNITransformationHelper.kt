@@ -39,16 +39,23 @@ object SexDomainScore {
   }
 
   fun overallDomainScore(request: PNIRequestValidated): Pair<Int?, List<String>> {
+    if (!preCheckValid(request)) {
+      return Pair(0, emptyList<String>())
+    }
     val totalScore = totalScore(request)
     val overallScore = when {
+      (request.sexualInterestsOffenceRelated?.score == 2) -> 2
       totalScore in 0..1 -> 0
       totalScore in 2..3 -> 1
-      totalScore in 4..6 || (request.sexualInterestsOffenceRelated?.score == 2) -> 2
+      totalScore in 4..6 -> 2
       else -> null
     }
     val missingFields = if (overallScore == null) getMissingFields(request) else emptyList<String>()
     return Pair(overallScore, missingFields)
   }
+
+  // The sex domain will only be calculated if hasCommittedSexualOffence or riskSexualHarm is Yes
+  private fun preCheckValid(request: PNIRequestValidated): Boolean = request.hasCommittedSexualOffence == true || request.riskSexualHarm == true
 }
 
 object ThinkingDomainScore {
@@ -77,8 +84,9 @@ object ThinkingDomainScore {
   fun overallDomainScore(request: PNIRequestValidated): Pair<Int?, List<String>> {
     val totalScore = totalScore(request)
     val overallScore = when {
+      (request.proCriminalAttitudes?.score == 2) -> 2
       totalScore == 0 -> 0
-      totalScore in 3..4 || (request.proCriminalAttitudes?.score == 2) -> 2
+      totalScore in 3..4 -> 2
       totalScore in 1..2 -> 1
       else -> null
     }
