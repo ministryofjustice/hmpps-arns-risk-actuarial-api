@@ -11,10 +11,11 @@ class RSRRiskProducerService : RiskScoreProducer {
   // todo - basic return to enable testing for ospdc and ospiic tickets
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
     val ospdc = context.OSPDC!!
-    val errors = ospdc.validationError
+    val ospiic = context.OSPIIC!!
+    val errors = (ospdc.validationError ?: emptyList()) + ospiic.validationError!! // TODO cleanup
     val snsv = context.SNSV!! // todo get the snsvScore and use this as part of the rsrBand calculation
     val snsvScoreType = snsv.scoreType
-    val rsr = RSRObject(ospdc.ospdcBand, ospdc.ospdcScore, null, null, null, snsvScoreType, null, errors)
+    val rsr = RSRObject(ospdc.ospdcBand, ospdc.ospdcScore, ospiic.band, ospiic.score, null, snsvScoreType, null, errors)
 
     return context.apply { RSR = rsr }
   }
