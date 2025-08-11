@@ -63,6 +63,14 @@ class PNIRiskProducerService : RiskScoreProducer {
       return context.apply { PNI = PNIObject(ProgrammeNeedIdentifier.OMISSION, errors) }
     }
 
+    val hasNullRisks = requestValidated.ovp == null ||
+      requestValidated.ogrs3TwoYear == null ||
+      requestValidated.ospDCBand == null ||
+      requestValidated.ospIICBand == null ||
+      requestValidated.saraRiskToPartner == null ||
+      requestValidated.saraRiskToOthers == null ||
+      requestValidated.rsr == null
+
     val risk = when {
       isHighRisk(requestValidated) -> RiskBand.HIGH
       isMediumRisk(requestValidated) -> RiskBand.MEDIUM
@@ -134,41 +142,49 @@ class PNIRiskProducerService : RiskScoreProducer {
 
   internal fun isHighRisk(
     requestValidated: PNIRequestValidated,
-  ): Boolean = requestValidated.inCustodyOrCommunity == CustodyOrCommunity.CUSTODY &&
+  ): Boolean = //requestValidated.inCustodyOrCommunity == CustodyOrCommunity.CUSTODY &&
     isHighOgrs3(requestValidated) ||
-    isHighOvp(requestValidated) ||
-    isOspDcHigh(requestValidated) ||
-    isOspIicHigh(requestValidated) ||
-    isRsrHigh(requestValidated) ||
-    isHighSara(requestValidated)
+      isHighOvp(requestValidated) ||
+      isOspDcHigh(requestValidated) ||
+      isOspIicHigh(requestValidated) ||
+      isRsrHigh(requestValidated) ||
+      isHighSara(requestValidated)
 
   internal fun isMediumRisk(
     requestValidated: PNIRequestValidated,
-  ): Boolean = isOgrs3Medium(requestValidated) ||
-    isOvpMedium(requestValidated) ||
-    isOspDcMedium(requestValidated) ||
-    isOspIicMedium(requestValidated) ||
-    isRsrMedium(requestValidated) ||
-    isMediumSara(requestValidated)
+  ): Boolean {
+    val isCommunity = requestValidated.inCustodyOrCommunity == CustodyOrCommunity.COMMUNITY
 
-  private fun isHighOgrs3(requestValidated: PNIRequestValidated) = requestValidated.ogrs3TwoYear?.let { it >= 75 } == true
+
+    return isOgrs3Medium(requestValidated) ||
+      isOvpMedium(requestValidated) ||
+      isOspDcMedium(requestValidated) ||
+      isOspIicMedium(requestValidated) ||
+      isMediumSara(requestValidated) ||
+      isRsrMedium(requestValidated)
+  }
+
+
+  private fun isHighOgrs3(requestValidated: PNIRequestValidated) =
+    requestValidated.ogrs3TwoYear?.let { it >= 75 } == true
 
   private fun isHighOvp(requestValidated: PNIRequestValidated) = requestValidated.ovp?.let { it >= 60.00 } == true
 
   // OSP DC can never be HIGH for gender FEMALE because female always OSPDC = NA
-  private fun isOspDcHigh(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospDCBand == RiskBand.HIGH
+  private fun isOspDcHigh(requestValidated: PNIRequestValidated): Boolean =
+    requestValidated.ospDCBand == RiskBand.HIGH || requestValidated.ospDCBand == RiskBand.VERY_HIGH
 
   // OSP IIC can never be HIGH for gender FEMALE because female always OSPIIC = LOW or NA
-  private fun isOspIicHigh(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospIICBand == RiskBand.HIGH
+  private fun isOspIicHigh(requestValidated: PNIRequestValidated): Boolean =
+    requestValidated.ospIICBand == RiskBand.HIGH || requestValidated.ospIICBand == RiskBand.VERY_HIGH
 
   // OSP DC can never be MEDIUM for gender FEMALE because female always OSPDC = NA
-  private fun isOspDcMedium(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospDCBand == RiskBand.MEDIUM
+  private fun isOspDcMedium(requestValidated: PNIRequestValidated): Boolean =
+    requestValidated.ospDCBand == RiskBand.MEDIUM
 
   // OSP IIC can never be MEDIUM for gender FEMALE because female always OSPIIC = LOW or NA
-  private fun isOspIicMedium(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospIICBand == RiskBand.MEDIUM
-
-  fun isHighSara(requestValidated: PNIRequestValidated) = requestValidated.saraRiskToOthers == RiskBand.HIGH ||
-    requestValidated.saraRiskToPartner == RiskBand.HIGH
+  private fun isOspIicMedium(requestValidated: PNIRequestValidated): Boolean =
+    requestValidated.ospIICBand == RiskBand.MEDIUM
 
   private fun isRsrMedium(request: PNIRequestValidated): Boolean {
     val rsrIsMedium = request.rsr in 1..2
@@ -191,16 +207,22 @@ class PNIRiskProducerService : RiskScoreProducer {
   }
 
   // This risk band combination can only mean the gender = FEMALE
-  private fun isFemaleGivenRiskBandCombination(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospDCBand == RiskBand.NOT_APPLICABLE &&
-    (requestValidated.ospIICBand in listOf(RiskBand.LOW, RiskBand.NOT_APPLICABLE))
+  private fun isFemaleGivenRiskBandCombination(requestValidated: PNIRequestValidated): Boolean =
+    requestValidated.ospDCBand == RiskBand.NOT_APPLICABLE &&
+      (requestValidated.ospIICBand in listOf(RiskBand.LOW, RiskBand.NOT_APPLICABLE))
 
-  private fun isOgrs3Medium(requestValidated: PNIRequestValidated) = requestValidated.ogrs3TwoYear?.let { it in 50..74 } == true
+  private fun isOgrs3Medium(requestValidated: PNIRequestValidated) =
+    requestValidated.ogrs3TwoYear?.let { it in 50..74 } == true
 
   private fun isOvpMedium(requestValidated: PNIRequestValidated) = requestValidated.ovp?.let { it in 30..59 } == true
 
-  fun isMediumSara(requestValidated: PNIRequestValidated) = requestValidated.saraRiskToOthers == RiskBand.MEDIUM ||
-    requestValidated.saraRiskToPartner == RiskBand.MEDIUM
 }
+
+fun isHighSara(requestValidated: PNIRequestValidated) = requestValidated.saraRiskToOthers == RiskBand.HIGH ||
+  requestValidated.saraRiskToPartner == RiskBand.HIGH
+
+fun isMediumSara(requestValidated: PNIRequestValidated) = requestValidated.saraRiskToOthers == RiskBand.MEDIUM ||
+  requestValidated.saraRiskToPartner == RiskBand.MEDIUM
 
 fun overallNeedsGroupingCalculation(request: PNIRequestValidated): Pair<NeedScore?, List<String>> {
   val (overallSexDomainScore, missingSexDomainScore) = SexDomainScore.overallDomainScore(request)
@@ -222,8 +244,15 @@ fun overallNeedsGroupingCalculation(request: PNIRequestValidated): Pair<NeedScor
     overallRelationshipDomain,
     overallSelfManagementDomain,
   ).sum()
-  return Pair(getOverallNeedClassification(overallNeedsScore,
-    request.inCustodyOrCommunity,
-    request.saraRiskToPartner,
-    allMissingFields), emptyList())
+
+  return Pair(
+    getOverallNeedClassification(
+      overallNeedsScore,
+      request.inCustodyOrCommunity,
+      isMediumSara(request),
+      isHighSara(request),
+      allMissingFields,
+    ),
+    emptyList(),
+  )
 }

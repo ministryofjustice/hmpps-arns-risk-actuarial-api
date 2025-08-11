@@ -9,7 +9,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIRequestValid
 fun getOverallNeedClassification(
   overallNeedsScore: Int,
   inCustodyOrCommunity: CustodyOrCommunity,
-  saraRiskToPartner: RiskBand?,
+  isMediumSara: Boolean,
+  isHighSara: Boolean,
   allMissingFields: List<String>,
 ): NeedScore? {
 
@@ -20,16 +21,16 @@ fun getOverallNeedClassification(
     val validScore = when (overallNeedsScore) {
       in 0..2 -> NeedScore.LOW
       in 3..5 -> NeedScore.MEDIUM
-      in 6..8 -> NeedScore.HIGH
+      //in 6..8 -> NeedScore.HIGH
       else -> null
     }
     return validScore
   }
 
-  if (inCustodyOrCommunity == CustodyOrCommunity.COMMUNITY && (saraRiskToPartner == RiskBand.MEDIUM || saraRiskToPartner == RiskBand.HIGH)) {
+  if (inCustodyOrCommunity == CustodyOrCommunity.COMMUNITY && isMediumSara) {
     return NeedScore.MEDIUM
   }
-  if (inCustodyOrCommunity != CustodyOrCommunity.COMMUNITY && saraRiskToPartner == RiskBand.HIGH) {
+  if (inCustodyOrCommunity != CustodyOrCommunity.COMMUNITY && (isMediumSara || isHighSara)) {
     return NeedScore.HIGH
   }
   return null
@@ -37,7 +38,7 @@ fun getOverallNeedClassification(
 
 
 object SexDomainScore {
-  private fun getMissingFields(request: PNIRequestValidated) = mutableListOf<String>().apply {
+  private fun getMissingFields(request: PNIRequestValidated) = arrayListOf<String>().apply {
     if (request.sexualPreoccupation == null) {
       add("sexualPreoccupation")
     }
@@ -63,6 +64,18 @@ object SexDomainScore {
     }
   }
 
+  private fun adjustedScore(request: PNIRequestValidated): Int? {
+    // Return null if any fields are missing
+    if (getMissingFields(request).isNotEmpty()) return null
+
+    val g = request.sexualPreoccupation?.score ?: return null
+    val hRaw = request.sexualInterestsOffenceRelated?.score ?: return null
+    val h = if (hRaw == 2) 4 else hRaw  // Special adjustment
+    val i = request.emotionalCongruence?.score ?: return null
+
+    return g + h + i
+  }
+
   fun overallDomainScore(request: PNIRequestValidated): Pair<Int?, List<String>> {
     if (!preCheckValid(request)) {
       return Pair(0, emptyList<String>())
@@ -85,7 +98,7 @@ object SexDomainScore {
 }
 
 object ThinkingDomainScore {
-  private fun getMissingFields(request: PNIRequestValidated) = mutableListOf<String>().apply {
+  private fun getMissingFields(request: PNIRequestValidated) = arrayListOf<String>().apply {
     if (request.proCriminalAttitudes == null) {
       add("proCriminalAttitudes")
     }
@@ -122,7 +135,7 @@ object ThinkingDomainScore {
 }
 
 object RelationshipDomainScore {
-  private fun getMissingFields(request: PNIRequestValidated) = mutableListOf<String>().apply {
+  private fun getMissingFields(request: PNIRequestValidated) = arrayListOf<String>().apply {
     if (request.currentRelationshipFamilyMembers == null) {
       add("currentRelationshipFamilyMembers")
     }
@@ -166,7 +179,7 @@ object RelationshipDomainScore {
 }
 
 object SelfManagementDomainScore {
-  private fun getMissingFields(request: PNIRequestValidated) = mutableListOf<String>().apply {
+  private fun getMissingFields(request: PNIRequestValidated) = arrayListOf<String>().apply {
     if (request.impulsivityBehaviour == null) {
       add("impulsivityBehaviour")
     }
