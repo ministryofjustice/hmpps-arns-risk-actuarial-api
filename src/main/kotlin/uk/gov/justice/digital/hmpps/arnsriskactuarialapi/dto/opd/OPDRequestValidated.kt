@@ -39,8 +39,6 @@ data class OPDRequestValidated(
   val patientSecureUnitOrHospital: Boolean,
   val obsessiveBehaviour: Boolean,
   val selfHarmSuicideAttempt: Boolean?,
-  val concernsAboutSuicidePast: Boolean?,
-  val concernsAboutSelfHarmPast: Boolean?,
   val attitudeTowardsSupervision: ProblemLevel? = null,
   val controllingBehaviour: ProblemLevel? = null,
   val assaultedOrThreatenedStaff: Boolean?,

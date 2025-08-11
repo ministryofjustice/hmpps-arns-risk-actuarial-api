@@ -49,15 +49,7 @@ fun historyOfMentalHealthDifficultiesOffendersScore(request: OPDRequestValidated
   return if (hasProblems) 1 else 0
 }
 
-fun selfHarmSuicideAttemptOffendersScore(input: OPDRequestValidated): Int {
-  val fields = listOf(
-    input.selfHarmSuicideAttempt,
-    input.concernsAboutSuicidePast,
-    input.concernsAboutSelfHarmPast,
-  )
-
-  return if (fields.any { it == true }) 1 else 0
-}
+fun selfHarmSuicideAttemptOffendersScore(input: OPDRequestValidated) = if (input.selfHarmSuicideAttempt == true) 1 else 0
 
 fun severeChallengingBehavioursOffendersScore(input: OPDRequestValidated): Int {
   val hasAttitudeProblems =
