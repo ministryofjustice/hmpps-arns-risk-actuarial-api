@@ -146,9 +146,6 @@ class PNIRiskProducerService : RiskScoreProducer {
   internal fun isMediumRisk(
     requestValidated: PNIRequestValidated,
   ): Boolean {
-    val isCommunity = requestValidated.inCustodyOrCommunity == CustodyOrCommunity.COMMUNITY
-
-
     return isOgrs3Medium(requestValidated) ||
       isOvpMedium(requestValidated) ||
       isOspDcMedium(requestValidated) ||
