@@ -10,7 +10,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3Object
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.OGPRiskProducerService.Companion.ogpInitialValidation
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.OGPValidationHelper.Companion.ogpInitialValidation
 
 class OGPValidationHelperTest {
 
