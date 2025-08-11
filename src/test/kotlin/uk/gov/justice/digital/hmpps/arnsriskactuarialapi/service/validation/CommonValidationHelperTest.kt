@@ -53,7 +53,7 @@ class CommonValidationHelperTest {
     val expected = listOf(
       ValidationErrorResponse(
         ValidationErrorType.NOT_APPLICABLE,
-        "ERR - Does not meet eligibility criteria",
+        "ERR1 - Does not meet eligibility criteria",
         listOf("Gender", "dateOfBirth"),
       ),
     )
@@ -67,7 +67,7 @@ class CommonValidationHelperTest {
     val expected = listOf(
       ValidationErrorResponse(
         ValidationErrorType.UNEXPECTED_VALUE,
-        "ERR - Field is unexpected",
+        "ERR6 - Field is unexpected",
         listOf("domesticAbusePartner", "domesticAbuseFamily"),
       ),
     )

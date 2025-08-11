@@ -120,7 +120,7 @@ class MSTScoreProducerServiceTest {
 
     val expectedError = ValidationErrorResponse(
       ValidationErrorType.NOT_APPLICABLE,
-      "ERR - Does not meet eligibility criteria",
+      "ERR1 - Does not meet eligibility criteria",
       listOf("dateOfBirth"),
     )
     val actualError = result.MST?.validationError
@@ -144,7 +144,7 @@ class MSTScoreProducerServiceTest {
 
     val expectedError = ValidationErrorResponse(
       ValidationErrorType.NOT_APPLICABLE,
-      "ERR - Does not meet eligibility criteria",
+      "ERR1 - Does not meet eligibility criteria",
       listOf("gender"),
     )
     val actualError = result.MST?.validationError
@@ -169,7 +169,7 @@ class MSTScoreProducerServiceTest {
 
     val expectedError = ValidationErrorResponse(
       ValidationErrorType.NOT_APPLICABLE,
-      "ERR - Does not meet eligibility criteria",
+      "ERR1 - Does not meet eligibility criteria",
       listOf("gender", "dateOfBirth"),
     )
     val actualError = result.MST?.validationError

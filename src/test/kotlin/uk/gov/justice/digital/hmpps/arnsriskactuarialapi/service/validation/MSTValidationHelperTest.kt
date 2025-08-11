@@ -117,7 +117,7 @@ class MSTValidationHelperTest {
     // Then
     val expectedError = ValidationErrorResponse(
       ValidationErrorType.NOT_APPLICABLE,
-      "ERR - Does not meet eligibility criteria",
+      "ERR1 - Does not meet eligibility criteria",
       listOf("dateOfBirth"),
     )
 
@@ -132,7 +132,7 @@ class MSTValidationHelperTest {
     // Then
     val expectedError = ValidationErrorResponse(
       ValidationErrorType.NOT_APPLICABLE,
-      "ERR - Does not meet eligibility criteria",
+      "ERR1 - Does not meet eligibility criteria",
       listOf("gender"),
     )
 
@@ -147,7 +147,7 @@ class MSTValidationHelperTest {
     // Then
     val expectedError = ValidationErrorResponse(
       ValidationErrorType.NOT_APPLICABLE,
-      "ERR - Does not meet eligibility criteria",
+      "ERR1 - Does not meet eligibility criteria",
       listOf("gender", "dateOfBirth"),
     )
 
