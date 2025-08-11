@@ -118,7 +118,7 @@ class OGPRiskProducerServiceCompanionTest {
       understandsPeoplesViews = ProblemLevel.NO_PROBLEMS,
       proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
     )
-    val output = getOGPOutput(input, mutableListOf())
+    val output = getOGPOutput(input)
     val expected = OGPObject(
       ogpReoffendingOneYear = 53,
       ogpReoffendingTwoYear = 68,
@@ -132,6 +132,6 @@ class OGPRiskProducerServiceCompanionTest {
   @ParameterizedTest()
   @MethodSource("getOGPTestCases")
   fun `testing from OGP test cases`(input: OGPInputValidated, expected: OGPObject) {
-    assertEquals(expected, getOGPOutput(input, mutableListOf()))
+    assertEquals(expected, getOGPOutput(input))
   }
 }

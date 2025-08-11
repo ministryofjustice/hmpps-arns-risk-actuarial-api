@@ -21,7 +21,7 @@ class LDSRiskProducerServiceCompanionTest {
       learningDifficulties = ProblemLevel.SOME_PROBLEMS,
       professionalOrVocationalQualifications = HasQualifications.NO_QUALIFICATIONS,
     )
-    val output = getLDSOutput(input, mutableListOf())
+    val output = getLDSOutput(input)
     val expected = LDSObject(
       ldsScore = 2,
       validationError = emptyList(),

@@ -61,13 +61,12 @@ class OSPDCRiskProducerService : RiskScoreProducer {
       request.victimStranger,
     )
     return context.apply {
-      OSPDC = getOSPDCObject(validRequest, errors)
+      OSPDC = getOSPDCObject(validRequest)
     }
   }
 
   private fun getOSPDCObject(
     request: OSPDCRequestValidated,
-    errors: List<ValidationErrorResponse>,
   ): OSPDCObject = runCatching {
     listOf(
       getTotalContactAdultSexualSanctionsWeight(request.totalContactAdultSexualSanctions),
@@ -98,7 +97,7 @@ class OSPDCRiskProducerService : RiskScoreProducer {
           OSPDCObject(
             getOSPDCBand(ospdc64PointScore),
             getOSPDCScore(ospdc64PointScore),
-            errors,
+            emptyList(),
           )
         }
       }

@@ -37,7 +37,7 @@ class OGPRiskProducerService : RiskScoreProducer {
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
     val errors = ogpInitialValidation(request, context)
 
-    if (!errors.isEmpty()) {
+    if (errors.isNotEmpty()) {
       return context.apply {
         OGP = OGPObject(null, null, null, null, errors)
       }
@@ -56,11 +56,11 @@ class OGPRiskProducerService : RiskScoreProducer {
       request.proCriminalAttitudes!!,
     )
 
-    return context.apply { OGP = getOGPOutput(validInput, errors) }
+    return context.apply { OGP = getOGPOutput(validInput) }
   }
 
   companion object {
-    fun getOGPOutput(input: OGPInputValidated, errors: List<ValidationErrorResponse>): OGPObject = runCatching {
+    fun getOGPOutput(input: OGPInputValidated): OGPObject = runCatching {
       // Transformation Step
       val currentAccommodationOffendersScore =
         currentAccommodationOffendersScore(input.currentAccommodation)
@@ -118,14 +118,20 @@ class OGPRiskProducerService : RiskScoreProducer {
       // Create OGP Output
       OGPObject(ogpReoffendingOneYear, ogpReoffendingTwoYear, bandOGP, totalOGPScore, emptyList())
     }.getOrElse {
-      errors +
-        ValidationErrorResponse(
-          type = ValidationErrorType.UNEXPECTED_VALUE,
-          message = "Error: ${it.message}",
-          fields = null,
-        )
       // Create OGP Output
-      OGPObject(null, null, null, null, errors)
+      OGPObject(
+        null,
+        null,
+        null,
+        null,
+        listOf(
+          ValidationErrorResponse(
+            type = ValidationErrorType.UNEXPECTED_VALUE,
+            message = "Error: ${it.message}",
+            fields = null,
+          ),
+        ),
+      )
     }
   }
 }
