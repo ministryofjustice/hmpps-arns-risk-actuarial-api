@@ -20,7 +20,7 @@ import java.nio.file.Files
 import java.nio.file.Paths
 
 private const val TEST_CSV_FILE = "/data/PNI/PNI_test_data_small.csv"
-private const val WRITE_FAILED_OUTPUTS = true
+private const val WRITE_FAILED_OUTPUTS = false
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PNIRegressionTest {

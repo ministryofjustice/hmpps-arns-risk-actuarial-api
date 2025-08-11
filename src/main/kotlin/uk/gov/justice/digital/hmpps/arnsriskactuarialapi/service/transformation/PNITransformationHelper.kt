@@ -63,19 +63,7 @@ object SexDomainScore {
     }
   }
 
-  private fun adjustedScore(request: PNIRequestValidated): Int? {
-    // Return null if any fields are missing
-    if (getMissingFields(request).isNotEmpty()) return null
-
-    val g = request.sexualPreoccupation?.score ?: return null
-    val hRaw = request.sexualInterestsOffenceRelated?.score ?: return null
-    val h = if (hRaw == 2) 4 else hRaw  // Special adjustment
-    val i = request.emotionalCongruence?.score ?: return null
-
-    return g + h + i
-  }
-
-  fun overallDomainScore(request: PNIRequestValidated): Pair<Int?, List<String>> {
+  fun overallDomainScore(request: PNIRequestValidated): Pair<Int, List<String>> {
     if (!preCheckValid(request)) {
       return Pair(0, emptyList<String>())
     }
@@ -88,7 +76,7 @@ object SexDomainScore {
       else -> null
     }
     val missingFields = if (overallScore == null) getMissingFields(request) else emptyList<String>()
-    return Pair(overallScore, missingFields)
+    return Pair(overallScore ?: 0, missingFields)
   }
 
   // The sex domain will only be calculated if hasCommittedSexualOffence or riskSexualHarm is Yes
@@ -119,7 +107,7 @@ object ThinkingDomainScore {
     }
   }
 
-  fun overallDomainScore(request: PNIRequestValidated): Pair<Int?, List<String>> {
+  fun overallDomainScore(request: PNIRequestValidated): Pair<Int, List<String>> {
     val totalScore = totalScore(request)
     val overallScore = when {
       (request.proCriminalAttitudes?.score == 2) -> 2
@@ -129,7 +117,7 @@ object ThinkingDomainScore {
       else -> null
     }
     val missingFields = if (overallScore == null) getMissingFields(request) else emptyList<String>()
-    return Pair(overallScore, missingFields)
+    return Pair(overallScore?: 0, missingFields)
   }
 }
 
@@ -164,7 +152,7 @@ object RelationshipDomainScore {
     }
   }
 
-  fun overallDomainScore(request: PNIRequestValidated): Pair<Int?, List<String>> {
+  fun overallDomainScore(request: PNIRequestValidated): Pair<Int, List<String>> {
     val totalScore = totalScore(request)
     val overallScore = when (totalScore) {
       in 0..1 -> 0
@@ -173,7 +161,7 @@ object RelationshipDomainScore {
       else -> null
     }
     val missingFields = if (overallScore == null) getMissingFields(request) else emptyList<String>()
-    return Pair(overallScore, missingFields)
+    return Pair(overallScore?: 0, missingFields)
   }
 }
 
@@ -208,7 +196,7 @@ object SelfManagementDomainScore {
     }
   }
 
-  fun overallDomainScore(request: PNIRequestValidated): Pair<Int?, List<String>> {
+  fun overallDomainScore(request: PNIRequestValidated): Pair<Int, List<String>> {
     val totalScore = totalScore(request)
     val overallScore = when (totalScore) {
       in 0..1 -> 0
@@ -217,6 +205,6 @@ object SelfManagementDomainScore {
       else -> null
     }
     val missingFields = if (overallScore == null) getMissingFields(request) else emptyList<String>()
-    return Pair(overallScore, missingFields)
+    return Pair(overallScore?: 0, missingFields)
   }
 }

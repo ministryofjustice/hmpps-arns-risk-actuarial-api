@@ -244,6 +244,6 @@ fun overallNeedsGroupingCalculation(request: PNIRequestValidated): Pair<NeedScor
       isHighSara(request),
       allMissingFields,
     ),
-    emptyList(),
+    allMissingFields,
   )
 }
