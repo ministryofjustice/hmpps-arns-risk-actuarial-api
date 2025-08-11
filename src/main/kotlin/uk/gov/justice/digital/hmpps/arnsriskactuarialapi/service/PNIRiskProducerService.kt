@@ -216,10 +216,10 @@ fun isMediumSara(requestValidated: PNIRequestValidated) = requestValidated.saraR
 
 
 fun overallNeedsGroupingCalculation(request: PNIRequestValidated): Pair<NeedScore?, List<String>> {
-  val (overallSexDomainScore, missingSexDomainScore) = SexDomainScore.overallDomainScore(request)
-  val (overallThinkingDomainScore, missingThinkingDomainScore) = ThinkingDomainScore.overallDomainScore(request)
-  val (overallRelationshipDomain, missingRelationshipDomain) = RelationshipDomainScore.overallDomainScore(request)
-  val (overallSelfManagementDomain, missingSelfManagementDomain) = SelfManagementDomainScore.overallDomainScore(
+  val (overallSexDomainScore, projectedSexDomainScore, missingSexDomainScore) = SexDomainScore.overallDomainScore(request)
+  val (overallThinkingDomainScore, projectedThinkingDomainScore, missingThinkingDomainScore) = ThinkingDomainScore.overallDomainScore(request)
+  val (overallRelationshipDomainScore, projectedRelationshipDomainScore, missingRelationshipDomain) = RelationshipDomainScore.overallDomainScore(request)
+  val (overallSelfManagementDomainScore, projectedSelfManagementDomainScore, missingSelfManagementDomain) = SelfManagementDomainScore.overallDomainScore(
     request,
   )
   val allMissingFields = listOf(
@@ -232,8 +232,8 @@ fun overallNeedsGroupingCalculation(request: PNIRequestValidated): Pair<NeedScor
   val overallNeedsScore = listOfNotNull(
     overallSexDomainScore,
     overallThinkingDomainScore,
-    overallRelationshipDomain,
-    overallSelfManagementDomain,
+    overallRelationshipDomainScore,
+    overallSelfManagementDomainScore,
   ).sum()
 
   return Pair(
