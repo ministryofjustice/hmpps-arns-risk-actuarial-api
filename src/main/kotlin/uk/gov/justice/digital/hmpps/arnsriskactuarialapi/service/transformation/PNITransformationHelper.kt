@@ -76,8 +76,8 @@ fun getOverallNeedClassification(
     }
 
     // calculation complete: No
-    if (overallNeedsLevel != overallNeedsLevelProjected) {
-       // return null
+    if (overallNeedsLevel == overallNeedsLevelProjected) {
+        return overallNeedsLevel
     }
     if (inCustodyOrCommunity == CustodyOrCommunity.COMMUNITY && (isMediumSara || isHighSara)) {
         return NeedScore.MEDIUM
@@ -85,6 +85,7 @@ fun getOverallNeedClassification(
     if (inCustodyOrCommunity != CustodyOrCommunity.COMMUNITY && (isMediumSara || isHighSara)) {
         return NeedScore.HIGH
     }
+
     return null
 }
 

@@ -31,11 +31,12 @@ object SexDomainScore {
   }
 
   private fun projectedNeeds(request: PNIRequestValidated): Int? {
-    return listOf(
+    val interimScore =  listOf(
       request.sexualPreoccupation?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
       request.sexualInterestsOffenceRelated?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
       request.emotionalCongruence?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
     ).sum()
+    return interimScore
   }
 
   fun overallDomainScore(request: PNIRequestValidated): Triple<Int, Int, List<String>> {
@@ -46,7 +47,7 @@ object SexDomainScore {
     val projectedScore = getOverallScore(request, projectedNeeds)
     val missingFields = if (overallScore == null) getMissingFields(request) else emptyList<String>()
     if (!preCheckValid(request)) {
-      return Triple(0, projectedScore ?: 0, missingFields)
+      return Triple(0,  0, missingFields)
     }
     return Triple(overallScore ?: 0, projectedScore ?: 0, missingFields)
   }

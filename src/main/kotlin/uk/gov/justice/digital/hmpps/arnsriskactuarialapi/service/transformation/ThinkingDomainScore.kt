@@ -26,7 +26,7 @@ object ThinkingDomainScore {
       request.proCriminalAttitudes?.score,
       request.hostileOrientation?.score,
     ).sum()
-    return if (request.proCriminalAttitudes == ProblemLevel.SIGNIFICANT_PROBLEMS || hasNoMissingFields) {
+    return if ( true ) { // hasNoMissingFieldsrequest.proCriminalAttitudes == ProblemLevel.SIGNIFICANT_PROBLEMS ||
       interimScore
     } else {
       null // cannot be calculated
