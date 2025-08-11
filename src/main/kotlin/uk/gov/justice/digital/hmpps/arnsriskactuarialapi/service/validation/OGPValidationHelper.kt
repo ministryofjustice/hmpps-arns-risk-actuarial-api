@@ -2,6 +2,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3Object
 
 class OGPValidationHelper {
@@ -23,6 +24,12 @@ class OGPValidationHelper {
       listOf(OGRS3Object::ogrs3TwoYear.name)
     } else {
       emptyList()
+    }
+
+    fun ogpInitialValidation(request: RiskScoreRequest, context: RiskScoreContext): List<ValidationErrorResponse> {
+      val missingProperties = getMissingPropertiesErrorStrings(request, OGP_PROPERTIES)
+      val missingFields = getMissingFieldsErrorsInContext(context)
+      return addMissingFields(missingProperties + missingFields, listOf())
     }
   }
 }

@@ -16,6 +16,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3Object
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.opd.OPDObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.opd.OPDRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.osp.OSPDCObject
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ospiic.OSPIICObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ovp.OVPObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIRequestValidated
@@ -43,6 +44,8 @@ fun emptyOSPDC(): OSPDCObject = OSPDCObject(null, null, null)
 fun emptySNSV(): SNSVObject = SNSVObject(null, null, null)
 
 fun emptyRSR(): RSRObject = RSRObject(null, null, null, null, null, null, null, null)
+
+fun emptyOSPIIC(): OSPIICObject = OSPIICObject(null, null, emptyList())
 
 fun emptyContext() = RiskScoreContext(version = RiskScoreVersion.V1_0)
 
@@ -148,6 +151,14 @@ object RiskScoreRequestTestConstants {
     numeracyDifficulties = null,
     learningDifficulties = ProblemLevel.SOME_PROBLEMS,
     professionalOrVocationalQualifications = HasQualifications.ANY_QUALIFICATION,
+  )
+  val FULL_OSPIIC_REQUEST = RiskScoreRequest(
+    version = RiskScoreVersion.V1_0,
+    gender = Gender.MALE,
+    totalContactAdultSexualSanctions = 5,
+    totalContactChildSexualSanctions = 2,
+    totalIndecentImageSanctions = 4,
+    totalNonContactSexualOffences = 6,
   )
 }
 
