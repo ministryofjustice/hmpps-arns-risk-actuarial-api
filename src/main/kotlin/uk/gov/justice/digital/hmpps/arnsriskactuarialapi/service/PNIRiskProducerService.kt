@@ -9,11 +9,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.ProgrammeNeedIdentifier
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.RelationshipDomainScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SelfManagementDomainScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SexDomainScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.ThinkingDomainScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getOverallNeedClassification
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.overallNeedsGroupingCalculation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.addMissingFields
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.pniInitialValidation
 
@@ -182,7 +178,7 @@ class PNIRiskProducerService : RiskScoreProducer {
     return if (isFemaleGivenRiskBandCombination(request)) {
       rsrIsMedium
     } else {
-      rsrIsMedium && request.ospDCBand == null && request.ospIICBand == null
+      rsrIsMedium && isNullOrNa(request.ospDCBand) && isNullOrNa(request.ospIICBand)
     }
   }
 
@@ -192,14 +188,17 @@ class PNIRiskProducerService : RiskScoreProducer {
     return if (isFemaleGivenRiskBandCombination(requestValidated)) {
       isHighRsr
     } else {
-      isHighRsr && requestValidated.ospDCBand == null && requestValidated.ospIICBand == null
+      isHighRsr && isNullOrNa(requestValidated.ospDCBand) && isNullOrNa(requestValidated.ospIICBand)
     }
   }
 
+  private fun isNullOrNa(band: RiskBand?): Boolean =
+    band == null || band == RiskBand.NOT_APPLICABLE
+
   // This risk band combination can only mean the gender = FEMALE
-  private fun isFemaleGivenRiskBandCombination(requestValidated: PNIRequestValidated): Boolean =
-    requestValidated.ospDCBand == RiskBand.NOT_APPLICABLE &&
-      (requestValidated.ospIICBand in listOf(RiskBand.LOW, RiskBand.NOT_APPLICABLE))
+  private fun isFemaleGivenRiskBandCombination(requestValidated: PNIRequestValidated): Boolean = false
+   // requestValidated.ospDCBand == RiskBand.NOT_APPLICABLE &&
+   //   (requestValidated.ospIICBand in listOf(RiskBand.LOW, RiskBand.NOT_APPLICABLE))
 
   private fun isOgrs3Medium(requestValidated: PNIRequestValidated) =
     requestValidated.ogrs3TwoYear?.let { it in 50..74 } == true
@@ -214,36 +213,3 @@ fun isHighSara(requestValidated: PNIRequestValidated) = requestValidated.saraRis
 fun isMediumSara(requestValidated: PNIRequestValidated) = requestValidated.saraRiskToOthers == RiskBand.MEDIUM ||
   requestValidated.saraRiskToPartner == RiskBand.MEDIUM
 
-
-fun overallNeedsGroupingCalculation(request: PNIRequestValidated): Pair<NeedScore?, List<String>> {
-  val (overallSexDomainScore, projectedSexDomainScore, missingSexDomainScore) = SexDomainScore.overallDomainScore(request)
-  val (overallThinkingDomainScore, projectedThinkingDomainScore, missingThinkingDomainScore) = ThinkingDomainScore.overallDomainScore(request)
-  val (overallRelationshipDomainScore, projectedRelationshipDomainScore, missingRelationshipDomain) = RelationshipDomainScore.overallDomainScore(request)
-  val (overallSelfManagementDomainScore, projectedSelfManagementDomainScore, missingSelfManagementDomain) = SelfManagementDomainScore.overallDomainScore(
-    request,
-  )
-  val allMissingFields = listOf(
-    missingSexDomainScore,
-    missingThinkingDomainScore,
-    missingRelationshipDomain,
-    missingSelfManagementDomain,
-  ).flatten()
-
-  val overallNeedsScore = listOfNotNull(
-    overallSexDomainScore,
-    overallThinkingDomainScore,
-    overallRelationshipDomainScore,
-    overallSelfManagementDomainScore,
-  ).sum()
-
-  return Pair(
-    getOverallNeedClassification(
-      overallNeedsScore,
-      request.inCustodyOrCommunity,
-      isMediumSara(request),
-      isHighSara(request),
-      allMissingFields,
-    ),
-    allMissingFields,
-  )
-}
