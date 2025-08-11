@@ -110,7 +110,7 @@ class OSPDCRiskProducerServiceTest {
     assertEquals(1, result.OSPDC?.validationError?.size)
     val error = result.OSPDC?.validationError?.first()
     assertEquals(ValidationErrorType.NOT_APPLICABLE, error?.type)
-    assertEquals("ERR - Does not meet eligibility criteria", error?.message)
+    assertEquals("ERR1 - Does not meet eligibility criteria", error?.message)
   }
 
   @Test
@@ -129,7 +129,7 @@ class OSPDCRiskProducerServiceTest {
     assertNull(result.OSPDC?.ospdcBand)
     val error = result.OSPDC?.validationError?.first()
     assertEquals(ValidationErrorType.NOT_APPLICABLE, error?.type)
-    assertEquals("ERR - Does not meet eligibility criteria", error?.message)
+    assertEquals("ERR1 - Does not meet eligibility criteria", error?.message)
   }
 
   @Test
