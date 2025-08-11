@@ -63,13 +63,6 @@ class PNIRiskProducerService : RiskScoreProducer {
       return context.apply { PNI = PNIObject(ProgrammeNeedIdentifier.OMISSION, errors) }
     }
 
-    val hasNullRisks = requestValidated.ovp == null ||
-      requestValidated.ogrs3TwoYear == null ||
-      requestValidated.ospDCBand == null ||
-      requestValidated.ospIICBand == null ||
-      requestValidated.saraRiskToPartner == null ||
-      requestValidated.saraRiskToOthers == null ||
-      requestValidated.rsr == null
 
     val risk = when {
       isHighRisk(requestValidated) -> RiskBand.HIGH
@@ -223,6 +216,7 @@ fun isHighSara(requestValidated: PNIRequestValidated) = requestValidated.saraRis
 
 fun isMediumSara(requestValidated: PNIRequestValidated) = requestValidated.saraRiskToOthers == RiskBand.MEDIUM ||
   requestValidated.saraRiskToPartner == RiskBand.MEDIUM
+
 
 fun overallNeedsGroupingCalculation(request: PNIRequestValidated): Pair<NeedScore?, List<String>> {
   val (overallSexDomainScore, missingSexDomainScore) = SexDomainScore.overallDomainScore(request)

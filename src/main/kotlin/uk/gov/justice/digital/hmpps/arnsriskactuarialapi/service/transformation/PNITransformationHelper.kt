@@ -3,7 +3,6 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CustodyOrCommunity
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.NeedScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIRequestValidated
 
 fun getOverallNeedClassification(
@@ -27,7 +26,7 @@ fun getOverallNeedClassification(
     return validScore
   }
 
-  if (inCustodyOrCommunity == CustodyOrCommunity.COMMUNITY && isMediumSara) {
+  if (inCustodyOrCommunity == CustodyOrCommunity.COMMUNITY && (isMediumSara || isHighSara)) {
     return NeedScore.MEDIUM
   }
   if (inCustodyOrCommunity != CustodyOrCommunity.COMMUNITY && (isMediumSara || isHighSara)) {
