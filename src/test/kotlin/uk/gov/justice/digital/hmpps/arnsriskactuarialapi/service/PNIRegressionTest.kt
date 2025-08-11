@@ -19,7 +19,7 @@ import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
 
-private const val TEST_CSV_FILE = "/data/PNI/PNI_test_data_small.csv"
+private const val TEST_CSV_FILE = "/data/PNI/PNI_test_data.csv"
 private const val WRITE_FAILED_OUTPUTS = true
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -172,7 +172,7 @@ class PNIRegressionTest {
     val rsr = emptyRSR().copy(
       ospdcBand = ospCdc.toRiskBand(),
       ospiicBand = ospIiic.toRiskBand(),
-      rsrScore = rsrPercentageScore?.toIntOrNull(),
+      rsrScore = rsrPercentageScore?.toDoubleOrNull()?.toInt(),
     )
     val ovp = emptyOVP().copy(
       provenViolentTypeReoffendingTwoYear = ovpRiskReconElm.bandToOVPScore(),
