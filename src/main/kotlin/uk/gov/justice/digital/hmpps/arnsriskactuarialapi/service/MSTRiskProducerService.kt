@@ -18,7 +18,7 @@ class MSTRiskProducerService : RiskScoreProducer {
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
     val errors = mstInitialValidation(request)
 
-    if (!errors.isEmpty()) {
+    if (errors.isNotEmpty()) {
       return context.apply {
         MST = MSTObject(
           maturityScore = null,

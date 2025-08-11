@@ -18,11 +18,7 @@ fun getTotalNumberOfSanctionsValidation(
 ): List<ValidationErrorResponse> {
   if (totalNumberOfSanctions != null && totalNumberOfSanctions < 1) {
     return errors +
-      ValidationErrorResponse(
-        type = ValidationErrorType.BELOW_MIN_VALUE,
-        message = "ERR2 - Below minimum value",
-        fields = listOf(RiskScoreRequest::totalNumberOfSanctions.name),
-      )
+      ValidationErrorType.BELOW_MIN_VALUE.asErrorResponse(listOf(RiskScoreRequest::totalNumberOfSanctions.name))
   }
 
   return errors
@@ -34,11 +30,7 @@ fun getCurrentOffenceValidation(
 ): List<ValidationErrorResponse> {
   if (currentOffence != null && currentOffence.length != 5) {
     return errors +
-      ValidationErrorResponse(
-        type = ValidationErrorType.NO_MATCHING_INPUT,
-        message = "ERR4 - Does not match agreed input",
-        fields = listOf(RiskScoreRequest::currentOffence.name),
-      )
+      ValidationErrorType.NO_MATCHING_INPUT.asErrorResponse(listOf(RiskScoreRequest::currentOffence.name))
   }
   return errors
 }
@@ -55,11 +47,7 @@ fun validateAge(
 private fun validateAgeAtCurrentConviction(
   ageAtCurrentConviction: Int,
 ): ValidationErrorResponse? = if (ageAtCurrentConviction < MIN_CONVICTION_AGE) {
-  ValidationErrorResponse(
-    type = ValidationErrorType.BELOW_MIN_VALUE,
-    message = "ERR2 - Below minimum value",
-    fields = listOf(RiskScoreRequest::dateOfBirth.name),
-  )
+  ValidationErrorType.BELOW_MIN_VALUE.asErrorResponse(listOf(RiskScoreRequest::dateOfBirth.name))
 } else {
   null
 }
@@ -68,11 +56,7 @@ private fun validateAgeAtFirstSanction(
   ageAtCurrentConviction: Int,
   ageAtFirstSanction: Int,
 ): ValidationErrorResponse? = if (ageAtFirstSanction > ageAtCurrentConviction) {
-  ValidationErrorResponse(
-    type = ValidationErrorType.BELOW_MIN_VALUE,
-    message = "ERR2 - Below minimum value",
-    fields = listOf(RiskScoreRequest::dateOfBirth.name, RiskScoreRequest::ageAtFirstSanction.name),
-  )
+  ValidationErrorType.BELOW_MIN_VALUE.asErrorResponse(listOf(RiskScoreRequest::dateOfBirth.name, RiskScoreRequest::ageAtFirstSanction.name))
 } else {
   null
 }
@@ -80,40 +64,36 @@ private fun validateAgeAtFirstSanction(
 fun addMissingFields(
   missingFields: List<String>,
   errors: List<ValidationErrorResponse>,
-): List<ValidationErrorResponse> = if (missingFields.isNotEmpty()) {
-  errors +
-    ValidationErrorResponse(
-      type = ValidationErrorType.MISSING_INPUT,
-      message = "ERR5 - Field is Null",
-      fields = missingFields,
-    )
-} else {
-  errors
-}
+): List<ValidationErrorResponse> = addValidationErrorResponse(
+  missingFields,
+  errors,
+  ValidationErrorType.MISSING_INPUT,
+)
 
 fun addUnexpectedFields(
   unexpectedFields: List<String>,
   errors: List<ValidationErrorResponse>,
-): List<ValidationErrorResponse> = if (unexpectedFields.isNotEmpty()) {
-  errors +
-    ValidationErrorResponse(
-      type = ValidationErrorType.UNEXPECTED_VALUE,
-      message = "ERR - Field is unexpected",
-      fields = unexpectedFields,
-    )
-} else {
-  errors
-}
+): List<ValidationErrorResponse> = addValidationErrorResponse(
+  unexpectedFields,
+  errors,
+  ValidationErrorType.UNEXPECTED_VALUE,
+)
 
 fun addMissingCriteriaValidation(
   criteriaFields: List<String>,
   errors: List<ValidationErrorResponse>,
-): List<ValidationErrorResponse> = if (criteriaFields.isNotEmpty()) {
-  errors + ValidationErrorResponse(
-    type = ValidationErrorType.NOT_APPLICABLE,
-    message = "ERR - Does not meet eligibility criteria",
-    fields = criteriaFields,
-  )
+): List<ValidationErrorResponse> = addValidationErrorResponse(
+  criteriaFields,
+  errors,
+  ValidationErrorType.NOT_APPLICABLE,
+)
+
+private fun addValidationErrorResponse(
+  fields: List<String>,
+  errors: List<ValidationErrorResponse>,
+  error: ValidationErrorType,
+): List<ValidationErrorResponse> = if (fields.isNotEmpty()) {
+  errors + error.asErrorResponse(fields)
 } else {
   errors
 }
@@ -122,7 +102,7 @@ fun getMissingPropertiesErrorStrings(
   request: RiskScoreRequest,
   properties: List<String>,
 ): List<String> = properties
-  .fold(arrayListOf<String>()) { acc, propertyName ->
+  .fold(arrayListOf()) { acc, propertyName ->
     acc.apply {
       val value = readInstanceProperty<Object>(request, propertyName)
       if (isNull(value)) {

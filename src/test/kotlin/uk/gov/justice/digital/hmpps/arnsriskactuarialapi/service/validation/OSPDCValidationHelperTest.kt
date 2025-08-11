@@ -64,7 +64,7 @@ class OSPDCValidationHelperTest {
 
     val error = result.first()
     assertEquals(ValidationErrorType.NOT_APPLICABLE, error.type)
-    assertEquals("ERR - Does not meet eligibility criteria", error.message)
+    assertEquals("ERR1 - Does not meet eligibility criteria", error.message)
     assertEquals(expectedFields, error.fields)
   }
 

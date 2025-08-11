@@ -3,8 +3,6 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 import org.springframework.stereotype.Service
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds.LDSInputValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds.LDSObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.LDSTransformationHelper.Companion.currentAccommodationOffendersScoreLDS
@@ -24,7 +22,7 @@ class LDSRiskProducerService : RiskScoreProducer {
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
     val errors = ldsInitialValidation(request)
 
-    if (!errors.isEmpty()) {
+    if (errors.isNotEmpty()) {
       return context.apply { LDS = LDSObject(null, errors) }
     }
 
@@ -38,11 +36,12 @@ class LDSRiskProducerService : RiskScoreProducer {
       request.professionalOrVocationalQualifications,
     )
 
-    return context.apply { LDS = getLDSOutput(validInput, errors) }
+    return context.apply { LDS = getLDSOutput(validInput) }
   }
 
   companion object {
-    fun getLDSOutput(input: LDSInputValidated, errors: List<ValidationErrorResponse>): LDSObject = runCatching {
+
+    fun getLDSOutput(input: LDSInputValidated): LDSObject {
       // Transformation Steps
       val currentAccommodationOffendersScoreLDS =
         currentAccommodationOffendersScoreLDS(input.currentAccommodation)
@@ -67,18 +66,10 @@ class LDSRiskProducerService : RiskScoreProducer {
         learningDifficultiesOffendersScore,
         professionalOrVocationalQualificationsOffendersScore,
       )
+
       // Create LDS Output
       val ldsScore = ldsScore(ldsSubTotal)
-      LDSObject(ldsScore, emptyList())
-    }.getOrElse {
-      errors +
-        ValidationErrorResponse(
-          type = ValidationErrorType.UNEXPECTED_VALUE,
-          message = "Error: ${it.message}",
-          fields = null,
-        )
-      // Create OGP Output
-      LDSObject(null, errors)
+      return LDSObject(ldsScore, emptyList())
     }
   }
 }
