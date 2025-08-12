@@ -48,7 +48,7 @@ object SelfManagementDomainScore {
     val projectedNeeds = projectedNeeds(request)
     val overallScore = getOverallScore(domainNeeds)
     val projectedScore = getOverallScore(projectedNeeds)
-    val missingFields = if (overallScore == null) getMissingFields(request) else emptyList<String>()
+    val missingFields = getMissingFields(request)
     return Triple(overallScore ?: 0, projectedScore ?: 0, missingFields)
   }
 

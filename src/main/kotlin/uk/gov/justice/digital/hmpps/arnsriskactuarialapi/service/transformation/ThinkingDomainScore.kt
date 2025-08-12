@@ -26,7 +26,7 @@ object ThinkingDomainScore {
       request.proCriminalAttitudes?.score,
       request.hostileOrientation?.score,
     ).sum()
-    return if ( true ) { // hasNoMissingFieldsrequest.proCriminalAttitudes == ProblemLevel.SIGNIFICANT_PROBLEMS ||
+    return if ( true ) { // hasNoMissingFields request.proCriminalAttitudes == ProblemLevel.SIGNIFICANT_PROBLEMS ||
       interimScore
     } else {
       null // cannot be calculated
@@ -40,7 +40,7 @@ object ThinkingDomainScore {
     val overallScore = getOverallScore(request, domainNeeds)
     val projectedScore = getOverallScore(request, projectedNeeds)
 
-    val missingFields = if (overallScore == null) getMissingFields(request) else emptyList<String>()
+    val missingFields = getMissingFields(request)
     return Triple(overallScore ?: 0, projectedScore ?: 0, missingFields)
   }
 

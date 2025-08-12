@@ -45,7 +45,7 @@ object SexDomainScore {
 
     val overallScore = getOverallScore(request, domainNeeds)
     val projectedScore = getOverallScore(request, projectedNeeds)
-    val missingFields = if (overallScore == null) getMissingFields(request) else emptyList<String>()
+    val missingFields = getMissingFields(request)
     if (!preCheckValid(request)) {
       return Triple(0,  0, missingFields)
     }

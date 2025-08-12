@@ -60,17 +60,41 @@ class PNIRiskProducerService : RiskScoreProducer {
     }
 
 
-    val risk = when {
+    val overallRisk = when {
       isHighRisk(requestValidated) -> RiskBand.HIGH
       isMediumRisk(requestValidated) -> RiskBand.MEDIUM
       else -> RiskBand.LOW
     }
 
-    val pniPathway = when {
-      isHighIntensity(requestValidated, overallNeedScore, risk) -> ProgrammeNeedIdentifier.HIGH
+    val projectedRisk = when {
+      isHighRisk(
+        requestValidated.copy(
+          ospIICBand = requestValidated.ospIICBand ?: RiskBand.VERY_HIGH,
+          ospDCBand = requestValidated.ospDCBand ?: RiskBand.VERY_HIGH,
+          rsr = requestValidated.rsr ?: 100,
+        ),
+      ) -> RiskBand.HIGH
 
-      isModerateIntensity(requestValidated, overallNeedScore, risk) -> ProgrammeNeedIdentifier.MODERATE
+      isMediumRisk(requestValidated) -> RiskBand.MEDIUM
+      else -> RiskBand.LOW
+    }
+
+
+    var pniPathway = when {
+      isHighIntensity(requestValidated, overallNeedScore, overallRisk) -> ProgrammeNeedIdentifier.HIGH
+
+      isModerateIntensity(requestValidated, overallNeedScore, overallRisk) -> ProgrammeNeedIdentifier.MODERATE
       else -> ProgrammeNeedIdentifier.ALTERNATIVE
+    }
+
+    // calculation incomplete
+    if (overallNeed.second.isNotEmpty()) {
+      if (projectedRisk != overallRisk) {
+        pniPathway = ProgrammeNeedIdentifier.OMISSION
+      }
+      if(requestValidated.saraRiskToPartner == null && requestValidated.saraRiskToOthers == null && requestValidated.inCustodyOrCommunity == CustodyOrCommunity.CUSTODY){
+        pniPathway = ProgrammeNeedIdentifier.OMISSION
+      }
     }
 
     return context.apply { PNI = PNIObject(pniPathway, errors) }
@@ -197,8 +221,8 @@ class PNIRiskProducerService : RiskScoreProducer {
 
   // This risk band combination can only mean the gender = FEMALE
   private fun isFemaleGivenRiskBandCombination(requestValidated: PNIRequestValidated): Boolean = false
-   // requestValidated.ospDCBand == RiskBand.NOT_APPLICABLE &&
-   //   (requestValidated.ospIICBand in listOf(RiskBand.LOW, RiskBand.NOT_APPLICABLE))
+  // requestValidated.ospDCBand == RiskBand.NOT_APPLICABLE &&
+  //   (requestValidated.ospIICBand in listOf(RiskBand.LOW, RiskBand.NOT_APPLICABLE))
 
   private fun isOgrs3Medium(requestValidated: PNIRequestValidated) =
     requestValidated.ogrs3TwoYear?.let { it in 50..74 } == true
@@ -213,3 +237,5 @@ fun isHighSara(requestValidated: PNIRequestValidated) = requestValidated.saraRis
 fun isMediumSara(requestValidated: PNIRequestValidated) = requestValidated.saraRiskToOthers == RiskBand.MEDIUM ||
   requestValidated.saraRiskToPartner == RiskBand.MEDIUM
 
+fun anyNullSara(requestValidated: PNIRequestValidated) = requestValidated.saraRiskToOthers == null ||
+  requestValidated.saraRiskToPartner == null

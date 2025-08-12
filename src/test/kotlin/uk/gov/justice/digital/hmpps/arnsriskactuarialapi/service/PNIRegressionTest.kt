@@ -19,8 +19,8 @@ import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
 
-private const val TEST_CSV_FILE = "/data/PNI/PNI_test_data.csv"
-private const val WRITE_FAILED_OUTPUTS = true
+private const val TEST_CSV_FILE = "/data/PNI/PNI_test_data_small.csv"
+private const val WRITE_FAILED_OUTPUTS = false
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PNIRegressionTest {
@@ -149,7 +149,6 @@ class PNIRegressionTest {
     transform6U11: String?,
   ) {
     val request = RiskScoreRequest().copy(
-      temperControl = s11U4.toProblemScore(),
       proCriminalAttitudes = s12U1.toProblemScore(),
       sexualPreoccupation = s11U11.toProblemScore(),
       sexualInterestsOffenceRelated = s11U12.toProblemScore(),
@@ -162,6 +161,7 @@ class PNIRegressionTest {
       easilyInfluencedByCriminals = s7U3.toProblemScore(),
       controllingBehaviour = s11U3.toProblemScore(),
       impulsivityBehaviour = s11U2.toProblemScore(),
+      temperControl = s11U4.toProblemScore(),
       problemSolvingSkills = s11U6.toProblemScore(),
       difficultiesCoping = s10U1.toProblemScore(),
       inCustodyOrCommunity = community.toCustodyOrCommunity(),
