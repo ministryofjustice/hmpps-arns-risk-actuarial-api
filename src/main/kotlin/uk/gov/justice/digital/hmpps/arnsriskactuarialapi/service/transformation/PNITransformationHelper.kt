@@ -54,8 +54,7 @@ fun overallNeedsGroupingCalculation(request: PNIRequestValidated): Pair<NeedScor
             overallNeedsScore,
             overallNeedsScoreProjected,
             request.inCustodyOrCommunity,
-            isMediumSara(request),
-            isHighSara(request),
+            isMediumSara(request) || isHighSara(request),
             anyNullSara(request),
             calculationComplete = allMissingFields.isEmpty(),
             allDomainsAreMissingAnswers = allDomainsAreMissingAnswers
@@ -69,8 +68,7 @@ fun getOverallNeedClassification(
     overallNeedsScore: Int,
     overallNeedsScoreProjected: Int,
     inCustodyOrCommunity: CustodyOrCommunity,
-    isMediumSara: Boolean,
-    isHighSara: Boolean,
+    isMediumOrHighSara: Boolean,
     anyNullSara: Boolean,
     calculationComplete: Boolean,
     allDomainsAreMissingAnswers: Boolean
@@ -83,29 +81,25 @@ fun getOverallNeedClassification(
     val overallNeedsLevel = getLevelFromScore(overallNeedsScore)
     val overallNeedsLevelProjected = getLevelFromScore(overallNeedsScoreProjected)
 
-    if (calculationComplete) {
-        return overallNeedsLevel
-    }
-
-    if (overallNeedsLevel == overallNeedsLevelProjected) {
-        return overallNeedsLevel
-    }
-
-    val isOutcomeOmission = isOutcomeOmission(
-        overallSexDomainScore,
-        overallNeedsLevel,
-        allDomainsAreMissingAnswers,
-        isCommunity = inCustodyOrCommunity != CustodyOrCommunity.COMMUNITY
-    )
-
-    if (isOutcomeOmission) {
-        return null
-    }
-    if (inCustodyOrCommunity == CustodyOrCommunity.COMMUNITY && (isMediumSara || isHighSara) && !anyNullSara) {
-        return NeedScore.MEDIUM
-    }
-    if (inCustodyOrCommunity != CustodyOrCommunity.COMMUNITY && (isMediumSara || isHighSara) && !anyNullSara) {
-        return NeedScore.HIGH
+    if (!calculationComplete) {
+        if (overallNeedsLevel == overallNeedsLevelProjected) {
+            return overallNeedsLevel
+        }
+        val isOutcomeOmission = isOutcomeOmission(
+            overallSexDomainScore,
+            overallNeedsLevel,
+            allDomainsAreMissingAnswers,
+            isCommunity = inCustodyOrCommunity != CustodyOrCommunity.COMMUNITY
+        )
+        if (isOutcomeOmission) {
+            return null
+        }
+        if (inCustodyOrCommunity == CustodyOrCommunity.COMMUNITY && (isMediumOrHighSara) && !anyNullSara) {
+            return NeedScore.MEDIUM
+        }
+        if (inCustodyOrCommunity != CustodyOrCommunity.COMMUNITY && (isMediumOrHighSara) && !anyNullSara) {
+            return NeedScore.HIGH
+        }
     }
 
     return overallNeedsLevel

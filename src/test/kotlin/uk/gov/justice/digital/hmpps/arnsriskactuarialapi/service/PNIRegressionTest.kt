@@ -19,7 +19,7 @@ import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
 
-private const val TEST_CSV_FILE = "/data/PNI/PNI_test_data_small.csv"
+private const val TEST_CSV_FILE = "/data/PNI/failed_rows_output.csv"
 private const val WRITE_FAILED_OUTPUTS = false
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -240,8 +240,6 @@ private fun String?.toRiskBand(): RiskBand? = when (this) {
   "'V'" -> RiskBand.VERY_HIGH
   "'M'" -> RiskBand.MEDIUM
   "'L'" -> RiskBand.LOW
-  "'NA'" -> RiskBand.NOT_APPLICABLE
-  "'NULL'" -> null
   else -> null
 }
 

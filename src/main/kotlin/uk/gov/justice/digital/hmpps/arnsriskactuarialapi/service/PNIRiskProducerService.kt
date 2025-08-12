@@ -13,8 +13,25 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.addMissingFields
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.pniInitialValidation
 
+
 @Service
 class PNIRiskProducerService : RiskScoreProducer {
+
+  private fun calculateInterimResult(
+    requestValidated: PNIRequestValidated,
+    overallNeedScore: NeedScore,
+    overallRisk: RiskBand,
+  ): ProgrammeNeedIdentifier =
+    when {
+      overallNeedScore == NeedScore.HIGH && overallRisk == RiskBand.HIGH -> ProgrammeNeedIdentifier.HIGH
+      overallNeedScore == NeedScore.MEDIUM && overallRisk == RiskBand.HIGH -> ProgrammeNeedIdentifier.MODERATE
+      overallNeedScore == NeedScore.HIGH && overallRisk == RiskBand.MEDIUM -> ProgrammeNeedIdentifier.MODERATE
+      overallNeedScore == NeedScore.MEDIUM && overallRisk == RiskBand.MEDIUM -> ProgrammeNeedIdentifier.MODERATE
+      requestValidated.saraRiskToPartner?.ordinal in listOf(2, 3) -> ProgrammeNeedIdentifier.MODERATE
+      requestValidated.saraRiskToOthers?.ordinal in listOf(2, 3) -> ProgrammeNeedIdentifier.MODERATE
+      else -> ProgrammeNeedIdentifier.ALTERNATIVE
+    }
+
   override fun getRiskScore(
     request: RiskScoreRequest,
     context: RiskScoreContext,
@@ -80,25 +97,37 @@ class PNIRiskProducerService : RiskScoreProducer {
     }
 
 
-    var pniPathway = when {
+    val interimResult = when {
       isHighIntensity(requestValidated, overallNeedScore, overallRisk) -> ProgrammeNeedIdentifier.HIGH
 
       isModerateIntensity(requestValidated, overallNeedScore, overallRisk) -> ProgrammeNeedIdentifier.MODERATE
       else -> ProgrammeNeedIdentifier.ALTERNATIVE
     }
 
-    // calculation incomplete
-    if (overallNeed.second.isNotEmpty()) {
+    var pniPathway = interimResult
+    // possible omission scenarios
+    if (hasMissingAnswers(overallNeed)) {
+      val saraTrump = (requestValidated.saraRiskToPartner == null ||
+        requestValidated.saraRiskToOthers == null)
+
+      if (saraTrump && interimResult == ProgrammeNeedIdentifier.ALTERNATIVE) {
+        pniPathway = ProgrammeNeedIdentifier.OMISSION
+      }
       if (projectedRisk != overallRisk) {
         pniPathway = ProgrammeNeedIdentifier.OMISSION
       }
-      if(requestValidated.saraRiskToPartner == null && requestValidated.saraRiskToOthers == null && requestValidated.inCustodyOrCommunity == CustodyOrCommunity.CUSTODY){
+      if (requestValidated.saraRiskToPartner == null &&
+        requestValidated.saraRiskToOthers == null &&
+        requestValidated.inCustodyOrCommunity == CustodyOrCommunity.CUSTODY
+      ) {
         pniPathway = ProgrammeNeedIdentifier.OMISSION
       }
     }
 
     return context.apply { PNI = PNIObject(pniPathway, errors) }
   }
+
+  private fun hasMissingAnswers(overallNeed: Pair<NeedScore?, List<String>>): Boolean = overallNeed.second.isNotEmpty()
 
   /**
    * High intensity programmes are only available in prisons and will therefore only be provided in these cases.
