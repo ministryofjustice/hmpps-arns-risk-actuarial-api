@@ -15,7 +15,15 @@ class RSRRiskProducerService : RiskScoreProducer {
     val errors = (ospdc.validationError ?: emptyList()) + ospiic.validationError!! // TODO cleanup
     val snsv = context.SNSV!! // todo get the snsvScore and use this as part of the rsrBand calculation
     val snsvScoreType = snsv.scoreType
-    val rsr = RSRObject(ospdc.ospdcBand, ospdc.ospdcScore, null, null, null, null, snsvScoreType, null, errors)
+    val rsr = RSRObject(ospdc.ospdcBand,
+      ospdc.ospdcScore,
+      ospiic.band,
+      ospiic.score,
+      null,
+      null,
+      snsvScoreType,
+      null,
+      errors)
 
     return context.apply { RSR = rsr }
   }
