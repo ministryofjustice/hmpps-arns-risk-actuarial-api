@@ -2,10 +2,8 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CustodyOrCommunity
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.NeedScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIRequestValidated
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.anyNullSara
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.isHighSara
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.isMediumSara
 
 fun overallNeedsGroupingCalculation(request: PNIRequestValidated): Triple<NeedScore?, NeedScore?, List<String>> {
   val (sexDomainScore, projectedSexDomainScore, missingSexDomainScore) = SexDomainScore.overallDomainScore(
@@ -77,7 +75,12 @@ private fun getOverallNeedClassification(
   val overallNeedsLevelProjected = getLevelFromScore(overallNeedsScoreProjected)
 
   if (overallNeedsScore >= 6) return Pair(NeedScore.HIGH, overallNeedsLevelProjected)
-  if (overallNeedsScore >= 3 && inCustodyOrCommunity == CustodyOrCommunity.COMMUNITY) return Pair(NeedScore.MEDIUM, overallNeedsLevelProjected)
+  if (overallNeedsScore >= 3 && inCustodyOrCommunity == CustodyOrCommunity.COMMUNITY) {
+    return Pair(
+      NeedScore.MEDIUM,
+      overallNeedsLevelProjected,
+    )
+  }
 
   if (!calculationComplete) {
     if (overallNeedsLevel == overallNeedsLevelProjected) {
@@ -105,3 +108,43 @@ private fun getLevelFromScore(overallNeedsScore: Int): NeedScore? = when (overal
   in 6..9 -> NeedScore.HIGH
   else -> null
 }
+
+fun isHighOgrs3(requestValidated: PNIRequestValidated) = requestValidated.ogrs3TwoYear?.let { it >= 75 } == true
+
+fun isHighOvp(requestValidated: PNIRequestValidated) = requestValidated.ovp?.let { it >= 60.00 } == true
+
+fun isOspDcHigh(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospDCBand == RiskBand.HIGH || requestValidated.ospDCBand == RiskBand.VERY_HIGH
+
+fun isOspIicHigh(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospIICBand == RiskBand.HIGH || requestValidated.ospIICBand == RiskBand.VERY_HIGH
+
+fun isOspDcMedium(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospDCBand == RiskBand.MEDIUM
+
+fun isOspIicMedium(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospIICBand == RiskBand.MEDIUM
+
+fun isRsrMedium(request: PNIRequestValidated): Boolean {
+  val rsrIsMedium = request.rsr in 1..2
+  return rsrIsMedium && isNullOrNa(request.ospDCBand) && isNullOrNa(request.ospIICBand)
+}
+
+fun isRsrHigh(requestValidated: PNIRequestValidated): Boolean {
+  val isHighRsr = requestValidated.rsr?.let { it >= 3 } == true
+  return isHighRsr && isNullOrNa(requestValidated.ospDCBand) && isNullOrNa(requestValidated.ospIICBand)
+}
+
+fun isNullOrNa(band: RiskBand?): Boolean = band == null || band == RiskBand.NOT_APPLICABLE
+
+fun isOgrs3Medium(requestValidated: PNIRequestValidated) = requestValidated.ogrs3TwoYear?.let { it in 50..74 } == true
+
+fun isOvpMedium(requestValidated: PNIRequestValidated) = requestValidated.ovp?.let { it in 30..59 } == true
+
+fun isHighSara(requestValidated: PNIRequestValidated) = requestValidated.saraRiskToOthers == RiskBand.HIGH ||
+  requestValidated.saraRiskToPartner == RiskBand.HIGH
+
+fun isMediumSara(requestValidated: PNIRequestValidated) = requestValidated.saraRiskToOthers == RiskBand.MEDIUM ||
+  requestValidated.saraRiskToPartner == RiskBand.MEDIUM
+
+fun anyNullSara(requestValidated: PNIRequestValidated) = requestValidated.saraRiskToOthers == null ||
+  requestValidated.saraRiskToPartner == null
+
+fun bothNullSara(requestValidated: PNIRequestValidated) = requestValidated.saraRiskToOthers == null &&
+  requestValidated.saraRiskToPartner == null
