@@ -3,7 +3,6 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIRequestValidated
 
-
 object SelfManagementDomainScore : DomainScore {
   override fun getMissingFields(request: PNIRequestValidated) = arrayListOf<String>().apply {
     if (request.impulsivityBehaviour == null) {
@@ -20,21 +19,19 @@ object SelfManagementDomainScore : DomainScore {
     }
   }
 
-  override fun domainNeeds(request: PNIRequestValidated): Int? =
-    listOfNotNull(
-      request.impulsivityBehaviour?.score,
-      request.temperControl?.score,
-      request.problemSolvingSkills?.score,
-      request.difficultiesCoping?.score,
-    ).sum()
+  override fun domainNeeds(request: PNIRequestValidated): Int? = listOfNotNull(
+    request.impulsivityBehaviour?.score,
+    request.temperControl?.score,
+    request.problemSolvingSkills?.score,
+    request.difficultiesCoping?.score,
+  ).sum()
 
-  override fun projectedNeeds(request: PNIRequestValidated): Int? =
-    listOf(
-      request.impulsivityBehaviour?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
-      request.temperControl?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
-      request.problemSolvingSkills?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
-      request.difficultiesCoping?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
-    ).sum()
+  override fun projectedNeeds(request: PNIRequestValidated): Int? = listOf(
+    request.impulsivityBehaviour?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
+    request.temperControl?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
+    request.problemSolvingSkills?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
+    request.difficultiesCoping?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
+  ).sum()
 
   override fun overallDomainScore(request: PNIRequestValidated): Triple<Int, Int, List<String>> {
     val domainNeeds = domainNeeds(request)

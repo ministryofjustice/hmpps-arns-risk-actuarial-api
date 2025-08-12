@@ -13,7 +13,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.addMissingFields
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.pniInitialValidation
 
-
 @Service
 class PNIRiskProducerService : RiskScoreProducer {
 
@@ -21,16 +20,15 @@ class PNIRiskProducerService : RiskScoreProducer {
     requestValidated: PNIRequestValidated,
     overallNeedScore: NeedScore,
     overallRisk: RiskBand,
-  ): ProgrammeNeedIdentifier =
-    when {
-      overallNeedScore == NeedScore.HIGH && overallRisk == RiskBand.HIGH -> ProgrammeNeedIdentifier.HIGH
-      overallNeedScore == NeedScore.MEDIUM && overallRisk == RiskBand.HIGH -> ProgrammeNeedIdentifier.MODERATE
-      overallNeedScore == NeedScore.HIGH && overallRisk == RiskBand.MEDIUM -> ProgrammeNeedIdentifier.MODERATE
-      overallNeedScore == NeedScore.MEDIUM && overallRisk == RiskBand.MEDIUM -> ProgrammeNeedIdentifier.MODERATE
-      requestValidated.saraRiskToPartner?.ordinal in listOf(2, 3) -> ProgrammeNeedIdentifier.MODERATE
-      requestValidated.saraRiskToOthers?.ordinal in listOf(2, 3) -> ProgrammeNeedIdentifier.MODERATE
-      else -> ProgrammeNeedIdentifier.ALTERNATIVE
-    }
+  ): ProgrammeNeedIdentifier = when {
+    overallNeedScore == NeedScore.HIGH && overallRisk == RiskBand.HIGH -> ProgrammeNeedIdentifier.HIGH
+    overallNeedScore == NeedScore.MEDIUM && overallRisk == RiskBand.HIGH -> ProgrammeNeedIdentifier.MODERATE
+    overallNeedScore == NeedScore.HIGH && overallRisk == RiskBand.MEDIUM -> ProgrammeNeedIdentifier.MODERATE
+    overallNeedScore == NeedScore.MEDIUM && overallRisk == RiskBand.MEDIUM -> ProgrammeNeedIdentifier.MODERATE
+    requestValidated.saraRiskToPartner?.ordinal in listOf(2, 3) -> ProgrammeNeedIdentifier.MODERATE
+    requestValidated.saraRiskToOthers?.ordinal in listOf(2, 3) -> ProgrammeNeedIdentifier.MODERATE
+    else -> ProgrammeNeedIdentifier.ALTERNATIVE
+  }
 
   override fun getRiskScore(
     request: RiskScoreRequest,
@@ -71,13 +69,10 @@ class PNIRiskProducerService : RiskScoreProducer {
 
     val overallNeed = overallNeedsGroupingCalculation(requestValidated)
     val overallNeedScore = overallNeed.first
-    val overallNeedScoreProjected = overallNeed.second
-
+    errors = addMissingFields(overallNeed.third.toList(), errors)
     if (overallNeedScore == null) {
-      errors = addMissingFields(overallNeed.third.toList(), errors)
       return context.apply { PNI = PNIObject(ProgrammeNeedIdentifier.OMISSION, errors) }
     }
-
 
     val overallRisk = when {
       isHighRisk(requestValidated) -> RiskBand.HIGH
@@ -98,7 +93,6 @@ class PNIRiskProducerService : RiskScoreProducer {
       else -> RiskBand.LOW
     }
 
-
     val interimResult = when {
       isHighIntensity(requestValidated, overallNeedScore, overallRisk) -> ProgrammeNeedIdentifier.HIGH
 
@@ -109,8 +103,10 @@ class PNIRiskProducerService : RiskScoreProducer {
     var pniPathway = interimResult
     // possible omission scenarios
     if (hasMissingAnswers(overallNeed)) {
-      val saraTrump = (requestValidated.saraRiskToPartner == null ||
-        requestValidated.saraRiskToOthers == null)
+      val saraTrump = (
+        requestValidated.saraRiskToPartner == null ||
+          requestValidated.saraRiskToOthers == null
+        )
 
       if (saraTrump && interimResult == ProgrammeNeedIdentifier.ALTERNATIVE) {
         pniPathway = ProgrammeNeedIdentifier.OMISSION
@@ -129,8 +125,7 @@ class PNIRiskProducerService : RiskScoreProducer {
     return context.apply { PNI = PNIObject(pniPathway, errors) }
   }
 
-  private fun hasMissingAnswers(overallNeed: Triple<NeedScore?, NeedScore?, List<String>>): Boolean =
-    overallNeed.third.isNotEmpty()
+  private fun hasMissingAnswers(overallNeed: Triple<NeedScore?, NeedScore?, List<String>>): Boolean = overallNeed.third.isNotEmpty()
 
   /**
    * High intensity programmes are only available in prisons and will therefore only be provided in these cases.
@@ -187,7 +182,7 @@ class PNIRiskProducerService : RiskScoreProducer {
 
   internal fun isHighRisk(
     requestValidated: PNIRequestValidated,
-  ): Boolean = //requestValidated.inCustodyOrCommunity == CustodyOrCommunity.CUSTODY &&
+  ): Boolean = // requestValidated.inCustodyOrCommunity == CustodyOrCommunity.CUSTODY &&
     isHighOgrs3(requestValidated) ||
       isHighOvp(requestValidated) ||
       isOspDcHigh(requestValidated) ||
@@ -197,36 +192,28 @@ class PNIRiskProducerService : RiskScoreProducer {
 
   internal fun isMediumRisk(
     requestValidated: PNIRequestValidated,
-  ): Boolean {
-    return isOgrs3Medium(requestValidated) ||
-      isOvpMedium(requestValidated) ||
-      isOspDcMedium(requestValidated) ||
-      isOspIicMedium(requestValidated) ||
-      isMediumSara(requestValidated) ||
-      isRsrMedium(requestValidated)
-  }
+  ): Boolean = isOgrs3Medium(requestValidated) ||
+    isOvpMedium(requestValidated) ||
+    isOspDcMedium(requestValidated) ||
+    isOspIicMedium(requestValidated) ||
+    isMediumSara(requestValidated) ||
+    isRsrMedium(requestValidated)
 
-
-  private fun isHighOgrs3(requestValidated: PNIRequestValidated) =
-    requestValidated.ogrs3TwoYear?.let { it >= 75 } == true
+  private fun isHighOgrs3(requestValidated: PNIRequestValidated) = requestValidated.ogrs3TwoYear?.let { it >= 75 } == true
 
   private fun isHighOvp(requestValidated: PNIRequestValidated) = requestValidated.ovp?.let { it >= 60.00 } == true
 
   // OSP DC can never be HIGH for gender FEMALE because female always OSPDC = NA
-  private fun isOspDcHigh(requestValidated: PNIRequestValidated): Boolean =
-    requestValidated.ospDCBand == RiskBand.HIGH || requestValidated.ospDCBand == RiskBand.VERY_HIGH
+  private fun isOspDcHigh(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospDCBand == RiskBand.HIGH || requestValidated.ospDCBand == RiskBand.VERY_HIGH
 
   // OSP IIC can never be HIGH for gender FEMALE because female always OSPIIC = LOW or NA
-  private fun isOspIicHigh(requestValidated: PNIRequestValidated): Boolean =
-    requestValidated.ospIICBand == RiskBand.HIGH || requestValidated.ospIICBand == RiskBand.VERY_HIGH
+  private fun isOspIicHigh(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospIICBand == RiskBand.HIGH || requestValidated.ospIICBand == RiskBand.VERY_HIGH
 
   // OSP DC can never be MEDIUM for gender FEMALE because female always OSPDC = NA
-  private fun isOspDcMedium(requestValidated: PNIRequestValidated): Boolean =
-    requestValidated.ospDCBand == RiskBand.MEDIUM
+  private fun isOspDcMedium(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospDCBand == RiskBand.MEDIUM
 
   // OSP IIC can never be MEDIUM for gender FEMALE because female always OSPIIC = LOW or NA
-  private fun isOspIicMedium(requestValidated: PNIRequestValidated): Boolean =
-    requestValidated.ospIICBand == RiskBand.MEDIUM
+  private fun isOspIicMedium(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospIICBand == RiskBand.MEDIUM
 
   private fun isRsrMedium(request: PNIRequestValidated): Boolean {
     val rsrIsMedium = request.rsr in 1..2
@@ -248,19 +235,16 @@ class PNIRiskProducerService : RiskScoreProducer {
     }
   }
 
-  private fun isNullOrNa(band: RiskBand?): Boolean =
-    band == null || band == RiskBand.NOT_APPLICABLE
+  private fun isNullOrNa(band: RiskBand?): Boolean = band == null || band == RiskBand.NOT_APPLICABLE
 
   // This risk band combination can only mean the gender = FEMALE
   private fun isFemaleGivenRiskBandCombination(requestValidated: PNIRequestValidated): Boolean = false
   // requestValidated.ospDCBand == RiskBand.NOT_APPLICABLE &&
   //   (requestValidated.ospIICBand in listOf(RiskBand.LOW, RiskBand.NOT_APPLICABLE))
 
-  private fun isOgrs3Medium(requestValidated: PNIRequestValidated) =
-    requestValidated.ogrs3TwoYear?.let { it in 50..74 } == true
+  private fun isOgrs3Medium(requestValidated: PNIRequestValidated) = requestValidated.ogrs3TwoYear?.let { it in 50..74 } == true
 
   private fun isOvpMedium(requestValidated: PNIRequestValidated) = requestValidated.ovp?.let { it in 30..59 } == true
-
 }
 
 fun isHighSara(requestValidated: PNIRequestValidated) = requestValidated.saraRiskToOthers == RiskBand.HIGH ||

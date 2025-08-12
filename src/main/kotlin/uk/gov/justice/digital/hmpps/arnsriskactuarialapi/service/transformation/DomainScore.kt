@@ -11,5 +11,4 @@ interface DomainScore {
   fun projectedNeeds(request: PNIRequestValidated): Int?
 
   fun overallDomainScore(request: PNIRequestValidated): Triple<Int, Int, List<String>>
-
 }

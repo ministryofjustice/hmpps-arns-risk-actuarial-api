@@ -82,7 +82,8 @@ class PNIRiskProducerServiceTest {
       sexualInterestsOffenceRelated = null,
       emotionalCongruence = null,
       easilyInfluencedByCriminals = null,
-      hasCommittedSexualOffence = true,
+      saraRiskToOthers = null,
+      saraRiskToPartner = null,
     )
     val result = service.getRiskScore(request, context).PNI
     assertNotNull(result)
@@ -216,13 +217,6 @@ class PNIRiskProducerServiceTest {
     }
 
     @Test
-    fun `isHighRisk returns true for rsr high when female`() {
-      val result =
-        service.isHighRisk(pniRequest().copy(ospDCBand = RiskBand.NOT_APPLICABLE, ospIICBand = RiskBand.LOW, rsr = 3))
-      assertTrue(result)
-    }
-
-    @Test
     fun `isHighRisk returns true for high SARA score`() {
       val result = service.isHighRisk(pniRequest().copy(saraRiskToOthers = RiskBand.HIGH))
       assertTrue(result)
@@ -268,13 +262,6 @@ class PNIRiskProducerServiceTest {
     @Test
     fun `isMediumRisk returns true for ospIic medium for male`() {
       val result = service.isMediumRisk(pniRequest().copy(ospIICBand = RiskBand.MEDIUM))
-      assertTrue(result)
-    }
-
-    @Test
-    fun `isMediumRisk returns true for rsr medium when female`() {
-      val result =
-        service.isMediumRisk(pniRequest().copy(ospDCBand = RiskBand.NOT_APPLICABLE, ospIICBand = RiskBand.LOW, rsr = 2))
       assertTrue(result)
     }
 

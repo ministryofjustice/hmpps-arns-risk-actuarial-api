@@ -20,26 +20,21 @@ object RelationshipDomainScore : DomainScore {
     }
   }
 
-  override fun domainNeeds(request: PNIRequestValidated): Int? {
-    return listOfNotNull(
-      request.currentRelationshipFamilyMembers?.score,
-      request.previousCloseRelationships?.score,
-      request.easilyInfluencedByCriminals?.score,
-      request.controllingBehaviour?.score,
-    ).sum()
-  }
+  override fun domainNeeds(request: PNIRequestValidated): Int? = listOfNotNull(
+    request.currentRelationshipFamilyMembers?.score,
+    request.previousCloseRelationships?.score,
+    request.easilyInfluencedByCriminals?.score,
+    request.controllingBehaviour?.score,
+  ).sum()
 
-
-  override fun projectedNeeds(request: PNIRequestValidated): Int? =
-    listOf(
-      request.currentRelationshipFamilyMembers?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
-      request.previousCloseRelationships?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
-      request.easilyInfluencedByCriminals?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
-      request.controllingBehaviour?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
-    ).sum()
+  override fun projectedNeeds(request: PNIRequestValidated): Int? = listOf(
+    request.currentRelationshipFamilyMembers?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
+    request.previousCloseRelationships?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
+    request.easilyInfluencedByCriminals?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
+    request.controllingBehaviour?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
+  ).sum()
 
   override fun overallDomainScore(request: PNIRequestValidated): Triple<Int, Int, List<String>> {
-
     val projectedNeeds = projectedNeeds(request)
     val domainNeeds = domainNeeds(request)
 

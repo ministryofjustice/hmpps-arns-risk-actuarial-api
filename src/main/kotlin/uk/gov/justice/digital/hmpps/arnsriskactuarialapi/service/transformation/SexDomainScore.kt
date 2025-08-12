@@ -64,6 +64,5 @@ object SexDomainScore : DomainScore {
   }
 
   // The sex domain will only be calculated if hasCommittedSexualOffence or riskSexualHarm is Yes
-  private fun preCheckValid(request: PNIRequestValidated): Boolean =
-    request.hasCommittedSexualOffence == true || request.riskSexualHarm == true
+  private fun preCheckValid(request: PNIRequestValidated): Boolean = request.hasCommittedSexualOffence == true || request.riskSexualHarm == true
 }
