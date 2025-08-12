@@ -3,8 +3,9 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIRequestValidated
 
-object RelationshipDomainScore {
-  private fun getMissingFields(request: PNIRequestValidated) = arrayListOf<String>().apply {
+object RelationshipDomainScore : DomainScore {
+
+  override fun getMissingFields(request: PNIRequestValidated) = arrayListOf<String>().apply {
     if (request.currentRelationshipFamilyMembers == null) {
       add("currentRelationshipFamilyMembers")
     }
@@ -19,23 +20,17 @@ object RelationshipDomainScore {
     }
   }
 
-  private fun domainNeeds(request: PNIRequestValidated): Int? {
-    val hasNoMissingFields = getMissingFields(request).isEmpty()
-    val interimScore = listOfNotNull(
+  override fun domainNeeds(request: PNIRequestValidated): Int? {
+    return listOfNotNull(
       request.currentRelationshipFamilyMembers?.score,
       request.previousCloseRelationships?.score,
       request.easilyInfluencedByCriminals?.score,
       request.controllingBehaviour?.score,
     ).sum()
-    return if (interimScore >= 5 || hasNoMissingFields) {
-      interimScore
-    } else {
-      null // cannot be calculated
-    }
   }
 
 
-  private fun projectedNeeds(request: PNIRequestValidated): Int? =
+  override fun projectedNeeds(request: PNIRequestValidated): Int? =
     listOf(
       request.currentRelationshipFamilyMembers?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
       request.previousCloseRelationships?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
@@ -43,7 +38,7 @@ object RelationshipDomainScore {
       request.controllingBehaviour?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
     ).sum()
 
-  fun overallDomainScore(request: PNIRequestValidated): Triple<Int, Int, List<String>> {
+  override fun overallDomainScore(request: PNIRequestValidated): Triple<Int, Int, List<String>> {
 
     val projectedNeeds = projectedNeeds(request)
     val domainNeeds = domainNeeds(request)

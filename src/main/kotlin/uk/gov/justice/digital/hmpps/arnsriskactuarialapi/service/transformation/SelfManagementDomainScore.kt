@@ -4,8 +4,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIRequestValidated
 
 
-object SelfManagementDomainScore {
-  private fun getMissingFields(request: PNIRequestValidated) = arrayListOf<String>().apply {
+object SelfManagementDomainScore : DomainScore {
+  override fun getMissingFields(request: PNIRequestValidated) = arrayListOf<String>().apply {
     if (request.impulsivityBehaviour == null) {
       add("impulsivityBehaviour")
     }
@@ -20,22 +20,15 @@ object SelfManagementDomainScore {
     }
   }
 
-  private fun domainNeeds(request: PNIRequestValidated): Int? {
-    val hasNoMissingFields = getMissingFields(request).isEmpty()
-    val interimScore = listOfNotNull(
+  override fun domainNeeds(request: PNIRequestValidated): Int? =
+    listOfNotNull(
       request.impulsivityBehaviour?.score,
       request.temperControl?.score,
       request.problemSolvingSkills?.score,
       request.difficultiesCoping?.score,
     ).sum()
-    return if (interimScore >= 5 || hasNoMissingFields) {
-      interimScore
-    } else {
-      null // cannot be calculated
-    }
-  }
 
-  private fun projectedNeeds(request: PNIRequestValidated): Int? =
+  override fun projectedNeeds(request: PNIRequestValidated): Int? =
     listOf(
       request.impulsivityBehaviour?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
       request.temperControl?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
@@ -43,7 +36,7 @@ object SelfManagementDomainScore {
       request.difficultiesCoping?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
     ).sum()
 
-  fun overallDomainScore(request: PNIRequestValidated): Triple<Int, Int, List<String>> {
+  override fun overallDomainScore(request: PNIRequestValidated): Triple<Int, Int, List<String>> {
     val domainNeeds = domainNeeds(request)
     val projectedNeeds = projectedNeeds(request)
     val overallScore = getOverallScore(domainNeeds)

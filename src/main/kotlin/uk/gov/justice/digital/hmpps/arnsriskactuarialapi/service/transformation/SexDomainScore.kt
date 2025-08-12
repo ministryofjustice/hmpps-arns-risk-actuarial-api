@@ -3,8 +3,8 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIRequestValidated
 
-object SexDomainScore {
-  private fun getMissingFields(request: PNIRequestValidated) = arrayListOf<String>().apply {
+object SexDomainScore : DomainScore {
+  override fun getMissingFields(request: PNIRequestValidated) = arrayListOf<String>().apply {
     if (request.sexualPreoccupation == null) {
       add("sexualPreoccupation")
     }
@@ -16,7 +16,7 @@ object SexDomainScore {
     }
   }
 
-  private fun domainNeeds(request: PNIRequestValidated): Int? {
+  override fun domainNeeds(request: PNIRequestValidated): Int? {
     val hasNoMissingFields = getMissingFields(request).isEmpty()
     val interimScore = listOfNotNull(
       request.sexualPreoccupation?.score,
@@ -30,8 +30,8 @@ object SexDomainScore {
     }
   }
 
-  private fun projectedNeeds(request: PNIRequestValidated): Int? {
-    val interimScore =  listOf(
+  override fun projectedNeeds(request: PNIRequestValidated): Int? {
+    val interimScore = listOf(
       request.sexualPreoccupation?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
       request.sexualInterestsOffenceRelated?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
       request.emotionalCongruence?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
@@ -39,7 +39,7 @@ object SexDomainScore {
     return interimScore
   }
 
-  fun overallDomainScore(request: PNIRequestValidated): Triple<Int, Int, List<String>> {
+  override fun overallDomainScore(request: PNIRequestValidated): Triple<Int, Int, List<String>> {
     val projectedNeeds = projectedNeeds(request)
     val domainNeeds = domainNeeds(request)
 
@@ -47,7 +47,7 @@ object SexDomainScore {
     val projectedScore = getOverallScore(request, projectedNeeds)
     val missingFields = getMissingFields(request)
     if (!preCheckValid(request)) {
-      return Triple(0,  0, missingFields)
+      return Triple(0, 0, missingFields)
     }
     return Triple(overallScore ?: 0, projectedScore ?: 0, missingFields)
   }

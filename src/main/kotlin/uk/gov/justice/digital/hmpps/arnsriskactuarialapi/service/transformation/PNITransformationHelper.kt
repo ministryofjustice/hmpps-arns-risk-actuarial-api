@@ -8,7 +8,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.isHighSara
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.isMediumSara
 
 
-fun overallNeedsGroupingCalculation(request: PNIRequestValidated): Pair<NeedScore?, List<String>> {
+fun overallNeedsGroupingCalculation(request: PNIRequestValidated): Triple<NeedScore?, NeedScore?, List<String>> {
     val (overallSexDomainScore, projectedSexDomainScore, missingSexDomainScore) = SexDomainScore.overallDomainScore(
         request,
     )
@@ -48,18 +48,21 @@ fun overallNeedsGroupingCalculation(request: PNIRequestValidated): Pair<NeedScor
         projectedSelfManagementDomainScore,
     ).sum()
 
-    return Pair(
-        getOverallNeedClassification(
-            overallSexDomainScore,
-            overallNeedsScore,
-            overallNeedsScoreProjected,
-            request.inCustodyOrCommunity,
-            isMediumSara(request) || isHighSara(request),
-            anyNullSara(request),
-            calculationComplete = allMissingFields.isEmpty(),
-            allDomainsAreMissingAnswers = allDomainsAreMissingAnswers
-        ),
-        allMissingFields,
+    val classifications = getOverallNeedClassification(
+        overallSexDomainScore,
+        overallNeedsScore,
+        overallNeedsScoreProjected,
+        request.inCustodyOrCommunity,
+        isMediumSara(request) || isHighSara(request),
+        anyNullSara(request),
+        calculationComplete = allMissingFields.isEmpty(),
+        allDomainsAreMissingAnswers = allDomainsAreMissingAnswers
+    )
+
+    return Triple(
+        classifications.first,
+        classifications.second,
+        allMissingFields
     )
 }
 
@@ -72,19 +75,18 @@ fun getOverallNeedClassification(
     anyNullSara: Boolean,
     calculationComplete: Boolean,
     allDomainsAreMissingAnswers: Boolean
-): NeedScore? {
-
-    if (overallNeedsScore >= 6) return NeedScore.HIGH
-    if (overallNeedsScore >= 3 && inCustodyOrCommunity == CustodyOrCommunity.COMMUNITY) return NeedScore.MEDIUM
-
-
+): Pair<NeedScore?, NeedScore?> {
     val overallNeedsLevel = getLevelFromScore(overallNeedsScore)
     val overallNeedsLevelProjected = getLevelFromScore(overallNeedsScoreProjected)
 
+    if (overallNeedsScore >= 6) return Pair(NeedScore.HIGH,overallNeedsLevelProjected)
+    if (overallNeedsScore >= 3 && inCustodyOrCommunity == CustodyOrCommunity.COMMUNITY) return Pair(NeedScore.MEDIUM,overallNeedsLevelProjected)
+
     if (!calculationComplete) {
         if (overallNeedsLevel == overallNeedsLevelProjected) {
-            return overallNeedsLevel
+            return Pair(overallNeedsLevel,overallNeedsLevelProjected)
         }
+
         val isOutcomeOmission = isOutcomeOmission(
             overallSexDomainScore,
             overallNeedsLevel,
@@ -92,17 +94,16 @@ fun getOverallNeedClassification(
             isCommunity = inCustodyOrCommunity != CustodyOrCommunity.COMMUNITY
         )
         if (isOutcomeOmission) {
-            return null
+            return Pair(null,overallNeedsLevelProjected)
         }
         if (inCustodyOrCommunity == CustodyOrCommunity.COMMUNITY && (isMediumOrHighSara) && !anyNullSara) {
-            return NeedScore.MEDIUM
+            return Pair(NeedScore.MEDIUM,overallNeedsLevelProjected)
         }
         if (inCustodyOrCommunity != CustodyOrCommunity.COMMUNITY && (isMediumOrHighSara) && !anyNullSara) {
-            return NeedScore.HIGH
+            return Pair(NeedScore.HIGH,overallNeedsLevelProjected)
         }
     }
-
-    return overallNeedsLevel
+    return Pair(overallNeedsLevel,overallNeedsLevelProjected)
 }
 
 fun isOutcomeOmission(
@@ -124,5 +125,3 @@ private fun getLevelFromScore(overallNeedsScore: Int): NeedScore? =
         in 6..9 -> NeedScore.HIGH
         else -> null
     }
-
-

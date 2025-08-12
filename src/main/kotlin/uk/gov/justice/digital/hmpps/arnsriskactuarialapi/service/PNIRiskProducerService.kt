@@ -71,8 +71,10 @@ class PNIRiskProducerService : RiskScoreProducer {
 
     val overallNeed = overallNeedsGroupingCalculation(requestValidated)
     val overallNeedScore = overallNeed.first
+    val overallNeedScoreProjected = overallNeed.second
+
     if (overallNeedScore == null) {
-      errors = addMissingFields(overallNeed.second.toList(), errors)
+      errors = addMissingFields(overallNeed.third.toList(), errors)
       return context.apply { PNI = PNIObject(ProgrammeNeedIdentifier.OMISSION, errors) }
     }
 
@@ -127,7 +129,8 @@ class PNIRiskProducerService : RiskScoreProducer {
     return context.apply { PNI = PNIObject(pniPathway, errors) }
   }
 
-  private fun hasMissingAnswers(overallNeed: Pair<NeedScore?, List<String>>): Boolean = overallNeed.second.isNotEmpty()
+  private fun hasMissingAnswers(overallNeed: Triple<NeedScore?, NeedScore?, List<String>>): Boolean =
+    overallNeed.third.isNotEmpty()
 
   /**
    * High intensity programmes are only available in prisons and will therefore only be provided in these cases.
