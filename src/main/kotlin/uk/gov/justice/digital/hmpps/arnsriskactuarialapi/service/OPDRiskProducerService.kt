@@ -117,12 +117,9 @@ class OPDRiskProducerService : RiskScoreProducer {
     patientSecureUnitOrHospital = request.patientSecureUnitOrHospital ?: false,
     obsessiveBehaviour = request.obsessiveBehaviour ?: false,
     selfHarmSuicideAttempt = request.selfHarmSuicideAttempt ?: false,
-    concernsAboutSuicidePast = request.concernsAboutSuicidePast ?: false,
-    concernsAboutSelfHarmPast = request.concernsAboutSelfHarmPast ?: false,
     assaultedOrThreatenedStaff = request.assaultedOrThreatenedStaff ?: false,
     escapeOrAbsconded = request.escapeOrAbsconded ?: false,
-    controlIssues = request.controlIssues ?: false,
-    breachOfTrust = request.breachOfTrust ?: false,
+    controlIssuesOrBreachOfTrust = request.controlIssuesOrBreachOfTrust ?: false,
     impactOfOffendingOnOthers = request.impactOfOffendingOnOthers ?: false,
   )
 
@@ -302,13 +299,10 @@ class OPDRiskProducerService : RiskScoreProducer {
         request.currentPsychiatricTreatmentOrPending,
         request.obsessiveBehaviour,
         request.selfHarmSuicideAttempt,
-        request.concernsAboutSuicidePast,
-        request.concernsAboutSelfHarmPast,
         request.attitudeTowardsSupervision,
         request.assaultedOrThreatenedStaff,
         request.escapeOrAbsconded,
-        request.controlIssues,
-        request.breachOfTrust,
+        request.controlIssuesOrBreachOfTrust,
       ),
     )
 }

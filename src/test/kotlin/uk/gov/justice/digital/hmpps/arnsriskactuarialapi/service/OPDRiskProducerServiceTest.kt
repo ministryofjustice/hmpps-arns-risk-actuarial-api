@@ -189,13 +189,10 @@ class OPDRiskProducerServiceTest {
       currentPsychiatricTreatmentOrPending = null,
       obsessiveBehaviour = null,
       selfHarmSuicideAttempt = null,
-      concernsAboutSuicidePast = null,
-      concernsAboutSelfHarmPast = null,
       attitudeTowardsSupervision = null,
       assaultedOrThreatenedStaff = null,
       escapeOrAbsconded = null,
-      controlIssues = null,
-      breachOfTrust = null,
+      controlIssuesOrBreachOfTrust = null,
     )
 
     val result = service.getRiskScore(request, context).OPD!!

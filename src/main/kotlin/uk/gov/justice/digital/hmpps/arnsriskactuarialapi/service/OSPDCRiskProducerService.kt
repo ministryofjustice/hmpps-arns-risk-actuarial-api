@@ -18,6 +18,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getTotalContactChildSexualSanctionsWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getTotalNonContactSexualOffencesExcludingIndecentImagesWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getTotalNumberOfSanctionsWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.addMissingCriteriaValidation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.ospdcInitialValidation
 import kotlin.getOrElse
 
@@ -36,14 +37,13 @@ class OSPDCRiskProducerService : RiskScoreProducer {
     }
 
     // When female, there is no score or band produced
-    if (request.gender == Gender.FEMALE) {
-      val rsrContribution = if (request.hasCommittedSexualOffence == true) {
-        FIXED_RSR_CONTRIBUTION
-      } else {
-        0.0
-      }
+    if (request.gender == Gender.FEMALE && request.hasCommittedSexualOffence == true) {
       return context.apply {
-        OSPDC = OSPDCObject(RiskBand.NOT_APPLICABLE, rsrContribution, emptyList())
+        OSPDC = OSPDCObject(
+          RiskBand.NOT_APPLICABLE,
+          FIXED_RSR_CONTRIBUTION,
+          addMissingCriteriaValidation(arrayListOf(RiskScoreRequest::gender.name), emptyList()),
+        )
       }
     }
 
@@ -61,13 +61,12 @@ class OSPDCRiskProducerService : RiskScoreProducer {
       request.victimStranger,
     )
     return context.apply {
-      OSPDC = getOSPDCObject(validRequest, errors)
+      OSPDC = getOSPDCObject(validRequest)
     }
   }
 
   private fun getOSPDCObject(
     request: OSPDCRequestValidated,
-    errors: List<ValidationErrorResponse>,
   ): OSPDCObject = runCatching {
     listOf(
       getTotalContactAdultSexualSanctionsWeight(request.totalContactAdultSexualSanctions),
@@ -98,7 +97,7 @@ class OSPDCRiskProducerService : RiskScoreProducer {
           OSPDCObject(
             getOSPDCBand(ospdc64PointScore),
             getOSPDCScore(ospdc64PointScore),
-            errors,
+            emptyList(),
           )
         }
       }

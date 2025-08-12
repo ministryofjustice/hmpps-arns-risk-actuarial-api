@@ -1,7 +1,7 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.softScale
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sigmoid
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
@@ -84,5 +84,5 @@ fun getOSPDCScore(ospdc64PointScore: Int): Double {
     return 0.0
   }
   val z = -8.6333 + (0.1598 * ospdc64PointScore)
-  return z.softScale()
+  return z.sigmoid()
 }

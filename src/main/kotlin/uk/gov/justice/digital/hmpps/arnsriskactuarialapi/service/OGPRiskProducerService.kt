@@ -29,10 +29,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.thinkingAndBehaviourNonViolentWeighted
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.totalOGPScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.understandsPeoplesViewsOffendersScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.OGPValidationHelper.Companion.OGP_PROPERTIES
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.OGPValidationHelper.Companion.getMissingFieldsErrorsInContext
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.addMissingFields
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.getMissingPropertiesErrorStrings
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.OGPValidationHelper.Companion.ogpInitialValidation
 
 @Service
 class OGPRiskProducerService : RiskScoreProducer {
@@ -40,7 +37,7 @@ class OGPRiskProducerService : RiskScoreProducer {
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
     val errors = ogpInitialValidation(request, context)
 
-    if (!errors.isEmpty()) {
+    if (errors.isNotEmpty()) {
       return context.apply {
         OGP = OGPObject(null, null, null, null, errors)
       }
@@ -59,11 +56,11 @@ class OGPRiskProducerService : RiskScoreProducer {
       request.proCriminalAttitudes!!,
     )
 
-    return context.apply { OGP = getOGPOutput(validInput, errors) }
+    return context.apply { OGP = getOGPOutput(validInput) }
   }
 
   companion object {
-    fun getOGPOutput(input: OGPInputValidated, errors: List<ValidationErrorResponse>): OGPObject = runCatching {
+    fun getOGPOutput(input: OGPInputValidated): OGPObject = runCatching {
       // Transformation Step
       val currentAccommodationOffendersScore =
         currentAccommodationOffendersScore(input.currentAccommodation)
@@ -121,23 +118,20 @@ class OGPRiskProducerService : RiskScoreProducer {
       // Create OGP Output
       OGPObject(ogpReoffendingOneYear, ogpReoffendingTwoYear, bandOGP, totalOGPScore, emptyList())
     }.getOrElse {
-      errors +
-        ValidationErrorResponse(
-          type = ValidationErrorType.UNEXPECTED_VALUE,
-          message = "Error: ${it.message}",
-          fields = null,
-        )
       // Create OGP Output
-      OGPObject(null, null, null, null, errors)
-    }
-
-    fun ogpInitialValidation(
-      request: RiskScoreRequest,
-      context: RiskScoreContext,
-    ): List<ValidationErrorResponse> {
-      val missingProperties = getMissingPropertiesErrorStrings(request, OGP_PROPERTIES)
-      val missingFields = getMissingFieldsErrorsInContext(context)
-      return addMissingFields(missingProperties + missingFields, listOf())
+      OGPObject(
+        null,
+        null,
+        null,
+        null,
+        listOf(
+          ValidationErrorResponse(
+            type = ValidationErrorType.UNEXPECTED_VALUE,
+            message = "Error: ${it.message}",
+            fields = null,
+          ),
+        ),
+      )
     }
   }
 }

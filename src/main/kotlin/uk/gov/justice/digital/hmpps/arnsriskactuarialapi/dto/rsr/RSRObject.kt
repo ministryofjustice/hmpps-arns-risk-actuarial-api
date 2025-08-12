@@ -5,13 +5,13 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResp
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.ScoreType
 
 data class RSRObject(
-  val ospdcBand: RiskBand?,
-  val ospdcScore: Double?,
-  val ospiicBand: RiskBand?,
-  val ospiicScore: Double?,
-  val rsrBand: RiskBand?,
+  val ospdcBand: RiskBand? = null,
+  val ospdcScore: Double? = null,
+  val ospiicBand: RiskBand? = null,
+  val ospiicScore: Double? = null,
+  val rsrBand: RiskBand? = null,
   val rsrScore: Int?,
-  val scoreType: ScoreType?,
-  val ospRiskReduction: Boolean?,
-  val validationError: List<ValidationErrorResponse>?,
+  val scoreType: ScoreType? = null,
+  val ospRiskReduction: Boolean? = null,
+  val validationError: List<ValidationErrorResponse>? = null,
 )

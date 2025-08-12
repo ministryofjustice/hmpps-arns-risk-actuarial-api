@@ -21,7 +21,7 @@ import java.nio.file.Paths
 private val knownFailures = listOf("10008", "10010", "10021", "10024", "10045", "10053", "10057", "10075")
 
 private const val TEST_CSV_FILE = "/data/PNI/PNI_test_data.csv"
-private const val WRITE_FAILED_OUTPUTS = true
+private const val WRITE_FAILED_OUTPUTS = false
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PNIRegressionTest {

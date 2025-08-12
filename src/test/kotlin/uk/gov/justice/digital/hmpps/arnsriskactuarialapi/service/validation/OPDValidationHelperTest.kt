@@ -106,7 +106,7 @@ class OPDValidationHelperTest {
 
     val error = result.first()
     assertEquals(ValidationErrorType.UNEXPECTED_VALUE, error.type)
-    assertEquals("ERR - Field is unexpected", error.message)
+    assertEquals("ERR6 - Field is unexpected", error.message)
     assertEquals(expectedFields, error.fields)
   }
 

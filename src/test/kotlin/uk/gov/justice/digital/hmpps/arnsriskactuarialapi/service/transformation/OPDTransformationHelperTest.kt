@@ -93,21 +93,17 @@ class OPDTransformationHelperTest {
   }
 
   @Test
-  fun `selfHarmSuicideAttemptOffendersScore returns 1 if any true`() {
+  fun `selfHarmSuicideAttemptOffendersScore returns 1 if selfHarmSuicideAttempt is true`() {
     val request = opdRequestValidated().copy(
       selfHarmSuicideAttempt = true,
-      concernsAboutSuicidePast = false,
-      concernsAboutSelfHarmPast = false,
     )
     assertEquals(1, selfHarmSuicideAttemptOffendersScore(request))
   }
 
   @Test
-  fun `selfHarmSuicideAttemptOffendersScore returns 0 if all false`() {
+  fun `selfHarmSuicideAttemptOffendersScore returns 0 if selfHarmSuicideAttempt false`() {
     val request = opdRequestValidated().copy(
       selfHarmSuicideAttempt = false,
-      concernsAboutSuicidePast = false,
-      concernsAboutSelfHarmPast = false,
     )
     assertEquals(0, selfHarmSuicideAttemptOffendersScore(request))
   }
@@ -120,7 +116,7 @@ class OPDTransformationHelperTest {
 
   @Test
   fun `severeChallengingBehavioursOffendersScore returns 1 for other risk flags`() {
-    val request = opdRequestValidated().copy(breachOfTrust = true)
+    val request = opdRequestValidated().copy(controlIssuesOrBreachOfTrust = true)
     assertEquals(1, severeChallengingBehavioursOffendersScore(request))
   }
 
@@ -130,8 +126,7 @@ class OPDTransformationHelperTest {
       attitudeTowardsSupervision = ProblemLevel.NO_PROBLEMS,
       assaultedOrThreatenedStaff = false,
       escapeOrAbsconded = false,
-      controlIssues = false,
-      breachOfTrust = false,
+      controlIssuesOrBreachOfTrust = false,
     )
     assertEquals(0, severeChallengingBehavioursOffendersScore(request))
   }
