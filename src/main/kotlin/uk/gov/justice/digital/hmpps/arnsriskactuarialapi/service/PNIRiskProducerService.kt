@@ -9,16 +9,27 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.ProgrammeNeedIdentifier
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.RelationshipDomainScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SelfManagementDomainScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SexDomainScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.ThinkingDomainScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getOverallNeedClassification
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.anyNullSara
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.bothNullSara
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isHighOgrs3
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isHighOvp
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isHighSara
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isMediumSara
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isOgrs3Medium
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isOspDcHigh
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isOspDcMedium
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isOspIicHigh
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isOspIicMedium
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isOvpMedium
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isRsrHigh
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isRsrMedium
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.overallNeedsGroupingCalculation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.addMissingFields
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.pniInitialValidation
 
 @Service
 class PNIRiskProducerService : RiskScoreProducer {
+
   override fun getRiskScore(
     request: RiskScoreRequest,
     context: RiskScoreContext,
@@ -47,9 +58,9 @@ class PNIRiskProducerService : RiskScoreProducer {
       ogrs3TwoYear = context.OGRS3?.ogrs3TwoYear,
       ovp = context.OVP?.provenViolentTypeReoffendingTwoYear,
       ovpBand = context.OVP?.band,
-      ospDCBand = null, // TODO
-      ospIICBand = null, // TODO
-      rsr = null, // TODO
+      ospDCBand = context.RSR?.ospdcBand,
+      ospIICBand = context.RSR?.ospiicBand,
+      rsr = context.RSR?.rsrScore,
       saraRiskToPartner = request.saraRiskToPartner,
       saraRiskToOthers = request.saraRiskToOthers,
       problemSolvingSkills = request.problemSolvingSkills,
@@ -58,26 +69,57 @@ class PNIRiskProducerService : RiskScoreProducer {
 
     val overallNeed = overallNeedsGroupingCalculation(requestValidated)
     val overallNeedScore = overallNeed.first
+    errors = addMissingFields(overallNeed.third.toList(), errors)
     if (overallNeedScore == null) {
-      errors = addMissingFields(overallNeed.second.toList(), errors)
       return context.apply { PNI = PNIObject(ProgrammeNeedIdentifier.OMISSION, errors) }
     }
 
-    val risk = when {
+    val overallRisk = when {
       isHighRisk(requestValidated) -> RiskBand.HIGH
       isMediumRisk(requestValidated) -> RiskBand.MEDIUM
       else -> RiskBand.LOW
     }
 
-    val pniPathway = when {
-      isHighIntensity(requestValidated, overallNeedScore, risk) -> ProgrammeNeedIdentifier.HIGH
+    val projectedRisk = when {
+      isHighRisk(
+        requestValidated.copy(
+          ospIICBand = requestValidated.ospIICBand ?: RiskBand.VERY_HIGH,
+          ospDCBand = requestValidated.ospDCBand ?: RiskBand.VERY_HIGH,
+          rsr = requestValidated.rsr ?: 100,
+        ),
+      ) -> RiskBand.HIGH
 
-      isModerateIntensity(requestValidated, overallNeedScore, risk) -> ProgrammeNeedIdentifier.MODERATE
+      isMediumRisk(requestValidated) -> RiskBand.MEDIUM
+      else -> RiskBand.LOW
+    }
+
+    val interimResult = when {
+      isHighIntensity(requestValidated, overallNeedScore, overallRisk) -> ProgrammeNeedIdentifier.HIGH
+
+      isModerateIntensity(requestValidated, overallNeedScore, overallRisk) -> ProgrammeNeedIdentifier.MODERATE
       else -> ProgrammeNeedIdentifier.ALTERNATIVE
+    }
+
+    var pniPathway = interimResult
+    // possible omission scenarios
+    if (hasMissingAnswers(overallNeed)) {
+      if (anyNullSara(requestValidated) && interimResult == ProgrammeNeedIdentifier.ALTERNATIVE) {
+        pniPathway = ProgrammeNeedIdentifier.OMISSION
+      }
+      if (projectedRisk != overallRisk) {
+        pniPathway = ProgrammeNeedIdentifier.OMISSION
+      }
+      if (bothNullSara(requestValidated) &&
+        requestValidated.inCustodyOrCommunity == CustodyOrCommunity.CUSTODY
+      ) {
+        pniPathway = ProgrammeNeedIdentifier.OMISSION
+      }
     }
 
     return context.apply { PNI = PNIObject(pniPathway, errors) }
   }
+
+  private fun hasMissingAnswers(overallNeed: Triple<NeedScore?, NeedScore?, List<String>>): Boolean = overallNeed.third.isNotEmpty()
 
   /**
    * High intensity programmes are only available in prisons and will therefore only be provided in these cases.
@@ -134,8 +176,7 @@ class PNIRiskProducerService : RiskScoreProducer {
 
   internal fun isHighRisk(
     requestValidated: PNIRequestValidated,
-  ): Boolean = requestValidated.inCustodyOrCommunity == CustodyOrCommunity.CUSTODY &&
-    isHighOgrs3(requestValidated) ||
+  ): Boolean = isHighOgrs3(requestValidated) ||
     isHighOvp(requestValidated) ||
     isOspDcHigh(requestValidated) ||
     isOspIicHigh(requestValidated) ||
@@ -148,82 +189,6 @@ class PNIRiskProducerService : RiskScoreProducer {
     isOvpMedium(requestValidated) ||
     isOspDcMedium(requestValidated) ||
     isOspIicMedium(requestValidated) ||
-    isRsrMedium(requestValidated) ||
-    isMediumSara(requestValidated)
-
-  private fun isHighOgrs3(requestValidated: PNIRequestValidated) = requestValidated.ogrs3TwoYear?.let { it >= 75 } == true
-
-  private fun isHighOvp(requestValidated: PNIRequestValidated) = requestValidated.ovp?.let { it >= 60.00 } == true
-
-  // OSP DC can never be HIGH for gender FEMALE because female always OSPDC = NA
-  private fun isOspDcHigh(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospDCBand == RiskBand.HIGH
-
-  // OSP IIC can never be HIGH for gender FEMALE because female always OSPIIC = LOW or NA
-  private fun isOspIicHigh(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospIICBand == RiskBand.HIGH
-
-  // OSP DC can never be MEDIUM for gender FEMALE because female always OSPDC = NA
-  private fun isOspDcMedium(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospDCBand == RiskBand.MEDIUM
-
-  // OSP IIC can never be MEDIUM for gender FEMALE because female always OSPIIC = LOW or NA
-  private fun isOspIicMedium(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospIICBand == RiskBand.MEDIUM
-
-  fun isHighSara(requestValidated: PNIRequestValidated) = requestValidated.saraRiskToOthers == RiskBand.HIGH ||
-    requestValidated.saraRiskToPartner == RiskBand.HIGH
-
-  private fun isRsrMedium(request: PNIRequestValidated): Boolean {
-    val rsrIsMedium = request.rsr in 1..2
-
-    return if (isFemaleGivenRiskBandCombination(request)) {
-      rsrIsMedium
-    } else {
-      rsrIsMedium && request.ospDCBand == null && request.ospIICBand == null
-    }
-  }
-
-  private fun isRsrHigh(requestValidated: PNIRequestValidated): Boolean {
-    val isHighRsr = requestValidated.rsr?.let { it >= 3 } == true
-
-    return if (isFemaleGivenRiskBandCombination(requestValidated)) {
-      isHighRsr
-    } else {
-      isHighRsr && requestValidated.ospDCBand == null && requestValidated.ospIICBand == null
-    }
-  }
-
-  // This risk band combination can only mean the gender = FEMALE
-  private fun isFemaleGivenRiskBandCombination(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospDCBand == RiskBand.NOT_APPLICABLE &&
-    (requestValidated.ospIICBand in listOf(RiskBand.LOW, RiskBand.NOT_APPLICABLE))
-
-  private fun isOgrs3Medium(requestValidated: PNIRequestValidated) = requestValidated.ogrs3TwoYear?.let { it in 50..74 } == true
-
-  private fun isOvpMedium(requestValidated: PNIRequestValidated) = requestValidated.ovp?.let { it in 30..59 } == true
-
-  fun isMediumSara(requestValidated: PNIRequestValidated) = requestValidated.saraRiskToOthers == RiskBand.MEDIUM ||
-    requestValidated.saraRiskToPartner == RiskBand.MEDIUM
-}
-
-fun overallNeedsGroupingCalculation(request: PNIRequestValidated): Pair<NeedScore?, List<String>> {
-  val (overallSexDomainScore, missingSexDomainScore) = SexDomainScore.overallDomainScore(request)
-  val (overallThinkingDomainScore, missingThinkingDomainScore) = ThinkingDomainScore.overallDomainScore(request)
-  val (overallRelationshipDomain, missingRelationshipDomain) = RelationshipDomainScore.overallDomainScore(request)
-  val (overallSelfManagementDomain, missingSelfManagementDomain) = SelfManagementDomainScore.overallDomainScore(
-    request,
-  )
-  val allMissingFields = listOf(
-    missingSexDomainScore,
-    missingThinkingDomainScore,
-    missingRelationshipDomain,
-    missingSelfManagementDomain,
-  ).flatten()
-
-  val overallNeedsScore = listOfNotNull(
-    overallSexDomainScore,
-    overallThinkingDomainScore,
-    overallRelationshipDomain,
-    overallSelfManagementDomain,
-  ).sum()
-  if (allMissingFields.isNotEmpty()) {
-    return Pair(null, allMissingFields)
-  }
-  return Pair(getOverallNeedClassification(overallNeedsScore), emptyList())
+    isMediumSara(requestValidated) ||
+    isRsrMedium(requestValidated)
 }

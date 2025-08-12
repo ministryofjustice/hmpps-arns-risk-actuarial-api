@@ -1,176 +1,150 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CustodyOrCommunity
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.NeedScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIRequestValidated
 
-fun getOverallNeedClassification(overallNeedsScore: Int): NeedScore? = when (overallNeedsScore) {
+fun overallNeedsGroupingCalculation(request: PNIRequestValidated): Triple<NeedScore?, NeedScore?, List<String>> {
+  val (sexDomainScore, projectedSexDomainScore, missingSexDomainScore) = SexDomainScore.overallDomainScore(
+    request,
+  )
+  val (thinkingDomainScore, projectedThinkingDomainScore, missingThinkingDomainScore) = ThinkingDomainScore.overallDomainScore(
+    request,
+  )
+  val (relationshipDomainScore, projectedRelationshipDomainScore, missingRelationshipDomain) = RelationshipDomainScore.overallDomainScore(
+    request,
+  )
+  val (selfManagementDomainScore, projectedSelfManagementDomainScore, missingSelfManagementDomain) = SelfManagementDomainScore.overallDomainScore(
+    request,
+  )
+
+  val allDomainsAreMissingAnswers = missingSexDomainScore.isNotEmpty() &&
+    missingThinkingDomainScore.isNotEmpty() &&
+    missingRelationshipDomain.isNotEmpty() &&
+    missingSelfManagementDomain.isNotEmpty()
+
+  val allMissingFields = listOf(
+    missingSexDomainScore,
+    missingThinkingDomainScore,
+    missingRelationshipDomain,
+    missingSelfManagementDomain,
+  ).flatten()
+
+  val overallNeedsScore = listOfNotNull(
+    sexDomainScore,
+    thinkingDomainScore,
+    relationshipDomainScore,
+    selfManagementDomainScore,
+  ).sum()
+
+  val overallNeedsScoreProjected = listOfNotNull(
+    projectedSexDomainScore,
+    projectedThinkingDomainScore,
+    projectedRelationshipDomainScore,
+    projectedSelfManagementDomainScore,
+  ).sum()
+
+  val classifications = getOverallNeedClassification(
+    overallNeedsScore,
+    overallNeedsScoreProjected,
+    request.inCustodyOrCommunity,
+    isMediumSara(request) || isHighSara(request),
+    anyNullSara(request),
+    calculationComplete = allMissingFields.isEmpty(),
+    allDomainsAreMissingAnswers = allDomainsAreMissingAnswers,
+  )
+
+  return Triple(
+    classifications.first,
+    classifications.second,
+    allMissingFields,
+  )
+}
+
+private fun getOverallNeedClassification(
+  overallNeedsScore: Int,
+  overallNeedsScoreProjected: Int,
+  inCustodyOrCommunity: CustodyOrCommunity,
+  isMediumOrHighSara: Boolean,
+  anyNullSara: Boolean,
+  calculationComplete: Boolean,
+  allDomainsAreMissingAnswers: Boolean,
+): Pair<NeedScore?, NeedScore?> {
+  val overallNeedsLevel = getLevelFromScore(overallNeedsScore)
+  val overallNeedsLevelProjected = getLevelFromScore(overallNeedsScoreProjected)
+
+  if (overallNeedsScore >= 6) return Pair(NeedScore.HIGH, overallNeedsLevelProjected)
+  if (overallNeedsScore >= 3 && inCustodyOrCommunity == CustodyOrCommunity.COMMUNITY) {
+    return Pair(
+      NeedScore.MEDIUM,
+      overallNeedsLevelProjected,
+    )
+  }
+
+  if (!calculationComplete) {
+    if (overallNeedsLevel == overallNeedsLevelProjected) {
+      return Pair(overallNeedsLevel, overallNeedsLevelProjected)
+    }
+    if (allDomainsAreMissingAnswers && inCustodyOrCommunity != CustodyOrCommunity.COMMUNITY) {
+      return Pair(null, overallNeedsLevelProjected)
+    }
+    if (overallNeedsLevel in setOf(NeedScore.HIGH, NeedScore.MEDIUM) && !(isMediumOrHighSara)) {
+      return Pair(null, overallNeedsLevelProjected)
+    }
+    if (inCustodyOrCommunity == CustodyOrCommunity.COMMUNITY && (isMediumOrHighSara) && !anyNullSara) {
+      return Pair(NeedScore.MEDIUM, overallNeedsLevelProjected)
+    }
+    if (inCustodyOrCommunity != CustodyOrCommunity.COMMUNITY && (isMediumOrHighSara) && !anyNullSara) {
+      return Pair(NeedScore.HIGH, overallNeedsLevelProjected)
+    }
+  }
+  return Pair(overallNeedsLevel, overallNeedsLevelProjected)
+}
+
+private fun getLevelFromScore(overallNeedsScore: Int): NeedScore? = when (overallNeedsScore) {
   in 0..2 -> NeedScore.LOW
   in 3..5 -> NeedScore.MEDIUM
-  in 6..8 -> NeedScore.HIGH
+  in 6..9 -> NeedScore.HIGH
   else -> null
 }
 
-object SexDomainScore {
-  private fun getMissingFields(request: PNIRequestValidated) = mutableListOf<String>().apply {
-    if (request.sexualPreoccupation == null) {
-      add("sexualPreoccupation")
-    }
-    if (request.sexualInterestsOffenceRelated == null) {
-      add("sexualInterestsOffenceRelated")
-    }
-    if (request.emotionalCongruence == null) {
-      add("emotionalCongruence")
-    }
-  }
+fun isHighOgrs3(requestValidated: PNIRequestValidated) = requestValidated.ogrs3TwoYear?.let { it >= 75 } == true
 
-  private fun totalScore(request: PNIRequestValidated): Int? {
-    val hasNoMissingFields = getMissingFields(request).isEmpty()
-    val interimScore = listOfNotNull(
-      request.sexualPreoccupation?.score,
-      request.sexualInterestsOffenceRelated?.score,
-      request.emotionalCongruence?.score,
-    ).sum()
-    return if (interimScore >= 4 || hasNoMissingFields) {
-      interimScore
-    } else {
-      null // cannot be calculated
-    }
-  }
+fun isHighOvp(requestValidated: PNIRequestValidated) = requestValidated.ovp?.let { it >= 60.00 } == true
 
-  fun overallDomainScore(request: PNIRequestValidated): Pair<Int?, List<String>> {
-    val totalScore = totalScore(request)
-    val overallScore = when {
-      totalScore in 0..1 -> 0
-      totalScore in 2..3 -> 1
-      totalScore in 4..6 || (request.sexualInterestsOffenceRelated?.score == 2) -> 2
-      else -> null
-    }
-    val missingFields = if (overallScore == null) getMissingFields(request) else emptyList<String>()
-    return Pair(overallScore, missingFields)
-  }
+fun isOspDcHigh(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospDCBand == RiskBand.HIGH || requestValidated.ospDCBand == RiskBand.VERY_HIGH
+
+fun isOspIicHigh(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospIICBand == RiskBand.HIGH || requestValidated.ospIICBand == RiskBand.VERY_HIGH
+
+fun isOspDcMedium(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospDCBand == RiskBand.MEDIUM
+
+fun isOspIicMedium(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospIICBand == RiskBand.MEDIUM
+
+fun isRsrMedium(request: PNIRequestValidated): Boolean {
+  val rsrIsMedium = request.rsr in 1..2
+  return rsrIsMedium && isNullOrNa(request.ospDCBand) && isNullOrNa(request.ospIICBand)
 }
 
-object ThinkingDomainScore {
-  private fun getMissingFields(request: PNIRequestValidated) = mutableListOf<String>().apply {
-    if (request.proCriminalAttitudes == null) {
-      add("proCriminalAttitudes")
-    }
-    if (request.hostileOrientation == null) {
-      add("hostileOrientation")
-    }
-  }
-
-  private fun totalScore(request: PNIRequestValidated): Int? {
-    val hasNoMissingFields = getMissingFields(request).isEmpty()
-    val interimScore = listOfNotNull(
-      request.proCriminalAttitudes?.score,
-      request.hostileOrientation?.score,
-    ).sum()
-    return if (request.proCriminalAttitudes == ProblemLevel.SIGNIFICANT_PROBLEMS || hasNoMissingFields) {
-      interimScore
-    } else {
-      null // cannot be calculated
-    }
-  }
-
-  fun overallDomainScore(request: PNIRequestValidated): Pair<Int?, List<String>> {
-    val totalScore = totalScore(request)
-    val overallScore = when {
-      totalScore == 0 -> 0
-      totalScore in 3..4 || (request.proCriminalAttitudes?.score == 2) -> 2
-      totalScore in 1..2 -> 1
-      else -> null
-    }
-    val missingFields = if (overallScore == null) getMissingFields(request) else emptyList<String>()
-    return Pair(overallScore, missingFields)
-  }
+fun isRsrHigh(requestValidated: PNIRequestValidated): Boolean {
+  val isHighRsr = requestValidated.rsr?.let { it >= 3 } == true
+  return isHighRsr && isNullOrNa(requestValidated.ospDCBand) && isNullOrNa(requestValidated.ospIICBand)
 }
 
-object RelationshipDomainScore {
-  private fun getMissingFields(request: PNIRequestValidated) = mutableListOf<String>().apply {
-    if (request.currentRelationshipFamilyMembers == null) {
-      add("currentRelationshipFamilyMembers")
-    }
-    if (request.previousCloseRelationships == null) {
-      add("previousCloseRelationships")
-    }
-    if (request.easilyInfluencedByCriminals == null) {
-      add("easilyInfluencedByCriminals")
-    }
-    if (request.controllingBehaviour == null) {
-      add("controllingBehaviour")
-    }
-  }
+fun isNullOrNa(band: RiskBand?): Boolean = band == null || band == RiskBand.NOT_APPLICABLE
 
-  private fun totalScore(request: PNIRequestValidated): Int? {
-    val hasNoMissingFields = getMissingFields(request).isEmpty()
-    val interimScore = listOfNotNull(
-      request.currentRelationshipFamilyMembers?.score,
-      request.previousCloseRelationships?.score,
-      request.easilyInfluencedByCriminals?.score,
-      request.controllingBehaviour?.score,
-    ).sum()
-    return if (interimScore >= 5 || hasNoMissingFields) {
-      interimScore
-    } else {
-      null // cannot be calculated
-    }
-  }
+fun isOgrs3Medium(requestValidated: PNIRequestValidated) = requestValidated.ogrs3TwoYear?.let { it in 50..74 } == true
 
-  fun overallDomainScore(request: PNIRequestValidated): Pair<Int?, List<String>> {
-    val totalScore = totalScore(request)
-    val overallScore = when (totalScore) {
-      in 0..1 -> 0
-      in 2..4 -> 1
-      in 5..8 -> 2
-      else -> null
-    }
-    val missingFields = if (overallScore == null) getMissingFields(request) else emptyList<String>()
-    return Pair(overallScore, missingFields)
-  }
-}
+fun isOvpMedium(requestValidated: PNIRequestValidated) = requestValidated.ovp?.let { it in 30..59 } == true
 
-object SelfManagementDomainScore {
-  private fun getMissingFields(request: PNIRequestValidated) = mutableListOf<String>().apply {
-    if (request.impulsivityBehaviour == null) {
-      add("impulsivityBehaviour")
-    }
-    if (request.temperControl == null) {
-      add("temperControl")
-    }
-    if (request.problemSolvingSkills == null) {
-      add("problemSolvingSkills")
-    }
-    if (request.difficultiesCoping == null) {
-      add("difficultiesCoping")
-    }
-  }
+fun isHighSara(requestValidated: PNIRequestValidated) = requestValidated.saraRiskToOthers == RiskBand.HIGH ||
+  requestValidated.saraRiskToPartner == RiskBand.HIGH
 
-  private fun totalScore(request: PNIRequestValidated): Int? {
-    val hasNoMissingFields = getMissingFields(request).isEmpty()
-    val interimScore = listOfNotNull(
-      request.impulsivityBehaviour?.score,
-      request.temperControl?.score,
-      request.problemSolvingSkills?.score,
-      request.difficultiesCoping?.score,
-    ).sum()
-    return if (interimScore >= 5 || hasNoMissingFields) {
-      interimScore
-    } else {
-      null // cannot be calculated
-    }
-  }
+fun isMediumSara(requestValidated: PNIRequestValidated) = requestValidated.saraRiskToOthers == RiskBand.MEDIUM ||
+  requestValidated.saraRiskToPartner == RiskBand.MEDIUM
 
-  fun overallDomainScore(request: PNIRequestValidated): Pair<Int?, List<String>> {
-    val totalScore = totalScore(request)
-    val overallScore = when (totalScore) {
-      in 0..1 -> 0
-      in 2..4 -> 1
-      in 5..8 -> 2
-      else -> null
-    }
-    val missingFields = if (overallScore == null) getMissingFields(request) else emptyList<String>()
-    return Pair(overallScore, missingFields)
-  }
-}
+fun anyNullSara(requestValidated: PNIRequestValidated) = requestValidated.saraRiskToOthers == null ||
+  requestValidated.saraRiskToPartner == null
+
+fun bothNullSara(requestValidated: PNIRequestValidated) = requestValidated.saraRiskToOthers == null &&
+  requestValidated.saraRiskToPartner == null

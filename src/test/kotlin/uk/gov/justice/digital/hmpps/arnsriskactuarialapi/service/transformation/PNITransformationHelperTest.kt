@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertNull
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.pniRequest
 
@@ -19,7 +18,7 @@ class PNITransformationHelperTest {
         sexualInterestsOffenceRelated = ProblemLevel.NO_PROBLEMS,
         emotionalCongruence = ProblemLevel.NO_PROBLEMS,
       )
-      val (score, missing) = SexDomainScore.overallDomainScore(request)
+      val (score, projected, missing) = SexDomainScore.overallDomainScore(request)
       assertEquals(0, score)
       assertTrue(missing.isEmpty())
     }
@@ -30,8 +29,9 @@ class PNITransformationHelperTest {
         sexualPreoccupation = ProblemLevel.SIGNIFICANT_PROBLEMS,
         sexualInterestsOffenceRelated = ProblemLevel.SIGNIFICANT_PROBLEMS,
         emotionalCongruence = ProblemLevel.SIGNIFICANT_PROBLEMS,
+        hasCommittedSexualOffence = true,
       )
-      val (score, missing) = SexDomainScore.overallDomainScore(request)
+      val (score, projected, missing) = SexDomainScore.overallDomainScore(request)
       assertEquals(2, score)
       assertTrue(missing.isEmpty())
     }
@@ -42,10 +42,11 @@ class PNITransformationHelperTest {
         sexualPreoccupation = ProblemLevel.SIGNIFICANT_PROBLEMS, // 2
         sexualInterestsOffenceRelated = ProblemLevel.SIGNIFICANT_PROBLEMS, // 2
         emotionalCongruence = null,
+        hasCommittedSexualOffence = true,
       )
-      val (score, missing) = SexDomainScore.overallDomainScore(request)
+      val (score, projected, missing) = SexDomainScore.overallDomainScore(request)
       assertEquals(2, score)
-      assertEquals(0, missing.size)
+      assertEquals(1, missing.size)
     }
 
     @Test
@@ -54,9 +55,10 @@ class PNITransformationHelperTest {
         sexualPreoccupation = ProblemLevel.SIGNIFICANT_PROBLEMS,
         sexualInterestsOffenceRelated = null,
         emotionalCongruence = null,
+        hasCommittedSexualOffence = true,
       )
-      val (score, missing) = SexDomainScore.overallDomainScore(request)
-      assertNull(score)
+      val (score, projected, missing) = SexDomainScore.overallDomainScore(request)
+      assertEquals(0, score)
       assertEquals(2, missing.size)
       assertTrue(missing.contains("sexualInterestsOffenceRelated"))
       assertTrue(missing.contains("emotionalCongruence"))
@@ -64,9 +66,11 @@ class PNITransformationHelperTest {
 
     @Test
     fun `should return null and report all missing fields`() {
-      val request = pniRequest()
-      val (score, missing) = SexDomainScore.overallDomainScore(request)
-      assertNull(score)
+      val request = pniRequest().copy(
+        hasCommittedSexualOffence = true,
+      )
+      val (score, projected, missing) = SexDomainScore.overallDomainScore(request)
+      assertEquals(0, score)
       assertEquals(3, missing.size)
       assertTrue(missing.contains("sexualPreoccupation"))
     }
@@ -80,7 +84,7 @@ class PNITransformationHelperTest {
         proCriminalAttitudes = ProblemLevel.NO_PROBLEMS,
         hostileOrientation = ProblemLevel.NO_PROBLEMS,
       )
-      val (score, missing) = ThinkingDomainScore.overallDomainScore(request)
+      val (score, projected, missing) = ThinkingDomainScore.overallDomainScore(request)
       assertEquals(0, score)
       assertTrue(missing.isEmpty())
     }
@@ -91,7 +95,7 @@ class PNITransformationHelperTest {
         proCriminalAttitudes = ProblemLevel.SIGNIFICANT_PROBLEMS,
         hostileOrientation = ProblemLevel.SIGNIFICANT_PROBLEMS,
       )
-      val (score, missing) = ThinkingDomainScore.overallDomainScore(request)
+      val (score, projected, missing) = ThinkingDomainScore.overallDomainScore(request)
       assertEquals(2, score)
       assertTrue(missing.isEmpty())
     }
@@ -102,19 +106,19 @@ class PNITransformationHelperTest {
         proCriminalAttitudes = ProblemLevel.SIGNIFICANT_PROBLEMS,
         hostileOrientation = null,
       )
-      val (score, missing) = ThinkingDomainScore.overallDomainScore(request)
+      val (score, projected, missing) = ThinkingDomainScore.overallDomainScore(request)
       assertEquals(2, score)
-      assertEquals(0, missing.size)
+      assertEquals(1, missing.size)
     }
 
     @Test
-    fun `should not omissions when proCriminalAttitudes less than 2`() {
+    fun `should partially score domain`() {
       val request = pniRequest(
         proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
         hostileOrientation = null,
       )
-      val (score, missing) = ThinkingDomainScore.overallDomainScore(request)
-      assertNull(score)
+      val (score, projected, missing) = ThinkingDomainScore.overallDomainScore(request)
+      assertEquals(1, score)
       assertEquals(1, missing.size)
       assertTrue(missing.contains("hostileOrientation"))
     }
@@ -125,8 +129,8 @@ class PNITransformationHelperTest {
         proCriminalAttitudes = null,
         hostileOrientation = null,
       )
-      val (score, missing) = ThinkingDomainScore.overallDomainScore(request)
-      assertNull(score)
+      val (score, projected, missing) = ThinkingDomainScore.overallDomainScore(request)
+      assertEquals(0, score)
       assertEquals(2, missing.size)
       assertTrue(missing.contains("proCriminalAttitudes"))
       assertTrue(missing.contains("hostileOrientation"))
@@ -143,7 +147,7 @@ class PNITransformationHelperTest {
         easilyInfluencedByCriminals = ProblemLevel.NO_PROBLEMS,
         controllingBehaviour = ProblemLevel.NO_PROBLEMS,
       )
-      val (score, missing) = RelationshipDomainScore.overallDomainScore(request)
+      val (score, projected, missing) = RelationshipDomainScore.overallDomainScore(request)
       assertEquals(0, score)
       assertTrue(missing.isEmpty())
     }
@@ -156,7 +160,7 @@ class PNITransformationHelperTest {
         easilyInfluencedByCriminals = ProblemLevel.SIGNIFICANT_PROBLEMS,
         controllingBehaviour = ProblemLevel.SIGNIFICANT_PROBLEMS,
       )
-      val (score, missing) = RelationshipDomainScore.overallDomainScore(request)
+      val (score, projected, missing) = RelationshipDomainScore.overallDomainScore(request)
       assertEquals(2, score)
       assertTrue(missing.isEmpty())
     }
@@ -169,24 +173,9 @@ class PNITransformationHelperTest {
         easilyInfluencedByCriminals = ProblemLevel.SIGNIFICANT_PROBLEMS,
         controllingBehaviour = null,
       )
-      val (score, missing) = RelationshipDomainScore.overallDomainScore(request)
+      val (score, projected, missing) = RelationshipDomainScore.overallDomainScore(request)
       assertEquals(2, score)
-      assertEquals(0, missing.size)
-    }
-
-    @Test
-    fun `should not ignore omissions when interim score is less than 4`() {
-      val request = pniRequest(
-        currentRelationshipFamilyMembers = ProblemLevel.SIGNIFICANT_PROBLEMS,
-        previousCloseRelationships = ProblemLevel.SIGNIFICANT_PROBLEMS,
-        easilyInfluencedByCriminals = null,
-        controllingBehaviour = null,
-      )
-      val (score, missing) = RelationshipDomainScore.overallDomainScore(request)
-      assertNull(score)
-      assertEquals(2, missing.size)
-      assertTrue(missing.contains("controllingBehaviour"))
-      assertTrue(missing.contains("easilyInfluencedByCriminals"))
+      assertEquals(1, missing.size)
     }
 
     @Test
@@ -197,8 +186,8 @@ class PNITransformationHelperTest {
         easilyInfluencedByCriminals = null,
         controllingBehaviour = null,
       )
-      val (score, missing) = RelationshipDomainScore.overallDomainScore(request)
-      assertNull(score)
+      val (score, projected, missing) = RelationshipDomainScore.overallDomainScore(request)
+      assertEquals(0, score)
       assertEquals(4, missing.size)
       assertTrue(missing.contains("currentRelationshipFamilyMembers"))
       assertTrue(missing.contains("previousCloseRelationships"))
@@ -217,7 +206,7 @@ class PNITransformationHelperTest {
         problemSolvingSkills = ProblemLevel.NO_PROBLEMS,
         difficultiesCoping = ProblemLevel.NO_PROBLEMS,
       )
-      val (score, missing) = SelfManagementDomainScore.overallDomainScore(request)
+      val (score, projected, missing) = SelfManagementDomainScore.overallDomainScore(request)
       assertEquals(0, score)
       assertTrue(missing.isEmpty())
     }
@@ -230,7 +219,7 @@ class PNITransformationHelperTest {
         problemSolvingSkills = ProblemLevel.SIGNIFICANT_PROBLEMS,
         difficultiesCoping = ProblemLevel.SIGNIFICANT_PROBLEMS,
       )
-      val (score, missing) = SelfManagementDomainScore.overallDomainScore(request)
+      val (score, projected, missing) = SelfManagementDomainScore.overallDomainScore(request)
       assertEquals(2, score)
       assertTrue(missing.isEmpty())
     }
@@ -243,9 +232,9 @@ class PNITransformationHelperTest {
         problemSolvingSkills = ProblemLevel.SOME_PROBLEMS,
         difficultiesCoping = null,
       )
-      val (score, missing) = SelfManagementDomainScore.overallDomainScore(request)
+      val (score, projected, missing) = SelfManagementDomainScore.overallDomainScore(request)
       assertEquals(2, score)
-      assertEquals(0, missing.size)
+      assertEquals(1, missing.size)
     }
 
     @Test
@@ -256,8 +245,8 @@ class PNITransformationHelperTest {
         problemSolvingSkills = ProblemLevel.NO_PROBLEMS,
         difficultiesCoping = null,
       )
-      val (score, missing) = SelfManagementDomainScore.overallDomainScore(request)
-      assertNull(score)
+      val (score, projected, missing) = SelfManagementDomainScore.overallDomainScore(request)
+      assertEquals(0, score)
       assertEquals(1, missing.size)
       assertTrue(missing.contains("difficultiesCoping"))
     }
@@ -270,8 +259,8 @@ class PNITransformationHelperTest {
         problemSolvingSkills = null,
         difficultiesCoping = null,
       )
-      val (score, missing) = SelfManagementDomainScore.overallDomainScore(request)
-      assertNull(score)
+      val (score, projected, missing) = SelfManagementDomainScore.overallDomainScore(request)
+      assertEquals(0, score)
       assertEquals(4, missing.size)
       assertTrue(missing.contains("impulsivityBehaviour"))
       assertTrue(missing.contains("temperControl"))
