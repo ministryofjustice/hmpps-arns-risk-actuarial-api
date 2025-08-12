@@ -16,20 +16,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.pniI
 @Service
 class PNIRiskProducerService : RiskScoreProducer {
 
-  private fun calculateInterimResult(
-    requestValidated: PNIRequestValidated,
-    overallNeedScore: NeedScore,
-    overallRisk: RiskBand,
-  ): ProgrammeNeedIdentifier = when {
-    overallNeedScore == NeedScore.HIGH && overallRisk == RiskBand.HIGH -> ProgrammeNeedIdentifier.HIGH
-    overallNeedScore == NeedScore.MEDIUM && overallRisk == RiskBand.HIGH -> ProgrammeNeedIdentifier.MODERATE
-    overallNeedScore == NeedScore.HIGH && overallRisk == RiskBand.MEDIUM -> ProgrammeNeedIdentifier.MODERATE
-    overallNeedScore == NeedScore.MEDIUM && overallRisk == RiskBand.MEDIUM -> ProgrammeNeedIdentifier.MODERATE
-    requestValidated.saraRiskToPartner?.ordinal in listOf(2, 3) -> ProgrammeNeedIdentifier.MODERATE
-    requestValidated.saraRiskToOthers?.ordinal in listOf(2, 3) -> ProgrammeNeedIdentifier.MODERATE
-    else -> ProgrammeNeedIdentifier.ALTERNATIVE
-  }
-
   override fun getRiskScore(
     request: RiskScoreRequest,
     context: RiskScoreContext,
