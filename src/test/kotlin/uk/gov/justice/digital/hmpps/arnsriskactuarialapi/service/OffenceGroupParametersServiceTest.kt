@@ -52,4 +52,68 @@ class OffenceGroupParametersServiceTest {
   fun `isViolentOrSexualType should return when values are found`(offenceCode: String, expected: Boolean) {
     assertEquals(expected, service.isViolentOrSexualType(offenceCode))
   }
+
+  @Test
+  fun `Test SNSVStatic Map values that are present`() {
+    assertEquals(0.0, service.getSNSVStaticWeighting("00000"))
+    assertEquals(-0.215779995, service.getSNSVStaticWeighting("09999"))
+    assertEquals(-0.215779995, service.getSNSVStaticWeighting("99968"))
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = ["XX", "99969"])
+  fun `Test SNSVStatic values that are NOT present`(exceptionCode: String) {
+    val exception = assertFailsWith<NoSuchElementException>(
+      block = { service.getSNSVStaticWeighting(exceptionCode) },
+    )
+    assertEquals(exception.message, "No Match found on lookup: '$exceptionCode'")
+  }
+
+  @Test
+  fun `Test SNSVVATPStatic Map values that are present`() {
+    assertEquals(0.0, service.getSNSVVATPStaticWeighting("00000"))
+    assertEquals(0.238802611, service.getSNSVVATPStaticWeighting("00101"))
+    assertEquals(0.503126183, service.getSNSVVATPStaticWeighting("99958"))
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = ["XX", "99969"])
+  fun `Test SNSVVATPStatic values that are NOT present`(exceptionCode: String) {
+    val exception = assertFailsWith<NoSuchElementException>(
+      block = { service.getSNSVVATPStaticWeighting(exceptionCode) },
+    )
+    assertEquals(exception.message, "No Match found on lookup: '$exceptionCode'")
+  }
+
+  @Test
+  fun `Test SNSVDynamic Map values that are present`() {
+    assertEquals(0.0, service.getSNSVDynamicWeighting("00000"))
+    assertEquals(-0.006538498, service.getSNSVDynamicWeighting("00101"))
+    assertEquals(-0.006538498, service.getSNSVDynamicWeighting("99958"))
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = ["XX", "99969"])
+  fun `Test SNSVDynamic values that are NOT present`(exceptionCode: String) {
+    val exception = assertFailsWith<NoSuchElementException>(
+      block = { service.getSNSVDynamicWeighting(exceptionCode) },
+    )
+    assertEquals(exception.message, "No Match found on lookup: '$exceptionCode'")
+  }
+
+  @Test
+  fun `Test SNSVVATPDynamic Map values that are present`() {
+    assertEquals(0.0, service.getSNSVVATPDynamicWeighting("00000"))
+    assertEquals(0.204895024, service.getSNSVVATPDynamicWeighting("00101"))
+    assertEquals(0.413159451, service.getSNSVVATPDynamicWeighting("99958"))
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = ["XX", "99969"])
+  fun `Test SNSVVATPDynamic values that are NOT present`(exceptionCode: String) {
+    val exception = assertFailsWith<NoSuchElementException>(
+      block = { service.getSNSVVATPDynamicWeighting(exceptionCode) },
+    )
+    assertEquals(exception.message, "No Match found on lookup: '$exceptionCode'")
+  }
 }

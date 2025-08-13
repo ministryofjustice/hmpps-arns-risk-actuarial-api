@@ -173,7 +173,7 @@ class PNIRegressionTest {
     val rsr = emptyRSR().copy(
       ospdcBand = ospCdc.toRiskBand(),
       ospiicBand = ospIiic.toRiskBand(),
-      rsrScore = rsrPercentageScore?.toDoubleOrNull()?.toInt(),
+      rsrScore = rsrPercentageScore?.toDoubleOrNull(),
     )
     val ovp = emptyOVP().copy(
       provenViolentTypeReoffendingTwoYear = ovpRiskReconElm.bandToOVPScore(),
