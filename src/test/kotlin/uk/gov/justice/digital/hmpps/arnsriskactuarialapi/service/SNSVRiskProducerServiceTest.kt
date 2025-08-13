@@ -57,7 +57,7 @@ class SNSVRiskProducerServiceTest {
 
     assertNotNull(result)
     assertEquals(ScoreType.STATIC, result.SNSV!!.scoreType)
-    assertEquals(7.691163811904924E-5, result.SNSV!!.snsvScore)
+    assertEquals(0.002818580403289646, result.SNSV!!.snsvScore)
   }
 
   @Test

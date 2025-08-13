@@ -10,6 +10,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.SNSVDynamicReq
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.SNSVObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.SNSVStaticRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.ScoreType
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.get2YearInterceptWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getAgeGenderPolynomialWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getMonthsSinceLastSanctionWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getNumberOfSanctionWeight
@@ -100,6 +101,7 @@ class SNSVRiskProducerService : RiskScoreProducer {
     request: SNSVStaticRequestValidated,
   ): SNSVObject = runCatching {
     listOf(
+      get2YearInterceptWeight(false),
       getAgeGenderPolynomialWeight(request.gender, request.dateOfBirth, request.assessmentDate, false),
       offenceGroupParametersService.getSNSVStaticWeighting(request.currentOffence),
       getNumberOfSanctionWeight(request.totalNumberOfSanctions, false),

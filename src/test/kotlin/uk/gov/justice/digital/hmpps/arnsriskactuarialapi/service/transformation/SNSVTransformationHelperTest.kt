@@ -18,6 +18,16 @@ import kotlin.math.pow
 class SNSVTransformationHelperTest {
 
   @ParameterizedTest
+  @MethodSource("get2YearInterceptWeightProvider")
+  fun `get2YearInterceptWeight should return valid coefficients`(
+    isSNSVDynamic: Boolean,
+    expected: Double,
+  ) {
+    val result = get2YearInterceptWeight(isSNSVDynamic)
+    assertEquals(expected, result, 1e-12)
+  }
+
+  @ParameterizedTest
   @MethodSource("getAgeGenderPolynomialWeightValidInputProvider")
   fun `getAgeGenderPolynomialWeight should calculate correct polynomial weight`(
     gender: Gender,
@@ -46,8 +56,8 @@ class SNSVTransformationHelperTest {
   }
 
   @ParameterizedTest
-  @MethodSource("getFirstOrSecondSanctionWeightValidInputProvider")
-  fun `getFirstOrSecondSanctionWeight should return correct weight for valid sanction values`(
+  @MethodSource("getNumberOfSanctionWeightValidInputProvider")
+  fun `getNumberOfSanctionWeight should return correct weight for valid sanction values`(
     totalNumberOfSanctions: Int,
     isSNSVDynamic: Boolean,
     expected: Double,
@@ -57,8 +67,8 @@ class SNSVTransformationHelperTest {
   }
 
   @ParameterizedTest
-  @MethodSource("getFirstOrSecondSanctionWeightInvalidInputProvider")
-  fun `getFirstOrSecondSanctionWeight should throw exception for invalid sanction counts`(
+  @MethodSource("getNumberOfSanctionWeightInvalidInputProvider")
+  fun `getNumberOfSanctionWeight should throw exception for invalid sanction counts`(
     totalNumberOfSanctions: Int,
     isSNSVDynamic: Boolean,
   ) {
@@ -246,6 +256,12 @@ class SNSVTransformationHelperTest {
   }
 
   companion object {
+    @JvmStatic
+    fun get2YearInterceptWeightProvider() = listOf(
+      arrayOf(false, 3.60407707356772),
+      arrayOf(true, 2.39022796091603),
+    )
+
     // getAgeGenderPolynomialWeight method source
     @JvmStatic
     fun getAgeGenderPolynomialWeightValidInputProvider(): Stream<Arguments> = Stream.of(
@@ -293,15 +309,15 @@ class SNSVTransformationHelperTest {
       ).sum() - 16.6927292697847
     }
 
-    // getFirstOrSecondSanctionWeight method source
+    // getNumberOfSanctionWeight method source
     @JvmStatic
-    fun getFirstOrSecondSanctionWeightValidInputProvider(): Stream<Arguments> = Stream.of(
+    fun getNumberOfSanctionWeightValidInputProvider(): Stream<Arguments> = Stream.of(
       Arguments.of(1, true, -1.89458617745666),
       Arguments.of(1, false, -2.09447596484765),
     )
 
     @JvmStatic
-    fun getFirstOrSecondSanctionWeightInvalidInputProvider(): Stream<Arguments> = Stream.of(
+    fun getNumberOfSanctionWeightInvalidInputProvider(): Stream<Arguments> = Stream.of(
       Arguments.of(0, true),
       Arguments.of(0, false),
       Arguments.of(-1, true),
