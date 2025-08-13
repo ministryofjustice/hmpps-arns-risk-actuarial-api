@@ -8,6 +8,11 @@ import java.time.temporal.ChronoUnit
 import kotlin.math.ln
 import kotlin.math.pow
 
+fun get2YearInterceptWeight(isSNSVDynamic: Boolean): Double = when (isSNSVDynamic) {
+  false -> 3.60407707356772
+  true -> 2.39022796091603
+}
+
 fun getAgeGenderPolynomialWeight(gender: Gender, dateOfBirth: LocalDate, assessmentDate: LocalDate, isSNSVDynamic: Boolean): Double {
   if (assessmentDate.isBefore(dateOfBirth)) {
     throw IllegalArgumentException("Assessment date cannot be before date of birth.")
@@ -43,6 +48,7 @@ fun getAgeGenderPolynomialWeight(gender: Gender, dateOfBirth: LocalDate, assessm
 }
 
 fun getNumberOfSanctionWeight(totalNumberOfSanctions: Int, isSNSVDynamic: Boolean): Double {
+  // OGRS3 contribution
   val c1 = if (isSNSVDynamic) -1.89458617745666 else -2.09447596484765
   val c2 = if (isSNSVDynamic) -1.51763151836726 else -1.67613460779912
   val c3 = if (isSNSVDynamic) -0.0182592921752245 else -0.0147495874606046
@@ -94,6 +100,7 @@ fun getMonthsSinceLastSanctionWeight(inCustodyOrCommunity: CustodyOrCommunity, d
 }
 
 fun getThreePlusSanctionsWeight(gender: Gender, totalNumberOfSanctions: Int, ageAtFirstSanction: Int, dateOfBirth: LocalDate, dateOfCurrentConviction: LocalDate, isSNSVDynamic: Boolean): Double {
+  // OGRS4 contribution
   if (totalNumberOfSanctions < 3) return 0.0
 
   val ageAtCurrentConviction = getAgeDiffAtOffenceDate(dateOfBirth, dateOfCurrentConviction)
