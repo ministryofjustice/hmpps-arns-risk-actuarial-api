@@ -6,6 +6,7 @@ import java.time.LocalDate
 data class OGRS3RequestValidated(
   val gender: Gender,
   val dateOfBirth: LocalDate,
+  val assessmentDate: LocalDate,
   val dateOfCurrentConviction: LocalDate,
   val dateAtStartOfFollowup: LocalDate,
   val totalNumberOfSanctions: Int,

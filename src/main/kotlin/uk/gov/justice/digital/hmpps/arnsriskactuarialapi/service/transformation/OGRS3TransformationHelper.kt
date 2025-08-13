@@ -113,3 +113,8 @@ fun getAgeGenderScore(age: Int, gender: Gender): Double {
     ?.second
     ?: throw IllegalArgumentException("Unhandled age: $age")
 }
+
+fun isWithinLastTwoYears(date: LocalDate): Boolean {
+  val twoYearsAgo = LocalDate.now().minusYears(2)
+  return !date.isBefore(twoYearsAgo) && !date.isAfter(LocalDate.now())
+}
