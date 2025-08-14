@@ -19,7 +19,7 @@
   "custodialSentence": true,
   "financialRelianceOnOthers": "SOME_PROBLEMS",
   "manipulativePredatoryBehaviour": "SOME_PROBLEMS",
-  "childhoodBehaviour": "SOME_PROBLEMS",
+  "childhoodBehaviour": true,
   "currentPsychiatricProblems": "SOME_PROBLEMS",
   "historyOfPsychiatricTreatment": true,
   "medicationMentalHealth": true,

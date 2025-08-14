@@ -91,7 +91,7 @@ class OPDRiskProducerService : RiskScoreProducer {
     ageAtFirstSanction = request.ageAtFirstSanction?.toInt(),
     financialRelianceOnOthers = request.financialRelianceOnOthers,
     manipulativePredatoryBehaviour = request.manipulativePredatoryBehaviour,
-    childhoodBehaviour = request.childhoodBehaviour,
+    childhoodBehaviour = request.childhoodBehaviour ?: false,
     currentPsychiatricProblems = request.currentPsychiatricProblems,
     attitudesStableBehaviour = request.attitudesStableBehaviour,
     impulsivityBehaviour = request.impulsivityBehaviour,
