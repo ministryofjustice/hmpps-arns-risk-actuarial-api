@@ -123,7 +123,7 @@ class OPDRiskProducerServiceTest {
   }
 
   @Test
-  fun `should not calculate OPD with an valid request, not-eligible  female`() {
+  fun `should skip OPD calculation with an valid request, SCREEN_OUT because because of low risk for female`() {
     whenever(offenceGroupParametersService.isViolentOrSexualType("02504")).thenReturn(true)
 
     val context = emptyContext().copy(
@@ -137,11 +137,52 @@ class OPDRiskProducerServiceTest {
     )
 
     val result = service.getRiskScore(request, context).OPD!!
-    assertEquals(false, result.opdCheck)
+    assertEquals(true, result.opdCheck)
+    assertEquals(OPDResult.SCREEN_OUT, result.opdResult)
   }
 
   @Test
-  fun `should not calculate OPD with an valid request, not-eligible  male`() {
+  fun `should skip OPD calculation with an valid request, SCREEN_OUT because of not custodial for female`() {
+    whenever(offenceGroupParametersService.isViolentOrSexualType("02504")).thenReturn(true)
+
+    val context = emptyContext().copy(
+      OPD = emptyOPD(),
+    )
+    val request = validOPDRiskScoreRequest().copy(
+      currentOffence = "02504",
+      gender = Gender.FEMALE,
+      overallRiskForAssessment = RiskBand.HIGH,
+      eligibleForMappa = false,
+      custodialSentence = false,
+    )
+
+    val result = service.getRiskScore(request, context).OPD!!
+    assertEquals(true, result.opdCheck)
+    assertEquals(OPDResult.SCREEN_OUT, result.opdResult)
+  }
+
+  @Test
+  fun `should skip OPD calculation with an valid request, SCREEN_OUT because of not violent for female`() {
+    whenever(offenceGroupParametersService.isViolentOrSexualType("02504")).thenReturn(false)
+
+    val context = emptyContext().copy(
+      OPD = emptyOPD(),
+    )
+    val request = validOPDRiskScoreRequest().copy(
+      currentOffence = "02504",
+      gender = Gender.FEMALE,
+      overallRiskForAssessment = RiskBand.HIGH,
+      eligibleForMappa = false,
+      custodialSentence = true,
+    )
+
+    val result = service.getRiskScore(request, context).OPD!!
+    assertEquals(true, result.opdCheck)
+    assertEquals(OPDResult.SCREEN_OUT, result.opdResult)
+  }
+
+  @Test
+  fun `should skip OPD calculation with an valid request, SCREEN_OUT because low risk for  male`() {
     whenever(offenceGroupParametersService.isViolentOrSexualType("02504")).thenReturn(true)
 
     val context = emptyContext().copy(
@@ -151,17 +192,54 @@ class OPDRiskProducerServiceTest {
       currentOffence = "02504",
       gender = Gender.MALE,
       overallRiskForAssessment = RiskBand.LOW,
+      custodialSentence = true,
+    )
+
+    val result = service.getRiskScore(request, context).OPD!!
+    assertEquals(true, result.opdCheck)
+    assertEquals(OPDResult.SCREEN_OUT, result.opdResult)
+  }
+
+  @Test
+  fun `should skip OPD calculation with an valid request, SCREEN_OUT because not custodial sentence for male`() {
+    whenever(offenceGroupParametersService.isViolentOrSexualType("02504")).thenReturn(true)
+
+    val context = emptyContext().copy(
+      OPD = emptyOPD(),
+    )
+    val request = validOPDRiskScoreRequest().copy(
+      currentOffence = "02504",
+      gender = Gender.MALE,
+      overallRiskForAssessment = RiskBand.HIGH,
       custodialSentence = false,
     )
 
     val result = service.getRiskScore(request, context).OPD!!
-    assertEquals(false, result.opdCheck)
+    assertEquals(true, result.opdCheck)
+    assertEquals(OPDResult.SCREEN_OUT, result.opdResult)
+  }
+
+  @Test
+  fun `should skip OPD calculation with an valid request, SCREEN_OUT because not violent offence for male`() {
+    whenever(offenceGroupParametersService.isViolentOrSexualType("02504")).thenReturn(false)
+
+    val context = emptyContext().copy(
+      OPD = emptyOPD(),
+    )
+    val request = validOPDRiskScoreRequest().copy(
+      currentOffence = "02504",
+      gender = Gender.MALE,
+      overallRiskForAssessment = RiskBand.HIGH,
+      custodialSentence = true,
+    )
+
+    val result = service.getRiskScore(request, context).OPD!!
+    assertEquals(true, result.opdCheck)
+    assertEquals(OPDResult.SCREEN_OUT, result.opdResult)
   }
 
   @Test
   fun `should not calculate OPD with an valid request, all null answers for male`() {
-    whenever(offenceGroupParametersService.isViolentOrSexualType("02504")).thenReturn(true)
-
     val context = emptyContext().copy(
       OPD = emptyOPD(),
     )
@@ -201,8 +279,6 @@ class OPDRiskProducerServiceTest {
 
   @Test
   fun `should not calculate OPD with an valid request, all null answers for female`() {
-    whenever(offenceGroupParametersService.isViolentOrSexualType("02504")).thenReturn(true)
-
     val context = emptyContext().copy(
       OPD = emptyOPD(),
     )
