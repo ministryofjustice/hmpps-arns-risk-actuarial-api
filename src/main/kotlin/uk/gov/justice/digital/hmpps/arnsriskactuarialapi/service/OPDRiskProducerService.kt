@@ -64,11 +64,11 @@ class OPDRiskProducerService : RiskScoreProducer {
       val validatedRequest = mapRequestValidated(request)
 
       // checks
-      if (!isOpdApplicable(validatedRequest)) {
-        return notApplicableResult(context)
-      }
       if (hasAllMaleQuestionsUnanswered(request) || hasAllFemaleQuestionsUnanswered(request)) {
         return notApplicableResult(context)
+      }
+      if (!isOpdApplicable(validatedRequest)) {
+        return screenOutResult(context)
       }
 
       return getOPDResult(validatedRequest, context)
@@ -164,6 +164,12 @@ class OPDRiskProducerService : RiskScoreProducer {
     context: RiskScoreContext,
   ): RiskScoreContext = context.apply {
     OPD = OPDObject(opdCheck = false, opdResult = null, validationError = emptyList())
+  }
+
+  private fun screenOutResult(
+    context: RiskScoreContext,
+  ): RiskScoreContext = context.apply {
+    OPD = OPDObject(opdCheck = true, opdResult = OPDResult.SCREEN_OUT, validationError = emptyList())
   }
 
   /**
