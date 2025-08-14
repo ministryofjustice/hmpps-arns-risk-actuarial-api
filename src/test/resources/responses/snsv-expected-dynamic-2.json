@@ -1,0 +1,13 @@
+{
+  "snsv": {
+    "snsvScore": null,
+    "scoreType": "DYNAMIC",
+    "validationError": [
+      {
+        "type": "UNEXPECTED_VALUE",
+        "message": "Error: Age at assessment date cannot be less than 10",
+        "fields": null
+      }
+    ]
+  }
+}

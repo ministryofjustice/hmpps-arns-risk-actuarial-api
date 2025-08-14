@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 import java.math.RoundingMode
+import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.cosh
 import kotlin.math.exp
@@ -15,6 +16,11 @@ class NumbersUtilsTest {
     const val SCALE = 2
     fun Double.equalsDelta(other: Double) = BigDecimal(abs(this / other - 1)).setScale(SCALE, RoundingMode.HALF_UP)
       .equals(BigDecimal(0).setScale(SCALE, RoundingMode.HALF_UP))
+
+    // for Horner's rule
+    val cubic = doubleArrayOf(-1.0, 0.0, 0.0, 1.0)
+    val linear = doubleArrayOf(-1.0, 1.0)
+    val quadratic = doubleArrayOf(1.0, 1.0, 1.0)
   }
 
   @Test
@@ -62,12 +68,24 @@ class NumbersUtilsTest {
   }
 
   @Test
-  fun `softScale should scale correctly`() {
+  fun `sigmoid should scale correctly`() {
     assertTrue(0.5.equalsDelta(0.0.sigmoid()))
     // should be true for any x (but delta may have to be tweaked)
     val x = Math.PI
     val g = { x: Double -> (x / 2).let { u -> exp(u) / (2 * cosh(u)) } }
     val f = { x: Double -> x.sigmoid() }
     assertTrue(f(x).equalsDelta(g(x)))
+  }
+
+  @Test
+  fun `horner's method calculations`() {
+    assertEquals(7.0, hornersMethod(cubic, 2.0), 0.00001)
+    assertEquals(PI - 1, hornersMethod(linear, PI), 0.00001)
+    assertEquals(21.0, hornersMethod(quadratic, 4.0), 0.00001)
+    // should be true for any x
+    val x = PI
+    val productOfPolynomials = { x: Double -> hornersMethod(linear, x) * hornersMethod(quadratic, x) }
+    val cubicPolynomial = { x: Double -> hornersMethod(cubic, x) }
+    assertEquals(productOfPolynomials(x), cubicPolynomial(x), 0.00001)
   }
 }

@@ -10,115 +10,81 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.SNSVDynamicReq
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.SNSVObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.SNSVStaticRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.ScoreType
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.get2YearInterceptWeight
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getAgeGenderPolynomialWeight
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getMonthsSinceLastSanctionWeight
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getNumberOfSanctionWeight
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getThreePlusSanctionsWeight
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getViolenceRateWeight
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getViolentSanctionsWeight
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getYearsBetweenFirstAndSecondSanctionWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.alcoholExcessive6MonthsWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.alcoholIsCurrentUseAProblemWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.carryingOrUsingWeaponWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.currentRelationshipWithPartnerWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.domesticViolenceWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.employmentStatusWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.get2YearInterceptWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getAgeGenderPolynomialWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getMonthsSinceLastSanctionWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getNumberOfSanctionWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getThreePlusSanctionsWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getViolenceRateWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getViolentSanctionsWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getYearsBetweenFirstAndSecondSanctionWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.impulsivityBehaviourWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.previousConvictionsWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.proCriminalAttitudesWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.suitabilityOfAccommodationWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.getNullValuesFromProperties
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.snsvInitialValidation
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.roundToNDecimals
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sigmoid
+import kotlin.getOrElse
 
 @Service
 class SNSVRiskProducerService : RiskScoreProducer {
+
+  companion object {
+    val SNSV_DYNAMIC_ADDITIONAL_REQUIRED_PROPERTIES = listOf(
+      RiskScoreRequest::carryingOrUsingWeapon,
+      RiskScoreRequest::suitabilityOfAccommodation,
+      RiskScoreRequest::employmentStatus,
+      RiskScoreRequest::currentRelationshipWithPartner,
+      RiskScoreRequest::alcoholIsCurrentUseAProblem,
+      RiskScoreRequest::alcoholExcessive6Months,
+      RiskScoreRequest::impulsivityBehaviour,
+      RiskScoreRequest::temperControl,
+      RiskScoreRequest::proCriminalAttitudes,
+      RiskScoreRequest::domesticAbuse,
+      RiskScoreRequest::previousConvictions,
+    )
+  }
 
   @Autowired
   lateinit var offenceGroupParametersService: OffenceGroupParametersService
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
     val errors = snsvInitialValidation(request)
-
-    if (errors.isNotEmpty()) {
-      return context.apply { SNSV = SNSVObject(null, null, errors) }
-    }
-
-    if (isSNSVDynamic(request) == ScoreType.STATIC) {
-      val validStaticRequest = SNSVStaticRequestValidated(
-        request.gender!!,
-        request.dateOfBirth!!,
-        request.assessmentDate,
-        request.dateOfCurrentConviction!!,
-        request.currentOffence!!,
-        request.totalNumberOfSanctions!!.toInt(),
-        request.ageAtFirstSanction!!.toInt(),
-        request.inCustodyOrCommunity!!,
-        request.dateAtStartOfFollowup!!,
-        request.totalNumberOfViolentSanctions!!.toInt(),
-      )
-      return context.apply {
-        SNSV = getSNSVStaticObject(validStaticRequest)
-      }
-    } else {
-      val validDynamicRequest = SNSVDynamicRequestValidated(
-        request.gender!!,
-        request.dateOfBirth!!,
-        request.assessmentDate,
-        request.dateOfCurrentConviction!!,
-        request.currentOffence!!,
-        request.totalNumberOfSanctions!!.toInt(),
-        request.ageAtFirstSanction!!.toInt(),
-        request.inCustodyOrCommunity!!,
-        request.dateAtStartOfFollowup!!,
-        request.totalNumberOfViolentSanctions!!.toInt(),
-        request.carryingOrUsingWeapon!!,
-        request.suitabilityOfAccommodation!!,
-        request.employmentStatus!!,
-        request.currentRelationshipWithPartner!!,
-        request.alcoholIsCurrentUseAProblem!!,
-        request.alcoholExcessive6Months!!,
-        request.impulsivityBehaviour!!,
-        request.temperControl!!,
-        request.proCriminalAttitudes!!,
-        request.domesticAbuse!!,
-        request.previousConvictions!!,
-      )
-      return context.apply {
-        SNSV = getSNSVDynamicObject(validDynamicRequest)
-      }
+    return context.apply {
+      SNSV =
+        if (errors.isNotEmpty()) {
+          SNSVObject(null, null, errors)
+        } else {
+          val scoreType = isSNSVDynamic(request)
+          getSNSVObject(scoreType, request)
+        }
     }
   }
 
-  fun isSNSVDynamic(request: RiskScoreRequest): ScoreType = if (request.carryingOrUsingWeapon != null &&
-    request.suitabilityOfAccommodation != null &&
-    request.employmentStatus != null &&
-    request.currentRelationshipWithPartner != null &&
-    request.alcoholIsCurrentUseAProblem != null &&
-    request.alcoholExcessive6Months != null &&
-    request.impulsivityBehaviour != null &&
-    request.temperControl != null &&
-    request.proCriminalAttitudes != null &&
-    request.domesticAbuse != null &&
-    request.previousConvictions != null
-  ) {
-    ScoreType.DYNAMIC
-  } else {
-    ScoreType.STATIC
-  }
-
-  private fun getSNSVStaticObject(
-    request: SNSVStaticRequestValidated,
+  fun getSNSVObject(
+    scoreType: ScoreType,
+    request: RiskScoreRequest,
   ): SNSVObject = runCatching {
-    listOf(
-      get2YearInterceptWeight(false),
-      getAgeGenderPolynomialWeight(request.gender, request.dateOfBirth, request.assessmentDate, false),
-      offenceGroupParametersService.getSNSVStaticWeighting(request.currentOffence),
-      getNumberOfSanctionWeight(request.totalNumberOfSanctions, false),
-      getYearsBetweenFirstAndSecondSanctionWeight(request.gender, request.dateOfBirth, request.dateOfCurrentConviction, request.ageAtFirstSanction, false),
-      getMonthsSinceLastSanctionWeight(request.inCustodyOrCommunity, request.dateAtStartOfFollowup, request.assessmentDate, false),
-      getThreePlusSanctionsWeight(request.gender, request.totalNumberOfSanctions, request.ageAtFirstSanction, request.dateOfBirth, request.dateOfCurrentConviction, false),
-      getViolentSanctionsWeight(request.totalNumberOfViolentSanctions, request.gender, false),
-      getViolenceRateWeight(request.dateOfBirth, request.dateOfCurrentConviction, request.ageAtFirstSanction, request.totalNumberOfViolentSanctions, false),
-      offenceGroupParametersService.getSNSVVATPStaticWeighting(request.currentOffence),
-    ).sum()
-      .let { coefficientSum ->
-        SNSVObject(coefficientSum.sigmoid(), ScoreType.STATIC, null)
+    when (scoreType) {
+      ScoreType.STATIC -> {
+        snvsStaticSum(request.toSNSVStaticRequestValidated())
       }
+      ScoreType.DYNAMIC -> {
+        snvsDynamicSum(request.toSNSVDynamicRequestValidated())
+      }
+    }.let { SNSVObject(it.sigmoid().roundToNDecimals(16), scoreType, emptyList()) }
   }.getOrElse {
     SNSVObject(
       null,
-      ScoreType.STATIC,
+      scoreType,
       arrayListOf(
         ValidationErrorResponse(
           type = ValidationErrorType.UNEXPECTED_VALUE,
@@ -129,8 +95,131 @@ class SNSVRiskProducerService : RiskScoreProducer {
     )
   }
 
-  // todo add runCatching and score in later tickets
-  private fun getSNSVDynamicObject(
-    request: SNSVDynamicRequestValidated,
-  ): SNSVObject = SNSVObject(null, ScoreType.DYNAMIC, null)
+  fun isSNSVDynamic(request: RiskScoreRequest): ScoreType = if (getNullValuesFromProperties(request, SNSV_DYNAMIC_ADDITIONAL_REQUIRED_PROPERTIES).isEmpty()) {
+    ScoreType.DYNAMIC
+  } else {
+    ScoreType.STATIC
+  }
+
+  private fun RiskScoreRequest.toSNSVDynamicRequestValidated(): SNSVDynamicRequestValidated = SNSVDynamicRequestValidated(
+    this.gender!!,
+    this.dateOfBirth!!,
+    this.assessmentDate,
+    this.dateOfCurrentConviction!!,
+    this.currentOffence!!,
+    this.totalNumberOfSanctions!!.toInt(),
+    this.ageAtFirstSanction!!.toInt(),
+    this.inCustodyOrCommunity!!,
+    this.dateAtStartOfFollowup!!,
+    this.totalNumberOfViolentSanctions!!.toInt(),
+    this.carryingOrUsingWeapon!!,
+    this.suitabilityOfAccommodation!!,
+    this.employmentStatus!!,
+    this.currentRelationshipWithPartner!!,
+    this.alcoholIsCurrentUseAProblem!!,
+    this.alcoholExcessive6Months!!,
+    this.impulsivityBehaviour!!,
+    this.temperControl!!,
+    this.proCriminalAttitudes!!,
+    this.domesticAbuse!!,
+    this.previousConvictions!!,
+  )
+
+  private fun RiskScoreRequest.toSNSVStaticRequestValidated() = SNSVStaticRequestValidated(
+    this.gender!!,
+    this.dateOfBirth!!,
+    this.assessmentDate,
+    this.dateOfCurrentConviction!!,
+    this.currentOffence!!,
+    this.totalNumberOfSanctions!!.toInt(),
+    this.ageAtFirstSanction!!.toInt(),
+    this.inCustodyOrCommunity!!,
+    this.dateAtStartOfFollowup!!,
+    this.totalNumberOfViolentSanctions!!.toInt(),
+  )
+
+  private fun snvsStaticSum(request: SNSVStaticRequestValidated): Double = listOf(
+    get2YearInterceptWeight(false),
+    getAgeGenderPolynomialWeight(request.gender, request.dateOfBirth, request.assessmentDate, false),
+    offenceGroupParametersService.getSNSVStaticWeighting(request.currentOffence),
+    getNumberOfSanctionWeight(request.totalNumberOfSanctions, false),
+    getYearsBetweenFirstAndSecondSanctionWeight(
+      request.gender,
+      request.dateOfBirth,
+      request.dateOfCurrentConviction,
+      request.ageAtFirstSanction,
+      false,
+    ),
+    getMonthsSinceLastSanctionWeight(
+      request.inCustodyOrCommunity,
+      request.dateAtStartOfFollowup,
+      request.assessmentDate,
+      false,
+    ),
+    getThreePlusSanctionsWeight(
+      request.gender,
+      request.totalNumberOfSanctions,
+      request.ageAtFirstSanction,
+      request.dateOfBirth,
+      request.dateOfCurrentConviction,
+      false,
+    ),
+    getViolentSanctionsWeight(request.totalNumberOfViolentSanctions, request.gender, false),
+    getViolenceRateWeight(
+      request.dateOfBirth,
+      request.dateOfCurrentConviction,
+      request.ageAtFirstSanction,
+      request.totalNumberOfViolentSanctions,
+      false,
+    ),
+    offenceGroupParametersService.getSNSVVATPStaticWeighting(request.currentOffence),
+  ).sum()
+
+  private fun snvsDynamicSum(request: SNSVDynamicRequestValidated): Double = listOf(
+    get2YearInterceptWeight(true),
+    getAgeGenderPolynomialWeight(request.gender, request.dateOfBirth, request.assessmentDate, true),
+    offenceGroupParametersService.getSNSVDynamicWeighting(request.currentOffence),
+    getNumberOfSanctionWeight(request.totalNumberOfSanctions, true),
+    getYearsBetweenFirstAndSecondSanctionWeight(
+      request.gender,
+      request.dateOfBirth,
+      request.dateOfCurrentConviction,
+      request.ageAtFirstSanction,
+      true,
+    ),
+    getMonthsSinceLastSanctionWeight(
+      request.inCustodyOrCommunity,
+      request.dateAtStartOfFollowup,
+      request.assessmentDate,
+      true,
+    ),
+    getThreePlusSanctionsWeight(
+      request.gender,
+      request.totalNumberOfSanctions,
+      request.ageAtFirstSanction,
+      request.dateOfBirth,
+      request.dateOfCurrentConviction,
+      true,
+    ),
+    getViolentSanctionsWeight(request.totalNumberOfViolentSanctions, request.gender, true),
+    getViolenceRateWeight(
+      request.dateOfBirth,
+      request.dateOfCurrentConviction,
+      request.ageAtFirstSanction,
+      request.totalNumberOfViolentSanctions,
+      true,
+    ),
+    offenceGroupParametersService.getSNSVVATPDynamicWeighting(request.currentOffence),
+    // Dynamic Additions
+    carryingOrUsingWeaponWeight(request.carryingOrUsingWeapon),
+    suitabilityOfAccommodationWeight(request.suitabilityOfAccommodation),
+    employmentStatusWeight(request.employmentStatus),
+    currentRelationshipWithPartnerWeight(request.currentRelationshipWithPartner),
+    alcoholIsCurrentUseAProblemWeight(request.alcoholIsCurrentUseAProblem),
+    alcoholExcessive6MonthsWeight(request.alcoholExcessive6Months),
+    impulsivityBehaviourWeight(request.impulsivityBehaviour),
+    proCriminalAttitudesWeight(request.proCriminalAttitudes),
+    domesticViolenceWeight(request.domesticAbuse),
+    previousConvictionsWeight(request.previousConvictions),
+  ).sum()
 }

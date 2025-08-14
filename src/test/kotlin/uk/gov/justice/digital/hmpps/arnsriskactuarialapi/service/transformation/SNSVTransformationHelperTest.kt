@@ -2,17 +2,31 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CustodyOrCommunity
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.PreviousConviction
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.get2YearInterceptWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getAgeAt
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getAgeGenderPolynomialWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getMonthsSinceLastSanctionWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getNumberOfSanctionWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getThreePlusSanctionsWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getViolenceRateWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getViolentSanctionsWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getYearsBetweenFirstAndSecondSanctionWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.previousConvictionsWeight
 import java.time.LocalDate
 import java.time.Month
 import java.util.stream.Stream
+import kotlin.collections.emptyList
 import kotlin.math.ln
 import kotlin.math.pow
+import kotlin.test.assertFailsWith
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SNSVTransformationHelperTest {
@@ -255,11 +269,35 @@ class SNSVTransformationHelperTest {
     assertEquals(expectedMessage, exception.message)
   }
 
+  @ParameterizedTest
+  @MethodSource("getPreviousConvictionsProvider")
+  fun `previousConvictionsWeight should sum correctly`(previousConvictions: List<PreviousConviction>, expected: Double) {
+    val result = previousConvictionsWeight(previousConvictions)
+    assertEquals(expected, result, 1e-9)
+  }
+
+  @Test
+  fun `out of range values`() {
+    val stage = "test stage"
+    var exception = assertFailsWith<IllegalArgumentException>(
+      block = {
+        getAgeAt(stage, LocalDate.of(1990, 1, 1), LocalDate.of(1989, 1, 1), 9)
+      },
+    )
+    assertEquals(exception.message, "Test stage cannot be before date of birth.")
+    exception = assertFailsWith<IllegalArgumentException>(
+      block = {
+        getAgeAt(stage, LocalDate.of(1990, 1, 1), LocalDate.of(2025, 1, 1), 36)
+      },
+    )
+    assertEquals(exception.message, "Age at test stage cannot be less than 36")
+  }
+
   companion object {
     @JvmStatic
     fun get2YearInterceptWeightProvider() = listOf(
-      arrayOf(false, 3.60407707356772),
-      arrayOf(true, 2.39022796091603),
+      Arguments.of(false, 3.60407707356772),
+      Arguments.of(true, 2.39022796091603),
     )
 
     // getAgeGenderPolynomialWeight method source
@@ -267,10 +305,12 @@ class SNSVTransformationHelperTest {
     fun getAgeGenderPolynomialWeightValidInputProvider(): Stream<Arguments> = Stream.of(
       // Male, isSNSVDynamic = true
       Arguments.of(Gender.MALE, LocalDate.of(1990, 1, 1), LocalDate.of(2020, 1, 1), true, calculateMalePolynomial(30, true)),
+      Arguments.of(Gender.MALE, LocalDate.of(1989, 1, 1), LocalDate.of(2020, 1, 1), true, calculateMalePolynomial(31, true)),
       // Male, isSNSVDynamic = false
       Arguments.of(Gender.MALE, LocalDate.of(1990, 1, 1), LocalDate.of(2020, 1, 1), false, calculateMalePolynomial(30, false)),
       // Female, isSNSVDynamic = true
       Arguments.of(Gender.FEMALE, LocalDate.of(1990, 1, 1), LocalDate.of(2020, 1, 1), true, calculateFemalePolynomial(30, true)),
+      Arguments.of(Gender.FEMALE, LocalDate.of(1989, 1, 1), LocalDate.of(2020, 1, 1), true, calculateFemalePolynomial(31, true)),
       // Female, isSNSVDynamic = false
       Arguments.of(Gender.FEMALE, LocalDate.of(1990, 1, 1), LocalDate.of(2020, 1, 1), false, calculateFemalePolynomial(30, false)),
     )
@@ -342,9 +382,9 @@ class SNSVTransformationHelperTest {
       // Negative years between sanctions
       Arguments.of(Gender.MALE, LocalDate.of(1990, 1, 1), LocalDate.of(2001, 1, 1), 15, true, "Years between first and second sanction cannot be a negative"),
       // Age at conviction <= 10
-      Arguments.of(Gender.FEMALE, LocalDate.of(2015, 1, 1), LocalDate.of(2024, 1, 1), 5, false, "Age at current conviction cannot be less than 10"),
+      Arguments.of(Gender.FEMALE, LocalDate.of(2015, 1, 1), LocalDate.of(2024, 1, 1), 5, false, "Age at current conviction date cannot be less than 10"),
       // Age at conviction < 0
-      Arguments.of(Gender.MALE, LocalDate.of(2030, 1, 1), LocalDate.of(2020, 1, 1), 5, true, "Conviction date cannot be before date of birth."),
+      Arguments.of(Gender.MALE, LocalDate.of(2030, 1, 1), LocalDate.of(2020, 1, 1), 5, true, "Current conviction date cannot be before date of birth."),
     )
 
     @JvmStatic
@@ -413,7 +453,15 @@ class SNSVTransformationHelperTest {
         true,
         calculateExpected(Gender.MALE, 5, 18, 35, true),
       ),
-
+      Arguments.of(
+        Gender.MALE,
+        5,
+        18,
+        LocalDate.of(1991, 1, 1),
+        LocalDate.of(2025, 1, 1),
+        true,
+        calculateExpected(Gender.MALE, 5, 18, 34, true),
+      ),
       // Male - static
       Arguments.of(
         Gender.MALE,
@@ -447,7 +495,7 @@ class SNSVTransformationHelperTest {
         LocalDate.of(2000, 1, 1),
         LocalDate.of(1999, 1, 1),
         true,
-        "Conviction date cannot be before date of birth.",
+        "Current conviction date cannot be before date of birth.",
       ),
 
       // Invalid: conviction age <= 10
@@ -458,7 +506,7 @@ class SNSVTransformationHelperTest {
         LocalDate.of(2015, 1, 1),
         LocalDate.of(2024, 1, 1),
         true,
-        "Age at current conviction cannot be less than 10",
+        "Age at current conviction date cannot be less than 10",
       ),
     )
 
@@ -552,7 +600,45 @@ class SNSVTransformationHelperTest {
         15,
         2,
         true,
-        "Conviction date cannot be before date of birth.",
+        "Current conviction cannot be before date of birth.",
+      ),
+    )
+
+    @JvmStatic
+    fun getPreviousConvictionsProvider(): Stream<Arguments> = Stream.of(
+      Arguments.of(emptyList<PreviousConviction>(), 0.0),
+      Arguments.of(
+        listOf(
+          PreviousConviction.HOMICIDE,
+          PreviousConviction.WOUNDING_GBH,
+          PreviousConviction.KIDNAPPING,
+          PreviousConviction.FIREARMS,
+          PreviousConviction.ROBBERY,
+          PreviousConviction.AGGRAVATED_BURGLARY,
+          PreviousConviction.WEAPON,
+          PreviousConviction.CRIMINAL_DAMAGE,
+          PreviousConviction.ARSON,
+        ),
+        0.399463399258737 + 0.451029720739399 + 0.0749101406070305 + 0.218055028351022 +
+          0.163248217650296 + 0.506616685297771 + 0.184104582611966 + 0.357345708081477 + 0.12261588608151,
+      ),
+      Arguments.of(
+        listOf(
+          PreviousConviction.ARSON,
+          PreviousConviction.WEAPON,
+          PreviousConviction.ROBBERY,
+          PreviousConviction.KIDNAPPING,
+          PreviousConviction.HOMICIDE,
+        ),
+        0.12261588608151 + 0.184104582611966 + 0.163248217650296 + 0.0749101406070305 + 0.399463399258737,
+      ),
+      Arguments.of(
+        listOf(
+          PreviousConviction.FIREARMS,
+          PreviousConviction.ROBBERY,
+          PreviousConviction.AGGRAVATED_BURGLARY,
+        ),
+        0.218055028351022 + 0.163248217650296 + 0.506616685297771,
       ),
     )
   }

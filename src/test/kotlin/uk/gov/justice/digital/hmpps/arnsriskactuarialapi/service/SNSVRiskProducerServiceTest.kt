@@ -46,6 +46,21 @@ class SNSVRiskProducerServiceTest {
   }
 
   @Test
+  fun `getRiskScore should return valid SNSVObject with ScoreType DYNAMIC`() {
+    whenever(offenceGroupParametersService.getSNSVDynamicWeighting("02700")).thenReturn(0.123)
+    whenever(offenceGroupParametersService.getSNSVVATPDynamicWeighting("02700")).thenReturn(0.123)
+
+    val result = service.getRiskScore(
+      validSNSVDynamicRiskScoreRequest(),
+      emptyContext(),
+    )
+
+    assertNotNull(result)
+    assertEquals(ScoreType.DYNAMIC, result.SNSV!!.scoreType)
+    assertEquals(0.002399338980972, result.SNSV!!.snsvScore!!, 1E-8)
+  }
+
+  @Test
   fun `getRiskScore should return valid SNSVObject with ScoreType STATIC`() {
     whenever(offenceGroupParametersService.getSNSVStaticWeighting("02700")).thenReturn(0.123)
     whenever(offenceGroupParametersService.getSNSVVATPStaticWeighting("02700")).thenReturn(0.123)
@@ -57,7 +72,22 @@ class SNSVRiskProducerServiceTest {
 
     assertNotNull(result)
     assertEquals(ScoreType.STATIC, result.SNSV!!.scoreType)
-    assertEquals(0.002818580403289646, result.SNSV!!.snsvScore)
+    assertEquals(0.00281858040329, result.SNSV!!.snsvScore!!, 1E-8)
+  }
+
+  @Test
+  fun `getRiskScore should hit calculation error and return UNEXPECTED_VALUE with DYNAMIC score type`() {
+    val result = service.getRiskScore(
+      validSNSVDynamicRiskScoreRequest().copy(dateOfBirth = LocalDate.of(2025, Month.JANUARY, 1)),
+      emptyContext(),
+    )
+
+    assertNotNull(result)
+    assertEquals(ScoreType.DYNAMIC, result.SNSV!!.scoreType)
+    assertEquals(1, result.SNSV?.validationError?.size)
+    val error = result.SNSV?.validationError?.first()
+    assertEquals(ValidationErrorType.UNEXPECTED_VALUE, error?.type)
+    assertEquals("Error: Age at assessment date cannot be less than 10", error?.message)
   }
 
   @Test

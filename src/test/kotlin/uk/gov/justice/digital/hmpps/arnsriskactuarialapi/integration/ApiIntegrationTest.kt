@@ -45,6 +45,10 @@ class ApiIntegrationTest : IntegrationTestBase() {
       arrayOf("lds", "requests/lds-input-1-valid.json", "responses/lds-expected-1.json"),
       arrayOf("lds", "requests/lds-input-2-missing-fields.json", "responses/lds-expected-2.json"),
       arrayOf("lds", "requests/lds-input-2-missing-fields.json", "responses/lds-expected-2.json"),
+      arrayOf("snsv", "requests/snsv-input-1-valid-static.json", "responses/snsv-expected-static-1.json"),
+      arrayOf("snsv", "requests/snsv-input-1-valid-dynamic.json", "responses/snsv-expected-dynamic-1.json"),
+      arrayOf("snsv", "requests/snsv-input-2-static-missing-fields.json", "responses/snsv-expected-static-2.json"),
+      arrayOf("snsv", "requests/snsv-input-2-dynamic-unexpected-error.json", "responses/snsv-expected-dynamic-2.json"),
       // Add more as needed
     )
 

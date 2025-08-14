@@ -1,0 +1,26 @@
+{
+  "version": "V1_0",
+  "gender": "MALE",
+  "dateOfBirth": "2025-01-01",
+  "assessmentDate": "2025-01-01",
+  "dateOfCurrentConviction": "2020-01-01",
+  "currentOffence": "02700",
+  "totalNumberOfSanctions": 1,
+  "ageAtFirstSanction": 40,
+  "inCustodyOrCommunity": "COMMUNITY",
+  "dateAtStartOfFollowup": "2027-01-01",
+  "totalNumberOfViolentSanctions": 1,
+  "carryingOrUsingWeapon": false,
+  "suitabilityOfAccommodation": "NO_PROBLEMS",
+  "employmentStatus": false,
+  "currentRelationshipWithPartner": "NO_PROBLEMS",
+  "alcoholIsCurrentUseAProblem": "NO_PROBLEMS",
+  "alcoholExcessive6Months": "NO_PROBLEMS",
+  "impulsivityBehaviour": "NO_PROBLEMS",
+  "temperControl": "NO_PROBLEMS",
+  "proCriminalAttitudes": "NO_PROBLEMS",
+  "domesticAbuse": false,
+  "previousConvictions": [
+    "WOUNDING_GBH"
+  ]
+}

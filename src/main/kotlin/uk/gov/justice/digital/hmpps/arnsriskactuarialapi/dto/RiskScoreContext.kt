@@ -37,4 +37,5 @@ fun RiskScoreContext.toRiskScoreResponse(): RiskScoreResponse = RiskScoreRespons
   this.PNI,
   this.LDS,
   this.RSR,
+  this.SNSV,
 )
