@@ -8,7 +8,7 @@ fun ageAtFirstSanctionOffendersScore(request: OPDRequestValidated) = when (reque
   else -> 0
 }
 
-fun violenceOrThreatOfViolenceOffendersScore(request: OPDRequestValidated) = scoreFromBoolean(request.excessiveOrSadisticViolence)
+fun violenceOrThreatOfViolenceOffendersScore(request: OPDRequestValidated) = scoreFromBoolean(request.violenceOrThreatOfViolence)
 
 fun excessiveOrSadisticViolenceOffendersScore(request: OPDRequestValidated) = when (request.excessiveOrSadisticViolence) {
   true -> if (request.violenceOrThreatOfViolence) {
@@ -87,7 +87,7 @@ fun thinkingAndBehaviourLinedToRiskOfSeriousHarmOffendersScore(request: OPDReque
 
 fun domesticAbuseOffendersScore(request: OPDRequestValidated): Int = when {
   !request.domesticAbuse -> 0
-  request.domesticAbusePartner == true || request.domesticAbuseFamily == true -> 1
+  (request.domesticAbusePartner == true) || (request.domesticAbuseFamily == true) -> 1
   else -> 0
 }
 
