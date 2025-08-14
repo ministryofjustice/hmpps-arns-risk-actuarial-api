@@ -1,6 +1,7 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Nested
@@ -199,5 +200,35 @@ class OGRS3TransformationHelperTest {
         getRiskBand(-1)
       }
     }
+  }
+
+  @Test
+  fun `isWithinLastTwoYears should be true for 18 months ago`() {
+    val date = LocalDate.now().minusMonths(18)
+    assertTrue(isWithinLastTwoYears(date))
+  }
+
+  @Test
+  fun `isWithinLastTwoYears should be true for 24 months ago exactly`() {
+    val date = LocalDate.now().minusMonths(24)
+    assertTrue(isWithinLastTwoYears(date))
+  }
+
+  @Test
+  fun `isWithinLastTwoYears should be true for today`() {
+    val date = LocalDate.now()
+    assertTrue(isWithinLastTwoYears(date))
+  }
+
+  @Test
+  fun `isWithinLastTwoYears should be false for 24 months and 1 day ago exactly`() {
+    val date = LocalDate.now().minusMonths(24).minusDays(1)
+    assertFalse(isWithinLastTwoYears(date))
+  }
+
+  @Test
+  fun `isWithinLastTwoYears should be false for tomorrows date`() {
+    val date = LocalDate.now().plusDays(1)
+    assertFalse(isWithinLastTwoYears(date))
   }
 }

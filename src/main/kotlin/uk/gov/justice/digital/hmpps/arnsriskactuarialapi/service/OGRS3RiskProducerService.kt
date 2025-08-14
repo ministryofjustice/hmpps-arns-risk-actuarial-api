@@ -17,6 +17,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getOgrs3OneYear
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getOgrs3TwoYear
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getRiskBand
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isWithinLastTwoYears
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.ogrs3InitialValidation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateAge
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asPercentage
@@ -40,11 +41,13 @@ class OGRS3RiskProducerService : RiskScoreProducer {
     val validRequest = OGRS3RequestValidated(
       request.gender!!,
       request.dateOfBirth!!,
+      request.assessmentDate,
       request.dateOfCurrentConviction!!,
       request.dateAtStartOfFollowup!!,
       request.totalNumberOfSanctions!!.toInt(),
       request.ageAtFirstSanction!!.toInt(),
       request.currentOffence!!,
+
     )
     return context.apply { OGRS3 = getOGRS3Object(validRequest) }
   }
@@ -57,9 +60,14 @@ class OGRS3RiskProducerService : RiskScoreProducer {
       request.dateOfCurrentConviction,
     )
 
+    val followUpDate = if (isWithinLastTwoYears(request.dateAtStartOfFollowup)) {
+      request.dateAtStartOfFollowup
+    } else {
+      request.assessmentDate
+    }
     val ageAtStartOfFollowup = getAgeDiffAtOffenceDate(
       request.dateOfBirth,
-      request.dateAtStartOfFollowup,
+      followUpDate,
     )
 
     val ageValidationErrors = validateAge(ageAtCurrentConviction, request.ageAtFirstSanction, emptyList())

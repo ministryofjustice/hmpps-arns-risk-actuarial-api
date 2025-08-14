@@ -77,7 +77,7 @@ data class RiskScoreRequest(
   val custodialSentence: Boolean? = null,
   val financialRelianceOnOthers: ProblemLevel? = null,
   val manipulativePredatoryBehaviour: ProblemLevel? = null,
-  val childhoodBehaviour: ProblemLevel? = null,
+  val childhoodBehaviour: Boolean? = null,
   val currentPsychiatricProblems: ProblemLevel? = null,
   val historyOfPsychiatricTreatment: Boolean? = null,
   val medicationMentalHealth: Boolean? = null,

@@ -171,11 +171,11 @@ class OPDTransformationHelperTest {
 
   @Test
   fun `childhoodBehaviourOffendersScore returns correct score`() {
-    val some = opdRequestValidated().copy(childhoodBehaviour = ProblemLevel.SOME_PROBLEMS)
-    val nullValue = opdRequestValidated().copy(childhoodBehaviour = null)
+    val trueValue = opdRequestValidated().copy(childhoodBehaviour = true)
+    val falseValue = opdRequestValidated().copy(childhoodBehaviour = false)
 
-    assertEquals(1, childhoodBehaviourOffendersScore(some))
-    assertEquals(0, childhoodBehaviourOffendersScore(nullValue))
+    assertEquals(1, childhoodBehaviourOffendersScore(trueValue))
+    assertEquals(0, childhoodBehaviourOffendersScore(falseValue))
   }
 
   @Test
