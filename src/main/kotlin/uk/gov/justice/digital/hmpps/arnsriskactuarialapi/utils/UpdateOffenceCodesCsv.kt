@@ -6,20 +6,15 @@ import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVParser
 import org.apache.commons.csv.CSVPrinter
 import org.apache.commons.lang3.StringUtils
-import java.io.BufferedWriter
 import java.io.File
 import java.io.FileOutputStream
-import java.nio.file.Paths
 import java.text.DecimalFormat
-import java.text.NumberFormat
-import java.time.LocalDateTime
-import java.time.ZoneOffset
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
-import kotlin.time.Instant
 
 // Path to CSV output of CT_OFFENCE
 const val CT_OFFENCES_PATH = "ADD ME"
+
 // Path to CSV output of RSR_COEFFICIENTS
 const val RSR_COEFFICIENTS_PATH = "ADD ME"
 
@@ -85,7 +80,7 @@ fun main() {
       "SNSV_DYNAMIC_WEIGHTING",
       "SNSV_VATP_STATIC_WEIGHTING",
       "SNSV_VATP_DYNAMIC_WEIGHTING",
-      "OPD_VIOL_SEX"
+      "OPD_VIOL_SEX",
     )
     offenceCodeMapping.forEach {
       csvPrinter.printRecord(
@@ -96,28 +91,27 @@ fun main() {
         formatDouble(it.snsvDynamicWeighting),
         formatDouble(it.snsvVatpStaticWeighting),
         formatDouble(it.snsvVatpDynamicWeighting),
-        it.opdViolSex
+        it.opdViolSex,
       )
     }
     writer.flush()
   }
 }
 
-internal fun formatDouble(value: Double?) = if (value?.compareTo(value.toInt()) == 0 ) DecimalFormat("#").format(value) else value?.toString() ?: ""
+internal fun formatDouble(value: Double?) = if (value?.compareTo(value.toInt()) == 0) DecimalFormat("#").format(value) else value?.toString() ?: ""
 
-internal fun lookupVatpWeighting(ctOffence: CTOffence, rsrCoefficients: List<RSRCoefficient>, static: Boolean) =
-  if (ctOffence.ogrs4CategoryDesc.trim() == "") {
-    null
-  } else if (ctOffence.ogrs4CategoryDesc == "Violence against the person") {
-    val rsrCategory = rsrCoefficients.firstOrNull { it.coefficientName == ctOffence.rsrCategoryDesc }
-    if (static) {
-      rsrCategory?.snsvStatic
-    } else {
-      rsrCategory?.snsvDynamic
-    }
+internal fun lookupVatpWeighting(ctOffence: CTOffence, rsrCoefficients: List<RSRCoefficient>, static: Boolean) = if (ctOffence.ogrs4CategoryDesc.trim() == "") {
+  null
+} else if (ctOffence.ogrs4CategoryDesc == "Violence against the person") {
+  val rsrCategory = rsrCoefficients.firstOrNull { it.coefficientName == ctOffence.rsrCategoryDesc }
+  if (static) {
+    rsrCategory?.snsvStatic
   } else {
-    0.0
+    rsrCategory?.snsvDynamic
   }
+} else {
+  0.0
+}
 
 data class CTOffence(
   val offenceGroupCode: String,
