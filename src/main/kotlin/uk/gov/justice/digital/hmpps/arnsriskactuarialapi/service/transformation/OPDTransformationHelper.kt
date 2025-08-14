@@ -16,7 +16,6 @@ fun excessiveOrSadisticViolenceOffendersScore(request: OPDRequestValidated) = wh
   } else {
     2
   }
-
   false -> 0
 }
 
@@ -28,7 +27,7 @@ fun manipulativePredatoryBehaviourOffendersScore(request: OPDRequestValidated) =
 
 fun attitudesStableBehaviourOffendersScoreOpd(request: OPDRequestValidated) = scoreFromProblemLevel(request.attitudesStableBehaviour)
 
-fun childhoodBehaviourOffendersScore(request: OPDRequestValidated) = scoreFromProblemLevel(request.childhoodBehaviour)
+fun childhoodBehaviourOffendersScore(request: OPDRequestValidated) = scoreFromBoolean(request.childhoodBehaviour)
 
 fun impulsivityBehaviourOffendersScore(request: OPDRequestValidated) = scoreFromProblemLevel(request.impulsivityBehaviour)
 
