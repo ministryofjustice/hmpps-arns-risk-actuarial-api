@@ -8,6 +8,14 @@ import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CustodyOrCommunity
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.get2YearInterceptWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getAgeGenderPolynomialWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getMonthsSinceLastSanctionWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getNumberOfSanctionWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getThreePlusSanctionsWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getViolenceRateWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getViolentSanctionsWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getYearsBetweenFirstAndSecondSanctionWeight
 import java.time.LocalDate
 import java.time.Month
 import java.util.stream.Stream
@@ -342,9 +350,9 @@ class SNSVTransformationHelperTest {
       // Negative years between sanctions
       Arguments.of(Gender.MALE, LocalDate.of(1990, 1, 1), LocalDate.of(2001, 1, 1), 15, true, "Years between first and second sanction cannot be a negative"),
       // Age at conviction <= 10
-      Arguments.of(Gender.FEMALE, LocalDate.of(2015, 1, 1), LocalDate.of(2024, 1, 1), 5, false, "Age at current conviction cannot be less than 10"),
+      Arguments.of(Gender.FEMALE, LocalDate.of(2015, 1, 1), LocalDate.of(2024, 1, 1), 5, false, "Age at current conviction date cannot be less than 10"),
       // Age at conviction < 0
-      Arguments.of(Gender.MALE, LocalDate.of(2030, 1, 1), LocalDate.of(2020, 1, 1), 5, true, "Conviction date cannot be before date of birth."),
+      Arguments.of(Gender.MALE, LocalDate.of(2030, 1, 1), LocalDate.of(2020, 1, 1), 5, true, "Current conviction date cannot be before date of birth."),
     )
 
     @JvmStatic
@@ -447,7 +455,7 @@ class SNSVTransformationHelperTest {
         LocalDate.of(2000, 1, 1),
         LocalDate.of(1999, 1, 1),
         true,
-        "Conviction date cannot be before date of birth.",
+        "Current conviction date cannot be before date of birth.",
       ),
 
       // Invalid: conviction age <= 10
@@ -458,7 +466,7 @@ class SNSVTransformationHelperTest {
         LocalDate.of(2015, 1, 1),
         LocalDate.of(2024, 1, 1),
         true,
-        "Age at current conviction cannot be less than 10",
+        "Age at current conviction date cannot be less than 10",
       ),
     )
 
@@ -552,7 +560,7 @@ class SNSVTransformationHelperTest {
         15,
         2,
         true,
-        "Conviction date cannot be before date of birth.",
+        "Current conviction cannot be before date of birth.",
       ),
     )
   }
