@@ -44,7 +44,7 @@ class SNSVTransformationHelper {
     val STATIC_GENDERED_VIOLENT_SANCTIONS_WEIGHTS = mapOf(Gender.MALE to -0.942816163300621, Gender.FEMALE to -2.32321324569237)
     val DYNAMIC_GENDERED_VIOLENT_SANCTIONS_WEIGHTS = mapOf(Gender.MALE to -0.35940007303088, Gender.FEMALE to -1.7513536371131)
 
-    private fun getAgeAt(stage: String, dateOfBirth: LocalDate, dateAtStage: LocalDate, lowest: Int): Int = Period.between(dateOfBirth, dateAtStage).years
+    fun getAgeAt(stage: String, dateOfBirth: LocalDate, dateAtStage: LocalDate, lowest: Int): Int = Period.between(dateOfBirth, dateAtStage).years
       .apply {
         require(!dateAtStage.isBefore(dateOfBirth)) { "${stage.replaceFirstChar(Char::titlecase)} cannot be before date of birth." }
         require(this >= lowest) { "Age at $stage cannot be less than $lowest" }

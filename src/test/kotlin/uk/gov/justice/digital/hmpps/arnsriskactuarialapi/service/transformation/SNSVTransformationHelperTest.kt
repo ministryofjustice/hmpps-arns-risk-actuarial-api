@@ -2,6 +2,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
@@ -10,6 +11,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CustodyOrCommunity
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.PreviousConviction
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.get2YearInterceptWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getAgeAt
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getAgeGenderPolynomialWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getMonthsSinceLastSanctionWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getNumberOfSanctionWeight
@@ -24,6 +26,7 @@ import java.util.stream.Stream
 import kotlin.collections.emptyList
 import kotlin.math.ln
 import kotlin.math.pow
+import kotlin.test.assertFailsWith
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SNSVTransformationHelperTest {
@@ -271,6 +274,23 @@ class SNSVTransformationHelperTest {
   fun `previousConvictionsWeight should sum correctly`(previousConvictions: List<PreviousConviction>, expected: Double) {
     val result = previousConvictionsWeight(previousConvictions)
     assertEquals(expected, result, 1e-9)
+  }
+
+  @Test
+  fun `out of range values`() {
+    val stage = "test stage"
+    var exception = assertFailsWith<IllegalArgumentException>(
+      block = {
+        getAgeAt(stage, LocalDate.of(1990, 1, 1), LocalDate.of(1989, 1, 1), 9)
+      },
+    )
+    assertEquals(exception.message, "Test stage cannot be before date of birth.")
+    exception = assertFailsWith<IllegalArgumentException>(
+      block = {
+        getAgeAt(stage, LocalDate.of(1990, 1, 1), LocalDate.of(2025, 1, 1), 36)
+      },
+    )
+    assertEquals(exception.message, "Age at test stage cannot be less than 36")
   }
 
   companion object {
