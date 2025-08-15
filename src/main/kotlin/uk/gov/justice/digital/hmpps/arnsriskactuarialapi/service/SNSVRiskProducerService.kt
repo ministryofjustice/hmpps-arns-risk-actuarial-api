@@ -31,6 +31,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.getNullValuesFromProperties
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.snsvInitialValidation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sigmoid
+import kotlin.getOrElse
 
 @Service
 class SNSVRiskProducerService : RiskScoreProducer {
@@ -70,7 +71,7 @@ class SNSVRiskProducerService : RiskScoreProducer {
   fun getSNSVObject(
     scoreType: ScoreType,
     request: RiskScoreRequest,
-  ): SNSVObject = try {
+  ): SNSVObject = runCatching {
     when (scoreType) {
       ScoreType.STATIC -> {
         snvsStaticSum(request.toSNSVStaticRequestValidated())
@@ -79,14 +80,14 @@ class SNSVRiskProducerService : RiskScoreProducer {
         snvsDynamicSum(request.toSNSVDynamicRequestValidated())
       }
     }.let { SNSVObject(it.sigmoid(), scoreType, emptyList()) }
-  } catch (e: Exception) {
+  }.getOrElse {
     SNSVObject(
       null,
       scoreType,
       arrayListOf(
         ValidationErrorResponse(
           type = ValidationErrorType.UNEXPECTED_VALUE,
-          message = "Error: ${e.message}",
+          message = "Error: ${it.message}",
           fields = null,
         ),
       ),
