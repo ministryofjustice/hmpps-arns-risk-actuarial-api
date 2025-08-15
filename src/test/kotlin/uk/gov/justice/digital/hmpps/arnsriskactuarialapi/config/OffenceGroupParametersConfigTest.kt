@@ -8,40 +8,40 @@ import kotlin.test.assertFailsWith
 
 class OffenceGroupParametersConfigTest {
 
-  object OffenseGroupParametersConfigTestConstants {
-    const val FILE_NAME = "/offensegroupparameters/CT_Offence_min_test.csv"
-    const val ERR_FILE_NAME = "/offensegroupparameters/CT_Offence_min_error_test.csv"
+  object OffenceGroupParametersConfigTestConstants {
+    const val FILE_NAME = "/offencegroupparameters/offence-code-mapping-test.csv"
+    const val ERR_FILE_NAME = "/offencegroupparameters/offence-code-mapping-error-test.csv"
   }
 
-  private lateinit var offenseGroupParameters: Map<String, OffenceGroupParameters>
+  private lateinit var offenceGroupParameters: Map<String, OffenceGroupParameters>
 
   @BeforeEach
   fun setUp() {
-    val config = OffenseGroupParametersConfig(OffenseGroupParametersConfigTestConstants.FILE_NAME)
-    offenseGroupParameters = config.offenseGroupParameters()
+    val config = OffenceGroupParametersConfig(OffenceGroupParametersConfigTestConstants.FILE_NAME)
+    offenceGroupParameters = config.offenceGroupParameters()
   }
 
   @Test
   fun `Check Map Size`() {
-    assertEquals(100, offenseGroupParameters.size)
+    assertEquals(100, offenceGroupParameters.size)
   }
 
   @Test
   fun `Test OGRS3 Map Values`() {
-    assertEquals(0.0, offenseGroupParameters["00000"]?.ogrs3Weighting)
-    assertEquals(0.0, offenseGroupParameters["00001"]?.ogrs3Weighting)
-    assertEquals(0.2622, offenseGroupParameters["00408"]?.ogrs3Weighting)
-    assertEquals(-0.6534, offenseGroupParameters["01618"]?.ogrs3Weighting)
-    assertNull(offenseGroupParameters["95006"]?.ogrs3Weighting)
-    assertNull(offenseGroupParameters["99955"]?.ogrs3Weighting)
+    assertEquals(0.0, offenceGroupParameters["00000"]?.ogrs3Weighting)
+    assertEquals(0.0, offenceGroupParameters["00001"]?.ogrs3Weighting)
+    assertEquals(0.2622, offenceGroupParameters["00408"]?.ogrs3Weighting)
+    assertEquals(-0.6534, offenceGroupParameters["01618"]?.ogrs3Weighting)
+    assertNull(offenceGroupParameters["95006"]?.ogrs3Weighting)
+    assertNull(offenceGroupParameters["99955"]?.ogrs3Weighting)
   }
 
   @Test
   fun `Error in OPD_VIOL_SEX field`() {
     val exception = assertFailsWith<IllegalArgumentException>(
       block = {
-        OffenseGroupParametersConfig(OffenseGroupParametersConfigTestConstants.ERR_FILE_NAME)
-          .offenseGroupParameters()
+        OffenceGroupParametersConfig(OffenceGroupParametersConfigTestConstants.ERR_FILE_NAME)
+          .offenceGroupParameters()
       },
     )
     assertEquals(
