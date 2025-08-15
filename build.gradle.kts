@@ -22,6 +22,10 @@ dependencies {
   }
   testImplementation("org.junit.jupiter:junit-jupiter-params:5.11.4")
   testImplementation(kotlin("test"))
+
+  constraints {
+    implementation("io.netty:netty-codec-http2:4.1.124.Final")
+  }
 }
 
 kotlin {
