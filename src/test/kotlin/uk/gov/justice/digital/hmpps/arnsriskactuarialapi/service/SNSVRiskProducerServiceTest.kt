@@ -46,6 +46,21 @@ class SNSVRiskProducerServiceTest {
   }
 
   @Test
+  fun `getRiskScore should return should return valid SNSVObject with ScoreType DYNAMIC`() {
+    whenever(offenceGroupParametersService.getSNSVDynamicWeighting("02700")).thenReturn(0.123)
+    whenever(offenceGroupParametersService.getSNSVVATPDynamicWeighting("02700")).thenReturn(0.123)
+
+    val result = service.getRiskScore(
+      validSNSVDynamicRiskScoreRequest(),
+      emptyContext(),
+    )
+
+    assertNotNull(result)
+    assertEquals(ScoreType.DYNAMIC, result.SNSV!!.scoreType)
+    assertEquals(0.002399338980971842, result.SNSV!!.snsvScore!!, 1E-8)
+  }
+
+  @Test
   fun `getRiskScore should return valid SNSVObject with ScoreType STATIC`() {
     whenever(offenceGroupParametersService.getSNSVStaticWeighting("02700")).thenReturn(0.123)
     whenever(offenceGroupParametersService.getSNSVVATPStaticWeighting("02700")).thenReturn(0.123)

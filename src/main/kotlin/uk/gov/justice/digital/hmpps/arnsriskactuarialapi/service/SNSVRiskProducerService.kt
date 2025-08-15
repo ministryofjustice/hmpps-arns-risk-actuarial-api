@@ -70,8 +70,8 @@ class SNSVRiskProducerService : RiskScoreProducer {
   fun getSNSVObject(
     scoreType: ScoreType,
     request: RiskScoreRequest,
-  ): SNSVObject = runCatching {
-    return when (scoreType) {
+  ): SNSVObject = try {
+    when (scoreType) {
       ScoreType.STATIC -> {
         snvsStaticSum(request.toSNSVStaticRequestValidated())
       }
@@ -79,14 +79,14 @@ class SNSVRiskProducerService : RiskScoreProducer {
         snvsDynamicSum(request.toSNSVDynamicRequestValidated())
       }
     }.let { SNSVObject(it.sigmoid(), scoreType, emptyList()) }
-  }.getOrElse {
+  } catch (e: Exception) {
     SNSVObject(
       null,
       scoreType,
       arrayListOf(
         ValidationErrorResponse(
           type = ValidationErrorType.UNEXPECTED_VALUE,
-          message = "Error: ${it.message}",
+          message = "Error: ${e.message}",
           fields = null,
         ),
       ),
