@@ -1,6 +1,4 @@
-@file:OptIn(ExperimentalTime::class)
-
-package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils
+package uk.gov.justice.digital.hmpps.arnsriskactuarialapi
 
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVParser
@@ -19,9 +17,11 @@ const val CT_OFFENCES_PATH = "ADD ME"
 const val RSR_COEFFICIENTS_PATH = "ADD ME"
 
 // Do not check in this file. Once happy with output copy contents to replace offence-code-mapping.csv.
-val OUTPUT_FILE = "src/main/resources/offencegroupparameters/offence-code-mapping-${Clock.System.now().epochSeconds}.csv"
+@OptIn(ExperimentalTime::class)
+val OUTPUT_FILE =
+  "src/main/resources/offencegroupparameters/offence-code-mapping-${Clock.System.now().epochSeconds}.csv"
 
-fun main() {
+fun main(args: Array<String>) {
   val ctOffenceInputStream = File(CT_OFFENCES_PATH).inputStream()
 
   val csvFormat = CSVFormat.DEFAULT.builder()
