@@ -33,7 +33,7 @@ fun emptyOGP(): OGPObject = OGPObject(null, null, null, null, null)
 
 fun emptyMST(): MSTObject = MSTObject(null, null, null, null)
 
-fun emptyOPD(): OPDObject = OPDObject(false, null, emptyList())
+fun emptyOPD(): OPDObject = OPDObject(false, null, null, emptyList())
 
 fun omittedPNI(): PNIObject = PNIObject(ProgrammeNeedIdentifier.OMISSION, null)
 

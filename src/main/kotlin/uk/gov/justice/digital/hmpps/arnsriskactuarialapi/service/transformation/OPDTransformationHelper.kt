@@ -4,7 +4,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.opd.OPDRequestValidated
 
 fun ageAtFirstSanctionOffendersScore(request: OPDRequestValidated) = when (request.ageAtFirstSanction) {
-  in 0..18 -> 1
+  in 0..17 -> 1
   else -> 0
 }
 
@@ -16,10 +16,11 @@ fun excessiveOrSadisticViolenceOffendersScore(request: OPDRequestValidated) = wh
   } else {
     2
   }
+
   false -> 0
 }
 
-fun impactOfOffendingOnOthersOffendersScoreOpd(request: OPDRequestValidated) = scoreFromBoolean(request.impactOfOffendingOnOthers)
+fun impactOfOffendingOnOthersOffendersScoreOpd(request: OPDRequestValidated) = invertedScoreFromBoolean(request.impactOfOffendingOnOthers)
 
 fun financialRelianceOnOthersOffendersScore(request: OPDRequestValidated) = scoreFromProblemLevel(request.financialRelianceOnOthers)
 
@@ -31,7 +32,7 @@ fun childhoodBehaviourOffendersScore(request: OPDRequestValidated) = scoreFromBo
 
 fun impulsivityBehaviourOffendersScore(request: OPDRequestValidated) = scoreFromProblemLevel(request.impulsivityBehaviour)
 
-fun presenceOfChildhoodDifficultiesOffendersScore(request: OPDRequestValidated) = scoreFromProblemLevel(request.experienceOfChildhood)
+fun presenceOfChildhoodDifficultiesOffendersScore(request: OPDRequestValidated) = if (scoreFromProblemLevel(request.experienceOfChildhood) == 1 || request.childhoodBehaviour) 1 else 0
 
 fun controllingBehaviourOffendersScore(request: OPDRequestValidated) = scoreFromProblemLevel(request.controllingBehaviour)
 
@@ -102,4 +103,9 @@ fun scoreFromProblemLevel(level: ProblemLevel?): Int = when (level) {
 fun scoreFromBoolean(boolean: Boolean): Int = when (boolean) {
   true -> 1
   false -> 0
+}
+
+fun invertedScoreFromBoolean(boolean: Boolean): Int = when (boolean) {
+  true -> 0
+  false -> 1
 }

@@ -204,8 +204,7 @@ class OPDRiskProducerService : RiskScoreProducer {
           ).sum()
 
         if (opdMalePersonalityScore >= ODP_MALE_PERSONALITY_SCORE_MIN ||
-          opdMaleIndicatorScore >= ODP_MALE_INDICATOR_SCORE_MIN ||
-          validatedRequest.opdOverride
+          opdMaleIndicatorScore >= ODP_MALE_INDICATOR_SCORE_MIN
         ) {
           OPDResult.SCREEN_IN
         } else {
@@ -216,7 +215,6 @@ class OPDRiskProducerService : RiskScoreProducer {
       Gender.FEMALE -> {
         val opdFemaleScore = listOf(
           carryingOrUsingWeaponOffendersScore(validatedRequest),
-
           violenceOrThreatOfViolenceOffendersScore(validatedRequest),
           excessiveOrSadisticViolenceOffendersScore(validatedRequest),
           offenceArsonOffendersScore(validatedRequest),
@@ -233,8 +231,7 @@ class OPDRiskProducerService : RiskScoreProducer {
           thinkingAndBehaviourLinedToRiskOfSeriousHarmOffendersScore(validatedRequest),
         ).sum()
 
-        if (opdFemaleScore >= ODP_FEMALE_SCORE_MIN ||
-          validatedRequest.opdOverride
+        if (opdFemaleScore >= ODP_FEMALE_SCORE_MIN
         ) {
           OPDResult.SCREEN_IN
         } else {
@@ -242,8 +239,14 @@ class OPDRiskProducerService : RiskScoreProducer {
         }
       }
     }
-
-    return context.apply { OPD = OPDObject(opdCheck = true, opdResult = opdResult, validationError = emptyList()) }
+    val opdOverride = if (opdResult == OPDResult.SCREEN_OUT) {
+      validatedRequest.opdOverride
+    } else {
+      null
+    }
+    return context.apply {
+      OPD = OPDObject(opdCheck = true, opdResult = opdResult, opdOverride = opdOverride, validationError = emptyList())
+    }
   }
 
   private fun errorResult(
