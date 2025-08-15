@@ -20,7 +20,4 @@ fun snsvInitialValidation(request: RiskScoreRequest): List<ValidationErrorRespon
   return getMissingSNSVFieldsValidation(request, errors)
 }
 
-fun getMissingSNSVFieldsValidation(request: RiskScoreRequest, errors: List<ValidationErrorResponse>): List<ValidationErrorResponse> = addMissingFields(
-  getNullValuesFromProperties(request, SNSV_STATIC_REQUIRED_PROPERTIES),
-  emptyList(),
-)
+fun getMissingSNSVFieldsValidation(request: RiskScoreRequest, errors: List<ValidationErrorResponse>): List<ValidationErrorResponse> = addMissingFields(getNullValuesFromProperties(request, SNSV_STATIC_REQUIRED_PROPERTIES), errors)
