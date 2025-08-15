@@ -4,6 +4,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResp
 
 data class OPDObject(
   val opdCheck: Boolean,
+  val opdOverride: Boolean? = null,
   val opdResult: OPDResult?,
   val validationError: List<ValidationErrorResponse>?,
 )

@@ -136,8 +136,8 @@ class OPDTransformationHelperTest {
     val withProblem = opdRequestValidated().copy(impactOfOffendingOnOthers = true)
     val noProblem = opdRequestValidated().copy(impactOfOffendingOnOthers = false)
 
-    assertEquals(1, impactOfOffendingOnOthersOffendersScoreOpd(withProblem))
-    assertEquals(0, impactOfOffendingOnOthersOffendersScoreOpd(noProblem))
+    assertEquals(0, impactOfOffendingOnOthersOffendersScoreOpd(withProblem))
+    assertEquals(1, impactOfOffendingOnOthersOffendersScoreOpd(noProblem))
   }
 
   @Test

@@ -79,7 +79,7 @@ class OPDRiskProducerServiceTest {
   }
 
   @Test
-  fun `should calculate OPD with an valid request, eligible male SCREEN_IN with override`() {
+  fun `should calculate OPD with an valid request, eligible male SCREEN_OUT with override TRUE`() {
     whenever(offenceGroupParametersService.isViolentOrSexualType("02504")).thenReturn(true)
 
     val context = emptyContext().copy(
@@ -95,7 +95,8 @@ class OPDRiskProducerServiceTest {
 
     val result = service.getRiskScore(request, context).OPD!!
     assertEquals(true, result.opdCheck)
-    assertEquals(OPDResult.SCREEN_IN, result.opdResult)
+    assertEquals(OPDResult.SCREEN_OUT, result.opdResult)
+    assertEquals(true, result.opdOverride)
   }
 
   @Test
@@ -274,7 +275,7 @@ class OPDRiskProducerServiceTest {
     )
 
     val result = service.getRiskScore(request, context).OPD!!
-    assertEquals(OPDObject(false, null, emptyList()), result)
+    assertEquals(OPDObject(false, null, null, emptyList()), result)
   }
 
   @Test
@@ -300,7 +301,7 @@ class OPDRiskProducerServiceTest {
     )
 
     val result = service.getRiskScore(request, context).OPD!!
-    assertEquals(OPDObject(false, null, emptyList()), result)
+    assertEquals(OPDObject(false, null, null, emptyList()), result)
   }
 
   @Test
@@ -347,7 +348,7 @@ class OPDRiskProducerServiceTest {
   }
 
   @Test
-  fun `should calculate OPD with an valid request, eligible female SCREEN_IN with override`() {
+  fun `should calculate OPD with an valid request, eligible female SCREEN_OUT with override TRUE`() {
     whenever(offenceGroupParametersService.isViolentOrSexualType("02504")).thenReturn(true)
 
     val context = emptyContext().copy(
@@ -363,7 +364,29 @@ class OPDRiskProducerServiceTest {
 
     val result = service.getRiskScore(request, context).OPD!!
     assertEquals(true, result.opdCheck)
-    assertEquals(OPDResult.SCREEN_IN, result.opdResult)
+    assertEquals(OPDResult.SCREEN_OUT, result.opdResult)
+    assertEquals(true, result.opdOverride)
+  }
+
+  @Test
+  fun `should calculate OPD with an valid request, eligible female SCREEN_OUT with override FALSE`() {
+    whenever(offenceGroupParametersService.isViolentOrSexualType("02504")).thenReturn(true)
+
+    val context = emptyContext().copy(
+      OPD = emptyOPD(),
+    )
+    val request = validOPDRiskScoreRequest().copy(
+      currentOffence = "02504",
+      gender = Gender.FEMALE,
+      carryingOrUsingWeapon = false,
+      violenceOrThreatOfViolence = false,
+      opdOverride = false,
+    )
+
+    val result = service.getRiskScore(request, context).OPD!!
+    assertEquals(true, result.opdCheck)
+    assertEquals(OPDResult.SCREEN_OUT, result.opdResult)
+    assertEquals(false, result.opdOverride)
   }
 
   @Test
