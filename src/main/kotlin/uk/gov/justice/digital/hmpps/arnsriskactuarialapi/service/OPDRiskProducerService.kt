@@ -216,6 +216,7 @@ class OPDRiskProducerService : RiskScoreProducer {
       Gender.FEMALE -> {
         val opdFemaleScore = listOf(
           carryingOrUsingWeaponOffendersScore(validatedRequest),
+
           violenceOrThreatOfViolenceOffendersScore(validatedRequest),
           excessiveOrSadisticViolenceOffendersScore(validatedRequest),
           offenceArsonOffendersScore(validatedRequest),

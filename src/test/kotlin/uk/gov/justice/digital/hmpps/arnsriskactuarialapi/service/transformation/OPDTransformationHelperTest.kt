@@ -26,8 +26,8 @@ class OPDTransformationHelperTest {
 
   @Test
   fun `violenceOrThreatOfViolenceOffendersScore returns correct score`() {
-    val requestTrue = opdRequestValidated().copy(excessiveOrSadisticViolence = true)
-    val requestFalse = opdRequestValidated().copy(excessiveOrSadisticViolence = false)
+    val requestTrue = opdRequestValidated().copy(violenceOrThreatOfViolence = true)
+    val requestFalse = opdRequestValidated().copy(violenceOrThreatOfViolence = false)
 
     assertEquals(1, violenceOrThreatOfViolenceOffendersScore(requestTrue))
     assertEquals(0, violenceOrThreatOfViolenceOffendersScore(requestFalse))
