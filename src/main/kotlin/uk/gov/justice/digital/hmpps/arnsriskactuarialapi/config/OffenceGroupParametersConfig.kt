@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-class OffenseGroupParametersConfig(
-  @param:Value($$"${hmpps.arnsriskactuarial.offensegroupparameters.csv}") val resource: String,
+class OffenceGroupParametersConfig(
+  @param:Value($$"${hmpps.arnsriskactuarial.offencegroupparameters.csv}") val resource: String,
 ) {
 
   companion object {
@@ -24,7 +24,7 @@ class OffenseGroupParametersConfig(
   }
 
   @Bean
-  fun offenseGroupParameters(): Map<String, OffenceGroupParameters> {
+  fun offenceGroupParameters(): Map<String, OffenceGroupParameters> {
     val inputStream = this::class.java.getResourceAsStream(resource)
       ?: throw IllegalArgumentException("CSV file not found at path: $resource")
     inputStream.bufferedReader().use { reader ->

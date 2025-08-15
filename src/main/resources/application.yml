@@ -63,5 +63,5 @@ management:
         time-to-live: 2000ms
 hmpps:
   arnsriskactuarial:
-    offensegroupparameters:
-      csv: "/offensegroupparameters/CT_Offence_minV3.csv"
+    offencegroupparameters:
+      csv: "/offencegroupparameters/offence-code-mapping.csv"
