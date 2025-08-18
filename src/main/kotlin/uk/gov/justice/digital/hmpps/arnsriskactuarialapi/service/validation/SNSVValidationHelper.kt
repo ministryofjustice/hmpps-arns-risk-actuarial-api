@@ -3,23 +3,21 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 
+val SNSV_STATIC_REQUIRED_PROPERTIES = listOf(
+  RiskScoreRequest::gender,
+  RiskScoreRequest::dateOfBirth,
+  RiskScoreRequest::dateOfCurrentConviction,
+  RiskScoreRequest::currentOffence,
+  RiskScoreRequest::totalNumberOfSanctions,
+  RiskScoreRequest::ageAtFirstSanction,
+  RiskScoreRequest::inCustodyOrCommunity,
+  RiskScoreRequest::dateAtStartOfFollowup,
+  RiskScoreRequest::totalNumberOfViolentSanctions,
+)
+
 fun snsvInitialValidation(request: RiskScoreRequest): List<ValidationErrorResponse> {
   val errors = arrayListOf<ValidationErrorResponse>()
   return getMissingSNSVFieldsValidation(request, errors)
 }
 
-fun getMissingSNSVFieldsValidation(request: RiskScoreRequest, errors: List<ValidationErrorResponse>): List<ValidationErrorResponse> {
-  val missingFields = arrayListOf<String>()
-
-  missingFields.addIfNull(request, RiskScoreRequest::gender)
-  missingFields.addIfNull(request, RiskScoreRequest::dateOfBirth)
-  missingFields.addIfNull(request, RiskScoreRequest::dateOfCurrentConviction)
-  missingFields.addIfNull(request, RiskScoreRequest::currentOffence)
-  missingFields.addIfNull(request, RiskScoreRequest::totalNumberOfSanctions)
-  missingFields.addIfNull(request, RiskScoreRequest::ageAtFirstSanction)
-  missingFields.addIfNull(request, RiskScoreRequest::inCustodyOrCommunity)
-  missingFields.addIfNull(request, RiskScoreRequest::dateAtStartOfFollowup)
-  missingFields.addIfNull(request, RiskScoreRequest::totalNumberOfViolentSanctions)
-
-  return addMissingFields(missingFields, errors)
-}
+fun getMissingSNSVFieldsValidation(request: RiskScoreRequest, errors: List<ValidationErrorResponse>): List<ValidationErrorResponse> = addMissingFields(getNullValuesFromProperties(request, SNSV_STATIC_REQUIRED_PROPERTIES), errors)

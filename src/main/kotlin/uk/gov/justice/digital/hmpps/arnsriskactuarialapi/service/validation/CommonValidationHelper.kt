@@ -56,7 +56,12 @@ private fun validateAgeAtFirstSanction(
   ageAtCurrentConviction: Int,
   ageAtFirstSanction: Int,
 ): ValidationErrorResponse? = if (ageAtFirstSanction > ageAtCurrentConviction) {
-  ValidationErrorType.BELOW_MIN_VALUE.asErrorResponse(listOf(RiskScoreRequest::dateOfBirth.name, RiskScoreRequest::ageAtFirstSanction.name))
+  ValidationErrorType.BELOW_MIN_VALUE.asErrorResponse(
+    listOf(
+      RiskScoreRequest::dateOfBirth.name,
+      RiskScoreRequest::ageAtFirstSanction.name,
+    ),
+  )
 } else {
   null
 }
@@ -96,6 +101,13 @@ private fun addValidationErrorResponse(
   errors + error.asErrorResponse(fields)
 } else {
   errors
+}
+
+fun getNullValuesFromProperties(
+  request: RiskScoreRequest,
+  properties: List<KProperty1<RiskScoreRequest, Any?>>,
+): List<String> = properties.fold(arrayListOf()) { acc, property ->
+  acc.apply { property.get(request) ?: acc.add(property.name) }
 }
 
 fun getMissingPropertiesErrorStrings(

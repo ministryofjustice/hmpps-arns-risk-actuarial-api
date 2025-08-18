@@ -9,13 +9,13 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validSNSVStaticRiskScor
 class SNSVValidationHelperTest {
 
   @Test
-  fun `oospdcInitialValidation no errors`() {
+  fun `getNullPropertiesFromPropertiesInitialValidation no errors`() {
     val result = snsvInitialValidation(validSNSVStaticRiskScoreRequest())
     assertTrue(result.isEmpty())
   }
 
   @Test
-  fun `oospdcInitialValidation missing field error with all field populated`() {
+  fun `snsvstaticInitialValidation missing field error with all fields null`() {
     val request = validSNSVStaticRiskScoreRequest().copy(
       gender = null,
       dateOfBirth = null,

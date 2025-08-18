@@ -1,0 +1,10 @@
+{
+  "version": "V1_0",
+  "gender": "MALE",
+  "dateOfBirth": "1980-01-01",
+  "assessmentDate": "2025-01-01",
+  "currentOffence": "02700",
+  "totalNumberOfSanctions": 1,
+  "inCustodyOrCommunity": "COMMUNITY",
+  "totalNumberOfViolentSanctions": 1
+}
