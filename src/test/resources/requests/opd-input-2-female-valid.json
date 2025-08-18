@@ -33,7 +33,7 @@
   "attitudeTowardsSupervision": "SIGNIFICANT_PROBLEMS",
   "controllingBehaviour": "SIGNIFICANT_PROBLEMS",
   "escapeOrAbsconded": false,
-  "impactOfOffendingOnOthers": false,
+  "doesRecogniseImpactOfOffendingOnOthers": false,
   "attitudesStableBehaviour": "SIGNIFICANT_PROBLEMS",
   "impulsivityBehaviour": "SIGNIFICANT_PROBLEMS",
   "obsessiveBehaviour": false,
@@ -41,6 +41,6 @@
   "eligibleForMappa": false,
   "overallRiskForAssessment": "HIGH",
   "highestRiskLevel": "HIGH",
-  "currentOffence": "00001",
+  "currentOffenceCode": "00001",
   "controlIssuesOrBreachOfTrust": true
 }

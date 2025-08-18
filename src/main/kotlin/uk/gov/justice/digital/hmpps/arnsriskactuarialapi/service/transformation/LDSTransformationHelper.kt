@@ -8,7 +8,7 @@ class LDSTransformationHelper {
 
     // Transformation Functions
 
-    fun currentAccommodationOffendersScoreLDS(currentAccommodation: Boolean?): Int = if (currentAccommodation ?: false) 1 else 0
+    fun isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScoreLDS(isCurrentlyOfNoFixedAbodeOrTransientAccommodation: Boolean?): Int = if (isCurrentlyOfNoFixedAbodeOrTransientAccommodation ?: false) 1 else 0
 
     fun transferableSkillsOffendersScore(transferableSkills: ProblemLevel?): Int = (transferableSkills ?: ProblemLevel.NO_PROBLEMS).score
 
@@ -25,7 +25,7 @@ class LDSTransformationHelper {
     // Final Outputs
 
     fun ldsSubTotal(
-      currentAccommodationOffendersScoreLDS: Int,
+      isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScoreLDS: Int,
       transferableSkillsOffendersScore: Int,
       educationDifficultiesOffendersScore: Int,
       readingDifficultiesOffendersScore: Int,
@@ -33,7 +33,7 @@ class LDSTransformationHelper {
       learningDifficultiesOffendersScore: Int,
       professionalOrVocationalQualifications: Int,
     ): Int = (
-      currentAccommodationOffendersScoreLDS +
+      isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScoreLDS +
         transferableSkillsOffendersScore +
         educationDifficultiesOffendersScore +
         readingDifficultiesOffendersScore +

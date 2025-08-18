@@ -20,7 +20,7 @@ fun excessiveOrSadisticViolenceOffendersScore(request: OPDRequestValidated) = wh
   false -> 0
 }
 
-fun impactOfOffendingOnOthersOffendersScoreOpd(request: OPDRequestValidated) = invertedScoreFromBoolean(request.impactOfOffendingOnOthers)
+fun doesRecogniseImpactOfOffendingOnOthersOffendersScoreOpd(request: OPDRequestValidated) = invertedScoreFromBoolean(request.doesRecogniseImpactOfOffendingOnOthers)
 
 fun financialRelianceOnOthersOffendersScore(request: OPDRequestValidated) = scoreFromProblemLevel(request.financialRelianceOnOthers)
 

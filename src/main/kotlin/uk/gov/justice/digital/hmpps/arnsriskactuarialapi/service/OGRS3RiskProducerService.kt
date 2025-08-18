@@ -44,9 +44,9 @@ class OGRS3RiskProducerService : RiskScoreProducer {
       request.assessmentDate,
       request.dateOfCurrentConviction!!,
       request.dateAtStartOfFollowup!!,
-      request.totalNumberOfSanctions!!.toInt(),
+      request.totalNumberOfSanctionsForAllOffences!!.toInt(),
       request.ageAtFirstSanction!!.toInt(),
-      request.currentOffence!!,
+      request.currentOffenceCode!!,
 
     )
     return context.apply { OGRS3 = getOGRS3Object(validRequest) }
@@ -75,19 +75,19 @@ class OGRS3RiskProducerService : RiskScoreProducer {
       OGRS3Object(null, null, null, ageValidationErrors)
     }
 
-    val offenderConvictionStatus = getOffenderConvictionStatus(request.totalNumberOfSanctions)
+    val offenderConvictionStatus = getOffenderConvictionStatus(request.totalNumberOfSanctionsForAllOffences)
 
     listOf(
       getAgeGenderScore(ageAtStartOfFollowup, request.gender),
       getConvictionStatusScore(offenderConvictionStatus),
       getOffenderCopasFinalScore(
         getOffenderCopasScore(
-          request.totalNumberOfSanctions - 1,
+          request.totalNumberOfSanctionsForAllOffences - 1,
           ageAtCurrentConviction,
           request.ageAtFirstSanction,
         ),
       ),
-      offenceGroupParametersService.getOGRS3Weighting(request.currentOffence),
+      offenceGroupParametersService.getOGRS3Weighting(request.currentOffenceCode),
     ).sum()
       .let { totalScore ->
         val oneYear = getOgrs3OneYear(totalScore).asPercentage().sanitisePercentage()

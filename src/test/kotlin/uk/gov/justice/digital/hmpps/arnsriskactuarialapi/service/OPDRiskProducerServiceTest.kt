@@ -37,7 +37,7 @@ class OPDRiskProducerServiceTest {
       OPD = emptyOPD(),
     )
     val request = validOPDRiskScoreRequest().copy(
-      currentOffence = "02504",
+      currentOffenceCode = "02504",
       gender = Gender.MALE,
       overallRiskForAssessment = RiskBand.HIGH,
       custodialSentence = true,
@@ -66,7 +66,7 @@ class OPDRiskProducerServiceTest {
       OPD = emptyOPD(),
     )
     val request = validOPDRiskScoreRequest().copy(
-      currentOffence = "02504",
+      currentOffenceCode = "02504",
       gender = Gender.MALE,
       overallRiskForAssessment = RiskBand.HIGH,
       custodialSentence = true,
@@ -86,7 +86,7 @@ class OPDRiskProducerServiceTest {
       OPD = emptyOPD(),
     )
     val request = validOPDRiskScoreRequest().copy(
-      currentOffence = "02504",
+      currentOffenceCode = "02504",
       gender = Gender.MALE,
       overallRiskForAssessment = RiskBand.HIGH,
       custodialSentence = true,
@@ -107,7 +107,7 @@ class OPDRiskProducerServiceTest {
       OPD = emptyOPD(),
     )
     val request = validOPDRiskScoreRequest().copy(
-      currentOffence = "02504",
+      currentOffenceCode = "02504",
       gender = Gender.MALE,
       overallRiskForAssessment = RiskBand.HIGH,
       custodialSentence = true,
@@ -131,7 +131,7 @@ class OPDRiskProducerServiceTest {
       OPD = emptyOPD(),
     )
     val request = validOPDRiskScoreRequest().copy(
-      currentOffence = "02504",
+      currentOffenceCode = "02504",
       gender = Gender.FEMALE,
       overallRiskForAssessment = RiskBand.LOW,
       eligibleForMappa = false,
@@ -150,7 +150,7 @@ class OPDRiskProducerServiceTest {
       OPD = emptyOPD(),
     )
     val request = validOPDRiskScoreRequest().copy(
-      currentOffence = "02504",
+      currentOffenceCode = "02504",
       gender = Gender.FEMALE,
       overallRiskForAssessment = RiskBand.HIGH,
       eligibleForMappa = false,
@@ -170,7 +170,7 @@ class OPDRiskProducerServiceTest {
       OPD = emptyOPD(),
     )
     val request = validOPDRiskScoreRequest().copy(
-      currentOffence = "02504",
+      currentOffenceCode = "02504",
       gender = Gender.FEMALE,
       overallRiskForAssessment = RiskBand.HIGH,
       eligibleForMappa = false,
@@ -190,7 +190,7 @@ class OPDRiskProducerServiceTest {
       OPD = emptyOPD(),
     )
     val request = validOPDRiskScoreRequest().copy(
-      currentOffence = "02504",
+      currentOffenceCode = "02504",
       gender = Gender.MALE,
       overallRiskForAssessment = RiskBand.LOW,
       custodialSentence = true,
@@ -209,7 +209,7 @@ class OPDRiskProducerServiceTest {
       OPD = emptyOPD(),
     )
     val request = validOPDRiskScoreRequest().copy(
-      currentOffence = "02504",
+      currentOffenceCode = "02504",
       gender = Gender.MALE,
       overallRiskForAssessment = RiskBand.HIGH,
       custodialSentence = false,
@@ -228,7 +228,7 @@ class OPDRiskProducerServiceTest {
       OPD = emptyOPD(),
     )
     val request = validOPDRiskScoreRequest().copy(
-      currentOffence = "02504",
+      currentOffenceCode = "02504",
       gender = Gender.MALE,
       overallRiskForAssessment = RiskBand.HIGH,
       custodialSentence = true,
@@ -245,14 +245,14 @@ class OPDRiskProducerServiceTest {
       OPD = emptyOPD(),
     )
     val request = validOPDRiskScoreRequest().copy(
-      currentOffence = "02504",
+      currentOffenceCode = "02504",
       gender = Gender.MALE,
       custodialSentence = true,
       overallRiskForAssessment = RiskBand.VERY_HIGH,
       ageAtFirstSanction = null,
       violenceOrThreatOfViolence = null,
       excessiveOrSadisticViolence = null,
-      impactOfOffendingOnOthers = null,
+      doesRecogniseImpactOfOffendingOnOthers = null,
       financialRelianceOnOthers = null,
       manipulativePredatoryBehaviour = null,
       attitudesStableBehaviour = null,
@@ -284,7 +284,7 @@ class OPDRiskProducerServiceTest {
       OPD = emptyOPD(),
     )
     val request = validOPDRiskScoreRequest().copy(
-      currentOffence = "02504",
+      currentOffenceCode = "02504",
       gender = Gender.FEMALE,
       overallRiskForAssessment = RiskBand.VERY_HIGH,
       eligibleForMappa = true,
@@ -334,7 +334,7 @@ class OPDRiskProducerServiceTest {
       OPD = emptyOPD(),
     )
     val request = validOPDRiskScoreRequest().copy(
-      currentOffence = "02504",
+      currentOffenceCode = "02504",
       gender = Gender.FEMALE,
       carryingOrUsingWeapon = false,
       violenceOrThreatOfViolence = false,
@@ -355,7 +355,7 @@ class OPDRiskProducerServiceTest {
       OPD = emptyOPD(),
     )
     val request = validOPDRiskScoreRequest().copy(
-      currentOffence = "02504",
+      currentOffenceCode = "02504",
       gender = Gender.FEMALE,
       carryingOrUsingWeapon = false,
       violenceOrThreatOfViolence = false,
@@ -376,7 +376,7 @@ class OPDRiskProducerServiceTest {
       OPD = emptyOPD(),
     )
     val request = validOPDRiskScoreRequest().copy(
-      currentOffence = "02504",
+      currentOffenceCode = "02504",
       gender = Gender.FEMALE,
       carryingOrUsingWeapon = false,
       violenceOrThreatOfViolence = false,
@@ -397,7 +397,7 @@ class OPDRiskProducerServiceTest {
       OPD = emptyOPD(),
     )
     val request = validOPDRiskScoreRequest().copy(
-      currentOffence = "02504",
+      currentOffenceCode = "02504",
       gender = Gender.FEMALE,
       carryingOrUsingWeapon = true,
       violenceOrThreatOfViolence = true,

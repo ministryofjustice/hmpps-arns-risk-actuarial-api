@@ -20,12 +20,12 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.controllingBehaviourOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.currentPsychologicalProblemsOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.difficultiesCopingOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.doesRecogniseImpactOfOffendingOnOthersOffendersScoreOpd
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.domesticAbuseOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.excessiveOrSadisticViolenceOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.experienceOfChildhoodOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.financialRelianceOnOthersOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.historyOfMentalHealthDifficultiesOffendersScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.impactOfOffendingOnOthersOffendersScoreOpd
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.impulsivityBehaviourOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.manipulativePredatoryBehaviourOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.offenceArsonOffendersScore
@@ -81,7 +81,7 @@ class OPDRiskProducerService : RiskScoreProducer {
     overallRiskForAssessment = request.overallRiskForAssessment!!,
     highestRiskLevel = request.highestRiskLevel!!,
     gender = request.gender!!,
-    currentOffence = request.currentOffence!!,
+    currentOffenceCode = request.currentOffenceCode!!,
     custodialSentence = request.custodialSentence!!,
     currentPsychologicalProblems = request.currentPsychologicalProblems,
     experienceOfChildhood = request.experienceOfChildhood,
@@ -120,7 +120,7 @@ class OPDRiskProducerService : RiskScoreProducer {
     assaultedOrThreatenedStaff = request.assaultedOrThreatenedStaff ?: false,
     escapeOrAbsconded = request.escapeOrAbsconded ?: false,
     controlIssuesOrBreachOfTrust = request.controlIssuesOrBreachOfTrust ?: false,
-    impactOfOffendingOnOthers = request.impactOfOffendingOnOthers ?: false,
+    doesRecogniseImpactOfOffendingOnOthers = request.doesRecogniseImpactOfOffendingOnOthers ?: false,
   )
 
   /**
@@ -128,7 +128,7 @@ class OPDRiskProducerService : RiskScoreProducer {
    */
   private fun isOpdApplicable(validatedRequest: OPDRequestValidated): Boolean {
     val isViolentOrSexualType =
-      offenceGroupParametersService.isViolentOrSexualType(validatedRequest.currentOffence)
+      offenceGroupParametersService.isViolentOrSexualType(validatedRequest.currentOffenceCode)
 
     val isOpdApplicable = when (validatedRequest.gender) {
       Gender.MALE -> isOpdApplicableMale(validatedRequest, isViolentOrSexualType)
@@ -186,7 +186,7 @@ class OPDRiskProducerService : RiskScoreProducer {
             ageAtFirstSanctionOffendersScore(validatedRequest),
             violenceOrThreatOfViolenceOffendersScore(validatedRequest),
             excessiveOrSadisticViolenceOffendersScore(validatedRequest),
-            impactOfOffendingOnOthersOffendersScoreOpd(validatedRequest),
+            doesRecogniseImpactOfOffendingOnOthersOffendersScoreOpd(validatedRequest),
             financialRelianceOnOthersOffendersScore(validatedRequest),
             manipulativePredatoryBehaviourOffendersScore(validatedRequest),
             attitudesStableBehaviourOffendersScoreOpd(validatedRequest),
@@ -293,7 +293,7 @@ class OPDRiskProducerService : RiskScoreProducer {
         request.ageAtFirstSanction,
         request.violenceOrThreatOfViolence,
         request.excessiveOrSadisticViolence,
-        request.impactOfOffendingOnOthers,
+        request.doesRecogniseImpactOfOffendingOnOthers,
         request.financialRelianceOnOthers,
         request.manipulativePredatoryBehaviour,
         request.attitudesStableBehaviour,

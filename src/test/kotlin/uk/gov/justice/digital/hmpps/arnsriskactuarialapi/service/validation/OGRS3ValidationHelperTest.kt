@@ -38,9 +38,9 @@ class OGRS3ValidationHelperTest {
       "dateOfBirth",
       "dateOfCurrentConviction",
       "dateAtStartOfFollowup",
-      "totalNumberOfSanctions",
+      "totalNumberOfSanctionsForAllOffences",
       "ageAtFirstSanction",
-      "currentOffence",
+      "currentOffenceCode",
     )
 
     val error = result.first()

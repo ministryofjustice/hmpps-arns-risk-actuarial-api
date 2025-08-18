@@ -10,14 +10,14 @@ data class RiskScoreRequest(
   val dateOfBirth: LocalDate? = null,
   val dateOfCurrentConviction: LocalDate? = null,
   val dateAtStartOfFollowup: LocalDate? = null,
-  val totalNumberOfSanctions: Integer? = null,
+  val totalNumberOfSanctionsForAllOffences: Integer? = null,
   val ageAtFirstSanction: Integer? = null,
-  val currentOffence: String? = null,
+  val currentOffenceCode: String? = null,
 
   // OVP additional properties
   val totalNumberOfViolentSanctions: Integer? = null,
-  val impactOfOffendingOnOthers: Boolean? = null,
-  val currentAccommodation: Boolean? = null,
+  val doesRecogniseImpactOfOffendingOnOthers: Boolean? = null,
+  val isCurrentlyOfNoFixedAbodeOrTransientAccommodation: Boolean? = null,
   val employmentStatus: Boolean? = null,
   val alcoholIsCurrentUseAProblem: ProblemLevel? = null,
   val alcoholExcessive6Months: ProblemLevel? = null,

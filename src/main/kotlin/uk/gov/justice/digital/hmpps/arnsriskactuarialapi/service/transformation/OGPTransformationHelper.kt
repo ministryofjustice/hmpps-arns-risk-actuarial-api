@@ -18,7 +18,7 @@ class OGPTransformationHelper {
 
     // Transformation Functions
 
-    fun currentAccommodationOffendersScore(currentAccomodation: Boolean): Int = currentAccomodation.booleanToScore()
+    fun isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScore(isCurrentlyOfNoFixedAbodeOrTransientAccommodation: Boolean): Int = isCurrentlyOfNoFixedAbodeOrTransientAccommodation.booleanToScore()
 
     fun employmentStatusOffendersScore(employmentStatus: Boolean): Int = employmentStatus.booleanToScore()
 
@@ -48,7 +48,7 @@ class OGPTransformationHelper {
 
     fun ogrs3TwoYearWeighted(ogrs3TwoYear: Int): Int = (ogrs3TwoYear * 0.6).roundToInt()
 
-    fun currentAccommodationWeighted(currentAccommodationOffendersScore: Int): Int = if (currentAccommodationOffendersScore == 2) 5 else 0
+    fun isCurrentlyOfNoFixedAbodeOrTransientAccommodationWeighted(isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScore: Int): Int = if (isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScore == 2) 5 else 0
 
     fun employmentStatusWeighted(employmentStatusOffendersScore: Int): Int = if (employmentStatusOffendersScore == 2) 5 else 0
 
@@ -72,7 +72,7 @@ class OGPTransformationHelper {
 
     fun totalOGPScore(
       ogrs3TwoYearWeighted: Int,
-      currentAccommodationWeighted: Int,
+      isCurrentlyOfNoFixedAbodeOrTransientAccommodationWeighted: Int,
       employmentStatusWeighted: Int,
       regularOffendingActivitiesWeighted: Int,
       drugMisuseNonViolentWeighted: Int,
@@ -80,7 +80,7 @@ class OGPTransformationHelper {
       proCriminalAttitudesWeighted: Int,
     ): Int = (
       ogrs3TwoYearWeighted +
-        currentAccommodationWeighted +
+        isCurrentlyOfNoFixedAbodeOrTransientAccommodationWeighted +
         employmentStatusWeighted +
         regularOffendingActivitiesWeighted +
         drugMisuseNonViolentWeighted +

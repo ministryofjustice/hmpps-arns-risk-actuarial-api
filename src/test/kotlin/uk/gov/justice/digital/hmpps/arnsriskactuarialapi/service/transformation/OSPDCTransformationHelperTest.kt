@@ -101,16 +101,16 @@ class OSPDCTransformationHelperTest {
 
   @ParameterizedTest
   @MethodSource("getTotalNumberOfSanctionsWeightValidSanctionCounts")
-  fun `test valid totalNumberOfSanctions returns correct weight`(input: Int, expected: Int) {
-    val result = getTotalNumberOfSanctionsWeight(input)
+  fun `test valid totalNumberOfSanctionsForAllOffences returns correct weight`(input: Int, expected: Int) {
+    val result = getTotalNumberOfSanctionsForAllOffencesWeight(input)
     assertEquals(expected, result)
   }
 
   @ParameterizedTest
   @MethodSource("getTotalNumberOfSanctionsWeightInvalidSanctionCounts")
-  fun `test invalid totalNumberOfSanctions throws exception`(input: Int) {
+  fun `test invalid totalNumberOfSanctionsForAllOffences throws exception`(input: Int) {
     val exception = assertThrows<IllegalArgumentException> {
-      getTotalNumberOfSanctionsWeight(input)
+      getTotalNumberOfSanctionsForAllOffencesWeight(input)
     }
     assertTrue(exception.message!!.contains("Invalid total number of sanctions"))
   }

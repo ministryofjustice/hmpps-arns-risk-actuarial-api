@@ -5,13 +5,13 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import java.time.LocalDate
 
 data class OVPRequestValidated(
-  val totalNumberOfSanctions: Int,
+  val totalNumberOfSanctionsForAllOffences: Int,
   val totalNumberOfViolentSanctions: Int,
   val dateAtStartOfFollowup: LocalDate,
   val dateOfBirth: LocalDate,
   val gender: Gender,
-  val impactOfOffendingOnOthers: Boolean,
-  val currentAccommodation: Boolean,
+  val doesRecogniseImpactOfOffendingOnOthers: Boolean,
+  val isCurrentlyOfNoFixedAbodeOrTransientAccommodation: Boolean,
   val employmentStatus: Boolean,
   val alcoholIsCurrentUseAProblem: ProblemLevel,
   val alcoholExcessive6Months: ProblemLevel,

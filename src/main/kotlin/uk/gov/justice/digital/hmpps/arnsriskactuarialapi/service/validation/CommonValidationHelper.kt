@@ -12,25 +12,25 @@ fun ArrayList<String>.addIfNull(request: RiskScoreRequest, prop: KProperty1<Risk
   if (prop.get(request) == null) this.add(prop.name)
 }
 
-fun getTotalNumberOfSanctionsValidation(
-  totalNumberOfSanctions: Integer?,
+fun getTotalNumberOfSanctionsForAllOffencesValidation(
+  totalNumberOfSanctionsForAllOffences: Integer?,
   errors: List<ValidationErrorResponse>,
 ): List<ValidationErrorResponse> {
-  if (totalNumberOfSanctions != null && totalNumberOfSanctions < 1) {
+  if (totalNumberOfSanctionsForAllOffences != null && totalNumberOfSanctionsForAllOffences < 1) {
     return errors +
-      ValidationErrorType.BELOW_MIN_VALUE.asErrorResponse(listOf(RiskScoreRequest::totalNumberOfSanctions.name))
+      ValidationErrorType.BELOW_MIN_VALUE.asErrorResponse(listOf(RiskScoreRequest::totalNumberOfSanctionsForAllOffences.name))
   }
 
   return errors
 }
 
-fun getCurrentOffenceValidation(
-  currentOffence: String?,
+fun getCurrentOffenceCodeValidation(
+  currentOffenceCode: String?,
   errors: List<ValidationErrorResponse>,
 ): List<ValidationErrorResponse> {
-  if (currentOffence != null && currentOffence.length != 5) {
+  if (currentOffenceCode != null && currentOffenceCode.length != 5) {
     return errors +
-      ValidationErrorType.NO_MATCHING_INPUT.asErrorResponse(listOf(RiskScoreRequest::currentOffence.name))
+      ValidationErrorType.NO_MATCHING_INPUT.asErrorResponse(listOf(RiskScoreRequest::currentOffenceCode.name))
   }
   return errors
 }

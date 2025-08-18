@@ -76,7 +76,7 @@ object RiskScoreRequestTestConstants {
   val NULL_REQUEST = RiskScoreRequest(version = RiskScoreVersion.V1_0)
   val FULL_OGP_REQUEST = RiskScoreRequest(
     version = RiskScoreVersion.V1_0,
-    currentAccommodation = true,
+    isCurrentlyOfNoFixedAbodeOrTransientAccommodation = true,
     employmentStatus = false,
     regularOffendingActivities = ProblemLevel.NO_PROBLEMS,
     currentDrugMisuse = ProblemLevel.NO_PROBLEMS,
@@ -88,7 +88,7 @@ object RiskScoreRequestTestConstants {
   )
   val ALT_NULL_OGP_REQUEST = RiskScoreRequest(
     version = RiskScoreVersion.V1_0,
-    currentAccommodation = null,
+    isCurrentlyOfNoFixedAbodeOrTransientAccommodation = null,
     employmentStatus = false,
     regularOffendingActivities = null,
     currentDrugMisuse = ProblemLevel.NO_PROBLEMS,
@@ -100,7 +100,7 @@ object RiskScoreRequestTestConstants {
   )
   val OGP_REQUEST_39 = RiskScoreRequest(
     version = RiskScoreVersion.V1_0,
-    currentAccommodation = true,
+    isCurrentlyOfNoFixedAbodeOrTransientAccommodation = true,
     employmentStatus = false,
     regularOffendingActivities = null,
     currentDrugMisuse = ProblemLevel.NO_PROBLEMS,
@@ -112,7 +112,7 @@ object RiskScoreRequestTestConstants {
   )
   val OGP_REQUEST_0458 = RiskScoreRequest(
     version = RiskScoreVersion.V1_0,
-    currentAccommodation = null,
+    isCurrentlyOfNoFixedAbodeOrTransientAccommodation = null,
     employmentStatus = false,
     regularOffendingActivities = ProblemLevel.NO_PROBLEMS,
     currentDrugMisuse = ProblemLevel.NO_PROBLEMS,
@@ -124,7 +124,7 @@ object RiskScoreRequestTestConstants {
   )
   val FULL_LDS_REQUEST = RiskScoreRequest(
     version = RiskScoreVersion.V1_0,
-    currentAccommodation = true,
+    isCurrentlyOfNoFixedAbodeOrTransientAccommodation = true,
     transferableSkills = ProblemLevel.SOME_PROBLEMS,
     educationDifficulties = ProblemLevel.SOME_PROBLEMS,
     readingDifficulties = true,
@@ -134,7 +134,7 @@ object RiskScoreRequestTestConstants {
   )
   val INELIGIBLE_LDS_REQUEST = RiskScoreRequest(
     version = RiskScoreVersion.V1_0,
-    currentAccommodation = true,
+    isCurrentlyOfNoFixedAbodeOrTransientAccommodation = true,
     transferableSkills = ProblemLevel.SOME_PROBLEMS,
     educationDifficulties = null,
     readingDifficulties = true,
@@ -144,7 +144,7 @@ object RiskScoreRequestTestConstants {
   )
   val BAD_READING_DIFFICULTY_LDS_REQUEST = RiskScoreRequest(
     version = RiskScoreVersion.V1_0,
-    currentAccommodation = true,
+    isCurrentlyOfNoFixedAbodeOrTransientAccommodation = true,
     transferableSkills = ProblemLevel.SOME_PROBLEMS,
     educationDifficulties = null,
     readingDifficulties = true,
@@ -168,12 +168,12 @@ fun validOVPRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
   dateOfBirth = LocalDate.of(1964, 10, 15),
   dateOfCurrentConviction = LocalDate.of(2014, 12, 13),
   dateAtStartOfFollowup = LocalDate.of(2027, 12, 12),
-  totalNumberOfSanctions = 30 as Integer?,
+  totalNumberOfSanctionsForAllOffences = 30 as Integer?,
   totalNumberOfViolentSanctions = 10 as Integer?,
-  impactOfOffendingOnOthers = true,
-  currentAccommodation = true,
+  doesRecogniseImpactOfOffendingOnOthers = true,
+  isCurrentlyOfNoFixedAbodeOrTransientAccommodation = true,
   ageAtFirstSanction = null,
-  currentOffence = null,
+  currentOffenceCode = null,
   employmentStatus = true,
   alcoholIsCurrentUseAProblem = ProblemLevel.NO_PROBLEMS,
   alcoholExcessive6Months = ProblemLevel.NO_PROBLEMS,
@@ -232,7 +232,7 @@ fun validOPDRiskScoreRequest() = RiskScoreRequest(
   version = RiskScoreVersion.V1_0,
   overallRiskForAssessment = RiskBand.HIGH,
   highestRiskLevel = RiskBand.HIGH,
-  currentOffence = "02700",
+  currentOffenceCode = "02700",
   opdOverride = false,
   eligibleForMappa = false,
   carryingOrUsingWeapon = false,
@@ -266,7 +266,7 @@ fun validOPDRiskScoreRequest() = RiskScoreRequest(
   assaultedOrThreatenedStaff = false,
   escapeOrAbsconded = false,
   controlIssuesOrBreachOfTrust = false,
-  impactOfOffendingOnOthers = false,
+  doesRecogniseImpactOfOffendingOnOthers = false,
   attitudesStableBehaviour = ProblemLevel.NO_PROBLEMS,
   impulsivityBehaviour = ProblemLevel.NO_PROBLEMS,
 )
@@ -282,7 +282,7 @@ fun validOSPDCRiskScoreRequest() = RiskScoreRequest(
   totalIndecentImageSanctions = 1,
   dateAtStartOfFollowup = LocalDate.of(2025, 1, 1),
   dateOfMostRecentSexualOffence = LocalDate.of(2000, 1, 1),
-  totalNumberOfSanctions = 4 as Integer,
+  totalNumberOfSanctionsForAllOffences = 4 as Integer,
 )
 
 fun validSNSVStaticRiskScoreRequest() = RiskScoreRequest(
@@ -291,8 +291,8 @@ fun validSNSVStaticRiskScoreRequest() = RiskScoreRequest(
   dateOfBirth = LocalDate.of(1980, 1, 1),
   assessmentDate = LocalDate.of(2025, 1, 1),
   dateOfCurrentConviction = LocalDate.of(2020, 1, 1),
-  currentOffence = "02700",
-  totalNumberOfSanctions = 1 as Integer,
+  currentOffenceCode = "02700",
+  totalNumberOfSanctionsForAllOffences = 1 as Integer,
   ageAtFirstSanction = 40 as Integer,
   inCustodyOrCommunity = CustodyOrCommunity.COMMUNITY,
   dateAtStartOfFollowup = LocalDate.of(2024, 1, 1),
@@ -305,8 +305,8 @@ fun validSNSVDynamicRiskScoreRequest() = RiskScoreRequest(
   dateOfBirth = LocalDate.of(1980, 1, 1),
   assessmentDate = LocalDate.of(2025, 1, 1),
   dateOfCurrentConviction = LocalDate.of(2020, 1, 1),
-  currentOffence = "02700",
-  totalNumberOfSanctions = 1 as Integer,
+  currentOffenceCode = "02700",
+  totalNumberOfSanctionsForAllOffences = 1 as Integer,
   ageAtFirstSanction = 40 as Integer,
   inCustodyOrCommunity = CustodyOrCommunity.COMMUNITY,
   dateAtStartOfFollowup = LocalDate.of(2027, 1, 1),
@@ -327,7 +327,7 @@ fun validSNSVDynamicRiskScoreRequest() = RiskScoreRequest(
 fun opdRequestValidated() = OPDRequestValidated(
   overallRiskForAssessment = RiskBand.HIGH,
   highestRiskLevel = RiskBand.HIGH,
-  currentOffence = "02700",
+  currentOffenceCode = "02700",
   opdOverride = false,
   eligibleForMappa = false,
   carryingOrUsingWeapon = false,
@@ -361,7 +361,7 @@ fun opdRequestValidated() = OPDRequestValidated(
   assaultedOrThreatenedStaff = false,
   escapeOrAbsconded = false,
   controlIssuesOrBreachOfTrust = false,
-  impactOfOffendingOnOthers = false,
+  doesRecogniseImpactOfOffendingOnOthers = false,
   attitudesStableBehaviour = ProblemLevel.NO_PROBLEMS,
   impulsivityBehaviour = ProblemLevel.NO_PROBLEMS,
   ageAtFirstSanction = null,

@@ -18,9 +18,9 @@ import java.util.stream.Stream
 class OVPTransformationHelperTest {
 
   @Test
-  fun `getCurrentAccommodationOffendersScore maps correctly`() {
-    assertEquals(2, getCurrentAccommodationOffendersScore(testRequest(currentAccommodation = true)))
-    assertEquals(0, getCurrentAccommodationOffendersScore(testRequest(currentAccommodation = false)))
+  fun `getIsCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScore maps correctly`() {
+    assertEquals(2, getIsCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScore(testRequest(isCurrentlyOfNoFixedAbodeOrTransientAccommodation = true)))
+    assertEquals(0, getIsCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScore(testRequest(isCurrentlyOfNoFixedAbodeOrTransientAccommodation = false)))
   }
 
   @Test
@@ -30,14 +30,14 @@ class OVPTransformationHelperTest {
   }
 
   @Test
-  fun `getImpactOfOffendingOnOthersWeighted maps correctly`() {
+  fun `getDoesRecogniseImpactOfOffendingOnOthersWeighted maps correctly`() {
     assertEquals(
       0,
-      getImpactOfOffendingOnOthersWeighted(testRequest(impactOfOffendingOnOthers = true)),
+      getDoesRecogniseImpactOfOffendingOnOthersWeighted(testRequest(doesRecogniseImpactOfOffendingOnOthers = true)),
     )
     assertEquals(
       4,
-      getImpactOfOffendingOnOthersWeighted(testRequest(impactOfOffendingOnOthers = false)),
+      getDoesRecogniseImpactOfOffendingOnOthersWeighted(testRequest(doesRecogniseImpactOfOffendingOnOthers = false)),
     )
   }
 
@@ -54,9 +54,9 @@ class OVPTransformationHelperTest {
   }
 
   @Test
-  fun `getCurrentAccommodationWeightedOVP maps correctly`() {
-    assertEquals(4, getCurrentAccommodationWeightedOVP(2))
-    assertEquals(0, getCurrentAccommodationWeightedOVP(1))
+  fun `getIsCurrentlyOfNoFixedAbodeOrTransientAccommodationWeightedOVP maps correctly`() {
+    assertEquals(4, getIsCurrentlyOfNoFixedAbodeOrTransientAccommodationWeightedOVP(2))
+    assertEquals(0, getIsCurrentlyOfNoFixedAbodeOrTransientAccommodationWeightedOVP(1))
   }
 
   @Test
@@ -70,8 +70,8 @@ class OVPTransformationHelperTest {
 
   @Test
   fun `getAnyPreviousSanctionsWeighted maps correctly`() {
-    assertEquals(0, getAnyPreviousSanctionsWeighted(testRequest(totalNumberOfSanctions = 0)))
-    assertEquals(5, getAnyPreviousSanctionsWeighted(testRequest(totalNumberOfSanctions = 1)))
+    assertEquals(0, getAnyPreviousSanctionsWeighted(testRequest(totalNumberOfSanctionsForAllOffences = 0)))
+    assertEquals(5, getAnyPreviousSanctionsWeighted(testRequest(totalNumberOfSanctionsForAllOffences = 1)))
   }
 
   @Test
@@ -156,20 +156,20 @@ class OVPTransformationHelperTest {
   }
 
   private fun testRequest(
-    currentAccommodation: Boolean = true,
+    isCurrentlyOfNoFixedAbodeOrTransientAccommodation: Boolean = true,
     employmentStatus: Boolean = false,
-    impactOfOffendingOnOthers: Boolean = false,
+    doesRecogniseImpactOfOffendingOnOthers: Boolean = false,
     currentPsychiatricTreatmentOrPending: Boolean = true,
-    totalNumberOfSanctions: Int = 3,
+    totalNumberOfSanctionsForAllOffences: Int = 3,
     gender: Gender = Gender.MALE,
     dateOfBirth: LocalDate = LocalDate.of(2000, 1, 1),
     dateAtStartOfFollowup: LocalDate = LocalDate.of(2021, 1, 1),
   ) = OVPRequestValidated(
-    currentAccommodation = currentAccommodation,
+    isCurrentlyOfNoFixedAbodeOrTransientAccommodation = isCurrentlyOfNoFixedAbodeOrTransientAccommodation,
     employmentStatus = employmentStatus,
-    impactOfOffendingOnOthers = impactOfOffendingOnOthers,
+    doesRecogniseImpactOfOffendingOnOthers = doesRecogniseImpactOfOffendingOnOthers,
     currentPsychiatricTreatmentOrPending = currentPsychiatricTreatmentOrPending,
-    totalNumberOfSanctions = totalNumberOfSanctions,
+    totalNumberOfSanctionsForAllOffences = totalNumberOfSanctionsForAllOffences,
     gender = gender,
     dateOfBirth = dateOfBirth,
     dateAtStartOfFollowup = dateAtStartOfFollowup,

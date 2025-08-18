@@ -7,7 +7,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResp
 fun opdInitialValidation(request: RiskScoreRequest): List<ValidationErrorResponse> = mutableListOf<ValidationErrorResponse>()
   .let { getMissingOPDFieldsValidation(request, it) }
   .let { validateDomesticAbuse(request, it) }
-  .let { getCurrentOffenceValidation(request.currentOffence, it) }
+  .let { getCurrentOffenceCodeValidation(request.currentOffenceCode, it) }
 
 private fun validateDomesticAbuse(
   request: RiskScoreRequest,
@@ -35,7 +35,7 @@ private fun getMissingOPDFieldsValidation(
   missingFields.addIfNull(request, RiskScoreRequest::gender)
   missingFields.addIfNull(request, RiskScoreRequest::overallRiskForAssessment)
   missingFields.addIfNull(request, RiskScoreRequest::highestRiskLevel)
-  missingFields.addIfNull(request, RiskScoreRequest::currentOffence)
+  missingFields.addIfNull(request, RiskScoreRequest::currentOffenceCode)
   missingFields.addIfNull(request, RiskScoreRequest::custodialSentence)
   if (request.eligibleForMappa == null && request.gender == Gender.FEMALE) missingFields.add(RiskScoreRequest::eligibleForMappa.name)
   if (request.domesticAbuse == true) {

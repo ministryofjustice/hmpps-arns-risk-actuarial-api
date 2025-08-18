@@ -72,25 +72,25 @@ class SNSVTransformationHelperTest {
   @ParameterizedTest
   @MethodSource("getNumberOfSanctionWeightValidInputProvider")
   fun `getNumberOfSanctionWeight should return correct weight for valid sanction values`(
-    totalNumberOfSanctions: Int,
+    totalNumberOfSanctionsForAllOffences: Int,
     isSNSVDynamic: Boolean,
     expected: Double,
   ) {
-    val result = getNumberOfSanctionWeight(totalNumberOfSanctions, isSNSVDynamic)
+    val result = getNumberOfSanctionWeight(totalNumberOfSanctionsForAllOffences, isSNSVDynamic)
     assertEquals(expected, result, 1e-9)
   }
 
   @ParameterizedTest
   @MethodSource("getNumberOfSanctionWeightInvalidInputProvider")
   fun `getNumberOfSanctionWeight should throw exception for invalid sanction counts`(
-    totalNumberOfSanctions: Int,
+    totalNumberOfSanctionsForAllOffences: Int,
     isSNSVDynamic: Boolean,
   ) {
     val exception = assertThrows(IllegalArgumentException::class.java) {
-      getNumberOfSanctionWeight(totalNumberOfSanctions, isSNSVDynamic)
+      getNumberOfSanctionWeight(totalNumberOfSanctionsForAllOffences, isSNSVDynamic)
     }
     assertEquals(
-      "Invalid total number of sanctions value: $totalNumberOfSanctions",
+      "Invalid total number of sanctions value: $totalNumberOfSanctionsForAllOffences",
       exception.message,
     )
   }

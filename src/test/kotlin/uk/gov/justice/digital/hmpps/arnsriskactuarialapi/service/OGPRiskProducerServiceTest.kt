@@ -29,7 +29,7 @@ class OGPRiskProducerServiceTest {
       OGRS3 = ogrs3Output,
     )
     val request = RiskScoreRequest(
-      currentAccommodation = false,
+      isCurrentlyOfNoFixedAbodeOrTransientAccommodation = false,
       employmentStatus = true,
       regularOffendingActivities = ProblemLevel.SOME_PROBLEMS,
       currentDrugMisuse = ProblemLevel.NO_PROBLEMS,

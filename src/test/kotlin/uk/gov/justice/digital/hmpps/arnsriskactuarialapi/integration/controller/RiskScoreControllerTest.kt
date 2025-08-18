@@ -52,9 +52,9 @@ class RiskScoreControllerTest : IntegrationTestBase() {
           "dateOfBirth": "1965-01-01",
           "dateOfCurrentConviction": "2024-01-01",
           "dateAtStartOfFollowup": "2027-01-01",
-          "totalNumberOfSanctions": 3,
+          "totalNumberOfSanctionsForAllOffences": 3,
           "ageAtFirstSanction": 50,
-          "currentOffence": "05101"
+          "currentOffenceCode": "05101"
         }
         """.trimIndent(),
       )
@@ -180,7 +180,7 @@ class RiskScoreControllerTest : IntegrationTestBase() {
       .bodyValue(
         """
         {
-          "totalNumberOfSanctions": "not a number",
+          "totalNumberOfSanctionsForAllOffences": "not a number"
         }
         """.trimIndent(),
       )

@@ -4,7 +4,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 
 data class OGPInputValidated(
   val ogrs3TwoYear: Int,
-  val currentAccommodation: Boolean,
+  val isCurrentlyOfNoFixedAbodeOrTransientAccommodation: Boolean,
   val employmentStatus: Boolean,
   val regularOffendingActivities: ProblemLevel,
   val currentDrugMisuse: ProblemLevel,

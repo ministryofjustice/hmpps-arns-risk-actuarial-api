@@ -38,10 +38,10 @@ class OVPValidationHelperTest {
       "gender",
       "dateOfBirth",
       "dateAtStartOfFollowup",
-      "totalNumberOfSanctions",
+      "totalNumberOfSanctionsForAllOffences",
       "totalNumberOfViolentSanctions",
-      "impactOfOffendingOnOthers",
-      "currentAccommodation",
+      "doesRecogniseImpactOfOffendingOnOthers",
+      "isCurrentlyOfNoFixedAbodeOrTransientAccommodation",
       "employmentStatus",
       "alcoholIsCurrentUseAProblem",
       "alcoholExcessive6Months",
@@ -58,7 +58,7 @@ class OVPValidationHelperTest {
 
   @Test
   fun `getTotalNumberOfSanctionsValidation no errors`() {
-    val result = getTotalNumberOfSanctionsValidation(1 as Integer?, arrayListOf())
+    val result = getTotalNumberOfSanctionsForAllOffencesValidation(1 as Integer?, arrayListOf())
     assertTrue(result.isEmpty())
   }
 
@@ -71,28 +71,28 @@ class OVPValidationHelperTest {
         fields = listOf("Total number of sanctions"),
       ),
     )
-    val result = getTotalNumberOfSanctionsValidation(null, missingFieldError)
+    val result = getTotalNumberOfSanctionsForAllOffencesValidation(null, missingFieldError)
     assertTrue(result.count() == 1)
     assertFalse(ValidationErrorType.BELOW_MIN_VALUE == result.first().type)
   }
 
   @Test
   fun `getTotalNumberOfSanctionsValidation below min value error`() {
-    val result = getTotalNumberOfSanctionsValidation(0 as Integer?, arrayListOf())
+    val result = getTotalNumberOfSanctionsForAllOffencesValidation(0 as Integer?, arrayListOf())
     val error = result.first()
     assertEquals(ValidationErrorType.BELOW_MIN_VALUE, error.type)
     assertEquals("ERR2 - Below minimum value", error.message)
-    assertEquals("totalNumberOfSanctions", error.fields?.first())
+    assertEquals("totalNumberOfSanctionsForAllOffences", error.fields?.first())
   }
 
   @Test
-  fun `getCurrentOffenceValidation no errors`() {
-    val result = getCurrentOffenceValidation("00101", arrayListOf())
+  fun `getCurrentOffenceCodeValidation no errors`() {
+    val result = getCurrentOffenceCodeValidation("00101", arrayListOf())
     assertTrue(result.isEmpty())
   }
 
   @Test
-  fun `getCurrentOffenceValidation no error added when current offence null`() {
+  fun `getCurrentOffenceCodeValidation no error added when current offence null`() {
     val missingFieldError = arrayListOf(
       ValidationErrorResponse(
         type = ValidationErrorType.MISSING_INPUT,
@@ -100,17 +100,17 @@ class OVPValidationHelperTest {
         fields = listOf("Current offence"),
       ),
     )
-    val result = getCurrentOffenceValidation(null, missingFieldError)
+    val result = getCurrentOffenceCodeValidation(null, missingFieldError)
     assertTrue(result.count() == 1)
     assertFalse(ValidationErrorType.NO_MATCHING_INPUT == result.first().type)
   }
 
   @Test
   fun `getCurrentOffenceValidation char count error`() {
-    val result = getCurrentOffenceValidation("001010", arrayListOf())
+    val result = getCurrentOffenceCodeValidation("001010", arrayListOf())
     val error = result.first()
     assertEquals(ValidationErrorType.NO_MATCHING_INPUT, error.type)
     assertEquals("ERR4 - Does not match agreed input", error.message)
-    assertEquals("currentOffence", error.fields?.first())
+    assertEquals("currentOffenceCode", error.fields?.first())
   }
 }

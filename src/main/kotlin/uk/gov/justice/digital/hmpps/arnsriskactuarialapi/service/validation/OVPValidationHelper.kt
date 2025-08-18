@@ -6,7 +6,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResp
 fun ovpInitialValidation(request: RiskScoreRequest): List<ValidationErrorResponse> {
   val missingFieldValidationErrorStep = getMissingOVPFieldsValidation(request)
   val totalSanctionsValidationErrorStep =
-    getTotalNumberOfSanctionsValidation(request.totalNumberOfSanctions, missingFieldValidationErrorStep)
+    getTotalNumberOfSanctionsForAllOffencesValidation(request.totalNumberOfSanctionsForAllOffences, missingFieldValidationErrorStep)
   return totalSanctionsValidationErrorStep
 }
 
@@ -17,10 +17,10 @@ fun getMissingOVPFieldsValidation(request: RiskScoreRequest): List<ValidationErr
   missingFields.addIfNull(request, RiskScoreRequest::gender)
   missingFields.addIfNull(request, RiskScoreRequest::dateOfBirth)
   missingFields.addIfNull(request, RiskScoreRequest::dateAtStartOfFollowup)
-  missingFields.addIfNull(request, RiskScoreRequest::totalNumberOfSanctions)
+  missingFields.addIfNull(request, RiskScoreRequest::totalNumberOfSanctionsForAllOffences)
   missingFields.addIfNull(request, RiskScoreRequest::totalNumberOfViolentSanctions)
-  missingFields.addIfNull(request, RiskScoreRequest::impactOfOffendingOnOthers)
-  missingFields.addIfNull(request, RiskScoreRequest::currentAccommodation)
+  missingFields.addIfNull(request, RiskScoreRequest::doesRecogniseImpactOfOffendingOnOthers)
+  missingFields.addIfNull(request, RiskScoreRequest::isCurrentlyOfNoFixedAbodeOrTransientAccommodation)
   missingFields.addIfNull(request, RiskScoreRequest::employmentStatus)
   missingFields.addIfNull(request, RiskScoreRequest::alcoholIsCurrentUseAProblem)
   missingFields.addIfNull(request, RiskScoreRequest::alcoholExcessive6Months)

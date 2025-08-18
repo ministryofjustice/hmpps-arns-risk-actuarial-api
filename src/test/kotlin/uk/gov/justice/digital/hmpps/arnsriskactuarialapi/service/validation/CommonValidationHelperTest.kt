@@ -28,7 +28,7 @@ class CommonValidationHelperTest {
   fun `all test fields absent`() {
     val errorStrings = getMissingPropertiesErrorStrings(NULL_REQUEST, TEST_OGP_PROPERTIES_TO_ERRORS)
     val expected = listOf(
-      "currentAccommodation",
+      "isCurrentlyOfNoFixedAbodeOrTransientAccommodation",
       "employmentStatus",
       "regularOffendingActivities",
       "currentDrugMisuse",
@@ -84,7 +84,7 @@ class CommonValidationHelperTest {
   companion object {
 
     val TEST_OGP_PROPERTIES_TO_ERRORS = listOf(
-      "currentAccommodation",
+      "isCurrentlyOfNoFixedAbodeOrTransientAccommodation",
       "employmentStatus",
       "regularOffendingActivities",
       "currentDrugMisuse",
@@ -99,7 +99,7 @@ class CommonValidationHelperTest {
     fun getRiskScoreRequests(): List<Arguments> = listOf(
       Arguments.of(
         ALT_NULL_OGP_REQUEST,
-        listOf("currentAccommodation", "regularOffendingActivities", "motivationDrug", "awarenessOfConsequences", "proCriminalAttitudes"),
+        listOf("isCurrentlyOfNoFixedAbodeOrTransientAccommodation", "regularOffendingActivities", "motivationDrug", "awarenessOfConsequences", "proCriminalAttitudes"),
       ),
       Arguments.of(
         OGP_REQUEST_39,
@@ -108,7 +108,7 @@ class CommonValidationHelperTest {
       ),
       Arguments.of(
         OGP_REQUEST_0458,
-        listOf("currentAccommodation", "motivationDrug", "problemSolvingSkills", "proCriminalAttitudes"),
+        listOf("isCurrentlyOfNoFixedAbodeOrTransientAccommodation", "motivationDrug", "problemSolvingSkills", "proCriminalAttitudes"),
 
       ),
     )
@@ -116,7 +116,7 @@ class CommonValidationHelperTest {
 
   @Test
   fun `getTotalNumberOfSanctionsValidation no errors`() {
-    val result = getTotalNumberOfSanctionsValidation(1 as Integer?, mutableListOf())
+    val result = getTotalNumberOfSanctionsForAllOffencesValidation(1 as Integer?, mutableListOf())
     assertTrue(result.isEmpty())
   }
 
@@ -126,50 +126,50 @@ class CommonValidationHelperTest {
       ValidationErrorResponse(
         type = ValidationErrorType.MISSING_INPUT,
         message = "Unable to produce OGRS3 score due to missing field(s)",
-        fields = listOf("totalNumberOfSanctions"),
+        fields = listOf("totalNumberOfSanctionsForAllOffences"),
       ),
     )
-    val result = getTotalNumberOfSanctionsValidation(null, missingFieldError)
+    val result = getTotalNumberOfSanctionsForAllOffencesValidation(null, missingFieldError)
     assertTrue(result.count() == 1)
     assertFalse(ValidationErrorType.BELOW_MIN_VALUE == result.first().type)
   }
 
   @Test
   fun `getTotalNumberOfSanctionsValidation below min value error`() {
-    val result = getTotalNumberOfSanctionsValidation(0 as Integer?, mutableListOf())
+    val result = getTotalNumberOfSanctionsForAllOffencesValidation(0 as Integer?, mutableListOf())
     val error = result.first()
     assertEquals(ValidationErrorType.BELOW_MIN_VALUE, error.type)
     assertEquals("ERR2 - Below minimum value", error.message)
-    assertEquals("totalNumberOfSanctions", error.fields?.first())
+    assertEquals("totalNumberOfSanctionsForAllOffences", error.fields?.first())
   }
 
   @Test
-  fun `getCurrentOffenceValidation no errors`() {
-    val result = getCurrentOffenceValidation("00101", mutableListOf())
+  fun `getCurrentOffenceCodeValidation no errors`() {
+    val result = getCurrentOffenceCodeValidation("00101", mutableListOf())
     assertTrue(result.isEmpty())
   }
 
   @Test
-  fun `getCurrentOffenceValidation no error added when current offence null`() {
+  fun `getCurrentOffenceCodeValidation no error added when current offence null`() {
     val missingFieldError = mutableListOf(
       ValidationErrorResponse(
         type = ValidationErrorType.MISSING_INPUT,
         message = "Unable to produce OGRS3 score due to missing field(s)",
-        fields = listOf("currentOffence"),
+        fields = listOf("currentOffenceCode"),
       ),
     )
-    val result = getCurrentOffenceValidation(null, missingFieldError)
+    val result = getCurrentOffenceCodeValidation(null, missingFieldError)
     assertTrue(result.count() == 1)
     assertFalse(ValidationErrorType.NO_MATCHING_INPUT == result.first().type)
   }
 
   @Test
-  fun `getCurrentOffenceValidation char count error`() {
-    val result = getCurrentOffenceValidation("001010", mutableListOf())
+  fun `getCurrentOffenceCodeValidation char count error`() {
+    val result = getCurrentOffenceCodeValidation("001010", mutableListOf())
     val error = result.first()
     assertEquals(ValidationErrorType.NO_MATCHING_INPUT, error.type)
     assertEquals("ERR4 - Does not match agreed input", error.message)
-    assertEquals("currentOffence", error.fields?.first())
+    assertEquals("currentOffenceCode", error.fields?.first())
   }
 
   @Test

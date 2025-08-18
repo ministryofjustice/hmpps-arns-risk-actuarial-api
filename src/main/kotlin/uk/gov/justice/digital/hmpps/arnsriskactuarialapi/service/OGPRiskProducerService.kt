@@ -9,13 +9,13 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPInputValidat
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.awarenessOfConsequencesOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.bandOGP
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.currentAccommodationOffendersScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.currentAccommodationWeighted
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.currentDrugMisuseOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.drugMisuseNonViolentOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.drugMisuseNonViolentWeighted
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.employmentStatusOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.employmentStatusWeighted
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.isCurrentlyOfNoFixedAbodeOrTransientAccommodationWeighted
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.motivationDrugOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.ogpReoffendingOneYear
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.ogpReoffendingTwoYear
@@ -45,7 +45,7 @@ class OGPRiskProducerService : RiskScoreProducer {
 
     val validInput = OGPInputValidated(
       context.OGRS3?.ogrs3TwoYear!!,
-      request.currentAccommodation!!,
+      request.isCurrentlyOfNoFixedAbodeOrTransientAccommodation!!,
       request.employmentStatus!!,
       request.regularOffendingActivities!!,
       request.currentDrugMisuse!!,
@@ -62,8 +62,8 @@ class OGPRiskProducerService : RiskScoreProducer {
   companion object {
     fun getOGPOutput(input: OGPInputValidated): OGPObject = runCatching {
       // Transformation Step
-      val currentAccommodationOffendersScore =
-        currentAccommodationOffendersScore(input.currentAccommodation)
+      val isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScore =
+        isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScore(input.isCurrentlyOfNoFixedAbodeOrTransientAccommodation)
       val employmentStatusOffendersScore =
         employmentStatusOffendersScore(input.employmentStatus)
       val regularOffendingActivitiesOffendersScore =
@@ -90,8 +90,8 @@ class OGPRiskProducerService : RiskScoreProducer {
         )
       // Weighted Scores
       val ogrs3TwoYearWeighted = ogrs3TwoYearWeighted(input.ogrs3TwoYear)
-      val currentAccommodationWeighted =
-        currentAccommodationWeighted(currentAccommodationOffendersScore)
+      val isCurrentlyOfNoFixedAbodeOrTransientAccommodationWeighted =
+        isCurrentlyOfNoFixedAbodeOrTransientAccommodationWeighted(isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScore)
       val employmentStatusWeighted =
         employmentStatusWeighted(employmentStatusOffendersScore)
       val regularOffendingActivitiesWeighted =
@@ -105,7 +105,7 @@ class OGPRiskProducerService : RiskScoreProducer {
       val totalOGPScore =
         totalOGPScore(
           ogrs3TwoYearWeighted,
-          currentAccommodationWeighted,
+          isCurrentlyOfNoFixedAbodeOrTransientAccommodationWeighted,
           employmentStatusWeighted,
           regularOffendingActivitiesWeighted,
           drugMisuseNonViolentWeighted,
