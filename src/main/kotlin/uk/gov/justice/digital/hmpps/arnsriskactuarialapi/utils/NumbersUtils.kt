@@ -9,7 +9,7 @@ fun Double.asDoublePercentage(): Double = BigDecimal(this).multiply(BigDecimal.v
 fun Double.roundToNDecimals(n: Int): Double = BigDecimal(this).setScale(n, RoundingMode.HALF_UP).toDouble()
 fun Double.roundTo5Decimals(): Double = roundToNDecimals(5)
 fun Double.asPercentage(): Int = BigDecimal(this).multiply(BigDecimal.valueOf(100)).setScale(0, RoundingMode.HALF_UP).toInt()
-fun Double.roundToInt(): Int = BigDecimal(this).setScale(0, RoundingMode.HALF_UP).toInt()
+fun Double.roundToInt(): Int = roundToNDecimals(0).toInt()
 
 /**
  * This is business logic that does not accept 0% nor 100% instead they are defaulted to 1% and 99% respectively.
