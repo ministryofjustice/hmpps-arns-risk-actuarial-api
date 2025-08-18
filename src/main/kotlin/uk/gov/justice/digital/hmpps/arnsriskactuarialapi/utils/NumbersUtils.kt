@@ -5,6 +5,7 @@ import java.math.RoundingMode
 import kotlin.math.exp
 
 fun Double.roundTo5Decimals(): Double = BigDecimal(this).setScale(5, RoundingMode.HALF_UP).toDouble()
+fun Double.asDoublePercentage(): Double = BigDecimal(this).multiply(BigDecimal.valueOf(100)).setScale(2, RoundingMode.HALF_UP).toDouble()
 fun Double.asPercentage(): Int = BigDecimal(this).multiply(BigDecimal.valueOf(100)).setScale(0, RoundingMode.HALF_UP).toInt()
 fun Double.roundToInt(): Int = BigDecimal(this).setScale(0, RoundingMode.HALF_UP).toInt()
 

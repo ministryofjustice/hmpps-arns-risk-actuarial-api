@@ -35,6 +35,17 @@ class NumbersUtilsTest {
   }
 
   @Test
+  fun `asDoublePercentage should convert decimal to 2 decimal percentage correctly`() {
+    assertEquals(50.00, 0.5.asDoublePercentage())
+    assertEquals(49.68, 0.49678.asDoublePercentage())
+    assertEquals(99.60, 0.996.asDoublePercentage())
+    assertEquals(100.00, 1.0.asDoublePercentage())
+    assertEquals(0.40, 0.004.asDoublePercentage())
+    assertEquals(99.40, 0.994.asDoublePercentage())
+    assertEquals(2.88, 0.02875687371686357.asDoublePercentage())
+  }
+
+  @Test
   fun `sanitisePercentage should default 0 with 1 and 100 with 99`() {
     assertEquals(1, (-1).sanitisePercentage())
     assertEquals(1, 0.sanitisePercentage())
