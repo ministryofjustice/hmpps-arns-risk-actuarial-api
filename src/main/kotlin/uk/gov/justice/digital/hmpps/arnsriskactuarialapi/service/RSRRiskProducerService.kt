@@ -8,21 +8,19 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.osp.OSPDCObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ospiic.OSPIICObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.rsr.RSRObject
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.rsr.RSRRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.SNSVObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getFullRSRScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getRSRBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asDoublePercentage
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.roundToNDecimals
 
 @Service
 class RSRRiskProducerService : RiskScoreProducer {
 
-  // todo - basic return to enable testing for ospdc and ospiic tickets
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
     val ospdc = context.OSPDC ?: OSPDCObject(null, null, null)
     val ospiic = context.OSPIIC ?: OSPIICObject(null, null, null)
-    val snsv =
-      context.SNSV ?: SNSVObject(null, null, null)
+    val snsv = context.SNSV ?: SNSVObject(null, null, null)
 
     val errors = listOfNotNull(
       ospdc.validationError,
@@ -30,18 +28,21 @@ class RSRRiskProducerService : RiskScoreProducer {
       snsv.validationError,
     ).flatten()
 
-    if (errors.isNotEmpty()) {
-      val rsrScore = snsv.snsvScore?.let { snsvScore ->
-        getFullRSRScore(snsvScore, ospdc.ospdcScore, ospiic.score, snsv.scoreType)?.asDoublePercentage()
+    try {
+      val ospdcScore = ospdc.ospdcScore?.asDoublePercentage()
+      val ospiicScore = ospiic.score?.asDoublePercentage()
+      val snsvScore = snsv.snsvScore?.asDoublePercentage()
+      val rsrScore = snsvScore?.let {
+        getFullRSRScore(it, ospdcScore, ospiicScore, snsv.scoreType)?.roundToNDecimals(2)
       }
       val rsrBand = rsrScore?.let { getRSRBand(it) }
 
       return context.apply {
         RSR = RSRObject(
           ospdc.ospdcBand,
-          ospdc.ospdcScore?.asDoublePercentage(),
+          ospdcScore,
           ospiic.band,
-          ospiic.score?.asDoublePercentage(),
+          ospiicScore,
           rsrScore,
           rsrBand,
           snsv.snsvScore?.let { snsv.scoreType },
@@ -49,53 +50,27 @@ class RSRRiskProducerService : RiskScoreProducer {
           errors,
         )
       }
-    }
-
-    val validRequest = RSRRequestValidated(
-      ospdc,
-      ospiic,
-      snsv,
-    )
-    return context.apply {
-      RSR = getRSRObject(validRequest)
-    }
-  }
-
-  private fun getRSRObject(
-    request: RSRRequestValidated,
-  ): RSRObject = runCatching {
-    val snsvScoreType = request.snsv.scoreType
-    val rsrScore =
-      getFullRSRScore(request.snsv.snsvScore, request.ospdc.ospdcScore, request.ospiic.score, snsvScoreType)
-    val rsrBand = getRSRBand(rsrScore)
-    RSRObject(
-      request.ospdc.ospdcBand,
-      request.ospdc.ospdcScore,
-      request.ospiic.band,
-      request.ospiic.score,
-      rsrScore,
-      rsrBand,
-      snsvScoreType,
-      null,
-      null,
-    )
-  }.getOrElse {
-    RSRObject(
-      request.ospdc.ospdcBand,
-      request.ospdc.ospdcScore,
-      request.ospiic.band,
-      request.ospiic.score,
-      null,
-      null,
-      request.snsv.scoreType,
-      null,
+    } catch (e: Exception) {
       arrayListOf(
         ValidationErrorResponse(
           type = ValidationErrorType.UNEXPECTED_VALUE,
-          message = "Error: ${it.message}",
+          message = "Error: ${e.message}",
           fields = null,
         ),
-      ),
-    )
+      )
+      return context.apply {
+        RSR = RSRObject(
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          errors,
+        )
+      }
+    }
   }
 }
