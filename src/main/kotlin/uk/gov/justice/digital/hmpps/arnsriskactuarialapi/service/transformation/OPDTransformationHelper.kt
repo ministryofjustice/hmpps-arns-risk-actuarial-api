@@ -22,17 +22,17 @@ fun didOffenceInvolveExcessiveUseOfViolenceOffendersScore(request: OPDRequestVal
 
 fun doesRecogniseImpactOfOffendingOnOthersOffendersScoreOpd(request: OPDRequestValidated) = invertedScoreFromBoolean(request.doesRecogniseImpactOfOffendingOnOthers)
 
-fun financialRelianceOnOthersOffendersScore(request: OPDRequestValidated) = scoreFromProblemLevel(request.financialRelianceOnOthers)
+fun overRelianceOnOthersForFinancialSupportOffendersScore(request: OPDRequestValidated) = scoreFromProblemLevel(request.overRelianceOnOthersForFinancialSupport)
 
-fun manipulativePredatoryBehaviourOffendersScore(request: OPDRequestValidated) = scoreFromProblemLevel(request.manipulativePredatoryBehaviour)
+fun manipulativeOrPredatoryBehaviourOffendersScore(request: OPDRequestValidated) = scoreFromProblemLevel(request.manipulativeOrPredatoryBehaviour)
 
 fun recklessnessAndRiskTakingBehaviourOffendersScoreOpd(request: OPDRequestValidated) = scoreFromProblemLevel(request.recklessnessAndRiskTakingBehaviour)
 
-fun childhoodBehaviourOffendersScore(request: OPDRequestValidated) = scoreFromBoolean(request.childhoodBehaviour)
+fun isEvidenceOfChildhoodBehaviouralProblemsOffendersScore(request: OPDRequestValidated) = scoreFromBoolean(request.isEvidenceOfChildhoodBehaviouralProblems)
 
 fun impulsivityProblemsOffendersScore(request: OPDRequestValidated) = scoreFromProblemLevel(request.impulsivityProblems)
 
-fun presenceOfChildhoodDifficultiesOffendersScore(request: OPDRequestValidated) = if (scoreFromProblemLevel(request.experienceOfChildhood) == 1 || request.childhoodBehaviour) 1 else 0
+fun presenceOfChildhoodDifficultiesOffendersScore(request: OPDRequestValidated) = if (scoreFromProblemLevel(request.experienceOfChildhood) == 1 || request.isEvidenceOfChildhoodBehaviouralProblems) 1 else 0
 
 fun controllingOrAggressiveBehaviourOffendersScore(request: OPDRequestValidated) = scoreFromProblemLevel(request.controllingOrAggressiveBehaviour)
 
@@ -40,25 +40,25 @@ fun historyOfMentalHealthDifficultiesOffendersScore(request: OPDRequestValidated
   val hasProblems =
     request.currentPsychologicalProblems in listOf(ProblemLevel.SOME_PROBLEMS, ProblemLevel.SIGNIFICANT_PROBLEMS) ||
       request.currentPsychiatricProblems in listOf(ProblemLevel.SOME_PROBLEMS, ProblemLevel.SIGNIFICANT_PROBLEMS) ||
-      request.historyOfPsychiatricTreatment ||
-      request.medicationMentalHealth ||
-      request.patientSecureUnitOrHospital ||
+      request.hasHistoryOfPsychiatricTreatment ||
+      request.hasBeenOnMedicationForMentalHealthProblems ||
+      request.hasEverBeenInSpecialHospitalOrRegionalSecureUnit ||
       request.hasCurrentPsychiatricTreatment == true ||
-      request.obsessiveBehaviour
+      request.hasDisplayedObsessiveBehaviourLinkedToOffending
 
   return if (hasProblems) 1 else 0
 }
 
-fun selfHarmSuicideAttemptOffendersScore(input: OPDRequestValidated) = if (input.selfHarmSuicideAttempt == true) 1 else 0
+fun hasSelfHarmOrAttemptedSuicideOffendersScore(input: OPDRequestValidated) = if (input.hasSelfHarmOrAttemptedSuicide == true) 1 else 0
 
 fun severeChallengingBehavioursOffendersScore(input: OPDRequestValidated): Int {
   val hasAttitudeProblems =
-    input.attitudeTowardsSupervision in listOf(ProblemLevel.SOME_PROBLEMS, ProblemLevel.SIGNIFICANT_PROBLEMS)
+    input.attitudeTowardsSupervisionOrLicence in listOf(ProblemLevel.SOME_PROBLEMS, ProblemLevel.SIGNIFICANT_PROBLEMS)
 
   val hasOtherRiskFlags = listOf(
-    input.assaultedOrThreatenedStaff,
-    input.escapeOrAbsconded,
-    input.controlIssuesOrBreachOfTrust,
+    input.hasAssaultedOrThreatenedStaff,
+    input.hasEscapedOrAbsconded,
+    input.hasControlIssues,
   ).any { it == true }
 
   return if (hasAttitudeProblems || hasOtherRiskFlags) 1 else 0
@@ -70,25 +70,25 @@ fun didOffenceInvolveArsonOffendersScore(request: OPDRequestValidated) = scoreFr
 
 fun offenceMotivationEmotionalStateOffendersScore(request: OPDRequestValidated) = scoreFromBoolean(request.offenceMotivationEmotionalState)
 
-fun offenceLinkedRiskOfSeriousHarmOffendersScore(request: OPDRequestValidated) = scoreFromBoolean(request.offenceLinkedRiskOfSeriousHarm)
+fun isAnalysisOfOffenceIssuesLinkedToRiskOffendersScore(request: OPDRequestValidated) = scoreFromBoolean(request.isAnalysisOfOffenceIssuesLinkedToRisk)
 
-fun accommodationLinkedRiskOfSeriousHarmOffendersScore(request: OPDRequestValidated) = scoreFromBoolean(request.accommodationLinkedRiskOfSeriousHarm)
+fun hasAccommodationIssuesLinkedToRiskOffendersScore(request: OPDRequestValidated) = scoreFromBoolean(request.hasAccommodationIssuesLinkedToRisk)
 
 fun experienceOfChildhoodOffendersScore(request: OPDRequestValidated) = scoreFromProblemLevel(request.experienceOfChildhood)
 
-fun relationshipLinkedSeriousHarmOffendersScore(request: OPDRequestValidated) = scoreFromBoolean(request.relationshipLinkedSeriousHarm)
+fun relationshipIssuesLinkedToRiskOffendersScore(request: OPDRequestValidated) = scoreFromBoolean(request.relationshipIssuesLinkedToRisk)
 
 fun difficultiesCopingOffendersScore(request: OPDRequestValidated) = scoreFromProblemLevel(request.difficultiesCoping)
 
 fun currentPsychologicalProblemsOffendersScore(request: OPDRequestValidated) = scoreFromProblemLevel(request.currentPsychologicalProblems)
 
-fun wellbeingEmotionalLinkedRiskOfSeriousHarmOffendersScore(request: OPDRequestValidated) = scoreFromBoolean(request.wellbeingEmotionalLinkedRiskOfSeriousHarm)
+fun areEmotionalIssuesLinkedToRiskOffendersScore(request: OPDRequestValidated) = scoreFromBoolean(request.areEmotionalIssuesLinkedToRisk)
 
-fun thinkingAndBehaviourLinedToRiskOfSeriousHarmOffendersScore(request: OPDRequestValidated) = scoreFromBoolean(request.thinkingAndBehaviourLinedToRiskOfSeriousHarm)
+fun areThinkingAndBehaviourIssuesLinkedToRiskOffendersScore(request: OPDRequestValidated) = scoreFromBoolean(request.areThinkingAndBehaviourIssuesLinkedToRisk)
 
 fun domesticAbuseOffendersScore(request: OPDRequestValidated): Int = when {
-  !request.domesticAbuse -> 0
-  (request.domesticAbusePartner == true) || (request.domesticAbuseFamily == true) -> 1
+  !request.evidenceOfDomesticAbuse -> 0
+  (request.domesticAbuseAgainstPartner == true) || (request.domesticAbuseAgainstFamily == true) -> 1
   else -> 0
 }
 

@@ -63,12 +63,12 @@ class CommonValidationHelperTest {
   @Test
   fun `addUnexpectedFields should add unexpected errors`() {
     val errorResponses =
-      addUnexpectedFields(mutableListOf("domesticAbusePartner", "domesticAbuseFamily"), mutableListOf())
+      addUnexpectedFields(mutableListOf("domesticAbuseAgainstPartner", "domesticAbuseAgainstFamily"), mutableListOf())
     val expected = listOf(
       ValidationErrorResponse(
         ValidationErrorType.UNEXPECTED_VALUE,
         "ERR6 - Field is unexpected",
-        listOf("domesticAbusePartner", "domesticAbuseFamily"),
+        listOf("domesticAbuseAgainstPartner", "domesticAbuseAgainstFamily"),
       ),
     )
     assertEquals(expected, errorResponses)

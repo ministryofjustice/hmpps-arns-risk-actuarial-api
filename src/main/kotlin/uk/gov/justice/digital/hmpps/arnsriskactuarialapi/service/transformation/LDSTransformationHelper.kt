@@ -10,13 +10,13 @@ class LDSTransformationHelper {
 
     fun isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScoreLDS(isCurrentlyOfNoFixedAbodeOrTransientAccommodation: Boolean?): Int = if (isCurrentlyOfNoFixedAbodeOrTransientAccommodation ?: false) 1 else 0
 
-    fun transferableSkillsOffendersScore(transferableSkills: ProblemLevel?): Int = (transferableSkills ?: ProblemLevel.NO_PROBLEMS).score
+    fun workRelatedSkillsOffendersScore(workRelatedSkills: ProblemLevel?): Int = (workRelatedSkills ?: ProblemLevel.NO_PROBLEMS).score
 
-    fun educationDifficultiesOffendersScore(educationDifficulties: ProblemLevel?): Int = (educationDifficulties ?: ProblemLevel.NO_PROBLEMS).score
+    fun problemsWithReadingWritingNumeracyOffendersScore(problemsWithReadingWritingNumeracy: ProblemLevel?): Int = (problemsWithReadingWritingNumeracy ?: ProblemLevel.NO_PROBLEMS).score
 
-    fun readingDifficultiesOffendersScore(readingDifficulties: Boolean?): Int = if (readingDifficulties ?: false) 1 else 0
+    fun hasProblemsWithReadingOffendersScore(hasProblemsWithReading: Boolean?): Int = if (hasProblemsWithReading ?: false) 1 else 0
 
-    fun numeracyDifficultiesOffendersScore(numeracyDifficulties: Boolean?): Int = if (numeracyDifficulties ?: false) 1 else 0
+    fun hasProblemsWithNumeracyOffendersScore(hasProblemsWithNumeracy: Boolean?): Int = if (hasProblemsWithNumeracy ?: false) 1 else 0
 
     fun learningDifficultiesOffendersScore(learningDifficulties: ProblemLevel?) = (learningDifficulties ?: ProblemLevel.NO_PROBLEMS).score
 
@@ -26,18 +26,18 @@ class LDSTransformationHelper {
 
     fun ldsSubTotal(
       isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScoreLDS: Int,
-      transferableSkillsOffendersScore: Int,
-      educationDifficultiesOffendersScore: Int,
-      readingDifficultiesOffendersScore: Int,
-      numeracyDifficultiesOffendersScore: Int,
+      workRelatedSkillsOffendersScore: Int,
+      problemsWithReadingWritingNumeracyOffendersScore: Int,
+      hasProblemsWithReadingOffendersScore: Int,
+      hasProblemsWithNumeracyOffendersScore: Int,
       learningDifficultiesOffendersScore: Int,
       professionalOrVocationalQualifications: Int,
     ): Int = (
       isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScoreLDS +
-        transferableSkillsOffendersScore +
-        educationDifficultiesOffendersScore +
-        readingDifficultiesOffendersScore +
-        numeracyDifficultiesOffendersScore +
+        workRelatedSkillsOffendersScore +
+        problemsWithReadingWritingNumeracyOffendersScore +
+        hasProblemsWithReadingOffendersScore +
+        hasProblemsWithNumeracyOffendersScore +
         learningDifficultiesOffendersScore +
         professionalOrVocationalQualifications
       )

@@ -1,4 +1,4 @@
-isCurrentlyOfNoFixedAbodeOrTransientAccommodation,transferableSkills,educationDifficulties,readingDifficulties,numeracyDifficulties,learningDifficulties,professionalOrVocationalQualifications,ldsSubTotal,ldsScore,Comments
+isCurrentlyOfNoFixedAbodeOrTransientAccommodation,workRelatedSkills,problemsWithReadingWritingNumeracy,hasProblemsWithReading,hasProblemsWithNumeracy,learningDifficulties,professionalOrVocationalQualifications,ldsSubTotal,ldsScore,Comments
 Yes,SIGNIFICANT_PROBLEMS,SIGNIFICANT_PROBLEMS,Yes,Yes,SIGNIFICANT_PROBLEMS,ANY_QUALIFICATION,11,2,All items scored - highest score
 Null,SOME_PROBLEMS,Null,Null,Null,Null,Null,Null,Null,Not enough items scored
 No,SOME_PROBLEMS,SOME_PROBLEMS,Null,Yes,Null,NO_QUALIFICATIONS,5,2,4 items scored

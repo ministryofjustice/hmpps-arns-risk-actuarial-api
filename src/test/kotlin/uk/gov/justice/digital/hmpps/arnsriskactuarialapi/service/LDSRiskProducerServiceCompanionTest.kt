@@ -14,10 +14,10 @@ class LDSRiskProducerServiceCompanionTest {
   fun `testing single test case`() {
     val input = LDSInputValidated(
       isCurrentlyOfNoFixedAbodeOrTransientAccommodation = true,
-      transferableSkills = ProblemLevel.SOME_PROBLEMS,
-      educationDifficulties = ProblemLevel.SOME_PROBLEMS,
-      readingDifficulties = true,
-      numeracyDifficulties = null,
+      workRelatedSkills = ProblemLevel.SOME_PROBLEMS,
+      problemsWithReadingWritingNumeracy = ProblemLevel.SOME_PROBLEMS,
+      hasProblemsWithReading = true,
+      hasProblemsWithNumeracy = null,
       learningDifficulties = ProblemLevel.SOME_PROBLEMS,
       professionalOrVocationalQualifications = HasQualifications.NO_QUALIFICATIONS,
     )

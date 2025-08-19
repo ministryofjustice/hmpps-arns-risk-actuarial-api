@@ -14,10 +14,10 @@ private fun validateDomesticAbuse(
   errors: List<ValidationErrorResponse>,
 ): List<ValidationErrorResponse> {
   val unexpectedFields = arrayListOf<String>()
-  when (request.domesticAbuse) {
+  when (request.evidenceOfDomesticAbuse) {
     null, false -> {
-      if (request.domesticAbusePartner != null) unexpectedFields.add(RiskScoreRequest::domesticAbusePartner.name)
-      if (request.domesticAbuseFamily != null) unexpectedFields.add(RiskScoreRequest::domesticAbuseFamily.name)
+      if (request.domesticAbuseAgainstPartner != null) unexpectedFields.add(RiskScoreRequest::domesticAbuseAgainstPartner.name)
+      if (request.domesticAbuseAgainstFamily != null) unexpectedFields.add(RiskScoreRequest::domesticAbuseAgainstFamily.name)
     }
 
     true -> return errors
@@ -34,13 +34,13 @@ private fun getMissingOPDFieldsValidation(
 
   missingFields.addIfNull(request, RiskScoreRequest::gender)
   missingFields.addIfNull(request, RiskScoreRequest::overallRiskForAssessment)
-  missingFields.addIfNull(request, RiskScoreRequest::highestRiskLevel)
+  missingFields.addIfNull(request, RiskScoreRequest::highestRiskLevelOverAllAssessments)
   missingFields.addIfNull(request, RiskScoreRequest::currentOffenceCode)
-  missingFields.addIfNull(request, RiskScoreRequest::custodialSentence)
+  missingFields.addIfNull(request, RiskScoreRequest::hasCustodialSentence)
   if (request.isEligibleForMappa == null && request.gender == Gender.FEMALE) missingFields.add(RiskScoreRequest::isEligibleForMappa.name)
-  if (request.domesticAbuse == true) {
-    missingFields.addIfNull(request, RiskScoreRequest::domesticAbusePartner)
-    missingFields.addIfNull(request, RiskScoreRequest::domesticAbuseFamily)
+  if (request.evidenceOfDomesticAbuse == true) {
+    missingFields.addIfNull(request, RiskScoreRequest::domesticAbuseAgainstPartner)
+    missingFields.addIfNull(request, RiskScoreRequest::domesticAbuseAgainstFamily)
   }
   return addMissingFields(missingFields, errors)
 }

@@ -40,7 +40,7 @@ class OPDRiskProducerServiceTest {
       currentOffenceCode = "02504",
       gender = Gender.MALE,
       overallRiskForAssessment = RiskBand.HIGH,
-      custodialSentence = true,
+      hasCustodialSentence = true,
     )
 
     val result = service.getRiskScore(request, context).OPD!!
@@ -69,7 +69,7 @@ class OPDRiskProducerServiceTest {
       currentOffenceCode = "02504",
       gender = Gender.MALE,
       overallRiskForAssessment = RiskBand.HIGH,
-      custodialSentence = true,
+      hasCustodialSentence = true,
     )
 
     val result = service.getRiskScore(request, context).OPD!!
@@ -89,7 +89,7 @@ class OPDRiskProducerServiceTest {
       currentOffenceCode = "02504",
       gender = Gender.MALE,
       overallRiskForAssessment = RiskBand.HIGH,
-      custodialSentence = true,
+      hasCustodialSentence = true,
       applyOPDOverride = true,
     )
 
@@ -110,11 +110,11 @@ class OPDRiskProducerServiceTest {
       currentOffenceCode = "02504",
       gender = Gender.MALE,
       overallRiskForAssessment = RiskBand.HIGH,
-      custodialSentence = true,
-      medicationMentalHealth = true,
-      historyOfPsychiatricTreatment = true,
+      hasCustodialSentence = true,
+      hasBeenOnMedicationForMentalHealthProblems = true,
+      hasHistoryOfPsychiatricTreatment = true,
       hasCurrentPsychiatricTreatment = true,
-      selfHarmSuicideAttempt = true,
+      hasSelfHarmOrAttemptedSuicide = true,
     )
 
     val result = service.getRiskScore(request, context).OPD!!
@@ -154,7 +154,7 @@ class OPDRiskProducerServiceTest {
       gender = Gender.FEMALE,
       overallRiskForAssessment = RiskBand.HIGH,
       isEligibleForMappa = false,
-      custodialSentence = false,
+      hasCustodialSentence = false,
     )
 
     val result = service.getRiskScore(request, context).OPD!!
@@ -174,7 +174,7 @@ class OPDRiskProducerServiceTest {
       gender = Gender.FEMALE,
       overallRiskForAssessment = RiskBand.HIGH,
       isEligibleForMappa = false,
-      custodialSentence = true,
+      hasCustodialSentence = true,
     )
 
     val result = service.getRiskScore(request, context).OPD!!
@@ -193,7 +193,7 @@ class OPDRiskProducerServiceTest {
       currentOffenceCode = "02504",
       gender = Gender.MALE,
       overallRiskForAssessment = RiskBand.LOW,
-      custodialSentence = true,
+      hasCustodialSentence = true,
     )
 
     val result = service.getRiskScore(request, context).OPD!!
@@ -212,7 +212,7 @@ class OPDRiskProducerServiceTest {
       currentOffenceCode = "02504",
       gender = Gender.MALE,
       overallRiskForAssessment = RiskBand.HIGH,
-      custodialSentence = false,
+      hasCustodialSentence = false,
     )
 
     val result = service.getRiskScore(request, context).OPD!!
@@ -231,7 +231,7 @@ class OPDRiskProducerServiceTest {
       currentOffenceCode = "02504",
       gender = Gender.MALE,
       overallRiskForAssessment = RiskBand.HIGH,
-      custodialSentence = true,
+      hasCustodialSentence = true,
     )
 
     val result = service.getRiskScore(request, context).OPD!!
@@ -247,31 +247,31 @@ class OPDRiskProducerServiceTest {
     val request = validOPDRiskScoreRequest().copy(
       currentOffenceCode = "02504",
       gender = Gender.MALE,
-      custodialSentence = true,
+      hasCustodialSentence = true,
       overallRiskForAssessment = RiskBand.VERY_HIGH,
       ageAtFirstSanction = null,
       didOffenceInvolveViolenceOrThreatOfViolence = null,
       didOffenceInvolveExcessiveUseOfViolence = null,
       doesRecogniseImpactOfOffendingOnOthers = null,
-      financialRelianceOnOthers = null,
-      manipulativePredatoryBehaviour = null,
+      overRelianceOnOthersForFinancialSupport = null,
+      manipulativeOrPredatoryBehaviour = null,
       recklessnessAndRiskTakingBehaviour = null,
-      childhoodBehaviour = null,
+      isEvidenceOfChildhoodBehaviouralProblems = null,
       impulsivityProblems = null,
       controllingOrAggressiveBehaviour = null,
       experienceOfChildhood = null,
       currentPsychologicalProblems = null,
       currentPsychiatricProblems = null,
-      historyOfPsychiatricTreatment = null,
-      medicationMentalHealth = null,
-      patientSecureUnitOrHospital = null,
+      hasHistoryOfPsychiatricTreatment = null,
+      hasBeenOnMedicationForMentalHealthProblems = null,
+      hasEverBeenInSpecialHospitalOrRegionalSecureUnit = null,
       hasCurrentPsychiatricTreatment = null,
-      obsessiveBehaviour = null,
-      selfHarmSuicideAttempt = null,
-      attitudeTowardsSupervision = null,
-      assaultedOrThreatenedStaff = null,
-      escapeOrAbsconded = null,
-      controlIssuesOrBreachOfTrust = null,
+      hasDisplayedObsessiveBehaviourLinkedToOffending = null,
+      hasSelfHarmOrAttemptedSuicide = null,
+      attitudeTowardsSupervisionOrLicence = null,
+      hasAssaultedOrThreatenedStaff = null,
+      hasEscapedOrAbsconded = null,
+      hasControlIssues = null,
     )
 
     val result = service.getRiskScore(request, context).OPD!!
@@ -293,11 +293,11 @@ class OPDRiskProducerServiceTest {
       didOffenceInvolveExcessiveUseOfViolence = null,
       didOffenceInvolveArson = null,
       offenceMotivationEmotionalState = null,
-      offenceLinkedRiskOfSeriousHarm = null,
-      accommodationLinkedRiskOfSeriousHarm = null,
+      isAnalysisOfOffenceIssuesLinkedToRisk = null,
+      hasAccommodationIssuesLinkedToRisk = null,
       experienceOfChildhood = null,
-      domesticAbuse = null,
-      relationshipLinkedSeriousHarm = null,
+      evidenceOfDomesticAbuse = null,
+      relationshipIssuesLinkedToRisk = null,
     )
 
     val result = service.getRiskScore(request, context).OPD!!
@@ -403,11 +403,11 @@ class OPDRiskProducerServiceTest {
       didOffenceInvolveViolenceOrThreatOfViolence = true,
       didOffenceInvolveArson = true,
       experienceOfChildhood = ProblemLevel.SIGNIFICANT_PROBLEMS,
-      accommodationLinkedRiskOfSeriousHarm = true,
-      thinkingAndBehaviourLinedToRiskOfSeriousHarm = true,
+      hasAccommodationIssuesLinkedToRisk = true,
+      areThinkingAndBehaviourIssuesLinkedToRisk = true,
       difficultiesCoping = ProblemLevel.SIGNIFICANT_PROBLEMS,
-      selfHarmSuicideAttempt = true,
-      wellbeingEmotionalLinkedRiskOfSeriousHarm = true,
+      hasSelfHarmOrAttemptedSuicide = true,
+      areEmotionalIssuesLinkedToRisk = true,
       didOffenceInvolveExcessiveUseOfViolence = true,
       applyOPDOverride = false,
     )

@@ -19,7 +19,7 @@
   "impulsivityProblems": "NO_PROBLEMS",
   "temperControl": "NO_PROBLEMS",
   "proCriminalAttitudes": "NO_PROBLEMS",
-  "domesticAbuse": false,
+  "evidenceOfDomesticAbuse": false,
   "previousConvictions": [
     "WOUNDING_GBH"
   ]

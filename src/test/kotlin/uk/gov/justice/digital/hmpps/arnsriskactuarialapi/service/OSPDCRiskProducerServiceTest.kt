@@ -141,7 +141,7 @@ class OSPDCRiskProducerServiceTest {
         totalIndecentImageSanctions = 0,
         dateOfMostRecentSexualOffence = LocalDate.of(1963, 1, 1),
         totalNumberOfSanctionsForAllOffences = 1 as Integer,
-        victimStranger = false,
+        isCurrentOffenceAgainstVictimStranger = false,
       ),
       emptyContext(),
     )

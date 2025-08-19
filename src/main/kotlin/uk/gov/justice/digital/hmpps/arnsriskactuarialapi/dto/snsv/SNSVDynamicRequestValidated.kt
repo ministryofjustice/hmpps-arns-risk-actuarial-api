@@ -26,6 +26,6 @@ data class SNSVDynamicRequestValidated(
   val impulsivityProblems: ProblemLevel,
   val temperControl: ProblemLevel,
   val proCriminalAttitudes: ProblemLevel,
-  val domesticAbuse: Boolean,
+  val evidenceOfDomesticAbuse: Boolean,
   val previousConvictions: List<PreviousConviction>,
 )

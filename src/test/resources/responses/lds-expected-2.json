@@ -6,8 +6,8 @@
         "type": "NOT_APPLICABLE",
         "message": "ERR - Less than three fields set",
         "fields": [
-          "transferableSkills",
-          "educationDifficulties",
+          "workRelatedSkills",
+          "problemsWithReadingWritingNumeracy",
           "learningDifficulties",
           "professionalOrVocationalQualifications"
         ]

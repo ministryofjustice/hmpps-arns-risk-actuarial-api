@@ -1,10 +1,10 @@
 {
   "version": "V1_0",
   "isCurrentlyOfNoFixedAbodeOrTransientAccommodation": null,
-  "transferableSkills": "NO_PROBLEMS",
-  "educationDifficulties": "SOME_PROBLEMS",
-  "readingDifficulties": null,
-  "numeracyDifficulties": null,
+  "workRelatedSkills": "NO_PROBLEMS",
+  "problemsWithReadingWritingNumeracy": "SOME_PROBLEMS",
+  "hasProblemsWithReading": null,
+  "hasProblemsWithNumeracy": null,
   "learningDifficulties": null,
   "professionalOrVocationalQualifications": null
 }

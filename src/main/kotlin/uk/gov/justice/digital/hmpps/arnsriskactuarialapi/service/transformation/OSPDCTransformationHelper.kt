@@ -64,7 +64,7 @@ fun getTotalNumberOfSanctionsForAllOffencesWeight(totalNumberOfSanctionsForAllOf
   else -> throw IllegalArgumentException("Invalid total number of sanctions value: $totalNumberOfSanctionsForAllOffences")
 }
 
-fun getStrangerVictimWeight(strangerVictim: Boolean?): Int = when (strangerVictim) {
+fun getIsCurrentOffenceAgainstVictimStrangerWeight(isCurrentOffenceAgainstVictimStranger: Boolean?): Int = when (isCurrentOffenceAgainstVictimStranger) {
   true -> 4
   false -> 0
   null -> 2

@@ -83,50 +83,50 @@ class OPDTransformationHelperTest {
       .copy(
         currentPsychologicalProblems = ProblemLevel.NO_PROBLEMS,
         currentPsychiatricProblems = ProblemLevel.NO_PROBLEMS,
-        historyOfPsychiatricTreatment = false,
-        medicationMentalHealth = false,
-        patientSecureUnitOrHospital = false,
+        hasHistoryOfPsychiatricTreatment = false,
+        hasBeenOnMedicationForMentalHealthProblems = false,
+        hasEverBeenInSpecialHospitalOrRegionalSecureUnit = false,
         hasCurrentPsychiatricTreatment = false,
-        obsessiveBehaviour = false,
+        hasDisplayedObsessiveBehaviourLinkedToOffending = false,
       )
     assertEquals(0, historyOfMentalHealthDifficultiesOffendersScore(request))
   }
 
   @Test
-  fun `selfHarmSuicideAttemptOffendersScore returns 1 if selfHarmSuicideAttempt is true`() {
+  fun `hasSelfHarmOrAttemptedSuicideOffendersScore returns 1 if hasSelfHarmOrAttemptedSuicide is true`() {
     val request = opdRequestValidated().copy(
-      selfHarmSuicideAttempt = true,
+      hasSelfHarmOrAttemptedSuicide = true,
     )
-    assertEquals(1, selfHarmSuicideAttemptOffendersScore(request))
+    assertEquals(1, hasSelfHarmOrAttemptedSuicideOffendersScore(request))
   }
 
   @Test
-  fun `selfHarmSuicideAttemptOffendersScore returns 0 if selfHarmSuicideAttempt false`() {
+  fun `hasSelfHarmOrAttemptedSuicideOffendersScore returns 0 if hasSelfHarmOrAttemptedSuicide false`() {
     val request = opdRequestValidated().copy(
-      selfHarmSuicideAttempt = false,
+      hasSelfHarmOrAttemptedSuicide = false,
     )
-    assertEquals(0, selfHarmSuicideAttemptOffendersScore(request))
+    assertEquals(0, hasSelfHarmOrAttemptedSuicideOffendersScore(request))
   }
 
   @Test
   fun `severeChallengingBehavioursOffendersScore returns 1 for attitude problem`() {
-    val request = opdRequestValidated().copy(attitudeTowardsSupervision = ProblemLevel.SIGNIFICANT_PROBLEMS)
+    val request = opdRequestValidated().copy(attitudeTowardsSupervisionOrLicence = ProblemLevel.SIGNIFICANT_PROBLEMS)
     assertEquals(1, severeChallengingBehavioursOffendersScore(request))
   }
 
   @Test
   fun `severeChallengingBehavioursOffendersScore returns 1 for other risk flags`() {
-    val request = opdRequestValidated().copy(controlIssuesOrBreachOfTrust = true)
+    val request = opdRequestValidated().copy(hasControlIssues = true)
     assertEquals(1, severeChallengingBehavioursOffendersScore(request))
   }
 
   @Test
   fun `severeChallengingBehavioursOffendersScore returns 0 for no issues`() {
     val request = opdRequestValidated().copy(
-      attitudeTowardsSupervision = ProblemLevel.NO_PROBLEMS,
-      assaultedOrThreatenedStaff = false,
-      escapeOrAbsconded = false,
-      controlIssuesOrBreachOfTrust = false,
+      attitudeTowardsSupervisionOrLicence = ProblemLevel.NO_PROBLEMS,
+      hasAssaultedOrThreatenedStaff = false,
+      hasEscapedOrAbsconded = false,
+      hasControlIssues = false,
     )
     assertEquals(0, severeChallengingBehavioursOffendersScore(request))
   }
@@ -141,23 +141,23 @@ class OPDTransformationHelperTest {
   }
 
   @Test
-  fun `financialRelianceOnOthersOffendersScore returns correct score`() {
-    val some = opdRequestValidated().copy(financialRelianceOnOthers = ProblemLevel.SOME_PROBLEMS)
-    val none = opdRequestValidated().copy(financialRelianceOnOthers = ProblemLevel.NO_PROBLEMS)
-    val nullValue = opdRequestValidated().copy(financialRelianceOnOthers = null)
+  fun `overRelianceOnOthersForFinancialSupportOffendersScore returns correct score`() {
+    val some = opdRequestValidated().copy(overRelianceOnOthersForFinancialSupport = ProblemLevel.SOME_PROBLEMS)
+    val none = opdRequestValidated().copy(overRelianceOnOthersForFinancialSupport = ProblemLevel.NO_PROBLEMS)
+    val nullValue = opdRequestValidated().copy(overRelianceOnOthersForFinancialSupport = null)
 
-    assertEquals(1, financialRelianceOnOthersOffendersScore(some))
-    assertEquals(0, financialRelianceOnOthersOffendersScore(none))
-    assertEquals(0, financialRelianceOnOthersOffendersScore(nullValue))
+    assertEquals(1, overRelianceOnOthersForFinancialSupportOffendersScore(some))
+    assertEquals(0, overRelianceOnOthersForFinancialSupportOffendersScore(none))
+    assertEquals(0, overRelianceOnOthersForFinancialSupportOffendersScore(nullValue))
   }
 
   @Test
-  fun `manipulativePredatoryBehaviourOffendersScore returns correct score`() {
-    val sig = opdRequestValidated().copy(manipulativePredatoryBehaviour = ProblemLevel.SIGNIFICANT_PROBLEMS)
-    val none = opdRequestValidated().copy(manipulativePredatoryBehaviour = ProblemLevel.NO_PROBLEMS)
+  fun `manipulativeOrPredatoryBehaviourOffendersScore returns correct score`() {
+    val sig = opdRequestValidated().copy(manipulativeOrPredatoryBehaviour = ProblemLevel.SIGNIFICANT_PROBLEMS)
+    val none = opdRequestValidated().copy(manipulativeOrPredatoryBehaviour = ProblemLevel.NO_PROBLEMS)
 
-    assertEquals(1, manipulativePredatoryBehaviourOffendersScore(sig))
-    assertEquals(0, manipulativePredatoryBehaviourOffendersScore(none))
+    assertEquals(1, manipulativeOrPredatoryBehaviourOffendersScore(sig))
+    assertEquals(0, manipulativeOrPredatoryBehaviourOffendersScore(none))
   }
 
   @Test
@@ -170,12 +170,12 @@ class OPDTransformationHelperTest {
   }
 
   @Test
-  fun `childhoodBehaviourOffendersScore returns correct score`() {
-    val trueValue = opdRequestValidated().copy(childhoodBehaviour = true)
-    val falseValue = opdRequestValidated().copy(childhoodBehaviour = false)
+  fun `isEvidenceOfChildhoodBehaviouralProblemsOffendersScore returns correct score`() {
+    val trueValue = opdRequestValidated().copy(isEvidenceOfChildhoodBehaviouralProblems = true)
+    val falseValue = opdRequestValidated().copy(isEvidenceOfChildhoodBehaviouralProblems = false)
 
-    assertEquals(1, childhoodBehaviourOffendersScore(trueValue))
-    assertEquals(0, childhoodBehaviourOffendersScore(falseValue))
+    assertEquals(1, isEvidenceOfChildhoodBehaviouralProblemsOffendersScore(trueValue))
+    assertEquals(0, isEvidenceOfChildhoodBehaviouralProblemsOffendersScore(falseValue))
   }
 
   @Test
@@ -206,9 +206,9 @@ class OPDTransformationHelperTest {
   }
 
   @DisplayName("Test domesticAbuseOffendersScore using CsvSource")
-  @ParameterizedTest(name = "domesticAbuse={0}, partner={1}, family={2} => expectedScore={3}")
+  @ParameterizedTest(name = "evidenceOfDomesticAbuse={0}, partner={1}, family={2} => expectedScore={3}")
   @CsvSource(
-    // domesticAbuse, partner, family, expectedScore
+    // evidenceOfDomesticAbuse, partner, family, expectedScore
     "false, , , 0",
     "false, true, true, 0", // this should never happen but testing anyway
     "true, , , 0",
@@ -220,15 +220,15 @@ class OPDTransformationHelperTest {
     "true, true, , 1",
   )
   fun testDomesticAbuseOffendersScore(
-    domesticAbuse: Boolean,
+    evidenceOfDomesticAbuse: Boolean,
     partner: Boolean?,
     family: Boolean?,
     expected: Int,
   ) {
     val request = opdRequestValidated().copy(
-      domesticAbuse = domesticAbuse,
-      domesticAbusePartner = partner,
-      domesticAbuseFamily = family,
+      evidenceOfDomesticAbuse = evidenceOfDomesticAbuse,
+      domesticAbuseAgainstPartner = partner,
+      domesticAbuseAgainstFamily = family,
     )
     assertEquals(expected, domesticAbuseOffendersScore(request))
   }

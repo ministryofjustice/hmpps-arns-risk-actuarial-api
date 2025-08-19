@@ -53,18 +53,18 @@ class LDSRiskProducerServiceTest {
 
     fun toRequest(
       isCurrentlyOfNoFixedAbodeOrTransientAccommodationCSV: String?,
-      transferableSkillsCSV: String?,
-      educationDifficultiesCSV: String?,
-      readingDifficultiesCSV: String?,
-      numeracyDifficultiesCSV: String?,
+      workRelatedSkillsCSV: String?,
+      problemsWithReadingWritingNumeracyCSV: String?,
+      hasProblemsWithReadingCSV: String?,
+      hasProblemsWithNumeracyCSV: String?,
       learningDifficultiesCSV: String?,
       professionalOrVocationalQualificationsCSV: String?,
     ): RiskScoreRequest = RiskScoreRequest(
       isCurrentlyOfNoFixedAbodeOrTransientAccommodation = isCurrentlyOfNoFixedAbodeOrTransientAccommodationCSV.toLDSBoolean(),
-      transferableSkills = transferableSkillsCSV.toLDSProblemLevel(),
-      educationDifficulties = educationDifficultiesCSV.toLDSProblemLevel(),
-      readingDifficulties = readingDifficultiesCSV.toLDSBoolean(),
-      numeracyDifficulties = numeracyDifficultiesCSV.toLDSBoolean(),
+      workRelatedSkills = workRelatedSkillsCSV.toLDSProblemLevel(),
+      problemsWithReadingWritingNumeracy = problemsWithReadingWritingNumeracyCSV.toLDSProblemLevel(),
+      hasProblemsWithReading = hasProblemsWithReadingCSV.toLDSBoolean(),
+      hasProblemsWithNumeracy = hasProblemsWithNumeracyCSV.toLDSBoolean(),
       learningDifficulties = learningDifficultiesCSV.toLDSProblemLevel(),
       professionalOrVocationalQualifications = professionalOrVocationalQualificationsCSV.toHasQualifications(),
     )
@@ -78,10 +78,10 @@ class LDSRiskProducerServiceTest {
     // No,NO_PROBLEMS,NO_PROBLEMS,Null,Null,NO_PROBLEMS,ANY_QUALIFICATION,0,0,5 items scored
     val request = toRequest(
       isCurrentlyOfNoFixedAbodeOrTransientAccommodationCSV = "No",
-      transferableSkillsCSV = "NO_PROBLEMS",
-      educationDifficultiesCSV = "NO_PROBLEMS",
-      readingDifficultiesCSV = null,
-      numeracyDifficultiesCSV = null,
+      workRelatedSkillsCSV = "NO_PROBLEMS",
+      problemsWithReadingWritingNumeracyCSV = "NO_PROBLEMS",
+      hasProblemsWithReadingCSV = null,
+      hasProblemsWithNumeracyCSV = null,
       learningDifficultiesCSV = "NO_PROBLEMS",
       professionalOrVocationalQualificationsCSV = "ANY_QUALIFICATION",
     )
@@ -101,10 +101,10 @@ class LDSRiskProducerServiceTest {
   )
   fun `requests from CSV file`(
     isCurrentlyOfNoFixedAbodeOrTransientAccommodationCSV: String?,
-    transferableSkillsCSV: String?,
-    educationDifficultiesCSV: String?,
-    readingDifficultiesCSV: String?,
-    numeracyDifficultiesCSV: String?,
+    workRelatedSkillsCSV: String?,
+    problemsWithReadingWritingNumeracyCSV: String?,
+    hasProblemsWithReadingCSV: String?,
+    hasProblemsWithNumeracyCSV: String?,
     learningDifficultiesCSV: String?,
     professionalOrVocationalQualificationsCSV: String?,
     @Suppress("UNUSED_PARAMETER") ldsSubTotalCSV: String?,
@@ -113,10 +113,10 @@ class LDSRiskProducerServiceTest {
   ) {
     val request = toRequest(
       isCurrentlyOfNoFixedAbodeOrTransientAccommodationCSV = isCurrentlyOfNoFixedAbodeOrTransientAccommodationCSV,
-      transferableSkillsCSV = transferableSkillsCSV,
-      educationDifficultiesCSV = educationDifficultiesCSV,
-      readingDifficultiesCSV = readingDifficultiesCSV,
-      numeracyDifficultiesCSV = numeracyDifficultiesCSV,
+      workRelatedSkillsCSV = workRelatedSkillsCSV,
+      problemsWithReadingWritingNumeracyCSV = problemsWithReadingWritingNumeracyCSV,
+      hasProblemsWithReadingCSV = hasProblemsWithReadingCSV,
+      hasProblemsWithNumeracyCSV = hasProblemsWithNumeracyCSV,
       learningDifficultiesCSV = learningDifficultiesCSV,
       professionalOrVocationalQualificationsCSV = professionalOrVocationalQualificationsCSV,
     )
