@@ -29,10 +29,10 @@ class CommonValidationHelperTest {
     val errorStrings = getMissingPropertiesErrorStrings(NULL_REQUEST, TEST_OGP_PROPERTIES_TO_ERRORS)
     val expected = listOf(
       "isCurrentlyOfNoFixedAbodeOrTransientAccommodation",
-      "employmentStatus",
+      "isUnemployed",
       "regularOffendingActivities",
       "currentDrugMisuse",
-      "motivationDrug",
+      "motivationToTackleDrugMisuse",
       "problemSolvingSkills",
       "awarenessOfConsequences",
       "understandsPeoplesViews",
@@ -85,10 +85,10 @@ class CommonValidationHelperTest {
 
     val TEST_OGP_PROPERTIES_TO_ERRORS = listOf(
       "isCurrentlyOfNoFixedAbodeOrTransientAccommodation",
-      "employmentStatus",
+      "isUnemployed",
       "regularOffendingActivities",
       "currentDrugMisuse",
-      "motivationDrug",
+      "motivationToTackleDrugMisuse",
       "problemSolvingSkills",
       "awarenessOfConsequences",
       "understandsPeoplesViews",
@@ -99,7 +99,7 @@ class CommonValidationHelperTest {
     fun getRiskScoreRequests(): List<Arguments> = listOf(
       Arguments.of(
         ALT_NULL_OGP_REQUEST,
-        listOf("isCurrentlyOfNoFixedAbodeOrTransientAccommodation", "regularOffendingActivities", "motivationDrug", "awarenessOfConsequences", "proCriminalAttitudes"),
+        listOf("isCurrentlyOfNoFixedAbodeOrTransientAccommodation", "regularOffendingActivities", "motivationToTackleDrugMisuse", "awarenessOfConsequences", "proCriminalAttitudes"),
       ),
       Arguments.of(
         OGP_REQUEST_39,
@@ -108,7 +108,7 @@ class CommonValidationHelperTest {
       ),
       Arguments.of(
         OGP_REQUEST_0458,
-        listOf("isCurrentlyOfNoFixedAbodeOrTransientAccommodation", "motivationDrug", "problemSolvingSkills", "proCriminalAttitudes"),
+        listOf("isCurrentlyOfNoFixedAbodeOrTransientAccommodation", "motivationToTackleDrugMisuse", "problemSolvingSkills", "proCriminalAttitudes"),
 
       ),
     )

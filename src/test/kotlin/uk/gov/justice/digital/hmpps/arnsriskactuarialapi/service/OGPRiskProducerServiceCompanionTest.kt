@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.MotivationLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.YesSometimesNo
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPInputValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPObject
@@ -21,12 +23,12 @@ class OGPRiskProducerServiceCompanionTest {
         OGPInputValidated(
           ogrs3TwoYear = 81,
           isCurrentlyOfNoFixedAbodeOrTransientAccommodation = false,
-          employmentStatus = true,
+          isUnemployed = true,
           regularOffendingActivities = ProblemLevel.SOME_PROBLEMS,
           currentDrugMisuse = ProblemLevel.NO_PROBLEMS,
-          motivationDrug = ProblemLevel.NO_PROBLEMS,
+          motivationToTackleDrugMisuse = MotivationLevel.FULL_MOTIVATION,
           problemSolvingSkills = ProblemLevel.SOME_PROBLEMS,
-          awarenessOfConsequences = ProblemLevel.SOME_PROBLEMS,
+          awarenessOfConsequences = YesSometimesNo.SOMETIMES,
           understandsPeoplesViews = ProblemLevel.NO_PROBLEMS,
           proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
         ),
@@ -42,12 +44,12 @@ class OGPRiskProducerServiceCompanionTest {
         OGPInputValidated(
           ogrs3TwoYear = 67,
           isCurrentlyOfNoFixedAbodeOrTransientAccommodation = false,
-          employmentStatus = true,
+          isUnemployed = true,
           regularOffendingActivities = ProblemLevel.SOME_PROBLEMS,
           currentDrugMisuse = ProblemLevel.NO_PROBLEMS,
-          motivationDrug = ProblemLevel.NO_PROBLEMS,
+          motivationToTackleDrugMisuse = MotivationLevel.FULL_MOTIVATION,
           problemSolvingSkills = ProblemLevel.SOME_PROBLEMS,
-          awarenessOfConsequences = ProblemLevel.SOME_PROBLEMS,
+          awarenessOfConsequences = YesSometimesNo.SOMETIMES,
           understandsPeoplesViews = ProblemLevel.NO_PROBLEMS,
           proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
         ),
@@ -63,12 +65,12 @@ class OGPRiskProducerServiceCompanionTest {
         OGPInputValidated(
           ogrs3TwoYear = 37,
           isCurrentlyOfNoFixedAbodeOrTransientAccommodation = false,
-          employmentStatus = true,
+          isUnemployed = true,
           regularOffendingActivities = ProblemLevel.SOME_PROBLEMS,
           currentDrugMisuse = ProblemLevel.SIGNIFICANT_PROBLEMS,
-          motivationDrug = ProblemLevel.NO_PROBLEMS,
+          motivationToTackleDrugMisuse = MotivationLevel.FULL_MOTIVATION,
           problemSolvingSkills = ProblemLevel.SOME_PROBLEMS,
-          awarenessOfConsequences = ProblemLevel.SOME_PROBLEMS,
+          awarenessOfConsequences = YesSometimesNo.SOMETIMES,
           understandsPeoplesViews = ProblemLevel.NO_PROBLEMS,
           proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
         ),
@@ -84,12 +86,12 @@ class OGPRiskProducerServiceCompanionTest {
         OGPInputValidated(
           ogrs3TwoYear = 17,
           isCurrentlyOfNoFixedAbodeOrTransientAccommodation = false,
-          employmentStatus = true,
+          isUnemployed = true,
           regularOffendingActivities = ProblemLevel.SOME_PROBLEMS,
           currentDrugMisuse = ProblemLevel.SIGNIFICANT_PROBLEMS,
-          motivationDrug = ProblemLevel.NO_PROBLEMS,
+          motivationToTackleDrugMisuse = MotivationLevel.FULL_MOTIVATION,
           problemSolvingSkills = ProblemLevel.SOME_PROBLEMS,
-          awarenessOfConsequences = ProblemLevel.SOME_PROBLEMS,
+          awarenessOfConsequences = YesSometimesNo.SOMETIMES,
           understandsPeoplesViews = ProblemLevel.NO_PROBLEMS,
           proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
         ),
@@ -109,12 +111,12 @@ class OGPRiskProducerServiceCompanionTest {
     val input = OGPInputValidated(
       ogrs3TwoYear = 81,
       isCurrentlyOfNoFixedAbodeOrTransientAccommodation = false,
-      employmentStatus = true,
+      isUnemployed = true,
       regularOffendingActivities = ProblemLevel.SOME_PROBLEMS,
       currentDrugMisuse = ProblemLevel.NO_PROBLEMS,
-      motivationDrug = ProblemLevel.NO_PROBLEMS,
+      motivationToTackleDrugMisuse = MotivationLevel.FULL_MOTIVATION,
       problemSolvingSkills = ProblemLevel.SOME_PROBLEMS,
-      awarenessOfConsequences = ProblemLevel.SOME_PROBLEMS,
+      awarenessOfConsequences = YesSometimesNo.SOMETIMES,
       understandsPeoplesViews = ProblemLevel.NO_PROBLEMS,
       proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
     )

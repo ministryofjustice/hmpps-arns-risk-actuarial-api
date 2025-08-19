@@ -43,7 +43,7 @@ fun historyOfMentalHealthDifficultiesOffendersScore(request: OPDRequestValidated
       request.historyOfPsychiatricTreatment ||
       request.medicationMentalHealth ||
       request.patientSecureUnitOrHospital ||
-      request.currentPsychiatricTreatmentOrPending == true ||
+      request.hasCurrentPsychiatricTreatment == true ||
       request.obsessiveBehaviour
 
   return if (hasProblems) 1 else 0

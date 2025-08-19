@@ -10,10 +10,10 @@ class OGPValidationHelper {
 
     val OGP_PROPERTIES = listOf(
       RiskScoreRequest::isCurrentlyOfNoFixedAbodeOrTransientAccommodation.name,
-      RiskScoreRequest::employmentStatus.name,
+      RiskScoreRequest::isUnemployed.name,
       RiskScoreRequest::regularOffendingActivities.name,
       RiskScoreRequest::currentDrugMisuse.name,
-      RiskScoreRequest::motivationDrug.name,
+      RiskScoreRequest::motivationToTackleDrugMisuse.name,
       RiskScoreRequest::problemSolvingSkills.name,
       RiskScoreRequest::awarenessOfConsequences.name,
       RiskScoreRequest::understandsPeoplesViews.name,

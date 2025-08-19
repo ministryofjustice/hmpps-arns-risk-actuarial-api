@@ -9,10 +9,10 @@
   "ageAtFirstSanction": 30,
   "doesRecogniseImpactOfOffendingOnOthers": false,
   "isCurrentlyOfNoFixedAbodeOrTransientAccommodation": true,
-  "employmentStatus": true,
-  "alcoholIsCurrentUseAProblem": "SOME_PROBLEMS",
-  "alcoholExcessive6Months": "NO_PROBLEMS",
+  "isUnemployed": true,
+  "currentAlcoholUseProblems": "SOME_PROBLEMS",
+  "excessiveAlcoholUse": "NO_PROBLEMS",
   "temperControl": "SIGNIFICANT_PROBLEMS",
   "proCriminalAttitudes": "SOME_PROBLEMS",
-  "currentPsychiatricTreatmentOrPending": false
+  "hasCurrentPsychiatricTreatment": false
 }

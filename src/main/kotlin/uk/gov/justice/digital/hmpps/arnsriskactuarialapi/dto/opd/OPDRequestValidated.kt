@@ -26,7 +26,7 @@ data class OPDRequestValidated(
   val domesticAbuseFamily: Boolean?,
   val relationshipLinkedSeriousHarm: Boolean,
   val currentPsychologicalProblems: ProblemLevel? = null,
-  val currentPsychiatricTreatmentOrPending: Boolean?,
+  val hasCurrentPsychiatricTreatment: Boolean?,
   val wellbeingEmotionalLinkedRiskOfSeriousHarm: Boolean,
   val thinkingAndBehaviourLinedToRiskOfSeriousHarm: Boolean,
   val custodialSentence: Boolean,

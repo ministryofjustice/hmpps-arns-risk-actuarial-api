@@ -18,19 +18,19 @@ data class RiskScoreRequest(
   val totalNumberOfViolentSanctions: Integer? = null,
   val doesRecogniseImpactOfOffendingOnOthers: Boolean? = null,
   val isCurrentlyOfNoFixedAbodeOrTransientAccommodation: Boolean? = null,
-  val employmentStatus: Boolean? = null,
-  val alcoholIsCurrentUseAProblem: ProblemLevel? = null,
-  val alcoholExcessive6Months: ProblemLevel? = null,
-  val currentPsychiatricTreatmentOrPending: Boolean? = null,
+  val isUnemployed: Boolean? = null,
+  val currentAlcoholUseProblems: ProblemLevel? = null,
+  val excessiveAlcoholUse: ProblemLevel? = null,
+  val hasCurrentPsychiatricTreatment: Boolean? = null,
   val temperControl: ProblemLevel? = null,
   val proCriminalAttitudes: ProblemLevel? = null,
 
   // OGP additional properties
   val regularOffendingActivities: ProblemLevel? = null,
   val currentDrugMisuse: ProblemLevel? = null,
-  val motivationDrug: ProblemLevel? = null,
+  val motivationToTackleDrugMisuse: MotivationLevel? = null,
   val problemSolvingSkills: ProblemLevel? = null,
-  val awarenessOfConsequences: ProblemLevel? = null,
+  val awarenessOfConsequences: YesSometimesNo? = null,
   val understandsPeoplesViews: ProblemLevel? = null,
 
   // MST props

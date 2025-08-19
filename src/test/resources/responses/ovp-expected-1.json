@@ -6,7 +6,7 @@
     "validationError" : [ {
       "type" : "MISSING_INPUT",
       "message" : "ERR5 - Field is Null",
-      "fields" : [ "totalNumberOfViolentSanctions", "doesRecogniseImpactOfOffendingOnOthers", "isCurrentlyOfNoFixedAbodeOrTransientAccommodation", "employmentStatus", "alcoholIsCurrentUseAProblem", "alcoholExcessive6Months", "currentPsychiatricTreatmentOrPending", "temperControl", "proCriminalAttitudes" ]
+      "fields" : [ "totalNumberOfViolentSanctions", "doesRecogniseImpactOfOffendingOnOthers", "isCurrentlyOfNoFixedAbodeOrTransientAccommodation", "isUnemployed", "currentAlcoholUseProblems", "excessiveAlcoholUse", "hasCurrentPsychiatricTreatment", "temperControl", "proCriminalAttitudes" ]
     } ]
   }
 }

@@ -21,24 +21,24 @@ private fun Boolean.booleanToInverseScore(): Int = when (this) {
 private fun Int.numberToScore(): Int = if (this == 2) 4 else 0
 
 fun getAlcoholMisuseWeighted(request: OVPRequestValidated): Int = listOf(
-  request.alcoholIsCurrentUseAProblem.ordinal,
-  request.alcoholExcessive6Months.ordinal,
+  request.currentAlcoholUseProblems.ordinal,
+  request.excessiveAlcoholUse.ordinal,
 ).sum().let { ceil(it * 2.5).toInt() }
 
 fun getIsCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScore(request: OVPRequestValidated): Int = request.isCurrentlyOfNoFixedAbodeOrTransientAccommodation.booleanToScore()
 
-fun getEmploymentStatusOffendersScore(request: OVPRequestValidated): Int = request.employmentStatus.booleanToScore()
+fun getIsUnemployedOffendersScore(request: OVPRequestValidated): Int = request.isUnemployed.booleanToScore()
 
 fun getDoesRecogniseImpactOfOffendingOnOthersWeighted(request: OVPRequestValidated): Int = request.doesRecogniseImpactOfOffendingOnOthers.booleanToInverseScore()
 
-fun getCurrentPsychiatricTreatmentOrPendingWeighted(request: OVPRequestValidated): Int = when (request.currentPsychiatricTreatmentOrPending) {
+fun getHasCurrentPsychiatricTreatmentWeighted(request: OVPRequestValidated): Int = when (request.hasCurrentPsychiatricTreatment) {
   true -> 4
   false -> 0
 }
 
 fun getIsCurrentlyOfNoFixedAbodeOrTransientAccommodationWeightedOVP(isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScore: Int): Int = isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScore.numberToScore()
 
-fun getEmploymentStatusWeightedOVP(employmentStatusScore: Int): Int = employmentStatusScore.numberToScore()
+fun getIsUnemployedWeightedOVP(isUnemployedScore: Int): Int = isUnemployedScore.numberToScore()
 
 fun getAgeAtStartOfFollowup(request: OVPRequestValidated): Int = getAgeAtStartOfFollowup(request.dateOfBirth, request.dateAtStartOfFollowup)
 

@@ -86,7 +86,7 @@ class OPDTransformationHelperTest {
         historyOfPsychiatricTreatment = false,
         medicationMentalHealth = false,
         patientSecureUnitOrHospital = false,
-        currentPsychiatricTreatmentOrPending = false,
+        hasCurrentPsychiatricTreatment = false,
         obsessiveBehaviour = false,
       )
     assertEquals(0, historyOfMentalHealthDifficultiesOffendersScore(request))

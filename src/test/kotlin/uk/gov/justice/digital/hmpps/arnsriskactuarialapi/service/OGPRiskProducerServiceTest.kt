@@ -3,10 +3,12 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.MotivationLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.YesSometimesNo
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3Object
@@ -30,12 +32,12 @@ class OGPRiskProducerServiceTest {
     )
     val request = RiskScoreRequest(
       isCurrentlyOfNoFixedAbodeOrTransientAccommodation = false,
-      employmentStatus = true,
+      isUnemployed = true,
       regularOffendingActivities = ProblemLevel.SOME_PROBLEMS,
       currentDrugMisuse = ProblemLevel.NO_PROBLEMS,
-      motivationDrug = ProblemLevel.NO_PROBLEMS,
+      motivationToTackleDrugMisuse = MotivationLevel.FULL_MOTIVATION,
       problemSolvingSkills = ProblemLevel.SOME_PROBLEMS,
-      awarenessOfConsequences = ProblemLevel.SOME_PROBLEMS,
+      awarenessOfConsequences = YesSometimesNo.SOMETIMES,
       understandsPeoplesViews = ProblemLevel.NO_PROBLEMS,
       proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
     )

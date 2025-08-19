@@ -2,6 +2,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.mst
 
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.YesSometimesNo
 import java.time.LocalDate
 
 data class MSTRequestValidated(
@@ -16,6 +17,6 @@ data class MSTRequestValidated(
   val impulsivityBehaviour: ProblemLevel?,
   val temperControl: ProblemLevel?,
   val problemSolvingSkills: ProblemLevel?,
-  val awarenessOfConsequences: ProblemLevel?,
+  val awarenessOfConsequences: YesSometimesNo?,
   val understandsPeoplesViews: ProblemLevel?,
 )
