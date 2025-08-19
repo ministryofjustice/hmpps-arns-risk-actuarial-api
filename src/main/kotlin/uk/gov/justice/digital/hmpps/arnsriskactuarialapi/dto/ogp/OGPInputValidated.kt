@@ -13,6 +13,6 @@ data class OGPInputValidated(
   val motivationToTackleDrugMisuse: MotivationLevel,
   val problemSolvingSkills: ProblemLevel,
   val awarenessOfConsequences: YesSometimesNo,
-  val understandsPeoplesViews: ProblemLevel,
+  val understandsOtherPeoplesViews: ProblemLevel,
   val proCriminalAttitudes: ProblemLevel,
 )

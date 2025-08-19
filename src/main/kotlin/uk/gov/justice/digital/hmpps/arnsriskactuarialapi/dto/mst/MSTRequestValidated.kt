@@ -18,5 +18,5 @@ data class MSTRequestValidated(
   val temperControl: ProblemLevel?,
   val problemSolvingSkills: ProblemLevel?,
   val awarenessOfConsequences: YesSometimesNo?,
-  val understandsPeoplesViews: ProblemLevel?,
+  val understandsOtherPeoplesViews: ProblemLevel?,
 )

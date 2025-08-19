@@ -31,7 +31,7 @@ data class RiskScoreRequest(
   val motivationToTackleDrugMisuse: MotivationLevel? = null,
   val problemSolvingSkills: ProblemLevel? = null,
   val awarenessOfConsequences: YesSometimesNo? = null,
-  val understandsPeoplesViews: ProblemLevel? = null,
+  val understandsOtherPeoplesViews: ProblemLevel? = null,
 
   // MST props
   val peerGroupInfluences: Boolean? = null,

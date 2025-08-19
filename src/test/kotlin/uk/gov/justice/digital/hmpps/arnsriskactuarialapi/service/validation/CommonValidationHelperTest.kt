@@ -35,7 +35,7 @@ class CommonValidationHelperTest {
       "motivationToTackleDrugMisuse",
       "problemSolvingSkills",
       "awarenessOfConsequences",
-      "understandsPeoplesViews",
+      "understandsOtherPeoplesViews",
       "proCriminalAttitudes",
     )
     assertEquals(expected, errorStrings)
@@ -91,7 +91,7 @@ class CommonValidationHelperTest {
       "motivationToTackleDrugMisuse",
       "problemSolvingSkills",
       "awarenessOfConsequences",
-      "understandsPeoplesViews",
+      "understandsOtherPeoplesViews",
       "proCriminalAttitudes",
     )
 

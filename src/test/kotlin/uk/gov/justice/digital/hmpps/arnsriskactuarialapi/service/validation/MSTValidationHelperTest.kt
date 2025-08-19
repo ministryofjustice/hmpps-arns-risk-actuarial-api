@@ -31,7 +31,7 @@ class MSTValidationHelperTest {
       temperControl = null,
       problemSolvingSkills = null,
       awarenessOfConsequences = null,
-      understandsPeoplesViews = null,
+      understandsOtherPeoplesViews = null,
     )
 
     // When
@@ -53,7 +53,7 @@ class MSTValidationHelperTest {
         "temperControl",
         "problemSolvingSkills",
         "awarenessOfConsequences",
-        "understandsPeoplesViews",
+        "understandsOtherPeoplesViews",
       ),
     )
 

@@ -6,7 +6,7 @@
     "validationError" : [ {
       "type" : "MISSING_INPUT",
       "message" : "ERR5 - Field is Null",
-      "fields" : [ "gender", "dateOfBirth", "peerGroupInfluences", "attitudesPeerPressure", "attitudesStableBehaviour", "difficultiesCoping", "attitudesTowardsSelf", "impulsivityBehaviour", "temperControl", "problemSolvingSkills", "awarenessOfConsequences", "understandsPeoplesViews" ]
+      "fields" : [ "gender", "dateOfBirth", "peerGroupInfluences", "attitudesPeerPressure", "attitudesStableBehaviour", "difficultiesCoping", "attitudesTowardsSelf", "impulsivityBehaviour", "temperControl", "problemSolvingSkills", "awarenessOfConsequences", "understandsOtherPeoplesViews" ]
     } ]
   }
 }

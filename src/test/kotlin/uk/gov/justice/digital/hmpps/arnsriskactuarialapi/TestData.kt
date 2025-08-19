@@ -85,7 +85,7 @@ object RiskScoreRequestTestConstants {
     motivationToTackleDrugMisuse = MotivationLevel.FULL_MOTIVATION,
     problemSolvingSkills = ProblemLevel.NO_PROBLEMS,
     awarenessOfConsequences = YesSometimesNo.YES,
-    understandsPeoplesViews = ProblemLevel.NO_PROBLEMS,
+    understandsOtherPeoplesViews = ProblemLevel.NO_PROBLEMS,
     proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
   )
   val ALT_NULL_OGP_REQUEST = RiskScoreRequest(
@@ -97,7 +97,7 @@ object RiskScoreRequestTestConstants {
     motivationToTackleDrugMisuse = null,
     problemSolvingSkills = ProblemLevel.NO_PROBLEMS,
     awarenessOfConsequences = null,
-    understandsPeoplesViews = ProblemLevel.NO_PROBLEMS,
+    understandsOtherPeoplesViews = ProblemLevel.NO_PROBLEMS,
     proCriminalAttitudes = null,
   )
   val OGP_REQUEST_39 = RiskScoreRequest(
@@ -109,7 +109,7 @@ object RiskScoreRequestTestConstants {
     motivationToTackleDrugMisuse = MotivationLevel.FULL_MOTIVATION,
     problemSolvingSkills = ProblemLevel.NO_PROBLEMS,
     awarenessOfConsequences = YesSometimesNo.YES,
-    understandsPeoplesViews = ProblemLevel.NO_PROBLEMS,
+    understandsOtherPeoplesViews = ProblemLevel.NO_PROBLEMS,
     proCriminalAttitudes = null,
   )
   val OGP_REQUEST_0458 = RiskScoreRequest(
@@ -121,7 +121,7 @@ object RiskScoreRequestTestConstants {
     motivationToTackleDrugMisuse = null,
     problemSolvingSkills = null,
     awarenessOfConsequences = YesSometimesNo.YES,
-    understandsPeoplesViews = ProblemLevel.NO_PROBLEMS,
+    understandsOtherPeoplesViews = ProblemLevel.NO_PROBLEMS,
     proCriminalAttitudes = null,
   )
   val FULL_LDS_REQUEST = RiskScoreRequest(
@@ -198,7 +198,7 @@ fun validMSTRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
   temperControl = ProblemLevel.SOME_PROBLEMS,
   problemSolvingSkills = ProblemLevel.SOME_PROBLEMS,
   awarenessOfConsequences = YesSometimesNo.SOMETIMES,
-  understandsPeoplesViews = ProblemLevel.SOME_PROBLEMS,
+  understandsOtherPeoplesViews = ProblemLevel.SOME_PROBLEMS,
 )
 
 fun validPNIRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
@@ -215,7 +215,7 @@ fun validPNIRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
   temperControl = ProblemLevel.SOME_PROBLEMS,
   problemSolvingSkills = ProblemLevel.SOME_PROBLEMS,
   awarenessOfConsequences = YesSometimesNo.SOMETIMES,
-  understandsPeoplesViews = ProblemLevel.SOME_PROBLEMS,
+  understandsOtherPeoplesViews = ProblemLevel.SOME_PROBLEMS,
   sexualPreoccupation = ProblemLevel.SOME_PROBLEMS,
   sexualInterestsOffenceRelated = ProblemLevel.SOME_PROBLEMS,
   emotionalCongruence = ProblemLevel.SOME_PROBLEMS,

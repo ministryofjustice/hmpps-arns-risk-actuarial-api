@@ -16,7 +16,7 @@ class OGPValidationHelper {
       RiskScoreRequest::motivationToTackleDrugMisuse.name,
       RiskScoreRequest::problemSolvingSkills.name,
       RiskScoreRequest::awarenessOfConsequences.name,
-      RiskScoreRequest::understandsPeoplesViews.name,
+      RiskScoreRequest::understandsOtherPeoplesViews.name,
       RiskScoreRequest::proCriminalAttitudes.name,
     )
 

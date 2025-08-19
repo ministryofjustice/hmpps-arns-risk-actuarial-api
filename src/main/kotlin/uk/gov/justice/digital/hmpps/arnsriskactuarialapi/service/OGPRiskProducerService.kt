@@ -12,10 +12,10 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.currentDrugMisuseOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.drugMisuseNonViolentOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.drugMisuseNonViolentWeighted
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.isUnemployedOffendersScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.isUnemployedWeighted
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.isCurrentlyOfNoFixedAbodeOrTransientAccommodationWeighted
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.isUnemployedOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.isUnemployedWeighted
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.motivationToTackleDrugMisuseOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.ogpReoffendingOneYear
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.ogpReoffendingTwoYear
@@ -28,7 +28,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.thinkingAndBehaviourNonViolentOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.thinkingAndBehaviourNonViolentWeighted
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.totalOGPScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.understandsPeoplesViewsOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.understandsOtherPeoplesViewsOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.OGPValidationHelper.Companion.ogpInitialValidation
 
 @Service
@@ -52,7 +52,7 @@ class OGPRiskProducerService : RiskScoreProducer {
       request.motivationToTackleDrugMisuse!!,
       request.problemSolvingSkills!!,
       request.awarenessOfConsequences!!,
-      request.understandsPeoplesViews!!,
+      request.understandsOtherPeoplesViews!!,
       request.proCriminalAttitudes!!,
     )
 
@@ -76,8 +76,8 @@ class OGPRiskProducerService : RiskScoreProducer {
         problemSolvingSkillsOffendersScore(input.problemSolvingSkills)
       val awarenessOfConsequencesOffendersScore =
         awarenessOfConsequencesOffendersScore(input.awarenessOfConsequences)
-      val understandsPeoplesViewsOffendersScore =
-        understandsPeoplesViewsOffendersScore(input.understandsPeoplesViews)
+      val understandsOtherPeoplesViewsOffendersScore =
+        understandsOtherPeoplesViewsOffendersScore(input.understandsOtherPeoplesViews)
       val proCriminalAttitudesOffendersScore =
         proCriminalAttitudesOffendersScore(input.proCriminalAttitudes)
       val drugMisuseNonViolentOffendersScore =
@@ -86,7 +86,7 @@ class OGPRiskProducerService : RiskScoreProducer {
         thinkingAndBehaviourNonViolentOffendersScore(
           problemSolvingSkillsOffendersScore,
           awarenessOfConsequencesOffendersScore,
-          understandsPeoplesViewsOffendersScore,
+          understandsOtherPeoplesViewsOffendersScore,
         )
       // Weighted Scores
       val ogrs3TwoYearWeighted = ogrs3TwoYearWeighted(input.ogrs3TwoYear)

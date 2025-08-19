@@ -34,7 +34,7 @@ class OGPTransformationHelper {
 
     fun awarenessOfConsequencesOffendersScore(awarenessOfConsequences: YesSometimesNo) = awarenessOfConsequences.score
 
-    fun understandsPeoplesViewsOffendersScore(understandsPeoplesOffendersScore: ProblemLevel) = understandsPeoplesOffendersScore.score
+    fun understandsOtherPeoplesViewsOffendersScore(understandsPeoplesOffendersScore: ProblemLevel) = understandsPeoplesOffendersScore.score
 
     fun proCriminalAttitudesOffendersScore(proCriminalAttitudes: ProblemLevel) = proCriminalAttitudes.score
 
@@ -43,8 +43,8 @@ class OGPTransformationHelper {
     fun thinkingAndBehaviourNonViolentOffendersScore(
       problemSolvingSkillsOffendersScore: Int,
       awarenessOfConsequencesOffendersScore: Int,
-      understandsPeoplesViewsOffendersScore: Int,
-    ) = problemSolvingSkillsOffendersScore + awarenessOfConsequencesOffendersScore + understandsPeoplesViewsOffendersScore
+      understandsOtherPeoplesViewsOffendersScore: Int,
+    ) = problemSolvingSkillsOffendersScore + awarenessOfConsequencesOffendersScore + understandsOtherPeoplesViewsOffendersScore
 
     // Weighted Values
 

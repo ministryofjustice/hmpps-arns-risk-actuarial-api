@@ -29,7 +29,7 @@ class OGPRiskProducerServiceCompanionTest {
           motivationToTackleDrugMisuse = MotivationLevel.FULL_MOTIVATION,
           problemSolvingSkills = ProblemLevel.SOME_PROBLEMS,
           awarenessOfConsequences = YesSometimesNo.SOMETIMES,
-          understandsPeoplesViews = ProblemLevel.NO_PROBLEMS,
+          understandsOtherPeoplesViews = ProblemLevel.NO_PROBLEMS,
           proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
         ),
         OGPObject(
@@ -50,7 +50,7 @@ class OGPRiskProducerServiceCompanionTest {
           motivationToTackleDrugMisuse = MotivationLevel.FULL_MOTIVATION,
           problemSolvingSkills = ProblemLevel.SOME_PROBLEMS,
           awarenessOfConsequences = YesSometimesNo.SOMETIMES,
-          understandsPeoplesViews = ProblemLevel.NO_PROBLEMS,
+          understandsOtherPeoplesViews = ProblemLevel.NO_PROBLEMS,
           proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
         ),
         OGPObject(
@@ -71,7 +71,7 @@ class OGPRiskProducerServiceCompanionTest {
           motivationToTackleDrugMisuse = MotivationLevel.FULL_MOTIVATION,
           problemSolvingSkills = ProblemLevel.SOME_PROBLEMS,
           awarenessOfConsequences = YesSometimesNo.SOMETIMES,
-          understandsPeoplesViews = ProblemLevel.NO_PROBLEMS,
+          understandsOtherPeoplesViews = ProblemLevel.NO_PROBLEMS,
           proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
         ),
         OGPObject(
@@ -92,7 +92,7 @@ class OGPRiskProducerServiceCompanionTest {
           motivationToTackleDrugMisuse = MotivationLevel.FULL_MOTIVATION,
           problemSolvingSkills = ProblemLevel.SOME_PROBLEMS,
           awarenessOfConsequences = YesSometimesNo.SOMETIMES,
-          understandsPeoplesViews = ProblemLevel.NO_PROBLEMS,
+          understandsOtherPeoplesViews = ProblemLevel.NO_PROBLEMS,
           proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
         ),
         OGPObject(
@@ -117,7 +117,7 @@ class OGPRiskProducerServiceCompanionTest {
       motivationToTackleDrugMisuse = MotivationLevel.FULL_MOTIVATION,
       problemSolvingSkills = ProblemLevel.SOME_PROBLEMS,
       awarenessOfConsequences = YesSometimesNo.SOMETIMES,
-      understandsPeoplesViews = ProblemLevel.NO_PROBLEMS,
+      understandsOtherPeoplesViews = ProblemLevel.NO_PROBLEMS,
       proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
     )
     val output = getOGPOutput(input)
