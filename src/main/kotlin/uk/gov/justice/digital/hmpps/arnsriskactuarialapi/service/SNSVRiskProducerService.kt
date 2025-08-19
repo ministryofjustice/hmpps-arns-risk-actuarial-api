@@ -48,7 +48,7 @@ class SNSVRiskProducerService : RiskScoreProducer {
       RiskScoreRequest::impulsivityProblems,
       RiskScoreRequest::temperControl,
       RiskScoreRequest::proCriminalAttitudes,
-      RiskScoreRequest::domesticAbuse,
+      RiskScoreRequest::evidenceOfDomesticAbuse,
       RiskScoreRequest::previousConvictions,
     )
   }
@@ -121,7 +121,7 @@ class SNSVRiskProducerService : RiskScoreProducer {
     this.impulsivityProblems!!,
     this.temperControl!!,
     this.proCriminalAttitudes!!,
-    this.domesticAbuse!!,
+    this.evidenceOfDomesticAbuse!!,
     this.previousConvictions!!,
   )
 
@@ -219,7 +219,7 @@ class SNSVRiskProducerService : RiskScoreProducer {
     excessiveAlcoholUseWeight(request.excessiveAlcoholUse),
     impulsivityProblemsWeight(request.impulsivityProblems),
     proCriminalAttitudesWeight(request.proCriminalAttitudes),
-    domesticViolenceWeight(request.domesticAbuse),
+    domesticViolenceWeight(request.evidenceOfDomesticAbuse),
     previousConvictionsWeight(request.previousConvictions),
   ).sum()
 }

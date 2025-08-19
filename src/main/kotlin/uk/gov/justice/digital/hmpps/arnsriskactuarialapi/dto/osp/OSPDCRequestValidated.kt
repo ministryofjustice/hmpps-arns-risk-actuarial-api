@@ -14,5 +14,5 @@ data class OSPDCRequestValidated(
   val dateAtStartOfFollowup: LocalDate,
   val totalNumberOfSanctionsForAllOffences: Int,
   val dateOfMostRecentSexualOffence: LocalDate?,
-  val victimStranger: Boolean?,
+  val isCurrentOffenceAgainstVictimStranger: Boolean?,
 )

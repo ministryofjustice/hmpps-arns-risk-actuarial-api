@@ -118,7 +118,7 @@ class OSPDCTransformationHelperTest {
   @ParameterizedTest
   @MethodSource("strangerVictimValues")
   fun `test all branches of getStrangerVictimWeight`(input: Boolean?, expected: Int) {
-    val result = getStrangerVictimWeight(input)
+    val result = getIsCurrentOffenceAgainstVictimStrangerWeight(input)
     assertEquals(expected, result)
   }
 

@@ -5,15 +5,15 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds.LDSInputValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds.LDSObject
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.LDSTransformationHelper.Companion.educationDifficultiesOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.LDSTransformationHelper.Companion.hasProblemsWithNumeracyOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.LDSTransformationHelper.Companion.hasProblemsWithReadingOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.LDSTransformationHelper.Companion.isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScoreLDS
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.LDSTransformationHelper.Companion.ldsScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.LDSTransformationHelper.Companion.ldsSubTotal
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.LDSTransformationHelper.Companion.learningDifficultiesOffendersScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.LDSTransformationHelper.Companion.numeracyDifficultiesOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.LDSTransformationHelper.Companion.problemsWithReadingWritingNumeracyOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.LDSTransformationHelper.Companion.professionalOrVocationalQualificationsOffendersScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.LDSTransformationHelper.Companion.readingDifficultiesOffendersScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.LDSTransformationHelper.Companion.transferableSkillsOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.LDSTransformationHelper.Companion.workRelatedSkillsOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.LDSValidationHelper.Companion.ldsInitialValidation
 
 @Service
@@ -28,10 +28,10 @@ class LDSRiskProducerService : RiskScoreProducer {
 
     val validInput = LDSInputValidated(
       request.isCurrentlyOfNoFixedAbodeOrTransientAccommodation,
-      request.transferableSkills,
-      request.educationDifficulties,
-      request.readingDifficulties,
-      request.numeracyDifficulties,
+      request.workRelatedSkills,
+      request.problemsWithReadingWritingNumeracy,
+      request.hasProblemsWithReading,
+      request.hasProblemsWithNumeracy,
       request.learningDifficulties,
       request.professionalOrVocationalQualifications,
     )
@@ -45,24 +45,24 @@ class LDSRiskProducerService : RiskScoreProducer {
       // Transformation Steps
       val isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScoreLDS =
         isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScoreLDS(input.isCurrentlyOfNoFixedAbodeOrTransientAccommodation)
-      val transferableSkillsOffendersScore =
-        transferableSkillsOffendersScore(input.transferableSkills)
-      val educationDifficultiesOffendersScore =
-        educationDifficultiesOffendersScore(input.educationDifficulties)
-      val readingDifficultiesOffendersScore =
-        readingDifficultiesOffendersScore(input.readingDifficulties)
-      val numeracyDifficultiesOffendersScore =
-        numeracyDifficultiesOffendersScore(input.numeracyDifficulties)
+      val workRelatedSkillsOffendersScore =
+        workRelatedSkillsOffendersScore(input.workRelatedSkills)
+      val problemsWithReadingWritingNumeracyOffendersScore =
+        problemsWithReadingWritingNumeracyOffendersScore(input.problemsWithReadingWritingNumeracy)
+      val hasProblemsWithReadingOffendersScore =
+        hasProblemsWithReadingOffendersScore(input.hasProblemsWithReading)
+      val hasProblemsWithNumeracyOffendersScore =
+        hasProblemsWithNumeracyOffendersScore(input.hasProblemsWithNumeracy)
       val learningDifficultiesOffendersScore =
         learningDifficultiesOffendersScore(input.learningDifficulties)
       val professionalOrVocationalQualificationsOffendersScore =
         professionalOrVocationalQualificationsOffendersScore(input.professionalOrVocationalQualifications)
       val ldsSubTotal = ldsSubTotal(
         isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScoreLDS,
-        transferableSkillsOffendersScore,
-        educationDifficultiesOffendersScore,
-        readingDifficultiesOffendersScore,
-        numeracyDifficultiesOffendersScore,
+        workRelatedSkillsOffendersScore,
+        problemsWithReadingWritingNumeracyOffendersScore,
+        hasProblemsWithReadingOffendersScore,
+        hasProblemsWithNumeracyOffendersScore,
         learningDifficultiesOffendersScore,
         professionalOrVocationalQualificationsOffendersScore,
       )

@@ -11,10 +11,10 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.opd.OPDObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.opd.OPDRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.opd.OPDResult
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.accommodationLinkedRiskOfSeriousHarmOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.ageAtFirstSanctionOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.allUnansweredQuestion
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.childhoodBehaviourOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.areEmotionalIssuesLinkedToRiskOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.areThinkingAndBehaviourIssuesLinkedToRiskOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.controllingOrAggressiveBehaviourOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.currentPsychologicalProblemsOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.didOffenceInvolveArsonOffendersScore
@@ -25,19 +25,19 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.doesRecogniseImpactOfOffendingOnOthersOffendersScoreOpd
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.domesticAbuseOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.experienceOfChildhoodOffendersScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.financialRelianceOnOthersOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.hasAccommodationIssuesLinkedToRiskOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.hasSelfHarmOrAttemptedSuicideOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.historyOfMentalHealthDifficultiesOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.impulsivityProblemsOffendersScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.manipulativePredatoryBehaviourOffendersScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.offenceLinkedRiskOfSeriousHarmOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isAnalysisOfOffenceIssuesLinkedToRiskOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isEvidenceOfChildhoodBehaviouralProblemsOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.manipulativeOrPredatoryBehaviourOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.offenceMotivationEmotionalStateOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.overRelianceOnOthersForFinancialSupportOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.presenceOfChildhoodDifficultiesOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.recklessnessAndRiskTakingBehaviourOffendersScoreOpd
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.relationshipLinkedSeriousHarmOffendersScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.selfHarmSuicideAttemptOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.relationshipIssuesLinkedToRiskOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.severeChallengingBehavioursOffendersScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.thinkingAndBehaviourLinedToRiskOfSeriousHarmOffendersScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.wellbeingEmotionalLinkedRiskOfSeriousHarmOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.opdInitialValidation
 
 private const val ODP_MALE_PERSONALITY_SCORE_MIN = 7
@@ -79,23 +79,23 @@ class OPDRiskProducerService : RiskScoreProducer {
 
   private fun mapRequestValidated(request: RiskScoreRequest): OPDRequestValidated = OPDRequestValidated(
     overallRiskForAssessment = request.overallRiskForAssessment!!,
-    highestRiskLevel = request.highestRiskLevel!!,
+    highestRiskLevelOverAllAssessments = request.highestRiskLevelOverAllAssessments!!,
     gender = request.gender!!,
     currentOffenceCode = request.currentOffenceCode!!,
-    custodialSentence = request.custodialSentence!!,
+    hasCustodialSentence = request.hasCustodialSentence!!,
     currentPsychologicalProblems = request.currentPsychologicalProblems,
     experienceOfChildhood = request.experienceOfChildhood,
     difficultiesCoping = request.difficultiesCoping,
-    domesticAbusePartner = request.domesticAbusePartner,
-    domesticAbuseFamily = request.domesticAbuseFamily,
+    domesticAbuseAgainstPartner = request.domesticAbuseAgainstPartner,
+    domesticAbuseAgainstFamily = request.domesticAbuseAgainstFamily,
     ageAtFirstSanction = request.ageAtFirstSanction?.toInt(),
-    financialRelianceOnOthers = request.financialRelianceOnOthers,
-    manipulativePredatoryBehaviour = request.manipulativePredatoryBehaviour,
-    childhoodBehaviour = request.childhoodBehaviour ?: false,
+    overRelianceOnOthersForFinancialSupport = request.overRelianceOnOthersForFinancialSupport,
+    manipulativeOrPredatoryBehaviour = request.manipulativeOrPredatoryBehaviour,
+    isEvidenceOfChildhoodBehaviouralProblems = request.isEvidenceOfChildhoodBehaviouralProblems ?: false,
     currentPsychiatricProblems = request.currentPsychiatricProblems,
     recklessnessAndRiskTakingBehaviour = request.recklessnessAndRiskTakingBehaviour,
     impulsivityProblems = request.impulsivityProblems,
-    attitudeTowardsSupervision = request.attitudeTowardsSupervision,
+    attitudeTowardsSupervisionOrLicence = request.attitudeTowardsSupervisionOrLicence,
     hasCurrentPsychiatricTreatment = request.hasCurrentPsychiatricTreatment,
     controllingOrAggressiveBehaviour = request.controllingOrAggressiveBehaviour,
     applyOPDOverride = request.applyOPDOverride ?: false,
@@ -105,21 +105,21 @@ class OPDRiskProducerService : RiskScoreProducer {
     didOffenceInvolveExcessiveUseOfViolence = request.didOffenceInvolveExcessiveUseOfViolence ?: false,
     didOffenceInvolveArson = request.didOffenceInvolveArson ?: false,
     offenceMotivationEmotionalState = request.offenceMotivationEmotionalState ?: false,
-    offenceLinkedRiskOfSeriousHarm = request.offenceLinkedRiskOfSeriousHarm ?: false,
-    accommodationLinkedRiskOfSeriousHarm = request.accommodationLinkedRiskOfSeriousHarm ?: false,
-    domesticAbuse = request.domesticAbuse ?: false,
-    relationshipLinkedSeriousHarm = request.relationshipLinkedSeriousHarm ?: false,
-    wellbeingEmotionalLinkedRiskOfSeriousHarm = request.wellbeingEmotionalLinkedRiskOfSeriousHarm ?: false,
-    thinkingAndBehaviourLinedToRiskOfSeriousHarm = request.thinkingAndBehaviourLinedToRiskOfSeriousHarm
+    isAnalysisOfOffenceIssuesLinkedToRisk = request.isAnalysisOfOffenceIssuesLinkedToRisk ?: false,
+    hasAccommodationIssuesLinkedToRisk = request.hasAccommodationIssuesLinkedToRisk ?: false,
+    evidenceOfDomesticAbuse = request.evidenceOfDomesticAbuse ?: false,
+    relationshipIssuesLinkedToRisk = request.relationshipIssuesLinkedToRisk ?: false,
+    areEmotionalIssuesLinkedToRisk = request.areEmotionalIssuesLinkedToRisk ?: false,
+    areThinkingAndBehaviourIssuesLinkedToRisk = request.areThinkingAndBehaviourIssuesLinkedToRisk
       ?: false,
-    historyOfPsychiatricTreatment = request.historyOfPsychiatricTreatment ?: false,
-    medicationMentalHealth = request.medicationMentalHealth ?: false,
-    patientSecureUnitOrHospital = request.patientSecureUnitOrHospital ?: false,
-    obsessiveBehaviour = request.obsessiveBehaviour ?: false,
-    selfHarmSuicideAttempt = request.selfHarmSuicideAttempt ?: false,
-    assaultedOrThreatenedStaff = request.assaultedOrThreatenedStaff ?: false,
-    escapeOrAbsconded = request.escapeOrAbsconded ?: false,
-    controlIssuesOrBreachOfTrust = request.controlIssuesOrBreachOfTrust ?: false,
+    hasHistoryOfPsychiatricTreatment = request.hasHistoryOfPsychiatricTreatment ?: false,
+    hasBeenOnMedicationForMentalHealthProblems = request.hasBeenOnMedicationForMentalHealthProblems ?: false,
+    hasEverBeenInSpecialHospitalOrRegionalSecureUnit = request.hasEverBeenInSpecialHospitalOrRegionalSecureUnit ?: false,
+    hasDisplayedObsessiveBehaviourLinkedToOffending = request.hasDisplayedObsessiveBehaviourLinkedToOffending ?: false,
+    hasSelfHarmOrAttemptedSuicide = request.hasSelfHarmOrAttemptedSuicide ?: false,
+    hasAssaultedOrThreatenedStaff = request.hasAssaultedOrThreatenedStaff ?: false,
+    hasEscapedOrAbsconded = request.hasEscapedOrAbsconded ?: false,
+    hasControlIssues = request.hasControlIssues ?: false,
     doesRecogniseImpactOfOffendingOnOthers = request.doesRecogniseImpactOfOffendingOnOthers ?: false,
   )
 
@@ -142,7 +142,7 @@ class OPDRiskProducerService : RiskScoreProducer {
     isViolentOrSexualType: Boolean,
   ): Boolean = (request.overallRiskForAssessment in arrayOf(RiskBand.HIGH, RiskBand.VERY_HIGH)) &&
     isViolentOrSexualType &&
-    request.custodialSentence
+    request.hasCustodialSentence
 
   private fun isOpdApplicableFemale(
     request: OPDRequestValidated,
@@ -187,10 +187,10 @@ class OPDRiskProducerService : RiskScoreProducer {
             didOffenceInvolveViolenceOrThreatOfViolenceOffendersScore(validatedRequest),
             didOffenceInvolveExcessiveUseOfViolenceOffendersScore(validatedRequest),
             doesRecogniseImpactOfOffendingOnOthersOffendersScoreOpd(validatedRequest),
-            financialRelianceOnOthersOffendersScore(validatedRequest),
-            manipulativePredatoryBehaviourOffendersScore(validatedRequest),
+            overRelianceOnOthersForFinancialSupportOffendersScore(validatedRequest),
+            manipulativeOrPredatoryBehaviourOffendersScore(validatedRequest),
             recklessnessAndRiskTakingBehaviourOffendersScoreOpd(validatedRequest),
-            childhoodBehaviourOffendersScore(validatedRequest),
+            isEvidenceOfChildhoodBehaviouralProblemsOffendersScore(validatedRequest),
             impulsivityProblemsOffendersScore(validatedRequest),
             controllingOrAggressiveBehaviourOffendersScore(validatedRequest),
           ).sum()
@@ -199,7 +199,7 @@ class OPDRiskProducerService : RiskScoreProducer {
           listOf(
             presenceOfChildhoodDifficultiesOffendersScore(validatedRequest),
             historyOfMentalHealthDifficultiesOffendersScore(validatedRequest),
-            selfHarmSuicideAttemptOffendersScore(validatedRequest),
+            hasSelfHarmOrAttemptedSuicideOffendersScore(validatedRequest),
             severeChallengingBehavioursOffendersScore(validatedRequest),
           ).sum()
 
@@ -219,16 +219,16 @@ class OPDRiskProducerService : RiskScoreProducer {
           didOffenceInvolveExcessiveUseOfViolenceOffendersScore(validatedRequest),
           didOffenceInvolveArsonOffendersScore(validatedRequest),
           offenceMotivationEmotionalStateOffendersScore(validatedRequest),
-          offenceLinkedRiskOfSeriousHarmOffendersScore(validatedRequest),
-          accommodationLinkedRiskOfSeriousHarmOffendersScore(validatedRequest),
+          isAnalysisOfOffenceIssuesLinkedToRiskOffendersScore(validatedRequest),
+          hasAccommodationIssuesLinkedToRiskOffendersScore(validatedRequest),
           experienceOfChildhoodOffendersScore(validatedRequest),
           domesticAbuseOffendersScore(validatedRequest),
-          relationshipLinkedSeriousHarmOffendersScore(validatedRequest),
+          relationshipIssuesLinkedToRiskOffendersScore(validatedRequest),
           difficultiesCopingOffendersScore(validatedRequest),
           currentPsychologicalProblemsOffendersScore(validatedRequest),
-          selfHarmSuicideAttemptOffendersScore(validatedRequest),
-          wellbeingEmotionalLinkedRiskOfSeriousHarmOffendersScore(validatedRequest),
-          thinkingAndBehaviourLinedToRiskOfSeriousHarmOffendersScore(validatedRequest),
+          hasSelfHarmOrAttemptedSuicideOffendersScore(validatedRequest),
+          areEmotionalIssuesLinkedToRiskOffendersScore(validatedRequest),
+          areThinkingAndBehaviourIssuesLinkedToRiskOffendersScore(validatedRequest),
         ).sum()
 
         if (opdFemaleScore >= ODP_FEMALE_SCORE_MIN
@@ -274,11 +274,11 @@ class OPDRiskProducerService : RiskScoreProducer {
         request.didOffenceInvolveExcessiveUseOfViolence,
         request.didOffenceInvolveArson,
         request.offenceMotivationEmotionalState,
-        request.offenceLinkedRiskOfSeriousHarm,
-        request.accommodationLinkedRiskOfSeriousHarm,
+        request.isAnalysisOfOffenceIssuesLinkedToRisk,
+        request.hasAccommodationIssuesLinkedToRisk,
         request.experienceOfChildhood,
-        request.domesticAbuse,
-        request.relationshipLinkedSeriousHarm,
+        request.evidenceOfDomesticAbuse,
+        request.relationshipIssuesLinkedToRisk,
       ),
     )
 
@@ -294,25 +294,25 @@ class OPDRiskProducerService : RiskScoreProducer {
         request.didOffenceInvolveViolenceOrThreatOfViolence,
         request.didOffenceInvolveExcessiveUseOfViolence,
         request.doesRecogniseImpactOfOffendingOnOthers,
-        request.financialRelianceOnOthers,
-        request.manipulativePredatoryBehaviour,
+        request.overRelianceOnOthersForFinancialSupport,
+        request.manipulativeOrPredatoryBehaviour,
         request.recklessnessAndRiskTakingBehaviour,
-        request.childhoodBehaviour,
+        request.isEvidenceOfChildhoodBehaviouralProblems,
         request.impulsivityProblems,
         request.controllingOrAggressiveBehaviour,
         request.experienceOfChildhood,
         request.currentPsychologicalProblems,
         request.currentPsychiatricProblems,
-        request.historyOfPsychiatricTreatment,
-        request.medicationMentalHealth,
-        request.patientSecureUnitOrHospital,
+        request.hasHistoryOfPsychiatricTreatment,
+        request.hasBeenOnMedicationForMentalHealthProblems,
+        request.hasEverBeenInSpecialHospitalOrRegionalSecureUnit,
         request.hasCurrentPsychiatricTreatment,
-        request.obsessiveBehaviour,
-        request.selfHarmSuicideAttempt,
-        request.attitudeTowardsSupervision,
-        request.assaultedOrThreatenedStaff,
-        request.escapeOrAbsconded,
-        request.controlIssuesOrBreachOfTrust,
+        request.hasDisplayedObsessiveBehaviourLinkedToOffending,
+        request.hasSelfHarmOrAttemptedSuicide,
+        request.attitudeTowardsSupervisionOrLicence,
+        request.hasAssaultedOrThreatenedStaff,
+        request.hasEscapedOrAbsconded,
+        request.hasControlIssues,
       ),
     )
 }

@@ -159,7 +159,7 @@ class RiskScoreControllerTest : IntegrationTestBase() {
       .bodyValue(
         """
         {
-          "medicationMentalHealth": "true"
+          "hasBeenOnMedicationForMentalHealthProblems": "true"
         }
         """.trimIndent(),
       )

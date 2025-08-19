@@ -9,8 +9,8 @@ class LDSValidationHelper {
 
     const val ERR_LESS_THAN_THREE_FIELDS = "ERR - Less than three fields set"
     val ELIGIBLE_FIELDS = listOf(
-      RiskScoreRequest::transferableSkills.name,
-      RiskScoreRequest::educationDifficulties.name,
+      RiskScoreRequest::workRelatedSkills.name,
+      RiskScoreRequest::problemsWithReadingWritingNumeracy.name,
       RiskScoreRequest::learningDifficulties.name,
       RiskScoreRequest::professionalOrVocationalQualifications.name,
     )
@@ -21,19 +21,19 @@ class LDSValidationHelper {
         .addEnoughFieldsPresent(request)
     }
 
-    fun getMissingLDSFieldsValidation(request: RiskScoreRequest): List<String> = if (request.educationDifficulties == null) {
+    fun getMissingLDSFieldsValidation(request: RiskScoreRequest): List<String> = if (request.problemsWithReadingWritingNumeracy == null) {
       arrayListOf<String>()
-        .addEducationDifficultiesSubfield(request.readingDifficulties, RiskScoreRequest::readingDifficulties.name)
-        .addEducationDifficultiesSubfield(request.numeracyDifficulties, RiskScoreRequest::numeracyDifficulties.name)
+        .addProblemsWithReadingWritingNumeracySubfield(request.hasProblemsWithReading, RiskScoreRequest::hasProblemsWithReading.name)
+        .addProblemsWithReadingWritingNumeracySubfield(request.hasProblemsWithNumeracy, RiskScoreRequest::hasProblemsWithNumeracy.name)
     } else {
       emptyList()
     }
 
-    private fun List<String>.addEducationDifficultiesSubfield(
+    private fun List<String>.addProblemsWithReadingWritingNumeracySubfield(
       difficulties: Boolean?,
       message: String,
     ): List<String> = if (difficulties != null) {
-      this + "${RiskScoreRequest::educationDifficulties.name} Field Not Present But $message Present"
+      this + "${RiskScoreRequest::problemsWithReadingWritingNumeracy.name} Field Not Present But $message Present"
     } else {
       this
     }

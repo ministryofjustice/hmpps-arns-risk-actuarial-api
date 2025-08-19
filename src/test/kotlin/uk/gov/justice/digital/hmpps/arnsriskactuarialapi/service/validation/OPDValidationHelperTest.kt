@@ -20,20 +20,20 @@ class OPDValidationHelperTest {
     val request = validOPDRiskScoreRequest().copy(
       gender = null,
       overallRiskForAssessment = null,
-      highestRiskLevel = null,
+      highestRiskLevelOverAllAssessments = null,
       isEligibleForMappa = null,
       currentOffenceCode = null,
-      custodialSentence = null,
-      domesticAbuse = false,
+      hasCustodialSentence = null,
+      evidenceOfDomesticAbuse = false,
     )
     val result = opdInitialValidation(request)
 
     val expectedFields = listOf(
       "gender",
       "overallRiskForAssessment",
-      "highestRiskLevel",
+      "highestRiskLevelOverAllAssessments",
       "currentOffenceCode",
-      "custodialSentence",
+      "hasCustodialSentence",
     )
 
     val error = result.first()
@@ -71,17 +71,17 @@ class OPDValidationHelperTest {
   }
 
   @Test
-  fun `opdInitialValidation missing domesticAbuse fields error with all field populated`() {
+  fun `opdInitialValidation missing evidenceOfDomesticAbuse fields error with all field populated`() {
     val request = validOPDRiskScoreRequest().copy(
-      domesticAbuse = true,
-      domesticAbusePartner = null,
-      domesticAbuseFamily = null,
+      evidenceOfDomesticAbuse = true,
+      domesticAbuseAgainstPartner = null,
+      domesticAbuseAgainstFamily = null,
     )
     val result = opdInitialValidation(request)
 
     val expectedFields = listOf(
-      "domesticAbusePartner",
-      "domesticAbuseFamily",
+      "domesticAbuseAgainstPartner",
+      "domesticAbuseAgainstFamily",
     )
 
     val error = result.first()
@@ -91,17 +91,17 @@ class OPDValidationHelperTest {
   }
 
   @Test
-  fun `opdInitialValidation wrong domesticAbuse fields when domesticAbuse not provided`() {
+  fun `opdInitialValidation wrong evidenceOfDomesticAbuse fields when evidenceOfDomesticAbuse not provided`() {
     val request = validOPDRiskScoreRequest().copy(
-      domesticAbuse = false,
-      domesticAbusePartner = true,
-      domesticAbuseFamily = false,
+      evidenceOfDomesticAbuse = false,
+      domesticAbuseAgainstPartner = true,
+      domesticAbuseAgainstFamily = false,
     )
     val result = opdInitialValidation(request)
 
     val expectedFields = listOf(
-      "domesticAbusePartner",
-      "domesticAbuseFamily",
+      "domesticAbuseAgainstPartner",
+      "domesticAbuseAgainstFamily",
     )
 
     val error = result.first()

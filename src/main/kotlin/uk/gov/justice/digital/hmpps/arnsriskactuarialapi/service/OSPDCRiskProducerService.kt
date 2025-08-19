@@ -11,9 +11,9 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.osp.OSPDCObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.osp.OSPDCRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getAgeAtLastSanctionForSexualOffenceWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getAgeAtStartOfFollowupWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getIsCurrentOffenceAgainstVictimStrangerWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getOSPDCBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getOSPDCScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getStrangerVictimWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getTotalContactAdultSexualSanctionsWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getTotalContactChildSexualSanctionsWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getTotalNonContactSexualOffencesExcludingIndecentImagesWeight
@@ -57,7 +57,7 @@ class OSPDCRiskProducerService : RiskScoreProducer {
       request.dateAtStartOfFollowup!!,
       request.totalNumberOfSanctionsForAllOffences!!.toInt(),
       request.dateOfMostRecentSexualOffence,
-      request.victimStranger,
+      request.isCurrentOffenceAgainstVictimStranger,
     )
     return context.apply {
       OSPDC = getOSPDCObject(validRequest)
@@ -77,7 +77,7 @@ class OSPDCRiskProducerService : RiskScoreProducer {
       getAgeAtStartOfFollowupWeight(request.dateOfBirth, request.dateAtStartOfFollowup),
       request.dateOfMostRecentSexualOffence?.let { date -> getAgeAtLastSanctionForSexualOffenceWeight(request.dateOfBirth, date) } ?: 0,
       getTotalNumberOfSanctionsForAllOffencesWeight(request.totalNumberOfSanctionsForAllOffences),
-      getStrangerVictimWeight(request.victimStranger),
+      getIsCurrentOffenceAgainstVictimStrangerWeight(request.isCurrentOffenceAgainstVictimStranger),
     ).sum()
       .let { ospdc64PointScore ->
         if (ospdc64PointScore == 0) {
