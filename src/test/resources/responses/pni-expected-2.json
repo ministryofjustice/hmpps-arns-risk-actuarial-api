@@ -4,7 +4,7 @@
     "validationError" : [ {
       "type" : "MISSING_INPUT",
       "message" : "ERR5 - Field is Null",
-      "fields" : [ "sexualPreoccupation", "sexualInterestsOffenceRelated", "emotionalCongruence", "hostileOrientation", "currentRelationshipFamilyMembers", "previousCloseRelationships", "easilyInfluencedByCriminals", "controllingBehaviour", "impulsivityBehaviour", "problemSolvingSkills", "difficultiesCoping" ]
+      "fields" : [ "sexualPreoccupation", "offenceRelatedSexualInterests", "emotionalCongruenceWithChildren", "hostileOrientation", "currentRelationshipWithFamilyMembers", "previousCloseRelationships", "easilyInfluencedByCriminalAssociates", "controllingOrAggressiveBehaviour", "impulsivityProblems", "problemSolvingSkills", "difficultiesCoping" ]
     } ]
   }
 }

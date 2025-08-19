@@ -41,19 +41,19 @@ class PNIRiskProducerService : RiskScoreProducer {
     }
 
     val requestValidated = PNIRequestValidated(
-      inCustodyOrCommunity = request.inCustodyOrCommunity!!,
-      hasCommittedSexualOffence = request.hasCommittedSexualOffence,
-      riskSexualHarm = request.riskSexualHarm,
+      supervisionStatus = request.supervisionStatus!!,
+      hasEverCommittedSexualOffence = request.hasEverCommittedSexualOffence,
+      isARiskOfSexualHarm = request.isARiskOfSexualHarm,
       sexualPreoccupation = request.sexualPreoccupation,
-      sexualInterestsOffenceRelated = request.sexualInterestsOffenceRelated,
-      emotionalCongruence = request.emotionalCongruence,
+      offenceRelatedSexualInterests = request.offenceRelatedSexualInterests,
+      emotionalCongruenceWithChildren = request.emotionalCongruenceWithChildren,
       proCriminalAttitudes = request.proCriminalAttitudes,
       hostileOrientation = request.hostileOrientation,
-      currentRelationshipFamilyMembers = request.currentRelationshipFamilyMembers,
+      currentRelationshipWithFamilyMembers = request.currentRelationshipWithFamilyMembers,
       previousCloseRelationships = request.previousCloseRelationships,
-      easilyInfluencedByCriminals = request.easilyInfluencedByCriminals,
-      controllingBehaviour = request.controllingBehaviour,
-      impulsivityBehaviour = request.impulsivityBehaviour,
+      easilyInfluencedByCriminalAssociates = request.easilyInfluencedByCriminalAssociates,
+      controllingOrAggressiveBehaviour = request.controllingOrAggressiveBehaviour,
+      impulsivityProblems = request.impulsivityProblems,
       temperControl = request.temperControl,
       ogrs3TwoYear = context.OGRS3?.ogrs3TwoYear,
       ovp = context.OVP?.provenViolentTypeReoffendingTwoYear,
@@ -110,7 +110,7 @@ class PNIRiskProducerService : RiskScoreProducer {
         pniPathway = ProgrammeNeedIdentifier.OMISSION
       }
       if (bothNullSara(requestValidated) &&
-        requestValidated.inCustodyOrCommunity == CustodyOrCommunity.CUSTODY
+        requestValidated.supervisionStatus == CustodyOrCommunity.CUSTODY
       ) {
         pniPathway = ProgrammeNeedIdentifier.OMISSION
       }
@@ -129,7 +129,7 @@ class PNIRiskProducerService : RiskScoreProducer {
     need: NeedScore,
     risk: RiskBand,
   ): Boolean {
-    if (request.inCustodyOrCommunity != CustodyOrCommunity.CUSTODY) return false
+    if (request.supervisionStatus != CustodyOrCommunity.CUSTODY) return false
     return isHighOgrsWithHighOVP(request) ||
       isHighOgrsWithHighSara(request) ||
       isHighNeedWithHighRisk(need, risk)
@@ -142,8 +142,8 @@ class PNIRiskProducerService : RiskScoreProducer {
     request: PNIRequestValidated,
     need: NeedScore,
     risk: RiskBand,
-  ): Boolean = (isHighOgrsWithHighOVP(request) && request.inCustodyOrCommunity == CustodyOrCommunity.COMMUNITY) ||
-    (isHighNeedWithHighRisk(need, risk) && request.inCustodyOrCommunity == CustodyOrCommunity.COMMUNITY) ||
+  ): Boolean = (isHighOgrsWithHighOVP(request) && request.supervisionStatus == CustodyOrCommunity.COMMUNITY) ||
+    (isHighNeedWithHighRisk(need, risk) && request.supervisionStatus == CustodyOrCommunity.COMMUNITY) ||
     isHighSara(request) ||
     isMediumSara(request) ||
     isMediumNeedWithHighRisk(need, risk) ||

@@ -20,7 +20,7 @@ class OSPDCValidationHelperTest {
     val request = validOSPDCRiskScoreRequest().copy(
       gender = null,
       dateOfBirth = null,
-      hasCommittedSexualOffence = null,
+      hasEverCommittedSexualOffence = null,
       totalContactAdultSexualSanctions = null,
       totalContactChildSexualSanctions = null,
       totalNonContactSexualOffences = null,
@@ -28,7 +28,7 @@ class OSPDCValidationHelperTest {
       dateAtStartOfFollowup = null,
       dateOfMostRecentSexualOffence = null,
       totalNumberOfSanctionsForAllOffences = null,
-      inCustodyOrCommunity = null,
+      supervisionStatus = null,
       mostRecentOffenceDate = null,
     )
 
@@ -52,9 +52,9 @@ class OSPDCValidationHelperTest {
   }
 
   @Test
-  fun `oospdcInitialValidation no error when hasCommittedSexualOffence is true`() {
+  fun `oospdcInitialValidation no error when hasEverCommittedSexualOffence is true`() {
     val request = validOSPDCRiskScoreRequest().copy(
-      hasCommittedSexualOffence = true,
+      hasEverCommittedSexualOffence = true,
     )
 
     val result = ospdcInitialValidation(request)

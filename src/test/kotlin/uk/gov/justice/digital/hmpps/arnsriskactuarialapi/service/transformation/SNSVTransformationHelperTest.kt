@@ -140,14 +140,14 @@ class SNSVTransformationHelperTest {
   @ParameterizedTest
   @MethodSource("getMonthsSinceLastSanctionWeightValidInputProvider")
   fun `getMonthsSinceLastSanctionWeight should return correct months since last sanction weight`(
-    inCustodyOrCommunity: CustodyOrCommunity,
+    supervisionStatus: CustodyOrCommunity,
     dateAtStartOfFollowup: LocalDate,
     assessmentDate: LocalDate,
     isSNSVDynamic: Boolean,
     expected: Double,
   ) {
     val result = getMonthsSinceLastSanctionWeight(
-      inCustodyOrCommunity,
+      supervisionStatus,
       dateAtStartOfFollowup,
       assessmentDate,
       isSNSVDynamic,

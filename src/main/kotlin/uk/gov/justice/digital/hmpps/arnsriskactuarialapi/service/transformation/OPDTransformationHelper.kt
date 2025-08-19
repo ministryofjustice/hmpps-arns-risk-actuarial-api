@@ -8,10 +8,10 @@ fun ageAtFirstSanctionOffendersScore(request: OPDRequestValidated) = when (reque
   else -> 0
 }
 
-fun violenceOrThreatOfViolenceOffendersScore(request: OPDRequestValidated) = scoreFromBoolean(request.violenceOrThreatOfViolence)
+fun didOffenceInvolveViolenceOrThreatOfViolenceOffendersScore(request: OPDRequestValidated) = scoreFromBoolean(request.didOffenceInvolveViolenceOrThreatOfViolence)
 
-fun excessiveOrSadisticViolenceOffendersScore(request: OPDRequestValidated) = when (request.excessiveOrSadisticViolence) {
-  true -> if (request.violenceOrThreatOfViolence) {
+fun didOffenceInvolveExcessiveUseOfViolenceOffendersScore(request: OPDRequestValidated) = when (request.didOffenceInvolveExcessiveUseOfViolence) {
+  true -> if (request.didOffenceInvolveViolenceOrThreatOfViolence) {
     1
   } else {
     2
@@ -26,15 +26,15 @@ fun financialRelianceOnOthersOffendersScore(request: OPDRequestValidated) = scor
 
 fun manipulativePredatoryBehaviourOffendersScore(request: OPDRequestValidated) = scoreFromProblemLevel(request.manipulativePredatoryBehaviour)
 
-fun attitudesStableBehaviourOffendersScoreOpd(request: OPDRequestValidated) = scoreFromProblemLevel(request.attitudesStableBehaviour)
+fun recklessnessAndRiskTakingBehaviourOffendersScoreOpd(request: OPDRequestValidated) = scoreFromProblemLevel(request.recklessnessAndRiskTakingBehaviour)
 
 fun childhoodBehaviourOffendersScore(request: OPDRequestValidated) = scoreFromBoolean(request.childhoodBehaviour)
 
-fun impulsivityBehaviourOffendersScore(request: OPDRequestValidated) = scoreFromProblemLevel(request.impulsivityBehaviour)
+fun impulsivityProblemsOffendersScore(request: OPDRequestValidated) = scoreFromProblemLevel(request.impulsivityProblems)
 
 fun presenceOfChildhoodDifficultiesOffendersScore(request: OPDRequestValidated) = if (scoreFromProblemLevel(request.experienceOfChildhood) == 1 || request.childhoodBehaviour) 1 else 0
 
-fun controllingBehaviourOffendersScore(request: OPDRequestValidated) = scoreFromProblemLevel(request.controllingBehaviour)
+fun controllingOrAggressiveBehaviourOffendersScore(request: OPDRequestValidated) = scoreFromProblemLevel(request.controllingOrAggressiveBehaviour)
 
 fun historyOfMentalHealthDifficultiesOffendersScore(request: OPDRequestValidated): Int {
   val hasProblems =
@@ -64,11 +64,11 @@ fun severeChallengingBehavioursOffendersScore(input: OPDRequestValidated): Int {
   return if (hasAttitudeProblems || hasOtherRiskFlags) 1 else 0
 }
 
-fun carryingOrUsingWeaponOffendersScore(request: OPDRequestValidated) = scoreFromBoolean(request.carryingOrUsingWeapon)
+fun didOffenceInvolveCarryingOrUsingWeaponOffendersScore(request: OPDRequestValidated) = scoreFromBoolean(request.didOffenceInvolveCarryingOrUsingWeapon)
 
-fun offenceArsonOffendersScore(request: OPDRequestValidated) = scoreFromBoolean(request.offenceArson)
+fun didOffenceInvolveArsonOffendersScore(request: OPDRequestValidated) = scoreFromBoolean(request.didOffenceInvolveArson)
 
-fun offenderMotivationsOffendersScore(request: OPDRequestValidated) = scoreFromBoolean(request.offenderMotivations)
+fun offenceMotivationEmotionalStateOffendersScore(request: OPDRequestValidated) = scoreFromBoolean(request.offenceMotivationEmotionalState)
 
 fun offenceLinkedRiskOfSeriousHarmOffendersScore(request: OPDRequestValidated) = scoreFromBoolean(request.offenceLinkedRiskOfSeriousHarm)
 

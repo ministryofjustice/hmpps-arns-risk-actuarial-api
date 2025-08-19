@@ -4,7 +4,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 
 data class OSPIICRequestValidated(
   val gender: Gender,
-  val hasCommittedSexualOffence: Boolean,
+  val hasEverCommittedSexualOffence: Boolean,
   val totalIndecentImageSanctions: Int,
   val totalContactChildSexualSanctions: Int,
 )

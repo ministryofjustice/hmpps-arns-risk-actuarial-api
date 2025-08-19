@@ -103,8 +103,8 @@ class SNSVTransformationHelper {
       }[gender]!!
     }
 
-    fun getMonthsSinceLastSanctionWeight(inCustodyOrCommunity: CustodyOrCommunity, dateAtStartOfFollowup: LocalDate, assessmentDate: LocalDate, isSNSVDynamic: Boolean): Double {
-      if (inCustodyOrCommunity == CustodyOrCommunity.CUSTODY || assessmentDate >= dateAtStartOfFollowup) {
+    fun getMonthsSinceLastSanctionWeight(supervisionStatus: CustodyOrCommunity, dateAtStartOfFollowup: LocalDate, assessmentDate: LocalDate, isSNSVDynamic: Boolean): Double {
+      if (supervisionStatus == CustodyOrCommunity.CUSTODY || assessmentDate >= dateAtStartOfFollowup) {
         return 0.0
       }
       val monthsSinceLastSanction = ChronoUnit.MONTHS.between(assessmentDate, dateAtStartOfFollowup).toInt()
@@ -159,7 +159,7 @@ class SNSVTransformationHelper {
 
     // SNSV Dynamic Additions
 
-    fun carryingOrUsingWeaponWeight(carryingOrUsingWeapon: Boolean): Double = if (carryingOrUsingWeapon) 0.15071282416667 else 0.0
+    fun didOffenceInvolveCarryingOrUsingWeaponWeight(carryingOrUsingWeapon: Boolean): Double = if (carryingOrUsingWeapon) 0.15071282416667 else 0.0
 
     fun suitabilityOfAccommodationWeight(suitabilityOfAccommodation: ProblemLevel): Double = 0.0619710049121293 * suitabilityOfAccommodation.score
 
@@ -183,7 +183,7 @@ class SNSVTransformationHelper {
       ProblemLevel.SIGNIFICANT_PROBLEMS -> 0.0567127896345591 * 2
     }
 
-    fun impulsivityBehaviourWeight(impulsivityBehaviour: ProblemLevel): Double = when (impulsivityBehaviour) {
+    fun impulsivityProblemsWeight(impulsivityProblems: ProblemLevel): Double = when (impulsivityProblems) {
       ProblemLevel.NO_PROBLEMS -> 0.0
       ProblemLevel.SOME_PROBLEMS -> 0.077212834605957
       ProblemLevel.SIGNIFICANT_PROBLEMS -> 0.077212834605957 * 2

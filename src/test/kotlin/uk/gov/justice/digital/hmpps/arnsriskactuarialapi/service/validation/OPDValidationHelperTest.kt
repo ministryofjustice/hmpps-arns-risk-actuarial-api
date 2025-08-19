@@ -21,7 +21,7 @@ class OPDValidationHelperTest {
       gender = null,
       overallRiskForAssessment = null,
       highestRiskLevel = null,
-      eligibleForMappa = null,
+      isEligibleForMappa = null,
       currentOffenceCode = null,
       custodialSentence = null,
       domesticAbuse = false,
@@ -43,25 +43,25 @@ class OPDValidationHelperTest {
   }
 
   @Test
-  fun `opdInitialValidation missing eligibleForMappa MALE`() {
+  fun `opdInitialValidation missing isEligibleForMappa MALE`() {
     val request = validOPDRiskScoreRequest().copy(
       gender = Gender.MALE,
-      eligibleForMappa = null,
+      isEligibleForMappa = null,
     )
     val result = opdInitialValidation(request)
     assertTrue(result.isEmpty())
   }
 
   @Test
-  fun `opdInitialValidation missing eligibleForMappa FEMALE`() {
+  fun `opdInitialValidation missing isEligibleForMappa FEMALE`() {
     val request = validOPDRiskScoreRequest().copy(
       gender = Gender.FEMALE,
-      eligibleForMappa = null,
+      isEligibleForMappa = null,
     )
     val result = opdInitialValidation(request)
 
     val expectedFields = listOf(
-      "eligibleForMappa",
+      "isEligibleForMappa",
     )
 
     val error = result.first()

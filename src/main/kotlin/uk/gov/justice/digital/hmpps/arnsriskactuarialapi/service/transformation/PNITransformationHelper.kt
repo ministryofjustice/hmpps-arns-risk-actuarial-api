@@ -48,7 +48,7 @@ fun overallNeedsGroupingCalculation(request: PNIRequestValidated): Triple<NeedSc
   val classifications = getOverallNeedClassification(
     overallNeedsScore,
     overallNeedsScoreProjected,
-    request.inCustodyOrCommunity,
+    request.supervisionStatus,
     isMediumSara(request) || isHighSara(request),
     anyNullSara(request),
     calculationComplete = allMissingFields.isEmpty(),
@@ -65,7 +65,7 @@ fun overallNeedsGroupingCalculation(request: PNIRequestValidated): Triple<NeedSc
 private fun getOverallNeedClassification(
   overallNeedsScore: Int,
   overallNeedsScoreProjected: Int,
-  inCustodyOrCommunity: CustodyOrCommunity,
+  supervisionStatus: CustodyOrCommunity,
   isMediumOrHighSara: Boolean,
   anyNullSara: Boolean,
   calculationComplete: Boolean,
@@ -75,7 +75,7 @@ private fun getOverallNeedClassification(
   val overallNeedsLevelProjected = getLevelFromScore(overallNeedsScoreProjected)
 
   if (overallNeedsScore >= 6) return Pair(NeedScore.HIGH, overallNeedsLevelProjected)
-  if (overallNeedsScore >= 3 && inCustodyOrCommunity == CustodyOrCommunity.COMMUNITY) {
+  if (overallNeedsScore >= 3 && supervisionStatus == CustodyOrCommunity.COMMUNITY) {
     return Pair(
       NeedScore.MEDIUM,
       overallNeedsLevelProjected,
@@ -86,16 +86,16 @@ private fun getOverallNeedClassification(
     if (overallNeedsLevel == overallNeedsLevelProjected) {
       return Pair(overallNeedsLevel, overallNeedsLevelProjected)
     }
-    if (allDomainsAreMissingAnswers && inCustodyOrCommunity != CustodyOrCommunity.COMMUNITY) {
+    if (allDomainsAreMissingAnswers && supervisionStatus != CustodyOrCommunity.COMMUNITY) {
       return Pair(null, overallNeedsLevelProjected)
     }
     if (overallNeedsLevel in setOf(NeedScore.HIGH, NeedScore.MEDIUM) && !(isMediumOrHighSara)) {
       return Pair(null, overallNeedsLevelProjected)
     }
-    if (inCustodyOrCommunity == CustodyOrCommunity.COMMUNITY && (isMediumOrHighSara) && !anyNullSara) {
+    if (supervisionStatus == CustodyOrCommunity.COMMUNITY && (isMediumOrHighSara) && !anyNullSara) {
       return Pair(NeedScore.MEDIUM, overallNeedsLevelProjected)
     }
-    if (inCustodyOrCommunity != CustodyOrCommunity.COMMUNITY && (isMediumOrHighSara) && !anyNullSara) {
+    if (supervisionStatus != CustodyOrCommunity.COMMUNITY && (isMediumOrHighSara) && !anyNullSara) {
       return Pair(NeedScore.HIGH, overallNeedsLevelProjected)
     }
   }

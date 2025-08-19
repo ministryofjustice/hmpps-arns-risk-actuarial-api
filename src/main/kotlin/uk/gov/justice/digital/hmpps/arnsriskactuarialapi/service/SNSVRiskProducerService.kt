@@ -10,7 +10,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.SNSVDynamicReq
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.SNSVObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.SNSVStaticRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.ScoreType
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.carryingOrUsingWeaponWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.didOffenceInvolveCarryingOrUsingWeaponWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.currentAlcoholUseProblemsWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.currentRelationshipWithPartnerWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.domesticViolenceWeight
@@ -23,7 +23,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getViolenceRateWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getViolentSanctionsWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getYearsBetweenFirstAndSecondSanctionWeight
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.impulsivityBehaviourWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.impulsivityProblemsWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.isUnemployedWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.previousConvictionsWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.proCriminalAttitudesWeight
@@ -39,13 +39,13 @@ class SNSVRiskProducerService : RiskScoreProducer {
 
   companion object {
     val SNSV_DYNAMIC_ADDITIONAL_REQUIRED_PROPERTIES = listOf(
-      RiskScoreRequest::carryingOrUsingWeapon,
+      RiskScoreRequest::didOffenceInvolveCarryingOrUsingWeapon,
       RiskScoreRequest::suitabilityOfAccommodation,
       RiskScoreRequest::isUnemployed,
       RiskScoreRequest::currentRelationshipWithPartner,
       RiskScoreRequest::currentAlcoholUseProblems,
       RiskScoreRequest::excessiveAlcoholUse,
-      RiskScoreRequest::impulsivityBehaviour,
+      RiskScoreRequest::impulsivityProblems,
       RiskScoreRequest::temperControl,
       RiskScoreRequest::proCriminalAttitudes,
       RiskScoreRequest::domesticAbuse,
@@ -109,16 +109,16 @@ class SNSVRiskProducerService : RiskScoreProducer {
     this.currentOffenceCode!!,
     this.totalNumberOfSanctionsForAllOffences!!.toInt(),
     this.ageAtFirstSanction!!.toInt(),
-    this.inCustodyOrCommunity!!,
+    this.supervisionStatus!!,
     this.dateAtStartOfFollowup!!,
     this.totalNumberOfViolentSanctions!!.toInt(),
-    this.carryingOrUsingWeapon!!,
+    this.didOffenceInvolveCarryingOrUsingWeapon!!,
     this.suitabilityOfAccommodation!!,
     this.isUnemployed!!,
     this.currentRelationshipWithPartner!!,
     this.currentAlcoholUseProblems!!,
     this.excessiveAlcoholUse!!,
-    this.impulsivityBehaviour!!,
+    this.impulsivityProblems!!,
     this.temperControl!!,
     this.proCriminalAttitudes!!,
     this.domesticAbuse!!,
@@ -133,7 +133,7 @@ class SNSVRiskProducerService : RiskScoreProducer {
     this.currentOffenceCode!!,
     this.totalNumberOfSanctionsForAllOffences!!.toInt(),
     this.ageAtFirstSanction!!.toInt(),
-    this.inCustodyOrCommunity!!,
+    this.supervisionStatus!!,
     this.dateAtStartOfFollowup!!,
     this.totalNumberOfViolentSanctions!!.toInt(),
   )
@@ -151,7 +151,7 @@ class SNSVRiskProducerService : RiskScoreProducer {
       false,
     ),
     getMonthsSinceLastSanctionWeight(
-      request.inCustodyOrCommunity,
+      request.supervisionStatus,
       request.dateAtStartOfFollowup,
       request.assessmentDate,
       false,
@@ -188,7 +188,7 @@ class SNSVRiskProducerService : RiskScoreProducer {
       true,
     ),
     getMonthsSinceLastSanctionWeight(
-      request.inCustodyOrCommunity,
+      request.supervisionStatus,
       request.dateAtStartOfFollowup,
       request.assessmentDate,
       true,
@@ -211,13 +211,13 @@ class SNSVRiskProducerService : RiskScoreProducer {
     ),
     offenceGroupParametersService.getSNSVVATPDynamicWeighting(request.currentOffenceCode),
     // Dynamic Additions
-    carryingOrUsingWeaponWeight(request.carryingOrUsingWeapon),
+    didOffenceInvolveCarryingOrUsingWeaponWeight(request.didOffenceInvolveCarryingOrUsingWeapon),
     suitabilityOfAccommodationWeight(request.suitabilityOfAccommodation),
     isUnemployedWeight(request.isUnemployed),
     currentRelationshipWithPartnerWeight(request.currentRelationshipWithPartner),
     currentAlcoholUseProblemsWeight(request.currentAlcoholUseProblems),
     excessiveAlcoholUseWeight(request.excessiveAlcoholUse),
-    impulsivityBehaviourWeight(request.impulsivityBehaviour),
+    impulsivityProblemsWeight(request.impulsivityProblems),
     proCriminalAttitudesWeight(request.proCriminalAttitudes),
     domesticViolenceWeight(request.domesticAbuse),
     previousConvictionsWeight(request.previousConvictions),

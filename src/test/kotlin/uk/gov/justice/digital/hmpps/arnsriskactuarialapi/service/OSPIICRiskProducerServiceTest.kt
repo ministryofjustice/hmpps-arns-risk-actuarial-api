@@ -58,7 +58,7 @@ class OSPIICRiskProducerServiceTest {
     )
     val request = RiskScoreRequest(
       totalContactChildSexualSanctions = 2,
-      hasCommittedSexualOffence = true,
+      hasEverCommittedSexualOffence = true,
       totalIndecentImageSanctions = 4,
     )
     val result = service.getRiskScore(request, context)

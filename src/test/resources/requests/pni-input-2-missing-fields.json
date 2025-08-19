@@ -16,9 +16,9 @@
   "proCriminalAttitudes": "SOME_PROBLEMS",
   "hasCurrentPsychiatricTreatment": false,
   "sexualPreoccupation": null,
-  "sexualInterestsOffenceRelated": null,
-  "emotionalCongruence": null,
+  "offenceRelatedSexualInterests": null,
+  "emotionalCongruenceWithChildren": null,
   "saraRiskToOthers": null,
-  "inCustodyOrCommunity": "CUSTODY",
-  "hasCommittedSexualOffence": true
+  "supervisionStatus": "CUSTODY",
+  "hasEverCommittedSexualOffence": true
 }

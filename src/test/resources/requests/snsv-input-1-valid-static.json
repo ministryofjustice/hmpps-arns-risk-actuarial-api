@@ -7,7 +7,7 @@
   "currentOffenceCode": "02700",
   "totalNumberOfSanctionsForAllOffences": 1,
   "ageAtFirstSanction": 40,
-  "inCustodyOrCommunity": "COMMUNITY",
+  "supervisionStatus": "COMMUNITY",
   "dateAtStartOfFollowup": "2024-01-01",
   "totalNumberOfViolentSanctions": 1
 }

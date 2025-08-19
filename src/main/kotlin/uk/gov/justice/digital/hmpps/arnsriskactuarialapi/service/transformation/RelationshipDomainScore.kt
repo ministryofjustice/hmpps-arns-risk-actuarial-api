@@ -6,32 +6,32 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIRequestValid
 object RelationshipDomainScore : DomainScore {
 
   override fun getMissingFields(request: PNIRequestValidated) = arrayListOf<String>().apply {
-    if (request.currentRelationshipFamilyMembers == null) {
-      add("currentRelationshipFamilyMembers")
+    if (request.currentRelationshipWithFamilyMembers == null) {
+      add("currentRelationshipWithFamilyMembers")
     }
     if (request.previousCloseRelationships == null) {
       add("previousCloseRelationships")
     }
-    if (request.easilyInfluencedByCriminals == null) {
-      add("easilyInfluencedByCriminals")
+    if (request.easilyInfluencedByCriminalAssociates == null) {
+      add("easilyInfluencedByCriminalAssociates")
     }
-    if (request.controllingBehaviour == null) {
-      add("controllingBehaviour")
+    if (request.controllingOrAggressiveBehaviour == null) {
+      add("controllingOrAggressiveBehaviour")
     }
   }
 
   override fun domainNeeds(request: PNIRequestValidated): Int? = listOfNotNull(
-    request.currentRelationshipFamilyMembers?.score,
+    request.currentRelationshipWithFamilyMembers?.score,
     request.previousCloseRelationships?.score,
-    request.easilyInfluencedByCriminals?.score,
-    request.controllingBehaviour?.score,
+    request.easilyInfluencedByCriminalAssociates?.score,
+    request.controllingOrAggressiveBehaviour?.score,
   ).sum()
 
   override fun projectedNeeds(request: PNIRequestValidated): Int? = listOf(
-    request.currentRelationshipFamilyMembers?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
+    request.currentRelationshipWithFamilyMembers?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
     request.previousCloseRelationships?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
-    request.easilyInfluencedByCriminals?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
-    request.controllingBehaviour?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
+    request.easilyInfluencedByCriminalAssociates?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
+    request.controllingOrAggressiveBehaviour?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
   ).sum()
 
   override fun overallDomainScore(request: PNIRequestValidated): Triple<Int, Int, List<String>> {

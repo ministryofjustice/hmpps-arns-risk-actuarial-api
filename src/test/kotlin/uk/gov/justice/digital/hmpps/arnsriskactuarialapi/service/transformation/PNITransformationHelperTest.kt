@@ -15,8 +15,8 @@ class PNITransformationHelperTest {
     fun `should return min score`() {
       val request = pniRequest(
         sexualPreoccupation = ProblemLevel.NO_PROBLEMS,
-        sexualInterestsOffenceRelated = ProblemLevel.NO_PROBLEMS,
-        emotionalCongruence = ProblemLevel.NO_PROBLEMS,
+        offenceRelatedSexualInterests = ProblemLevel.NO_PROBLEMS,
+        emotionalCongruenceWithChildren = ProblemLevel.NO_PROBLEMS,
       )
       val (score, projected, missing) = SexDomainScore.overallDomainScore(request)
       assertEquals(0, score)
@@ -27,9 +27,9 @@ class PNITransformationHelperTest {
     fun `should return max score`() {
       val request = pniRequest(
         sexualPreoccupation = ProblemLevel.SIGNIFICANT_PROBLEMS,
-        sexualInterestsOffenceRelated = ProblemLevel.SIGNIFICANT_PROBLEMS,
-        emotionalCongruence = ProblemLevel.SIGNIFICANT_PROBLEMS,
-        hasCommittedSexualOffence = true,
+        offenceRelatedSexualInterests = ProblemLevel.SIGNIFICANT_PROBLEMS,
+        emotionalCongruenceWithChildren = ProblemLevel.SIGNIFICANT_PROBLEMS,
+        hasEverCommittedSexualOffence = true,
       )
       val (score, projected, missing) = SexDomainScore.overallDomainScore(request)
       assertEquals(2, score)
@@ -40,9 +40,9 @@ class PNITransformationHelperTest {
     fun `should ignore omissions when interim score of 4 or more`() {
       val request = pniRequest(
         sexualPreoccupation = ProblemLevel.SIGNIFICANT_PROBLEMS, // 2
-        sexualInterestsOffenceRelated = ProblemLevel.SIGNIFICANT_PROBLEMS, // 2
-        emotionalCongruence = null,
-        hasCommittedSexualOffence = true,
+        offenceRelatedSexualInterests = ProblemLevel.SIGNIFICANT_PROBLEMS, // 2
+        emotionalCongruenceWithChildren = null,
+        hasEverCommittedSexualOffence = true,
       )
       val (score, projected, missing) = SexDomainScore.overallDomainScore(request)
       assertEquals(2, score)
@@ -53,21 +53,21 @@ class PNITransformationHelperTest {
     fun `should not ignore omissions when interim score is less than 4`() {
       val request = pniRequest(
         sexualPreoccupation = ProblemLevel.SIGNIFICANT_PROBLEMS,
-        sexualInterestsOffenceRelated = null,
-        emotionalCongruence = null,
-        hasCommittedSexualOffence = true,
+        offenceRelatedSexualInterests = null,
+        emotionalCongruenceWithChildren = null,
+        hasEverCommittedSexualOffence = true,
       )
       val (score, projected, missing) = SexDomainScore.overallDomainScore(request)
       assertEquals(0, score)
       assertEquals(2, missing.size)
-      assertTrue(missing.contains("sexualInterestsOffenceRelated"))
-      assertTrue(missing.contains("emotionalCongruence"))
+      assertTrue(missing.contains("offenceRelatedSexualInterests"))
+      assertTrue(missing.contains("emotionalCongruenceWithChildren"))
     }
 
     @Test
     fun `should return null and report all missing fields`() {
       val request = pniRequest().copy(
-        hasCommittedSexualOffence = true,
+        hasEverCommittedSexualOffence = true,
       )
       val (score, projected, missing) = SexDomainScore.overallDomainScore(request)
       assertEquals(0, score)
@@ -142,10 +142,10 @@ class PNITransformationHelperTest {
     @Test
     fun `should return min score`() {
       val request = pniRequest(
-        currentRelationshipFamilyMembers = ProblemLevel.NO_PROBLEMS,
+        currentRelationshipWithFamilyMembers = ProblemLevel.NO_PROBLEMS,
         previousCloseRelationships = ProblemLevel.NO_PROBLEMS,
-        easilyInfluencedByCriminals = ProblemLevel.NO_PROBLEMS,
-        controllingBehaviour = ProblemLevel.NO_PROBLEMS,
+        easilyInfluencedByCriminalAssociates = ProblemLevel.NO_PROBLEMS,
+        controllingOrAggressiveBehaviour = ProblemLevel.NO_PROBLEMS,
       )
       val (score, projected, missing) = RelationshipDomainScore.overallDomainScore(request)
       assertEquals(0, score)
@@ -155,10 +155,10 @@ class PNITransformationHelperTest {
     @Test
     fun `should return max score`() {
       val request = pniRequest(
-        currentRelationshipFamilyMembers = ProblemLevel.SIGNIFICANT_PROBLEMS,
+        currentRelationshipWithFamilyMembers = ProblemLevel.SIGNIFICANT_PROBLEMS,
         previousCloseRelationships = ProblemLevel.SIGNIFICANT_PROBLEMS,
-        easilyInfluencedByCriminals = ProblemLevel.SIGNIFICANT_PROBLEMS,
-        controllingBehaviour = ProblemLevel.SIGNIFICANT_PROBLEMS,
+        easilyInfluencedByCriminalAssociates = ProblemLevel.SIGNIFICANT_PROBLEMS,
+        controllingOrAggressiveBehaviour = ProblemLevel.SIGNIFICANT_PROBLEMS,
       )
       val (score, projected, missing) = RelationshipDomainScore.overallDomainScore(request)
       assertEquals(2, score)
@@ -168,10 +168,10 @@ class PNITransformationHelperTest {
     @Test
     fun `should ignore omissions when interim score of 5 or more`() {
       val request = pniRequest(
-        currentRelationshipFamilyMembers = ProblemLevel.SIGNIFICANT_PROBLEMS,
+        currentRelationshipWithFamilyMembers = ProblemLevel.SIGNIFICANT_PROBLEMS,
         previousCloseRelationships = ProblemLevel.SIGNIFICANT_PROBLEMS,
-        easilyInfluencedByCriminals = ProblemLevel.SIGNIFICANT_PROBLEMS,
-        controllingBehaviour = null,
+        easilyInfluencedByCriminalAssociates = ProblemLevel.SIGNIFICANT_PROBLEMS,
+        controllingOrAggressiveBehaviour = null,
       )
       val (score, projected, missing) = RelationshipDomainScore.overallDomainScore(request)
       assertEquals(2, score)
@@ -181,18 +181,18 @@ class PNITransformationHelperTest {
     @Test
     fun `should return null and report all missing fields`() {
       val request = pniRequest(
-        currentRelationshipFamilyMembers = null,
+        currentRelationshipWithFamilyMembers = null,
         previousCloseRelationships = null,
-        easilyInfluencedByCriminals = null,
-        controllingBehaviour = null,
+        easilyInfluencedByCriminalAssociates = null,
+        controllingOrAggressiveBehaviour = null,
       )
       val (score, projected, missing) = RelationshipDomainScore.overallDomainScore(request)
       assertEquals(0, score)
       assertEquals(4, missing.size)
-      assertTrue(missing.contains("currentRelationshipFamilyMembers"))
+      assertTrue(missing.contains("currentRelationshipWithFamilyMembers"))
       assertTrue(missing.contains("previousCloseRelationships"))
-      assertTrue(missing.contains("controllingBehaviour"))
-      assertTrue(missing.contains("easilyInfluencedByCriminals"))
+      assertTrue(missing.contains("controllingOrAggressiveBehaviour"))
+      assertTrue(missing.contains("easilyInfluencedByCriminalAssociates"))
     }
   }
 
@@ -201,7 +201,7 @@ class PNITransformationHelperTest {
     @Test
     fun `should return min score`() {
       val request = pniRequest(
-        impulsivityBehaviour = ProblemLevel.NO_PROBLEMS,
+        impulsivityProblems = ProblemLevel.NO_PROBLEMS,
         temperControl = ProblemLevel.NO_PROBLEMS,
         problemSolvingSkills = ProblemLevel.NO_PROBLEMS,
         difficultiesCoping = ProblemLevel.NO_PROBLEMS,
@@ -214,7 +214,7 @@ class PNITransformationHelperTest {
     @Test
     fun `should return max score`() {
       val request = pniRequest(
-        impulsivityBehaviour = ProblemLevel.SIGNIFICANT_PROBLEMS,
+        impulsivityProblems = ProblemLevel.SIGNIFICANT_PROBLEMS,
         temperControl = ProblemLevel.SIGNIFICANT_PROBLEMS,
         problemSolvingSkills = ProblemLevel.SIGNIFICANT_PROBLEMS,
         difficultiesCoping = ProblemLevel.SIGNIFICANT_PROBLEMS,
@@ -227,7 +227,7 @@ class PNITransformationHelperTest {
     @Test
     fun `should ignore omissions when interim score of 5 or more`() {
       val request = pniRequest(
-        impulsivityBehaviour = ProblemLevel.SIGNIFICANT_PROBLEMS,
+        impulsivityProblems = ProblemLevel.SIGNIFICANT_PROBLEMS,
         temperControl = ProblemLevel.SIGNIFICANT_PROBLEMS,
         problemSolvingSkills = ProblemLevel.SOME_PROBLEMS,
         difficultiesCoping = null,
@@ -240,7 +240,7 @@ class PNITransformationHelperTest {
     @Test
     fun `should not ignore omissions when interim score is less than 5`() {
       val request = pniRequest(
-        impulsivityBehaviour = ProblemLevel.SOME_PROBLEMS,
+        impulsivityProblems = ProblemLevel.SOME_PROBLEMS,
         temperControl = ProblemLevel.NO_PROBLEMS,
         problemSolvingSkills = ProblemLevel.NO_PROBLEMS,
         difficultiesCoping = null,
@@ -254,7 +254,7 @@ class PNITransformationHelperTest {
     @Test
     fun `should return null and report all missing fields`() {
       val request = pniRequest(
-        impulsivityBehaviour = null,
+        impulsivityProblems = null,
         temperControl = null,
         problemSolvingSkills = null,
         difficultiesCoping = null,
@@ -262,7 +262,7 @@ class PNITransformationHelperTest {
       val (score, projected, missing) = SelfManagementDomainScore.overallDomainScore(request)
       assertEquals(0, score)
       assertEquals(4, missing.size)
-      assertTrue(missing.contains("impulsivityBehaviour"))
+      assertTrue(missing.contains("impulsivityProblems"))
       assertTrue(missing.contains("temperControl"))
       assertTrue(missing.contains("problemSolvingSkills"))
       assertTrue(missing.contains("difficultiesCoping"))

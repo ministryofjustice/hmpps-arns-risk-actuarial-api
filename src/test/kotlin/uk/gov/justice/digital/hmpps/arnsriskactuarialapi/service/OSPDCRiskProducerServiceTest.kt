@@ -98,7 +98,7 @@ class OSPDCRiskProducerServiceTest {
     val result = service.getRiskScore(
       validOSPDCRiskScoreRequest().copy(
         gender = Gender.FEMALE,
-        hasCommittedSexualOffence = true,
+        hasEverCommittedSexualOffence = true,
       ),
       emptyContext(),
     )
@@ -118,7 +118,7 @@ class OSPDCRiskProducerServiceTest {
     // When
     val result = service.getRiskScore(
       validOSPDCRiskScoreRequest().copy(
-        hasCommittedSexualOffence = false,
+        hasEverCommittedSexualOffence = false,
       ),
       emptyContext(),
     )
