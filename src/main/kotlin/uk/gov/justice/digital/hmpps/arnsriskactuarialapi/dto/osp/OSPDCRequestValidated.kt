@@ -12,7 +12,7 @@ data class OSPDCRequestValidated(
   val totalNonContactSexualOffences: Int,
   val totalIndecentImageSanctions: Int,
   val dateAtStartOfFollowup: LocalDate,
-  val dateOfMostRecentSexualOffence: LocalDate,
   val totalNumberOfSanctionsForAllOffences: Int,
+  val dateOfMostRecentSexualOffence: LocalDate?,
   val victimStranger: Boolean?,
 )

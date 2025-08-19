@@ -114,7 +114,7 @@ class OSPDCRiskProducerServiceTest {
   }
 
   @Test
-  fun `should return NOT_APPLICABLE when no sexual offences`() {
+  fun `should still return a score when no sexual offences`() {
     // When
     val result = service.getRiskScore(
       validOSPDCRiskScoreRequest().copy(
@@ -125,11 +125,8 @@ class OSPDCRiskProducerServiceTest {
 
     // Then
     assertNotNull(result)
-    assertNull(result.OSPDC?.ospdcScore)
-    assertNull(result.OSPDC?.ospdcBand)
-    val error = result.OSPDC?.validationError?.first()
-    assertEquals(ValidationErrorType.NOT_APPLICABLE, error?.type)
-    assertEquals("ERR1 - Does not meet eligibility criteria", error?.message)
+    assertNotNull(result.OSPDC?.ospdcScore)
+    assertNotNull(result.OSPDC?.ospdcBand)
   }
 
   @Test
