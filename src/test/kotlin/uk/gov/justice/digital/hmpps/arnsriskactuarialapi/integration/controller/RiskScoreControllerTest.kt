@@ -138,7 +138,7 @@ class RiskScoreControllerTest : IntegrationTestBase() {
       .bodyValue(
         """
         {
-          "employmentStatus": 123
+          "isUnemployed": 123
         }
         """.trimIndent(),
       )

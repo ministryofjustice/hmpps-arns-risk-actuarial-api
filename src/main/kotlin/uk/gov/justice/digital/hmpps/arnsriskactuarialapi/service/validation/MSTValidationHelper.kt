@@ -26,7 +26,7 @@ fun mstInitialValidation(request: RiskScoreRequest): List<ValidationErrorRespons
     request.temperControl,
     request.problemSolvingSkills,
     request.awarenessOfConsequences,
-    request.understandsPeoplesViews,
+    request.understandsOtherPeoplesViews,
   ).size
 
   if (answersCount < MIN_MST_ANSWERS_SIZE) {
@@ -39,7 +39,7 @@ fun mstInitialValidation(request: RiskScoreRequest): List<ValidationErrorRespons
     missingFields.addIfNull(request, RiskScoreRequest::temperControl)
     missingFields.addIfNull(request, RiskScoreRequest::problemSolvingSkills)
     missingFields.addIfNull(request, RiskScoreRequest::awarenessOfConsequences)
-    missingFields.addIfNull(request, RiskScoreRequest::understandsPeoplesViews)
+    missingFields.addIfNull(request, RiskScoreRequest::understandsOtherPeoplesViews)
   }
   return addMissingFields(missingFields, errors)
 }

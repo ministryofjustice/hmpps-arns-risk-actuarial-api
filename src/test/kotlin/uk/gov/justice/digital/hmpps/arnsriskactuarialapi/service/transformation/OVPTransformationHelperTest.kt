@@ -24,9 +24,9 @@ class OVPTransformationHelperTest {
   }
 
   @Test
-  fun `getEmploymentStatusOffendersScore maps correctly`() {
-    assertEquals(2, getEmploymentStatusOffendersScore(testRequest(employmentStatus = true)))
-    assertEquals(0, getEmploymentStatusOffendersScore(testRequest(employmentStatus = false)))
+  fun `getIsUnemployedOffendersScore maps correctly`() {
+    assertEquals(2, getIsUnemployedOffendersScore(testRequest(isUnemployed = true)))
+    assertEquals(0, getIsUnemployedOffendersScore(testRequest(isUnemployed = false)))
   }
 
   @Test
@@ -42,14 +42,14 @@ class OVPTransformationHelperTest {
   }
 
   @Test
-  fun `getCurrentPsychiatricTreatmentOrPendingWeighted maps correctly`() {
+  fun `getHasCurrentPsychiatricTreatmentWeighted maps correctly`() {
     assertEquals(
       4,
-      getCurrentPsychiatricTreatmentOrPendingWeighted(testRequest(currentPsychiatricTreatmentOrPending = true)),
+      getHasCurrentPsychiatricTreatmentWeighted(testRequest(hasCurrentPsychiatricTreatment = true)),
     )
     assertEquals(
       0,
-      getCurrentPsychiatricTreatmentOrPendingWeighted(testRequest(currentPsychiatricTreatmentOrPending = false)),
+      getHasCurrentPsychiatricTreatmentWeighted(testRequest(hasCurrentPsychiatricTreatment = false)),
     )
   }
 
@@ -140,16 +140,16 @@ class OVPTransformationHelperTest {
     )
   }
 
-  @ParameterizedTest(name = "returns {2} for alcoholIsCurrentUseAProblem={0}, alcoholExcessive6Months={1}")
+  @ParameterizedTest(name = "returns {2} for currentAlcoholUseProblems={0}, excessiveAlcoholUse={1}")
   @MethodSource("alcoholMisuseTestCases")
   fun `getAlcoholMisuseWeighted returns expected score`(
     currentUse: ProblemLevel,
-    excessive6mo: ProblemLevel,
+    excessiveUse: ProblemLevel,
     expectedScore: Int,
   ) {
     val request = testRequest().copy(
-      alcoholIsCurrentUseAProblem = currentUse,
-      alcoholExcessive6Months = excessive6mo,
+      currentAlcoholUseProblems = currentUse,
+      excessiveAlcoholUse = excessiveUse,
     )
     val result = getAlcoholMisuseWeighted(request)
     assertEquals(expectedScore, result)
@@ -157,26 +157,26 @@ class OVPTransformationHelperTest {
 
   private fun testRequest(
     isCurrentlyOfNoFixedAbodeOrTransientAccommodation: Boolean = true,
-    employmentStatus: Boolean = false,
+    isUnemployed: Boolean = false,
     doesRecogniseImpactOfOffendingOnOthers: Boolean = false,
-    currentPsychiatricTreatmentOrPending: Boolean = true,
+    hasCurrentPsychiatricTreatment: Boolean = true,
     totalNumberOfSanctionsForAllOffences: Int = 3,
     gender: Gender = Gender.MALE,
     dateOfBirth: LocalDate = LocalDate.of(2000, 1, 1),
     dateAtStartOfFollowup: LocalDate = LocalDate.of(2021, 1, 1),
   ) = OVPRequestValidated(
     isCurrentlyOfNoFixedAbodeOrTransientAccommodation = isCurrentlyOfNoFixedAbodeOrTransientAccommodation,
-    employmentStatus = employmentStatus,
+    isUnemployed = isUnemployed,
     doesRecogniseImpactOfOffendingOnOthers = doesRecogniseImpactOfOffendingOnOthers,
-    currentPsychiatricTreatmentOrPending = currentPsychiatricTreatmentOrPending,
+    hasCurrentPsychiatricTreatment = hasCurrentPsychiatricTreatment,
     totalNumberOfSanctionsForAllOffences = totalNumberOfSanctionsForAllOffences,
     gender = gender,
     dateOfBirth = dateOfBirth,
     dateAtStartOfFollowup = dateAtStartOfFollowup,
     // following don't matter for this tests
     totalNumberOfViolentSanctions = 1,
-    alcoholIsCurrentUseAProblem = ProblemLevel.NO_PROBLEMS,
-    alcoholExcessive6Months = ProblemLevel.NO_PROBLEMS,
+    currentAlcoholUseProblems = ProblemLevel.NO_PROBLEMS,
+    excessiveAlcoholUse = ProblemLevel.NO_PROBLEMS,
     temperControl = ProblemLevel.NO_PROBLEMS,
     proCriminalAttitudes = ProblemLevel.NO_PROBLEMS,
   )

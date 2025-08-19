@@ -68,7 +68,7 @@ class MSTScoreProducerServiceTest {
       temperControl = null,
       problemSolvingSkills = null,
       awarenessOfConsequences = null,
-      understandsPeoplesViews = null,
+      understandsOtherPeoplesViews = null,
     )
 
     // When
@@ -96,7 +96,7 @@ class MSTScoreProducerServiceTest {
         "temperControl",
         "problemSolvingSkills",
         "awarenessOfConsequences",
-        "understandsPeoplesViews",
+        "understandsOtherPeoplesViews",
       ),
     )
     val actualError = result.MST?.validationError

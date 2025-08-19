@@ -9,8 +9,8 @@
   "impulsivityBehaviour": "SIGNIFICANT_PROBLEMS",
   "temperControl": "SOME_PROBLEMS",
   "problemSolvingSkills": "SIGNIFICANT_PROBLEMS",
-  "awarenessOfConsequences": "SOME_PROBLEMS",
-  "understandsPeoplesViews": "SOME_PROBLEMS",
+  "awarenessOfConsequences": "SOMETIMES",
+  "understandsOtherPeoplesViews": "SOME_PROBLEMS",
   "peerGroupInfluences": false,
   "assessmentDate": "2025-07-17"
 }

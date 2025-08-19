@@ -19,7 +19,7 @@
   "relationshipLinkedSeriousHarm": true,
   "currentPsychologicalProblems": "SIGNIFICANT_PROBLEMS",
   "currentPsychiatricProblems": "SOME_PROBLEMS",
-  "currentPsychiatricTreatmentOrPending": false,
+  "hasCurrentPsychiatricTreatment": false,
   "wellbeingEmotionalLinkedRiskOfSeriousHarm": true,
   "thinkingAndBehaviourLinedToRiskOfSeriousHarm": true,
   "custodialSentence": true,

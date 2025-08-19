@@ -42,7 +42,7 @@ class MSTRiskProducerService : RiskScoreProducer {
       temperControl = request.temperControl,
       problemSolvingSkills = request.problemSolvingSkills,
       awarenessOfConsequences = request.awarenessOfConsequences,
-      understandsPeoplesViews = request.understandsPeoplesViews,
+      understandsOtherPeoplesViews = request.understandsOtherPeoplesViews,
     )
 
     return context.apply { MST = getMstObject(validRequest, errors) }
@@ -66,7 +66,7 @@ class MSTRiskProducerService : RiskScoreProducer {
         request.temperControl?.score ?: 0,
         request.problemSolvingSkills?.score ?: 0,
         request.awarenessOfConsequences?.score ?: 0,
-        request.understandsPeoplesViews?.score ?: 0,
+        request.understandsOtherPeoplesViews?.score ?: 0,
       ).sum()
 
       return MSTObject(

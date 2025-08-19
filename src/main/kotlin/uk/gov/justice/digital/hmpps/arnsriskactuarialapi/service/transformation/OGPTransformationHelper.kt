@@ -1,6 +1,8 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.MotivationLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.YesSometimesNo
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.ConversionUtils.Companion.booleanToScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asPercentage
@@ -20,29 +22,29 @@ class OGPTransformationHelper {
 
     fun isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScore(isCurrentlyOfNoFixedAbodeOrTransientAccommodation: Boolean): Int = isCurrentlyOfNoFixedAbodeOrTransientAccommodation.booleanToScore()
 
-    fun employmentStatusOffendersScore(employmentStatus: Boolean): Int = employmentStatus.booleanToScore()
+    fun isUnemployedOffendersScore(isUnemployed: Boolean): Int = isUnemployed.booleanToScore()
 
     fun regularOffendingActivitiesOffendersScore(regularOffendingActivities: ProblemLevel) = regularOffendingActivities.score
 
     fun currentDrugMisuseOffendersScore(currentDrugMisuse: ProblemLevel) = currentDrugMisuse.score
 
-    fun motivationDrugOffendersScore(motivationDrug: ProblemLevel) = motivationDrug.score
+    fun motivationToTackleDrugMisuseOffendersScore(motivationToTackleDrugMisuse: MotivationLevel) = motivationToTackleDrugMisuse.score
 
     fun problemSolvingSkillsOffendersScore(problemSolvingSkillsOffendersScore: ProblemLevel) = problemSolvingSkillsOffendersScore.score
 
-    fun awarenessOfConsequencesOffendersScore(awarenessOfConsequences: ProblemLevel) = awarenessOfConsequences.score
+    fun awarenessOfConsequencesOffendersScore(awarenessOfConsequences: YesSometimesNo) = awarenessOfConsequences.score
 
-    fun understandsPeoplesViewsOffendersScore(understandsPeoplesOffendersScore: ProblemLevel) = understandsPeoplesOffendersScore.score
+    fun understandsOtherPeoplesViewsOffendersScore(understandsPeoplesOffendersScore: ProblemLevel) = understandsPeoplesOffendersScore.score
 
     fun proCriminalAttitudesOffendersScore(proCriminalAttitudes: ProblemLevel) = proCriminalAttitudes.score
 
-    fun drugMisuseNonViolentOffendersScore(currentDrugMisuseOffendersScore: Int, motivationDrugOffendersScore: Int) = currentDrugMisuseOffendersScore + motivationDrugOffendersScore
+    fun drugMisuseNonViolentOffendersScore(currentDrugMisuseOffendersScore: Int, motivationToTackleDrugMisuseOffendersScore: Int) = currentDrugMisuseOffendersScore + motivationToTackleDrugMisuseOffendersScore
 
     fun thinkingAndBehaviourNonViolentOffendersScore(
       problemSolvingSkillsOffendersScore: Int,
       awarenessOfConsequencesOffendersScore: Int,
-      understandsPeoplesViewsOffendersScore: Int,
-    ) = problemSolvingSkillsOffendersScore + awarenessOfConsequencesOffendersScore + understandsPeoplesViewsOffendersScore
+      understandsOtherPeoplesViewsOffendersScore: Int,
+    ) = problemSolvingSkillsOffendersScore + awarenessOfConsequencesOffendersScore + understandsOtherPeoplesViewsOffendersScore
 
     // Weighted Values
 
@@ -50,7 +52,7 @@ class OGPTransformationHelper {
 
     fun isCurrentlyOfNoFixedAbodeOrTransientAccommodationWeighted(isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScore: Int): Int = if (isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScore == 2) 5 else 0
 
-    fun employmentStatusWeighted(employmentStatusOffendersScore: Int): Int = if (employmentStatusOffendersScore == 2) 5 else 0
+    fun isUnemployedWeighted(isUnemployedOffendersScore: Int): Int = if (isUnemployedOffendersScore == 2) 5 else 0
 
     fun regularOffendingActivitiesWeighted(regularOffendingActivitiesOffendersScore: Int): Int = when (regularOffendingActivitiesOffendersScore) {
       1 -> 3
@@ -73,7 +75,7 @@ class OGPTransformationHelper {
     fun totalOGPScore(
       ogrs3TwoYearWeighted: Int,
       isCurrentlyOfNoFixedAbodeOrTransientAccommodationWeighted: Int,
-      employmentStatusWeighted: Int,
+      isUnemployedWeighted: Int,
       regularOffendingActivitiesWeighted: Int,
       drugMisuseNonViolentWeighted: Int,
       thinkingAndBehaviourNonViolentWeighted: Int,
@@ -81,7 +83,7 @@ class OGPTransformationHelper {
     ): Int = (
       ogrs3TwoYearWeighted +
         isCurrentlyOfNoFixedAbodeOrTransientAccommodationWeighted +
-        employmentStatusWeighted +
+        isUnemployedWeighted +
         regularOffendingActivitiesWeighted +
         drugMisuseNonViolentWeighted +
         thinkingAndBehaviourNonViolentWeighted +

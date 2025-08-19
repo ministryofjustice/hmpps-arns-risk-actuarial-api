@@ -163,7 +163,7 @@ class SNSVTransformationHelper {
 
     fun suitabilityOfAccommodationWeight(suitabilityOfAccommodation: ProblemLevel): Double = 0.0619710049121293 * suitabilityOfAccommodation.score
 
-    fun employmentStatusWeight(employmentStatus: Boolean): Double = if (employmentStatus) 0.0389109699626767 * 2 else 0.0
+    fun isUnemployedWeight(isUnemployed: Boolean): Double = if (isUnemployed) 0.0389109699626767 * 2 else 0.0
 
     fun currentRelationshipWithPartnerWeight(currentRelationshipWithPartner: ProblemLevel): Double = when (currentRelationshipWithPartner) {
       ProblemLevel.NO_PROBLEMS -> 0.0
@@ -171,13 +171,13 @@ class SNSVTransformationHelper {
       ProblemLevel.SIGNIFICANT_PROBLEMS -> 0.0935672441515258 * 2
     }
 
-    fun alcoholIsCurrentUseAProblemWeight(alcoholIsCurrentUseAProblem: ProblemLevel): Double = when (alcoholIsCurrentUseAProblem) {
+    fun currentAlcoholUseProblemsWeight(currentAlcoholUseProblems: ProblemLevel): Double = when (currentAlcoholUseProblems) {
       ProblemLevel.NO_PROBLEMS -> 0.0
       ProblemLevel.SOME_PROBLEMS -> 0.0935672441515258
       ProblemLevel.SIGNIFICANT_PROBLEMS -> 0.0935672441515258 * 2
     }
 
-    fun alcoholExcessive6MonthsWeight(alcoholExcessive6Months: ProblemLevel): Double = when (alcoholExcessive6Months) {
+    fun excessiveAlcoholUseWeight(excessiveAlcoholUse: ProblemLevel): Double = when (excessiveAlcoholUse) {
       ProblemLevel.NO_PROBLEMS -> 0.0
       ProblemLevel.SOME_PROBLEMS -> 0.0567127896345591
       ProblemLevel.SIGNIFICANT_PROBLEMS -> 0.0567127896345591 * 2

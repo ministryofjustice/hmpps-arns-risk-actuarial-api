@@ -2,12 +2,14 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi
 
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CustodyOrCommunity
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.MotivationLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.PreviousConviction
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.YesSometimesNo
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds.HasQualifications
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds.LDSObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.mst.MSTObject
@@ -77,49 +79,49 @@ object RiskScoreRequestTestConstants {
   val FULL_OGP_REQUEST = RiskScoreRequest(
     version = RiskScoreVersion.V1_0,
     isCurrentlyOfNoFixedAbodeOrTransientAccommodation = true,
-    employmentStatus = false,
+    isUnemployed = false,
     regularOffendingActivities = ProblemLevel.NO_PROBLEMS,
     currentDrugMisuse = ProblemLevel.NO_PROBLEMS,
-    motivationDrug = ProblemLevel.NO_PROBLEMS,
+    motivationToTackleDrugMisuse = MotivationLevel.FULL_MOTIVATION,
     problemSolvingSkills = ProblemLevel.NO_PROBLEMS,
-    awarenessOfConsequences = ProblemLevel.NO_PROBLEMS,
-    understandsPeoplesViews = ProblemLevel.NO_PROBLEMS,
+    awarenessOfConsequences = YesSometimesNo.YES,
+    understandsOtherPeoplesViews = ProblemLevel.NO_PROBLEMS,
     proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
   )
   val ALT_NULL_OGP_REQUEST = RiskScoreRequest(
     version = RiskScoreVersion.V1_0,
     isCurrentlyOfNoFixedAbodeOrTransientAccommodation = null,
-    employmentStatus = false,
+    isUnemployed = false,
     regularOffendingActivities = null,
     currentDrugMisuse = ProblemLevel.NO_PROBLEMS,
-    motivationDrug = null,
+    motivationToTackleDrugMisuse = null,
     problemSolvingSkills = ProblemLevel.NO_PROBLEMS,
     awarenessOfConsequences = null,
-    understandsPeoplesViews = ProblemLevel.NO_PROBLEMS,
+    understandsOtherPeoplesViews = ProblemLevel.NO_PROBLEMS,
     proCriminalAttitudes = null,
   )
   val OGP_REQUEST_39 = RiskScoreRequest(
     version = RiskScoreVersion.V1_0,
     isCurrentlyOfNoFixedAbodeOrTransientAccommodation = true,
-    employmentStatus = false,
+    isUnemployed = false,
     regularOffendingActivities = null,
     currentDrugMisuse = ProblemLevel.NO_PROBLEMS,
-    motivationDrug = ProblemLevel.NO_PROBLEMS,
+    motivationToTackleDrugMisuse = MotivationLevel.FULL_MOTIVATION,
     problemSolvingSkills = ProblemLevel.NO_PROBLEMS,
-    awarenessOfConsequences = ProblemLevel.NO_PROBLEMS,
-    understandsPeoplesViews = ProblemLevel.NO_PROBLEMS,
+    awarenessOfConsequences = YesSometimesNo.YES,
+    understandsOtherPeoplesViews = ProblemLevel.NO_PROBLEMS,
     proCriminalAttitudes = null,
   )
   val OGP_REQUEST_0458 = RiskScoreRequest(
     version = RiskScoreVersion.V1_0,
     isCurrentlyOfNoFixedAbodeOrTransientAccommodation = null,
-    employmentStatus = false,
+    isUnemployed = false,
     regularOffendingActivities = ProblemLevel.NO_PROBLEMS,
     currentDrugMisuse = ProblemLevel.NO_PROBLEMS,
-    motivationDrug = null,
+    motivationToTackleDrugMisuse = null,
     problemSolvingSkills = null,
-    awarenessOfConsequences = ProblemLevel.NO_PROBLEMS,
-    understandsPeoplesViews = ProblemLevel.NO_PROBLEMS,
+    awarenessOfConsequences = YesSometimesNo.YES,
+    understandsOtherPeoplesViews = ProblemLevel.NO_PROBLEMS,
     proCriminalAttitudes = null,
   )
   val FULL_LDS_REQUEST = RiskScoreRequest(
@@ -174,10 +176,10 @@ fun validOVPRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
   isCurrentlyOfNoFixedAbodeOrTransientAccommodation = true,
   ageAtFirstSanction = null,
   currentOffenceCode = null,
-  employmentStatus = true,
-  alcoholIsCurrentUseAProblem = ProblemLevel.NO_PROBLEMS,
-  alcoholExcessive6Months = ProblemLevel.NO_PROBLEMS,
-  currentPsychiatricTreatmentOrPending = false,
+  isUnemployed = true,
+  currentAlcoholUseProblems = ProblemLevel.NO_PROBLEMS,
+  excessiveAlcoholUse = ProblemLevel.NO_PROBLEMS,
+  hasCurrentPsychiatricTreatment = false,
   temperControl = ProblemLevel.NO_PROBLEMS,
   proCriminalAttitudes = ProblemLevel.NO_PROBLEMS,
 )
@@ -195,8 +197,8 @@ fun validMSTRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
   impulsivityBehaviour = ProblemLevel.SOME_PROBLEMS,
   temperControl = ProblemLevel.SOME_PROBLEMS,
   problemSolvingSkills = ProblemLevel.SOME_PROBLEMS,
-  awarenessOfConsequences = ProblemLevel.SOME_PROBLEMS,
-  understandsPeoplesViews = ProblemLevel.SOME_PROBLEMS,
+  awarenessOfConsequences = YesSometimesNo.SOMETIMES,
+  understandsOtherPeoplesViews = ProblemLevel.SOME_PROBLEMS,
 )
 
 fun validPNIRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
@@ -212,8 +214,8 @@ fun validPNIRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
   impulsivityBehaviour = ProblemLevel.SOME_PROBLEMS,
   temperControl = ProblemLevel.SOME_PROBLEMS,
   problemSolvingSkills = ProblemLevel.SOME_PROBLEMS,
-  awarenessOfConsequences = ProblemLevel.SOME_PROBLEMS,
-  understandsPeoplesViews = ProblemLevel.SOME_PROBLEMS,
+  awarenessOfConsequences = YesSometimesNo.SOMETIMES,
+  understandsOtherPeoplesViews = ProblemLevel.SOME_PROBLEMS,
   sexualPreoccupation = ProblemLevel.SOME_PROBLEMS,
   sexualInterestsOffenceRelated = ProblemLevel.SOME_PROBLEMS,
   emotionalCongruence = ProblemLevel.SOME_PROBLEMS,
@@ -313,10 +315,10 @@ fun validSNSVDynamicRiskScoreRequest() = RiskScoreRequest(
   totalNumberOfViolentSanctions = 1 as Integer,
   carryingOrUsingWeapon = false,
   suitabilityOfAccommodation = ProblemLevel.NO_PROBLEMS,
-  employmentStatus = false,
+  isUnemployed = false,
   currentRelationshipWithPartner = ProblemLevel.NO_PROBLEMS,
-  alcoholIsCurrentUseAProblem = ProblemLevel.NO_PROBLEMS,
-  alcoholExcessive6Months = ProblemLevel.NO_PROBLEMS,
+  currentAlcoholUseProblems = ProblemLevel.NO_PROBLEMS,
+  excessiveAlcoholUse = ProblemLevel.NO_PROBLEMS,
   impulsivityBehaviour = ProblemLevel.NO_PROBLEMS,
   temperControl = ProblemLevel.NO_PROBLEMS,
   proCriminalAttitudes = ProblemLevel.NO_PROBLEMS,
@@ -365,7 +367,7 @@ fun opdRequestValidated() = OPDRequestValidated(
   attitudesStableBehaviour = ProblemLevel.NO_PROBLEMS,
   impulsivityBehaviour = ProblemLevel.NO_PROBLEMS,
   ageAtFirstSanction = null,
-  currentPsychiatricTreatmentOrPending = null,
+  hasCurrentPsychiatricTreatment = null,
   controllingBehaviour = null,
 )
 

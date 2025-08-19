@@ -12,11 +12,11 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.currentDrugMisuseOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.drugMisuseNonViolentOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.drugMisuseNonViolentWeighted
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.employmentStatusOffendersScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.employmentStatusWeighted
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.isCurrentlyOfNoFixedAbodeOrTransientAccommodationWeighted
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.motivationDrugOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.isUnemployedOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.isUnemployedWeighted
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.motivationToTackleDrugMisuseOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.ogpReoffendingOneYear
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.ogpReoffendingTwoYear
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.ogrs3TwoYearWeighted
@@ -28,7 +28,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.thinkingAndBehaviourNonViolentOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.thinkingAndBehaviourNonViolentWeighted
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.totalOGPScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.understandsPeoplesViewsOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.understandsOtherPeoplesViewsOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.OGPValidationHelper.Companion.ogpInitialValidation
 
 @Service
@@ -46,13 +46,13 @@ class OGPRiskProducerService : RiskScoreProducer {
     val validInput = OGPInputValidated(
       context.OGRS3?.ogrs3TwoYear!!,
       request.isCurrentlyOfNoFixedAbodeOrTransientAccommodation!!,
-      request.employmentStatus!!,
+      request.isUnemployed!!,
       request.regularOffendingActivities!!,
       request.currentDrugMisuse!!,
-      request.motivationDrug!!,
+      request.motivationToTackleDrugMisuse!!,
       request.problemSolvingSkills!!,
       request.awarenessOfConsequences!!,
-      request.understandsPeoplesViews!!,
+      request.understandsOtherPeoplesViews!!,
       request.proCriminalAttitudes!!,
     )
 
@@ -64,36 +64,36 @@ class OGPRiskProducerService : RiskScoreProducer {
       // Transformation Step
       val isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScore =
         isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScore(input.isCurrentlyOfNoFixedAbodeOrTransientAccommodation)
-      val employmentStatusOffendersScore =
-        employmentStatusOffendersScore(input.employmentStatus)
+      val isUnemployedOffendersScore =
+        isUnemployedOffendersScore(input.isUnemployed)
       val regularOffendingActivitiesOffendersScore =
         regularOffendingActivitiesOffendersScore(input.regularOffendingActivities)
       val currentDrugMisuseOffendersScore =
         currentDrugMisuseOffendersScore(input.currentDrugMisuse)
-      val motivationDrugOffendersScore =
-        motivationDrugOffendersScore(input.motivationDrug)
+      val motivationToTackleDrugMisuseOffendersScore =
+        motivationToTackleDrugMisuseOffendersScore(input.motivationToTackleDrugMisuse)
       val problemSolvingSkillsOffendersScore =
         problemSolvingSkillsOffendersScore(input.problemSolvingSkills)
       val awarenessOfConsequencesOffendersScore =
         awarenessOfConsequencesOffendersScore(input.awarenessOfConsequences)
-      val understandsPeoplesViewsOffendersScore =
-        understandsPeoplesViewsOffendersScore(input.understandsPeoplesViews)
+      val understandsOtherPeoplesViewsOffendersScore =
+        understandsOtherPeoplesViewsOffendersScore(input.understandsOtherPeoplesViews)
       val proCriminalAttitudesOffendersScore =
         proCriminalAttitudesOffendersScore(input.proCriminalAttitudes)
       val drugMisuseNonViolentOffendersScore =
-        drugMisuseNonViolentOffendersScore(currentDrugMisuseOffendersScore, motivationDrugOffendersScore)
+        drugMisuseNonViolentOffendersScore(currentDrugMisuseOffendersScore, motivationToTackleDrugMisuseOffendersScore)
       val thinkingAndBehaviourNonViolentOffendersScore =
         thinkingAndBehaviourNonViolentOffendersScore(
           problemSolvingSkillsOffendersScore,
           awarenessOfConsequencesOffendersScore,
-          understandsPeoplesViewsOffendersScore,
+          understandsOtherPeoplesViewsOffendersScore,
         )
       // Weighted Scores
       val ogrs3TwoYearWeighted = ogrs3TwoYearWeighted(input.ogrs3TwoYear)
       val isCurrentlyOfNoFixedAbodeOrTransientAccommodationWeighted =
         isCurrentlyOfNoFixedAbodeOrTransientAccommodationWeighted(isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScore)
-      val employmentStatusWeighted =
-        employmentStatusWeighted(employmentStatusOffendersScore)
+      val isUnemployedWeighted =
+        isUnemployedWeighted(isUnemployedOffendersScore)
       val regularOffendingActivitiesWeighted =
         regularOffendingActivitiesWeighted(regularOffendingActivitiesOffendersScore)
       val drugMisuseNonViolentWeighted = drugMisuseNonViolentWeighted(drugMisuseNonViolentOffendersScore)
@@ -106,7 +106,7 @@ class OGPRiskProducerService : RiskScoreProducer {
         totalOGPScore(
           ogrs3TwoYearWeighted,
           isCurrentlyOfNoFixedAbodeOrTransientAccommodationWeighted,
-          employmentStatusWeighted,
+          isUnemployedWeighted,
           regularOffendingActivitiesWeighted,
           drugMisuseNonViolentWeighted,
           thinkingAndBehaviourNonViolentWeighted,

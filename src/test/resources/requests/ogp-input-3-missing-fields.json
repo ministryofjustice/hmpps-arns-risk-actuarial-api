@@ -8,10 +8,10 @@
   "ageAtFirstSanction": 21,
   "currentOffenceCode": "11618",
   "isCurrentlyOfNoFixedAbodeOrTransientAccommodation": false,
-  "employmentStatus": true,
-  "motivationDrug": "NO_PROBLEMS",
+  "isUnemployed": true,
+  "motivationToTackleDrugMisuse": "FULL_MOTIVATION",
   "problemSolvingSkills": "SOME_PROBLEMS",
-  "awarenessOfConsequences": "SOME_PROBLEMS",
-  "understandsPeoplesViews": "NO_PROBLEMS",
+  "awarenessOfConsequences": "SOMETIMES",
+  "understandsOtherPeoplesViews": "NO_PROBLEMS",
   "proCriminalAttitudes": "SOME_PROBLEMS"
 }

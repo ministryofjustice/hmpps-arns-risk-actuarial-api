@@ -9,7 +9,7 @@
   "attitudesTowardsSelf": "SOME_PROBLEMS",
   "impulsivityBehaviour": "SOME_PROBLEMS",
   "problemSolvingSkills": "SOME_PROBLEMS",
-  "awarenessOfConsequences": "NO_PROBLEMS",
-  "understandsPeoplesViews": "NO_PROBLEMS",
+  "awarenessOfConsequences": "YES",
+  "understandsOtherPeoplesViews": "NO_PROBLEMS",
   "temperControl": "SIGNIFICANT_PROBLEMS"
 }

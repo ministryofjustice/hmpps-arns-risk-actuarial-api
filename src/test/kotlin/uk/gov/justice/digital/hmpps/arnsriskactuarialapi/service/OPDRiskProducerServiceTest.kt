@@ -113,7 +113,7 @@ class OPDRiskProducerServiceTest {
       custodialSentence = true,
       medicationMentalHealth = true,
       historyOfPsychiatricTreatment = true,
-      currentPsychiatricTreatmentOrPending = true,
+      hasCurrentPsychiatricTreatment = true,
       selfHarmSuicideAttempt = true,
     )
 
@@ -265,7 +265,7 @@ class OPDRiskProducerServiceTest {
       historyOfPsychiatricTreatment = null,
       medicationMentalHealth = null,
       patientSecureUnitOrHospital = null,
-      currentPsychiatricTreatmentOrPending = null,
+      hasCurrentPsychiatricTreatment = null,
       obsessiveBehaviour = null,
       selfHarmSuicideAttempt = null,
       attitudeTowardsSupervision = null,

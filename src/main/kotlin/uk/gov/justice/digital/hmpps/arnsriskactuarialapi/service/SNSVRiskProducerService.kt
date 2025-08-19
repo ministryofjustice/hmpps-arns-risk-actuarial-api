@@ -10,12 +10,11 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.SNSVDynamicReq
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.SNSVObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.SNSVStaticRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.ScoreType
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.alcoholExcessive6MonthsWeight
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.alcoholIsCurrentUseAProblemWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.carryingOrUsingWeaponWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.currentAlcoholUseProblemsWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.currentRelationshipWithPartnerWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.domesticViolenceWeight
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.employmentStatusWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.excessiveAlcoholUseWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.get2YearInterceptWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getAgeGenderPolynomialWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getMonthsSinceLastSanctionWeight
@@ -25,6 +24,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getViolentSanctionsWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getYearsBetweenFirstAndSecondSanctionWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.impulsivityBehaviourWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.isUnemployedWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.previousConvictionsWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.proCriminalAttitudesWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.suitabilityOfAccommodationWeight
@@ -41,10 +41,10 @@ class SNSVRiskProducerService : RiskScoreProducer {
     val SNSV_DYNAMIC_ADDITIONAL_REQUIRED_PROPERTIES = listOf(
       RiskScoreRequest::carryingOrUsingWeapon,
       RiskScoreRequest::suitabilityOfAccommodation,
-      RiskScoreRequest::employmentStatus,
+      RiskScoreRequest::isUnemployed,
       RiskScoreRequest::currentRelationshipWithPartner,
-      RiskScoreRequest::alcoholIsCurrentUseAProblem,
-      RiskScoreRequest::alcoholExcessive6Months,
+      RiskScoreRequest::currentAlcoholUseProblems,
+      RiskScoreRequest::excessiveAlcoholUse,
       RiskScoreRequest::impulsivityBehaviour,
       RiskScoreRequest::temperControl,
       RiskScoreRequest::proCriminalAttitudes,
@@ -114,10 +114,10 @@ class SNSVRiskProducerService : RiskScoreProducer {
     this.totalNumberOfViolentSanctions!!.toInt(),
     this.carryingOrUsingWeapon!!,
     this.suitabilityOfAccommodation!!,
-    this.employmentStatus!!,
+    this.isUnemployed!!,
     this.currentRelationshipWithPartner!!,
-    this.alcoholIsCurrentUseAProblem!!,
-    this.alcoholExcessive6Months!!,
+    this.currentAlcoholUseProblems!!,
+    this.excessiveAlcoholUse!!,
     this.impulsivityBehaviour!!,
     this.temperControl!!,
     this.proCriminalAttitudes!!,
@@ -213,10 +213,10 @@ class SNSVRiskProducerService : RiskScoreProducer {
     // Dynamic Additions
     carryingOrUsingWeaponWeight(request.carryingOrUsingWeapon),
     suitabilityOfAccommodationWeight(request.suitabilityOfAccommodation),
-    employmentStatusWeight(request.employmentStatus),
+    isUnemployedWeight(request.isUnemployed),
     currentRelationshipWithPartnerWeight(request.currentRelationshipWithPartner),
-    alcoholIsCurrentUseAProblemWeight(request.alcoholIsCurrentUseAProblem),
-    alcoholExcessive6MonthsWeight(request.alcoholExcessive6Months),
+    currentAlcoholUseProblemsWeight(request.currentAlcoholUseProblems),
+    excessiveAlcoholUseWeight(request.excessiveAlcoholUse),
     impulsivityBehaviourWeight(request.impulsivityBehaviour),
     proCriminalAttitudesWeight(request.proCriminalAttitudes),
     domesticViolenceWeight(request.domesticAbuse),
