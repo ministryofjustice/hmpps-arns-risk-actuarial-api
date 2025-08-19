@@ -43,10 +43,10 @@ class PNIRiskProducerServiceTest {
     )
     val request = validPNIRiskScoreRequest().copy(
       sexualPreoccupation = ProblemLevel.SIGNIFICANT_PROBLEMS,
-      sexualInterestsOffenceRelated = ProblemLevel.SIGNIFICANT_PROBLEMS,
-      emotionalCongruence = ProblemLevel.SIGNIFICANT_PROBLEMS,
+      offenceRelatedSexualInterests = ProblemLevel.SIGNIFICANT_PROBLEMS,
+      emotionalCongruenceWithChildren = ProblemLevel.SIGNIFICANT_PROBLEMS,
       saraRiskToOthers = RiskBand.HIGH,
-      inCustodyOrCommunity = CustodyOrCommunity.CUSTODY,
+      supervisionStatus = CustodyOrCommunity.CUSTODY,
     )
     val result = service.getRiskScore(request, context).PNI
     assertNotNull(result)
@@ -61,10 +61,10 @@ class PNIRiskProducerServiceTest {
     )
     val request = validPNIRiskScoreRequest().copy(
       sexualPreoccupation = ProblemLevel.SOME_PROBLEMS,
-      sexualInterestsOffenceRelated = ProblemLevel.SOME_PROBLEMS,
-      emotionalCongruence = ProblemLevel.SOME_PROBLEMS,
+      offenceRelatedSexualInterests = ProblemLevel.SOME_PROBLEMS,
+      emotionalCongruenceWithChildren = ProblemLevel.SOME_PROBLEMS,
       saraRiskToOthers = RiskBand.HIGH,
-      inCustodyOrCommunity = CustodyOrCommunity.COMMUNITY,
+      supervisionStatus = CustodyOrCommunity.COMMUNITY,
     )
     val result = service.getRiskScore(request, context).PNI
     assertNotNull(result)
@@ -79,9 +79,9 @@ class PNIRiskProducerServiceTest {
     )
     val request = validPNIRiskScoreRequest().copy(
       sexualPreoccupation = null,
-      sexualInterestsOffenceRelated = null,
-      emotionalCongruence = null,
-      easilyInfluencedByCriminals = null,
+      offenceRelatedSexualInterests = null,
+      emotionalCongruenceWithChildren = null,
+      easilyInfluencedByCriminalAssociates = null,
       saraRiskToOthers = null,
       saraRiskToPartner = null,
     )
@@ -93,9 +93,9 @@ class PNIRiskProducerServiceTest {
     assertEquals(ValidationErrorType.MISSING_INPUT, error?.type)
     assertEquals("ERR5 - Field is Null", error?.message)
     assertTrue(error?.fields?.contains("sexualPreoccupation") == true)
-    assertTrue(error?.fields?.contains("sexualInterestsOffenceRelated") == true)
-    assertTrue(error?.fields?.contains("emotionalCongruence") == true)
-    assertTrue(error?.fields?.contains("easilyInfluencedByCriminals") == true)
+    assertTrue(error?.fields?.contains("offenceRelatedSexualInterests") == true)
+    assertTrue(error?.fields?.contains("emotionalCongruenceWithChildren") == true)
+    assertTrue(error?.fields?.contains("easilyInfluencedByCriminalAssociates") == true)
   }
 
   @Nested
@@ -104,7 +104,7 @@ class PNIRiskProducerServiceTest {
     @Test
     fun `should return true for high intensity when custody is true and OGRS and OVP are high`() {
       val request = pniRequest().copy(
-        inCustodyOrCommunity = CustodyOrCommunity.CUSTODY,
+        supervisionStatus = CustodyOrCommunity.CUSTODY,
         ogrs3TwoYear = 80,
         ovp = 65,
       )
@@ -115,7 +115,7 @@ class PNIRiskProducerServiceTest {
     @Test
     fun `should return false for high intensity when custody is false even if scores are high`() {
       val request = pniRequest().copy(
-        inCustodyOrCommunity = CustodyOrCommunity.COMMUNITY,
+        supervisionStatus = CustodyOrCommunity.COMMUNITY,
         ogrs3TwoYear = 80,
         ovp = 65,
       )
@@ -125,7 +125,7 @@ class PNIRiskProducerServiceTest {
 
     @Test
     fun `should return true for high intensity with high need and high risk`() {
-      val request = pniRequest().copy(inCustodyOrCommunity = CustodyOrCommunity.CUSTODY)
+      val request = pniRequest().copy(supervisionStatus = CustodyOrCommunity.CUSTODY)
       val result = service.isHighIntensity(request, NeedScore.HIGH, RiskBand.HIGH)
       assertTrue(result)
     }
@@ -133,7 +133,7 @@ class PNIRiskProducerServiceTest {
     @Test
     fun `should return true for high intensity with high sara and high ogrs`() {
       val request = pniRequest().copy(
-        inCustodyOrCommunity = CustodyOrCommunity.CUSTODY,
+        supervisionStatus = CustodyOrCommunity.CUSTODY,
         ogrs3TwoYear = 80,
         saraRiskToPartner = RiskBand.HIGH,
       )
@@ -144,7 +144,7 @@ class PNIRiskProducerServiceTest {
     @Test
     fun `should return true for moderate intensity with high ogrs and ovp and community`() {
       val request = pniRequest().copy(
-        inCustodyOrCommunity = CustodyOrCommunity.COMMUNITY,
+        supervisionStatus = CustodyOrCommunity.COMMUNITY,
         ogrs3TwoYear = 80,
         ovp = 65,
       )
@@ -155,7 +155,7 @@ class PNIRiskProducerServiceTest {
     @Test
     fun `should return true for moderate intensity with high sara`() {
       val request = pniRequest().copy(
-        inCustodyOrCommunity = CustodyOrCommunity.COMMUNITY,
+        supervisionStatus = CustodyOrCommunity.COMMUNITY,
         saraRiskToOthers = RiskBand.HIGH,
       )
       val result = service.isModerateIntensity(request, NeedScore.MEDIUM, RiskBand.MEDIUM)
@@ -164,14 +164,14 @@ class PNIRiskProducerServiceTest {
 
     @Test
     fun `should return true for moderate intensity with medium need and high risk`() {
-      val request = pniRequest().copy(inCustodyOrCommunity = CustodyOrCommunity.COMMUNITY)
+      val request = pniRequest().copy(supervisionStatus = CustodyOrCommunity.COMMUNITY)
       val result = service.isModerateIntensity(request, NeedScore.MEDIUM, RiskBand.HIGH)
       assertTrue(result)
     }
 
     @Test
     fun `should return false for moderate intensity if none of the conditions apply`() {
-      val request = pniRequest().copy(inCustodyOrCommunity = CustodyOrCommunity.COMMUNITY)
+      val request = pniRequest().copy(supervisionStatus = CustodyOrCommunity.COMMUNITY)
       val result = service.isModerateIntensity(request, NeedScore.LOW, RiskBand.LOW)
       assertFalse(result)
     }
@@ -182,7 +182,7 @@ class PNIRiskProducerServiceTest {
     @Test
     fun `isHighRisk returns true when custody is true and ogrs3 is high`() {
       val result =
-        service.isHighRisk(pniRequest().copy(inCustodyOrCommunity = CustodyOrCommunity.CUSTODY, ogrs3TwoYear = 80))
+        service.isHighRisk(pniRequest().copy(supervisionStatus = CustodyOrCommunity.CUSTODY, ogrs3TwoYear = 80))
       assertTrue(result)
     }
 
@@ -226,7 +226,7 @@ class PNIRiskProducerServiceTest {
     fun `isHighRisk returns false when all risk factors are low or null`() {
       val result = service.isHighRisk(
         pniRequest().copy(
-          inCustodyOrCommunity = CustodyOrCommunity.COMMUNITY,
+          supervisionStatus = CustodyOrCommunity.COMMUNITY,
           ogrs3TwoYear = 40,
           ovp = 10,
           rsr = 1,

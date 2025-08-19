@@ -90,7 +90,7 @@ class OPDRiskProducerServiceTest {
       gender = Gender.MALE,
       overallRiskForAssessment = RiskBand.HIGH,
       custodialSentence = true,
-      opdOverride = true,
+      applyOPDOverride = true,
     )
 
     val result = service.getRiskScore(request, context).OPD!!
@@ -134,7 +134,7 @@ class OPDRiskProducerServiceTest {
       currentOffenceCode = "02504",
       gender = Gender.FEMALE,
       overallRiskForAssessment = RiskBand.LOW,
-      eligibleForMappa = false,
+      isEligibleForMappa = false,
     )
 
     val result = service.getRiskScore(request, context).OPD!!
@@ -153,7 +153,7 @@ class OPDRiskProducerServiceTest {
       currentOffenceCode = "02504",
       gender = Gender.FEMALE,
       overallRiskForAssessment = RiskBand.HIGH,
-      eligibleForMappa = false,
+      isEligibleForMappa = false,
       custodialSentence = false,
     )
 
@@ -173,7 +173,7 @@ class OPDRiskProducerServiceTest {
       currentOffenceCode = "02504",
       gender = Gender.FEMALE,
       overallRiskForAssessment = RiskBand.HIGH,
-      eligibleForMappa = false,
+      isEligibleForMappa = false,
       custodialSentence = true,
     )
 
@@ -250,15 +250,15 @@ class OPDRiskProducerServiceTest {
       custodialSentence = true,
       overallRiskForAssessment = RiskBand.VERY_HIGH,
       ageAtFirstSanction = null,
-      violenceOrThreatOfViolence = null,
-      excessiveOrSadisticViolence = null,
+      didOffenceInvolveViolenceOrThreatOfViolence = null,
+      didOffenceInvolveExcessiveUseOfViolence = null,
       doesRecogniseImpactOfOffendingOnOthers = null,
       financialRelianceOnOthers = null,
       manipulativePredatoryBehaviour = null,
-      attitudesStableBehaviour = null,
+      recklessnessAndRiskTakingBehaviour = null,
       childhoodBehaviour = null,
-      impulsivityBehaviour = null,
-      controllingBehaviour = null,
+      impulsivityProblems = null,
+      controllingOrAggressiveBehaviour = null,
       experienceOfChildhood = null,
       currentPsychologicalProblems = null,
       currentPsychiatricProblems = null,
@@ -287,12 +287,12 @@ class OPDRiskProducerServiceTest {
       currentOffenceCode = "02504",
       gender = Gender.FEMALE,
       overallRiskForAssessment = RiskBand.VERY_HIGH,
-      eligibleForMappa = true,
-      carryingOrUsingWeapon = null,
-      violenceOrThreatOfViolence = null,
-      excessiveOrSadisticViolence = null,
-      offenceArson = null,
-      offenderMotivations = null,
+      isEligibleForMappa = true,
+      didOffenceInvolveCarryingOrUsingWeapon = null,
+      didOffenceInvolveViolenceOrThreatOfViolence = null,
+      didOffenceInvolveExcessiveUseOfViolence = null,
+      didOffenceInvolveArson = null,
+      offenceMotivationEmotionalState = null,
       offenceLinkedRiskOfSeriousHarm = null,
       accommodationLinkedRiskOfSeriousHarm = null,
       experienceOfChildhood = null,
@@ -336,9 +336,9 @@ class OPDRiskProducerServiceTest {
     val request = validOPDRiskScoreRequest().copy(
       currentOffenceCode = "02504",
       gender = Gender.FEMALE,
-      carryingOrUsingWeapon = false,
-      violenceOrThreatOfViolence = false,
-      opdOverride = false,
+      didOffenceInvolveCarryingOrUsingWeapon = false,
+      didOffenceInvolveViolenceOrThreatOfViolence = false,
+      applyOPDOverride = false,
     )
 
     val result = service.getRiskScore(request, context).OPD!!
@@ -357,9 +357,9 @@ class OPDRiskProducerServiceTest {
     val request = validOPDRiskScoreRequest().copy(
       currentOffenceCode = "02504",
       gender = Gender.FEMALE,
-      carryingOrUsingWeapon = false,
-      violenceOrThreatOfViolence = false,
-      opdOverride = true,
+      didOffenceInvolveCarryingOrUsingWeapon = false,
+      didOffenceInvolveViolenceOrThreatOfViolence = false,
+      applyOPDOverride = true,
     )
 
     val result = service.getRiskScore(request, context).OPD!!
@@ -378,9 +378,9 @@ class OPDRiskProducerServiceTest {
     val request = validOPDRiskScoreRequest().copy(
       currentOffenceCode = "02504",
       gender = Gender.FEMALE,
-      carryingOrUsingWeapon = false,
-      violenceOrThreatOfViolence = false,
-      opdOverride = false,
+      didOffenceInvolveCarryingOrUsingWeapon = false,
+      didOffenceInvolveViolenceOrThreatOfViolence = false,
+      applyOPDOverride = false,
     )
 
     val result = service.getRiskScore(request, context).OPD!!
@@ -399,17 +399,17 @@ class OPDRiskProducerServiceTest {
     val request = validOPDRiskScoreRequest().copy(
       currentOffenceCode = "02504",
       gender = Gender.FEMALE,
-      carryingOrUsingWeapon = true,
-      violenceOrThreatOfViolence = true,
-      offenceArson = true,
+      didOffenceInvolveCarryingOrUsingWeapon = true,
+      didOffenceInvolveViolenceOrThreatOfViolence = true,
+      didOffenceInvolveArson = true,
       experienceOfChildhood = ProblemLevel.SIGNIFICANT_PROBLEMS,
       accommodationLinkedRiskOfSeriousHarm = true,
       thinkingAndBehaviourLinedToRiskOfSeriousHarm = true,
       difficultiesCoping = ProblemLevel.SIGNIFICANT_PROBLEMS,
       selfHarmSuicideAttempt = true,
       wellbeingEmotionalLinkedRiskOfSeriousHarm = true,
-      excessiveOrSadisticViolence = true,
-      opdOverride = false,
+      didOffenceInvolveExcessiveUseOfViolence = true,
+      applyOPDOverride = false,
     )
 
     val result = service.getRiskScore(request, context).OPD!!

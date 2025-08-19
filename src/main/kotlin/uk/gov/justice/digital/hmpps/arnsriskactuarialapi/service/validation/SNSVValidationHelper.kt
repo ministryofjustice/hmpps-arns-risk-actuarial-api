@@ -10,7 +10,7 @@ val SNSV_STATIC_REQUIRED_PROPERTIES = listOf(
   RiskScoreRequest::currentOffenceCode,
   RiskScoreRequest::totalNumberOfSanctionsForAllOffences,
   RiskScoreRequest::ageAtFirstSanction,
-  RiskScoreRequest::inCustodyOrCommunity,
+  RiskScoreRequest::supervisionStatus,
   RiskScoreRequest::dateAtStartOfFollowup,
   RiskScoreRequest::totalNumberOfViolentSanctions,
 )

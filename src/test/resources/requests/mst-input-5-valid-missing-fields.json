@@ -3,14 +3,14 @@
   "gender": "MALE",
   "dateOfBirth": "2003-04-06",
   "assessmentDate": "2025-06-18",
-  "attitudesPeerPressure": "SIGNIFICANT_PROBLEMS",
-  "attitudesStableBehaviour": null,
+  "influenceFromCriminalAssociates": "SIGNIFICANT_PROBLEMS",
+  "recklessnessAndRiskTakingBehaviour": null,
   "difficultiesCoping": "NO_PROBLEMS",
   "attitudesTowardsSelf": "NO_PROBLEMS",
-  "impulsivityBehaviour": "NO_PROBLEMS",
+  "impulsivityProblems": "NO_PROBLEMS",
   "temperControl": "NO_PROBLEMS",
   "problemSolvingSkills": "SOME_PROBLEMS",
   "awarenessOfConsequences": "SOMETIMES",
   "understandsOtherPeoplesViews": "NO_PROBLEMS",
-  "peerGroupInfluences": false
+  "hasPeerGroupInfluences": false
 }

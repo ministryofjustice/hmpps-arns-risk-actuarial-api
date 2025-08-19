@@ -226,22 +226,22 @@ class CommonValidationHelperTest {
 
   @Test
   fun `addIfNull should field name when property is null`() {
-    val request = RiskScoreRequest(peerGroupInfluences = null)
+    val request = RiskScoreRequest(hasPeerGroupInfluences = null)
     val missingFields = arrayListOf<String>()
 
-    missingFields.addIfNull(request, RiskScoreRequest::peerGroupInfluences)
-    assertEquals(listOf("peerGroupInfluences"), missingFields)
+    missingFields.addIfNull(request, RiskScoreRequest::hasPeerGroupInfluences)
+    assertEquals(listOf("hasPeerGroupInfluences"), missingFields)
 
     missingFields.addIfNull(request, RiskScoreRequest::gender)
-    assertEquals(listOf("peerGroupInfluences", "gender"), missingFields)
+    assertEquals(listOf("hasPeerGroupInfluences", "gender"), missingFields)
   }
 
   @Test
   fun `addIfNull should not add field name when property is not null`() {
-    val request = RiskScoreRequest(peerGroupInfluences = true)
+    val request = RiskScoreRequest(hasPeerGroupInfluences = true)
     val missingFields = arrayListOf<String>()
 
-    missingFields.addIfNull(request, RiskScoreRequest::peerGroupInfluences)
+    missingFields.addIfNull(request, RiskScoreRequest::hasPeerGroupInfluences)
     assertEquals(emptyList<String>(), missingFields)
   }
 }

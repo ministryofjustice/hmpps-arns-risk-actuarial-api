@@ -9,7 +9,7 @@ private fun getMissingPNIFieldsValidation(request: RiskScoreRequest): List<Valid
   val errors = arrayListOf<ValidationErrorResponse>()
   val missingFields = arrayListOf<String>()
 
-  missingFields.addIfNull(request, RiskScoreRequest::inCustodyOrCommunity)
+  missingFields.addIfNull(request, RiskScoreRequest::supervisionStatus)
 
   return addMissingFields(missingFields, errors)
 }

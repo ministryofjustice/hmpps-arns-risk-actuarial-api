@@ -8,11 +8,11 @@ object SexDomainScore : DomainScore {
     if (request.sexualPreoccupation == null) {
       add("sexualPreoccupation")
     }
-    if (request.sexualInterestsOffenceRelated == null) {
-      add("sexualInterestsOffenceRelated")
+    if (request.offenceRelatedSexualInterests == null) {
+      add("offenceRelatedSexualInterests")
     }
-    if (request.emotionalCongruence == null) {
-      add("emotionalCongruence")
+    if (request.emotionalCongruenceWithChildren == null) {
+      add("emotionalCongruenceWithChildren")
     }
   }
 
@@ -20,8 +20,8 @@ object SexDomainScore : DomainScore {
     val hasNoMissingFields = getMissingFields(request).isEmpty()
     val interimScore = listOfNotNull(
       request.sexualPreoccupation?.score,
-      request.sexualInterestsOffenceRelated?.score,
-      request.emotionalCongruence?.score,
+      request.offenceRelatedSexualInterests?.score,
+      request.emotionalCongruenceWithChildren?.score,
     ).sum()
     return if (interimScore >= 4 || hasNoMissingFields) {
       interimScore
@@ -33,8 +33,8 @@ object SexDomainScore : DomainScore {
   override fun projectedNeeds(request: PNIRequestValidated): Int? {
     val interimScore = listOf(
       request.sexualPreoccupation?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
-      request.sexualInterestsOffenceRelated?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
-      request.emotionalCongruence?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
+      request.offenceRelatedSexualInterests?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
+      request.emotionalCongruenceWithChildren?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
     ).sum()
     return interimScore
   }
@@ -56,13 +56,13 @@ object SexDomainScore : DomainScore {
     request: PNIRequestValidated,
     interimScore: Int?,
   ): Int? = when {
-    (request.sexualInterestsOffenceRelated?.score == 2) -> 2
+    (request.offenceRelatedSexualInterests?.score == 2) -> 2
     interimScore in 0..1 -> 0
     interimScore in 2..3 -> 1
     interimScore in 4..6 -> 2
     else -> null
   }
 
-  // The sex domain will only be calculated if hasCommittedSexualOffence or riskSexualHarm is Yes
-  private fun preCheckValid(request: PNIRequestValidated): Boolean = request.hasCommittedSexualOffence == true || request.riskSexualHarm == true
+  // The sex domain will only be calculated if hasEverCommittedSexualOffence or isARiskOfSexualHarm is Yes
+  private fun preCheckValid(request: PNIRequestValidated): Boolean = request.hasEverCommittedSexualOffence == true || request.isARiskOfSexualHarm == true
 }

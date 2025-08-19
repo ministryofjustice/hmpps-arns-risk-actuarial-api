@@ -18,12 +18,12 @@ class PNIValidationHelperTest {
   fun `opdInitialValidation missing field error with all field populated`() {
     val request = validPNIRiskScoreRequest().copy(
       gender = null,
-      inCustodyOrCommunity = null,
+      supervisionStatus = null,
     )
     val result = pniInitialValidation(request)
 
     val expectedFields = listOf(
-      "inCustodyOrCommunity",
+      "supervisionStatus",
     )
 
     val error = result.first()

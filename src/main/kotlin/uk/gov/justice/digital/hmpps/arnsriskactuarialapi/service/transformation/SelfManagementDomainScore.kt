@@ -5,8 +5,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIRequestValid
 
 object SelfManagementDomainScore : DomainScore {
   override fun getMissingFields(request: PNIRequestValidated) = arrayListOf<String>().apply {
-    if (request.impulsivityBehaviour == null) {
-      add("impulsivityBehaviour")
+    if (request.impulsivityProblems == null) {
+      add("impulsivityProblems")
     }
     if (request.temperControl == null) {
       add("temperControl")
@@ -20,14 +20,14 @@ object SelfManagementDomainScore : DomainScore {
   }
 
   override fun domainNeeds(request: PNIRequestValidated): Int? = listOfNotNull(
-    request.impulsivityBehaviour?.score,
+    request.impulsivityProblems?.score,
     request.temperControl?.score,
     request.problemSolvingSkills?.score,
     request.difficultiesCoping?.score,
   ).sum()
 
   override fun projectedNeeds(request: PNIRequestValidated): Int? = listOf(
-    request.impulsivityBehaviour?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
+    request.impulsivityProblems?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
     request.temperControl?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
     request.problemSolvingSkills?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,
     request.difficultiesCoping?.score ?: ProblemLevel.SIGNIFICANT_PROBLEMS.score,

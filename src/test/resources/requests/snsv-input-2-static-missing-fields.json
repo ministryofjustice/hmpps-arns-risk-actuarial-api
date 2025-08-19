@@ -5,6 +5,6 @@
   "assessmentDate": "2025-01-01",
   "currentOffenceCode": "02700",
   "totalNumberOfSanctionsForAllOffences": 1,
-  "inCustodyOrCommunity": "COMMUNITY",
+  "supervisionStatus": "COMMUNITY",
   "totalNumberOfViolentSanctions": 1
 }

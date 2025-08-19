@@ -16,16 +16,16 @@
   "proCriminalAttitudes": "SOME_PROBLEMS",
   "hasCurrentPsychiatricTreatment": false,
   "sexualPreoccupation": "SIGNIFICANT_PROBLEMS",
-  "sexualInterestsOffenceRelated": "SIGNIFICANT_PROBLEMS",
-  "emotionalCongruence": "SIGNIFICANT_PROBLEMS",
+  "offenceRelatedSexualInterests": "SIGNIFICANT_PROBLEMS",
+  "emotionalCongruenceWithChildren": "SIGNIFICANT_PROBLEMS",
   "saraRiskToOthers": "HIGH",
   "hostileOrientation": "NO_PROBLEMS",
-  "currentRelationshipFamilyMembers": "NO_PROBLEMS",
+  "currentRelationshipWithFamilyMembers": "NO_PROBLEMS",
   "previousCloseRelationships": "NO_PROBLEMS",
-  "easilyInfluencedByCriminals": "NO_PROBLEMS",
-  "controllingBehaviour": "NO_PROBLEMS",
-  "impulsivityBehaviour": "NO_PROBLEMS",
+  "easilyInfluencedByCriminalAssociates": "NO_PROBLEMS",
+  "controllingOrAggressiveBehaviour": "NO_PROBLEMS",
+  "impulsivityProblems": "NO_PROBLEMS",
   "problemSolvingSkills": "NO_PROBLEMS",
   "difficultiesCoping": "NO_PROBLEMS",
-  "inCustodyOrCommunity": "COMMUNITY"
+  "supervisionStatus": "COMMUNITY"
 }

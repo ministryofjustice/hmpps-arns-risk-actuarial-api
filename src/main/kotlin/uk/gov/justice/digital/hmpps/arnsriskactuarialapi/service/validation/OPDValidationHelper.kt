@@ -37,7 +37,7 @@ private fun getMissingOPDFieldsValidation(
   missingFields.addIfNull(request, RiskScoreRequest::highestRiskLevel)
   missingFields.addIfNull(request, RiskScoreRequest::currentOffenceCode)
   missingFields.addIfNull(request, RiskScoreRequest::custodialSentence)
-  if (request.eligibleForMappa == null && request.gender == Gender.FEMALE) missingFields.add(RiskScoreRequest::eligibleForMappa.name)
+  if (request.isEligibleForMappa == null && request.gender == Gender.FEMALE) missingFields.add(RiskScoreRequest::isEligibleForMappa.name)
   if (request.domesticAbuse == true) {
     missingFields.addIfNull(request, RiskScoreRequest::domesticAbusePartner)
     missingFields.addIfNull(request, RiskScoreRequest::domesticAbuseFamily)

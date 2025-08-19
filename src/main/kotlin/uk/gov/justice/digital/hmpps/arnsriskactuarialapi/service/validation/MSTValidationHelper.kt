@@ -17,12 +17,12 @@ fun mstInitialValidation(request: RiskScoreRequest): List<ValidationErrorRespons
   missingFields.addIfNull(request, RiskScoreRequest::dateOfBirth)
 
   val answersCount = listOfNotNull(
-    request.peerGroupInfluences,
-    request.attitudesPeerPressure,
-    request.attitudesStableBehaviour,
+    request.hasPeerGroupInfluences,
+    request.influenceFromCriminalAssociates,
+    request.recklessnessAndRiskTakingBehaviour,
     request.difficultiesCoping,
     request.attitudesTowardsSelf,
-    request.impulsivityBehaviour,
+    request.impulsivityProblems,
     request.temperControl,
     request.problemSolvingSkills,
     request.awarenessOfConsequences,
@@ -30,12 +30,12 @@ fun mstInitialValidation(request: RiskScoreRequest): List<ValidationErrorRespons
   ).size
 
   if (answersCount < MIN_MST_ANSWERS_SIZE) {
-    missingFields.addIfNull(request, RiskScoreRequest::peerGroupInfluences)
-    missingFields.addIfNull(request, RiskScoreRequest::attitudesPeerPressure)
-    missingFields.addIfNull(request, RiskScoreRequest::attitudesStableBehaviour)
+    missingFields.addIfNull(request, RiskScoreRequest::hasPeerGroupInfluences)
+    missingFields.addIfNull(request, RiskScoreRequest::influenceFromCriminalAssociates)
+    missingFields.addIfNull(request, RiskScoreRequest::recklessnessAndRiskTakingBehaviour)
     missingFields.addIfNull(request, RiskScoreRequest::difficultiesCoping)
     missingFields.addIfNull(request, RiskScoreRequest::attitudesTowardsSelf)
-    missingFields.addIfNull(request, RiskScoreRequest::impulsivityBehaviour)
+    missingFields.addIfNull(request, RiskScoreRequest::impulsivityProblems)
     missingFields.addIfNull(request, RiskScoreRequest::temperControl)
     missingFields.addIfNull(request, RiskScoreRequest::problemSolvingSkills)
     missingFields.addIfNull(request, RiskScoreRequest::awarenessOfConsequences)
