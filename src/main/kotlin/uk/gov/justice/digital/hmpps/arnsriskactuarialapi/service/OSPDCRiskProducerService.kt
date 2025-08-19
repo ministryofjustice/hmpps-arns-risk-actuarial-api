@@ -55,8 +55,8 @@ class OSPDCRiskProducerService : RiskScoreProducer {
       request.totalNonContactSexualOffences!!,
       request.totalIndecentImageSanctions!!,
       request.dateAtStartOfFollowup!!,
-      request.dateOfMostRecentSexualOffence,
       request.totalNumberOfSanctionsForAllOffences!!.toInt(),
+      request.dateOfMostRecentSexualOffence,
       request.victimStranger,
     )
     return context.apply {
@@ -76,7 +76,7 @@ class OSPDCRiskProducerService : RiskScoreProducer {
       ),
       getAgeAtStartOfFollowupWeight(request.dateOfBirth, request.dateAtStartOfFollowup),
       request.dateOfMostRecentSexualOffence?.let { date -> getAgeAtLastSanctionForSexualOffenceWeight(request.dateOfBirth, date) } ?: 0,
-      getTotalNumberOfSanctionsWeight(request.totalNumberOfSanctionsForAllOffences),
+      getTotalNumberOfSanctionsForAllOffencesWeight(request.totalNumberOfSanctionsForAllOffences),
       getStrangerVictimWeight(request.victimStranger),
     ).sum()
       .let { ospdc64PointScore ->
