@@ -17,7 +17,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getTotalContactAdultSexualSanctionsWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getTotalContactChildSexualSanctionsWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getTotalNonContactSexualOffencesExcludingIndecentImagesWeight
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getTotalNumberOfSanctionsWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getTotalNumberOfSanctionsForAllOffencesWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.addMissingCriteriaValidation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.ospdcInitialValidation
 
@@ -55,8 +55,8 @@ class OSPDCRiskProducerService : RiskScoreProducer {
       request.totalNonContactSexualOffences!!,
       request.totalIndecentImageSanctions!!,
       request.dateAtStartOfFollowup!!,
+      request.totalNumberOfSanctionsForAllOffences!!.toInt(),
       request.dateOfMostRecentSexualOffence,
-      request.totalNumberOfSanctions!!.toInt(),
       request.victimStranger,
     )
     return context.apply {
@@ -76,7 +76,7 @@ class OSPDCRiskProducerService : RiskScoreProducer {
       ),
       getAgeAtStartOfFollowupWeight(request.dateOfBirth, request.dateAtStartOfFollowup),
       request.dateOfMostRecentSexualOffence?.let { date -> getAgeAtLastSanctionForSexualOffenceWeight(request.dateOfBirth, date) } ?: 0,
-      getTotalNumberOfSanctionsWeight(request.totalNumberOfSanctions),
+      getTotalNumberOfSanctionsForAllOffencesWeight(request.totalNumberOfSanctionsForAllOffences),
       getStrangerVictimWeight(request.victimStranger),
     ).sum()
       .let { ospdc64PointScore ->

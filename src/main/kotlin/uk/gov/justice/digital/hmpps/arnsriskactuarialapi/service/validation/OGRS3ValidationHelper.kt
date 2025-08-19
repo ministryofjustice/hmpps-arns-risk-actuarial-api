@@ -6,10 +6,10 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResp
 fun ogrs3InitialValidation(request: RiskScoreRequest): List<ValidationErrorResponse> {
   val missingFieldValidationErrorStep = getMissingOGRS3FieldsValidation(request)
   val totalSanctionsValidationErrorStep =
-    getTotalNumberOfSanctionsValidation(request.totalNumberOfSanctions, emptyList())
-  val currentOffenceValidationErrorStep =
-    getCurrentOffenceValidation(request.currentOffence, emptyList())
-  return missingFieldValidationErrorStep + totalSanctionsValidationErrorStep + currentOffenceValidationErrorStep
+    getTotalNumberOfSanctionsForAllOffencesValidation(request.totalNumberOfSanctionsForAllOffences, emptyList())
+  val currentOffenceCodeValidationErrorStep =
+    getCurrentOffenceCodeValidation(request.currentOffenceCode, emptyList())
+  return missingFieldValidationErrorStep + totalSanctionsValidationErrorStep + currentOffenceCodeValidationErrorStep
 }
 
 fun getMissingOGRS3FieldsValidation(request: RiskScoreRequest): List<ValidationErrorResponse> {
@@ -21,9 +21,9 @@ fun getMissingOGRS3FieldsValidation(request: RiskScoreRequest): List<ValidationE
   missingFields.addIfNull(request, RiskScoreRequest::dateOfBirth)
   missingFields.addIfNull(request, RiskScoreRequest::dateOfCurrentConviction)
   missingFields.addIfNull(request, RiskScoreRequest::dateAtStartOfFollowup)
-  missingFields.addIfNull(request, RiskScoreRequest::totalNumberOfSanctions)
+  missingFields.addIfNull(request, RiskScoreRequest::totalNumberOfSanctionsForAllOffences)
   missingFields.addIfNull(request, RiskScoreRequest::ageAtFirstSanction)
-  missingFields.addIfNull(request, RiskScoreRequest::currentOffence)
+  missingFields.addIfNull(request, RiskScoreRequest::currentOffenceCode)
 
   return addMissingFields(missingFields, errors)
 }

@@ -27,7 +27,7 @@ fun getAgeDiffAtOffenceDate(
 
 fun getAgeAtStartOfFollowup(dateOfBirth: LocalDate, dateAtStartOfFollowup: LocalDate): Int = ChronoUnit.YEARS.between(dateOfBirth, dateAtStartOfFollowup).toInt()
 
-fun getOffenderConvictionStatus(totalNumberOfSanctions: Int) = if (totalNumberOfSanctions == 1) OffenderConvictionStatus.FIRST_TIME_OFFENDER else OffenderConvictionStatus.REPEAT_OFFENDER
+fun getOffenderConvictionStatus(totalNumberOfSanctionsForAllOffences: Int) = if (totalNumberOfSanctionsForAllOffences == 1) OffenderConvictionStatus.FIRST_TIME_OFFENDER else OffenderConvictionStatus.REPEAT_OFFENDER
 
 fun getOffenderCopasScore(
   numberOfPreviousSanctions: Int,

@@ -9,7 +9,7 @@ class OGPValidationHelper {
   companion object {
 
     val OGP_PROPERTIES = listOf(
-      RiskScoreRequest::currentAccommodation.name,
+      RiskScoreRequest::isCurrentlyOfNoFixedAbodeOrTransientAccommodation.name,
       RiskScoreRequest::employmentStatus.name,
       RiskScoreRequest::regularOffendingActivities.name,
       RiskScoreRequest::currentDrugMisuse.name,

@@ -9,7 +9,7 @@ data class OPDRequestValidated(
   val highestRiskLevel: RiskBand,
   val gender: Gender,
   val ageAtFirstSanction: Int? = null,
-  val currentOffence: String,
+  val currentOffenceCode: String,
   val opdOverride: Boolean,
   val eligibleForMappa: Boolean,
   val carryingOrUsingWeapon: Boolean,
@@ -44,7 +44,7 @@ data class OPDRequestValidated(
   val assaultedOrThreatenedStaff: Boolean?,
   val escapeOrAbsconded: Boolean?,
   val controlIssuesOrBreachOfTrust: Boolean?,
-  val impactOfOffendingOnOthers: Boolean,
+  val doesRecogniseImpactOfOffendingOnOthers: Boolean,
   val attitudesStableBehaviour: ProblemLevel? = null,
   val impulsivityBehaviour: ProblemLevel? = null,
 )

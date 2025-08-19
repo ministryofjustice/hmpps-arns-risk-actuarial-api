@@ -22,7 +22,7 @@ class OPDValidationHelperTest {
       overallRiskForAssessment = null,
       highestRiskLevel = null,
       eligibleForMappa = null,
-      currentOffence = null,
+      currentOffenceCode = null,
       custodialSentence = null,
       domesticAbuse = false,
     )
@@ -32,7 +32,7 @@ class OPDValidationHelperTest {
       "gender",
       "overallRiskForAssessment",
       "highestRiskLevel",
-      "currentOffence",
+      "currentOffenceCode",
       "custodialSentence",
     )
 
@@ -111,14 +111,14 @@ class OPDValidationHelperTest {
   }
 
   @Test
-  fun `opdInitialValidation with invalid currentOffence`() {
+  fun `opdInitialValidation with invalid currentOffenceCode`() {
     val request = validOPDRiskScoreRequest().copy(
-      currentOffence = "BLA",
+      currentOffenceCode = "BLA",
     )
     val result = opdInitialValidation(request)
 
     val expectedFields = listOf(
-      "currentOffence",
+      "currentOffenceCode",
     )
 
     val error = result.first()

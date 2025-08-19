@@ -74,16 +74,16 @@ class SNSVTransformationHelper {
         }
       }
 
-    fun getNumberOfSanctionWeight(totalNumberOfSanctions: Int, isSNSVDynamic: Boolean): Double = // OGRS3 contribution
+    fun getNumberOfSanctionWeight(totalNumberOfSanctionsForAllOffences: Int, isSNSVDynamic: Boolean): Double = // OGRS3 contribution
       when (isSNSVDynamic) {
         true -> DYNAMIC_NUMBER_OF_SANCTIONS_WEIGHTS
         false -> STATIC_NUMBER_OF_SANCTIONS_WEIGHTS
       }.let { weights ->
         when {
-          totalNumberOfSanctions == 1 -> weights[0]
-          totalNumberOfSanctions == 2 -> weights[1]
-          totalNumberOfSanctions > 2 -> totalNumberOfSanctions * weights[2]
-          else -> throw IllegalArgumentException("Invalid total number of sanctions value: $totalNumberOfSanctions")
+          totalNumberOfSanctionsForAllOffences == 1 -> weights[0]
+          totalNumberOfSanctionsForAllOffences == 2 -> weights[1]
+          totalNumberOfSanctionsForAllOffences > 2 -> totalNumberOfSanctionsForAllOffences * weights[2]
+          else -> throw IllegalArgumentException("Invalid total number of sanctions value: $totalNumberOfSanctionsForAllOffences")
         }
       }
 
@@ -112,13 +112,13 @@ class SNSVTransformationHelper {
       return monthsSinceLastSanction * hornersMethod(coeffs, monthsSinceLastSanction.toDouble())
     }
 
-    fun getThreePlusSanctionsWeight(gender: Gender, totalNumberOfSanctions: Int, ageAtFirstSanction: Int, dateOfBirth: LocalDate, dateOfCurrentConviction: LocalDate, isSNSVDynamic: Boolean): Double {
+    fun getThreePlusSanctionsWeight(gender: Gender, totalNumberOfSanctionsForAllOffences: Int, ageAtFirstSanction: Int, dateOfBirth: LocalDate, dateOfCurrentConviction: LocalDate, isSNSVDynamic: Boolean): Double {
       // OGRS4 contribution
-      if (totalNumberOfSanctions < 3) return 0.0
+      if (totalNumberOfSanctionsForAllOffences < 3) return 0.0
 
       val ageAtCurrentConviction = getAgeAt("current conviction date", dateOfBirth, dateOfCurrentConviction, 10)
       val x1 = ageAtCurrentConviction - ageAtFirstSanction + 12
-      val x2 = totalNumberOfSanctions / x1.toDouble()
+      val x2 = totalNumberOfSanctionsForAllOffences / x1.toDouble()
       val x3 = ln(x2)
       return x3 * (if (isSNSVDynamic) DYNAMIC_THREE_PLUS_SANCTIONS_WEIGHT else STATIC_THREE_PLUS_SANCTIONS_WEIGHT)[gender]!!
     }

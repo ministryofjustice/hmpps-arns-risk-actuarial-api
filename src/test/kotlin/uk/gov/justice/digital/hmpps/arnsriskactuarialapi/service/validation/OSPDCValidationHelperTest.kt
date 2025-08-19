@@ -27,7 +27,7 @@ class OSPDCValidationHelperTest {
       totalIndecentImageSanctions = null,
       dateAtStartOfFollowup = null,
       dateOfMostRecentSexualOffence = null,
-      totalNumberOfSanctions = null,
+      totalNumberOfSanctionsForAllOffences = null,
       inCustodyOrCommunity = null,
       mostRecentOffenceDate = null,
     )
@@ -42,7 +42,7 @@ class OSPDCValidationHelperTest {
       "totalNonContactSexualOffences",
       "totalIndecentImageSanctions",
       "dateAtStartOfFollowup",
-      "totalNumberOfSanctions",
+      "totalNumberOfSanctionsForAllOffences",
     )
 
     val error = result.first()

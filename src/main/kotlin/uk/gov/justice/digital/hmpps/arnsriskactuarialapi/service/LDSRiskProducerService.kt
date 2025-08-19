@@ -5,8 +5,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds.LDSInputValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds.LDSObject
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.LDSTransformationHelper.Companion.currentAccommodationOffendersScoreLDS
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.LDSTransformationHelper.Companion.educationDifficultiesOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.LDSTransformationHelper.Companion.isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScoreLDS
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.LDSTransformationHelper.Companion.ldsScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.LDSTransformationHelper.Companion.ldsSubTotal
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.LDSTransformationHelper.Companion.learningDifficultiesOffendersScore
@@ -27,7 +27,7 @@ class LDSRiskProducerService : RiskScoreProducer {
     }
 
     val validInput = LDSInputValidated(
-      request.currentAccommodation,
+      request.isCurrentlyOfNoFixedAbodeOrTransientAccommodation,
       request.transferableSkills,
       request.educationDifficulties,
       request.readingDifficulties,
@@ -43,8 +43,8 @@ class LDSRiskProducerService : RiskScoreProducer {
 
     fun getLDSOutput(input: LDSInputValidated): LDSObject {
       // Transformation Steps
-      val currentAccommodationOffendersScoreLDS =
-        currentAccommodationOffendersScoreLDS(input.currentAccommodation)
+      val isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScoreLDS =
+        isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScoreLDS(input.isCurrentlyOfNoFixedAbodeOrTransientAccommodation)
       val transferableSkillsOffendersScore =
         transferableSkillsOffendersScore(input.transferableSkills)
       val educationDifficultiesOffendersScore =
@@ -58,7 +58,7 @@ class LDSRiskProducerService : RiskScoreProducer {
       val professionalOrVocationalQualificationsOffendersScore =
         professionalOrVocationalQualificationsOffendersScore(input.professionalOrVocationalQualifications)
       val ldsSubTotal = ldsSubTotal(
-        currentAccommodationOffendersScoreLDS,
+        isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScoreLDS,
         transferableSkillsOffendersScore,
         educationDifficultiesOffendersScore,
         readingDifficultiesOffendersScore,

@@ -58,10 +58,10 @@ fun getAgeAtLastSanctionForSexualOffenceWeight(dateOfBirth: LocalDate, dateOfMos
   }
 }
 
-fun getTotalNumberOfSanctionsWeight(totalNumberOfSanctions: Int): Int = when (totalNumberOfSanctions) {
+fun getTotalNumberOfSanctionsForAllOffencesWeight(totalNumberOfSanctionsForAllOffences: Int): Int = when (totalNumberOfSanctionsForAllOffences) {
   1 -> 0
   in 2..Int.MAX_VALUE -> 6
-  else -> throw IllegalArgumentException("Invalid total number of sanctions value: $totalNumberOfSanctions")
+  else -> throw IllegalArgumentException("Invalid total number of sanctions value: $totalNumberOfSanctionsForAllOffences")
 }
 
 fun getStrangerVictimWeight(strangerVictim: Boolean?): Int = when (strangerVictim) {

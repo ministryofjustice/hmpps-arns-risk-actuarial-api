@@ -3,7 +3,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 
 data class LDSInputValidated(
-  val currentAccommodation: Boolean?,
+  val isCurrentlyOfNoFixedAbodeOrTransientAccommodation: Boolean?,
   val transferableSkills: ProblemLevel?,
   val educationDifficulties: ProblemLevel?,
   val readingDifficulties: Boolean?,

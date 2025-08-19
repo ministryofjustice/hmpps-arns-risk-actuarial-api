@@ -20,7 +20,7 @@ class OGPRiskProducerServiceCompanionTest {
       Arguments.of(
         OGPInputValidated(
           ogrs3TwoYear = 81,
-          currentAccommodation = false,
+          isCurrentlyOfNoFixedAbodeOrTransientAccommodation = false,
           employmentStatus = true,
           regularOffendingActivities = ProblemLevel.SOME_PROBLEMS,
           currentDrugMisuse = ProblemLevel.NO_PROBLEMS,
@@ -41,7 +41,7 @@ class OGPRiskProducerServiceCompanionTest {
       Arguments.of(
         OGPInputValidated(
           ogrs3TwoYear = 67,
-          currentAccommodation = false,
+          isCurrentlyOfNoFixedAbodeOrTransientAccommodation = false,
           employmentStatus = true,
           regularOffendingActivities = ProblemLevel.SOME_PROBLEMS,
           currentDrugMisuse = ProblemLevel.NO_PROBLEMS,
@@ -62,7 +62,7 @@ class OGPRiskProducerServiceCompanionTest {
       Arguments.of(
         OGPInputValidated(
           ogrs3TwoYear = 37,
-          currentAccommodation = false,
+          isCurrentlyOfNoFixedAbodeOrTransientAccommodation = false,
           employmentStatus = true,
           regularOffendingActivities = ProblemLevel.SOME_PROBLEMS,
           currentDrugMisuse = ProblemLevel.SIGNIFICANT_PROBLEMS,
@@ -83,7 +83,7 @@ class OGPRiskProducerServiceCompanionTest {
       Arguments.of(
         OGPInputValidated(
           ogrs3TwoYear = 17,
-          currentAccommodation = false,
+          isCurrentlyOfNoFixedAbodeOrTransientAccommodation = false,
           employmentStatus = true,
           regularOffendingActivities = ProblemLevel.SOME_PROBLEMS,
           currentDrugMisuse = ProblemLevel.SIGNIFICANT_PROBLEMS,
@@ -108,7 +108,7 @@ class OGPRiskProducerServiceCompanionTest {
   fun `testing single test case`() {
     val input = OGPInputValidated(
       ogrs3TwoYear = 81,
-      currentAccommodation = false,
+      isCurrentlyOfNoFixedAbodeOrTransientAccommodation = false,
       employmentStatus = true,
       regularOffendingActivities = ProblemLevel.SOME_PROBLEMS,
       currentDrugMisuse = ProblemLevel.NO_PROBLEMS,

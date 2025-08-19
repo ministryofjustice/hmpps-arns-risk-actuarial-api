@@ -9,7 +9,7 @@ data class OGRS3RequestValidated(
   val assessmentDate: LocalDate,
   val dateOfCurrentConviction: LocalDate,
   val dateAtStartOfFollowup: LocalDate,
-  val totalNumberOfSanctions: Int,
+  val totalNumberOfSanctionsForAllOffences: Int,
   val ageAtFirstSanction: Int,
-  val currentOffence: String,
+  val currentOffenceCode: String,
 )

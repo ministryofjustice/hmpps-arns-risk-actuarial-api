@@ -17,7 +17,7 @@ internal fun ospdcValidationMissingFields(
   missingFields.addIfNull(request, RiskScoreRequest::totalNonContactSexualOffences)
   missingFields.addIfNull(request, RiskScoreRequest::totalIndecentImageSanctions)
   missingFields.addIfNull(request, RiskScoreRequest::dateAtStartOfFollowup)
-  missingFields.addIfNull(request, RiskScoreRequest::totalNumberOfSanctions)
+  missingFields.addIfNull(request, RiskScoreRequest::totalNumberOfSanctionsForAllOffences)
 
   return addMissingFields(missingFields, emptyList())
 }

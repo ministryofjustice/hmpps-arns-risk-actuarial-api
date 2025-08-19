@@ -39,9 +39,9 @@ class OGRS3RiskProducerServiceTest {
         dateOfBirth = LocalDate.of(1965, 12, 7),
         dateOfCurrentConviction = LocalDate.of(2025, 5, 13),
         dateAtStartOfFollowup = LocalDate.of(2026, 12, 6),
-        totalNumberOfSanctions = Integer.valueOf(2) as Integer?,
+        totalNumberOfSanctionsForAllOffences = Integer.valueOf(2) as Integer?,
         ageAtFirstSanction = Integer.valueOf(47) as Integer?,
-        currentOffence = "02700",
+        currentOffenceCode = "02700",
       ),
       emptyContext(),
     )
@@ -65,9 +65,9 @@ class OGRS3RiskProducerServiceTest {
         dateOfBirth = LocalDate.of(1991, 7, 17),
         dateOfCurrentConviction = LocalDate.of(2021, 8, 5),
         dateAtStartOfFollowup = LocalDate.of(2021, 12, 12),
-        totalNumberOfSanctions = Integer.valueOf(2) as Integer?,
+        totalNumberOfSanctionsForAllOffences = Integer.valueOf(2) as Integer?,
         ageAtFirstSanction = Integer.valueOf(21) as Integer?,
-        currentOffence = "11618",
+        currentOffenceCode = "11618",
       ),
       emptyContext(),
     )
@@ -102,9 +102,9 @@ class OGRS3RiskProducerServiceTest {
       "dateOfBirth",
       "dateOfCurrentConviction",
       "dateAtStartOfFollowup",
-      "totalNumberOfSanctions",
+      "totalNumberOfSanctionsForAllOffences",
       "ageAtFirstSanction",
-      "currentOffence",
+      "currentOffenceCode",
     )
 
     // Then

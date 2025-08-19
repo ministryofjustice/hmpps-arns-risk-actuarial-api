@@ -1,6 +1,6 @@
 {
   "version": "V1_0",
-  "currentAccommodation": null,
+  "isCurrentlyOfNoFixedAbodeOrTransientAccommodation": null,
   "transferableSkills": "NO_PROBLEMS",
   "educationDifficulties": "SOME_PROBLEMS",
   "readingDifficulties": null,

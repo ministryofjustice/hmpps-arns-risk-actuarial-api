@@ -132,12 +132,12 @@ class OPDTransformationHelperTest {
   }
 
   @Test
-  fun `impactOfOffendingOnOthersOffendersScoreOpd returns correct score`() {
-    val withProblem = opdRequestValidated().copy(impactOfOffendingOnOthers = true)
-    val noProblem = opdRequestValidated().copy(impactOfOffendingOnOthers = false)
+  fun `doesRecogniseImpactOfOffendingOnOthersOffendersScoreOpd returns correct score`() {
+    val withProblem = opdRequestValidated().copy(doesRecogniseImpactOfOffendingOnOthers = true)
+    val noProblem = opdRequestValidated().copy(doesRecogniseImpactOfOffendingOnOthers = false)
 
-    assertEquals(0, impactOfOffendingOnOthersOffendersScoreOpd(withProblem))
-    assertEquals(1, impactOfOffendingOnOthersOffendersScoreOpd(noProblem))
+    assertEquals(0, doesRecogniseImpactOfOffendingOnOthersOffendersScoreOpd(withProblem))
+    assertEquals(1, doesRecogniseImpactOfOffendingOnOthersOffendersScoreOpd(noProblem))
   }
 
   @Test

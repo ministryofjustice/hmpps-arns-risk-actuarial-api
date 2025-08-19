@@ -12,13 +12,13 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getAgeAtStartOfFollowup
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getAlcoholMisuseWeighted
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getAnyPreviousSanctionsWeighted
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getCurrentAccommodationOffendersScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getCurrentAccommodationWeightedOVP
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getCurrentPsychiatricTreatmentOrPendingWeighted
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getDoesRecogniseImpactOfOffendingOnOthersWeighted
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getEmploymentStatusOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getEmploymentStatusWeightedOVP
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getGenderWeighted
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getImpactOfOffendingOnOthersWeighted
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getIsCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getIsCurrentlyOfNoFixedAbodeOrTransientAccommodationWeightedOVP
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getOVPBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getOffenderAgeGroupOVP
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getTotalNumberOfNonViolentSanctionsWeighted
@@ -36,13 +36,13 @@ class OVPRiskProducerService : RiskScoreProducer {
     }
 
     val validRequest = OVPRequestValidated(
-      request.totalNumberOfSanctions!!.toInt(),
+      request.totalNumberOfSanctionsForAllOffences!!.toInt(),
       request.totalNumberOfViolentSanctions!!.toInt(),
       request.dateAtStartOfFollowup!!,
       request.dateOfBirth!!,
       request.gender!!,
-      request.impactOfOffendingOnOthers!!,
-      request.currentAccommodation!!,
+      request.doesRecogniseImpactOfOffendingOnOthers!!,
+      request.isCurrentlyOfNoFixedAbodeOrTransientAccommodation!!,
       request.employmentStatus!!,
       request.alcoholIsCurrentUseAProblem!!,
       request.alcoholExcessive6Months!!,
@@ -62,15 +62,15 @@ class OVPRiskProducerService : RiskScoreProducer {
       getAnyPreviousSanctionsWeighted(request),
       getTotalNumberOfViolentSanctionsWeighted(request.totalNumberOfViolentSanctions),
       getTotalNumberOfNonViolentSanctionsWeighted(
-        request.totalNumberOfSanctions - request.totalNumberOfViolentSanctions,
+        request.totalNumberOfSanctionsForAllOffences - request.totalNumberOfViolentSanctions,
       ),
       getOffenderAgeGroupOVP(getAgeAtStartOfFollowup(request)),
       getGenderWeighted(request),
     ).sum()
 
     val dynamicItems = listOf(
-      getImpactOfOffendingOnOthersWeighted(request),
-      getCurrentAccommodationWeightedOVP(getCurrentAccommodationOffendersScore(request)),
+      getDoesRecogniseImpactOfOffendingOnOthersWeighted(request),
+      getIsCurrentlyOfNoFixedAbodeOrTransientAccommodationWeightedOVP(getIsCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScore(request)),
       getEmploymentStatusWeightedOVP(getEmploymentStatusOffendersScore(request)),
       alcoholMisuseWeighted,
       getCurrentPsychiatricTreatmentOrPendingWeighted(request),

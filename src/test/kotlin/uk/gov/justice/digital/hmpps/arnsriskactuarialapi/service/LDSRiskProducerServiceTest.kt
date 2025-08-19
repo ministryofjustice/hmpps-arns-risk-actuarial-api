@@ -52,7 +52,7 @@ class LDSRiskProducerServiceTest {
     }
 
     fun toRequest(
-      currentAccommodationCSV: String?,
+      isCurrentlyOfNoFixedAbodeOrTransientAccommodationCSV: String?,
       transferableSkillsCSV: String?,
       educationDifficultiesCSV: String?,
       readingDifficultiesCSV: String?,
@@ -60,7 +60,7 @@ class LDSRiskProducerServiceTest {
       learningDifficultiesCSV: String?,
       professionalOrVocationalQualificationsCSV: String?,
     ): RiskScoreRequest = RiskScoreRequest(
-      currentAccommodation = currentAccommodationCSV.toLDSBoolean(),
+      isCurrentlyOfNoFixedAbodeOrTransientAccommodation = isCurrentlyOfNoFixedAbodeOrTransientAccommodationCSV.toLDSBoolean(),
       transferableSkills = transferableSkillsCSV.toLDSProblemLevel(),
       educationDifficulties = educationDifficultiesCSV.toLDSProblemLevel(),
       readingDifficulties = readingDifficultiesCSV.toLDSBoolean(),
@@ -77,7 +77,7 @@ class LDSRiskProducerServiceTest {
   fun `single request`() {
     // No,NO_PROBLEMS,NO_PROBLEMS,Null,Null,NO_PROBLEMS,ANY_QUALIFICATION,0,0,5 items scored
     val request = toRequest(
-      currentAccommodationCSV = "No",
+      isCurrentlyOfNoFixedAbodeOrTransientAccommodationCSV = "No",
       transferableSkillsCSV = "NO_PROBLEMS",
       educationDifficultiesCSV = "NO_PROBLEMS",
       readingDifficultiesCSV = null,
@@ -100,7 +100,7 @@ class LDSRiskProducerServiceTest {
     nullValues = ["Null", "Missing"],
   )
   fun `requests from CSV file`(
-    currentAccommodationCSV: String?,
+    isCurrentlyOfNoFixedAbodeOrTransientAccommodationCSV: String?,
     transferableSkillsCSV: String?,
     educationDifficultiesCSV: String?,
     readingDifficultiesCSV: String?,
@@ -112,7 +112,7 @@ class LDSRiskProducerServiceTest {
     commentsCSV: String?,
   ) {
     val request = toRequest(
-      currentAccommodationCSV = currentAccommodationCSV,
+      isCurrentlyOfNoFixedAbodeOrTransientAccommodationCSV = isCurrentlyOfNoFixedAbodeOrTransientAccommodationCSV,
       transferableSkillsCSV = transferableSkillsCSV,
       educationDifficultiesCSV = educationDifficultiesCSV,
       readingDifficultiesCSV = readingDifficultiesCSV,
