@@ -20,7 +20,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getTotalNumberOfSanctionsWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.addMissingCriteriaValidation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.ospdcInitialValidation
-import kotlin.getOrElse
 
 const val FIXED_RSR_CONTRIBUTION = 0.00383142
 
@@ -50,13 +49,13 @@ class OSPDCRiskProducerService : RiskScoreProducer {
     val validRequest = OSPDCRequestValidated(
       request.gender!!,
       request.dateOfBirth!!,
-      request.hasCommittedSexualOffence!!,
+      request.hasCommittedSexualOffence ?: false,
       request.totalContactAdultSexualSanctions!!,
       request.totalContactChildSexualSanctions!!,
       request.totalNonContactSexualOffences!!,
       request.totalIndecentImageSanctions!!,
       request.dateAtStartOfFollowup!!,
-      request.dateOfMostRecentSexualOffence!!,
+      request.dateOfMostRecentSexualOffence,
       request.totalNumberOfSanctions!!.toInt(),
       request.victimStranger,
     )
@@ -76,7 +75,7 @@ class OSPDCRiskProducerService : RiskScoreProducer {
         request.totalIndecentImageSanctions,
       ),
       getAgeAtStartOfFollowupWeight(request.dateOfBirth, request.dateAtStartOfFollowup),
-      getAgeAtLastSanctionForSexualOffenceWeight(request.dateOfBirth, request.dateOfMostRecentSexualOffence),
+      request.dateOfMostRecentSexualOffence?.let { date -> getAgeAtLastSanctionForSexualOffenceWeight(request.dateOfBirth, date) } ?: 0,
       getTotalNumberOfSanctionsWeight(request.totalNumberOfSanctions),
       getStrangerVictimWeight(request.victimStranger),
     ).sum()

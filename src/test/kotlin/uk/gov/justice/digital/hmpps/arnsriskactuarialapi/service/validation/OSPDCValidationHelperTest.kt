@@ -37,34 +37,17 @@ class OSPDCValidationHelperTest {
     val expectedFields = listOf(
       "gender",
       "dateOfBirth",
-      "hasCommittedSexualOffence",
       "totalContactAdultSexualSanctions",
       "totalContactChildSexualSanctions",
       "totalNonContactSexualOffences",
       "totalIndecentImageSanctions",
       "dateAtStartOfFollowup",
-      "dateOfMostRecentSexualOffence",
       "totalNumberOfSanctions",
     )
 
     val error = result.first()
     assertEquals(ValidationErrorType.MISSING_INPUT, error.type)
     assertEquals("ERR5 - Field is Null", error.message)
-    assertEquals(expectedFields, error.fields)
-  }
-
-  @Test
-  fun `oospdcInitialValidation not applicable error when hasCommittedSexualOffence is false`() {
-    val request = validOSPDCRiskScoreRequest().copy(
-      hasCommittedSexualOffence = false,
-    )
-
-    val result = ospdcInitialValidation(request)
-    val expectedFields = listOf("hasCommittedSexualOffence")
-
-    val error = result.first()
-    assertEquals(ValidationErrorType.NOT_APPLICABLE, error.type)
-    assertEquals("ERR1 - Does not meet eligibility criteria", error.message)
     assertEquals(expectedFields, error.fields)
   }
 
