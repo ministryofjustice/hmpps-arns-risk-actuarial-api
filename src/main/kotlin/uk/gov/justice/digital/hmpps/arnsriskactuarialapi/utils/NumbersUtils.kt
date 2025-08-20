@@ -4,6 +4,7 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 import kotlin.collections.fold
 import kotlin.math.exp
+import kotlin.math.pow
 
 fun Double.asDoublePercentage(): Double = BigDecimal(this).multiply(BigDecimal.valueOf(100)).setScale(2, RoundingMode.HALF_UP).toDouble()
 fun Double.roundToNDecimals(n: Int): Double = BigDecimal(this).setScale(n, RoundingMode.HALF_UP).toDouble()
@@ -22,4 +23,4 @@ fun Int.sanitisePercentage(): Int = when {
 
 fun Double.sigmoid(): Double = exp(this).let { it / (1 + it) }
 
-fun hornersMethod(coeffs: DoubleArray, x: Double): Double = (coeffs.size - 1 downTo 0).fold(0.0) { sum, i -> sum * x + coeffs[i] }
+fun calculatePolynomial(coeffs: DoubleArray, x: Double): Double = (0..<coeffs.size).fold(0.0) { sum, i -> sum + coeffs[i] * x.pow(i) }

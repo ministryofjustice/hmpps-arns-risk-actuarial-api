@@ -4,7 +4,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CustodyOrCommunity
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.PreviousConviction
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.hornersMethod
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.calculatePolynomial
 import java.time.LocalDate
 import java.time.Period
 import java.time.temporal.ChronoUnit
@@ -66,10 +66,10 @@ class SNSVTransformationHelper {
       .let { x ->
         when (gender) {
           Gender.MALE -> (if (isSNSVDynamic) DYNAMIC_AGE_MALE_COEFFS else STATIC_AGE_MALE_COEFFS).let {
-            x * hornersMethod(it, x)
+            x * calculatePolynomial(it, x)
           }
           Gender.FEMALE -> (if (isSNSVDynamic) DYNAMIC_AGE_FEMALE_COEFFS else STATIC_AGE_FEMALE_COEFFS).let {
-            x * hornersMethod(it, x) - 16.6927292697847
+            x * calculatePolynomial(it, x) - 16.6927292697847
           }
         }
       }
@@ -109,7 +109,7 @@ class SNSVTransformationHelper {
       }
       val monthsSinceLastSanction = ChronoUnit.MONTHS.between(assessmentDate, dateAtStartOfFollowup).toInt()
       val coeffs = if (isSNSVDynamic) DYNAMIC_MONTHS_SINCE_LAST_SANCTION_WEIGHTS else STATIC_MONTHS_SINCE_LAST_SANCTION_WEIGHTS
-      return monthsSinceLastSanction * hornersMethod(coeffs, monthsSinceLastSanction.toDouble())
+      return monthsSinceLastSanction * calculatePolynomial(coeffs, monthsSinceLastSanction.toDouble())
     }
 
     fun getThreePlusSanctionsWeight(gender: Gender, totalNumberOfSanctionsForAllOffences: Int, ageAtFirstSanction: Int, dateOfBirth: LocalDate, dateOfCurrentConviction: LocalDate, isSNSVDynamic: Boolean): Double {
