@@ -24,6 +24,7 @@ class OSPIICRiskProducerService : RiskScoreProducer {
       request.gender == Gender.FEMALE -> OSPIICObject(RiskBand.LOW, 0.0, emptyList())
       else -> {
         val validInput = OSPIICInputValidated(
+          hasEverCommittedSexualOffence = request.hasEverCommittedSexualOffence!!,
           totalContactAdultSexualSanctions = request.totalContactAdultSexualSanctions!!,
           totalContactChildSexualSanctions = request.totalContactChildSexualSanctions!!,
           totalIndecentImageSanctions = request.totalIndecentImageSanctions!!,
