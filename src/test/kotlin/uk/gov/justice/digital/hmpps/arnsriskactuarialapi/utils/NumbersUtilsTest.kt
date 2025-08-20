@@ -78,14 +78,14 @@ class NumbersUtilsTest {
   }
 
   @Test
-  fun `horner's method calculations`() {
-    assertEquals(7.0, hornersMethod(cubic, 2.0), 0.00001)
-    assertEquals(PI - 1, hornersMethod(linear, PI), 0.00001)
-    assertEquals(21.0, hornersMethod(quadratic, 4.0), 0.00001)
+  fun `polynomial calculations`() {
+    assertEquals(7.0, calculatePolynomial(cubic, 2.0), 0.00001)
+    assertEquals(PI - 1, calculatePolynomial(linear, PI), 0.00001)
+    assertEquals(21.0, calculatePolynomial(quadratic, 4.0), 0.00001)
     // should be true for any x
     val x = PI
-    val productOfPolynomials = { x: Double -> hornersMethod(linear, x) * hornersMethod(quadratic, x) }
-    val cubicPolynomial = { x: Double -> hornersMethod(cubic, x) }
+    val productOfPolynomials = { x: Double -> calculatePolynomial(linear, x) * calculatePolynomial(quadratic, x) }
+    val cubicPolynomial = { x: Double -> calculatePolynomial(cubic, x) }
     assertEquals(productOfPolynomials(x), cubicPolynomial(x), 0.00001)
   }
 }
