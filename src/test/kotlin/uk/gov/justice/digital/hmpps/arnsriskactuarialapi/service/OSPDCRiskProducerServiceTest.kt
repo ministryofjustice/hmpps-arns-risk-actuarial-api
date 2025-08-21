@@ -125,8 +125,8 @@ class OSPDCRiskProducerServiceTest {
 
     // Then
     assertNotNull(result)
-    assertNotNull(result.OSPDC?.ospdcScore)
-    assertNotNull(result.OSPDC?.ospdcBand)
+    assertEquals(0.0, result.OSPDC?.ospdcScore)
+    assertEquals(RiskBand.NOT_APPLICABLE, result.OSPDC?.ospdcBand)
   }
 
   @Test

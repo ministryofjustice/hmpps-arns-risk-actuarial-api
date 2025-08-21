@@ -78,6 +78,41 @@ class OSPIICRiskProducerServiceTest {
   }
 
   @Test
+  fun `unexpected value, fields not populated when sexual offence history is null`() {
+    val context = RiskScoreContext(
+      version = RiskScoreVersion.V1_0,
+    )
+    val request = RiskScoreRequest(
+      gender = Gender.MALE,
+      totalContactChildSexualSanctions = 2,
+      totalIndecentImageSanctions = 4,
+      totalContactAdultSexualSanctions = 5,
+      totalNonContactSexualOffences = 6,
+      hasEverCommittedSexualOffence = false,
+    )
+
+    val result = service.getRiskScore(request, context)
+    val output = result.OSPIIC
+    val expected = OSPIICObject(
+      RiskBand.NOT_APPLICABLE,
+      0.0,
+      validationError = listOf(
+        ValidationErrorResponse(
+          type = ValidationErrorType.UNEXPECTED_VALUE,
+          message = "Error: No sexual motivation/offending identified - fields should not be populated.",
+          fields = listOf(
+            "totalContactAdultSexualSanctions",
+            "totalContactChildSexualSanctions",
+            "totalIndecentImageSanctions",
+            "totalNonContactSexualOffences",
+          ),
+        ),
+      ),
+    )
+    assertEquals(expected, output)
+  }
+
+  @Test
   fun `missing fields when gender is male`() {
     val context = RiskScoreContext(
       version = RiskScoreVersion.V1_0,

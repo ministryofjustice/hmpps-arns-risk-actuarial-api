@@ -9,6 +9,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.OSPIICValidationHelper.Companion.ospiicInitialValidation
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validOSPDCRiskScoreRequest
 
 class OSPIICValidationHelperTest {
 
@@ -58,5 +59,30 @@ class OSPIICValidationHelperTest {
       ),
       result,
     )
+  }
+
+  @Test
+  fun `ospiicSexualOffenceTrueValidation error when hasEverCommittedSexualOffence is true but values are 0`() {
+    val request = validOSPDCRiskScoreRequest().copy(
+      hasEverCommittedSexualOffence = true,
+      totalContactAdultSexualSanctions = 0,
+      totalContactChildSexualSanctions = 0,
+      totalIndecentImageSanctions = 0,
+      totalNonContactSexualOffences = 0,
+    )
+
+    val expectedFields = listOf(
+      "totalContactAdultSexualSanctions",
+      "totalContactChildSexualSanctions",
+      "totalIndecentImageSanctions",
+      "totalNonContactSexualOffences",
+    )
+
+    val result = ospiicInitialValidation(request)
+
+    val error = result.first()
+    assertEquals(ValidationErrorType.UNEXPECTED_VALUE, error.type)
+    assertEquals("Error: Sexual motivation/offending identified - please complete sexual offence counts.", error.message)
+    assertEquals(expectedFields, error.fields)
   }
 }
