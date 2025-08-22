@@ -35,6 +35,16 @@ class OSPDCRiskProducerService : RiskScoreProducer {
       }
     }
 
+    if (request.hasEverCommittedSexualOffence == false) {
+      return context.apply {
+        OSPDC = OSPDCObject(
+          RiskBand.NOT_APPLICABLE,
+          0.0,
+          null,
+        )
+      }
+    }
+
     // When female, there is no score or band produced
     if (request.gender == Gender.FEMALE && request.hasEverCommittedSexualOffence == true) {
       return context.apply {
