@@ -1,6 +1,7 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
 import org.springframework.stereotype.Service
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
@@ -29,8 +30,10 @@ class RSRRiskProducerService : RiskScoreProducer {
     ).flatten()
 
     try {
-      val ospdcScore = ospdc.ospdcScore?.asDoublePercentage()
-      val ospiicScore = ospiic.score?.asDoublePercentage()
+      val ospdcScore = ospdc.ospdcScore ?: 0.0
+      val ospdcBand = ospdc.ospdcBand ?: RiskBand.NOT_APPLICABLE
+      val ospiicScore = ospiic.score ?: 0.0
+      val ospiicBand = ospiic.band ?: RiskBand.NOT_APPLICABLE
       val snsvScore = snsv.snsvScore?.asDoublePercentage()
       val rsrScore = snsvScore?.let {
         getFullRSRScore(it, ospdcScore, ospiicScore, snsv.scoreType)?.roundToNDecimals(2)
@@ -39,10 +42,10 @@ class RSRRiskProducerService : RiskScoreProducer {
 
       return context.apply {
         RSR = RSRObject(
-          ospdc.ospdcBand,
-          ospdcScore,
-          ospiic.band,
-          ospiicScore,
+          ospdcBand,
+          ospdcScore.asDoublePercentage(),
+          ospiicBand,
+          ospiicScore.asDoublePercentage(),
           rsrScore,
           rsrBand,
           snsv.snsvScore?.let { snsv.scoreType },
