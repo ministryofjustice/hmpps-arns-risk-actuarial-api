@@ -13,10 +13,13 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.PreviousConviction
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.get2YearInterceptWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getAgeAt
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getAgeGenderPolynomialWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getGenderWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getMonthsSinceLastSanctionWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getNumberOfSanctionWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getThreePlusSanctionsWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getTotalSanctionWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getViolenceRateWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getViolentHistoryWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getViolentSanctionsWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getYearsBetweenFirstAndSecondSanctionWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.previousConvictionsWeight
@@ -70,6 +73,17 @@ class SNSVTransformationHelperTest {
   }
 
   @ParameterizedTest
+  @MethodSource("getGenderWeightValidInputProvider")
+  fun `getGenderWeight should calculate correct polynomial weight`(
+    gender: Gender,
+    isSNSVDynamic: Boolean,
+    expected: Double,
+  ) {
+    val result = getGenderWeight(gender, isSNSVDynamic)
+    assertEquals(expected, result, 1e-9)
+  }
+
+  @ParameterizedTest
   @MethodSource("getNumberOfSanctionWeightValidInputProvider")
   fun `getNumberOfSanctionWeight should return correct weight for valid sanction values`(
     totalNumberOfSanctionsForAllOffences: Int,
@@ -96,8 +110,35 @@ class SNSVTransformationHelperTest {
   }
 
   @ParameterizedTest
+  @MethodSource("getTotalSanctionWeightValidInputProvider")
+  fun `getTotalSanctionWeight should return correct weight for valid sanction values`(
+    totalNumberOfSanctionsForAllOffences: Int,
+    isSNSVDynamic: Boolean,
+    expected: Double,
+  ) {
+    val result = getTotalSanctionWeight(totalNumberOfSanctionsForAllOffences, isSNSVDynamic)
+    assertEquals(expected, result, 1e-9)
+  }
+
+  @ParameterizedTest
+  @MethodSource("getTotalSanctionWeightInvalidInputProvider")
+  fun `getTotalSanctionWeight should throw exception for invalid sanction counts`(
+    totalNumberOfSanctionsForAllOffences: Int,
+    isSNSVDynamic: Boolean,
+  ) {
+    val exception = assertThrows(IllegalArgumentException::class.java) {
+      getTotalSanctionWeight(totalNumberOfSanctionsForAllOffences, isSNSVDynamic)
+    }
+    assertEquals(
+      "Invalid total number of sanctions value: $totalNumberOfSanctionsForAllOffences",
+      exception.message,
+    )
+  }
+
+  @ParameterizedTest
   @MethodSource("getYearsBetweenFirstAndSecondSanctionWeightValidInputProvider")
   fun `getYearsBetweenFirstAndSecondSanctionWeight should calculate correct weight for years between sanctions`(
+    totalNumberOfSanctionsForAllOffences: Int,
     gender: Gender,
     dob: LocalDate,
     convictionDate: LocalDate,
@@ -106,6 +147,7 @@ class SNSVTransformationHelperTest {
     expected: Double,
   ) {
     val result = getYearsBetweenFirstAndSecondSanctionWeight(
+      totalNumberOfSanctionsForAllOffences,
       gender,
       dob,
       convictionDate,
@@ -118,6 +160,7 @@ class SNSVTransformationHelperTest {
   @ParameterizedTest
   @MethodSource("getYearsBetweenFirstAndSecondSanctionWeightInvalidInputProvider")
   fun `getYearsBetweenFirstAndSecondSanctionWeight should throw exception for invalid input`(
+    totalNumberOfSanctionsForAllOffences: Int,
     gender: Gender,
     dob: LocalDate,
     convictionDate: LocalDate,
@@ -127,6 +170,7 @@ class SNSVTransformationHelperTest {
   ) {
     val ex = assertThrows(IllegalArgumentException::class.java) {
       getYearsBetweenFirstAndSecondSanctionWeight(
+        totalNumberOfSanctionsForAllOffences,
         gender,
         dob,
         convictionDate,
@@ -202,14 +246,39 @@ class SNSVTransformationHelperTest {
   }
 
   @ParameterizedTest
-  @MethodSource("getViolentSanctionsWeightValidInputProvider")
-  fun `getViolentSanctionsWeight should return correct violent sanctions weight`(
+  @MethodSource("getViolentHistoryWeightValidInputProvider")
+  fun `getViolentHistoryWeight should return correct violent sanctions weight`(
     totalViolentSanctions: Int,
     gender: Gender,
     isSNSVDynamic: Boolean,
     expected: Double,
   ) {
-    val result = getViolentSanctionsWeight(totalViolentSanctions, gender, isSNSVDynamic)
+    val result = getViolentHistoryWeight(totalViolentSanctions, gender, isSNSVDynamic)
+    assertEquals(expected, result, 1e-9)
+  }
+
+  @ParameterizedTest
+  @MethodSource("getViolentHistoryWeightInvalidInputProvider")
+  fun `getViolentHistoryWeight should throw exception for invalid input`(
+    totalViolentSanctions: Int,
+    gender: Gender,
+    isSNSVDynamic: Boolean,
+    expectedMessage: String,
+  ) {
+    val exception = assertThrows(IllegalArgumentException::class.java) {
+      getViolentHistoryWeight(totalViolentSanctions, gender, isSNSVDynamic)
+    }
+    assertEquals(expectedMessage, exception.message)
+  }
+
+  @ParameterizedTest
+  @MethodSource("getViolentSanctionsWeightValidInputProvider")
+  fun `getViolentSanctionsWeight should return correct violent sanctions weight`(
+    totalViolentSanctions: Int,
+    isSNSVDynamic: Boolean,
+    expected: Double,
+  ) {
+    val result = getViolentSanctionsWeight(totalViolentSanctions, isSNSVDynamic)
     assertEquals(expected, result, 1e-9)
   }
 
@@ -217,12 +286,11 @@ class SNSVTransformationHelperTest {
   @MethodSource("getViolentSanctionsWeightInvalidInputProvider")
   fun `getViolentSanctionsWeight should throw exception for invalid input`(
     totalViolentSanctions: Int,
-    gender: Gender,
     isSNSVDynamic: Boolean,
     expectedMessage: String,
   ) {
     val exception = assertThrows(IllegalArgumentException::class.java) {
-      getViolentSanctionsWeight(totalViolentSanctions, gender, isSNSVDynamic)
+      getViolentSanctionsWeight(totalViolentSanctions, isSNSVDynamic)
     }
     assertEquals(expectedMessage, exception.message)
   }
@@ -317,8 +385,8 @@ class SNSVTransformationHelperTest {
 
     @JvmStatic
     fun getAgeGenderPolynomialWeightInvalidInputProvider(): Stream<Arguments> = Stream.of(
-      Arguments.of(Gender.MALE, LocalDate.of(2015, 1, 1), LocalDate.of(2020, 1, 1), true, "Age at assessment date cannot be less than 10"),
-      Arguments.of(Gender.FEMALE, LocalDate.of(2025, 1, 1), LocalDate.of(2020, 1, 1), false, "Assessment date cannot be before date of birth."),
+      Arguments.of(Gender.MALE, LocalDate.of(2015, 1, 1), LocalDate.of(2020, 1, 1), true, "Age at date at start of followup cannot be less than 10"),
+      Arguments.of(Gender.FEMALE, LocalDate.of(2025, 1, 1), LocalDate.of(2020, 1, 1), false, "Date at start of followup cannot be before date of birth."),
     )
 
     private fun calculateMalePolynomial(age: Int, isDynamic: Boolean): Double {
@@ -346,14 +414,26 @@ class SNSVTransformationHelperTest {
         c2 * age.toDouble().pow(2),
         c3 * age.toDouble().pow(3),
         c4 * age.toDouble().pow(4),
-      ).sum() - 16.6927292697847
+      ).sum()
     }
+
+    // getGenderWeightValid method source
+    @JvmStatic
+    fun getGenderWeightValidInputProvider(): Stream<Arguments> = Stream.of(
+      Arguments.of(Gender.MALE, true, 0.0),
+      Arguments.of(Gender.FEMALE, true, -16.6927292697847),
+      Arguments.of(Gender.FEMALE, false, -16.6220270089011),
+    )
 
     // getNumberOfSanctionWeight method source
     @JvmStatic
     fun getNumberOfSanctionWeightValidInputProvider(): Stream<Arguments> = Stream.of(
       Arguments.of(1, true, -1.89458617745666),
       Arguments.of(1, false, -2.09447596484765),
+      Arguments.of(2, true, -1.51763151836726),
+      Arguments.of(2, false, -1.67613460779912),
+      Arguments.of(3, true, 0.0),
+      Arguments.of(3, false, 0.0),
     )
 
     @JvmStatic
@@ -364,29 +444,49 @@ class SNSVTransformationHelperTest {
       Arguments.of(-1, false),
     )
 
+    // getTotalSanctionWeight method source
+    @JvmStatic
+    fun getTotalSanctionWeightValidInputProvider(): Stream<Arguments> = Stream.of(
+      Arguments.of(1, true, -0.0182592921752245),
+      Arguments.of(1, false, -0.0147495874606046),
+      Arguments.of(2, true, -0.036518584350449),
+      Arguments.of(2, false, -0.0294991749212092),
+    )
+
+    @JvmStatic
+    fun getTotalSanctionWeightInvalidInputProvider(): Stream<Arguments> = Stream.of(
+      Arguments.of(0, true),
+      Arguments.of(0, false),
+      Arguments.of(-1, true),
+      Arguments.of(-1, false),
+    )
+
     // getYearsBetweenFirstAndSecondSanction method source
     @JvmStatic
     fun getYearsBetweenFirstAndSecondSanctionWeightValidInputProvider(): Stream<Arguments> = Stream.of(
       // Male, dynamic
-      Arguments.of(Gender.MALE, LocalDate.of(1990, 1, 1), LocalDate.of(2020, 1, 1), 25, true, (30 - 25) * -0.0271828619470523),
+      Arguments.of(2, Gender.MALE, LocalDate.of(1990, 1, 1), LocalDate.of(2020, 1, 1), 25, true, (30 - 25) * -0.0271828619470523),
       // Male, static
-      Arguments.of(Gender.MALE, LocalDate.of(1990, 1, 1), LocalDate.of(2020, 1, 1), 25, false, (30 - 25) * -0.0292205730647305),
+      Arguments.of(2, Gender.MALE, LocalDate.of(1990, 1, 1), LocalDate.of(2020, 1, 1), 25, false, (30 - 25) * -0.0292205730647305),
       // Female, dynamic
-      Arguments.of(Gender.FEMALE, LocalDate.of(1990, 1, 1), LocalDate.of(2020, 1, 1), 25, true, (30 - 25) * -0.0960719132524968),
+      Arguments.of(2, Gender.FEMALE, LocalDate.of(1990, 1, 1), LocalDate.of(2020, 1, 1), 25, true, (30 - 25) * -0.0960719132524968),
       // Female, static
-      Arguments.of(Gender.FEMALE, LocalDate.of(1990, 1, 1), LocalDate.of(2020, 1, 1), 25, false, (30 - 25) * -0.0841673003341906),
+      Arguments.of(2, Gender.FEMALE, LocalDate.of(1990, 1, 1), LocalDate.of(2020, 1, 1), 25, false, (30 - 25) * -0.0841673003341906),
+      // number of sanctions not 2
+      Arguments.of(1, Gender.FEMALE, LocalDate.of(1990, 1, 1), LocalDate.of(2020, 1, 1), 25, false, 0.0),
     )
 
     @JvmStatic
     fun getYearsBetweenFirstAndSecondSanctionWeightInvalidInputProvider(): Stream<Arguments> = Stream.of(
       // Negative years between sanctions
-      Arguments.of(Gender.MALE, LocalDate.of(1990, 1, 1), LocalDate.of(2001, 1, 1), 15, true, "Years between first and second sanction cannot be a negative"),
+      Arguments.of(2, Gender.MALE, LocalDate.of(1990, 1, 1), LocalDate.of(2001, 1, 1), 15, true, "Years between first and second sanction cannot be a negative"),
       // Age at conviction <= 10
-      Arguments.of(Gender.FEMALE, LocalDate.of(2015, 1, 1), LocalDate.of(2024, 1, 1), 5, false, "Age at current conviction date cannot be less than 10"),
+      Arguments.of(2, Gender.FEMALE, LocalDate.of(2015, 1, 1), LocalDate.of(2024, 1, 1), 5, false, "Age at current conviction date cannot be less than 10"),
       // Age at conviction < 0
-      Arguments.of(Gender.MALE, LocalDate.of(2030, 1, 1), LocalDate.of(2020, 1, 1), 5, true, "Current conviction date cannot be before date of birth."),
+      Arguments.of(2, Gender.MALE, LocalDate.of(2030, 1, 1), LocalDate.of(2020, 1, 1), 5, true, "Current conviction date cannot be before date of birth."),
     )
 
+    // getMonthsSinceLastSanctionWeight method source
     @JvmStatic
     fun getMonthsSinceLastSanctionWeightValidInputProvider(): Stream<Arguments> = Stream.of(
       // In custody -> always 0
@@ -397,7 +497,7 @@ class SNSVTransformationHelperTest {
         true,
         0.0,
       ),
-      // assessmentDate >= dateAtStartOfFollowup -> 0
+      // dateAtStartOfFollowup >= assessmentDate -> 0
       Arguments.of(
         CustodyOrCommunity.COMMUNITY,
         LocalDate.of(2025, Month.JANUARY, 1),
@@ -405,19 +505,27 @@ class SNSVTransformationHelperTest {
         false,
         0.0,
       ),
+      // dateAtStartOfFollowup >= assessmentDate -> 0
+      Arguments.of(
+        CustodyOrCommunity.COMMUNITY,
+        LocalDate.of(2025, Month.JANUARY, 2),
+        LocalDate.of(2025, Month.JANUARY, 1),
+        false,
+        0.0,
+      ),
       // Normal calculation for dynamic
       Arguments.of(
         CustodyOrCommunity.COMMUNITY,
-        LocalDate.of(2025, Month.JUNE, 1),
         LocalDate.of(2025, Month.JANUARY, 1),
+        LocalDate.of(2025, Month.JUNE, 1),
         true,
         calculateExpected(5, true),
       ),
       // Normal calculation for static
       Arguments.of(
         CustodyOrCommunity.COMMUNITY,
-        LocalDate.of(2025, Month.SEPTEMBER, 1),
         LocalDate.of(2025, Month.JANUARY, 1),
+        LocalDate.of(2025, Month.SEPTEMBER, 1),
         false,
         calculateExpected(8, false),
       ),
@@ -453,15 +561,6 @@ class SNSVTransformationHelperTest {
         true,
         calculateExpected(Gender.MALE, 5, 18, 35, true),
       ),
-      Arguments.of(
-        Gender.MALE,
-        5,
-        18,
-        LocalDate.of(1991, 1, 1),
-        LocalDate.of(2025, 1, 1),
-        true,
-        calculateExpected(Gender.MALE, 5, 18, 34, true),
-      ),
       // Male - static
       Arguments.of(
         Gender.MALE,
@@ -472,8 +571,17 @@ class SNSVTransformationHelperTest {
         false,
         calculateExpected(Gender.MALE, 6, 20, 35, false),
       ),
-
-      // Female - static (same coeff for both static and dynamic)
+      // Female - dynamic
+      Arguments.of(
+        Gender.FEMALE,
+        4,
+        17,
+        LocalDate.of(1985, 1, 1),
+        LocalDate.of(2020, 1, 1),
+        true,
+        calculateExpected(Gender.FEMALE, 4, 17, 35, true),
+      ),
+      // Female - static
       Arguments.of(
         Gender.FEMALE,
         4,
@@ -497,7 +605,6 @@ class SNSVTransformationHelperTest {
         true,
         "Current conviction date cannot be before date of birth.",
       ),
-
       // Invalid: conviction age <= 10
       Arguments.of(
         Gender.FEMALE,
@@ -523,40 +630,60 @@ class SNSVTransformationHelperTest {
 
       val c1 = when (gender) {
         Gender.MALE -> if (isSNSVDynamic) 0.689153313085879 else 0.769213898314811
-        Gender.FEMALE -> 0.76704149890481
+        Gender.FEMALE -> if (isSNSVDynamic) 0.76704149890481 else 0.793186572461819
       }
 
       return x3 * c1
     }
 
-    // getViolentSanctionsWeight method source
+    // getViolentHistoryWeight method source
     @JvmStatic
-    fun getViolentSanctionsWeightValidInputProvider(): Stream<Arguments> = Stream.of(
+    fun getViolentHistoryWeightValidInputProvider(): Stream<Arguments> = Stream.of(
       // Male - dynamic
       Arguments.of(0, Gender.MALE, true, -0.35940007303088),
       Arguments.of(1, Gender.MALE, true, -0.101514048705338),
-      Arguments.of(2, Gender.MALE, true, 0.021160895925655),
+      Arguments.of(2, Gender.MALE, true, 0.0),
 
       // Male - static
       Arguments.of(0, Gender.MALE, false, -0.942816163300621),
       Arguments.of(1, Gender.MALE, false, -0.0633592949212861),
-      Arguments.of(2, Gender.MALE, false, 0.0188685880078656),
+      Arguments.of(2, Gender.MALE, false, 0.0),
 
       // Female - dynamic
       Arguments.of(0, Gender.FEMALE, true, -1.7513536371131),
       Arguments.of(1, Gender.FEMALE, true, -0.101514048705338),
-      Arguments.of(2, Gender.FEMALE, true, 0.021160895925655),
+      Arguments.of(2, Gender.FEMALE, true, 0.0),
 
       // Female - static
       Arguments.of(0, Gender.FEMALE, false, -2.32321324569237),
       Arguments.of(1, Gender.FEMALE, false, -0.0633592949212861),
-      Arguments.of(2, Gender.FEMALE, false, 0.0188685880078656),
+      Arguments.of(2, Gender.FEMALE, false, 0.0),
+    )
+
+    @JvmStatic
+    fun getViolentHistoryWeightInvalidInputProvider(): Stream<Arguments> = Stream.of(
+      Arguments.of(-1, Gender.MALE, true, "Invalid total number of violent sanctions value: -1"),
+      Arguments.of(-1, Gender.FEMALE, false, "Invalid total number of violent sanctions value: -1"),
+    )
+
+    // getViolentSanctionsWeight method source
+    @JvmStatic
+    fun getViolentSanctionsWeightValidInputProvider(): Stream<Arguments> = Stream.of(
+      // Dynamic
+      Arguments.of(0, true, 0.0),
+      Arguments.of(1, true, 0.021160895925655),
+      Arguments.of(2, true, 0.04232179185131),
+
+      // Static
+      Arguments.of(0, false, 0.0),
+      Arguments.of(1, false, 0.0188685880078656),
+      Arguments.of(2, false, 0.0377371760157312),
     )
 
     @JvmStatic
     fun getViolentSanctionsWeightInvalidInputProvider(): Stream<Arguments> = Stream.of(
-      Arguments.of(-1, Gender.MALE, true, "Invalid total number of violent sanctions value: -1"),
-      Arguments.of(-1, Gender.FEMALE, false, "Invalid total number of violent sanctions value: -1"),
+      Arguments.of(-1, true, "Invalid total number of violent sanctions value: -1"),
+      Arguments.of(-1, false, "Invalid total number of violent sanctions value: -1"),
     )
 
     // getViolenceRateWeight method source
