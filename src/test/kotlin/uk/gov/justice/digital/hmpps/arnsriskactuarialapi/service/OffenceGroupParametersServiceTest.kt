@@ -55,8 +55,8 @@ class OffenceGroupParametersServiceTest {
 
   @Test
   fun `Test SNSVStatic Map values that are present`() {
-    assertEquals(-0.215779995, service.getSNSVStaticWeighting("09999"))
-    assertEquals(-0.215779995, service.getSNSVStaticWeighting("99968"))
+    assertEquals(-0.215779995107354, service.getSNSVStaticWeighting("09999"))
+    assertEquals(-0.215779995107354, service.getSNSVStaticWeighting("99968"))
   }
 
   @ParameterizedTest
@@ -70,8 +70,8 @@ class OffenceGroupParametersServiceTest {
 
   @Test
   fun `Test SNSVVATPStatic Map values that are present`() {
-    assertEquals(0.238802611, service.getSNSVVATPStaticWeighting("00101"))
-    assertEquals(0.503126183, service.getSNSVVATPStaticWeighting("99958"))
+    assertEquals(0.238802610774108, service.getSNSVVATPStaticWeighting("00101"))
+    assertEquals(0.503126183131338, service.getSNSVVATPStaticWeighting("99958"))
   }
 
   @ParameterizedTest
@@ -85,8 +85,8 @@ class OffenceGroupParametersServiceTest {
 
   @Test
   fun `Test SNSVDynamic Map values that are present`() {
-    assertEquals(-0.006538498, service.getSNSVDynamicWeighting("00101"))
-    assertEquals(-0.006538498, service.getSNSVDynamicWeighting("99958"))
+    assertEquals(-0.006538498404, service.getSNSVDynamicWeighting("00101"))
+    assertEquals(-0.006538498404, service.getSNSVDynamicWeighting("99958"))
   }
 
   @ParameterizedTest
@@ -100,8 +100,8 @@ class OffenceGroupParametersServiceTest {
 
   @Test
   fun `Test SNSVVATPDynamic Map values that are present`() {
-    assertEquals(0.204895024, service.getSNSVVATPDynamicWeighting("00101"))
-    assertEquals(0.413159451, service.getSNSVVATPDynamicWeighting("99958"))
+    assertEquals(0.204895023669854, service.getSNSVVATPDynamicWeighting("00101"))
+    assertEquals(0.41315945136753, service.getSNSVVATPDynamicWeighting("99958"))
   }
 
   @ParameterizedTest
