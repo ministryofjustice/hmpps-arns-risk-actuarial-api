@@ -105,7 +105,7 @@ class OGRS3RiskProducerService : RiskScoreProducer {
         ValidationErrorResponse(
           type = ValidationErrorType.NO_MATCHING_INPUT,
           message = "Error: ${it.message}",
-          fields = null,
+          fields = emptyList(),
         ),
       ),
     )
