@@ -6,7 +6,7 @@
       {
         "type": "UNEXPECTED_VALUE",
         "message": "Error: Age at assessment date cannot be less than 10",
-        "fields": null
+        "fields": []
       }
     ]
   }

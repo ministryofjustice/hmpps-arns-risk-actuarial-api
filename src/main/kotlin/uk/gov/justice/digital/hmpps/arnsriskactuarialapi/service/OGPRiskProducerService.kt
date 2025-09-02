@@ -128,7 +128,7 @@ class OGPRiskProducerService : RiskScoreProducer {
           ValidationErrorResponse(
             type = ValidationErrorType.UNEXPECTED_VALUE,
             message = "Error: ${it.message}",
-            fields = null,
+            fields = emptyList(),
           ),
         ),
       )

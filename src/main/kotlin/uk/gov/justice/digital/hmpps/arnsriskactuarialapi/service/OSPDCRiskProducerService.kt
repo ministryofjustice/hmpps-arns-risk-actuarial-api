@@ -98,7 +98,7 @@ class OSPDCRiskProducerService : RiskScoreProducer {
               ValidationErrorResponse(
                 type = ValidationErrorType.NOT_APPLICABLE,
                 message = "OSP/DC band not applicable, 64 point score value: 0",
-                fields = null,
+                fields = emptyList(),
               ),
             ),
           )
@@ -118,7 +118,7 @@ class OSPDCRiskProducerService : RiskScoreProducer {
         ValidationErrorResponse(
           type = ValidationErrorType.UNEXPECTED_VALUE,
           message = "Error: ${it.message}",
-          fields = null,
+          fields = emptyList(),
         ),
       ),
     )
