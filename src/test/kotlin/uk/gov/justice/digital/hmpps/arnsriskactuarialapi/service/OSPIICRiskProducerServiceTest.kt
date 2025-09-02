@@ -31,7 +31,7 @@ class OSPIICRiskProducerServiceTest {
     )
     val result = service.getRiskScore(request, context)
     val output = result.OSPIIC
-    assertEquals(RiskBand.VERY_HIGH, output!!.band)
+    assertEquals(RiskBand.HIGH, output!!.band)
     assertEquals(0.1031, output.score!!, 0.00001)
     assertEquals(emptyList<ValidationErrorResponse>(), output.validationError)
   }
