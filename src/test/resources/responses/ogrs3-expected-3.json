@@ -6,7 +6,7 @@
     "validationError" : [ {
       "type" : "NO_MATCHING_INPUT",
       "message" : "Error: Conviction date cannot be before date of birth.",
-      "fields" : null
+      "fields" : []
     } ]
   }
 }

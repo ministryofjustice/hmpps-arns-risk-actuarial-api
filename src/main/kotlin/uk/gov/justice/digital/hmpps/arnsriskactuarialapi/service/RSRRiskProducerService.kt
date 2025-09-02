@@ -58,7 +58,7 @@ class RSRRiskProducerService : RiskScoreProducer {
         ValidationErrorResponse(
           type = ValidationErrorType.UNEXPECTED_VALUE,
           message = "Error: ${e.message}",
-          fields = null,
+          fields = emptyList(),
         ),
       )
       return context.apply {
