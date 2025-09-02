@@ -21,16 +21,12 @@ fun getTotalContactChildSexualSanctionsWeight(sanctions: Int) = when (sanctions)
   else -> throw IllegalArgumentException("Invalid contact child sexual sanctions value: $sanctions")
 }
 
-fun getTotalNonContactSexualOffencesExcludingIndecentImagesWeight(totalNonContactSexualOffences: Int, totalIndecentImageSanctions: Int): Int {
-  val totalNonContactSexualOffencesExcludingIndecentImages = totalNonContactSexualOffences - totalIndecentImageSanctions
-
-  return when (totalNonContactSexualOffencesExcludingIndecentImages) {
-    0 -> 0
-    1 -> 2
-    2 -> 4
-    in 3..Int.MAX_VALUE -> 6
-    else -> throw IllegalArgumentException("Invalid total non-contact sexual offences excluding indecent images value: $totalNonContactSexualOffencesExcludingIndecentImages")
-  }
+fun getTotalNonContactSexualOffencesWeight(totalNonContactSexualOffences: Int): Int = when (totalNonContactSexualOffences) {
+  0 -> 0
+  1 -> 2
+  2 -> 4
+  in 3..Int.MAX_VALUE -> 6
+  else -> throw IllegalArgumentException("Invalid total non-contact sexual offences excluding indecent images value: $totalNonContactSexualOffences")
 }
 
 fun getAgeAtStartOfFollowupWeight(dob: LocalDate, dateAtStartOfFollowup: LocalDate): Int {

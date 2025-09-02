@@ -161,8 +161,7 @@ class OSPDCRiskProducerServiceTest {
     // When
     val result = service.getRiskScore(
       validOSPDCRiskScoreRequest().copy(
-        totalNonContactSexualOffences = 0,
-        totalIndecentImageSanctions = 1,
+        totalNonContactSexualOffences = -1,
       ),
       emptyContext(),
     )

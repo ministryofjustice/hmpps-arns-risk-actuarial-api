@@ -45,15 +45,15 @@ class OSPDCTransformationHelperTest {
 
   @ParameterizedTest
   @MethodSource("getTotalNonContactSexualOffencesExcludingIndecentImagesWeightValidInput")
-  fun `test getTotalNonContactSexualOffencesExcludingIndecentImagesWeight with valid inputs`(getTotalNonContactSexualOffencesExcludingIndecentImagesWeight: Int, totalIndecentImageSanctions: Int, expected: Int) {
-    val result = getTotalNonContactSexualOffencesExcludingIndecentImagesWeight(getTotalNonContactSexualOffencesExcludingIndecentImagesWeight, totalIndecentImageSanctions)
+  fun `test getTotalNonContactSexualOffencesExcludingIndecentImagesWeight with valid inputs`(getTotalNonContactSexualOffencesExcludingIndecentImagesWeight: Int, expected: Int) {
+    val result = getTotalNonContactSexualOffencesWeight(getTotalNonContactSexualOffencesExcludingIndecentImagesWeight)
     assertEquals(expected, result)
   }
 
   @Test
   fun `test getTotalNonContactSexualOffencesExcludingIndecentImagesWeight throws for negative value`() {
     val ex = assertThrows<IllegalArgumentException> {
-      getTotalNonContactSexualOffencesExcludingIndecentImagesWeight(0, 1)
+      getTotalNonContactSexualOffencesWeight(-1)
     }
 
     assertTrue(ex.message!!.contains("Invalid total non-contact sexual offences excluding indecent images value: -1"))
@@ -168,11 +168,11 @@ class OSPDCTransformationHelperTest {
 
     @JvmStatic
     fun getTotalNonContactSexualOffencesExcludingIndecentImagesWeightValidInput(): Stream<Arguments> = Stream.of(
-      Arguments.of(1, 1, 0),
-      Arguments.of(2, 1, 2),
-      Arguments.of(4, 2, 4),
-      Arguments.of(6, 3, 6),
-      Arguments.of(Int.MAX_VALUE, 1, 6),
+      Arguments.of(0, 0),
+      Arguments.of(1, 2),
+      Arguments.of(2, 4),
+      Arguments.of(3, 6),
+      Arguments.of(Int.MAX_VALUE, 6),
     )
 
     @JvmStatic
