@@ -41,7 +41,6 @@ class SNSVRiskProducerService : RiskScoreProducer {
     val SNSV_DYNAMIC_ADDITIONAL_REQUIRED_PROPERTIES = listOf(
       RiskScoreRequest::didOffenceInvolveCarryingOrUsingWeapon,
       RiskScoreRequest::suitabilityOfAccommodation,
-      RiskScoreRequest::isUnemployed,
       RiskScoreRequest::currentRelationshipWithPartner,
       RiskScoreRequest::currentAlcoholUseProblems,
       RiskScoreRequest::excessiveAlcoholUse,
@@ -114,7 +113,7 @@ class SNSVRiskProducerService : RiskScoreProducer {
     this.totalNumberOfViolentSanctions!!.toInt(),
     this.didOffenceInvolveCarryingOrUsingWeapon!!,
     this.suitabilityOfAccommodation!!,
-    this.isUnemployed!!,
+    this.isUnemployed,
     this.currentRelationshipWithPartner!!,
     this.currentAlcoholUseProblems!!,
     this.excessiveAlcoholUse!!,

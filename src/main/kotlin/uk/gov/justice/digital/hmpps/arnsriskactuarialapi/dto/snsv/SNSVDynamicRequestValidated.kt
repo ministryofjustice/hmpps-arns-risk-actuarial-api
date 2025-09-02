@@ -19,7 +19,7 @@ data class SNSVDynamicRequestValidated(
   val totalNumberOfViolentSanctions: Int,
   val didOffenceInvolveCarryingOrUsingWeapon: Boolean,
   val suitabilityOfAccommodation: ProblemLevel,
-  val isUnemployed: Boolean,
+  val isUnemployed: Boolean?,
   val currentRelationshipWithPartner: ProblemLevel,
   val currentAlcoholUseProblems: ProblemLevel,
   val excessiveAlcoholUse: ProblemLevel,

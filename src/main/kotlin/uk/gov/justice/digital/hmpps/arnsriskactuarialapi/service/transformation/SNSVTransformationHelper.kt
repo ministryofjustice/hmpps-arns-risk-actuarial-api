@@ -163,7 +163,7 @@ class SNSVTransformationHelper {
 
     fun suitabilityOfAccommodationWeight(suitabilityOfAccommodation: ProblemLevel): Double = 0.0619710049121293 * suitabilityOfAccommodation.score
 
-    fun isUnemployedWeight(isUnemployed: Boolean): Double = if (isUnemployed) 0.0389109699626767 * 2 else 0.0
+    fun isUnemployedWeight(isUnemployed: Boolean?): Double = if (isUnemployed == true) 0.0389109699626767 * 2 else 0.0
 
     fun currentRelationshipWithPartnerWeight(currentRelationshipWithPartner: ProblemLevel): Double = when (currentRelationshipWithPartner) {
       ProblemLevel.NO_PROBLEMS -> 0.0
