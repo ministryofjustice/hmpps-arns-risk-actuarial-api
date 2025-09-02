@@ -26,25 +26,30 @@ class OSPIICRiskProducerService : RiskScoreProducer {
       request.hasEverCommittedSexualOffence == false -> {
         val unexpectedFields = arrayListOf<String>()
 
-        if (request.totalContactAdultSexualSanctions != null) {
+        if (request.totalContactAdultSexualSanctions != null && request.totalContactAdultSexualSanctions != 0) {
           unexpectedFields.add(RiskScoreRequest::totalContactAdultSexualSanctions.name)
         }
-        if (request.totalContactChildSexualSanctions != null) {
+        if (request.totalContactChildSexualSanctions != null && request.totalContactChildSexualSanctions != 0) {
           unexpectedFields.add(RiskScoreRequest::totalContactChildSexualSanctions.name)
         }
-        if (request.totalIndecentImageSanctions != null) {
+        if (request.totalIndecentImageSanctions != null && request.totalIndecentImageSanctions != 0) {
           unexpectedFields.add(RiskScoreRequest::totalIndecentImageSanctions.name)
         }
-        if (request.totalNonContactSexualOffences != null) {
+        if (request.totalNonContactSexualOffences != null && request.totalNonContactSexualOffences != 0) {
           unexpectedFields.add(RiskScoreRequest::totalNonContactSexualOffences.name)
         }
 
-        val errors = errors + ValidationErrorResponse(
+        val additionalErrors = errors + ValidationErrorResponse(
           type = ValidationErrorType.UNEXPECTED_VALUE,
           message = "Error: No sexual motivation/offending identified - fields should not be populated.",
           fields = unexpectedFields,
         )
-        OSPIICObject(RiskBand.NOT_APPLICABLE, 0.0, errors)
+
+        OSPIICObject(
+          RiskBand.NOT_APPLICABLE,
+          0.0,
+          if (unexpectedFields.isEmpty()) errors else additionalErrors,
+        )
       }
 
       request.gender == Gender.FEMALE -> OSPIICObject(RiskBand.LOW, 0.0, errors)

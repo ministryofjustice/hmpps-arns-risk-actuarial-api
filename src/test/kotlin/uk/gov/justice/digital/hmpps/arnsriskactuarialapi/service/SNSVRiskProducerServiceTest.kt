@@ -57,7 +57,7 @@ class SNSVRiskProducerServiceTest {
 
     assertNotNull(result)
     assertEquals(ScoreType.DYNAMIC, result.SNSV!!.scoreType)
-    assertEquals(0.002399338980972, result.SNSV!!.snsvScore!!, 1E-8)
+    assertEquals(0.0027603294949487, result.SNSV!!.snsvScore!!, 1E-8)
   }
 
   @Test
@@ -72,7 +72,7 @@ class SNSVRiskProducerServiceTest {
 
     assertNotNull(result)
     assertEquals(ScoreType.STATIC, result.SNSV!!.scoreType)
-    assertEquals(0.00281858040329, result.SNSV!!.snsvScore!!, 1E-8)
+    assertEquals(0.0021598644399697, result.SNSV!!.snsvScore!!, 1E-8)
   }
 
   @Test
@@ -87,13 +87,16 @@ class SNSVRiskProducerServiceTest {
     assertEquals(1, result.SNSV?.validationError?.size)
     val error = result.SNSV?.validationError?.first()
     assertEquals(ValidationErrorType.UNEXPECTED_VALUE, error?.type)
-    assertEquals("Error: Age at assessment date cannot be less than 10", error?.message)
+    assertEquals("Error: Age at date at start of followup cannot be less than 10", error?.message)
   }
 
   @Test
   fun `getRiskScore should hit calculation error and return UNEXPECTED_VALUE with STATIC score type`() {
     val result = service.getRiskScore(
-      validSNSVStaticRiskScoreRequest().copy(dateOfBirth = LocalDate.of(2025, Month.JANUARY, 1)),
+      validSNSVStaticRiskScoreRequest().copy(
+        dateOfBirth = LocalDate.of(2025, Month.JANUARY, 1),
+        dateAtStartOfFollowup = LocalDate.of(2027, 1, 1),
+      ),
       emptyContext(),
     )
 
@@ -102,6 +105,6 @@ class SNSVRiskProducerServiceTest {
     assertEquals(1, result.SNSV?.validationError?.size)
     val error = result.SNSV?.validationError?.first()
     assertEquals(ValidationErrorType.UNEXPECTED_VALUE, error?.type)
-    assertEquals("Error: Age at assessment date cannot be less than 10", error?.message)
+    assertEquals("Error: Age at date at start of followup cannot be less than 10", error?.message)
   }
 }

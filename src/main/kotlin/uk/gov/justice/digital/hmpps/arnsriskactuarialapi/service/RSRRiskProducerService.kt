@@ -10,7 +10,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.osp.OSPDCObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ospiic.OSPIICObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.rsr.RSRObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.SNSVObject
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getFullRSRScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getRSRBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asDoublePercentage
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.roundToNDecimals
@@ -30,22 +29,20 @@ class RSRRiskProducerService : RiskScoreProducer {
     ).flatten()
 
     try {
-      val ospdcScore = ospdc.ospdcScore ?: 0.0
+      val ospdcScore = ospdc.ospdcScore?.asDoublePercentage() ?: 0.0
       val ospdcBand = ospdc.ospdcBand ?: RiskBand.NOT_APPLICABLE
-      val ospiicScore = ospiic.score ?: 0.0
+      val ospiicScore = ospiic.score?.asDoublePercentage() ?: 0.0
       val ospiicBand = ospiic.band ?: RiskBand.NOT_APPLICABLE
       val snsvScore = snsv.snsvScore?.asDoublePercentage()
-      val rsrScore = snsvScore?.let {
-        getFullRSRScore(it, ospdcScore, ospiicScore, snsv.scoreType)?.roundToNDecimals(2)
-      }
-      val rsrBand = rsrScore?.let { getRSRBand(it) }
+      val rsrScore = listOfNotNull(snsvScore, ospdcScore, ospiicScore).sum().roundToNDecimals(2)
+      val rsrBand = getRSRBand(rsrScore)
 
       return context.apply {
         RSR = RSRObject(
           ospdcBand,
-          ospdcScore.asDoublePercentage(),
+          ospdcScore,
           ospiicBand,
-          ospiicScore.asDoublePercentage(),
+          ospiicScore,
           rsrScore,
           rsrBand,
           snsv.snsvScore?.let { snsv.scoreType },
