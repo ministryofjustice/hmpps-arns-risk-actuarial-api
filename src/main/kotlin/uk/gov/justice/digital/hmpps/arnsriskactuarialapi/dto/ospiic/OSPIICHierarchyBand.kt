@@ -12,9 +12,9 @@ enum class OSPIICHierarchyBand(
   val band: RiskBand,
   val isMatchFor: (OSPIICInputValidated) -> Boolean,
 ) {
-  TwoOrMoreIIOCSanctions(0.10310, RiskBand.VERY_HIGH, twoOrMoreIIOCSanctions),
-  OneIIOCSanction(0.03328, RiskBand.HIGH, oneIIOCSanction),
-  TwoOrMoreContactChildSexualSanctions(0.00926, RiskBand.MEDIUM, twoOrMoreContactChildSexualSanctions),
+  TwoOrMoreIIOCSanctions(0.10310, RiskBand.HIGH, twoOrMoreIIOCSanctions),
+  OneIIOCSanction(0.03328, RiskBand.MEDIUM, oneIIOCSanction),
+  TwoOrMoreContactChildSexualSanctions(0.00926, RiskBand.LOW, twoOrMoreContactChildSexualSanctions),
   OneContactChildSexualSanctions(0.00634, RiskBand.LOW, oneContactChildSexualSanctions),
   NoSexualOffenceSanctions(0.00062, RiskBand.LOW, noSexualOffenceSanctions),
   AllOthers(0.00281, RiskBand.LOW, { _ -> true }),
