@@ -31,16 +31,9 @@ fun getTotalNonContactSexualOffencesWeight(totalNonContactSexualOffences: Int): 
 
 fun getAgeAtStartOfFollowupWeight(dob: LocalDate, dateAtStartOfFollowup: LocalDate): Int {
   val ageAtStartOfFollowup = getAgeAtStartOfFollowup(dob, dateAtStartOfFollowup)
-
-  if (ageAtStartOfFollowup >= 18) {
-    return if (ageAtStartOfFollowup >= 63) {
-      0
-    } else {
-      20 - (ageAtStartOfFollowup / 3)
-    }
-  } else {
-    throw IllegalArgumentException("Invalid age at start of follow up value: $ageAtStartOfFollowup")
-  }
+  if (ageAtStartOfFollowup < 1) throw IllegalArgumentException("Invalid age at start of follow up value: $ageAtStartOfFollowup")
+  if (ageAtStartOfFollowup >= 60) return 0
+  return 14 - maxOf(0, (ageAtStartOfFollowup - 18) / 3)
 }
 
 fun getAgeAtLastSanctionForSexualOffenceWeight(dateOfBirth: LocalDate, dateOfMostRecentSexualOffence: LocalDate): Int {
@@ -62,8 +55,7 @@ fun getTotalNumberOfSanctionsForAllOffencesWeight(totalNumberOfSanctionsForAllOf
 
 fun getIsCurrentOffenceAgainstVictimStrangerWeight(isCurrentOffenceAgainstVictimStranger: Boolean?): Int = when (isCurrentOffenceAgainstVictimStranger) {
   true -> 4
-  false -> 0
-  null -> 2
+  false, null -> 0
 }
 
 fun getOSPDCBand(ospdc64PointScore: Int): RiskBand = when (ospdc64PointScore) {

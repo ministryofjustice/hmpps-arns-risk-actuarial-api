@@ -13,6 +13,12 @@ import java.util.stream.Stream
 
 class OSPDCTransformationHelperTest {
 
+  @Test
+  fun `getOSPDCScore with 28`() {
+    val result = getOSPDCScore(28)
+    assertEquals(0.015384359134649634, result)
+  }
+
   @ParameterizedTest
   @MethodSource("getTotalContactAdultSexualSanctionsWeightValidInput")
   fun `test getTotalContactAdultSexualSanctionsWeight with valid inputs`(input: Int, expected: Int) {
@@ -177,7 +183,8 @@ class OSPDCTransformationHelperTest {
 
     @JvmStatic
     fun getAgeAtStartOfFollowupWeightValidAges(): Stream<Arguments> = Stream.of(
-      Arguments.of(18, 14),
+      Arguments.of(1, 14),
+      Arguments.of(20, 14),
       Arguments.of(21, 13),
       Arguments.of(24, 12),
       Arguments.of(27, 11),
@@ -197,7 +204,6 @@ class OSPDCTransformationHelperTest {
 
     @JvmStatic
     fun getAgeAtStartOfFollowupWeightInvalidAges(): Stream<Arguments> = Stream.of(
-      Arguments.of(17),
       Arguments.of(0),
       Arguments.of(-1),
     )
@@ -240,7 +246,7 @@ class OSPDCTransformationHelperTest {
     fun strangerVictimValues(): Stream<Arguments> = Stream.of(
       Arguments.of(true, 4),
       Arguments.of(false, 0),
-      Arguments.of(null, 2),
+      Arguments.of(null, 0),
     )
 
     @JvmStatic
