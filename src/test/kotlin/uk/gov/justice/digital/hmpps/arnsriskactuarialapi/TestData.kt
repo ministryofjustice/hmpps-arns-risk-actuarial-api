@@ -41,7 +41,7 @@ fun omittedPNI(): PNIObject = PNIObject(ProgrammeNeedIdentifier.OMISSION, null)
 
 fun emptyLDS(): LDSObject = LDSObject(null, null)
 
-fun emptyOSPDC(): OSPDCObject = OSPDCObject(null, null, null)
+fun emptyOSPDC(): OSPDCObject = OSPDCObject(null, null, null, null)
 
 fun emptySNSV(): SNSVObject = SNSVObject(null, null, null)
 
@@ -286,6 +286,7 @@ fun validOSPDCRiskScoreRequest() = RiskScoreRequest(
   dateOfMostRecentSexualOffence = LocalDate.of(2000, 1, 1),
   totalNumberOfSanctionsForAllOffences = 4 as Integer,
   isCurrentOffenceSexuallyMotivated = false,
+  supervisionStatus = CustodyOrCommunity.CUSTODY,
 )
 
 fun validSNSVStaticRiskScoreRequest() = RiskScoreRequest(

@@ -17,7 +17,7 @@ class OSPDCRiskProducerServiceTest {
   private val service: OSPDCRiskProducerService = OSPDCRiskProducerService()
 
   @Test
-  fun `should return valid OVPObject for valid input LOW risk`() {
+  fun `should return valid OSPDCObject for valid input LOW risk`() {
     val result = service.getRiskScore(
       validOSPDCRiskScoreRequest()
         .copy(

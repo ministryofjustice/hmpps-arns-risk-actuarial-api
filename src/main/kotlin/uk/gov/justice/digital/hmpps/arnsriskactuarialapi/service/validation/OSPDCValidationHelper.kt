@@ -33,6 +33,7 @@ internal fun ospdcValidationMissingFields(
   missingFields.addIfNull(request, RiskScoreRequest::totalIndecentImageSanctions)
   missingFields.addIfNull(request, RiskScoreRequest::dateAtStartOfFollowup)
   missingFields.addIfNull(request, RiskScoreRequest::totalNumberOfSanctionsForAllOffences)
+  missingFields.addIfNull(request, RiskScoreRequest::supervisionStatus)
 
   return addMissingFields(missingFields, emptyList())
 }

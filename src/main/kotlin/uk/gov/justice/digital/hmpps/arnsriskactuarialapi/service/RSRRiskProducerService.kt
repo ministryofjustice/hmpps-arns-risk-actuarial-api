@@ -18,7 +18,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.roundToNDecimals
 class RSRRiskProducerService : RiskScoreProducer {
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
-    val ospdc = context.OSPDC ?: OSPDCObject(null, null, null)
+    val ospdc = context.OSPDC ?: OSPDCObject(null, null, null, null)
     val ospiic = context.OSPIIC ?: OSPIICObject(null, null, null)
     val snsv = context.SNSV ?: SNSVObject(null, null, null)
 
@@ -31,6 +31,7 @@ class RSRRiskProducerService : RiskScoreProducer {
     try {
       val ospdcScore = ospdc.ospdcScore?.asDoublePercentage() ?: 0.0
       val ospdcBand = ospdc.ospdcBand ?: RiskBand.NOT_APPLICABLE
+      val ospRiskReduction = ospdc.ospRiskReduction
       val ospiicScore = ospiic.score?.asDoublePercentage() ?: 0.0
       val ospiicBand = ospiic.band ?: RiskBand.NOT_APPLICABLE
       val snsvScore = snsv.snsvScore?.asDoublePercentage()
@@ -54,7 +55,7 @@ class RSRRiskProducerService : RiskScoreProducer {
           rsrScore,
           rsrBand,
           scoreType,
-          null,
+          ospRiskReduction,
           errors,
         )
       }

@@ -23,7 +23,7 @@ class RSRRiskProducerServiceTest {
   @Test
   fun `should calculate RSR score when no validation errors`() {
     val context = emptyContext().copy(
-      OSPDC = OSPDCObject(ospdcScore = 0.0512312312, ospdcBand = RiskBand.LOW, validationError = emptyList()),
+      OSPDC = OSPDCObject(ospdcScore = 0.0512312312, ospdcBand = RiskBand.LOW, validationError = emptyList(), ospRiskReduction = null),
       OSPIIC = OSPIICObject(score = 0.0212312312, band = RiskBand.MEDIUM, validationError = emptyList()),
       SNSV = SNSVObject(snsvScore = 0.0312312312, scoreType = ScoreType.DYNAMIC, validationError = emptyList()),
     )
@@ -51,7 +51,7 @@ class RSRRiskProducerServiceTest {
       ),
     )
     val context = emptyContext().copy(
-      OSPDC = OSPDCObject(ospdcScore = 0.02378462734, ospdcBand = RiskBand.LOW, validationError = errors),
+      OSPDC = OSPDCObject(ospdcScore = 0.02378462734, ospdcBand = RiskBand.LOW, validationError = errors, ospRiskReduction = null),
     )
 
     val result = service.getRiskScore(RiskScoreRequest(), context)
