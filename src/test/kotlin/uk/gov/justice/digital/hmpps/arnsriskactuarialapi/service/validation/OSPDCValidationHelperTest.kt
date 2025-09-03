@@ -3,6 +3,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validOSPDCRiskScoreRequest
 import kotlin.collections.listOf
@@ -43,6 +44,26 @@ class OSPDCValidationHelperTest {
       "totalIndecentImageSanctions",
       "dateAtStartOfFollowup",
       "totalNumberOfSanctionsForAllOffences",
+    )
+
+    val error = result.first()
+    assertEquals(ValidationErrorType.MISSING_INPUT, error.type)
+    assertEquals("ERR5 - Field is Null", error.message)
+    assertEquals(expectedFields, error.fields)
+  }
+
+  @Test
+  fun `oospdcInitialValidation missing sexual motivation question`() {
+    val request = validOSPDCRiskScoreRequest().copy(
+      gender = Gender.MALE,
+      hasEverCommittedSexualOffence = true,
+      isCurrentOffenceSexuallyMotivated = null,
+    )
+
+    val result = ospdcInitialValidation(request)
+
+    val expectedFields = listOf(
+      "isCurrentOffenceSexuallyMotivated",
     )
 
     val error = result.first()
