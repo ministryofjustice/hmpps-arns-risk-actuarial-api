@@ -80,5 +80,4 @@ class RiskScoreService {
       service.getRiskScore(riskScoreRequest, context)
     }.toRiskScoreResponse()
   }
-
 }
