@@ -43,6 +43,7 @@ class OSPDCValidationHelperTest {
       "totalIndecentImageSanctions",
       "dateAtStartOfFollowup",
       "totalNumberOfSanctionsForAllOffences",
+      "supervisionStatus",
     )
 
     val error = result.first()

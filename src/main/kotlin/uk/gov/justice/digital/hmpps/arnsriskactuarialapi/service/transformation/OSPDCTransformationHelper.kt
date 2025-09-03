@@ -1,8 +1,11 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CustodyOrCommunity
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sigmoid
 import java.time.LocalDate
+import java.time.Period
 import java.time.temporal.ChronoUnit
 
 fun getTotalContactAdultSexualSanctionsWeight(sanctions: Int) = when (sanctions) {
@@ -36,7 +39,7 @@ fun getAgeAtStartOfFollowupWeight(dob: LocalDate, dateAtStartOfFollowup: LocalDa
   return 14 - maxOf(0, (ageAtStartOfFollowup - 18) / 3)
 }
 
-fun getAgeAtLastSanctionForSexualOffenceWeight(dateOfBirth: LocalDate, dateOfMostRecentSexualOffence: LocalDate): Int {
+fun getAgeAtLastSanctionForSexualOffenceWeight(dateOfBirth: LocalDate, dateOfMostRecentSexualOffence: LocalDate?): Int {
   val ageAtLastSanctionForSexualOffence = ChronoUnit.YEARS.between(dateOfBirth, dateOfMostRecentSexualOffence).toInt()
 
   return when (ageAtLastSanctionForSexualOffence) {
@@ -73,4 +76,28 @@ fun getOSPDCScore(ospdc64PointScore: Int): Double {
   }
   val z = -8.6333 + (0.1598 * ospdc64PointScore)
   return z.sigmoid()
+}
+
+fun getOSPDCRiskReduction(gender: Gender, supervisionStatus: CustodyOrCommunity, mostRecentOffenceDate: LocalDate?, dateOfMostRecentSexualOffence: LocalDate?, dateAtStartOfFollowup: LocalDate, assessmentDate: LocalDate, riskBand: RiskBand?): Boolean? {
+  if (riskBand == null) return null
+
+  return !(
+    gender == Gender.FEMALE ||
+      supervisionStatus == CustodyOrCommunity.CUSTODY ||
+      (mostRecentOffenceDate != null && ChronoUnit.YEARS.between(mostRecentOffenceDate, assessmentDate).toInt() < 5) ||
+      (dateOfMostRecentSexualOffence != null && ChronoUnit.YEARS.between(dateOfMostRecentSexualOffence, assessmentDate).toInt() < 5) ||
+      Period.between(dateAtStartOfFollowup, assessmentDate).years < 5 ||
+      riskBand == RiskBand.LOW ||
+      riskBand == RiskBand.NOT_APPLICABLE
+    )
+}
+
+fun getOSPDCRiskBandReduction(ospRiskReduction: Boolean?, riskBand: RiskBand?): RiskBand? {
+  if (ospRiskReduction == null || !ospRiskReduction || riskBand == null) return riskBand
+  return when (riskBand) {
+    RiskBand.VERY_HIGH -> RiskBand.HIGH
+    RiskBand.HIGH -> RiskBand.MEDIUM
+    RiskBand.MEDIUM -> RiskBand.LOW
+    else -> throw IllegalArgumentException("Unsupported risk band reduction for value: $riskBand")
+  }
 }

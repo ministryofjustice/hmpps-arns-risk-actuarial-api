@@ -13,6 +13,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getAgeAtStartOfFollowupWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getIsCurrentOffenceAgainstVictimStrangerWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getOSPDCBand
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getOSPDCRiskBandReduction
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getOSPDCRiskReduction
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getOSPDCScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getTotalContactAdultSexualSanctionsWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getTotalContactChildSexualSanctionsWeight
@@ -31,7 +33,7 @@ class OSPDCRiskProducerService : RiskScoreProducer {
 
     if (errors.isNotEmpty()) {
       return context.apply {
-        OSPDC = OSPDCObject(null, null, errors)
+        OSPDC = OSPDCObject(null, null, null, errors)
       }
     }
 
@@ -40,6 +42,7 @@ class OSPDCRiskProducerService : RiskScoreProducer {
         OSPDC = OSPDCObject(
           RiskBand.NOT_APPLICABLE,
           0.0,
+          null,
           null,
         )
       }
@@ -51,6 +54,7 @@ class OSPDCRiskProducerService : RiskScoreProducer {
         OSPDC = OSPDCObject(
           RiskBand.NOT_APPLICABLE,
           FIXED_RSR_CONTRIBUTION,
+          null,
           addMissingCriteriaValidation(arrayListOf(RiskScoreRequest::gender.name), emptyList()),
         )
       }
@@ -68,6 +72,9 @@ class OSPDCRiskProducerService : RiskScoreProducer {
       request.totalNumberOfSanctionsForAllOffences!!.toInt(),
       request.dateOfMostRecentSexualOffence,
       request.isCurrentOffenceAgainstVictimStranger,
+      request.supervisionStatus!!,
+      request.mostRecentOffenceDate,
+      request.assessmentDate,
     )
     return context.apply {
       OSPDC = getOSPDCObject(validRequest)
@@ -91,6 +98,7 @@ class OSPDCRiskProducerService : RiskScoreProducer {
           OSPDCObject(
             getOSPDCBand(ospdc64PointScore),
             getOSPDCScore(ospdc64PointScore),
+            null,
             arrayListOf(
               ValidationErrorResponse(
                 type = ValidationErrorType.NOT_APPLICABLE,
@@ -100,15 +108,27 @@ class OSPDCRiskProducerService : RiskScoreProducer {
             ),
           )
         } else {
+          val ospdcBand = getOSPDCBand(ospdc64PointScore)
+          val ospRiskReduction = getOSPDCRiskReduction(
+            request.gender,
+            request.supervisionStatus,
+            request.mostRecentOffenceDate,
+            request.dateOfMostRecentSexualOffence,
+            request.dateAtStartOfFollowup,
+            request.assessmentDate,
+            ospdcBand,
+          )
           OSPDCObject(
-            getOSPDCBand(ospdc64PointScore),
+            getOSPDCRiskBandReduction(ospRiskReduction, ospdcBand),
             getOSPDCScore(ospdc64PointScore),
+            ospRiskReduction,
             emptyList(),
           )
         }
       }
   }.getOrElse {
     OSPDCObject(
+      null,
       null,
       null,
       arrayListOf(
