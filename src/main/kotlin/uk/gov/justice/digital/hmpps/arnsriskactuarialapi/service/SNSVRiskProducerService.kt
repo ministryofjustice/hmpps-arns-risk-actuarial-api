@@ -17,6 +17,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.excessiveAlcoholUseWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.get2YearInterceptWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getAgeGenderPolynomialWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getDomesticViolencePerpetrator
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getGenderWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getMonthsSinceLastSanctionWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getNumberOfSanctionWeight
@@ -32,30 +33,14 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.proCriminalAttitudesWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.suitabilityOfAccommodationWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.temperControlWeight
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.getNullValuesFromProperties
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.isValidDynamicSnsv
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.snsvDynamicValidation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.snsvInitialValidation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.roundToNDecimals
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sigmoid
-import kotlin.getOrElse
 
 @Service
 class SNSVRiskProducerService : RiskScoreProducer {
-
-  companion object {
-    val SNSV_DYNAMIC_ADDITIONAL_REQUIRED_PROPERTIES = listOf(
-      RiskScoreRequest::didOffenceInvolveCarryingOrUsingWeapon,
-      RiskScoreRequest::suitabilityOfAccommodation,
-      RiskScoreRequest::isUnemployed,
-      RiskScoreRequest::currentRelationshipWithPartner,
-      RiskScoreRequest::currentAlcoholUseProblems,
-      RiskScoreRequest::excessiveAlcoholUse,
-      RiskScoreRequest::impulsivityProblems,
-      RiskScoreRequest::temperControl,
-      RiskScoreRequest::proCriminalAttitudes,
-      RiskScoreRequest::evidenceOfDomesticAbuse,
-      RiskScoreRequest::previousConvictions,
-    )
-  }
 
   @Autowired
   lateinit var offenceGroupParametersService: OffenceGroupParametersService
@@ -77,14 +62,17 @@ class SNSVRiskProducerService : RiskScoreProducer {
     scoreType: ScoreType,
     request: RiskScoreRequest,
   ): SNSVObject = runCatching {
+    val validationErrors = snsvDynamicValidation(request)
+
     when (scoreType) {
       ScoreType.STATIC -> {
         snvsStaticSum(request.toSNSVStaticRequestValidated())
       }
+
       ScoreType.DYNAMIC -> {
         snvsDynamicSum(request.toSNSVDynamicRequestValidated())
       }
-    }.let { SNSVObject(it.sigmoid().roundToNDecimals(16), scoreType, emptyList()) }
+    }.let { SNSVObject(it.sigmoid().roundToNDecimals(16), scoreType, validationErrors) }
   }.getOrElse {
     SNSVObject(
       null,
@@ -99,7 +87,7 @@ class SNSVRiskProducerService : RiskScoreProducer {
     )
   }
 
-  fun isSNSVDynamic(request: RiskScoreRequest): ScoreType = if (getNullValuesFromProperties(request, SNSV_DYNAMIC_ADDITIONAL_REQUIRED_PROPERTIES).isEmpty()) {
+  fun isSNSVDynamic(request: RiskScoreRequest): ScoreType = if (isValidDynamicSnsv(request)) {
     ScoreType.DYNAMIC
   } else {
     ScoreType.STATIC
@@ -125,7 +113,7 @@ class SNSVRiskProducerService : RiskScoreProducer {
     this.impulsivityProblems!!,
     this.temperControl!!,
     this.proCriminalAttitudes!!,
-    this.evidenceOfDomesticAbuse!!,
+    getDomesticViolencePerpetrator(this.evidenceOfDomesticAbuse, this.domesticAbuseAgainstPartner)!!,
     this.previousConvictions!!,
   )
 
@@ -232,7 +220,7 @@ class SNSVRiskProducerService : RiskScoreProducer {
     impulsivityProblemsWeight(request.impulsivityProblems),
     temperControlWeight(request.temperControl),
     proCriminalAttitudesWeight(request.proCriminalAttitudes),
-    domesticViolenceWeight(request.evidenceOfDomesticAbuse),
+    domesticViolenceWeight(request.domesticViolencePerpetrator),
     previousConvictionsWeight(request.previousConvictions),
   ).sum()
 }

@@ -47,4 +47,24 @@ class SNSVValidationHelperTest {
     assertEquals("ERR5 - Field is Null", error.message)
     assertEquals(expectedFields, error.fields)
   }
+
+  @Test
+  fun `snsvDynamicValidation missing field error with derived domesticViolencePerpetrator question null`() {
+    val request = validSNSVStaticRiskScoreRequest().copy(
+      evidenceOfDomesticAbuse = null,
+      domesticAbuseAgainstPartner = null,
+    )
+
+    val result = snsvDynamicValidation(request)
+
+    val expectedFields = listOf(
+      "evidenceOfDomesticAbuse",
+      "domesticAbuseAgainstPartner",
+    )
+
+    val error = result.first()
+    assertEquals(ValidationErrorType.MISSING_INPUT, error.type)
+    assertEquals("ERR5 - Field is Null", error.message)
+    assertEquals(expectedFields, error.fields)
+  }
 }

@@ -52,7 +52,7 @@ class OSPIICRiskProducerService : RiskScoreProducer {
         )
       }
 
-      request.gender == Gender.FEMALE -> OSPIICObject(RiskBand.LOW, 0.0, errors)
+      request.gender == Gender.FEMALE -> OSPIICObject(RiskBand.NOT_APPLICABLE, 0.0, errors)
       else -> {
         val validInput = OSPIICInputValidated(
           totalContactAdultSexualSanctions = request.totalContactAdultSexualSanctions!!,
