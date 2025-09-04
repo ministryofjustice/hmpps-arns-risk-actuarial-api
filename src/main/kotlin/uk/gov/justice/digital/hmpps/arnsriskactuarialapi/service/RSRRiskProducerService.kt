@@ -32,7 +32,7 @@ class RSRRiskProducerService : RiskScoreProducer {
       val ospdcScore = ospdc.ospdcScore?.asDoublePercentage() ?: 0.0
       val ospdcBand = ospdc.ospdcBand ?: RiskBand.NOT_APPLICABLE
       val ospRiskReduction = ospdc.ospRiskReduction
-      val ospiicScore = ospiic.score?.asDoublePercentage() ?: 0.0
+      val ospiicScore = ospiic.score ?: 0.0
       val ospiicBand = ospiic.band ?: RiskBand.NOT_APPLICABLE
       val snsvScore = snsv.snsvScore?.asDoublePercentage()
       val rsrScore = if (hasBlockingErrors(errors)) {
