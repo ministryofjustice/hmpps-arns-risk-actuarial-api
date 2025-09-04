@@ -58,12 +58,10 @@ class SNSVTransformationHelper {
     fun getDomesticViolencePerpetrator(
       evidenceOfDomesticAbuse: Boolean?,
       domesticAbuseAgainstPartner: Boolean?,
-    ): Boolean? {
-      return if (evidenceOfDomesticAbuse != true) {
-        evidenceOfDomesticAbuse
-      } else {
-        domesticAbuseAgainstPartner
-      }
+    ): Boolean? = if (evidenceOfDomesticAbuse != true) {
+      evidenceOfDomesticAbuse
+    } else {
+      domesticAbuseAgainstPartner
     }
 
     fun getAgeAt(stage: String, dateOfBirth: LocalDate, dateAtStage: LocalDate, lowest: Int): Int = Period.between(dateOfBirth, dateAtStage).years

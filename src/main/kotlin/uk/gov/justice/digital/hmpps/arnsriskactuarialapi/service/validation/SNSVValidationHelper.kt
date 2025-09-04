@@ -29,18 +29,16 @@ val SNSV_DYNAMIC_ADDITIONAL_REQUIRED_PROPERTIES = listOf(
   RiskScoreRequest::previousConvictions,
 )
 
-
 fun snsvInitialValidation(request: RiskScoreRequest): List<ValidationErrorResponse> {
   val errors = arrayListOf<ValidationErrorResponse>()
   return getMissingSNSVFieldsValidation(request, errors)
 }
 
-fun isValidDynamicSnsv(request: RiskScoreRequest): Boolean {
-  return getNullValuesFromProperties(
-    request,
-    SNSV_DYNAMIC_ADDITIONAL_REQUIRED_PROPERTIES,
-  ).isEmpty() && hasDomesticViolencePerpetrator(request)
-}
+fun isValidDynamicSnsv(request: RiskScoreRequest): Boolean = getNullValuesFromProperties(
+  request,
+  SNSV_DYNAMIC_ADDITIONAL_REQUIRED_PROPERTIES,
+).isEmpty() &&
+  hasDomesticViolencePerpetrator(request)
 
 fun snsvDynamicValidation(request: RiskScoreRequest): List<ValidationErrorResponse> {
   val errors = arrayListOf<ValidationErrorResponse>()
@@ -59,14 +57,12 @@ fun snsvDynamicValidation(request: RiskScoreRequest): List<ValidationErrorRespon
   return errors
 }
 
-fun hasDomesticViolencePerpetrator(request: RiskScoreRequest) =
-  getDomesticViolencePerpetrator(
-    request.evidenceOfDomesticAbuse,
-    request.domesticAbuseAgainstPartner,
-  ) != null
+fun hasDomesticViolencePerpetrator(request: RiskScoreRequest) = getDomesticViolencePerpetrator(
+  request.evidenceOfDomesticAbuse,
+  request.domesticAbuseAgainstPartner,
+) != null
 
 fun getMissingSNSVFieldsValidation(
   request: RiskScoreRequest,
   errors: List<ValidationErrorResponse>,
-): List<ValidationErrorResponse> =
-  addMissingFields(getNullValuesFromProperties(request, SNSV_STATIC_REQUIRED_PROPERTIES), errors)
+): List<ValidationErrorResponse> = addMissingFields(getNullValuesFromProperties(request, SNSV_STATIC_REQUIRED_PROPERTIES), errors)

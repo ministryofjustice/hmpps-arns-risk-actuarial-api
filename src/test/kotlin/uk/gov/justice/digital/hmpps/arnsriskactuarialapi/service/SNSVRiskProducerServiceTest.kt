@@ -79,7 +79,7 @@ class SNSVRiskProducerServiceTest {
   fun `getRiskScore should default to ScoreType STATIC with invalid domesticViolencePerpetrator params`() {
     val result = service.getRiskScore(
       validSNSVDynamicRiskScoreRequest().copy(
-        evidenceOfDomesticAbuse = null
+        evidenceOfDomesticAbuse = null,
       ),
       emptyContext(),
     )

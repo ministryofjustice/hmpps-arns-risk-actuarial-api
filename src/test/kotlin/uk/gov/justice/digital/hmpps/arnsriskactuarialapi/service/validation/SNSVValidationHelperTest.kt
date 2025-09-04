@@ -52,14 +52,14 @@ class SNSVValidationHelperTest {
   fun `snsvDynamicValidation missing field error with derived domesticViolencePerpetrator question null`() {
     val request = validSNSVStaticRiskScoreRequest().copy(
       evidenceOfDomesticAbuse = null,
-      domesticAbuseAgainstPartner = null
+      domesticAbuseAgainstPartner = null,
     )
 
     val result = snsvDynamicValidation(request)
 
     val expectedFields = listOf(
       "evidenceOfDomesticAbuse",
-      "domesticAbuseAgainstPartner"
+      "domesticAbuseAgainstPartner",
     )
 
     val error = result.first()

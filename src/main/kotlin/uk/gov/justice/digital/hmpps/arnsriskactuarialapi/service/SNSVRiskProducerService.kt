@@ -42,7 +42,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sigmoid
 @Service
 class SNSVRiskProducerService : RiskScoreProducer {
 
-
   @Autowired
   lateinit var offenceGroupParametersService: OffenceGroupParametersService
 
@@ -63,7 +62,6 @@ class SNSVRiskProducerService : RiskScoreProducer {
     scoreType: ScoreType,
     request: RiskScoreRequest,
   ): SNSVObject = runCatching {
-
     val validationErrors = snsvDynamicValidation(request)
 
     when (scoreType) {
@@ -89,37 +87,35 @@ class SNSVRiskProducerService : RiskScoreProducer {
     )
   }
 
-  fun isSNSVDynamic(request: RiskScoreRequest): ScoreType =
-    if (isValidDynamicSnsv(request)) {
-      ScoreType.DYNAMIC
-    } else {
-      ScoreType.STATIC
-    }
+  fun isSNSVDynamic(request: RiskScoreRequest): ScoreType = if (isValidDynamicSnsv(request)) {
+    ScoreType.DYNAMIC
+  } else {
+    ScoreType.STATIC
+  }
 
-  private fun RiskScoreRequest.toSNSVDynamicRequestValidated(): SNSVDynamicRequestValidated =
-    SNSVDynamicRequestValidated(
-      this.gender!!,
-      this.dateOfBirth!!,
-      this.assessmentDate,
-      this.dateOfCurrentConviction!!,
-      this.currentOffenceCode!!,
-      this.totalNumberOfSanctionsForAllOffences!!.toInt(),
-      this.ageAtFirstSanction!!.toInt(),
-      this.supervisionStatus!!,
-      this.dateAtStartOfFollowup!!,
-      this.totalNumberOfViolentSanctions!!.toInt(),
-      this.didOffenceInvolveCarryingOrUsingWeapon!!,
-      this.suitabilityOfAccommodation!!,
-      this.isUnemployed!!,
-      this.currentRelationshipWithPartner!!,
-      this.currentAlcoholUseProblems!!,
-      this.excessiveAlcoholUse!!,
-      this.impulsivityProblems!!,
-      this.temperControl!!,
-      this.proCriminalAttitudes!!,
-      getDomesticViolencePerpetrator(this.evidenceOfDomesticAbuse, this.domesticAbuseAgainstPartner)!!,
-      this.previousConvictions!!,
-    )
+  private fun RiskScoreRequest.toSNSVDynamicRequestValidated(): SNSVDynamicRequestValidated = SNSVDynamicRequestValidated(
+    this.gender!!,
+    this.dateOfBirth!!,
+    this.assessmentDate,
+    this.dateOfCurrentConviction!!,
+    this.currentOffenceCode!!,
+    this.totalNumberOfSanctionsForAllOffences!!.toInt(),
+    this.ageAtFirstSanction!!.toInt(),
+    this.supervisionStatus!!,
+    this.dateAtStartOfFollowup!!,
+    this.totalNumberOfViolentSanctions!!.toInt(),
+    this.didOffenceInvolveCarryingOrUsingWeapon!!,
+    this.suitabilityOfAccommodation!!,
+    this.isUnemployed!!,
+    this.currentRelationshipWithPartner!!,
+    this.currentAlcoholUseProblems!!,
+    this.excessiveAlcoholUse!!,
+    this.impulsivityProblems!!,
+    this.temperControl!!,
+    this.proCriminalAttitudes!!,
+    getDomesticViolencePerpetrator(this.evidenceOfDomesticAbuse, this.domesticAbuseAgainstPartner)!!,
+    this.previousConvictions!!,
+  )
 
   private fun RiskScoreRequest.toSNSVStaticRequestValidated() = SNSVStaticRequestValidated(
     this.gender!!,
@@ -227,5 +223,4 @@ class SNSVRiskProducerService : RiskScoreProducer {
     domesticViolenceWeight(request.domesticViolencePerpetrator),
     previousConvictionsWeight(request.previousConvictions),
   ).sum()
-
 }
