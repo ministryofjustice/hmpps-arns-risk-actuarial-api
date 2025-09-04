@@ -285,10 +285,8 @@ fun validOSPDCRiskScoreRequest() = RiskScoreRequest(
   dateAtStartOfFollowup = LocalDate.of(2025, 1, 1),
   dateOfMostRecentSexualOffence = LocalDate.of(2000, 1, 1),
   totalNumberOfSanctionsForAllOffences = 4 as Integer,
-  isCurrentOffenceAgainstVictimStranger = false,
-  supervisionStatus = CustodyOrCommunity.COMMUNITY,
-  mostRecentOffenceDate = LocalDate.of(2000, 1, 1),
-  assessmentDate = LocalDate.of(2025, 6, 6),
+  isCurrentOffenceSexuallyMotivated = false,
+  supervisionStatus = CustodyOrCommunity.CUSTODY,
 )
 
 fun validSNSVStaticRiskScoreRequest() = RiskScoreRequest(

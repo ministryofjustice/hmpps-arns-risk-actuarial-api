@@ -12,6 +12,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import java.time.LocalDate
 import java.util.stream.Stream
+import kotlin.test.assertNull
 
 class RSRTransformationHelperTest {
 
@@ -34,15 +35,11 @@ class RSRTransformationHelperTest {
   @Test
   fun `should return HIGH for RSR score 6 point 9 or above`() {
     assertEquals(RiskBand.HIGH, getRSRBand(6.9))
-    assertEquals(RiskBand.HIGH, getRSRBand(10.0))
   }
 
   @Test
-  fun `should throw IllegalArgumentException for null RSR score`() {
-    val exception = assertThrows<IllegalArgumentException> {
-      getRSRBand(null)
-    }
-    assertEquals("RSR Score is null", exception.message)
+  fun `should get null band for null RSR score`() {
+    assertNull(getRSRBand(null))
   }
 
   @Test

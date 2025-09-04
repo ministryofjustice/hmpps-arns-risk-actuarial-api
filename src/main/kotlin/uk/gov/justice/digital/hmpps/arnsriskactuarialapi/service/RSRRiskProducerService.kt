@@ -35,9 +35,17 @@ class RSRRiskProducerService : RiskScoreProducer {
       val ospiicScore = ospiic.score?.asDoublePercentage() ?: 0.0
       val ospiicBand = ospiic.band ?: RiskBand.NOT_APPLICABLE
       val snsvScore = snsv.snsvScore?.asDoublePercentage()
-      val rsrScore = listOfNotNull(snsvScore, ospdcScore, ospiicScore).sum().roundToNDecimals(2)
+      val rsrScore = if (hasBlockingErrors(errors)) {
+        null
+      } else {
+        listOfNotNull(snsvScore, ospdcScore, ospiicScore).sum().roundToNDecimals(2)
+      }
       val rsrBand = getRSRBand(rsrScore)
-
+      val scoreType = if (rsrScore != null) {
+        snsv.snsvScore?.let { snsv.scoreType }
+      } else {
+        null
+      }
       return context.apply {
         RSR = RSRObject(
           ospdcBand,
@@ -46,7 +54,7 @@ class RSRRiskProducerService : RiskScoreProducer {
           ospiicScore,
           rsrScore,
           rsrBand,
-          snsv.snsvScore?.let { snsv.scoreType },
+          scoreType,
           ospRiskReduction,
           errors,
         )
@@ -74,4 +82,6 @@ class RSRRiskProducerService : RiskScoreProducer {
       }
     }
   }
+
+  internal fun hasBlockingErrors(errors: List<ValidationErrorResponse>): Boolean = errors.any { it.fields.contains(RiskScoreRequest::isCurrentOffenceSexuallyMotivated.name) }
 }

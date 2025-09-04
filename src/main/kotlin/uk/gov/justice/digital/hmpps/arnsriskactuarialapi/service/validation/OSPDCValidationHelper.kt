@@ -1,9 +1,24 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 
-fun ospdcInitialValidation(request: RiskScoreRequest): List<ValidationErrorResponse> = ospdcValidationMissingFields(request)
+fun ospdcInitialValidation(request: RiskScoreRequest): List<ValidationErrorResponse> = ospdcValidationMissingFields(request) + ospdcValidateSexualMotivationFields(request)
+
+internal fun ospdcValidateSexualMotivationFields(
+  request: RiskScoreRequest,
+): List<ValidationErrorResponse> {
+  val missingFields = arrayListOf<String>()
+  if (request.gender == Gender.MALE &&
+    request.hasEverCommittedSexualOffence == true &&
+    request.isCurrentOffenceSexuallyMotivated == null
+  ) {
+    missingFields.addIfNull(request, RiskScoreRequest::isCurrentOffenceSexuallyMotivated)
+  }
+
+  return addMissingFields(missingFields, emptyList())
+}
 
 internal fun ospdcValidationMissingFields(
   request: RiskScoreRequest,
