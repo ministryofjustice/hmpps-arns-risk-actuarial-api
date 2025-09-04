@@ -50,6 +50,22 @@ class SNSVTransformationHelper {
     const val STATIC_VIOLENCE_RATE_WEIGHT = 0.207442427665471
     const val DYNAMIC_VIOLENCE_RATE_WEIGHT = 0.0549319831836878
 
+    /**
+     * If  'Is there evidence of current or previous domestic abuse'? = Yes
+     * Then return ‘Against current or former partner’
+     * Otherwise return 'Is there evidence of current or previous domestic abuse'
+     */
+    fun getDomesticViolencePerpetrator(
+      evidenceOfDomesticAbuse: Boolean?,
+      domesticAbuseAgainstPartner: Boolean?,
+    ): Boolean? {
+      return if (evidenceOfDomesticAbuse != true) {
+        evidenceOfDomesticAbuse
+      } else {
+        domesticAbuseAgainstPartner
+      }
+    }
+
     fun getAgeAt(stage: String, dateOfBirth: LocalDate, dateAtStage: LocalDate, lowest: Int): Int = Period.between(dateOfBirth, dateAtStage).years
       .apply {
         require(!dateAtStage.isBefore(dateOfBirth)) { "${stage.replaceFirstChar(Char::titlecase)} cannot be before date of birth." }

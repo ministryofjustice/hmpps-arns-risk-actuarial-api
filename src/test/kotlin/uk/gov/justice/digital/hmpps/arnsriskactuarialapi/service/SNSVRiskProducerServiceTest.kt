@@ -76,6 +76,20 @@ class SNSVRiskProducerServiceTest {
   }
 
   @Test
+  fun `getRiskScore should default to ScoreType STATIC with invalid domesticViolencePerpetrator params`() {
+    val result = service.getRiskScore(
+      validSNSVDynamicRiskScoreRequest().copy(
+        evidenceOfDomesticAbuse = null
+      ),
+      emptyContext(),
+    )
+
+    assertNotNull(result)
+    assertEquals(ScoreType.STATIC, result.SNSV!!.scoreType)
+    assertEquals(0.0020745554019918, result.SNSV!!.snsvScore!!, 1E-8)
+  }
+
+  @Test
   fun `getRiskScore should hit calculation error and return UNEXPECTED_VALUE with DYNAMIC score type`() {
     val result = service.getRiskScore(
       validSNSVDynamicRiskScoreRequest().copy(dateOfBirth = LocalDate.of(2025, Month.JANUARY, 1)),

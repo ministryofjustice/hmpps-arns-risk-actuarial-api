@@ -13,6 +13,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.PreviousConviction
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.get2YearInterceptWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getAgeAt
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getAgeGenderPolynomialWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getDomesticViolencePerpetrator
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getGenderWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getMonthsSinceLastSanctionWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getNumberOfSanctionWeight
@@ -33,6 +34,15 @@ import kotlin.test.assertFailsWith
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SNSVTransformationHelperTest {
+
+  @Test
+  fun `getDomesticViolencePerpetrator should derive from evidenceOfDomesticAbuse and domesticAbuseAgainstPartner`() {
+    assertEquals(null, getDomesticViolencePerpetrator(null, null))
+    assertEquals(false, getDomesticViolencePerpetrator(false, null))
+    assertEquals(null, getDomesticViolencePerpetrator(true, null))
+    assertEquals(true, getDomesticViolencePerpetrator(true, true))
+    assertEquals(false, getDomesticViolencePerpetrator(true, false))
+  }
 
   @ParameterizedTest
   @MethodSource("get2YearInterceptWeightProvider")
