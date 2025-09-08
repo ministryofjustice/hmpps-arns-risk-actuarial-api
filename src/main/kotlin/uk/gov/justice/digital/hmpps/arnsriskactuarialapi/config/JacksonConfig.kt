@@ -23,6 +23,7 @@ class JacksonConfig {
       .postConfigurer { mapper: ObjectMapper ->
         mapper.configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, false)
         mapper.configure(DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS, true)
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true)
         mapper.configure(DeserializationFeature.READ_ENUMS_USING_TO_STRING, true)
 
         listOf(
