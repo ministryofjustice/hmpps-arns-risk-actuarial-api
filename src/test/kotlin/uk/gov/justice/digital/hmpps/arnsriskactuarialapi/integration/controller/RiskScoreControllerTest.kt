@@ -189,4 +189,25 @@ class RiskScoreControllerTest : IntegrationTestBase() {
       .expectBody()
       .jsonPath("$.message").isEqualTo(expectedError)
   }
+
+  @Test
+  fun `postRiskScores returns 400 if unknown field is passed`() {
+    val expectedError =
+      "JSON parse error: Unrecognized field \"IdoNotExists\" (class uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest), not marked as ignorable"
+    webTestClient.post()
+      .uri("/risk-scores/v1")
+      .headers(setAuthorisation(roles = listOf("ARNS_RISK_ACTUARIAL")))
+      .contentType(MediaType.APPLICATION_JSON)
+      .bodyValue(
+        """
+        {
+          "IdoNotExists": "1234"
+        }
+        """.trimIndent(),
+      )
+      .exchange()
+      .expectStatus().isBadRequest
+      .expectBody()
+      .jsonPath("$.message").isEqualTo(expectedError)
+  }
 }
