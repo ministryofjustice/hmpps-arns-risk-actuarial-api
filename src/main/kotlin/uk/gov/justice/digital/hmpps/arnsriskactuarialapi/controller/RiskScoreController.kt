@@ -29,7 +29,7 @@ class RiskScoreController(private val riskScoreService: RiskScoreService) {
       ApiResponse(
         responseCode = "200",
         description = "Successfully calculated risks scores, returned in response body.",
-        content = [Content(mediaType = "application/json", schema = Schema(implementation = RiskScoreRequest::class))],
+        content = [Content(mediaType = "application/json", schema = Schema(implementation = RiskScoreResponse::class))],
       ),
       ApiResponse(
         responseCode = "400",
