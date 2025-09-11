@@ -43,8 +43,10 @@ class SNSVTransformationHelper {
       mapOf(Gender.MALE to 0.689153313085879, Gender.FEMALE to 0.76704149890481)
     const val STATIC_ONCE_VIOLENT_SANCTIONS_WEIGHTS = -0.0633592949212861
     const val DYNAMIC_ONCE_VIOLENT_SANCTIONS_WEIGHTS = -0.101514048705338
-    val STATIC_GENDERED_VIOLENT_SANCTIONS_WEIGHTS = mapOf(Gender.MALE to -0.942816163300621, Gender.FEMALE to -2.32321324569237)
-    val DYNAMIC_GENDERED_VIOLENT_SANCTIONS_WEIGHTS = mapOf(Gender.MALE to -0.35940007303088, Gender.FEMALE to -1.7513536371131)
+    val STATIC_GENDERED_VIOLENT_SANCTIONS_WEIGHTS =
+      mapOf(Gender.MALE to -0.942816163300621, Gender.FEMALE to -2.32321324569237)
+    val DYNAMIC_GENDERED_VIOLENT_SANCTIONS_WEIGHTS =
+      mapOf(Gender.MALE to -0.35940007303088, Gender.FEMALE to -1.7513536371131)
     const val STATIC_TOTAL_VIOLENT_SANCTIONS_WEIGHTS = 0.0188685880078656
     const val DYNAMIC_TOTAL_VIOLENT_SANCTIONS_WEIGHTS = 0.021160895925655
     const val STATIC_VIOLENCE_RATE_WEIGHT = 0.207442427665471
@@ -81,13 +83,14 @@ class SNSVTransformationHelper {
       dateAtStartOfFollowup: LocalDate,
       isSNSVDynamic: Boolean,
     ): Double = getAgeAt("date at start of followup", dateOfBirth, dateAtStartOfFollowup, 10).toDouble()
-      .let { x ->
+      .let { age ->
         when (gender) {
-          Gender.MALE -> (if (isSNSVDynamic) DYNAMIC_AGE_MALE_COEFFS else STATIC_AGE_MALE_COEFFS).let {
-            x * calculatePolynomial(it, x)
+          Gender.MALE -> (if (isSNSVDynamic) DYNAMIC_AGE_MALE_COEFFS else STATIC_AGE_MALE_COEFFS).let { coefficients ->
+            age * calculatePolynomial(coefficients, age)
           }
-          Gender.FEMALE -> (if (isSNSVDynamic) DYNAMIC_AGE_FEMALE_COEFFS else STATIC_AGE_FEMALE_COEFFS).let {
-            x * calculatePolynomial(it, x)
+
+          Gender.FEMALE -> (if (isSNSVDynamic) DYNAMIC_AGE_FEMALE_COEFFS else STATIC_AGE_FEMALE_COEFFS).let { coefficients ->
+            age * calculatePolynomial(coefficients, age)
           }
         }
       }
@@ -124,7 +127,7 @@ class SNSVTransformationHelper {
         }
       }
 
-    fun getYearsBetweenFirstAndSecondSanctionWeight(
+    fun getSecondSanctionCasesOnlyWeight(
       totalNumberOfSanctionsForAllOffences: Int,
       gender: Gender,
       dateOfBirth: LocalDate,
@@ -142,17 +145,30 @@ class SNSVTransformationHelper {
       }[gender]!!
     }
 
-    fun getMonthsSinceLastSanctionWeight(supervisionStatus: CustodyOrCommunity, dateAtStartOfFollowup: LocalDate, assessmentDate: LocalDate, isSNSVDynamic: Boolean): Double {
+    fun getMonthsSinceLastSanctionWeight(
+      supervisionStatus: CustodyOrCommunity,
+      dateAtStartOfFollowup: LocalDate,
+      assessmentDate: LocalDate,
+      isSNSVDynamic: Boolean,
+    ): Double {
       if (supervisionStatus == CustodyOrCommunity.CUSTODY || dateAtStartOfFollowup >= assessmentDate) {
         return 0.0
       }
       val monthsSinceLastSanctionPreCheck = ChronoUnit.MONTHS.between(dateAtStartOfFollowup, assessmentDate).toInt()
       val monthsSinceLastSanction = if (monthsSinceLastSanctionPreCheck >= 36) 36 else monthsSinceLastSanctionPreCheck
-      val coeffs = if (isSNSVDynamic) DYNAMIC_MONTHS_SINCE_LAST_SANCTION_WEIGHTS else STATIC_MONTHS_SINCE_LAST_SANCTION_WEIGHTS
+      val coeffs =
+        if (isSNSVDynamic) DYNAMIC_MONTHS_SINCE_LAST_SANCTION_WEIGHTS else STATIC_MONTHS_SINCE_LAST_SANCTION_WEIGHTS
       return monthsSinceLastSanction * calculatePolynomial(coeffs, monthsSinceLastSanction.toDouble())
     }
 
-    fun getThreePlusSanctionsWeight(gender: Gender, totalNumberOfSanctionsForAllOffences: Int, ageAtFirstSanction: Int, dateOfBirth: LocalDate, dateOfCurrentConviction: LocalDate, isSNSVDynamic: Boolean): Double {
+    fun getThreePlusSanctionsWeight(
+      gender: Gender,
+      totalNumberOfSanctionsForAllOffences: Int,
+      ageAtFirstSanction: Int,
+      dateOfBirth: LocalDate,
+      dateOfCurrentConviction: LocalDate,
+      isSNSVDynamic: Boolean,
+    ): Double {
       // OGRS4 contribution
       if (totalNumberOfSanctionsForAllOffences < 3) return 0.0
       val ageAtCurrentConviction = getAgeAt("current conviction date", dateOfBirth, dateOfCurrentConviction, 10)
@@ -214,45 +230,28 @@ class SNSVTransformationHelper {
     // SNSV Dynamic Additions
     fun didOffenceInvolveCarryingOrUsingWeaponWeight(carryingOrUsingWeapon: Boolean): Double = if (carryingOrUsingWeapon) 0.15071282416667 else 0.0
 
-    fun suitabilityOfAccommodationWeight(suitabilityOfAccommodation: ProblemLevel): Double = 0.0619710049121293 * suitabilityOfAccommodation.score
+    const val ACCOMMODATION_COEFFICIENT = 0.0619710049121293
+    fun suitabilityOfAccommodationWeight(suitabilityOfAccommodation: ProblemLevel): Double = ACCOMMODATION_COEFFICIENT * suitabilityOfAccommodation.score
 
     fun isUnemployedWeight(isUnemployed: Boolean): Double = if (isUnemployed) 0.0389109699626767 * 2 else 0.0
 
-    fun currentRelationshipWithPartnerWeight(currentRelationshipWithPartner: ProblemLevel): Double = when (currentRelationshipWithPartner) {
-      ProblemLevel.NO_PROBLEMS -> 0.0
-      ProblemLevel.SOME_PROBLEMS -> 0.0259107268767618
-      ProblemLevel.SIGNIFICANT_PROBLEMS -> 0.0259107268767618 * 2
-    }
+    const val RELATIONSHIP_PARTNER_COEFFICIENT = 0.0259107268767618
+    fun currentRelationshipWithPartnerWeight(currentRelationshipWithPartner: ProblemLevel): Double = currentRelationshipWithPartner.score * RELATIONSHIP_PARTNER_COEFFICIENT
 
-    fun currentAlcoholUseProblemsWeight(currentAlcoholUseProblems: ProblemLevel): Double = when (currentAlcoholUseProblems) {
-      ProblemLevel.NO_PROBLEMS -> 0.0
-      ProblemLevel.SOME_PROBLEMS -> 0.0935672441515258
-      ProblemLevel.SIGNIFICANT_PROBLEMS -> 0.0935672441515258 * 2
-    }
+    const val CHRONIC_DRINKING_COEFFICIENT = 0.0935672441515258
+    fun chronicDrinkingProblemsWeight(currentAlcoholUseProblems: ProblemLevel): Double = currentAlcoholUseProblems.score * CHRONIC_DRINKING_COEFFICIENT
 
-    fun excessiveAlcoholUseWeight(excessiveAlcoholUse: ProblemLevel): Double = when (excessiveAlcoholUse) {
-      ProblemLevel.NO_PROBLEMS -> 0.0
-      ProblemLevel.SOME_PROBLEMS -> 0.0567127896345591
-      ProblemLevel.SIGNIFICANT_PROBLEMS -> 0.0567127896345591 * 2
-    }
+    const val BINGE_DRINK_COEFFICIENT = 0.0567127896345591
+    fun bingeDrinkingProblemWeight(excessiveAlcoholUse: ProblemLevel): Double = excessiveAlcoholUse.score * BINGE_DRINK_COEFFICIENT
 
-    fun impulsivityProblemsWeight(impulsivityProblems: ProblemLevel): Double = when (impulsivityProblems) {
-      ProblemLevel.NO_PROBLEMS -> 0.0
-      ProblemLevel.SOME_PROBLEMS -> 0.077212834605957
-      ProblemLevel.SIGNIFICANT_PROBLEMS -> 0.077212834605957 * 2
-    }
+    const val IMPULSIVITY_COEFFICIENT = 0.077212834605957
+    fun impulsivityProblemsWeight(impulsivityProblems: ProblemLevel): Double = impulsivityProblems.score * IMPULSIVITY_COEFFICIENT
 
-    fun temperControlWeight(temperProblems: ProblemLevel): Double = when (temperProblems) {
-      ProblemLevel.NO_PROBLEMS -> 0.0
-      ProblemLevel.SOME_PROBLEMS -> 0.0482892034688302
-      ProblemLevel.SIGNIFICANT_PROBLEMS -> 0.0482892034688302 * 2
-    }
+    const val TEMPER_CONTROL_COEFFICIENT = 0.0482892034688302
+    fun temperControlWeight(temperProblems: ProblemLevel): Double = temperProblems.score * TEMPER_CONTROL_COEFFICIENT
 
-    fun proCriminalAttitudesWeight(proCriminalAttitudes: ProblemLevel): Double = when (proCriminalAttitudes) {
-      ProblemLevel.NO_PROBLEMS -> 0.0
-      ProblemLevel.SOME_PROBLEMS -> 0.130830533773332
-      ProblemLevel.SIGNIFICANT_PROBLEMS -> 0.130830533773332 * 2
-    }
+    const val PRO_CRIMINAL_COEFFICIENT = 0.130830533773332
+    fun proCriminalAttitudesWeight(proCriminalAttitudes: ProblemLevel): Double = proCriminalAttitudes.score * PRO_CRIMINAL_COEFFICIENT
 
     fun domesticViolenceWeight(domesticViolence: Boolean): Double = if (domesticViolence) 0.0847839330659903 else 0.0
 

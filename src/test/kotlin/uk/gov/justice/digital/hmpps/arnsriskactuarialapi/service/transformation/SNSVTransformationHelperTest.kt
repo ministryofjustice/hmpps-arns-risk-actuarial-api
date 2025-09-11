@@ -10,6 +10,12 @@ import org.junit.jupiter.params.provider.MethodSource
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CustodyOrCommunity
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.PreviousConviction
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.bingeDrinkingProblemWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.chronicDrinkingProblemsWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.currentRelationshipWithPartnerWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.didOffenceInvolveCarryingOrUsingWeaponWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.domesticViolenceWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.get2YearInterceptWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getAgeAt
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getAgeGenderPolynomialWeight
@@ -17,17 +23,21 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getGenderWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getMonthsSinceLastSanctionWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getNumberOfSanctionWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getSecondSanctionCasesOnlyWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getThreePlusSanctionsWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getTotalSanctionWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getViolenceRateWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getViolentHistoryWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getViolentSanctionsWeight
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getYearsBetweenFirstAndSecondSanctionWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.impulsivityProblemsWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.isUnemployedWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.previousConvictionsWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.proCriminalAttitudesWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.suitabilityOfAccommodationWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.temperControlWeight
 import java.time.LocalDate
 import java.time.Month
 import java.util.stream.Stream
-import kotlin.collections.emptyList
 import kotlin.math.ln
 import kotlin.math.pow
 import kotlin.test.assertFailsWith
@@ -36,12 +46,129 @@ import kotlin.test.assertFailsWith
 class SNSVTransformationHelperTest {
 
   @Test
+  fun `didOffenceInvolveCarryingOrUsingWeaponWeight should lookup value`() {
+    assertEquals(0.15071282416667, didOffenceInvolveCarryingOrUsingWeaponWeight(true))
+    assertEquals(0.0, didOffenceInvolveCarryingOrUsingWeaponWeight(false))
+  }
+
+  @Test
+  fun `isUnemployedWeight should lookup value`() {
+    assertEquals(0.0, isUnemployedWeight(false))
+  }
+
+  @Test
+  fun `suitabilityOfAccommodationWeight should lookup value`() {
+    assertEquals(0.1239420098242586, suitabilityOfAccommodationWeight(ProblemLevel.SIGNIFICANT_PROBLEMS))
+  }
+
+  @Test
+  fun `currentRelationshipWithPartnerWeight should lookup value`() {
+    assertEquals(0.0259107268767618, currentRelationshipWithPartnerWeight(ProblemLevel.SOME_PROBLEMS))
+  }
+
+  @Test
+  fun `domesticViolenceWeight should lookup value`() {
+    assertEquals(0.0, domesticViolenceWeight(false))
+    assertEquals(0.0847839330659903, domesticViolenceWeight(true))
+  }
+
+  @Test
+  fun `chronicDrinkingProblemsWeight should lookup value`() {
+    assertEquals(0.0, chronicDrinkingProblemsWeight(ProblemLevel.NO_PROBLEMS))
+    assertEquals(0.0935672441515258, chronicDrinkingProblemsWeight(ProblemLevel.SOME_PROBLEMS))
+  }
+
+  @Test
+  fun `bingeDrinkingProblemWeight should lookup value`() {
+    assertEquals(0.0, bingeDrinkingProblemWeight(ProblemLevel.NO_PROBLEMS))
+    assertEquals(0.0567127896345591, bingeDrinkingProblemWeight(ProblemLevel.SOME_PROBLEMS))
+  }
+
+  @Test
+  fun `impulsivityProblemsWeight should lookup value`() {
+    assertEquals(0.0, impulsivityProblemsWeight(ProblemLevel.NO_PROBLEMS))
+    assertEquals(0.077212834605957, impulsivityProblemsWeight(ProblemLevel.SOME_PROBLEMS))
+  }
+
+  @Test
+  fun `temperControlWeight should lookup value`() {
+    assertEquals(0.0, temperControlWeight(ProblemLevel.NO_PROBLEMS))
+    assertEquals(0.0482892034688302, temperControlWeight(ProblemLevel.SOME_PROBLEMS))
+  }
+
+  @Test
+  fun `proCriminalAttitudesWeight should lookup value`() {
+    assertEquals(0.0, proCriminalAttitudesWeight(ProblemLevel.NO_PROBLEMS))
+    assertEquals(0.130830533773332, proCriminalAttitudesWeight(ProblemLevel.SOME_PROBLEMS))
+  }
+
+  @Test
+  fun `previousConvictionsWeight should lookup value`() {
+    assertEquals(0.0, previousConvictionsWeight(emptyList()))
+  }
+
+  @Test
   fun `getDomesticViolencePerpetrator should derive from evidenceOfDomesticAbuse and domesticAbuseAgainstPartner`() {
     assertEquals(null, getDomesticViolencePerpetrator(null, null))
     assertEquals(false, getDomesticViolencePerpetrator(false, null))
     assertEquals(null, getDomesticViolencePerpetrator(true, null))
     assertEquals(true, getDomesticViolencePerpetrator(true, true))
     assertEquals(false, getDomesticViolencePerpetrator(true, false))
+  }
+
+  @Test
+  fun `getAgeGenderPolynomialWeight should calculate correct polynomial weight for example Adam Dynamic`() {
+    val dateAtStartOfFollowup = LocalDate.of(2025, 9, 11)
+    val dob = dateAtStartOfFollowup.minusYears(33)
+    assertEquals(
+      -6.368740156140515,
+      getAgeGenderPolynomialWeight(
+        gender = Gender.MALE,
+        dateOfBirth = dob,
+        dateAtStartOfFollowup = dateAtStartOfFollowup,
+        isSNSVDynamic = true,
+      ),
+    )
+  }
+
+  @Test
+  fun `getTotalSanctionWeight should calculate for example Adam Dynamic`() {
+    assertEquals(-0.036518584350449, getTotalSanctionWeight(2, true))
+  }
+
+  @Test
+  fun `getMonthsSinceLastSanctionWeight should calculate for example Adam Dynamic`() {
+    val baseline = LocalDate.of(2025, 9, 11)
+    val dateAtStartOfFollowup = baseline.minusMonths(5)
+    val assessmentDate = baseline
+    assertEquals(
+      -0.1635176921525733,
+      getMonthsSinceLastSanctionWeight(
+        supervisionStatus = CustodyOrCommunity.COMMUNITY,
+        dateAtStartOfFollowup = dateAtStartOfFollowup,
+        assessmentDate = assessmentDate,
+        isSNSVDynamic = true,
+      ),
+    )
+  }
+
+  @Test
+  fun `getSecondSanctionCasesOnlyWeight should calculate for example Adam Dynamic`() {
+    val ageAtFirstSanction = LocalDate.of(2025, 9, 11)
+    val dob = ageAtFirstSanction.minusYears(33)
+    val dateOfConviction = ageAtFirstSanction.minusYears(1)
+
+    assertEquals(
+      -0.4077429292057845,
+      getSecondSanctionCasesOnlyWeight(
+        totalNumberOfSanctionsForAllOffences = 2,
+        gender = Gender.MALE,
+        dateOfBirth = dob,
+        dateOfCurrentConviction = dateOfConviction,
+        ageAtFirstSanction = 17,
+        isSNSVDynamic = true,
+      ),
+    )
   }
 
   @ParameterizedTest
@@ -156,7 +283,7 @@ class SNSVTransformationHelperTest {
     isSNSVDynamic: Boolean,
     expected: Double,
   ) {
-    val result = getYearsBetweenFirstAndSecondSanctionWeight(
+    val result = getSecondSanctionCasesOnlyWeight(
       totalNumberOfSanctionsForAllOffences,
       gender,
       dob,
@@ -179,7 +306,7 @@ class SNSVTransformationHelperTest {
     expectedMessage: String,
   ) {
     val ex = assertThrows(IllegalArgumentException::class.java) {
-      getYearsBetweenFirstAndSecondSanctionWeight(
+      getSecondSanctionCasesOnlyWeight(
         totalNumberOfSanctionsForAllOffences,
         gender,
         dob,
@@ -349,7 +476,10 @@ class SNSVTransformationHelperTest {
 
   @ParameterizedTest
   @MethodSource("getPreviousConvictionsProvider")
-  fun `previousConvictionsWeight should sum correctly`(previousConvictions: List<PreviousConviction>, expected: Double) {
+  fun `previousConvictionsWeight should sum correctly`(
+    previousConvictions: List<PreviousConviction>,
+    expected: Double,
+  ) {
     val result = previousConvictionsWeight(previousConvictions)
     assertEquals(expected, result, 1e-9)
   }
@@ -382,21 +512,69 @@ class SNSVTransformationHelperTest {
     @JvmStatic
     fun getAgeGenderPolynomialWeightValidInputProvider(): Stream<Arguments> = Stream.of(
       // Male, isSNSVDynamic = true
-      Arguments.of(Gender.MALE, LocalDate.of(1990, 1, 1), LocalDate.of(2020, 1, 1), true, calculateMalePolynomial(30, true)),
-      Arguments.of(Gender.MALE, LocalDate.of(1989, 1, 1), LocalDate.of(2020, 1, 1), true, calculateMalePolynomial(31, true)),
+      Arguments.of(
+        Gender.MALE,
+        LocalDate.of(1990, 1, 1),
+        LocalDate.of(2020, 1, 1),
+        true,
+        calculateMalePolynomial(30, true),
+      ),
+      Arguments.of(
+        Gender.MALE,
+        LocalDate.of(1989, 1, 1),
+        LocalDate.of(2020, 1, 1),
+        true,
+        calculateMalePolynomial(31, true),
+      ),
       // Male, isSNSVDynamic = false
-      Arguments.of(Gender.MALE, LocalDate.of(1990, 1, 1), LocalDate.of(2020, 1, 1), false, calculateMalePolynomial(30, false)),
+      Arguments.of(
+        Gender.MALE,
+        LocalDate.of(1990, 1, 1),
+        LocalDate.of(2020, 1, 1),
+        false,
+        calculateMalePolynomial(30, false),
+      ),
       // Female, isSNSVDynamic = true
-      Arguments.of(Gender.FEMALE, LocalDate.of(1990, 1, 1), LocalDate.of(2020, 1, 1), true, calculateFemalePolynomial(30, true)),
-      Arguments.of(Gender.FEMALE, LocalDate.of(1989, 1, 1), LocalDate.of(2020, 1, 1), true, calculateFemalePolynomial(31, true)),
+      Arguments.of(
+        Gender.FEMALE,
+        LocalDate.of(1990, 1, 1),
+        LocalDate.of(2020, 1, 1),
+        true,
+        calculateFemalePolynomial(30, true),
+      ),
+      Arguments.of(
+        Gender.FEMALE,
+        LocalDate.of(1989, 1, 1),
+        LocalDate.of(2020, 1, 1),
+        true,
+        calculateFemalePolynomial(31, true),
+      ),
       // Female, isSNSVDynamic = false
-      Arguments.of(Gender.FEMALE, LocalDate.of(1990, 1, 1), LocalDate.of(2020, 1, 1), false, calculateFemalePolynomial(30, false)),
+      Arguments.of(
+        Gender.FEMALE,
+        LocalDate.of(1990, 1, 1),
+        LocalDate.of(2020, 1, 1),
+        false,
+        calculateFemalePolynomial(30, false),
+      ),
     )
 
     @JvmStatic
     fun getAgeGenderPolynomialWeightInvalidInputProvider(): Stream<Arguments> = Stream.of(
-      Arguments.of(Gender.MALE, LocalDate.of(2015, 1, 1), LocalDate.of(2020, 1, 1), true, "Age at date at start of followup cannot be less than 10"),
-      Arguments.of(Gender.FEMALE, LocalDate.of(2025, 1, 1), LocalDate.of(2020, 1, 1), false, "Date at start of followup cannot be before date of birth."),
+      Arguments.of(
+        Gender.MALE,
+        LocalDate.of(2015, 1, 1),
+        LocalDate.of(2020, 1, 1),
+        true,
+        "Age at date at start of followup cannot be less than 10",
+      ),
+      Arguments.of(
+        Gender.FEMALE,
+        LocalDate.of(2025, 1, 1),
+        LocalDate.of(2020, 1, 1),
+        false,
+        "Date at start of followup cannot be before date of birth.",
+      ),
     )
 
     private fun calculateMalePolynomial(age: Int, isDynamic: Boolean): Double {
@@ -475,13 +653,45 @@ class SNSVTransformationHelperTest {
     @JvmStatic
     fun getYearsBetweenFirstAndSecondSanctionWeightValidInputProvider(): Stream<Arguments> = Stream.of(
       // Male, dynamic
-      Arguments.of(2, Gender.MALE, LocalDate.of(1990, 1, 1), LocalDate.of(2020, 1, 1), 25, true, (30 - 25) * -0.0271828619470523),
+      Arguments.of(
+        2,
+        Gender.MALE,
+        LocalDate.of(1990, 1, 1),
+        LocalDate.of(2020, 1, 1),
+        25,
+        true,
+        (30 - 25) * -0.0271828619470523,
+      ),
       // Male, static
-      Arguments.of(2, Gender.MALE, LocalDate.of(1990, 1, 1), LocalDate.of(2020, 1, 1), 25, false, (30 - 25) * -0.0292205730647305),
+      Arguments.of(
+        2,
+        Gender.MALE,
+        LocalDate.of(1990, 1, 1),
+        LocalDate.of(2020, 1, 1),
+        25,
+        false,
+        (30 - 25) * -0.0292205730647305,
+      ),
       // Female, dynamic
-      Arguments.of(2, Gender.FEMALE, LocalDate.of(1990, 1, 1), LocalDate.of(2020, 1, 1), 25, true, (30 - 25) * -0.0960719132524968),
+      Arguments.of(
+        2,
+        Gender.FEMALE,
+        LocalDate.of(1990, 1, 1),
+        LocalDate.of(2020, 1, 1),
+        25,
+        true,
+        (30 - 25) * -0.0960719132524968,
+      ),
       // Female, static
-      Arguments.of(2, Gender.FEMALE, LocalDate.of(1990, 1, 1), LocalDate.of(2020, 1, 1), 25, false, (30 - 25) * -0.0841673003341906),
+      Arguments.of(
+        2,
+        Gender.FEMALE,
+        LocalDate.of(1990, 1, 1),
+        LocalDate.of(2020, 1, 1),
+        25,
+        false,
+        (30 - 25) * -0.0841673003341906,
+      ),
       // number of sanctions not 2
       Arguments.of(1, Gender.FEMALE, LocalDate.of(1990, 1, 1), LocalDate.of(2020, 1, 1), 25, false, 0.0),
     )
@@ -489,11 +699,35 @@ class SNSVTransformationHelperTest {
     @JvmStatic
     fun getYearsBetweenFirstAndSecondSanctionWeightInvalidInputProvider(): Stream<Arguments> = Stream.of(
       // Negative years between sanctions
-      Arguments.of(2, Gender.MALE, LocalDate.of(1990, 1, 1), LocalDate.of(2001, 1, 1), 15, true, "Years between first and second sanction cannot be a negative"),
+      Arguments.of(
+        2,
+        Gender.MALE,
+        LocalDate.of(1990, 1, 1),
+        LocalDate.of(2001, 1, 1),
+        15,
+        true,
+        "Years between first and second sanction cannot be a negative",
+      ),
       // Age at conviction <= 10
-      Arguments.of(2, Gender.FEMALE, LocalDate.of(2015, 1, 1), LocalDate.of(2024, 1, 1), 5, false, "Age at current conviction date cannot be less than 10"),
+      Arguments.of(
+        2,
+        Gender.FEMALE,
+        LocalDate.of(2015, 1, 1),
+        LocalDate.of(2024, 1, 1),
+        5,
+        false,
+        "Age at current conviction date cannot be less than 10",
+      ),
       // Age at conviction < 0
-      Arguments.of(2, Gender.MALE, LocalDate.of(2030, 1, 1), LocalDate.of(2020, 1, 1), 5, true, "Current conviction date cannot be before date of birth."),
+      Arguments.of(
+        2,
+        Gender.MALE,
+        LocalDate.of(2030, 1, 1),
+        LocalDate.of(2020, 1, 1),
+        5,
+        true,
+        "Current conviction date cannot be before date of birth.",
+      ),
     )
 
     // getMonthsSinceLastSanctionWeight method source

@@ -17,15 +17,15 @@ import kotlin.test.assertNull
 class RSRTransformationHelperTest {
 
   @Test
-  fun `should return LOW for RSR score within 0 point 0 to 3 point 0`() {
+  fun `should return LOW for RSR score within 0 point 0 to 2 point 99`() {
     assertEquals(RiskBand.LOW, getRSRBand(0.0))
     assertEquals(RiskBand.LOW, getRSRBand(1.5))
-    assertEquals(RiskBand.LOW, getRSRBand(3.0))
+    assertEquals(RiskBand.LOW, getRSRBand(2.99))
   }
 
   @Test
   fun `should return MEDIUM for RSR score within 3 point 0 to 6 point 8`() {
-    assertEquals(RiskBand.MEDIUM, getRSRBand(3.1))
+    assertEquals(RiskBand.MEDIUM, getRSRBand(3.0))
     assertEquals(RiskBand.MEDIUM, getRSRBand(5.5))
     assertEquals(RiskBand.MEDIUM, getRSRBand(6.87))
     assertEquals(RiskBand.MEDIUM, getRSRBand(6.81))
