@@ -62,8 +62,7 @@ fun getIsCurrentOffenceAgainstVictimStrangerWeight(isCurrentOffenceAgainstVictim
 }
 
 fun getOSPDCBand(ospdc64PointScore: Int): RiskBand = when (ospdc64PointScore) {
-  0 -> RiskBand.NOT_APPLICABLE
-  in 1..21 -> RiskBand.LOW
+  in 0..21 -> RiskBand.LOW
   in 22..29 -> RiskBand.MEDIUM
   in 30..35 -> RiskBand.HIGH
   in 36..64 -> RiskBand.VERY_HIGH
