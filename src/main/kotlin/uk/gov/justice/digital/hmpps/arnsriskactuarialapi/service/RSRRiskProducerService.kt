@@ -52,6 +52,7 @@ class RSRRiskProducerService : RiskScoreProducer {
           ospdcScore,
           ospiicBand,
           ospiicScore,
+          snsvScore,
           rsrScore,
           rsrBand,
           scoreType,
@@ -69,6 +70,7 @@ class RSRRiskProducerService : RiskScoreProducer {
       )
       return context.apply {
         RSR = RSRObject(
+          null,
           null,
           null,
           null,
