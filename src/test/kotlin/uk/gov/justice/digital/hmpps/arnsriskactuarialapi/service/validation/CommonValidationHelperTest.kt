@@ -115,35 +115,6 @@ class CommonValidationHelperTest {
   }
 
   @Test
-  fun `getTotalNumberOfSanctionsValidation no errors`() {
-    val result = getTotalNumberOfSanctionsForAllOffencesValidation(1 as Integer?, mutableListOf())
-    assertTrue(result.isEmpty())
-  }
-
-  @Test
-  fun `getTotalNumberOfSanctionsValidation no error added when number of sanctions is null`() {
-    val missingFieldError = mutableListOf(
-      ValidationErrorResponse(
-        type = ValidationErrorType.MISSING_INPUT,
-        message = "Unable to produce OGRS3 score due to missing field(s)",
-        fields = listOf("totalNumberOfSanctionsForAllOffences"),
-      ),
-    )
-    val result = getTotalNumberOfSanctionsForAllOffencesValidation(null, missingFieldError)
-    assertTrue(result.count() == 1)
-    assertFalse(ValidationErrorType.BELOW_MIN_VALUE == result.first().type)
-  }
-
-  @Test
-  fun `getTotalNumberOfSanctionsValidation below min value error`() {
-    val result = getTotalNumberOfSanctionsForAllOffencesValidation(0 as Integer?, mutableListOf())
-    val error = result.first()
-    assertEquals(ValidationErrorType.BELOW_MIN_VALUE, error.type)
-    assertEquals("ERR2 - Below minimum value", error.message)
-    assertEquals("totalNumberOfSanctionsForAllOffences", error.fields?.first())
-  }
-
-  @Test
   fun `getCurrentOffenceCodeValidation no errors`() {
     val result = getCurrentOffenceCodeValidation("00101", mutableListOf())
     assertTrue(result.isEmpty())

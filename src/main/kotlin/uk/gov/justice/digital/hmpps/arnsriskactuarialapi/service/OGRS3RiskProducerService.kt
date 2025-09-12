@@ -18,8 +18,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getOgrs3TwoYear
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getRiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isWithinLastTwoYears
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.ogrs3InitialValidation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateAge
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateOGRS3
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asPercentage
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sanitisePercentage
 
@@ -30,7 +30,7 @@ class OGRS3RiskProducerService : RiskScoreProducer {
   lateinit var offenceGroupParametersService: OffenceGroupParametersService
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
-    val errors = ogrs3InitialValidation(request)
+    val errors = validateOGRS3(request)
 
     if (errors.isNotEmpty()) {
       return context.apply {
