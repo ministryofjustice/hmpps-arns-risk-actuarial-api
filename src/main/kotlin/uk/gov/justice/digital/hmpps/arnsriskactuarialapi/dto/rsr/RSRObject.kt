@@ -9,6 +9,7 @@ data class RSRObject(
   val ospdcScore: Double? = null,
   val ospiicBand: RiskBand? = null,
   val ospiicScore: Double? = null,
+  val snsvScore: Double?,
   val rsrScore: Double? = null,
   val rsrBand: RiskBand? = null,
   val scoreType: ScoreType? = null,
