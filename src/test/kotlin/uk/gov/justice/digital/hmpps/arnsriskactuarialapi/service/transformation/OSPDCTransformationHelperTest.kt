@@ -251,7 +251,7 @@ class OSPDCTransformationHelperTest {
 
     @JvmStatic
     fun getOSPDCBandValidScores(): Stream<Arguments> = Stream.of(
-      Arguments.of(0, RiskBand.NOT_APPLICABLE),
+      Arguments.of(0, RiskBand.LOW),
       Arguments.of(1, RiskBand.LOW),
       Arguments.of(21, RiskBand.LOW),
       Arguments.of(22, RiskBand.MEDIUM),
