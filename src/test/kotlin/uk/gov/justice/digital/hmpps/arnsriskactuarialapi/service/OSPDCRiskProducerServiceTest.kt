@@ -149,11 +149,8 @@ class OSPDCRiskProducerServiceTest {
     // Then
     assertNotNull(result)
     assertEquals(0.0, result.OSPDC?.ospdcScore)
-    assertEquals(RiskBand.NOT_APPLICABLE, result.OSPDC?.ospdcBand)
-    assertEquals(1, result.OSPDC?.validationError?.size)
-    val error = result.OSPDC?.validationError?.first()
-    assertEquals(ValidationErrorType.NOT_APPLICABLE, error?.type)
-    assertEquals("OSP/DC band not applicable, 64 point score value: 0", error?.message)
+    assertEquals(RiskBand.LOW, result.OSPDC?.ospdcBand)
+    assertEquals(0, result.OSPDC?.validationError?.size)
   }
 
   @Test
