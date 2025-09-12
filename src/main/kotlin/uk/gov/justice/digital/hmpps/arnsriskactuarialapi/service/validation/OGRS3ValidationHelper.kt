@@ -2,19 +2,17 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 
-fun ogrs3InitialValidation(request: RiskScoreRequest): List<ValidationErrorResponse> {
-  val missingFieldValidationErrorStep = getMissingOGRS3FieldsValidation(request)
-  val totalSanctionsValidationErrorStep =
-    getTotalNumberOfSanctionsForAllOffencesValidation(request.totalNumberOfSanctionsForAllOffences, emptyList())
-  val currentOffenceCodeValidationErrorStep =
-    getCurrentOffenceCodeValidation(request.currentOffenceCode, emptyList())
-  return missingFieldValidationErrorStep + totalSanctionsValidationErrorStep + currentOffenceCodeValidationErrorStep
+fun validateOGRS3(request: RiskScoreRequest): List<ValidationErrorResponse> {
+  val errors = mutableListOf<ValidationErrorResponse>()
+  validateRequiredFields(request, errors)
+  validateTotalNumberOfSanctionsForAllOffences(request, errors)
+  validateCurrentOffenceCode(request, errors)
+  return errors
 }
 
-fun getMissingOGRS3FieldsValidation(request: RiskScoreRequest): List<ValidationErrorResponse> {
-  val errors = arrayListOf<ValidationErrorResponse>()
-
+private fun validateRequiredFields(request: RiskScoreRequest, errors: MutableList<ValidationErrorResponse>) {
   val missingFields = arrayListOf<String>()
 
   missingFields.addIfNull(request, RiskScoreRequest::gender)
@@ -25,5 +23,13 @@ fun getMissingOGRS3FieldsValidation(request: RiskScoreRequest): List<ValidationE
   missingFields.addIfNull(request, RiskScoreRequest::ageAtFirstSanction)
   missingFields.addIfNull(request, RiskScoreRequest::currentOffenceCode)
 
-  return addMissingFields(missingFields, errors)
+  if (missingFields.isNotEmpty()) {
+    errors += ValidationErrorType.MISSING_INPUT.asErrorResponse(missingFields)
+  }
+}
+
+private fun validateCurrentOffenceCode(request: RiskScoreRequest, errors: MutableList<ValidationErrorResponse>) {
+  if (request.currentOffenceCode != null && request.currentOffenceCode.length != 5) {
+    errors += ValidationErrorType.NO_MATCHING_INPUT.asErrorResponse(listOf(RiskScoreRequest::currentOffenceCode.name))
+  }
 }

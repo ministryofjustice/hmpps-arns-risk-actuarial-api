@@ -12,16 +12,12 @@ fun ArrayList<String>.addIfNull(request: RiskScoreRequest, prop: KProperty1<Risk
   if (prop.get(request) == null) this.add(prop.name)
 }
 
-fun getTotalNumberOfSanctionsForAllOffencesValidation(
-  totalNumberOfSanctionsForAllOffences: Integer?,
-  errors: List<ValidationErrorResponse>,
-): List<ValidationErrorResponse> {
-  if (totalNumberOfSanctionsForAllOffences != null && totalNumberOfSanctionsForAllOffences < 1) {
-    return errors +
-      ValidationErrorType.BELOW_MIN_VALUE.asErrorResponse(listOf(RiskScoreRequest::totalNumberOfSanctionsForAllOffences.name))
+fun validateTotalNumberOfSanctionsForAllOffences(request: RiskScoreRequest, errors: MutableList<ValidationErrorResponse>) {
+  if (request.totalNumberOfSanctionsForAllOffences != null && request.totalNumberOfSanctionsForAllOffences < 1) {
+    errors += ValidationErrorType.TOTAL_NUMBER_OF_SANCTIONS_LESS_THAN_ONE.asErrorResponse(
+      listOf(RiskScoreRequest::totalNumberOfSanctionsForAllOffences.name),
+    )
   }
-
-  return errors
 }
 
 fun getCurrentOffenceCodeValidation(
@@ -93,7 +89,7 @@ fun addMissingCriteriaValidation(
   ValidationErrorType.NOT_APPLICABLE,
 )
 
-private fun addValidationErrorResponse(
+fun addValidationErrorResponse(
   fields: List<String>,
   errors: List<ValidationErrorResponse>,
   error: ValidationErrorType,

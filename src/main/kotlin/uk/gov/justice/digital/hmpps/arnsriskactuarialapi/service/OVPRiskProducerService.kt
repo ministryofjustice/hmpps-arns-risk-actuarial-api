@@ -23,13 +23,13 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getOffenderAgeGroupOVP
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getTotalNumberOfNonViolentSanctionsWeighted
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getTotalNumberOfViolentSanctionsWeighted
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.ovpInitialValidation
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateOVP
 
 @Service
 class OVPRiskProducerService : RiskScoreProducer {
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
-    val errors = ovpInitialValidation(request)
+    val errors = validateOVP(request)
 
     if (errors.isNotEmpty()) {
       return context.apply { OVP = OVPObject(null, null, null, errors) }
