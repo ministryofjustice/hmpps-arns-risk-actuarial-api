@@ -1,11 +1,11 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
 import org.springframework.stereotype.Service
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CustodyOrCommunity
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.NeedScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.ProgrammeNeedIdentifier
@@ -110,7 +110,7 @@ class PNIRiskProducerService : RiskScoreProducer {
         pniPathway = ProgrammeNeedIdentifier.OMISSION
       }
       if (bothNullSara(requestValidated) &&
-        requestValidated.supervisionStatus == CustodyOrCommunity.CUSTODY
+        isCustody(requestValidated)
       ) {
         pniPathway = ProgrammeNeedIdentifier.OMISSION
       }
@@ -118,6 +118,11 @@ class PNIRiskProducerService : RiskScoreProducer {
 
     return context.apply { PNI = PNIObject(pniPathway, errors) }
   }
+
+  /**
+   * In PNI REMAND should be treated in the same way as CUSTODY
+   */
+  private fun isCustody(requestValidated: PNIRequestValidated): Boolean = requestValidated.supervisionStatus == SupervisionStatus.CUSTODY || requestValidated.supervisionStatus == SupervisionStatus.REMAND
 
   private fun hasMissingAnswers(overallNeed: Triple<NeedScore?, NeedScore?, List<String>>): Boolean = overallNeed.third.isNotEmpty()
 
@@ -129,7 +134,7 @@ class PNIRiskProducerService : RiskScoreProducer {
     need: NeedScore,
     risk: RiskBand,
   ): Boolean {
-    if (request.supervisionStatus != CustodyOrCommunity.CUSTODY) return false
+    if (request.supervisionStatus != SupervisionStatus.CUSTODY) return false
     return isHighOgrsWithHighOVP(request) ||
       isHighOgrsWithHighSara(request) ||
       isHighNeedWithHighRisk(need, risk)
@@ -142,8 +147,8 @@ class PNIRiskProducerService : RiskScoreProducer {
     request: PNIRequestValidated,
     need: NeedScore,
     risk: RiskBand,
-  ): Boolean = (isHighOgrsWithHighOVP(request) && request.supervisionStatus == CustodyOrCommunity.COMMUNITY) ||
-    (isHighNeedWithHighRisk(need, risk) && request.supervisionStatus == CustodyOrCommunity.COMMUNITY) ||
+  ): Boolean = (isHighOgrsWithHighOVP(request) && request.supervisionStatus == SupervisionStatus.COMMUNITY) ||
+    (isHighNeedWithHighRisk(need, risk) && request.supervisionStatus == SupervisionStatus.COMMUNITY) ||
     isHighSara(request) ||
     isMediumSara(request) ||
     isMediumNeedWithHighRisk(need, risk) ||

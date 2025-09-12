@@ -1,9 +1,9 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv
 
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CustodyOrCommunity
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.PreviousConviction
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import java.time.LocalDate
 
 data class SNSVDynamicRequestValidated(
@@ -14,7 +14,7 @@ data class SNSVDynamicRequestValidated(
   val currentOffenceCode: String,
   val totalNumberOfSanctionsForAllOffences: Int,
   val ageAtFirstSanction: Int,
-  val supervisionStatus: CustodyOrCommunity,
+  val supervisionStatus: SupervisionStatus,
   val dateAtStartOfFollowup: LocalDate,
   val totalNumberOfViolentSanctions: Int,
   val didOffenceInvolveCarryingOrUsingWeapon: Boolean,

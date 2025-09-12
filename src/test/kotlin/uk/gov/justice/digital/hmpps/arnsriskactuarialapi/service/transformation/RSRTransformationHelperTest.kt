@@ -7,9 +7,9 @@ import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CustodyOrCommunity
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import java.time.LocalDate
 import java.util.stream.Stream
 import kotlin.test.assertNull
@@ -54,7 +54,7 @@ class RSRTransformationHelperTest {
   @MethodSource("getOSPDCRiskReductionCases")
   fun testGetOSPDCRiskReduction(
     gender: Gender,
-    supervisionStatus: CustodyOrCommunity,
+    supervisionStatus: SupervisionStatus,
     mostRecentOffenceDate: LocalDate?,
     dateOfMostRecentSexualOffence: LocalDate?,
     dateAtStartOfFollowup: LocalDate,
@@ -105,7 +105,7 @@ class RSRTransformationHelperTest {
         // Case 1: Null riskBand → expect null
         Arguments.of(
           Gender.MALE,
-          CustodyOrCommunity.COMMUNITY,
+          SupervisionStatus.COMMUNITY,
           null,
           null,
           today.minusYears(6),
@@ -116,7 +116,7 @@ class RSRTransformationHelperTest {
         // Case 2: Female → should return false
         Arguments.of(
           Gender.FEMALE,
-          CustodyOrCommunity.COMMUNITY,
+          SupervisionStatus.COMMUNITY,
           null,
           null,
           today.minusYears(10),
@@ -127,7 +127,7 @@ class RSRTransformationHelperTest {
         // Case 3: In custody → should return false
         Arguments.of(
           Gender.MALE,
-          CustodyOrCommunity.CUSTODY,
+          SupervisionStatus.CUSTODY,
           null,
           null,
           today.minusYears(10),
@@ -138,7 +138,7 @@ class RSRTransformationHelperTest {
         // Case 4: Recent offence within 5 years → false
         Arguments.of(
           Gender.MALE,
-          CustodyOrCommunity.COMMUNITY,
+          SupervisionStatus.COMMUNITY,
           today.minusYears(3),
           null,
           today.minusYears(10),
@@ -149,7 +149,7 @@ class RSRTransformationHelperTest {
         // Case 5: Sexual offence within 5 years → false
         Arguments.of(
           Gender.MALE,
-          CustodyOrCommunity.COMMUNITY,
+          SupervisionStatus.COMMUNITY,
           null,
           today.minusYears(4),
           today.minusYears(10),
@@ -160,7 +160,7 @@ class RSRTransformationHelperTest {
         // Case 6: Follow-up period less than 5 years → false
         Arguments.of(
           Gender.MALE,
-          CustodyOrCommunity.COMMUNITY,
+          SupervisionStatus.COMMUNITY,
           null,
           null,
           today.minusYears(3),
@@ -171,7 +171,7 @@ class RSRTransformationHelperTest {
         // Case 7: Low risk band → false
         Arguments.of(
           Gender.MALE,
-          CustodyOrCommunity.COMMUNITY,
+          SupervisionStatus.COMMUNITY,
           null,
           null,
           today.minusYears(10),
@@ -182,7 +182,7 @@ class RSRTransformationHelperTest {
         // Case 8: Not applicable risk band → false
         Arguments.of(
           Gender.MALE,
-          CustodyOrCommunity.COMMUNITY,
+          SupervisionStatus.COMMUNITY,
           null,
           null,
           today.minusYears(10),
@@ -193,7 +193,7 @@ class RSRTransformationHelperTest {
         // Case 9: Meets all conditions (male, community, no recent offences, >5y follow-up, valid riskBand) → true
         Arguments.of(
           Gender.MALE,
-          CustodyOrCommunity.COMMUNITY,
+          SupervisionStatus.COMMUNITY,
           today.minusYears(6),
           today.minusYears(6),
           today.minusYears(6),

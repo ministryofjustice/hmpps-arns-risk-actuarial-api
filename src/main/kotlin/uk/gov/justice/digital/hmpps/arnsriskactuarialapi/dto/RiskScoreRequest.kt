@@ -42,7 +42,7 @@ data class RiskScoreRequest(
   val impulsivityProblems: ProblemLevel? = null,
 
   // PNI
-  val supervisionStatus: CustodyOrCommunity? = null,
+  val supervisionStatus: SupervisionStatus? = null,
   val hasEverCommittedSexualOffence: Boolean? = null,
   val isARiskOfSexualHarm: Boolean? = null,
   val sexualPreoccupation: ProblemLevel? = null,

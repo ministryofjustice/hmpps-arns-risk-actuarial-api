@@ -1,7 +1,7 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.osp
 
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CustodyOrCommunity
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import java.time.LocalDate
 
 data class OSPDCRequestValidated(
@@ -16,7 +16,7 @@ data class OSPDCRequestValidated(
   val totalNumberOfSanctionsForAllOffences: Int,
   val dateOfMostRecentSexualOffence: LocalDate?,
   val isCurrentOffenceAgainstVictimStranger: Boolean?,
-  val supervisionStatus: CustodyOrCommunity,
+  val supervisionStatus: SupervisionStatus,
   val mostRecentOffenceDate: LocalDate?,
   val assessmentDate: LocalDate,
 )

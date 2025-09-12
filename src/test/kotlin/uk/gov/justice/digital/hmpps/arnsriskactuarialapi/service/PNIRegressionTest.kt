@@ -4,10 +4,10 @@ import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvFileSource
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CustodyOrCommunity
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.ProgrammeNeedIdentifier
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOGRS3
@@ -258,9 +258,9 @@ private fun String?.bandToOGRSScore(): Int? = when (this.toRiskBand()) {
   null -> null
 }
 
-private fun String?.toCustodyOrCommunity(): CustodyOrCommunity = when {
-  this?.contains("YES") == true -> CustodyOrCommunity.COMMUNITY
-  else -> CustodyOrCommunity.CUSTODY
+private fun String?.toCustodyOrCommunity(): SupervisionStatus = when {
+  this?.contains("YES") == true -> SupervisionStatus.COMMUNITY
+  else -> SupervisionStatus.CUSTODY
 }
 
 private fun String?.toYesNoBoolean(): Boolean? = when {

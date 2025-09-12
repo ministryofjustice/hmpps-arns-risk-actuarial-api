@@ -1,8 +1,8 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CustodyOrCommunity
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.NeedScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIRequestValidated
 
 fun overallNeedsGroupingCalculation(request: PNIRequestValidated): Triple<NeedScore?, NeedScore?, List<String>> {
@@ -65,7 +65,7 @@ fun overallNeedsGroupingCalculation(request: PNIRequestValidated): Triple<NeedSc
 private fun getOverallNeedClassification(
   overallNeedsScore: Int,
   overallNeedsScoreProjected: Int,
-  supervisionStatus: CustodyOrCommunity,
+  supervisionStatus: SupervisionStatus,
   isMediumOrHighSara: Boolean,
   anyNullSara: Boolean,
   calculationComplete: Boolean,
@@ -75,7 +75,7 @@ private fun getOverallNeedClassification(
   val overallNeedsLevelProjected = getLevelFromScore(overallNeedsScoreProjected)
 
   if (overallNeedsScore >= 6) return Pair(NeedScore.HIGH, overallNeedsLevelProjected)
-  if (overallNeedsScore >= 3 && supervisionStatus == CustodyOrCommunity.COMMUNITY) {
+  if (overallNeedsScore >= 3 && supervisionStatus == SupervisionStatus.COMMUNITY) {
     return Pair(
       NeedScore.MEDIUM,
       overallNeedsLevelProjected,
@@ -86,16 +86,16 @@ private fun getOverallNeedClassification(
     if (overallNeedsLevel == overallNeedsLevelProjected) {
       return Pair(overallNeedsLevel, overallNeedsLevelProjected)
     }
-    if (allDomainsAreMissingAnswers && supervisionStatus != CustodyOrCommunity.COMMUNITY) {
+    if (allDomainsAreMissingAnswers && supervisionStatus != SupervisionStatus.COMMUNITY) {
       return Pair(null, overallNeedsLevelProjected)
     }
     if (overallNeedsLevel in setOf(NeedScore.HIGH, NeedScore.MEDIUM) && !(isMediumOrHighSara)) {
       return Pair(null, overallNeedsLevelProjected)
     }
-    if (supervisionStatus == CustodyOrCommunity.COMMUNITY && (isMediumOrHighSara) && !anyNullSara) {
+    if (supervisionStatus == SupervisionStatus.COMMUNITY && (isMediumOrHighSara) && !anyNullSara) {
       return Pair(NeedScore.MEDIUM, overallNeedsLevelProjected)
     }
-    if (supervisionStatus != CustodyOrCommunity.COMMUNITY && (isMediumOrHighSara) && !anyNullSara) {
+    if (supervisionStatus != SupervisionStatus.COMMUNITY && (isMediumOrHighSara) && !anyNullSara) {
       return Pair(NeedScore.HIGH, overallNeedsLevelProjected)
     }
   }

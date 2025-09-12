@@ -1,11 +1,11 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni
 
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CustodyOrCommunity
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 
 data class PNIRequestValidated(
-  val supervisionStatus: CustodyOrCommunity,
+  val supervisionStatus: SupervisionStatus,
   val hasEverCommittedSexualOffence: Boolean?,
   val isARiskOfSexualHarm: Boolean?,
   val sexualPreoccupation: ProblemLevel?,

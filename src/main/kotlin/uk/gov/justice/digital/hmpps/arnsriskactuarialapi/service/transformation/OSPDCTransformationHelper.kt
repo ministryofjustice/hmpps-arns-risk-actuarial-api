@@ -1,8 +1,8 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CustodyOrCommunity
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sigmoid
 import java.time.LocalDate
 import java.time.Period
@@ -77,12 +77,12 @@ fun getOSPDCScore(ospdc64PointScore: Int): Double {
   return z.sigmoid()
 }
 
-fun getOSPDCRiskReduction(gender: Gender, supervisionStatus: CustodyOrCommunity, mostRecentOffenceDate: LocalDate?, dateOfMostRecentSexualOffence: LocalDate?, dateAtStartOfFollowup: LocalDate, assessmentDate: LocalDate, riskBand: RiskBand?): Boolean? {
+fun getOSPDCRiskReduction(gender: Gender, supervisionStatus: SupervisionStatus, mostRecentOffenceDate: LocalDate?, dateOfMostRecentSexualOffence: LocalDate?, dateAtStartOfFollowup: LocalDate, assessmentDate: LocalDate, riskBand: RiskBand?): Boolean? {
   if (riskBand == null) return null
 
   return !(
     gender == Gender.FEMALE ||
-      supervisionStatus == CustodyOrCommunity.CUSTODY ||
+      isCustody(supervisionStatus) ||
       (mostRecentOffenceDate != null && ChronoUnit.YEARS.between(mostRecentOffenceDate, assessmentDate).toInt() < 5) ||
       (dateOfMostRecentSexualOffence != null && ChronoUnit.YEARS.between(dateOfMostRecentSexualOffence, assessmentDate).toInt() < 5) ||
       Period.between(dateAtStartOfFollowup, assessmentDate).years < 5 ||
@@ -90,6 +90,8 @@ fun getOSPDCRiskReduction(gender: Gender, supervisionStatus: CustodyOrCommunity,
       riskBand == RiskBand.NOT_APPLICABLE
     )
 }
+
+private fun isCustody(supervisionStatus: SupervisionStatus): Boolean = supervisionStatus == SupervisionStatus.CUSTODY
 
 fun getOSPDCRiskBandReduction(ospRiskReduction: Boolean?, riskBand: RiskBand?): RiskBand? {
   if (ospRiskReduction == null || !ospRiskReduction || riskBand == null) return riskBand

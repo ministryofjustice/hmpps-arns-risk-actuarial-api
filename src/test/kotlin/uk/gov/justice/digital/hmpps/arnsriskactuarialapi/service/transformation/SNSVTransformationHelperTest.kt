@@ -7,10 +7,10 @@ import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CustodyOrCommunity
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.PreviousConviction
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.bingeDrinkingProblemWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.chronicDrinkingProblemsWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.currentRelationshipWithPartnerWeight
@@ -144,7 +144,7 @@ class SNSVTransformationHelperTest {
     assertEquals(
       -0.1635176921525733,
       getMonthsSinceLastSanctionWeight(
-        supervisionStatus = CustodyOrCommunity.COMMUNITY,
+        supervisionStatus = SupervisionStatus.COMMUNITY,
         dateAtStartOfFollowup = dateAtStartOfFollowup,
         assessmentDate = assessmentDate,
         isSNSVDynamic = true,
@@ -321,7 +321,7 @@ class SNSVTransformationHelperTest {
   @ParameterizedTest
   @MethodSource("getMonthsSinceLastSanctionWeightValidInputProvider")
   fun `getMonthsSinceLastSanctionWeight should return correct months since last sanction weight`(
-    supervisionStatus: CustodyOrCommunity,
+    supervisionStatus: SupervisionStatus,
     dateAtStartOfFollowup: LocalDate,
     assessmentDate: LocalDate,
     isSNSVDynamic: Boolean,
@@ -735,7 +735,7 @@ class SNSVTransformationHelperTest {
     fun getMonthsSinceLastSanctionWeightValidInputProvider(): Stream<Arguments> = Stream.of(
       // In custody -> always 0
       Arguments.of(
-        CustodyOrCommunity.CUSTODY,
+        SupervisionStatus.CUSTODY,
         LocalDate.of(2025, Month.JANUARY, 1),
         LocalDate.of(2025, Month.JANUARY, 15),
         true,
@@ -743,7 +743,7 @@ class SNSVTransformationHelperTest {
       ),
       // dateAtStartOfFollowup >= assessmentDate -> 0
       Arguments.of(
-        CustodyOrCommunity.COMMUNITY,
+        SupervisionStatus.COMMUNITY,
         LocalDate.of(2025, Month.JANUARY, 1),
         LocalDate.of(2025, Month.JANUARY, 1),
         false,
@@ -751,7 +751,7 @@ class SNSVTransformationHelperTest {
       ),
       // dateAtStartOfFollowup >= assessmentDate -> 0
       Arguments.of(
-        CustodyOrCommunity.COMMUNITY,
+        SupervisionStatus.COMMUNITY,
         LocalDate.of(2025, Month.JANUARY, 2),
         LocalDate.of(2025, Month.JANUARY, 1),
         false,
@@ -759,7 +759,7 @@ class SNSVTransformationHelperTest {
       ),
       // Normal calculation for dynamic
       Arguments.of(
-        CustodyOrCommunity.COMMUNITY,
+        SupervisionStatus.COMMUNITY,
         LocalDate.of(2025, Month.JANUARY, 1),
         LocalDate.of(2025, Month.JUNE, 1),
         true,
@@ -767,7 +767,7 @@ class SNSVTransformationHelperTest {
       ),
       // Normal calculation for static
       Arguments.of(
-        CustodyOrCommunity.COMMUNITY,
+        SupervisionStatus.COMMUNITY,
         LocalDate.of(2025, Month.JANUARY, 1),
         LocalDate.of(2025, Month.SEPTEMBER, 1),
         false,
