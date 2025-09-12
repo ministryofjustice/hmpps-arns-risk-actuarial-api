@@ -2,16 +2,16 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 
-fun ovpInitialValidation(request: RiskScoreRequest): List<ValidationErrorResponse> {
-  val missingFieldValidationErrorStep = getMissingOVPFieldsValidation(request)
-  val totalSanctionsValidationErrorStep =
-    getTotalNumberOfSanctionsForAllOffencesValidation(request.totalNumberOfSanctionsForAllOffences, missingFieldValidationErrorStep)
-  return totalSanctionsValidationErrorStep
+fun validateOVP(request: RiskScoreRequest): List<ValidationErrorResponse> {
+  val errors = mutableListOf<ValidationErrorResponse>()
+  validateRequiredFields(request, errors)
+  validateTotalNumberOfSanctionsForAllOffences(request, errors)
+  return errors
 }
 
-fun getMissingOVPFieldsValidation(request: RiskScoreRequest): List<ValidationErrorResponse> {
-  val errors = arrayListOf<ValidationErrorResponse>()
+private fun validateRequiredFields(request: RiskScoreRequest, errors: MutableList<ValidationErrorResponse>) {
   val missingFields = arrayListOf<String>()
 
   missingFields.addIfNull(request, RiskScoreRequest::gender)
@@ -28,5 +28,7 @@ fun getMissingOVPFieldsValidation(request: RiskScoreRequest): List<ValidationErr
   missingFields.addIfNull(request, RiskScoreRequest::temperControl)
   missingFields.addIfNull(request, RiskScoreRequest::proCriminalAttitudes)
 
-  return addMissingFields(missingFields, errors)
+  if (missingFields.isNotEmpty()) {
+    errors += ValidationErrorType.MISSING_INPUT.asErrorResponse(missingFields)
+  }
 }
