@@ -7,9 +7,9 @@ import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import java.time.LocalDate
 import java.util.stream.Stream
 import kotlin.test.assertNull

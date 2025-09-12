@@ -1,8 +1,8 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sigmoid
 import java.time.LocalDate
 import java.time.Period

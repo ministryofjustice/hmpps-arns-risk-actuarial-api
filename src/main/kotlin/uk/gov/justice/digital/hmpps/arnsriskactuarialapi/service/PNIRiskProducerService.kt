@@ -1,11 +1,11 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
 import org.springframework.stereotype.Service
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.NeedScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.ProgrammeNeedIdentifier
@@ -122,8 +122,7 @@ class PNIRiskProducerService : RiskScoreProducer {
   /**
    * In PNI REMAND should be treated in the same way as CUSTODY
    */
-  private fun isCustody(requestValidated: PNIRequestValidated): Boolean =
-    requestValidated.supervisionStatus == SupervisionStatus.CUSTODY || requestValidated.supervisionStatus == SupervisionStatus.REMAND
+  private fun isCustody(requestValidated: PNIRequestValidated): Boolean = requestValidated.supervisionStatus == SupervisionStatus.CUSTODY || requestValidated.supervisionStatus == SupervisionStatus.REMAND
 
   private fun hasMissingAnswers(overallNeed: Triple<NeedScore?, NeedScore?, List<String>>): Boolean = overallNeed.third.isNotEmpty()
 
