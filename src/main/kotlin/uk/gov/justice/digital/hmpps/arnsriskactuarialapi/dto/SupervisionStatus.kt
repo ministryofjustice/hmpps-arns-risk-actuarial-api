@@ -1,6 +1,7 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto
 
-enum class CustodyOrCommunity {
+enum class SupervisionStatus {
   CUSTODY,
   COMMUNITY,
+  REMAND
 }

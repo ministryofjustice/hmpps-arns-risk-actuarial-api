@@ -1,6 +1,6 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi
 
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CustodyOrCommunity
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.MotivationLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.PreviousConviction
@@ -225,7 +225,7 @@ fun validPNIRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
   previousCloseRelationships = ProblemLevel.SOME_PROBLEMS,
   easilyInfluencedByCriminalAssociates = ProblemLevel.SOME_PROBLEMS,
   controllingOrAggressiveBehaviour = ProblemLevel.SOME_PROBLEMS,
-  supervisionStatus = CustodyOrCommunity.COMMUNITY,
+  supervisionStatus = SupervisionStatus.COMMUNITY,
   saraRiskToPartner = RiskBand.LOW,
   saraRiskToOthers = RiskBand.LOW,
 )
@@ -286,7 +286,7 @@ fun validOSPDCRiskScoreRequest() = RiskScoreRequest(
   dateOfMostRecentSexualOffence = LocalDate.of(2000, 1, 1),
   totalNumberOfSanctionsForAllOffences = 4 as Integer,
   isCurrentOffenceSexuallyMotivated = false,
-  supervisionStatus = CustodyOrCommunity.CUSTODY,
+  supervisionStatus = SupervisionStatus.CUSTODY,
 )
 
 fun validSNSVStaticRiskScoreRequest() = RiskScoreRequest(
@@ -298,7 +298,7 @@ fun validSNSVStaticRiskScoreRequest() = RiskScoreRequest(
   currentOffenceCode = "02700",
   totalNumberOfSanctionsForAllOffences = 1 as Integer,
   ageAtFirstSanction = 40 as Integer,
-  supervisionStatus = CustodyOrCommunity.COMMUNITY,
+  supervisionStatus = SupervisionStatus.COMMUNITY,
   dateAtStartOfFollowup = LocalDate.of(2024, 1, 1),
   totalNumberOfViolentSanctions = 1 as Integer,
 )
@@ -312,7 +312,7 @@ fun validSNSVDynamicRiskScoreRequest() = RiskScoreRequest(
   currentOffenceCode = "02700",
   totalNumberOfSanctionsForAllOffences = 1 as Integer,
   ageAtFirstSanction = 40 as Integer,
-  supervisionStatus = CustodyOrCommunity.COMMUNITY,
+  supervisionStatus = SupervisionStatus.COMMUNITY,
   dateAtStartOfFollowup = LocalDate.of(2027, 1, 1),
   totalNumberOfViolentSanctions = 1 as Integer,
   didOffenceInvolveCarryingOrUsingWeapon = false,
@@ -390,7 +390,7 @@ fun pniRequest(
   hasEverCommittedSexualOffence: Boolean? = null,
   isARiskOfSexualHarm: Boolean? = null,
 ) = PNIRequestValidated(
-  supervisionStatus = CustodyOrCommunity.COMMUNITY,
+  supervisionStatus = SupervisionStatus.COMMUNITY,
   hasEverCommittedSexualOffence = hasEverCommittedSexualOffence,
   isARiskOfSexualHarm = isARiskOfSexualHarm,
   sexualPreoccupation = sexualPreoccupation,
