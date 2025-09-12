@@ -89,7 +89,12 @@ class OSPDCRiskProducerService : RiskScoreProducer {
       getTotalContactChildSexualSanctionsWeight(request.totalContactChildSexualSanctions),
       getTotalNonContactSexualOffencesWeight(request.totalNonContactSexualOffences),
       getAgeAtStartOfFollowupWeight(request.dateOfBirth, request.dateAtStartOfFollowup),
-      request.dateOfMostRecentSexualOffence?.let { date -> getAgeAtLastSanctionForSexualOffenceWeight(request.dateOfBirth, date) } ?: 0,
+      request.dateOfMostRecentSexualOffence?.let { date ->
+        getAgeAtLastSanctionForSexualOffenceWeight(
+          request.dateOfBirth,
+          date,
+        )
+      } ?: 0,
       getTotalNumberOfSanctionsForAllOffencesWeight(request.totalNumberOfSanctionsForAllOffences),
       getIsCurrentOffenceAgainstVictimStrangerWeight(request.isCurrentOffenceAgainstVictimStranger),
     ).sum()
@@ -99,13 +104,7 @@ class OSPDCRiskProducerService : RiskScoreProducer {
             getOSPDCBand(ospdc64PointScore),
             getOSPDCScore(ospdc64PointScore),
             null,
-            arrayListOf(
-              ValidationErrorResponse(
-                type = ValidationErrorType.NOT_APPLICABLE,
-                message = "OSP/DC band not applicable, 64 point score value: 0",
-                fields = emptyList(),
-              ),
-            ),
+            emptyList(),
           )
         } else {
           val ospdcBand = getOSPDCBand(ospdc64PointScore)
