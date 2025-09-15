@@ -78,7 +78,7 @@ class MSTScoreProducerServiceTest {
     assertNotNull(result)
     assertEquals(null, result.MST?.maturityScore)
     assertEquals(null, result.MST?.maturityFlag)
-    assertEquals(false, result.MST?.isMstApplicable)
+    assertEquals(null, result.MST?.isMstApplicable)
     assertTrue(result.MST?.validationError?.size == 1)
 
     val expectedError = ValidationErrorResponse(
