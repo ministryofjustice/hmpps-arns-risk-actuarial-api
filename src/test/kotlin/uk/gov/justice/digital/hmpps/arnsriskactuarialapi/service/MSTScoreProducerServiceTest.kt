@@ -116,17 +116,7 @@ class MSTScoreProducerServiceTest {
     assertEquals(null, result.MST?.maturityScore)
     assertEquals(false, result.MST?.maturityFlag)
     assertEquals(false, result.MST?.isMstApplicable)
-    assertTrue(result.MST?.validationError?.size == 1)
-
-    val expectedError = ValidationErrorResponse(
-      ValidationErrorType.NOT_APPLICABLE,
-      "ERR1 - Does not meet eligibility criteria",
-      listOf("dateOfBirth"),
-    )
-    val actualError = result.MST?.validationError
-
-    assertTrue(actualError?.size == 1)
-    assertEquals(expectedError, actualError?.first())
+    assertEquals(result.MST?.validationError, listOf<ValidationErrorResponse>())
   }
 
   @Test
@@ -140,17 +130,7 @@ class MSTScoreProducerServiceTest {
     assertEquals(null, result.MST?.maturityScore)
     assertEquals(false, result.MST?.maturityFlag)
     assertEquals(false, result.MST?.isMstApplicable)
-    assertTrue(result.MST?.validationError?.size == 1)
-
-    val expectedError = ValidationErrorResponse(
-      ValidationErrorType.NOT_APPLICABLE,
-      "ERR1 - Does not meet eligibility criteria",
-      listOf("gender"),
-    )
-    val actualError = result.MST?.validationError
-
-    assertTrue(actualError?.size == 1)
-    assertEquals(expectedError, actualError?.first())
+    assertEquals(result.MST?.validationError, listOf<ValidationErrorResponse>())
   }
 
   @Test
@@ -165,16 +145,6 @@ class MSTScoreProducerServiceTest {
     assertEquals(null, result.MST?.maturityScore)
     assertEquals(false, result.MST?.maturityFlag)
     assertEquals(false, result.MST?.isMstApplicable)
-    assertTrue(result.MST?.validationError?.size == 1)
-
-    val expectedError = ValidationErrorResponse(
-      ValidationErrorType.NOT_APPLICABLE,
-      "ERR1 - Does not meet eligibility criteria",
-      listOf("gender", "dateOfBirth"),
-    )
-    val actualError = result.MST?.validationError
-
-    assertTrue(actualError?.size == 1)
-    assertEquals(expectedError, actualError?.first())
+    assertEquals(result.MST?.validationError, listOf<ValidationErrorResponse>())
   }
 }
