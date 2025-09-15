@@ -4,10 +4,13 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.CsvSource
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.whenever
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.ScoreType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
@@ -45,13 +48,14 @@ class SNSVRiskProducerServiceTest {
     assertEquals(ScoreType.DYNAMIC, result)
   }
 
-  @Test
-  fun `getRiskScore should return valid SNSVObject with ScoreType DYNAMIC`() {
+  @ParameterizedTest
+  @CsvSource(value = ["COMMUNITY, REMAND"])
+  fun `getRiskScore should return valid SNSVObject with ScoreType DYNAMIC`(supervisionStatus: SupervisionStatus) {
     whenever(offenceGroupParametersService.getSNSVDynamicWeighting("02700")).thenReturn(0.123)
     whenever(offenceGroupParametersService.getSNSVVATPDynamicWeighting("02700")).thenReturn(0.123)
 
     val result = service.getRiskScore(
-      validSNSVDynamicRiskScoreRequest(),
+      validSNSVDynamicRiskScoreRequest().copy(supervisionStatus = supervisionStatus),
       emptyContext(),
     )
 
@@ -60,13 +64,14 @@ class SNSVRiskProducerServiceTest {
     assertEquals(0.0027603294949487, result.SNSV!!.snsvScore!!, 1E-8)
   }
 
-  @Test
-  fun `getRiskScore should return valid SNSVObject with ScoreType STATIC`() {
+  @ParameterizedTest
+  @CsvSource(value = ["COMMUNITY, REMAND"])
+  fun `getRiskScore should return valid SNSVObject with ScoreType STATIC`(supervisionStatus: SupervisionStatus) {
     whenever(offenceGroupParametersService.getSNSVStaticWeighting("02700")).thenReturn(0.123)
     whenever(offenceGroupParametersService.getSNSVVATPStaticWeighting("02700")).thenReturn(0.123)
 
     val result = service.getRiskScore(
-      validSNSVStaticRiskScoreRequest(),
+      validSNSVStaticRiskScoreRequest().copy(supervisionStatus = supervisionStatus),
       emptyContext(),
     )
 
