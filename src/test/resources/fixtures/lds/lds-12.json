@@ -1,0 +1,20 @@
+{
+  "request": {
+    "version": "V1_0",
+    "isCurrentlyOfNoFixedAbodeOrTransientAccommodation": false,
+    "workRelatedSkills": null,
+    "problemsWithReadingWritingNumeracy": null,
+    "hasProblemsWithReading": null,
+    "hasProblemsWithNumeracy": null,
+    "learningDifficulties": "SOME_PROBLEMS",
+    "professionalOrVocationalQualifications": null
+  },
+  "response": {
+    "ldsScore" : null,
+    "validationError" : [ {
+      "type" : "NOT_APPLICABLE",
+      "message" : "ERR - Less than three fields set",
+      "fields" : [ "workRelatedSkills", "problemsWithReadingWritingNumeracy", "learningDifficulties", "professionalOrVocationalQualifications" ]
+    } ]
+  }
+}

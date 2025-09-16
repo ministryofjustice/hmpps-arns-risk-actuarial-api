@@ -1,0 +1,16 @@
+{
+  "request": {
+    "version": "V1_0",
+    "isCurrentlyOfNoFixedAbodeOrTransientAccommodation": true,
+    "workRelatedSkills": "SIGNIFICANT_PROBLEMS",
+    "problemsWithReadingWritingNumeracy": "SIGNIFICANT_PROBLEMS",
+    "hasProblemsWithReading": true,
+    "hasProblemsWithNumeracy": true,
+    "learningDifficulties": "SIGNIFICANT_PROBLEMS",
+    "professionalOrVocationalQualifications": "ANY_QUALIFICATION"
+  },
+  "response": {
+    "ldsScore": 2,
+    "validationError": []
+  }
+}
