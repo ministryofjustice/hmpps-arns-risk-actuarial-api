@@ -50,6 +50,9 @@ class ApiIntegrationTest : IntegrationTestBase() {
       arrayOf("rsr", "requests/rsr-input-1-valid-dynamic.json", "responses/rsr-expected-dynamic-1.json"),
       arrayOf("rsr", "requests/rsr-input-2-static-missing-fields.json", "responses/rsr-expected-static-2.json"),
       arrayOf("rsr", "requests/rsr-input-2-dynamic-unexpected-error.json", "responses/rsr-expected-dynamic-2.json"),
+      arrayOf("rsr", "requests/rsr-input-3-community.json", "responses/rsr-expected-3.json"),
+      arrayOf("rsr", "requests/rsr-input-4-remand.json", "responses/rsr-expected-4.json"),
+      arrayOf("rsr", "requests/rsr-input-5-custody.json", "responses/rsr-expected-5.json"),
       // Add more as needed
     )
 
