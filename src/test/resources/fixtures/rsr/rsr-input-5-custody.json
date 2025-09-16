@@ -1,0 +1,73 @@
+{
+  "request": {
+    "version": "V1_0",
+    "gender": "MALE",
+    "dateOfBirth": "1988-06-11",
+    "assessmentDate": "2025-06-12",
+    "ageAtFirstSanction": 11,
+    "didOffenceInvolveCarryingOrUsingWeapon": true,
+    "evidenceOfDomesticAbuse": true,
+    "domesticAbuseAgainstPartner": false,
+    "domesticAbuseAgainstFamily": true,
+    "currentOffenceCode": "04600",
+    "totalNumberOfSanctionsForAllOffences": 31,
+    "awarenessOfConsequences": null,
+    "isUnemployed": false,
+    "impulsivityProblems": "SOME_PROBLEMS",
+    "temperControl": "SIGNIFICANT_PROBLEMS",
+    "proCriminalAttitudes": "SOME_PROBLEMS",
+    "hasEverCommittedSexualOffence": false,
+    "suitabilityOfAccommodation": "NO_PROBLEMS",
+    "currentRelationshipWithPartner": "SIGNIFICANT_PROBLEMS",
+    "currentAlcoholUseProblems": "SIGNIFICANT_PROBLEMS",
+    "excessiveAlcoholUse": "SIGNIFICANT_PROBLEMS",
+    "totalContactAdultSexualSanctions": null,
+    "totalContactChildSexualSanctions": null,
+    "totalIndecentImageSanctions": null,
+    "totalNonContactSexualOffences": null,
+    "dateAtStartOfFollowup": "2024-01-05",
+    "dateOfMostRecentSexualOffence": null,
+    "isCurrentOffenceAgainstVictimStranger": null,
+    "totalNumberOfViolentSanctions": 10,
+    "isCurrentOffenceSexuallyMotivated": false,
+    "mostRecentOffenceDate": null,
+    "previousConvictions": [
+      "WEAPON"
+    ],
+    "dateOfCurrentConviction": "2024-01-05",
+    "supervisionStatus": "CUSTODY"
+  },
+  "response": {
+    "ospdcBand": "NOT_APPLICABLE",
+    "ospdcScore": 0.0,
+    "ospiicBand": "NOT_APPLICABLE",
+    "ospiicScore": 0.0,
+    "snsvScore": 2.71,
+    "rsrScore": 2.71,
+    "rsrBand": "LOW",
+    "scoreType": "DYNAMIC",
+    "ospRiskReduction": null,
+    "validationError": [
+      {
+        "type": "MISSING_INPUT",
+        "message": "ERR5 - Field is Null",
+        "fields": [
+          "totalContactAdultSexualSanctions",
+          "totalContactChildSexualSanctions",
+          "totalNonContactSexualOffences",
+          "totalIndecentImageSanctions"
+        ]
+      },
+      {
+        "type": "MISSING_INPUT",
+        "message": "ERR5 - Field is Null",
+        "fields": [
+          "totalContactAdultSexualSanctions",
+          "totalContactChildSexualSanctions",
+          "totalIndecentImageSanctions",
+          "totalNonContactSexualOffences"
+        ]
+      }
+    ]
+  }
+}

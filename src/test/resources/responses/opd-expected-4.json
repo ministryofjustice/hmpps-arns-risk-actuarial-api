@@ -1,8 +1,0 @@
-{
-  "opd" : {
-    "opdCheck" : true,
-    "opdOverride" : null,
-    "opdResult" : "SCREEN_IN",
-    "validationError" : [ ]
-  }
-}

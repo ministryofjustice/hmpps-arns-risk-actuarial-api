@@ -1,0 +1,24 @@
+{
+  "request": {
+    "version": "V1_0",
+    "gender": "MALE",
+    "dateOfBirth": "1980-04-06",
+    "assessmentDate": "2025-06-18",
+    "influenceFromCriminalAssociates": "SIGNIFICANT_PROBLEMS",
+    "recklessnessAndRiskTakingBehaviour": null,
+    "difficultiesCoping": "NO_PROBLEMS",
+    "attitudesTowardsSelf": "NO_PROBLEMS",
+    "impulsivityProblems": "NO_PROBLEMS",
+    "temperControl": "NO_PROBLEMS",
+    "problemSolvingSkills": "SOME_PROBLEMS",
+    "awarenessOfConsequences": "SOMETIMES",
+    "understandsOtherPeoplesViews": "NO_PROBLEMS",
+    "hasPeerGroupInfluences": false
+  },
+  "response": {
+    "maturityScore": null,
+    "maturityFlag": false,
+    "isMstApplicable": false,
+    "validationError": []
+  }
+}

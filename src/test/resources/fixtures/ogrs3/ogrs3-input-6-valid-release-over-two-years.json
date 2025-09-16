@@ -1,0 +1,19 @@
+{
+  "request": {
+    "version": "V1_0",
+    "gender": "MALE",
+    "dateOfBirth": "1975-04-29",
+    "dateOfCurrentConviction": "2009-02-19",
+    "dateAtStartOfFollowup": "2020-01-14",
+    "totalNumberOfSanctionsForAllOffences": 22,
+    "ageAtFirstSanction": 17,
+    "currentOffenceCode": "09230",
+    "assessmentDate": "2025-08-01"
+  },
+  "response": {
+    "ogrs3OneYear": 24,
+    "ogrs3TwoYear": 39,
+    "band": "LOW",
+    "validationError": []
+  }
+}

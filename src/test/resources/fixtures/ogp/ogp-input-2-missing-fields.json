@@ -1,0 +1,35 @@
+{
+  "request":{
+  "version": "V1_0",
+  "dateOfBirth": "1991-07-17",
+  "dateOfCurrentConviction": "2021-08-05",
+  "dateAtStartOfFollowup": "2021-12-12",
+  "totalNumberOfSanctionsForAllOffences": 2,
+  "ageAtFirstSanction": 21,
+  "currentOffenceCode": "11618",
+  "isCurrentlyOfNoFixedAbodeOrTransientAccommodation": false,
+  "isUnemployed": true,
+  "regularOffendingActivities": "SOME_PROBLEMS",
+  "currentDrugMisuse": "SIGNIFICANT_PROBLEMS",
+  "motivationToTackleDrugMisuse": "FULL_MOTIVATION",
+  "problemSolvingSkills": "SOME_PROBLEMS",
+  "awarenessOfConsequences": "SOMETIMES",
+  "understandsOtherPeoplesViews": "NO_PROBLEMS",
+  "proCriminalAttitudes": "SOME_PROBLEMS"
+  },
+  "response": {
+    "ogpReoffendingOneYear": null,
+    "ogpReoffendingTwoYear": null,
+    "bandOGP": null,
+    "totalOGPScore": null,
+    "validationError": [
+      {
+        "type": "MISSING_INPUT",
+        "message": "ERR5 - Field is Null",
+        "fields": [
+          "ogrs3TwoYear"
+        ]
+      }
+    ]
+  }
+}
