@@ -1,0 +1,42 @@
+{
+  "request": {
+    "version": "V1_0",
+    "gender": null,
+    "dateOfBirth": null,
+    "hasPeerGroupInfluences": null,
+    "influenceFromCriminalAssociates": null,
+    "recklessnessAndRiskTakingBehaviour": null,
+    "difficultiesCoping": null,
+    "attitudesTowardsSelf": null,
+    "impulsivityProblems": null,
+    "problemSolvingSkills": null,
+    "awarenessOfConsequences": null,
+    "understandsOtherPeoplesViews": null,
+    "temperControl": null
+  },
+  "response": {
+    "maturityScore": null,
+    "maturityFlag": null,
+    "isMstApplicable": null,
+    "validationError": [
+      {
+        "type": "MISSING_INPUT",
+        "message": "ERR5 - Field is Null",
+        "fields": [
+          "gender",
+          "dateOfBirth",
+          "hasPeerGroupInfluences",
+          "influenceFromCriminalAssociates",
+          "recklessnessAndRiskTakingBehaviour",
+          "difficultiesCoping",
+          "attitudesTowardsSelf",
+          "impulsivityProblems",
+          "temperControl",
+          "problemSolvingSkills",
+          "awarenessOfConsequences",
+          "understandsOtherPeoplesViews"
+        ]
+      }
+    ]
+  }
+}

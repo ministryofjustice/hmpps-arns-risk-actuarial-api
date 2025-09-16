@@ -1,0 +1,66 @@
+{
+  "request":{
+  "version": "V1_0",
+  "gender": "MALE",
+  "dateOfBirth": "2025-01-01",
+  "assessmentDate": "2025-01-01",
+  "dateOfCurrentConviction": "2020-01-01",
+  "currentOffenceCode": "02700",
+  "totalNumberOfSanctionsForAllOffences": 1,
+  "ageAtFirstSanction": 40,
+  "supervisionStatus": "COMMUNITY",
+  "dateAtStartOfFollowup": "2027-01-01",
+  "totalNumberOfViolentSanctions": 1,
+  "didOffenceInvolveCarryingOrUsingWeapon": false,
+  "suitabilityOfAccommodation": "NO_PROBLEMS",
+  "isUnemployed": false,
+  "currentRelationshipWithPartner": "NO_PROBLEMS",
+  "currentAlcoholUseProblems": "NO_PROBLEMS",
+  "excessiveAlcoholUse": "NO_PROBLEMS",
+  "impulsivityProblems": "NO_PROBLEMS",
+  "temperControl": "NO_PROBLEMS",
+  "proCriminalAttitudes": "NO_PROBLEMS",
+  "evidenceOfDomesticAbuse": false,
+  "previousConvictions": [
+    "WOUNDING_GBH"
+  ]
+  },
+  "response": {
+    "ospdcBand": "NOT_APPLICABLE",
+    "ospdcScore": 0.0,
+    "ospiicBand": "NOT_APPLICABLE",
+    "ospiicScore": 0.0,
+    "snsvScore": null,
+    "rsrScore": 0.0,
+    "rsrBand": "LOW",
+    "scoreType": null,
+    "ospRiskReduction": null,
+    "validationError": [
+      {
+        "type": "MISSING_INPUT",
+        "message": "ERR5 - Field is Null",
+        "fields": [
+          "totalContactAdultSexualSanctions",
+          "totalContactChildSexualSanctions",
+          "totalNonContactSexualOffences",
+          "totalIndecentImageSanctions"
+        ]
+      },
+      {
+        "type": "MISSING_INPUT",
+        "message": "ERR5 - Field is Null",
+        "fields": [
+          "totalContactAdultSexualSanctions",
+          "totalContactChildSexualSanctions",
+          "totalIndecentImageSanctions",
+          "totalNonContactSexualOffences"
+        ]
+      },
+      {
+        "type": "UNEXPECTED_VALUE",
+        "message": "Error: Age at date at start of followup cannot be less than 10",
+        "fields": []
+      }
+    ]
+  }
+}

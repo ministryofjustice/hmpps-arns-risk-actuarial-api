@@ -1,0 +1,37 @@
+{
+  "request": {
+    "version": "V1_0",
+    "gender": "MALE",
+    "dateOfBirth": "2000-10-15",
+    "dateOfCurrentConviction": "2014-12-12",
+    "dateAtStartOfFollowup": "2019-12-12",
+    "totalNumberOfSanctionsForAllOffences": 31,
+    "totalNumberOfViolentSanctions": 17,
+    "ageAtFirstSanction": 30,
+    "doesRecogniseImpactOfOffendingOnOthers": false,
+    "isCurrentlyOfNoFixedAbodeOrTransientAccommodation": true,
+    "isUnemployed": true,
+    "currentAlcoholUseProblems": "SOME_PROBLEMS",
+    "excessiveAlcoholUse": "NO_PROBLEMS",
+    "temperControl": "SIGNIFICANT_PROBLEMS",
+    "proCriminalAttitudes": "SOME_PROBLEMS",
+    "hasCurrentPsychiatricTreatment": false,
+    "sexualPreoccupation": "SIGNIFICANT_PROBLEMS",
+    "offenceRelatedSexualInterests": "SIGNIFICANT_PROBLEMS",
+    "emotionalCongruenceWithChildren": "SIGNIFICANT_PROBLEMS",
+    "saraRiskToOthers": "HIGH",
+    "hostileOrientation": "NO_PROBLEMS",
+    "currentRelationshipWithFamilyMembers": "NO_PROBLEMS",
+    "previousCloseRelationships": "NO_PROBLEMS",
+    "easilyInfluencedByCriminalAssociates": "NO_PROBLEMS",
+    "controllingOrAggressiveBehaviour": "NO_PROBLEMS",
+    "impulsivityProblems": "NO_PROBLEMS",
+    "problemSolvingSkills": "NO_PROBLEMS",
+    "difficultiesCoping": "NO_PROBLEMS",
+    "supervisionStatus": "COMMUNITY"
+  },
+  "response": {
+    "pniPathway": "MODERATE",
+    "validationError": []
+  }
+}

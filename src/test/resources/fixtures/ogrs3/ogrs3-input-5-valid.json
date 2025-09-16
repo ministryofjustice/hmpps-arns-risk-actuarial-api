@@ -1,0 +1,18 @@
+{
+  "request":{
+  "version": "V1_0",
+  "gender": "MALE",
+  "dateOfBirth": "1965-12-07",
+  "dateOfCurrentConviction": "2025-05-13",
+  "dateAtStartOfFollowup": "2026-12-12",
+  "totalNumberOfSanctionsForAllOffences": 2,
+  "ageAtFirstSanction": 47,
+  "currentOffenceCode": "02700"
+  },
+  "response": {
+    "ogrs3OneYear" : 8,
+    "ogrs3TwoYear" : 16,
+    "band" : "LOW",
+    "validationError" : [ ]
+  }
+}

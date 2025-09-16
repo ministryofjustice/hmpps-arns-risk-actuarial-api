@@ -1,0 +1,55 @@
+{
+  "request":{
+  "version": "V1_0",
+  "gender": "MALE",
+  "dateOfBirth": "1980-01-01",
+  "assessmentDate": "2025-01-01",
+  "currentOffenceCode": "02700",
+  "totalNumberOfSanctionsForAllOffences": 1,
+  "supervisionStatus": "COMMUNITY",
+  "totalNumberOfViolentSanctions": 1
+  },
+  "response": {
+    "ospdcBand": "NOT_APPLICABLE",
+    "ospdcScore": 0.0,
+    "ospiicBand": "NOT_APPLICABLE",
+    "ospiicScore": 0.0,
+    "snsvScore": null,
+    "rsrScore": 0.0,
+    "rsrBand": "LOW",
+    "scoreType": null,
+    "ospRiskReduction": null,
+    "validationError": [
+      {
+        "type": "MISSING_INPUT",
+        "message": "ERR5 - Field is Null",
+        "fields": [
+          "totalContactAdultSexualSanctions",
+          "totalContactChildSexualSanctions",
+          "totalNonContactSexualOffences",
+          "totalIndecentImageSanctions",
+          "dateAtStartOfFollowup"
+        ]
+      },
+      {
+        "type": "MISSING_INPUT",
+        "message": "ERR5 - Field is Null",
+        "fields": [
+          "totalContactAdultSexualSanctions",
+          "totalContactChildSexualSanctions",
+          "totalIndecentImageSanctions",
+          "totalNonContactSexualOffences"
+        ]
+      },
+      {
+        "type": "MISSING_INPUT",
+        "message": "ERR5 - Field is Null",
+        "fields": [
+          "dateOfCurrentConviction",
+          "ageAtFirstSanction",
+          "dateAtStartOfFollowup"
+        ]
+      }
+    ]
+  }
+}

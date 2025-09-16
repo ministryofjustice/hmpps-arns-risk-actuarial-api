@@ -1,8 +1,0 @@
-{
-  "ovp" : {
-    "provenViolentTypeReoffendingOneYear" : 80,
-    "provenViolentTypeReoffendingTwoYear" : 89,
-    "band" : "VERY_HIGH",
-    "validationError" : [ ]
-  }
-}
