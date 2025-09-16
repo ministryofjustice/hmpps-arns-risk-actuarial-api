@@ -9,7 +9,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.mst.MSTRequestValid
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.calculateAge
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getMaturityFlag
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getMstApplicable
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.genderAndAgeValidation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.mstInitialValidation
 
 @Service
@@ -23,7 +22,7 @@ class MSTRiskProducerService : RiskScoreProducer {
         MST = MSTObject(
           maturityScore = null,
           maturityFlag = null,
-          isMstApplicable = false,
+          isMstApplicable = null,
           validationError = errors,
         )
       }
@@ -81,7 +80,7 @@ class MSTRiskProducerService : RiskScoreProducer {
       maturityScore = null,
       maturityFlag = false,
       isMstApplicable = false,
-      genderAndAgeValidation(request.gender, currentAge, errors),
+      listOf(),
     )
   }
 }

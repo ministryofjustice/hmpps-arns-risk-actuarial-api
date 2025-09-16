@@ -78,7 +78,7 @@ class MSTScoreProducerServiceTest {
     assertNotNull(result)
     assertEquals(null, result.MST?.maturityScore)
     assertEquals(null, result.MST?.maturityFlag)
-    assertEquals(false, result.MST?.isMstApplicable)
+    assertEquals(null, result.MST?.isMstApplicable)
     assertTrue(result.MST?.validationError?.size == 1)
 
     val expectedError = ValidationErrorResponse(
@@ -106,7 +106,7 @@ class MSTScoreProducerServiceTest {
   }
 
   @Test
-  fun `should return valid MstObject with NOT_APPLICABLE validationError when out of age range`() {
+  fun `should return valid MstObject with isMstApplicable=false when out of age range`() {
     val isMstApplicableFalseInput = validMSTRiskScoreRequest().copy(dateOfBirth = FIXED_TEST_DATE.minusYears(26))
     // When
     val result = mstRiskProducerService.getRiskScore(isMstApplicableFalseInput, emptyContext())
@@ -116,21 +116,11 @@ class MSTScoreProducerServiceTest {
     assertEquals(null, result.MST?.maturityScore)
     assertEquals(false, result.MST?.maturityFlag)
     assertEquals(false, result.MST?.isMstApplicable)
-    assertTrue(result.MST?.validationError?.size == 1)
-
-    val expectedError = ValidationErrorResponse(
-      ValidationErrorType.NOT_APPLICABLE,
-      "ERR1 - Does not meet eligibility criteria",
-      listOf("dateOfBirth"),
-    )
-    val actualError = result.MST?.validationError
-
-    assertTrue(actualError?.size == 1)
-    assertEquals(expectedError, actualError?.first())
+    assertEquals(result.MST?.validationError, listOf<ValidationErrorResponse>())
   }
 
   @Test
-  fun `should return valid MstObject with NOT_APPLICABLE validationError when FEMALE`() {
+  fun `should return valid MstObject with isMstApplicable=false when FEMALE`() {
     val isMstApplicableFalseInput = validMSTRiskScoreRequest().copy(gender = Gender.FEMALE)
     // When
     val result = mstRiskProducerService.getRiskScore(isMstApplicableFalseInput, emptyContext())
@@ -140,21 +130,11 @@ class MSTScoreProducerServiceTest {
     assertEquals(null, result.MST?.maturityScore)
     assertEquals(false, result.MST?.maturityFlag)
     assertEquals(false, result.MST?.isMstApplicable)
-    assertTrue(result.MST?.validationError?.size == 1)
-
-    val expectedError = ValidationErrorResponse(
-      ValidationErrorType.NOT_APPLICABLE,
-      "ERR1 - Does not meet eligibility criteria",
-      listOf("gender"),
-    )
-    val actualError = result.MST?.validationError
-
-    assertTrue(actualError?.size == 1)
-    assertEquals(expectedError, actualError?.first())
+    assertEquals(result.MST?.validationError, listOf<ValidationErrorResponse>())
   }
 
   @Test
-  fun `should return valid MstObject with NOT_APPLICABLE validationError when FEMALE and out of age range`() {
+  fun `should return valid MstObject with isMstApplicable=false when FEMALE and out of age range`() {
     val isMstApplicableFalseInput =
       validMSTRiskScoreRequest().copy(gender = Gender.FEMALE, dateOfBirth = FIXED_TEST_DATE.minusYears(26))
     // When
@@ -165,16 +145,6 @@ class MSTScoreProducerServiceTest {
     assertEquals(null, result.MST?.maturityScore)
     assertEquals(false, result.MST?.maturityFlag)
     assertEquals(false, result.MST?.isMstApplicable)
-    assertTrue(result.MST?.validationError?.size == 1)
-
-    val expectedError = ValidationErrorResponse(
-      ValidationErrorType.NOT_APPLICABLE,
-      "ERR1 - Does not meet eligibility criteria",
-      listOf("gender", "dateOfBirth"),
-    )
-    val actualError = result.MST?.validationError
-
-    assertTrue(actualError?.size == 1)
-    assertEquals(expectedError, actualError?.first())
+    assertEquals(result.MST?.validationError, listOf<ValidationErrorResponse>())
   }
 }
