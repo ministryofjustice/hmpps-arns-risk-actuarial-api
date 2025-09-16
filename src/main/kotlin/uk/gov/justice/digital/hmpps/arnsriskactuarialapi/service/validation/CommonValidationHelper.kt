@@ -36,17 +36,8 @@ fun validateAge(
   ageAtFirstSanction: Int,
   errors: List<ValidationErrorResponse>,
 ): List<ValidationErrorResponse> = errors + listOfNotNull(
-  validateAgeAtCurrentConviction(ageAtCurrentConviction),
   validateAgeAtFirstSanction(ageAtCurrentConviction, ageAtFirstSanction),
 )
-
-private fun validateAgeAtCurrentConviction(
-  ageAtCurrentConviction: Int,
-): ValidationErrorResponse? = if (ageAtCurrentConviction < MIN_CONVICTION_AGE) {
-  ValidationErrorType.BELOW_MIN_VALUE.asErrorResponse(listOf(RiskScoreRequest::dateOfBirth.name))
-} else {
-  null
-}
 
 private fun validateAgeAtFirstSanction(
   ageAtCurrentConviction: Int,

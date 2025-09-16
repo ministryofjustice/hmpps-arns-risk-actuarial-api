@@ -3,6 +3,10 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertNotNull
+import org.junit.jupiter.api.assertNull
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ValueSource
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.FIXED_TEST_DATE
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
@@ -69,6 +73,22 @@ class OGRS3ValidationHelperTest {
     assertEquals(ValidationErrorType.MISSING_INPUT, error.type)
     assertEquals("ERR5 - Field is Null", error.message)
     assertEquals(expectedFields, error.fields)
+  }
+
+  @ParameterizedTest
+  @ValueSource(ints = [10, 11])
+  fun `validateAgeAtCurrentConviction when age equal to or greater than minimum conviction age`(inputAge: Int) {
+    val validationError = validateAgeAtCurrentConviction(inputAge)
+    assertNull(validationError)
+  }
+
+  @Test
+  fun `validateAgeAtCurrentConviction when age is less than minimum conviction age`() {
+    val validationError = validateAgeAtCurrentConviction(9)
+    assertNotNull(validationError)
+    assertEquals(ValidationErrorType.AGE_AT_CURRENT_CONVICTION_LESS_THAN_TEN, validationError.type)
+    assertEquals("Age at current conviction must be 10 or greater", validationError.message)
+    assertEquals(listOf("dateOfBirth", "dateOfCurrentConviction"), validationError.fields)
   }
 
   private fun validOGRS3RiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(

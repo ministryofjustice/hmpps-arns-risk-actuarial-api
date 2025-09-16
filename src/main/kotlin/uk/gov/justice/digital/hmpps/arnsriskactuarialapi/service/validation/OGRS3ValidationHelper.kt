@@ -3,6 +3,9 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3Object
+
+private const val MIN_CONVICTION_AGE = 10
 
 fun validateOGRS3(request: RiskScoreRequest): List<ValidationErrorResponse> {
   val errors = mutableListOf<ValidationErrorResponse>()
@@ -33,3 +36,21 @@ private fun validateCurrentOffenceCode(request: RiskScoreRequest, errors: Mutabl
     errors += ValidationErrorType.NO_MATCHING_INPUT.asErrorResponse(listOf(RiskScoreRequest::currentOffenceCode.name))
   }
 }
+
+fun validateAgeAtCurrentConviction(ageAtCurrentConviction: Int): ValidationErrorResponse? = if (ageAtCurrentConviction < MIN_CONVICTION_AGE) {
+  ValidationErrorType.AGE_AT_CURRENT_CONVICTION_LESS_THAN_TEN.asErrorResponse(
+    listOf(
+      RiskScoreRequest::dateOfBirth.name,
+      RiskScoreRequest::dateOfCurrentConviction.name,
+    ),
+  )
+} else {
+  null
+}
+
+fun returnOGRS3ObjectWithError(validationErrorResponse: ValidationErrorResponse): OGRS3Object = OGRS3Object(
+  null,
+  null,
+  null,
+  listOf(validationErrorResponse),
+)
