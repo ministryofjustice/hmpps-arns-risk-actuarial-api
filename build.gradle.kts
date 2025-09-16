@@ -1,3 +1,6 @@
+import kotlinx.kover.gradle.plugin.dsl.AggregationType
+import kotlinx.kover.gradle.plugin.dsl.CoverageUnit
+
 plugins {
   id("uk.gov.justice.hmpps.gradle-spring-boot") version "9.0.1"
   id("org.jetbrains.kotlinx.kover") version "0.9.1"
@@ -6,6 +9,20 @@ plugins {
 
 configurations {
   testImplementation { exclude(group = "org.junit.vintage") }
+}
+
+kover {
+  reports {
+    verify {
+      rule {
+        bound {
+          minValue = 88
+          aggregationForGroup = AggregationType.COVERED_PERCENTAGE
+          coverageUnits = CoverageUnit.BRANCH
+        }
+      }
+    }
+  }
 }
 
 dependencies {
