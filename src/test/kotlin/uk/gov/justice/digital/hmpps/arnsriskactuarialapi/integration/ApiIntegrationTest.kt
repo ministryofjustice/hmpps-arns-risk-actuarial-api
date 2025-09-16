@@ -13,6 +13,7 @@ import kotlin.test.fail
 /**
  * Snapshot testing for risk score calculations.
  * Each test fixture contains both request and expected response JSON in one file.
+ * To add a new test file go to test/resources/fixtures and add in the relevant subfolder copying the existing structure.
  */
 class ApiIntegrationTest : IntegrationTestBase() {
 
