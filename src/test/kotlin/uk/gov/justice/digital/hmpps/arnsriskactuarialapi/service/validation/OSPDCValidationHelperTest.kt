@@ -12,7 +12,7 @@ class OSPDCValidationHelperTest {
 
   @Test
   fun `oospdcInitialValidation no errors`() {
-    val result = ospdcInitialValidation(validOSPDCRiskScoreRequest())
+    val result = validateOSPDC(validOSPDCRiskScoreRequest())
     assertTrue(result.isEmpty())
   }
 
@@ -33,7 +33,7 @@ class OSPDCValidationHelperTest {
       mostRecentOffenceDate = null,
     )
 
-    val result = ospdcInitialValidation(request)
+    val result = validateOSPDC(request)
 
     val expectedFields = listOf(
       "gender",
@@ -48,8 +48,8 @@ class OSPDCValidationHelperTest {
     )
 
     val error = result.first()
-    assertEquals(ValidationErrorType.MISSING_INPUT, error.type)
-    assertEquals("ERR5 - Field is Null", error.message)
+    assertEquals(ValidationErrorType.MISSING_MANDATORY_INPUT, error.type)
+    assertEquals("Mandatory input field(s) missing", error.message)
     assertEquals(expectedFields, error.fields)
   }
 
@@ -61,15 +61,15 @@ class OSPDCValidationHelperTest {
       isCurrentOffenceSexuallyMotivated = null,
     )
 
-    val result = ospdcInitialValidation(request)
+    val result = validateOSPDC(request)
 
     val expectedFields = listOf(
       "isCurrentOffenceSexuallyMotivated",
     )
 
     val error = result.first()
-    assertEquals(ValidationErrorType.MISSING_INPUT, error.type)
-    assertEquals("ERR5 - Field is Null", error.message)
+    assertEquals(ValidationErrorType.MISSING_MANDATORY_INPUT, error.type)
+    assertEquals("Mandatory input field(s) missing", error.message)
     assertEquals(expectedFields, error.fields)
   }
 
@@ -79,7 +79,7 @@ class OSPDCValidationHelperTest {
       hasEverCommittedSexualOffence = true,
     )
 
-    val result = ospdcInitialValidation(request)
+    val result = validateOSPDC(request)
 
     assertTrue(result.isEmpty())
   }

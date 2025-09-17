@@ -29,13 +29,13 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.thinkingAndBehaviourNonViolentWeighted
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.totalOGPScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.understandsOtherPeoplesViewsOffendersScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.OGPValidationHelper.Companion.ogpInitialValidation
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateOGP
 
 @Service
 class OGPRiskProducerService : RiskScoreProducer {
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
-    val errors = ogpInitialValidation(request, context)
+    val errors = validateOGP(request, context)
 
     if (errors.isNotEmpty()) {
       return context.apply {

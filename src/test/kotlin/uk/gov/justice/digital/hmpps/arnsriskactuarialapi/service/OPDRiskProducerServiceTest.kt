@@ -318,8 +318,8 @@ class OPDRiskProducerServiceTest {
     assertTrue(result.validationError?.isNotEmpty() == true)
     assertEquals(
       ValidationErrorResponse(
-        type = ValidationErrorType.MISSING_INPUT,
-        message = "ERR5 - Field is Null",
+        type = ValidationErrorType.MISSING_MANDATORY_INPUT,
+        message = "Mandatory input field(s) missing",
         fields = listOf("gender"),
       ),
       result.validationError?.first(),

@@ -3,13 +3,32 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
+import kotlin.reflect.KProperty1
 
-fun ospdcInitialValidation(request: RiskScoreRequest): List<ValidationErrorResponse> = ospdcValidationMissingFields(request) + ospdcValidateSexualMotivationFields(request)
+val OSPDC_REQUIRED_FIELDS: List<KProperty1<RiskScoreRequest, Any?>> = listOf(
+  RiskScoreRequest::gender,
+  RiskScoreRequest::dateOfBirth,
+  RiskScoreRequest::totalContactAdultSexualSanctions,
+  RiskScoreRequest::totalContactChildSexualSanctions,
+  RiskScoreRequest::totalNonContactSexualOffences,
+  RiskScoreRequest::totalIndecentImageSanctions,
+  RiskScoreRequest::dateAtStartOfFollowup,
+  RiskScoreRequest::totalNumberOfSanctionsForAllOffences,
+  RiskScoreRequest::supervisionStatus,
+)
 
-internal fun ospdcValidateSexualMotivationFields(
-  request: RiskScoreRequest,
-): List<ValidationErrorResponse> {
+fun validateOSPDC(request: RiskScoreRequest): List<ValidationErrorResponse> {
+  val errors = mutableListOf<ValidationErrorResponse>()
+  validateRequiredFields(request, errors)
+  return errors
+}
+
+private fun validateRequiredFields(request: RiskScoreRequest, errors: MutableList<ValidationErrorResponse>) {
   val missingFields = arrayListOf<String>()
+
+  OSPDC_REQUIRED_FIELDS.forEach { missingFields.addIfNull(request, it) }
+
   if (request.gender == Gender.MALE &&
     request.hasEverCommittedSexualOffence == true &&
     request.isCurrentOffenceSexuallyMotivated == null
@@ -17,23 +36,7 @@ internal fun ospdcValidateSexualMotivationFields(
     missingFields.addIfNull(request, RiskScoreRequest::isCurrentOffenceSexuallyMotivated)
   }
 
-  return addMissingFields(missingFields, emptyList())
-}
-
-internal fun ospdcValidationMissingFields(
-  request: RiskScoreRequest,
-): List<ValidationErrorResponse> {
-  val missingFields = arrayListOf<String>()
-
-  missingFields.addIfNull(request, RiskScoreRequest::gender)
-  missingFields.addIfNull(request, RiskScoreRequest::dateOfBirth)
-  missingFields.addIfNull(request, RiskScoreRequest::totalContactAdultSexualSanctions)
-  missingFields.addIfNull(request, RiskScoreRequest::totalContactChildSexualSanctions)
-  missingFields.addIfNull(request, RiskScoreRequest::totalNonContactSexualOffences)
-  missingFields.addIfNull(request, RiskScoreRequest::totalIndecentImageSanctions)
-  missingFields.addIfNull(request, RiskScoreRequest::dateAtStartOfFollowup)
-  missingFields.addIfNull(request, RiskScoreRequest::totalNumberOfSanctionsForAllOffences)
-  missingFields.addIfNull(request, RiskScoreRequest::supervisionStatus)
-
-  return addMissingFields(missingFields, emptyList())
+  if (missingFields.isNotEmpty()) {
+    errors += ValidationErrorType.MISSING_MANDATORY_INPUT.asErrorResponse(missingFields)
+  }
 }

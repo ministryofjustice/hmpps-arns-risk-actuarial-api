@@ -3,13 +3,12 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 
-fun pniInitialValidation(request: RiskScoreRequest): List<ValidationErrorResponse> = getMissingPNIFieldsValidation(request)
+val PNI_REQUIRED_FIELDS = listOf(
+  RiskScoreRequest::supervisionStatus,
+)
 
-private fun getMissingPNIFieldsValidation(request: RiskScoreRequest): List<ValidationErrorResponse> {
-  val errors = arrayListOf<ValidationErrorResponse>()
-  val missingFields = arrayListOf<String>()
-
-  missingFields.addIfNull(request, RiskScoreRequest::supervisionStatus)
-
-  return addMissingFields(missingFields, errors)
+fun validatePNI(request: RiskScoreRequest): List<ValidationErrorResponse> {
+  val errors = mutableListOf<ValidationErrorResponse>()
+  validateRequiredFields(request, errors, PNI_REQUIRED_FIELDS)
+  return errors
 }

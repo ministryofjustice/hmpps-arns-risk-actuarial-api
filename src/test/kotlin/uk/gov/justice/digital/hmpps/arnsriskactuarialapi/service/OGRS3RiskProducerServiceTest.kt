@@ -162,8 +162,8 @@ class OGRS3RiskProducerServiceTest {
     assertNull(result.OGRS3?.band)
     assertEquals(1, result.OGRS3?.validationError?.size)
     val error = result.OGRS3?.validationError?.first()
-    assertEquals(ValidationErrorType.MISSING_INPUT, error?.type)
-    assertEquals("ERR5 - Field is Null", error?.message)
+    assertEquals(ValidationErrorType.MISSING_MANDATORY_INPUT, error?.type)
+    assertEquals("Mandatory input field(s) missing", error?.message)
     assertEquals(expectedFields, error?.fields)
   }
 

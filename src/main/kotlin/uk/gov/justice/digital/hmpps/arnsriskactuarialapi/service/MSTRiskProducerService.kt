@@ -9,13 +9,13 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.mst.MSTRequestValid
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.calculateAge
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getMaturityFlag
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getMstApplicable
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.mstInitialValidation
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateMST
 
 @Service
 class MSTRiskProducerService : RiskScoreProducer {
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
-    val errors = mstInitialValidation(request)
+    val errors = validateMST(request)
 
     if (errors.isNotEmpty()) {
       return context.apply {

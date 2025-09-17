@@ -18,7 +18,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validMSTRiskScoreRequest
 
 @ExtendWith(MockitoExtension::class)
-class MSTScoreProducerServiceTest {
+class MSTRiskProducerServiceTest {
 
   @InjectMocks
   lateinit var mstRiskProducerService: MSTRiskProducerService
@@ -53,7 +53,7 @@ class MSTScoreProducerServiceTest {
   }
 
   @Test
-  fun `should return valid MstObject with MISSING_INPUT validationError`() {
+  fun `should return valid MstObject with MISSING_MANDATORY_INPUT validationError`() {
     // Given
     val input = RiskScoreRequest(
       version = RiskScoreVersion.V1_0,
@@ -82,8 +82,8 @@ class MSTScoreProducerServiceTest {
     assertTrue(result.MST?.validationError?.size == 1)
 
     val expectedError = ValidationErrorResponse(
-      ValidationErrorType.MISSING_INPUT,
-      "ERR5 - Field is Null",
+      ValidationErrorType.MISSING_MANDATORY_INPUT,
+      "Mandatory input field(s) missing",
       listOf(
         "gender",
         "dateOfBirth",
