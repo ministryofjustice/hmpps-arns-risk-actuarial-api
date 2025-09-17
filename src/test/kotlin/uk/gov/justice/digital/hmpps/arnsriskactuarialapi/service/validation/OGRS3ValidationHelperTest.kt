@@ -91,6 +91,22 @@ class OGRS3ValidationHelperTest {
     assertEquals(listOf("dateOfBirth", "dateOfCurrentConviction"), validationError.fields)
   }
 
+  @ParameterizedTest
+  @ValueSource(ints = [10, 11])
+  fun `validateAgeAtFirstSanction when age at first sanction is equal to or less than age  at current conviction`(ageAtFirstSanctionInput: Int) {
+    val validationError = validateAgeAtFirstSanction(ageAtFirstSanctionInput, 11)
+    assertNull(validationError)
+  }
+
+  @Test
+  fun `validateAgeAtFirstSanction when age at first sanction is greater than age  at current conviction`() {
+    val validationError = validateAgeAtFirstSanction(20, 1)
+    assertNotNull(validationError)
+    assertEquals(ValidationErrorType.AGE_AT_FIRST_SANCTION_AFTER_AGE_AT_CURRENT_CONVICTION, validationError.type)
+    assertEquals("Age at first sanction must be before age at current conviction", validationError.message)
+    assertEquals(listOf("dateOfBirth", "dateOfCurrentConviction", "ageAtFirstSanction"), validationError.fields)
+  }
+
   private fun validOGRS3RiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
     RiskScoreVersion.V1_0,
     Gender.MALE,

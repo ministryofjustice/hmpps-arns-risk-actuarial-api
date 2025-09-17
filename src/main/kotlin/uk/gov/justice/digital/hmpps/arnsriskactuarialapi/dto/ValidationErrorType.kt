@@ -2,6 +2,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto
 
 enum class ValidationErrorType(val asErrorResponse: (List<String>) -> ValidationErrorResponse) {
 
+  AGE_AT_FIRST_SANCTION_AFTER_AGE_AT_CURRENT_CONVICTION({ fields -> ValidationErrorResponse(AGE_AT_FIRST_SANCTION_AFTER_AGE_AT_CURRENT_CONVICTION, "Age at first sanction must be before age at current conviction", fields) }),
   TOTAL_NUMBER_OF_SANCTIONS_LESS_THAN_ONE({ fields -> ValidationErrorResponse(TOTAL_NUMBER_OF_SANCTIONS_LESS_THAN_ONE, "Total number of sanctions must be one or greater", fields) }),
   AGE_AT_CURRENT_CONVICTION_LESS_THAN_TEN({ fields -> ValidationErrorResponse(AGE_AT_CURRENT_CONVICTION_LESS_THAN_TEN, "Age at current conviction must be 10 or greater", fields) }),
   LDS_NOT_ENOUGH_FIELDS_PRESENT({ fields -> ValidationErrorResponse(LDS_NOT_ENOUGH_FIELDS_PRESENT, "At least three input fields must be provided", fields) }),

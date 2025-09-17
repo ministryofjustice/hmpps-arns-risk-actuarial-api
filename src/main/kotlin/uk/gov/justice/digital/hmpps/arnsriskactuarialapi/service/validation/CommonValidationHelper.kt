@@ -6,8 +6,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import java.util.Objects.isNull
 import kotlin.reflect.KProperty1
 
-private const val MIN_CONVICTION_AGE = 10
-
 fun ArrayList<String>.addIfNull(request: RiskScoreRequest, prop: KProperty1<RiskScoreRequest, Any?>) {
   if (prop.get(request) == null) this.add(prop.name)
 }
@@ -29,28 +27,6 @@ fun getCurrentOffenceCodeValidation(
       ValidationErrorType.NO_MATCHING_INPUT.asErrorResponse(listOf(RiskScoreRequest::currentOffenceCode.name))
   }
   return errors
-}
-
-fun validateAge(
-  ageAtCurrentConviction: Int,
-  ageAtFirstSanction: Int,
-  errors: List<ValidationErrorResponse>,
-): List<ValidationErrorResponse> = errors + listOfNotNull(
-  validateAgeAtFirstSanction(ageAtCurrentConviction, ageAtFirstSanction),
-)
-
-private fun validateAgeAtFirstSanction(
-  ageAtCurrentConviction: Int,
-  ageAtFirstSanction: Int,
-): ValidationErrorResponse? = if (ageAtFirstSanction > ageAtCurrentConviction) {
-  ValidationErrorType.BELOW_MIN_VALUE.asErrorResponse(
-    listOf(
-      RiskScoreRequest::dateOfBirth.name,
-      RiskScoreRequest::ageAtFirstSanction.name,
-    ),
-  )
-} else {
-  null
 }
 
 fun addMissingFields(
