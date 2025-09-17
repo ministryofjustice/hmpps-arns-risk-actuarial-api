@@ -19,8 +19,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getRiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isWithinLastTwoYears
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.returnOGRS3ObjectWithError
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateAge
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateAgeAtCurrentConviction
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateAgeAtFirstSanction
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateOGRS3
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asPercentage
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sanitisePercentage
@@ -72,11 +72,7 @@ class OGRS3RiskProducerService : RiskScoreProducer {
       followUpDate,
     )
     validateAgeAtCurrentConviction(ageAtCurrentConviction)?.let { return returnOGRS3ObjectWithError(it) }
-
-    val ageValidationErrors = validateAge(ageAtCurrentConviction, request.ageAtFirstSanction, emptyList())
-    if (!ageValidationErrors.isEmpty()) {
-      OGRS3Object(null, null, null, ageValidationErrors)
-    }
+    validateAgeAtFirstSanction(request.ageAtFirstSanction, ageAtCurrentConviction)?.let { return returnOGRS3ObjectWithError(it) }
 
     val offenderConvictionStatus = getOffenderConvictionStatus(request.totalNumberOfSanctionsForAllOffences)
 

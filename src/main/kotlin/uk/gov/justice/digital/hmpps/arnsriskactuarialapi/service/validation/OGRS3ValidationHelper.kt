@@ -48,6 +48,18 @@ fun validateAgeAtCurrentConviction(ageAtCurrentConviction: Int): ValidationError
   null
 }
 
+fun validateAgeAtFirstSanction(ageAtFirstSanction: Int, ageAtCurrentConviction: Int): ValidationErrorResponse? = if (ageAtFirstSanction > ageAtCurrentConviction) {
+  ValidationErrorType.AGE_AT_FIRST_SANCTION_AFTER_AGE_AT_CURRENT_CONVICTION.asErrorResponse(
+    listOf(
+      RiskScoreRequest::dateOfBirth.name,
+      RiskScoreRequest::dateOfCurrentConviction.name,
+      RiskScoreRequest::ageAtFirstSanction.name,
+    ),
+  )
+} else {
+  null
+}
+
 fun returnOGRS3ObjectWithError(validationErrorResponse: ValidationErrorResponse): OGRS3Object = OGRS3Object(
   null,
   null,

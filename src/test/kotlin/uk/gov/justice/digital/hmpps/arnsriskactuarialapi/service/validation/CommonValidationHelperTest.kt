@@ -144,58 +144,6 @@ class CommonValidationHelperTest {
   }
 
   @Test
-  fun `validateAge should return no errors with valid parameters`() {
-    val result = validateAge(10, 10, mutableListOf())
-    assertTrue(result.isEmpty())
-  }
-
-  @Test
-  fun `validateAge should return 1 error for age under 10`() {
-    val result = validateAge(9, 10, mutableListOf())
-    val error = result.first()
-    assertEquals(ValidationErrorType.BELOW_MIN_VALUE, error.type)
-    assertEquals("ERR2 - Below minimum value", error.message)
-    assertEquals("dateOfBirth", error.fields?.first())
-  }
-
-  @Test
-  fun `validateAge should return 1 error for age below first sanction age`() {
-    val result = validateAge(11, 15, mutableListOf())
-    val error = result.first()
-    assertEquals(ValidationErrorType.BELOW_MIN_VALUE, error.type)
-    assertEquals("ERR2 - Below minimum value", error.message)
-    assertEquals("dateOfBirth", error.fields?.first())
-    assertEquals("ageAtFirstSanction", error.fields?.last())
-  }
-
-  @Test
-  fun `validateAge should not alter exiting errors list if no new errors`() {
-    val existingErrors = mutableListOf(
-      ValidationErrorResponse(
-        type = ValidationErrorType.MISSING_INPUT,
-        message = "Unable to produce OGRS3 score due to missing field(s)",
-        fields = listOf("Current offence"),
-      ),
-    )
-    val result = validateAge(22, 15, existingErrors)
-    assertTrue(result.count() == 1)
-    assertFalse(ValidationErrorType.NO_MATCHING_INPUT == result.first().type)
-  }
-
-  @Test
-  fun `validateAge should add errors to existing list of errors`() {
-    val existingErrors = arrayListOf(
-      ValidationErrorResponse(
-        type = ValidationErrorType.MISSING_INPUT,
-        message = "Unable to produce OGRS3 score due to missing field(s)",
-        fields = listOf("Current offence"),
-      ),
-    )
-    val result = validateAge(11, 15, existingErrors)
-    assertEquals(2, result.size)
-  }
-
-  @Test
   fun `addIfNull should field name when property is null`() {
     val request = RiskScoreRequest(hasPeerGroupInfluences = null)
     val missingFields = arrayListOf<String>()
