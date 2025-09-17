@@ -31,12 +31,6 @@ private fun validateRequiredFields(request: RiskScoreRequest, errors: MutableLis
   }
 }
 
-private fun validateCurrentOffenceCode(request: RiskScoreRequest, errors: MutableList<ValidationErrorResponse>) {
-  if (request.currentOffenceCode != null && request.currentOffenceCode.length != 5) {
-    errors += ValidationErrorType.NO_MATCHING_INPUT.asErrorResponse(listOf(RiskScoreRequest::currentOffenceCode.name))
-  }
-}
-
 fun validateAgeAtCurrentConviction(ageAtCurrentConviction: Int): ValidationErrorResponse? = if (ageAtCurrentConviction < MIN_CONVICTION_AGE) {
   ValidationErrorType.AGE_AT_CURRENT_CONVICTION_LESS_THAN_TEN.asErrorResponse(
     listOf(

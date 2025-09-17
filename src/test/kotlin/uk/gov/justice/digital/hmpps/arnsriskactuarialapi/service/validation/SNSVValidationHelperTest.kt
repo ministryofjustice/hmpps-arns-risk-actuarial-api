@@ -10,7 +10,7 @@ class SNSVValidationHelperTest {
 
   @Test
   fun `getNullPropertiesFromPropertiesInitialValidation no errors`() {
-    val result = snsvInitialValidation(validSNSVStaticRiskScoreRequest())
+    val result = validateSNSV(validSNSVStaticRiskScoreRequest())
     assertTrue(result.isEmpty())
   }
 
@@ -28,7 +28,7 @@ class SNSVValidationHelperTest {
       totalNumberOfViolentSanctions = null,
     )
 
-    val result = snsvInitialValidation(request)
+    val result = validateSNSV(request)
 
     val expectedFields = listOf(
       "gender",
@@ -66,5 +66,16 @@ class SNSVValidationHelperTest {
     assertEquals(ValidationErrorType.MISSING_INPUT, error.type)
     assertEquals("ERR5 - Field is Null", error.message)
     assertEquals(expectedFields, error.fields)
+  }
+
+  @Test
+  fun `validateSNSV with invalid currentOffenceCode`() {
+    val inputRiskScoreRequest = validSNSVStaticRiskScoreRequest()
+      .copy(currentOffenceCode = "123456")
+    val result = validateSNSV(inputRiskScoreRequest)
+    assertEquals(1, result.size)
+    assertEquals(ValidationErrorType.OFFENCE_CODE_INCORRECT_FORMAT, result.first().type)
+    assertEquals("Offence code must be a string of 5 digits", result.first().message)
+    assertEquals(listOf("currentOffenceCode"), result.first().fields)
   }
 }

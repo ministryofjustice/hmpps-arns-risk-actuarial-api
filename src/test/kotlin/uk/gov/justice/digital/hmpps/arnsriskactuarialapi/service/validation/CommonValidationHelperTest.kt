@@ -1,7 +1,6 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -60,20 +59,6 @@ class CommonValidationHelperTest {
     assertEquals(expected, errorResponses)
   }
 
-  @Test
-  fun `addUnexpectedFields should add unexpected errors`() {
-    val errorResponses =
-      addUnexpectedFields(mutableListOf("domesticAbuseAgainstPartner", "domesticAbuseAgainstFamily"), mutableListOf())
-    val expected = listOf(
-      ValidationErrorResponse(
-        ValidationErrorType.UNEXPECTED_VALUE,
-        "ERR6 - Field is unexpected",
-        listOf("domesticAbuseAgainstPartner", "domesticAbuseAgainstFamily"),
-      ),
-    )
-    assertEquals(expected, errorResponses)
-  }
-
   @ParameterizedTest()
   @MethodSource("getRiskScoreRequests")
   fun `error responses are found correctly`(request: RiskScoreRequest, expected: List<String>) {
@@ -116,31 +101,29 @@ class CommonValidationHelperTest {
 
   @Test
   fun `getCurrentOffenceCodeValidation no errors`() {
-    val result = getCurrentOffenceCodeValidation("00101", mutableListOf())
-    assertTrue(result.isEmpty())
+    val riskScoreRequestInput = RiskScoreRequest(currentOffenceCode = "00101")
+    val validationErrorResponses = mutableListOf<ValidationErrorResponse>()
+    validateCurrentOffenceCode(riskScoreRequestInput, validationErrorResponses)
+    assertTrue(validationErrorResponses.isEmpty())
   }
 
   @Test
   fun `getCurrentOffenceCodeValidation no error added when current offence null`() {
-    val missingFieldError = mutableListOf(
-      ValidationErrorResponse(
-        type = ValidationErrorType.MISSING_INPUT,
-        message = "Unable to produce OGRS3 score due to missing field(s)",
-        fields = listOf("currentOffenceCode"),
-      ),
-    )
-    val result = getCurrentOffenceCodeValidation(null, missingFieldError)
-    assertTrue(result.count() == 1)
-    assertFalse(ValidationErrorType.NO_MATCHING_INPUT == result.first().type)
+    val riskScoreRequestInput = RiskScoreRequest(currentOffenceCode = null)
+    val validationErrorResponses = mutableListOf<ValidationErrorResponse>()
+    validateCurrentOffenceCode(riskScoreRequestInput, validationErrorResponses)
+    assertTrue(validationErrorResponses.isEmpty())
   }
 
   @Test
   fun `getCurrentOffenceCodeValidation char count error`() {
-    val result = getCurrentOffenceCodeValidation("001010", mutableListOf())
-    val error = result.first()
-    assertEquals(ValidationErrorType.NO_MATCHING_INPUT, error.type)
-    assertEquals("ERR4 - Does not match agreed input", error.message)
-    assertEquals("currentOffenceCode", error.fields?.first())
+    val riskScoreRequestInput = RiskScoreRequest(currentOffenceCode = "001010")
+    val validationErrorResponses = mutableListOf<ValidationErrorResponse>()
+    validateCurrentOffenceCode(riskScoreRequestInput, validationErrorResponses)
+    assertEquals(1, validationErrorResponses.size)
+    assertEquals(ValidationErrorType.OFFENCE_CODE_INCORRECT_FORMAT, validationErrorResponses.first().type)
+    assertEquals("Offence code must be a string of 5 digits", validationErrorResponses.first().message)
+    assertEquals(listOf("currentOffenceCode"), validationErrorResponses.first().fields)
   }
 
   @Test

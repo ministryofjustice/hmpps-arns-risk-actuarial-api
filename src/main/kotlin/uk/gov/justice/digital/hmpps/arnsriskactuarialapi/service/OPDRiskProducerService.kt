@@ -38,7 +38,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.recklessnessAndRiskTakingBehaviourOffendersScoreOpd
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.relationshipIssuesLinkedToRiskOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.severeChallengingBehavioursOffendersScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.opdInitialValidation
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateOPD
 
 private const val ODP_MALE_PERSONALITY_SCORE_MIN = 7
 private const val ODP_MALE_INDICATOR_SCORE_MIN = 2
@@ -56,7 +56,7 @@ class OPDRiskProducerService : RiskScoreProducer {
   ): RiskScoreContext {
     try {
       // validation
-      val errors = opdInitialValidation(request)
+      val errors = validateOPD(request)
       if (errors.isNotEmpty()) {
         return invalidInformationResult(context, errors)
       }

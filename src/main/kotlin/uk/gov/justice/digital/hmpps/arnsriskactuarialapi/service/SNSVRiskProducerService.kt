@@ -35,7 +35,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.temperControlWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.isValidDynamicSnsv
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.snsvDynamicValidation
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.snsvInitialValidation
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateSNSV
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.roundToNDecimals
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sigmoid
 
@@ -46,7 +46,7 @@ class SNSVRiskProducerService : RiskScoreProducer {
   lateinit var offenceGroupParametersService: OffenceGroupParametersService
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
-    val errors = snsvInitialValidation(request)
+    val errors = validateSNSV(request)
     return context.apply {
       SNSV =
         if (errors.isNotEmpty()) {

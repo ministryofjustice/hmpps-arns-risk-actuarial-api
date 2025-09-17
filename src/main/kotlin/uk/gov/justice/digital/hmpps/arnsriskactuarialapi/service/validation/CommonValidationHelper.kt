@@ -18,15 +18,10 @@ fun validateTotalNumberOfSanctionsForAllOffences(request: RiskScoreRequest, erro
   }
 }
 
-fun getCurrentOffenceCodeValidation(
-  currentOffenceCode: String?,
-  errors: List<ValidationErrorResponse>,
-): List<ValidationErrorResponse> {
-  if (currentOffenceCode != null && currentOffenceCode.length != 5) {
-    return errors +
-      ValidationErrorType.NO_MATCHING_INPUT.asErrorResponse(listOf(RiskScoreRequest::currentOffenceCode.name))
+fun validateCurrentOffenceCode(request: RiskScoreRequest, errors: MutableList<ValidationErrorResponse>) {
+  if (request.currentOffenceCode != null && request.currentOffenceCode.length != 5) {
+    errors += ValidationErrorType.OFFENCE_CODE_INCORRECT_FORMAT.asErrorResponse(listOf(RiskScoreRequest::currentOffenceCode.name))
   }
-  return errors
 }
 
 fun addMissingFields(
@@ -36,15 +31,6 @@ fun addMissingFields(
   missingFields,
   errors,
   ValidationErrorType.MISSING_INPUT,
-)
-
-fun addUnexpectedFields(
-  unexpectedFields: List<String>,
-  errors: List<ValidationErrorResponse>,
-): List<ValidationErrorResponse> = addValidationErrorResponse(
-  unexpectedFields,
-  errors,
-  ValidationErrorType.UNEXPECTED_VALUE,
 )
 
 fun addMissingCriteriaValidation(

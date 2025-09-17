@@ -1,0 +1,62 @@
+{
+  "request": {
+    "version": "V1_0",
+    "gender": "FEMALE",
+    "assessmentDate": "2025-08-01",
+    "ageAtFirstSanction": 42,
+    "applyOPDOverride": true,
+    "didOffenceInvolveCarryingOrUsingWeapon": false,
+    "didOffenceInvolveViolenceOrThreatOfViolence": false,
+    "didOffenceInvolveExcessiveUseOfViolence": false,
+    "didOffenceInvolveArson": false,
+    "offenceMotivationEmotionalState": true,
+    "isAnalysisOfOffenceIssuesLinkedToRisk": true,
+    "hasAccommodationIssuesLinkedToRisk": true,
+    "experienceOfChildhood": "NO_PROBLEMS",
+    "difficultiesCoping": "SIGNIFICANT_PROBLEMS",
+    "evidenceOfDomesticAbuse": true,
+    "domesticAbuseAgainstPartner": true,
+    "domesticAbuseAgainstFamily": true,
+    "relationshipIssuesLinkedToRisk": true,
+    "currentPsychologicalProblems": "SIGNIFICANT_PROBLEMS",
+    "currentPsychiatricProblems": "SOME_PROBLEMS",
+    "hasCurrentPsychiatricTreatment": false,
+    "areEmotionalIssuesLinkedToRisk": true,
+    "areThinkingAndBehaviourIssuesLinkedToRisk": true,
+    "hasCustodialSentence": true,
+    "overRelianceOnOthersForFinancialSupport": "SIGNIFICANT_PROBLEMS",
+    "manipulativeOrPredatoryBehaviour": "SIGNIFICANT_PROBLEMS",
+    "isEvidenceOfChildhoodBehaviouralProblems": false,
+    "hasHistoryOfPsychiatricTreatment": true,
+    "hasBeenOnMedicationForMentalHealthProblems": true,
+    "hasEverBeenInSpecialHospitalOrRegionalSecureUnit": false,
+    "hasSelfHarmOrAttemptedSuicide": false,
+    "attitudeTowardsSupervisionOrLicence": "SIGNIFICANT_PROBLEMS",
+    "controllingOrAggressiveBehaviour": "SIGNIFICANT_PROBLEMS",
+    "hasEscapedOrAbsconded": false,
+    "doesRecogniseImpactOfOffendingOnOthers": false,
+    "recklessnessAndRiskTakingBehaviour": "SIGNIFICANT_PROBLEMS",
+    "impulsivityProblems": "SIGNIFICANT_PROBLEMS",
+    "hasDisplayedObsessiveBehaviourLinkedToOffending": false,
+    "hasAssaultedOrThreatenedStaff": false,
+    "isEligibleForMappa": false,
+    "overallRiskForAssessment": "HIGH",
+    "highestRiskLevelOverAllAssessments": "HIGH",
+    "currentOffenceCode": "123456±",
+    "hasControlIssues": true
+  },
+  "response": {
+    "opdCheck": false,
+    "opdOverride": null,
+    "opdResult": null,
+    "validationError": [
+      {
+        "type": "OFFENCE_CODE_INCORRECT_FORMAT",
+        "message": "Offence code must be a string of 5 digits",
+        "fields": [
+          "currentOffenceCode"
+        ]
+      }
+    ]
+  }
+}
