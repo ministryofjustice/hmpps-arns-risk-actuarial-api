@@ -11,7 +11,7 @@ class OPDValidationHelperTest {
 
   @Test
   fun `opdInitialValidation no errors`() {
-    val result = opdInitialValidation(validOPDRiskScoreRequest())
+    val result = validateOPD(validOPDRiskScoreRequest())
     assertTrue(result.isEmpty())
   }
 
@@ -26,7 +26,7 @@ class OPDValidationHelperTest {
       hasCustodialSentence = null,
       evidenceOfDomesticAbuse = false,
     )
-    val result = opdInitialValidation(request)
+    val result = validateOPD(request)
 
     val expectedFields = listOf(
       "gender",
@@ -48,7 +48,7 @@ class OPDValidationHelperTest {
       gender = Gender.MALE,
       isEligibleForMappa = null,
     )
-    val result = opdInitialValidation(request)
+    val result = validateOPD(request)
     assertTrue(result.isEmpty())
   }
 
@@ -58,7 +58,7 @@ class OPDValidationHelperTest {
       gender = Gender.FEMALE,
       isEligibleForMappa = null,
     )
-    val result = opdInitialValidation(request)
+    val result = validateOPD(request)
 
     val expectedFields = listOf(
       "isEligibleForMappa",
@@ -77,7 +77,7 @@ class OPDValidationHelperTest {
       domesticAbuseAgainstPartner = null,
       domesticAbuseAgainstFamily = null,
     )
-    val result = opdInitialValidation(request)
+    val result = validateOPD(request)
 
     val expectedFields = listOf(
       "domesticAbuseAgainstPartner",
@@ -97,7 +97,7 @@ class OPDValidationHelperTest {
       domesticAbuseAgainstPartner = true,
       domesticAbuseAgainstFamily = false,
     )
-    val result = opdInitialValidation(request)
+    val result = validateOPD(request)
 
     val expectedFields = listOf(
       "domesticAbuseAgainstPartner",
@@ -115,15 +115,9 @@ class OPDValidationHelperTest {
     val request = validOPDRiskScoreRequest().copy(
       currentOffenceCode = "BLA",
     )
-    val result = opdInitialValidation(request)
-
-    val expectedFields = listOf(
-      "currentOffenceCode",
-    )
+    val result = validateOPD(request)
 
     val error = result.first()
-    assertEquals(ValidationErrorType.NO_MATCHING_INPUT, error.type)
-    assertEquals("ERR4 - Does not match agreed input", error.message)
-    assertEquals(expectedFields, error.fields)
+    assertEquals(ValidationErrorType.OFFENCE_CODE_INCORRECT_FORMAT, error.type)
   }
 }

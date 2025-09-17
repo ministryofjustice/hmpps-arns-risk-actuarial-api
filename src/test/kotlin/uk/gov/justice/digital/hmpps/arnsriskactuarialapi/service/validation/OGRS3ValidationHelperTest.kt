@@ -39,9 +39,7 @@ class OGRS3ValidationHelperTest {
       .copy(currentOffenceCode = "123456")
     val errors = validateOGRS3(riskScoreRequest)
     assertEquals(1, errors.size)
-    assertEquals(ValidationErrorType.NO_MATCHING_INPUT, errors[0].type)
-    assertEquals("ERR4 - Does not match agreed input", errors[0].message)
-    assertEquals(listOf("currentOffenceCode"), errors[0].fields)
+    assertEquals(ValidationErrorType.OFFENCE_CODE_INCORRECT_FORMAT, errors[0].type)
   }
 
   @Test

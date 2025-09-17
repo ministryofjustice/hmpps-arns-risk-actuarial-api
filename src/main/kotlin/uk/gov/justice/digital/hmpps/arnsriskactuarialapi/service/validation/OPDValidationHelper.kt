@@ -3,33 +3,36 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
+import kotlin.collections.plusAssign
 
-fun opdInitialValidation(request: RiskScoreRequest): List<ValidationErrorResponse> = mutableListOf<ValidationErrorResponse>()
-  .let { getMissingOPDFieldsValidation(request, it) }
-  .let { validateDomesticAbuse(request, it) }
-  .let { getCurrentOffenceCodeValidation(request.currentOffenceCode, it) }
+fun validateOPD(request: RiskScoreRequest): List<ValidationErrorResponse> {
+  val errors = mutableListOf<ValidationErrorResponse>()
+  validateRequiredFields(request, errors)
+  validateDomesticAbuse(request, errors)
+  validateCurrentOffenceCode(request, errors)
+  return errors
+}
 
 private fun validateDomesticAbuse(
   request: RiskScoreRequest,
-  errors: List<ValidationErrorResponse>,
-): List<ValidationErrorResponse> {
+  errors: MutableList<ValidationErrorResponse>,
+) {
   val unexpectedFields = arrayListOf<String>()
-  when (request.evidenceOfDomesticAbuse) {
-    null, false -> {
-      if (request.domesticAbuseAgainstPartner != null) unexpectedFields.add(RiskScoreRequest::domesticAbuseAgainstPartner.name)
-      if (request.domesticAbuseAgainstFamily != null) unexpectedFields.add(RiskScoreRequest::domesticAbuseAgainstFamily.name)
-    }
-
-    true -> return errors
+  if (request.evidenceOfDomesticAbuse == null || !request.evidenceOfDomesticAbuse) {
+    if (request.domesticAbuseAgainstPartner != null) unexpectedFields.add(RiskScoreRequest::domesticAbuseAgainstPartner.name)
+    if (request.domesticAbuseAgainstFamily != null) unexpectedFields.add(RiskScoreRequest::domesticAbuseAgainstFamily.name)
   }
 
-  return addUnexpectedFields(unexpectedFields, errors)
+  if (unexpectedFields.isNotEmpty()) {
+    errors += ValidationErrorType.UNEXPECTED_VALUE.asErrorResponse(unexpectedFields)
+  }
 }
 
-private fun getMissingOPDFieldsValidation(
+private fun validateRequiredFields(
   request: RiskScoreRequest,
-  errors: List<ValidationErrorResponse>,
-): List<ValidationErrorResponse> {
+  errors: MutableList<ValidationErrorResponse>,
+) {
   val missingFields = arrayListOf<String>()
 
   missingFields.addIfNull(request, RiskScoreRequest::gender)
@@ -42,5 +45,8 @@ private fun getMissingOPDFieldsValidation(
     missingFields.addIfNull(request, RiskScoreRequest::domesticAbuseAgainstPartner)
     missingFields.addIfNull(request, RiskScoreRequest::domesticAbuseAgainstFamily)
   }
-  return addMissingFields(missingFields, errors)
+
+  if (missingFields.isNotEmpty()) {
+    errors += ValidationErrorType.MISSING_INPUT.asErrorResponse(missingFields)
+  }
 }
