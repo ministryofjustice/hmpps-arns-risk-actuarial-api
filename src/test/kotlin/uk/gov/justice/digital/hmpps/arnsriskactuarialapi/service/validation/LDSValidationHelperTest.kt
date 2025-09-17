@@ -9,28 +9,24 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.RiskScoreRequestTestCon
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.RiskScoreRequestTestConstants.NULL_REQUEST
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.LDSValidationHelper.Companion.ELIGIBLE_FIELDS
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.LDSValidationHelper.Companion.ERR_LESS_THAN_THREE_FIELDS
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.LDSValidationHelper.Companion.addEnoughFieldsPresent
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.LDSValidationHelper.Companion.ldsInitialValidation
 
 class LDSValidationHelperTest {
 
   @Test
   fun `initial validation no errors`() {
-    val result = ldsInitialValidation(FULL_LDS_REQUEST)
+    val result = validateLDS(FULL_LDS_REQUEST)
     assertTrue(result.isEmpty())
   }
 
   @Test
   fun `fields not eligible`() {
-    val result = ldsInitialValidation(NULL_REQUEST)
+    val result = validateLDS(NULL_REQUEST)
     assertEquals(
       listOf(
         ValidationErrorResponse(
-          type = ValidationErrorType.NOT_APPLICABLE,
-          message = ERR_LESS_THAN_THREE_FIELDS,
-          fields = ELIGIBLE_FIELDS,
+          type = ValidationErrorType.LDS_NOT_ENOUGH_FIELDS_PRESENT,
+          message = "At least three input fields must be provided",
+          fields = listOf("workRelatedSkills", "problemsWithReadingWritingNumeracy", "learningDifficulties", "professionalOrVocationalQualifications"),
         ),
       ),
       result,
@@ -39,7 +35,7 @@ class LDSValidationHelperTest {
 
   @Test
   fun `educational field not present but reading difficulty present`() {
-    val result = ldsInitialValidation(BAD_READING_DIFFICULTY_LDS_REQUEST)
+    val result = validateLDS(BAD_READING_DIFFICULTY_LDS_REQUEST)
     assertEquals(
       listOf(
         ValidationErrorResponse(
@@ -56,7 +52,7 @@ class LDSValidationHelperTest {
 
   @Test
   fun `fields not eligible but some present error`() {
-    val result = ldsInitialValidation(INELIGIBLE_LDS_REQUEST)
+    val result = validateLDS(INELIGIBLE_LDS_REQUEST)
     assertEquals(
       listOf(
         ValidationErrorResponse(
@@ -68,45 +64,9 @@ class LDSValidationHelperTest {
           ),
         ),
         ValidationErrorResponse(
-          type = ValidationErrorType.NOT_APPLICABLE,
-          message = ERR_LESS_THAN_THREE_FIELDS,
-          fields = ELIGIBLE_FIELDS,
-        ),
-      ),
-      result,
-    )
-  }
-
-  @Test
-  fun `fields eligible`() {
-    val result = mutableListOf<ValidationErrorResponse>().addEnoughFieldsPresent(FULL_LDS_REQUEST)
-    assertEquals(emptyList<ValidationErrorResponse>(), result)
-  }
-
-  @Test
-  fun `fields not eligible and none present`() {
-    val result = mutableListOf<ValidationErrorResponse>().addEnoughFieldsPresent(NULL_REQUEST)
-    assertEquals(
-      listOf(
-        ValidationErrorResponse(
-          type = ValidationErrorType.NOT_APPLICABLE,
-          message = ERR_LESS_THAN_THREE_FIELDS,
-          fields = ELIGIBLE_FIELDS,
-        ),
-      ),
-      result,
-    )
-  }
-
-  @Test
-  fun `fields not eligible but some present`() {
-    val result = listOf<ValidationErrorResponse>().addEnoughFieldsPresent(INELIGIBLE_LDS_REQUEST)
-    assertEquals(
-      listOf(
-        ValidationErrorResponse(
-          type = ValidationErrorType.NOT_APPLICABLE,
-          message = ERR_LESS_THAN_THREE_FIELDS,
-          fields = ELIGIBLE_FIELDS,
+          type = ValidationErrorType.LDS_NOT_ENOUGH_FIELDS_PRESENT,
+          message = "At least three input fields must be provided",
+          fields = listOf("workRelatedSkills", "problemsWithReadingWritingNumeracy", "learningDifficulties", "professionalOrVocationalQualifications"),
         ),
       ),
       result,

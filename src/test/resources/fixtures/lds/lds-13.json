@@ -12,8 +12,8 @@
   "response": {
     "ldsScore" : null,
     "validationError" : [ {
-      "type" : "NOT_APPLICABLE",
-      "message" : "ERR - Less than three fields set",
+      "type" : "LDS_NOT_ENOUGH_FIELDS_PRESENT",
+      "message" : "At least three input fields must be provided",
       "fields" : [ "workRelatedSkills", "problemsWithReadingWritingNumeracy", "learningDifficulties", "professionalOrVocationalQualifications" ]
     } ]
   }

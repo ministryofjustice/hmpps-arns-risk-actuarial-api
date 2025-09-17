@@ -4,52 +4,48 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 
-class LDSValidationHelper {
-  companion object {
+private val LDS_FIELDS_AT_LEAST_3_OF = listOf(
+  RiskScoreRequest::workRelatedSkills,
+  RiskScoreRequest::problemsWithReadingWritingNumeracy,
+  RiskScoreRequest::learningDifficulties,
+  RiskScoreRequest::professionalOrVocationalQualifications,
+)
 
-    const val ERR_LESS_THAN_THREE_FIELDS = "ERR - Less than three fields set"
-    val ELIGIBLE_FIELDS = listOf(
-      RiskScoreRequest::workRelatedSkills.name,
-      RiskScoreRequest::problemsWithReadingWritingNumeracy.name,
-      RiskScoreRequest::learningDifficulties.name,
-      RiskScoreRequest::professionalOrVocationalQualifications.name,
-    )
+fun validateLDS(request: RiskScoreRequest): List<ValidationErrorResponse> {
+  val errors = mutableListOf<ValidationErrorResponse>()
+  validateRequiredFields(request, errors)
+  validateAtLeastThreeFieldsPresent(request, errors)
+  return errors
+}
 
-    fun ldsInitialValidation(request: RiskScoreRequest): List<ValidationErrorResponse> {
-      val missingFields = getMissingLDSFieldsValidation(request)
-      return addMissingFields(missingFields, mutableListOf())
-        .addEnoughFieldsPresent(request)
-    }
-
-    fun getMissingLDSFieldsValidation(request: RiskScoreRequest): List<String> = if (request.problemsWithReadingWritingNumeracy == null) {
-      arrayListOf<String>()
-        .addProblemsWithReadingWritingNumeracySubfield(request.hasProblemsWithReading, RiskScoreRequest::hasProblemsWithReading.name)
-        .addProblemsWithReadingWritingNumeracySubfield(request.hasProblemsWithNumeracy, RiskScoreRequest::hasProblemsWithNumeracy.name)
-    } else {
-      emptyList()
-    }
-
-    private fun List<String>.addProblemsWithReadingWritingNumeracySubfield(
-      difficulties: Boolean?,
-      message: String,
-    ): List<String> = if (difficulties != null) {
-      this + "${RiskScoreRequest::problemsWithReadingWritingNumeracy.name} Field Not Present But $message Present"
-    } else {
-      this
-    }
-
-    fun List<ValidationErrorResponse>.addEnoughFieldsPresent(request: RiskScoreRequest): List<ValidationErrorResponse> = if (ELIGIBLE_FIELDS
-        .mapNotNull { field -> readInstanceProperty(request, field) as Any? }
-        .size < 3
-    ) {
-      this +
-        ValidationErrorResponse(
-          type = ValidationErrorType.NOT_APPLICABLE,
-          message = ERR_LESS_THAN_THREE_FIELDS,
-          fields = ELIGIBLE_FIELDS,
-        )
-    } else {
-      this
+private fun validateAtLeastThreeFieldsPresent(request: RiskScoreRequest, errors: MutableList<ValidationErrorResponse>) {
+  LDS_FIELDS_AT_LEAST_3_OF.mapNotNull {
+    if (it.get(request) == null) it.name else null
+  }.let {
+    if (it.size > 1) {
+      errors += ValidationErrorType.LDS_NOT_ENOUGH_FIELDS_PRESENT.asErrorResponse(LDS_FIELDS_AT_LEAST_3_OF.map { property -> property.name })
     }
   }
+}
+
+private fun validateRequiredFields(request: RiskScoreRequest, errors: MutableList<ValidationErrorResponse>) {
+  val missingFields = arrayListOf<String>()
+
+  if (request.problemsWithReadingWritingNumeracy == null) {
+    addProblemsWithReadingWritingNumeracySubfield(request.hasProblemsWithReading, RiskScoreRequest::hasProblemsWithReading.name)?.let { missingFields.add(it) }
+    addProblemsWithReadingWritingNumeracySubfield(request.hasProblemsWithNumeracy, RiskScoreRequest::hasProblemsWithNumeracy.name)?.let { missingFields.add(it) }
+  }
+
+  if (missingFields.isNotEmpty()) {
+    errors += ValidationErrorType.MISSING_INPUT.asErrorResponse(missingFields)
+  }
+}
+
+private fun addProblemsWithReadingWritingNumeracySubfield(
+  difficulties: Boolean?,
+  message: String,
+): String? = if (difficulties != null) {
+  "${RiskScoreRequest::problemsWithReadingWritingNumeracy.name} Field Not Present But $message Present"
+} else {
+  null
 }
