@@ -37,7 +37,7 @@ private fun validateRequiredFields(request: RiskScoreRequest, errors: MutableLis
   }
 
   if (missingFields.isNotEmpty()) {
-    errors += ValidationErrorType.MISSING_INPUT.asErrorResponse(missingFields)
+    errors += ValidationErrorType.MISSING_MANDATORY_INPUT.asErrorResponse(missingFields)
   }
 }
 

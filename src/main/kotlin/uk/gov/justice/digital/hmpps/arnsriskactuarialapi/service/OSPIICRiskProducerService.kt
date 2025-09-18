@@ -11,12 +11,17 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ospiic.OSPIICInputV
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ospiic.OSPIICObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OSPIICTransformationHelper.Companion.ospiicHierarchyBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OSPIICTransformationHelper.Companion.toOSPIICOutput
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.OSPIICValidationHelper.Companion.ospiicInitialValidation
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateOSPIIC
 
 @Service
 class OSPIICRiskProducerService : RiskScoreProducer {
 
-  override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext = context.apply { OSPIIC = getOSPIICOutput(request, ospiicInitialValidation(request)) }
+  override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext = context.apply {
+    OSPIIC = getOSPIICOutput(
+      request,
+      validateOSPIIC(request),
+    )
+  }
 
   companion object {
 

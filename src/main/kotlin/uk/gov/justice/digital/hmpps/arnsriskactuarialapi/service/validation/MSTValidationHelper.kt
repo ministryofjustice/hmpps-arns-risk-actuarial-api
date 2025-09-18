@@ -1,58 +1,46 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isValidMstAge
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isValidMstGender
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 
 const val MIN_MST_ANSWERS_SIZE = 9
 
-fun mstInitialValidation(request: RiskScoreRequest): List<ValidationErrorResponse> {
-  val errors = arrayListOf<ValidationErrorResponse>()
+val MST_REQUIRED_FIELDS = listOf(
+  RiskScoreRequest::gender,
+  RiskScoreRequest::dateOfBirth,
+)
 
-  val missingFields = arrayListOf<String>()
+val MST_MINIMUM_ANSWERS = listOf(
+  RiskScoreRequest::hasPeerGroupInfluences,
+  RiskScoreRequest::influenceFromCriminalAssociates,
+  RiskScoreRequest::recklessnessAndRiskTakingBehaviour,
+  RiskScoreRequest::difficultiesCoping,
+  RiskScoreRequest::attitudesTowardsSelf,
+  RiskScoreRequest::impulsivityProblems,
+  RiskScoreRequest::temperControl,
+  RiskScoreRequest::problemSolvingSkills,
+  RiskScoreRequest::awarenessOfConsequences,
+  RiskScoreRequest::understandsOtherPeoplesViews,
+)
 
-  missingFields.addIfNull(request, RiskScoreRequest::gender)
-  missingFields.addIfNull(request, RiskScoreRequest::dateOfBirth)
-
-  val answersCount = listOfNotNull(
-    request.hasPeerGroupInfluences,
-    request.influenceFromCriminalAssociates,
-    request.recklessnessAndRiskTakingBehaviour,
-    request.difficultiesCoping,
-    request.attitudesTowardsSelf,
-    request.impulsivityProblems,
-    request.temperControl,
-    request.problemSolvingSkills,
-    request.awarenessOfConsequences,
-    request.understandsOtherPeoplesViews,
-  ).size
-
-  if (answersCount < MIN_MST_ANSWERS_SIZE) {
-    missingFields.addIfNull(request, RiskScoreRequest::hasPeerGroupInfluences)
-    missingFields.addIfNull(request, RiskScoreRequest::influenceFromCriminalAssociates)
-    missingFields.addIfNull(request, RiskScoreRequest::recklessnessAndRiskTakingBehaviour)
-    missingFields.addIfNull(request, RiskScoreRequest::difficultiesCoping)
-    missingFields.addIfNull(request, RiskScoreRequest::attitudesTowardsSelf)
-    missingFields.addIfNull(request, RiskScoreRequest::impulsivityProblems)
-    missingFields.addIfNull(request, RiskScoreRequest::temperControl)
-    missingFields.addIfNull(request, RiskScoreRequest::problemSolvingSkills)
-    missingFields.addIfNull(request, RiskScoreRequest::awarenessOfConsequences)
-    missingFields.addIfNull(request, RiskScoreRequest::understandsOtherPeoplesViews)
-  }
-  return addMissingFields(missingFields, errors)
+fun validateMST(request: RiskScoreRequest): List<ValidationErrorResponse> {
+  val errors = mutableListOf<ValidationErrorResponse>()
+  validateRequiredFields(request, errors)
+  return errors
 }
 
-fun genderAndAgeValidation(
-  gender: Gender,
-  age: Int,
-  errors: List<ValidationErrorResponse>,
-): List<ValidationErrorResponse> {
-  val criteriaFields = arrayListOf<String>()
+private fun validateRequiredFields(request: RiskScoreRequest, errors: MutableList<ValidationErrorResponse>) {
+  val missingFields = arrayListOf<String>()
 
-  if (!isValidMstGender(gender)) criteriaFields.add(RiskScoreRequest::gender.name)
-  if (!isValidMstAge(age)) criteriaFields.add(RiskScoreRequest::dateOfBirth.name)
+  MST_REQUIRED_FIELDS.forEach { missingFields.addIfNull(request, it) }
 
-  return addMissingCriteriaValidation(criteriaFields, errors)
+  val actualNonNullAnswers = MST_MINIMUM_ANSWERS.mapNotNull { wib -> wib.get(request) }.size
+  if (actualNonNullAnswers < MIN_MST_ANSWERS_SIZE) {
+    MST_MINIMUM_ANSWERS.forEach { missingFields.addIfNull(request, it) }
+  }
+
+  if (missingFields.isNotEmpty()) {
+    errors += ValidationErrorType.MISSING_MANDATORY_INPUT.asErrorResponse(missingFields)
+  }
 }

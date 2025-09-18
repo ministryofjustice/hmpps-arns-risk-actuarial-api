@@ -2,7 +2,6 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getDomesticViolencePerpetrator
 
 val SNSV_STATIC_REQUIRED_PROPERTIES = listOf(
@@ -32,19 +31,9 @@ val SNSV_DYNAMIC_ADDITIONAL_REQUIRED_PROPERTIES = listOf(
 
 fun validateSNSV(request: RiskScoreRequest): List<ValidationErrorResponse> {
   val errors = mutableListOf<ValidationErrorResponse>()
-  validateRequiredFields(request, errors)
+  validateRequiredFields(request, errors, SNSV_STATIC_REQUIRED_PROPERTIES)
   validateCurrentOffenceCode(request, errors)
   return errors
-}
-
-private fun validateRequiredFields(request: RiskScoreRequest, errors: MutableList<ValidationErrorResponse>) {
-  val missingFields = arrayListOf<String>()
-
-  SNSV_STATIC_REQUIRED_PROPERTIES.forEach { field -> missingFields.addIfNull(request, field) }
-
-  if (missingFields.isNotEmpty()) {
-    errors += ValidationErrorType.MISSING_INPUT.asErrorResponse(missingFields)
-  }
 }
 
 fun isValidDynamicSnsv(request: RiskScoreRequest): Boolean = getNullValuesFromProperties(

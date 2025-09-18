@@ -10,7 +10,7 @@ class PNIValidationHelperTest {
 
   @Test
   fun `opdInitialValidation no errors`() {
-    val result = pniInitialValidation(validPNIRiskScoreRequest())
+    val result = validatePNI(validPNIRiskScoreRequest())
     assertTrue(result.isEmpty())
   }
 
@@ -20,15 +20,15 @@ class PNIValidationHelperTest {
       gender = null,
       supervisionStatus = null,
     )
-    val result = pniInitialValidation(request)
+    val result = validatePNI(request)
 
     val expectedFields = listOf(
       "supervisionStatus",
     )
 
     val error = result.first()
-    assertEquals(ValidationErrorType.MISSING_INPUT, error.type)
-    assertEquals("ERR5 - Field is Null", error.message)
+    assertEquals(ValidationErrorType.MISSING_MANDATORY_INPUT, error.type)
+    assertEquals("Mandatory input field(s) missing", error.message)
     assertEquals(expectedFields, error.fields)
   }
 }

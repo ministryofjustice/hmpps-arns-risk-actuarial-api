@@ -21,7 +21,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getTotalNonContactSexualOffencesWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getTotalNumberOfSanctionsForAllOffencesWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.addMissingCriteriaValidation
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.ospdcInitialValidation
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateOSPDC
 
 const val FIXED_RSR_CONTRIBUTION = 0.00383142
 
@@ -29,7 +29,7 @@ const val FIXED_RSR_CONTRIBUTION = 0.00383142
 class OSPDCRiskProducerService : RiskScoreProducer {
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
-    val errors = ospdcInitialValidation(request)
+    val errors = validateOSPDC(request)
 
     if (errors.isNotEmpty()) {
       return context.apply {

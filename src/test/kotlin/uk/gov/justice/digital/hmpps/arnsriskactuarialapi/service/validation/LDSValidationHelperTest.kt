@@ -39,8 +39,8 @@ class LDSValidationHelperTest {
     assertEquals(
       listOf(
         ValidationErrorResponse(
-          type = ValidationErrorType.MISSING_INPUT,
-          message = "ERR5 - Field is Null",
+          type = ValidationErrorType.MISSING_MANDATORY_INPUT,
+          message = "Mandatory input field(s) missing",
           fields = listOf(
             "problemsWithReadingWritingNumeracy Field Not Present But hasProblemsWithReading Present",
           ),
@@ -56,8 +56,8 @@ class LDSValidationHelperTest {
     assertEquals(
       listOf(
         ValidationErrorResponse(
-          type = ValidationErrorType.MISSING_INPUT,
-          message = "ERR5 - Field is Null",
+          type = ValidationErrorType.MISSING_MANDATORY_INPUT,
+          message = "Mandatory input field(s) missing",
           fields = listOf(
             "problemsWithReadingWritingNumeracy Field Not Present But hasProblemsWithReading Present",
             "problemsWithReadingWritingNumeracy Field Not Present But hasProblemsWithNumeracy Present",

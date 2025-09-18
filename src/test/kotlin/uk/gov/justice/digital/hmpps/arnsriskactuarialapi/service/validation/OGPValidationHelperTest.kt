@@ -10,7 +10,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3Object
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.OGPValidationHelper.Companion.ogpInitialValidation
 
 class OGPValidationHelperTest {
 
@@ -27,19 +26,19 @@ class OGPValidationHelperTest {
 
   @Test
   fun `initial validation no errors`() {
-    val result = ogpInitialValidation(FULL_OGP_REQUEST, CONTEXT_WITH_OSGR3_TWO_YEAR)
+    val result = validateOGP(FULL_OGP_REQUEST, CONTEXT_WITH_OSGR3_TWO_YEAR)
     assertTrue(result.isEmpty())
   }
 
   @Test
   fun `initial validation with no OSGR3 Two Year present`() {
-    val result = ogpInitialValidation(FULL_OGP_REQUEST, CONTEXT_WITH_NO_OSGR3_TWO_YEAR)
+    val result = validateOGP(FULL_OGP_REQUEST, CONTEXT_WITH_NO_OSGR3_TWO_YEAR)
     assertEquals(
       result,
       listOf(
         ValidationErrorResponse(
-          type = ValidationErrorType.MISSING_INPUT,
-          message = "ERR5 - Field is Null",
+          type = ValidationErrorType.MISSING_MANDATORY_INPUT,
+          message = "Mandatory input field(s) missing",
           fields = listOf("ogrs3TwoYear"),
         ),
       ),
@@ -48,13 +47,13 @@ class OGPValidationHelperTest {
 
   @Test
   fun `initial validation with OGP_REQUEST_39 and OSGR3 Two Year present`() {
-    val result = ogpInitialValidation(OGP_REQUEST_39, CONTEXT_WITH_OSGR3_TWO_YEAR)
+    val result = validateOGP(OGP_REQUEST_39, CONTEXT_WITH_OSGR3_TWO_YEAR)
     assertEquals(
       result,
       listOf(
         ValidationErrorResponse(
-          type = ValidationErrorType.MISSING_INPUT,
-          message = "ERR5 - Field is Null",
+          type = ValidationErrorType.MISSING_MANDATORY_INPUT,
+          message = "Mandatory input field(s) missing",
           fields = listOf("regularOffendingActivities", "proCriminalAttitudes"),
         ),
       ),
@@ -63,13 +62,13 @@ class OGPValidationHelperTest {
 
   @Test
   fun `initial validation with OGP_REQUEST_39 and no OSGR3 Two Year present`() {
-    val result = ogpInitialValidation(OGP_REQUEST_39, CONTEXT_WITH_NO_OSGR3_TWO_YEAR)
+    val result = validateOGP(OGP_REQUEST_39, CONTEXT_WITH_NO_OSGR3_TWO_YEAR)
     assertEquals(
       result,
       listOf(
         ValidationErrorResponse(
-          type = ValidationErrorType.MISSING_INPUT,
-          message = "ERR5 - Field is Null",
+          type = ValidationErrorType.MISSING_MANDATORY_INPUT,
+          message = "Mandatory input field(s) missing",
           fields = listOf("regularOffendingActivities", "proCriminalAttitudes", "ogrs3TwoYear"),
         ),
       ),

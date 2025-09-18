@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
@@ -12,8 +11,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validMSTRiskScoreRequest
 
 class MSTValidationHelperTest {
-
-  private val errors = arrayListOf<ValidationErrorResponse>()
 
   @Test
   fun `mstInitialValidation should return list of ValidationErrorResponse with MISSING_INPUT validationError`() {
@@ -35,12 +32,12 @@ class MSTValidationHelperTest {
     )
 
     // When
-    val result = mstInitialValidation(input)
+    val result = validateMST(input)
 
     // Then
     val expectedError = ValidationErrorResponse(
-      ValidationErrorType.MISSING_INPUT,
-      "ERR5 - Field is Null",
+      ValidationErrorType.MISSING_MANDATORY_INPUT,
+      "Mandatory input field(s) missing",
       listOf(
         "gender",
         "dateOfBirth",
@@ -65,7 +62,7 @@ class MSTValidationHelperTest {
   @Test
   fun `mstInitialValidation should return empty list of ValidationErrorResponse`() {
     // When
-    val result = mstInitialValidation(validMSTRiskScoreRequest())
+    val result = validateMST(validMSTRiskScoreRequest())
 
     // Then
     assertNotNull(result)
@@ -75,7 +72,7 @@ class MSTValidationHelperTest {
   @Test
   fun `mstInitialValidation should return empty list of ValidationErrorResponse when only 1 null answer`() {
     // When
-    val result = mstInitialValidation(
+    val result = validateMST(
       validMSTRiskScoreRequest().copy(
         difficultiesCoping = null,
       ),
@@ -89,15 +86,15 @@ class MSTValidationHelperTest {
   @Test
   fun `mstInitialValidation should return a list of ValidationErrorResponse when 2 null answer`() {
     // When
-    val result = mstInitialValidation(
+    val result = validateMST(
       validMSTRiskScoreRequest().copy(
         difficultiesCoping = null,
         temperControl = null,
       ),
     )
     val expectedError = ValidationErrorResponse(
-      ValidationErrorType.MISSING_INPUT,
-      "ERR5 - Field is Null",
+      ValidationErrorType.MISSING_MANDATORY_INPUT,
+      "Mandatory input field(s) missing",
       listOf(
         "difficultiesCoping",
         "temperControl",
@@ -107,60 +104,5 @@ class MSTValidationHelperTest {
     assertNotNull(result)
     assertTrue(result.size == 1)
     assertEquals(expectedError, result.first())
-  }
-
-  @Test
-  fun `genderAndAgeValidation should return NOT_APPLICABLE validationError when out of age range`() {
-    // When
-    val result = genderAndAgeValidation(Gender.MALE, 26, errors)
-
-    // Then
-    val expectedError = ValidationErrorResponse(
-      ValidationErrorType.NOT_APPLICABLE,
-      "ERR1 - Does not meet eligibility criteria",
-      listOf("dateOfBirth"),
-    )
-
-    assertEquals(expectedError, result.first())
-  }
-
-  @Test
-  fun `genderAndAgeValidation should return NOT_APPLICABLE validationError when FEMALE`() {
-    // When
-    val result = genderAndAgeValidation(Gender.FEMALE, 24, errors)
-
-    // Then
-    val expectedError = ValidationErrorResponse(
-      ValidationErrorType.NOT_APPLICABLE,
-      "ERR1 - Does not meet eligibility criteria",
-      listOf("gender"),
-    )
-
-    assertEquals(expectedError, result.first())
-  }
-
-  @Test
-  fun `genderAndAgeValidation should return NOT_APPLICABLE validationError when FEMALE and out of age range`() {
-    // When
-    val result = genderAndAgeValidation(Gender.FEMALE, 26, errors)
-
-    // Then
-    val expectedError = ValidationErrorResponse(
-      ValidationErrorType.NOT_APPLICABLE,
-      "ERR1 - Does not meet eligibility criteria",
-      listOf("gender", "dateOfBirth"),
-    )
-
-    assertEquals(expectedError, result.first())
-  }
-
-  @Test
-  fun `genderAndAgeValidation should return empty list of ValidationErrorResponse`() {
-    // When
-    val result = genderAndAgeValidation(Gender.MALE, 25, errors)
-
-    // Then
-    assertNotNull(result)
-    assertTrue(result.isEmpty())
   }
 }

@@ -3,11 +3,20 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
-import java.util.Objects.isNull
 import kotlin.reflect.KProperty1
 
 fun ArrayList<String>.addIfNull(request: RiskScoreRequest, prop: KProperty1<RiskScoreRequest, Any?>) {
   if (prop.get(request) == null) this.add(prop.name)
+}
+
+fun validateRequiredFields(request: RiskScoreRequest, errors: MutableList<ValidationErrorResponse>, requiredFields: List<KProperty1<RiskScoreRequest, Any?>>) {
+  val missingFields = arrayListOf<String>()
+
+  requiredFields.forEach { missingFields.addIfNull(request, it) }
+
+  if (missingFields.isNotEmpty()) {
+    errors += ValidationErrorType.MISSING_MANDATORY_INPUT.asErrorResponse(missingFields)
+  }
 }
 
 fun validateTotalNumberOfSanctionsForAllOffences(request: RiskScoreRequest, errors: MutableList<ValidationErrorResponse>) {
@@ -57,26 +66,4 @@ fun getNullValuesFromProperties(
   properties: List<KProperty1<RiskScoreRequest, Any?>>,
 ): List<String> = properties.fold(arrayListOf()) { acc, property ->
   acc.apply { property.get(request) ?: acc.add(property.name) }
-}
-
-fun getMissingPropertiesErrorStrings(
-  request: RiskScoreRequest,
-  properties: List<String>,
-): List<String> = properties
-  .fold(arrayListOf()) { acc, propertyName ->
-    acc.apply {
-      val value = readInstanceProperty<Object>(request, propertyName)
-      if (isNull(value)) {
-        acc.add(propertyName)
-      }
-    }
-  }
-
-@Suppress("UNCHECKED_CAST")
-fun <R> readInstanceProperty(instance: Any, propertyName: String): R {
-  val property = instance::class.members
-    // don't cast here to <Any, R>, it would succeed silently
-    .first { it.name == propertyName } as KProperty1<Any, *>
-  // force a invalid cast exception if incorrect type here
-  return property.get(instance) as R
 }

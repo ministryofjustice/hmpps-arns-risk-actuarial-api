@@ -4,7 +4,15 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
-import kotlin.collections.plusAssign
+import kotlin.reflect.KProperty1
+
+val OPD_REQUIRED_FIELDS: List<KProperty1<RiskScoreRequest, Any?>> = listOf(
+  RiskScoreRequest::gender,
+  RiskScoreRequest::overallRiskForAssessment,
+  RiskScoreRequest::highestRiskLevelOverAllAssessments,
+  RiskScoreRequest::currentOffenceCode,
+  RiskScoreRequest::hasCustodialSentence,
+)
 
 fun validateOPD(request: RiskScoreRequest): List<ValidationErrorResponse> {
   val errors = mutableListOf<ValidationErrorResponse>()
@@ -34,12 +42,7 @@ private fun validateRequiredFields(
   errors: MutableList<ValidationErrorResponse>,
 ) {
   val missingFields = arrayListOf<String>()
-
-  missingFields.addIfNull(request, RiskScoreRequest::gender)
-  missingFields.addIfNull(request, RiskScoreRequest::overallRiskForAssessment)
-  missingFields.addIfNull(request, RiskScoreRequest::highestRiskLevelOverAllAssessments)
-  missingFields.addIfNull(request, RiskScoreRequest::currentOffenceCode)
-  missingFields.addIfNull(request, RiskScoreRequest::hasCustodialSentence)
+  OPD_REQUIRED_FIELDS.forEach { missingFields.addIfNull(request, it) }
   if (request.isEligibleForMappa == null && request.gender == Gender.FEMALE) missingFields.add(RiskScoreRequest::isEligibleForMappa.name)
   if (request.evidenceOfDomesticAbuse == true) {
     missingFields.addIfNull(request, RiskScoreRequest::domesticAbuseAgainstPartner)
@@ -47,6 +50,6 @@ private fun validateRequiredFields(
   }
 
   if (missingFields.isNotEmpty()) {
-    errors += ValidationErrorType.MISSING_INPUT.asErrorResponse(missingFields)
+    errors += ValidationErrorType.MISSING_MANDATORY_INPUT.asErrorResponse(missingFields)
   }
 }

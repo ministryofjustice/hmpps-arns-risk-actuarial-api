@@ -25,7 +25,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isRsrMedium
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.overallNeedsGroupingCalculation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.addMissingFields
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.pniInitialValidation
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validatePNI
 
 @Service
 class PNIRiskProducerService : RiskScoreProducer {
@@ -34,7 +34,7 @@ class PNIRiskProducerService : RiskScoreProducer {
     request: RiskScoreRequest,
     context: RiskScoreContext,
   ): RiskScoreContext {
-    var errors = pniInitialValidation(request)
+    var errors = validatePNI(request)
 
     if (errors.isNotEmpty()) {
       return context.apply { PNI = PNIObject(ProgrammeNeedIdentifier.OMISSION, errors) }

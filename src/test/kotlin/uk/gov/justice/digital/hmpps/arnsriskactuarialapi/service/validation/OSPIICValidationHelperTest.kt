@@ -8,26 +8,25 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.RiskScoreRequestTestCon
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.OSPIICValidationHelper.Companion.ospiicInitialValidation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validOSPDCRiskScoreRequest
 
 class OSPIICValidationHelperTest {
 
   @Test
   fun `initial validation no errors`() {
-    val result = ospiicInitialValidation(FULL_OSPIIC_REQUEST)
+    val result = validateOSPIIC(FULL_OSPIIC_REQUEST)
     println(result)
     assertTrue(result.isEmpty())
   }
 
   @Test
   fun `initial validation with no gender`() {
-    val result = ospiicInitialValidation(FULL_OSPIIC_REQUEST.copy(gender = null))
+    val result = validateOSPIIC(FULL_OSPIIC_REQUEST.copy(gender = null))
     assertEquals(
       listOf(
         ValidationErrorResponse(
-          type = ValidationErrorType.MISSING_INPUT,
-          message = "ERR5 - Field is Null",
+          type = ValidationErrorType.MISSING_MANDATORY_INPUT,
+          message = "Mandatory input field(s) missing",
           fields = listOf("gender"),
         ),
       ),
@@ -37,18 +36,18 @@ class OSPIICValidationHelperTest {
 
   @Test
   fun `initial validation for female`() {
-    val result = ospiicInitialValidation(NULL_REQUEST.copy(gender = Gender.FEMALE))
+    val result = validateOSPIIC(NULL_REQUEST.copy(gender = Gender.FEMALE))
     assertTrue(result.isEmpty())
   }
 
   @Test
   fun `initial validation for male`() {
-    val result = ospiicInitialValidation(NULL_REQUEST.copy(gender = Gender.MALE))
+    val result = validateOSPIIC(NULL_REQUEST.copy(gender = Gender.MALE))
     assertEquals(
       listOf(
         ValidationErrorResponse(
-          type = ValidationErrorType.MISSING_INPUT,
-          message = "ERR5 - Field is Null",
+          type = ValidationErrorType.MISSING_MANDATORY_INPUT,
+          message = "Mandatory input field(s) missing",
           fields = listOf(
             "totalContactAdultSexualSanctions",
             "totalContactChildSexualSanctions",
@@ -78,7 +77,7 @@ class OSPIICValidationHelperTest {
       "totalNonContactSexualOffences",
     )
 
-    val result = ospiicInitialValidation(request)
+    val result = validateOSPIIC(request)
 
     val error = result.first()
     assertEquals(ValidationErrorType.UNEXPECTED_VALUE, error.type)

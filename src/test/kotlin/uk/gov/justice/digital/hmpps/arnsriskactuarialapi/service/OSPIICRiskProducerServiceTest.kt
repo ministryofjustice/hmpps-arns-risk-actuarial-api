@@ -68,8 +68,8 @@ class OSPIICRiskProducerServiceTest {
       null,
       validationError = listOf(
         ValidationErrorResponse(
-          type = ValidationErrorType.MISSING_INPUT,
-          message = "ERR5 - Field is Null",
+          type = ValidationErrorType.MISSING_MANDATORY_INPUT,
+          message = "Mandatory input field(s) missing",
           fields = listOf("gender"),
         ),
       ),
@@ -128,8 +128,8 @@ class OSPIICRiskProducerServiceTest {
       null,
       validationError = listOf(
         ValidationErrorResponse(
-          type = ValidationErrorType.MISSING_INPUT,
-          message = "ERR5 - Field is Null",
+          type = ValidationErrorType.MISSING_MANDATORY_INPUT,
+          message = "Mandatory input field(s) missing",
           fields = listOf(
             "totalContactAdultSexualSanctions",
             "totalContactChildSexualSanctions",

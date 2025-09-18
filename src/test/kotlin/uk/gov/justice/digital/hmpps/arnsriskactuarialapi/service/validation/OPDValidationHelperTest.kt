@@ -37,8 +37,8 @@ class OPDValidationHelperTest {
     )
 
     val error = result.first()
-    assertEquals(ValidationErrorType.MISSING_INPUT, error.type)
-    assertEquals("ERR5 - Field is Null", error.message)
+    assertEquals(ValidationErrorType.MISSING_MANDATORY_INPUT, error.type)
+    assertEquals("Mandatory input field(s) missing", error.message)
     assertEquals(expectedFields, error.fields)
   }
 
@@ -65,8 +65,8 @@ class OPDValidationHelperTest {
     )
 
     val error = result.first()
-    assertEquals(ValidationErrorType.MISSING_INPUT, error.type)
-    assertEquals("ERR5 - Field is Null", error.message)
+    assertEquals(ValidationErrorType.MISSING_MANDATORY_INPUT, error.type)
+    assertEquals("Mandatory input field(s) missing", error.message)
     assertEquals(expectedFields, error.fields)
   }
 
@@ -85,8 +85,8 @@ class OPDValidationHelperTest {
     )
 
     val error = result.first()
-    assertEquals(ValidationErrorType.MISSING_INPUT, error.type)
-    assertEquals("ERR5 - Field is Null", error.message)
+    assertEquals(ValidationErrorType.MISSING_MANDATORY_INPUT, error.type)
+    assertEquals("Mandatory input field(s) missing", error.message)
     assertEquals(expectedFields, error.fields)
   }
 
