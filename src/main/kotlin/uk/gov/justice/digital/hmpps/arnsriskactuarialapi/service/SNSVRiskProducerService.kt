@@ -62,17 +62,20 @@ class SNSVRiskProducerService : RiskScoreProducer {
     scoreType: ScoreType,
     request: RiskScoreRequest,
   ): SNSVObject = runCatching {
-    val validationErrors = snsvDynamicValidation(request)
-
+    val errors = mutableListOf<ValidationErrorResponse>()
+    val weightingSNSV = retrieveWeightingSNSV(scoreType, request)
+    val weightingSNSVVATP = retrieveWeightingSNSVVATP(scoreType, request)
+    if (weightingSNSV == null || weightingSNSVVATP == null) {
+      errors += ValidationErrorType.OFFENCE_CODE_MAPPING_NOT_FOUND.asErrorResponse(listOf(RiskScoreRequest::currentOffenceCode.name))
+    }
+    if (errors.isNotEmpty()) {
+      return SNSVObject(null, scoreType, errors)
+    }
+    snsvDynamicValidation(request, errors)
     when (scoreType) {
-      ScoreType.STATIC -> {
-        snvsStaticSum(request.toSNSVStaticRequestValidated())
-      }
-
-      ScoreType.DYNAMIC -> {
-        snvsDynamicSum(request.toSNSVDynamicRequestValidated())
-      }
-    }.let { SNSVObject(it.sigmoid().roundToNDecimals(16), scoreType, validationErrors) }
+      ScoreType.STATIC -> snvsStaticSum(request.toSNSVStaticRequestValidated(weightingSNSVVATP!!, weightingSNSV!!))
+      ScoreType.DYNAMIC -> snvsDynamicSum(request.toSNSVDynamicRequestValidated(weightingSNSVVATP!!, weightingSNSV!!))
+    }.let { SNSVObject(it.sigmoid().roundToNDecimals(16), scoreType, errors) }
   }.getOrElse {
     SNSVObject(
       null,
@@ -87,13 +90,23 @@ class SNSVRiskProducerService : RiskScoreProducer {
     )
   }
 
+  private fun retrieveWeightingSNSV(scoreType: ScoreType, request: RiskScoreRequest): Double? = when (scoreType) {
+    ScoreType.STATIC -> offenceGroupParametersService.getSNSVStaticWeighting(request.currentOffenceCode!!)
+    ScoreType.DYNAMIC -> offenceGroupParametersService.getSNSVDynamicWeighting(request.currentOffenceCode!!)
+  }
+
+  private fun retrieveWeightingSNSVVATP(scoreType: ScoreType, request: RiskScoreRequest): Double? = when (scoreType) {
+    ScoreType.STATIC -> offenceGroupParametersService.getSNSVVATPStaticWeighting(request.currentOffenceCode!!)
+    ScoreType.DYNAMIC -> offenceGroupParametersService.getSNSVVATPDynamicWeighting(request.currentOffenceCode!!)
+  }
+
   fun isSNSVDynamic(request: RiskScoreRequest): ScoreType = if (isValidDynamicSnsv(request)) {
     ScoreType.DYNAMIC
   } else {
     ScoreType.STATIC
   }
 
-  private fun RiskScoreRequest.toSNSVDynamicRequestValidated(): SNSVDynamicRequestValidated = SNSVDynamicRequestValidated(
+  private fun RiskScoreRequest.toSNSVDynamicRequestValidated(weightingSNSVVATP: Double, weightingSNSV: Double): SNSVDynamicRequestValidated = SNSVDynamicRequestValidated(
     this.gender!!,
     this.dateOfBirth!!,
     this.assessmentDate,
@@ -115,9 +128,11 @@ class SNSVRiskProducerService : RiskScoreProducer {
     this.proCriminalAttitudes!!,
     getDomesticViolencePerpetrator(this.evidenceOfDomesticAbuse, this.domesticAbuseAgainstPartner)!!,
     this.previousConvictions!!,
+    weightingSNSVVATP,
+    weightingSNSV,
   )
 
-  private fun RiskScoreRequest.toSNSVStaticRequestValidated() = SNSVStaticRequestValidated(
+  private fun RiskScoreRequest.toSNSVStaticRequestValidated(weightingSNSVVATP: Double, weightingSNSV: Double) = SNSVStaticRequestValidated(
     this.gender!!,
     this.dateOfBirth!!,
     this.assessmentDate,
@@ -128,13 +143,15 @@ class SNSVRiskProducerService : RiskScoreProducer {
     this.supervisionStatus!!,
     this.dateAtStartOfFollowup!!,
     this.totalNumberOfViolentSanctions!!.toInt(),
+    weightingSNSVVATP,
+    weightingSNSV,
   )
 
   private fun snvsStaticSum(request: SNSVStaticRequestValidated): Double = listOf(
     get2YearInterceptWeight(false),
     getGenderWeight(request.gender, false),
     getAgeGenderPolynomialWeight(request.gender, request.dateOfBirth, request.dateAtStartOfFollowup, false),
-    offenceGroupParametersService.getSNSVStaticWeighting(request.currentOffenceCode),
+    request.snsvWeighting,
     getNumberOfSanctionWeight(request.totalNumberOfSanctionsForAllOffences, false),
     getTotalSanctionWeight(request.totalNumberOfSanctionsForAllOffences, false),
 
@@ -169,14 +186,14 @@ class SNSVRiskProducerService : RiskScoreProducer {
       request.totalNumberOfViolentSanctions,
       false,
     ), //
-    offenceGroupParametersService.getSNSVVATPStaticWeighting(request.currentOffenceCode),
+    request.snsvvatpWeighting,
   ).sum()
 
   private fun snvsDynamicSum(request: SNSVDynamicRequestValidated): Double = listOf(
     get2YearInterceptWeight(true),
     getGenderWeight(request.gender, true),
     getAgeGenderPolynomialWeight(request.gender, request.dateOfBirth, request.dateAtStartOfFollowup, true),
-    offenceGroupParametersService.getSNSVDynamicWeighting(request.currentOffenceCode),
+    request.snsvWeighting,
     getNumberOfSanctionWeight(request.totalNumberOfSanctionsForAllOffences, true),
     getTotalSanctionWeight(request.totalNumberOfSanctionsForAllOffences, true),
     getSecondSanctionCasesOnlyWeight(
@@ -210,7 +227,7 @@ class SNSVRiskProducerService : RiskScoreProducer {
       request.totalNumberOfViolentSanctions,
       true,
     ),
-    offenceGroupParametersService.getSNSVVATPDynamicWeighting(request.currentOffenceCode),
+    request.snsvvatpWeighting,
     // Dynamic Additions
     didOffenceInvolveCarryingOrUsingWeaponWeight(request.didOffenceInvolveCarryingOrUsingWeapon),
     suitabilityOfAccommodationWeight(request.suitabilityOfAccommodation),

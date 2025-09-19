@@ -77,6 +77,35 @@ class OGRS3RiskProducerServiceTest {
   }
 
   @Test
+  fun `should return validation error when no offence code mapping is found`() {
+    // Given
+    whenever(offenceGroupParametersService.getOGRS3Weighting("02700")).thenReturn(null)
+
+    // When
+    val result = ogrs3RiskProducerService.getRiskScore(
+      validRiskScoreRequest().copy(
+        dateOfBirth = LocalDate.of(1965, 12, 7),
+        dateOfCurrentConviction = LocalDate.of(2025, 5, 13),
+        dateAtStartOfFollowup = LocalDate.of(2026, 12, 6),
+        totalNumberOfSanctionsForAllOffences = Integer.valueOf(2) as Integer?,
+        ageAtFirstSanction = Integer.valueOf(47) as Integer?,
+        currentOffenceCode = "02700",
+      ),
+      emptyContext(),
+    )
+
+    // Then
+    assertNotNull(result)
+    assertNull(result.OGRS3?.ogrs3OneYear)
+    assertNull(result.OGRS3?.ogrs3TwoYear)
+    assertNull(result.OGRS3?.band)
+    assertEquals(1, result.OGRS3?.validationError?.size)
+    assertEquals(ValidationErrorType.OFFENCE_CODE_MAPPING_NOT_FOUND, result.OGRS3?.validationError?.get(0)?.type)
+    assertEquals("No offence code to actuarial weighting mapping found for offence code", result.OGRS3?.validationError?.get(0)?.message)
+    assertEquals(listOf("currentOffenceCode"), result.OGRS3?.validationError?.get(0)?.fields)
+  }
+
+  @Test
   fun `should return valid OGRS3Object for valid input ACT-62 scenario 1`() {
     // Given
     whenever(offenceGroupParametersService.getOGRS3Weighting("02700")).thenReturn(0.7606)

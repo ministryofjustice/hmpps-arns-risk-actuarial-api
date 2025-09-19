@@ -81,6 +81,23 @@ class SNSVRiskProducerServiceTest {
   }
 
   @Test
+  fun `getRiskScore should return validation error SNSVObject with ScoreType STATIC and no offence code mapping`() {
+    whenever(offenceGroupParametersService.getSNSVStaticWeighting("02700")).thenReturn(null)
+    whenever(offenceGroupParametersService.getSNSVVATPStaticWeighting("02700")).thenReturn(null)
+
+    val result = service.getRiskScore(
+      validSNSVStaticRiskScoreRequest().copy(supervisionStatus = SupervisionStatus.COMMUNITY),
+      emptyContext(),
+    )
+
+    assertNotNull(result)
+    assertEquals(1, result.SNSV!!.validationError?.size)
+    assertEquals(ValidationErrorType.OFFENCE_CODE_MAPPING_NOT_FOUND, result.SNSV!!.validationError?.first()?.type)
+    assertEquals("No offence code to actuarial weighting mapping found for offence code", result.SNSV!!.validationError?.first()?.message)
+    assertEquals(listOf("currentOffenceCode"), result.SNSV!!.validationError?.first()?.fields)
+  }
+
+  @Test
   fun `getRiskScore should default to ScoreType STATIC with invalid domesticViolencePerpetrator params`() {
     val result = service.getRiskScore(
       validSNSVDynamicRiskScoreRequest().copy(

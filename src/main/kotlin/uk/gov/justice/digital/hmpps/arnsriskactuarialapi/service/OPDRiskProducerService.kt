@@ -67,7 +67,18 @@ class OPDRiskProducerService : RiskScoreProducer {
       if (hasAllMaleQuestionsUnanswered(request) || hasAllFemaleQuestionsUnanswered(request)) {
         return notApplicableResult(context)
       }
-      if (!isOpdApplicable(validatedRequest)) {
+      val isViolentOrSexualType =
+        offenceGroupParametersService.isViolentOrSexualType(validatedRequest.currentOffenceCode)
+          ?: return invalidInformationResult(
+            context,
+            listOf(
+              ValidationErrorType.OFFENCE_CODE_MAPPING_NOT_FOUND.asErrorResponse(
+                listOf(RiskScoreRequest::currentOffenceCode.name),
+              ),
+            ),
+          )
+
+      if (!isOpdApplicable(validatedRequest, isViolentOrSexualType)) {
         return screenOutResult(context)
       }
 
@@ -126,10 +137,7 @@ class OPDRiskProducerService : RiskScoreProducer {
   /**
    * Minimum set of criteria to progress with scoring
    */
-  private fun isOpdApplicable(validatedRequest: OPDRequestValidated): Boolean {
-    val isViolentOrSexualType =
-      offenceGroupParametersService.isViolentOrSexualType(validatedRequest.currentOffenceCode)
-
+  private fun isOpdApplicable(validatedRequest: OPDRequestValidated, isViolentOrSexualType: Boolean): Boolean {
     val isOpdApplicable = when (validatedRequest.gender) {
       Gender.MALE -> isOpdApplicableMale(validatedRequest, isViolentOrSexualType)
       Gender.FEMALE -> isOpdApplicableFemale(validatedRequest)
