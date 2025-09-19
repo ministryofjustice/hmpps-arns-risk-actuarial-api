@@ -28,4 +28,6 @@ data class SNSVDynamicRequestValidated(
   val proCriminalAttitudes: ProblemLevel,
   val domesticViolencePerpetrator: Boolean,
   val previousConvictions: List<PreviousConviction>,
+  val snsvvatpWeighting: Double,
+  val snsvWeighting: Double,
 )

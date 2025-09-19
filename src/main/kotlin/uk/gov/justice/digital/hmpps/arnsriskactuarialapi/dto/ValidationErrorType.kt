@@ -8,6 +8,7 @@ enum class ValidationErrorType(val asErrorResponse: (List<String>) -> Validation
   AGE_AT_CURRENT_CONVICTION_LESS_THAN_TEN({ fields -> ValidationErrorResponse(AGE_AT_CURRENT_CONVICTION_LESS_THAN_TEN, "Age at current conviction must be 10 or greater", fields) }),
   LDS_NOT_ENOUGH_FIELDS_PRESENT({ fields -> ValidationErrorResponse(LDS_NOT_ENOUGH_FIELDS_PRESENT, "At least three input fields must be provided", fields) }),
   OFFENCE_CODE_INCORRECT_FORMAT({ fields -> ValidationErrorResponse(OFFENCE_CODE_INCORRECT_FORMAT, "Offence code must be a string of 5 digits", fields) }),
+  OFFENCE_CODE_MAPPING_NOT_FOUND({ fields -> ValidationErrorResponse(OFFENCE_CODE_MAPPING_NOT_FOUND, "No offence code to actuarial weighting mapping found for offence code", fields) }),
 
   // Potential Legacy
   NOT_APPLICABLE({ fields -> ValidationErrorResponse(NOT_APPLICABLE, "ERR1 - Does not meet eligibility criteria", fields) }),
