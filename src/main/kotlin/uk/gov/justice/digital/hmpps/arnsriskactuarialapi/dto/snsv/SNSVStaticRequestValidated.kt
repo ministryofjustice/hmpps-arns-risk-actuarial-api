@@ -15,4 +15,6 @@ data class SNSVStaticRequestValidated(
   val supervisionStatus: SupervisionStatus,
   val dateAtStartOfFollowup: LocalDate,
   val totalNumberOfViolentSanctions: Int,
+  val snsvvatpWeighting: Double,
+  val snsvWeighting: Double,
 )

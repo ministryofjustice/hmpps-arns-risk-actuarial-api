@@ -2,13 +2,13 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertNull
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.config.OffenceGroupParametersConfig
-import kotlin.test.assertFailsWith
 
 @SpringBootTest(classes = [OffenceGroupParametersConfig::class, OffenceGroupParametersService::class])
 class OffenceGroupParametersServiceTest {
@@ -27,19 +27,13 @@ class OffenceGroupParametersServiceTest {
   @ParameterizedTest
   @ValueSource(strings = ["XX", "95006", "99955"])
   fun `Test OGRS3 values that are NOT present`(exceptionCode: String) {
-    val exception = assertFailsWith<NoSuchElementException>(
-      block = { service.getOGRS3Weighting(exceptionCode) },
-    )
-    assertEquals(exception.message, "No Match found on lookup: '$exceptionCode'")
+    assertNull(service.getOGRS3Weighting(exceptionCode))
   }
 
   @ParameterizedTest
   @ValueSource(strings = ["XX", "ABC", ""])
   fun `isViolentOrSexualType should throw when values not found`(exceptionCode: String) {
-    val exception = assertFailsWith<NoSuchElementException>(
-      block = { service.isViolentOrSexualType(exceptionCode) },
-    )
-    assertEquals(exception.message, "No Match found on lookup: '$exceptionCode'")
+    assertNull(service.isViolentOrSexualType(exceptionCode))
   }
 
   @ParameterizedTest
@@ -62,10 +56,7 @@ class OffenceGroupParametersServiceTest {
   @ParameterizedTest
   @ValueSource(strings = ["XX", "99969", "00000"])
   fun `Test SNSVStatic values that are NOT present`(exceptionCode: String) {
-    val exception = assertFailsWith<NoSuchElementException>(
-      block = { service.getSNSVStaticWeighting(exceptionCode) },
-    )
-    assertEquals(exception.message, "No Match found on lookup: '$exceptionCode'")
+    assertNull(service.getSNSVStaticWeighting(exceptionCode))
   }
 
   @Test
@@ -77,10 +68,7 @@ class OffenceGroupParametersServiceTest {
   @ParameterizedTest
   @ValueSource(strings = ["XX", "99969", "00000"])
   fun `Test SNSVVATPStatic values that are NOT present`(exceptionCode: String) {
-    val exception = assertFailsWith<NoSuchElementException>(
-      block = { service.getSNSVVATPStaticWeighting(exceptionCode) },
-    )
-    assertEquals(exception.message, "No Match found on lookup: '$exceptionCode'")
+    assertNull(service.getSNSVVATPStaticWeighting(exceptionCode))
   }
 
   @Test
@@ -92,10 +80,7 @@ class OffenceGroupParametersServiceTest {
   @ParameterizedTest
   @ValueSource(strings = ["XX", "99969", "00000"])
   fun `Test SNSVDynamic values that are NOT present`(exceptionCode: String) {
-    val exception = assertFailsWith<NoSuchElementException>(
-      block = { service.getSNSVDynamicWeighting(exceptionCode) },
-    )
-    assertEquals(exception.message, "No Match found on lookup: '$exceptionCode'")
+    assertNull(service.getSNSVDynamicWeighting(exceptionCode))
   }
 
   @Test
@@ -107,9 +92,6 @@ class OffenceGroupParametersServiceTest {
   @ParameterizedTest
   @ValueSource(strings = ["XX", "99969", "00000"])
   fun `Test SNSVVATPDynamic values that are NOT present`(exceptionCode: String) {
-    val exception = assertFailsWith<NoSuchElementException>(
-      block = { service.getSNSVVATPDynamicWeighting(exceptionCode) },
-    )
-    assertEquals(exception.message, "No Match found on lookup: '$exceptionCode'")
+    assertNull(service.getSNSVVATPDynamicWeighting(exceptionCode))
   }
 }

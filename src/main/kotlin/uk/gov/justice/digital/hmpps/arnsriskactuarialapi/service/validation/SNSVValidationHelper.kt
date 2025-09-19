@@ -42,10 +42,9 @@ fun isValidDynamicSnsv(request: RiskScoreRequest): Boolean = getNullValuesFromPr
 ).isEmpty() &&
   hasDomesticViolencePerpetrator(request)
 
-fun snsvDynamicValidation(request: RiskScoreRequest): List<ValidationErrorResponse> {
-  val errors = arrayListOf<ValidationErrorResponse>()
+fun snsvDynamicValidation(request: RiskScoreRequest, errors: MutableList<ValidationErrorResponse>) {
   if (!hasDomesticViolencePerpetrator(request)) {
-    return addMissingFields(
+    errors += addMissingFields(
       getNullValuesFromProperties(
         request,
         listOf(
@@ -56,7 +55,6 @@ fun snsvDynamicValidation(request: RiskScoreRequest): List<ValidationErrorRespon
       emptyList(),
     )
   }
-  return errors
 }
 
 fun hasDomesticViolencePerpetrator(request: RiskScoreRequest) = getDomesticViolencePerpetrator(
