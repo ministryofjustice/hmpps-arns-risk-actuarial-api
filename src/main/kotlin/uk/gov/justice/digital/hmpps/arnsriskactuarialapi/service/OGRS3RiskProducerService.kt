@@ -28,6 +28,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sanitisePercentag
 @Service
 class OGRS3RiskProducerService : RiskScoreProducer {
 
+  val invalidOffenceCodeWeighting: Double = 999.0
+
   @Autowired
   lateinit var offenceGroupParametersService: OffenceGroupParametersService
 
@@ -120,6 +122,8 @@ class OGRS3RiskProducerService : RiskScoreProducer {
     val ogrS3Weighting = offenceGroupParametersService.getOGRS3Weighting(request.currentOffenceCode)
     if (ogrS3Weighting == null) {
       errors += ValidationErrorType.OFFENCE_CODE_MAPPING_NOT_FOUND.asErrorResponse(listOf(RiskScoreRequest::currentOffenceCode.name))
+    } else if (invalidOffenceCodeWeighting == ogrS3Weighting) {
+      errors += ValidationErrorType.NEED_DETAILS_OF_EXACT_OFFENCE.asErrorResponse(listOf(RiskScoreRequest::currentOffenceCode.name))
     }
     return ogrS3Weighting
   }
