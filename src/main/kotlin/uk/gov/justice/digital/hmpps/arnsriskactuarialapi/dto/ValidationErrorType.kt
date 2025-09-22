@@ -2,6 +2,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto
 
 enum class ValidationErrorType(val asErrorResponse: (List<String>) -> ValidationErrorResponse) {
 
+  NEED_DETAILS_OF_EXACT_OFFENCE({ fields -> ValidationErrorResponse(NEED_DETAILS_OF_EXACT_OFFENCE, "For this group of offences, the OGRS 3 offence category takes different values depending on the nature of the exact offence. Therefore, it is not possible to calculate an OGRS 3 score without details of the exact offence.", fields) }),
   MISSING_MANDATORY_INPUT({ fields -> ValidationErrorResponse(MISSING_MANDATORY_INPUT, "Mandatory input field(s) missing", fields) }),
   AGE_AT_FIRST_SANCTION_AFTER_AGE_AT_CURRENT_CONVICTION({ fields -> ValidationErrorResponse(AGE_AT_FIRST_SANCTION_AFTER_AGE_AT_CURRENT_CONVICTION, "Age at first sanction must be before age at current conviction", fields) }),
   TOTAL_NUMBER_OF_SANCTIONS_LESS_THAN_ONE({ fields -> ValidationErrorResponse(TOTAL_NUMBER_OF_SANCTIONS_LESS_THAN_ONE, "Total number of sanctions must be one or greater", fields) }),
