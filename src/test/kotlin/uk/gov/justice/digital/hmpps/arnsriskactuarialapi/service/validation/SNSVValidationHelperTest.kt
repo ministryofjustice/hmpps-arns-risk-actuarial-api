@@ -3,6 +3,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validSNSVStaticRiskScoreRequest
 
@@ -54,18 +55,18 @@ class SNSVValidationHelperTest {
       evidenceOfDomesticAbuse = null,
       domesticAbuseAgainstPartner = null,
     )
-
-    val result = snsvDynamicValidation(request)
+    val errors = mutableListOf<ValidationErrorResponse>()
+    snsvDynamicValidation(request, errors)
 
     val expectedFields = listOf(
       "evidenceOfDomesticAbuse",
       "domesticAbuseAgainstPartner",
     )
 
-    val error = result.first()
-    assertEquals(ValidationErrorType.MISSING_INPUT, error.type)
-    assertEquals("ERR5 - Field is Null", error.message)
-    assertEquals(expectedFields, error.fields)
+    assertEquals(1, errors.size)
+    assertEquals(ValidationErrorType.MISSING_INPUT, errors.first().type)
+    assertEquals("ERR5 - Field is Null", errors.first().message)
+    assertEquals(expectedFields, errors.first().fields)
   }
 
   @Test

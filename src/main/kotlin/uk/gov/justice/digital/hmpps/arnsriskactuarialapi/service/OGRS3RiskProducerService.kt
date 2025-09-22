@@ -76,6 +76,12 @@ class OGRS3RiskProducerService : RiskScoreProducer {
 
     val offenderConvictionStatus = getOffenderConvictionStatus(request.totalNumberOfSanctionsForAllOffences)
 
+    val errors = mutableListOf<ValidationErrorResponse>()
+    val ogrS3Weighting = validateAndRetrieveOGRS3Weighting(request, errors)
+    if (errors.isNotEmpty()) {
+      return OGRS3Object(null, null, null, errors)
+    }
+
     listOf(
       getAgeGenderScore(ageAtStartOfFollowup, request.gender),
       getConvictionStatusScore(offenderConvictionStatus),
@@ -86,7 +92,7 @@ class OGRS3RiskProducerService : RiskScoreProducer {
           request.ageAtFirstSanction,
         ),
       ),
-      offenceGroupParametersService.getOGRS3Weighting(request.currentOffenceCode),
+      ogrS3Weighting!!,
     ).sum()
       .let { totalScore ->
         val oneYear = getOgrs3OneYear(totalScore).asPercentage().sanitisePercentage()
@@ -108,5 +114,13 @@ class OGRS3RiskProducerService : RiskScoreProducer {
         ),
       ),
     )
+  }
+
+  private fun validateAndRetrieveOGRS3Weighting(request: OGRS3RequestValidated, errors: MutableList<ValidationErrorResponse>): Double? {
+    val ogrS3Weighting = offenceGroupParametersService.getOGRS3Weighting(request.currentOffenceCode)
+    if (ogrS3Weighting == null) {
+      errors += ValidationErrorType.OFFENCE_CODE_MAPPING_NOT_FOUND.asErrorResponse(listOf(RiskScoreRequest::currentOffenceCode.name))
+    }
+    return ogrS3Weighting
   }
 }

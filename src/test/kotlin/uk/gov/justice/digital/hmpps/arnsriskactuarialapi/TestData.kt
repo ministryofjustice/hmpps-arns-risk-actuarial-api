@@ -301,6 +301,7 @@ fun validSNSVStaticRiskScoreRequest() = RiskScoreRequest(
   supervisionStatus = SupervisionStatus.COMMUNITY,
   dateAtStartOfFollowup = LocalDate.of(2024, 1, 1),
   totalNumberOfViolentSanctions = 1 as Integer,
+  evidenceOfDomesticAbuse = false,
 )
 
 fun validSNSVDynamicRiskScoreRequest() = RiskScoreRequest(
