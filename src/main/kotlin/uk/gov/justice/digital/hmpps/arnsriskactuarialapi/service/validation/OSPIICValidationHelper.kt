@@ -64,3 +64,25 @@ private fun validateMaleSexualOffences(request: RiskScoreRequest, errors: Mutabl
       )
   }
 }
+
+fun validateMaleSexualOffencesInconsistentFields(request: RiskScoreRequest, errors: MutableList<ValidationErrorResponse>) {
+  if (request.hasEverCommittedSexualOffence == false) {
+    val unexpectedFields = arrayListOf<String>()
+
+    if (request.totalContactAdultSexualSanctions != null && request.totalContactAdultSexualSanctions != 0) {
+      unexpectedFields.add(RiskScoreRequest::totalContactAdultSexualSanctions.name)
+    }
+    if (request.totalContactChildSexualSanctions != null && request.totalContactChildSexualSanctions != 0) {
+      unexpectedFields.add(RiskScoreRequest::totalContactChildSexualSanctions.name)
+    }
+    if (request.totalIndecentImageSanctions != null && request.totalIndecentImageSanctions != 0) {
+      unexpectedFields.add(RiskScoreRequest::totalIndecentImageSanctions.name)
+    }
+    if (request.totalNonContactSexualOffences != null && request.totalNonContactSexualOffences != 0) {
+      unexpectedFields.add(RiskScoreRequest::totalNonContactSexualOffences.name)
+    }
+    if (unexpectedFields.isNotEmpty()) {
+      errors += ValidationErrorType.SEXUAL_OFFENDING_INCONSISTENT_INPUT.asErrorResponse(unexpectedFields)
+    }
+  }
+}

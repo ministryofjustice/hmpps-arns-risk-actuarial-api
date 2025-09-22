@@ -98,8 +98,8 @@ class OSPIICRiskProducerServiceTest {
       0.0,
       validationError = listOf(
         ValidationErrorResponse(
-          type = ValidationErrorType.UNEXPECTED_VALUE,
-          message = "Error: No sexual motivation/offending identified - fields should not be populated.",
+          type = ValidationErrorType.SEXUAL_OFFENDING_INCONSISTENT_INPUT,
+          message = "No sexual motivation/offending identified - additional fields should not be provided",
           fields = listOf(
             "totalContactAdultSexualSanctions",
             "totalContactChildSexualSanctions",
