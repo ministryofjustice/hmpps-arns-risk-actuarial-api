@@ -3,10 +3,16 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validOPDRiskScoreRequest
+import java.util.stream.Stream
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class OPDValidationHelperTest {
 
   @Test
@@ -90,24 +96,42 @@ class OPDValidationHelperTest {
     assertEquals(expectedFields, error.fields)
   }
 
-  @Test
-  fun `opdInitialValidation wrong evidenceOfDomesticAbuse fields when evidenceOfDomesticAbuse not provided`() {
+  private fun domesticAbuseInconsistentInputTestInputs(): Stream<Arguments> = Stream.of(
+    Arguments.of(null, true, null),
+    Arguments.of(null, null, true),
+    Arguments.of(null, false, null),
+    Arguments.of(null, null, false),
+    Arguments.of(false, true, null),
+    Arguments.of(false, null, true),
+    Arguments.of(false, false, null),
+    Arguments.of(false, null, false),
+  )
+
+  @ParameterizedTest
+  @MethodSource("domesticAbuseInconsistentInputTestInputs")
+  fun `opdInitialValidation wrong evidenceOfDomesticAbuse fields when evidenceOfDomesticAbuse not provided`(
+    evidenceOfDomesticAbuseInput: Boolean?,
+    domesticAbuseAgainstPartnerInput: Boolean?,
+    domesticAbuseAgainstFamilyInput: Boolean?,
+  ) {
     val request = validOPDRiskScoreRequest().copy(
-      evidenceOfDomesticAbuse = false,
-      domesticAbuseAgainstPartner = true,
-      domesticAbuseAgainstFamily = false,
+      evidenceOfDomesticAbuse = evidenceOfDomesticAbuseInput,
+      domesticAbuseAgainstPartner = domesticAbuseAgainstPartnerInput,
+      domesticAbuseAgainstFamily = domesticAbuseAgainstFamilyInput,
     )
     val result = validateOPD(request)
 
-    val expectedFields = listOf(
-      "domesticAbuseAgainstPartner",
-      "domesticAbuseAgainstFamily",
-    )
-
     val error = result.first()
-    assertEquals(ValidationErrorType.UNEXPECTED_VALUE, error.type)
-    assertEquals("ERR6 - Field is unexpected", error.message)
-    assertEquals(expectedFields, error.fields)
+    assertEquals(ValidationErrorType.DOMESTIC_ABUSE_INCONSISTENT_INPUT, error.type)
+    assertEquals("No evidence of domestic abuse identified - domesticAbuseAgainstPartner and domesticAbuseAgainstFamily should not be provided", error.message)
+    assertEquals(
+      listOf(
+        "evidenceOfDomesticAbuse",
+        "domesticAbuseAgainstFamily",
+        "domesticAbuseAgainstPartner",
+      ),
+      error.fields,
+    )
   }
 
   @Test
