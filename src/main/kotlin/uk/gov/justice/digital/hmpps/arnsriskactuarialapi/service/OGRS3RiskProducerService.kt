@@ -18,7 +18,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getOgrs3TwoYear
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getRiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isWithinLastTwoYears
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.returnOGRS3ObjectWithError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateAgeAtCurrentConviction
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateAgeAtFirstSanction
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateOGRS3
@@ -26,7 +25,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asPercentage
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sanitisePercentage
 
 @Service
-class OGRS3RiskProducerService : RiskScoreProducer {
+class OGRS3RiskProducerService : BaseRiskScoreProducer() {
 
   val invalidOffenceCodeWeighting: Double = 999.0
 
@@ -37,9 +36,7 @@ class OGRS3RiskProducerService : RiskScoreProducer {
     val errors = validateOGRS3(request)
 
     if (errors.isNotEmpty()) {
-      return context.apply {
-        OGRS3 = OGRS3Object(null, null, null, errors)
-      }
+      return applyErrorsToContextAndReturn(context, errors)
     }
 
     val validRequest = OGRS3RequestValidated(
@@ -58,7 +55,7 @@ class OGRS3RiskProducerService : RiskScoreProducer {
 
   private fun getOGRS3Object(
     request: OGRS3RequestValidated,
-  ): OGRS3Object = runCatching {
+  ): OGRS3Object {
     val ageAtCurrentConviction = getAgeDiffAtOffenceDate(
       request.dateOfBirth,
       request.dateOfCurrentConviction,
@@ -73,8 +70,8 @@ class OGRS3RiskProducerService : RiskScoreProducer {
       request.dateOfBirth,
       followUpDate,
     )
-    validateAgeAtCurrentConviction(ageAtCurrentConviction)?.let { return returnOGRS3ObjectWithError(it) }
-    validateAgeAtFirstSanction(request.ageAtFirstSanction, ageAtCurrentConviction)?.let { return returnOGRS3ObjectWithError(it) }
+    validateAgeAtCurrentConviction(ageAtCurrentConviction)?.let { return buildErrorObject(listOf(it)) }
+    validateAgeAtFirstSanction(request.ageAtFirstSanction, ageAtCurrentConviction)?.let { return buildErrorObject(listOf(it)) }
 
     val offenderConvictionStatus = getOffenderConvictionStatus(request.totalNumberOfSanctionsForAllOffences)
 
@@ -101,21 +98,8 @@ class OGRS3RiskProducerService : RiskScoreProducer {
         val twoYear = getOgrs3TwoYear(totalScore).asPercentage().sanitisePercentage()
         val riskBand = getRiskBand(twoYear)
 
-        OGRS3Object(oneYear, twoYear, riskBand, emptyList())
+        return OGRS3Object(oneYear, twoYear, riskBand, emptyList())
       }
-  }.getOrElse {
-    OGRS3Object(
-      null,
-      null,
-      null,
-      arrayListOf(
-        ValidationErrorResponse(
-          type = ValidationErrorType.NO_MATCHING_INPUT,
-          message = "Error: ${it.message}",
-          fields = emptyList(),
-        ),
-      ),
-    )
   }
 
   private fun validateAndRetrieveOGRS3Weighting(request: OGRS3RequestValidated, errors: MutableList<ValidationErrorResponse>): Double? {
@@ -127,4 +111,13 @@ class OGRS3RiskProducerService : RiskScoreProducer {
     }
     return ogrS3Weighting
   }
+
+  override fun applyErrorsToContextAndReturn(context: RiskScoreContext, validationErrorResponses: List<ValidationErrorResponse>): RiskScoreContext = context.apply { OGRS3 = buildErrorObject(validationErrorResponses) }
+
+  private fun buildErrorObject(validationErrorResponse: List<ValidationErrorResponse>): OGRS3Object = OGRS3Object(
+    null,
+    null,
+    null,
+    validationErrorResponse,
+  )
 }

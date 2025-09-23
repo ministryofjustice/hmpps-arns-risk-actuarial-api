@@ -18,6 +18,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validSNSVDynamicRiskSco
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validSNSVStaticRiskScoreRequest
 import java.time.LocalDate
 import java.time.Month
+import kotlin.test.assertFailsWith
 
 @ExtendWith(MockitoExtension::class)
 class SNSVRiskProducerServiceTest {
@@ -112,35 +113,33 @@ class SNSVRiskProducerServiceTest {
   }
 
   @Test
-  fun `getRiskScore should hit calculation error and return UNEXPECTED_VALUE with DYNAMIC score type`() {
-    val result = service.getRiskScore(
-      validSNSVDynamicRiskScoreRequest().copy(dateOfBirth = LocalDate.of(2025, Month.JANUARY, 1)),
-      emptyContext(),
+  fun `getRiskScore should hit calculation error and throw with DYNAMIC score type`() {
+    val exception = assertFailsWith<IllegalArgumentException>(
+      block = {
+        service.getRiskScore(
+          validSNSVDynamicRiskScoreRequest().copy(dateOfBirth = LocalDate.of(2025, Month.JANUARY, 1)),
+          emptyContext(),
+        )
+      },
     )
 
-    assertNotNull(result)
-    assertEquals(ScoreType.DYNAMIC, result.SNSV!!.scoreType)
-    assertEquals(1, result.SNSV?.validationError?.size)
-    val error = result.SNSV?.validationError?.first()
-    assertEquals(ValidationErrorType.UNEXPECTED_VALUE, error?.type)
-    assertEquals("Error: Age at date at start of followup cannot be less than 10", error?.message)
+    assertEquals("Age at date at start of followup cannot be less than 10", exception.message)
   }
 
   @Test
-  fun `getRiskScore should hit calculation error and return UNEXPECTED_VALUE with STATIC score type`() {
-    val result = service.getRiskScore(
-      validSNSVStaticRiskScoreRequest().copy(
-        dateOfBirth = LocalDate.of(2025, Month.JANUARY, 1),
-        dateAtStartOfFollowup = LocalDate.of(2027, 1, 1),
-      ),
-      emptyContext(),
+  fun `getRiskScore should hit calculation error and throw with STATIC score type`() {
+    val exception = assertFailsWith<IllegalArgumentException>(
+      block = {
+        service.getRiskScore(
+          validSNSVStaticRiskScoreRequest().copy(
+            dateOfBirth = LocalDate.of(2025, Month.JANUARY, 1),
+            dateAtStartOfFollowup = LocalDate.of(2027, 1, 1),
+          ),
+          emptyContext(),
+        )
+      },
     )
 
-    assertNotNull(result)
-    assertEquals(ScoreType.STATIC, result.SNSV!!.scoreType)
-    assertEquals(1, result.SNSV?.validationError?.size)
-    val error = result.SNSV?.validationError?.first()
-    assertEquals(ValidationErrorType.UNEXPECTED_VALUE, error?.type)
-    assertEquals("Error: Age at date at start of followup cannot be less than 10", error?.message)
+    assertEquals("Age at date at start of followup cannot be less than 10", exception.message)
   }
 }

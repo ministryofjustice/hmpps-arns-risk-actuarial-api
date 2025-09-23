@@ -2,6 +2,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -11,100 +12,98 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.YesSometimesNo
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPInputValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPObject
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.OGPRiskProducerService.Companion.getOGPOutput
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class OGPRiskProducerServiceCompanionTest {
 
-  companion object {
+  var testSubject: OGPRiskProducerService = OGPRiskProducerService()
 
-    @JvmStatic
-    fun getOGPTestCases(): List<Arguments> = listOf(
-      Arguments.of(
-        OGPInputValidated(
-          ogrs3TwoYear = 81,
-          isCurrentlyOfNoFixedAbodeOrTransientAccommodation = false,
-          isUnemployed = true,
-          regularOffendingActivities = ProblemLevel.SOME_PROBLEMS,
-          currentDrugMisuse = ProblemLevel.NO_PROBLEMS,
-          motivationToTackleDrugMisuse = MotivationLevel.FULL_MOTIVATION,
-          problemSolvingSkills = ProblemLevel.SOME_PROBLEMS,
-          awarenessOfConsequences = YesSometimesNo.SOMETIMES,
-          understandsOtherPeoplesViews = ProblemLevel.NO_PROBLEMS,
-          proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
-        ),
-        OGPObject(
-          ogpReoffendingOneYear = 53,
-          ogpReoffendingTwoYear = 68,
-          bandOGP = OGPBand.HIGH,
-          totalOGPScore = 62,
-          validationError = emptyList(),
-        ),
+  fun getOGPTestCases(): List<Arguments> = listOf(
+    Arguments.of(
+      OGPInputValidated(
+        ogrs3TwoYear = 81,
+        isCurrentlyOfNoFixedAbodeOrTransientAccommodation = false,
+        isUnemployed = true,
+        regularOffendingActivities = ProblemLevel.SOME_PROBLEMS,
+        currentDrugMisuse = ProblemLevel.NO_PROBLEMS,
+        motivationToTackleDrugMisuse = MotivationLevel.FULL_MOTIVATION,
+        problemSolvingSkills = ProblemLevel.SOME_PROBLEMS,
+        awarenessOfConsequences = YesSometimesNo.SOMETIMES,
+        understandsOtherPeoplesViews = ProblemLevel.NO_PROBLEMS,
+        proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
       ),
-      Arguments.of(
-        OGPInputValidated(
-          ogrs3TwoYear = 67,
-          isCurrentlyOfNoFixedAbodeOrTransientAccommodation = false,
-          isUnemployed = true,
-          regularOffendingActivities = ProblemLevel.SOME_PROBLEMS,
-          currentDrugMisuse = ProblemLevel.NO_PROBLEMS,
-          motivationToTackleDrugMisuse = MotivationLevel.FULL_MOTIVATION,
-          problemSolvingSkills = ProblemLevel.SOME_PROBLEMS,
-          awarenessOfConsequences = YesSometimesNo.SOMETIMES,
-          understandsOtherPeoplesViews = ProblemLevel.NO_PROBLEMS,
-          proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
-        ),
-        OGPObject(
-          ogpReoffendingOneYear = 40,
-          ogpReoffendingTwoYear = 55,
-          bandOGP = OGPBand.MEDIUM,
-          totalOGPScore = 53,
-          validationError = emptyList(),
-        ),
+      OGPObject(
+        ogpReoffendingOneYear = 53,
+        ogpReoffendingTwoYear = 68,
+        bandOGP = OGPBand.HIGH,
+        totalOGPScore = 62,
+        validationError = emptyList(),
       ),
-      Arguments.of(
-        OGPInputValidated(
-          ogrs3TwoYear = 37,
-          isCurrentlyOfNoFixedAbodeOrTransientAccommodation = false,
-          isUnemployed = true,
-          regularOffendingActivities = ProblemLevel.SOME_PROBLEMS,
-          currentDrugMisuse = ProblemLevel.SIGNIFICANT_PROBLEMS,
-          motivationToTackleDrugMisuse = MotivationLevel.FULL_MOTIVATION,
-          problemSolvingSkills = ProblemLevel.SOME_PROBLEMS,
-          awarenessOfConsequences = YesSometimesNo.SOMETIMES,
-          understandsOtherPeoplesViews = ProblemLevel.NO_PROBLEMS,
-          proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
-        ),
-        OGPObject(
-          ogpReoffendingOneYear = 26,
-          ogpReoffendingTwoYear = 39,
-          bandOGP = OGPBand.MEDIUM,
-          totalOGPScore = 43,
-          validationError = emptyList(),
-        ),
+    ),
+    Arguments.of(
+      OGPInputValidated(
+        ogrs3TwoYear = 67,
+        isCurrentlyOfNoFixedAbodeOrTransientAccommodation = false,
+        isUnemployed = true,
+        regularOffendingActivities = ProblemLevel.SOME_PROBLEMS,
+        currentDrugMisuse = ProblemLevel.NO_PROBLEMS,
+        motivationToTackleDrugMisuse = MotivationLevel.FULL_MOTIVATION,
+        problemSolvingSkills = ProblemLevel.SOME_PROBLEMS,
+        awarenessOfConsequences = YesSometimesNo.SOMETIMES,
+        understandsOtherPeoplesViews = ProblemLevel.NO_PROBLEMS,
+        proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
       ),
-      Arguments.of(
-        OGPInputValidated(
-          ogrs3TwoYear = 17,
-          isCurrentlyOfNoFixedAbodeOrTransientAccommodation = false,
-          isUnemployed = true,
-          regularOffendingActivities = ProblemLevel.SOME_PROBLEMS,
-          currentDrugMisuse = ProblemLevel.SIGNIFICANT_PROBLEMS,
-          motivationToTackleDrugMisuse = MotivationLevel.FULL_MOTIVATION,
-          problemSolvingSkills = ProblemLevel.SOME_PROBLEMS,
-          awarenessOfConsequences = YesSometimesNo.SOMETIMES,
-          understandsOtherPeoplesViews = ProblemLevel.NO_PROBLEMS,
-          proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
-        ),
-        OGPObject(
-          ogpReoffendingOneYear = 15,
-          ogpReoffendingTwoYear = 24,
-          bandOGP = OGPBand.LOW,
-          totalOGPScore = 31,
-          validationError = emptyList(),
-        ),
+      OGPObject(
+        ogpReoffendingOneYear = 40,
+        ogpReoffendingTwoYear = 55,
+        bandOGP = OGPBand.MEDIUM,
+        totalOGPScore = 53,
+        validationError = emptyList(),
       ),
-    )
-  }
+    ),
+    Arguments.of(
+      OGPInputValidated(
+        ogrs3TwoYear = 37,
+        isCurrentlyOfNoFixedAbodeOrTransientAccommodation = false,
+        isUnemployed = true,
+        regularOffendingActivities = ProblemLevel.SOME_PROBLEMS,
+        currentDrugMisuse = ProblemLevel.SIGNIFICANT_PROBLEMS,
+        motivationToTackleDrugMisuse = MotivationLevel.FULL_MOTIVATION,
+        problemSolvingSkills = ProblemLevel.SOME_PROBLEMS,
+        awarenessOfConsequences = YesSometimesNo.SOMETIMES,
+        understandsOtherPeoplesViews = ProblemLevel.NO_PROBLEMS,
+        proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
+      ),
+      OGPObject(
+        ogpReoffendingOneYear = 26,
+        ogpReoffendingTwoYear = 39,
+        bandOGP = OGPBand.MEDIUM,
+        totalOGPScore = 43,
+        validationError = emptyList(),
+      ),
+    ),
+    Arguments.of(
+      OGPInputValidated(
+        ogrs3TwoYear = 17,
+        isCurrentlyOfNoFixedAbodeOrTransientAccommodation = false,
+        isUnemployed = true,
+        regularOffendingActivities = ProblemLevel.SOME_PROBLEMS,
+        currentDrugMisuse = ProblemLevel.SIGNIFICANT_PROBLEMS,
+        motivationToTackleDrugMisuse = MotivationLevel.FULL_MOTIVATION,
+        problemSolvingSkills = ProblemLevel.SOME_PROBLEMS,
+        awarenessOfConsequences = YesSometimesNo.SOMETIMES,
+        understandsOtherPeoplesViews = ProblemLevel.NO_PROBLEMS,
+        proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
+      ),
+      OGPObject(
+        ogpReoffendingOneYear = 15,
+        ogpReoffendingTwoYear = 24,
+        bandOGP = OGPBand.LOW,
+        totalOGPScore = 31,
+        validationError = emptyList(),
+      ),
+    ),
+  )
 
   @Test
   fun `testing single test case`() {
@@ -120,7 +119,7 @@ class OGPRiskProducerServiceCompanionTest {
       understandsOtherPeoplesViews = ProblemLevel.NO_PROBLEMS,
       proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
     )
-    val output = getOGPOutput(input)
+    val output = testSubject.getOGPOutput(input)
     val expected = OGPObject(
       ogpReoffendingOneYear = 53,
       ogpReoffendingTwoYear = 68,
@@ -131,9 +130,9 @@ class OGPRiskProducerServiceCompanionTest {
     assertEquals(expected, output)
   }
 
-  @ParameterizedTest()
+  @ParameterizedTest
   @MethodSource("getOGPTestCases")
   fun `testing from OGP test cases`(input: OGPInputValidated, expected: OGPObject) {
-    assertEquals(expected, getOGPOutput(input))
+    assertEquals(expected, testSubject.getOGPOutput(input))
   }
 }

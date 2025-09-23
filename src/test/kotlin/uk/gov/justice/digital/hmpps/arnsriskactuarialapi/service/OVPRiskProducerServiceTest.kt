@@ -14,6 +14,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validOVPRiskScoreRequest
 import java.time.LocalDate
+import kotlin.test.assertFailsWith
 
 class OVPRiskProducerServiceTest {
 
@@ -120,24 +121,21 @@ class OVPRiskProducerServiceTest {
   }
 
   @Test
-  fun `should return null OVPObject with error message for exceptions thrown during calculation`() {
+  fun `should throw exceptions during calculation`() {
     // When
-    val result = service.getRiskScore(
-      validOVPRiskScoreRequest().copy(
-        dateOfBirth = LocalDate.of(2002, 12, 13),
-        dateAtStartOfFollowup = LocalDate.of(2000, 12, 13),
-      ),
-      emptyContext(),
+    val exception = assertFailsWith<IllegalArgumentException>(
+      block = {
+        service.getRiskScore(
+          validOVPRiskScoreRequest().copy(
+            dateOfBirth = LocalDate.of(2002, 12, 13),
+            dateAtStartOfFollowup = LocalDate.of(2000, 12, 13),
+          ),
+          emptyContext(),
+        )
+      },
     )
 
     // Then
-    assertNotNull(result)
-    assertNull(result.OVP?.provenViolentTypeReoffendingTwoYear)
-    assertNull(result.OVP?.provenViolentTypeReoffendingOneYear)
-    assertNull(result.OVP?.band)
-    assertEquals(1, result.OVP?.validationError?.size)
-    val error = result.OVP?.validationError?.first()
-    assertEquals(ValidationErrorType.NO_MATCHING_INPUT, error?.type)
-    assertEquals("Error: Invalid ageAtStartOfFollowup value: -2", error?.message)
+    assertEquals("Invalid ageAtStartOfFollowup value: -2", exception.message)
   }
 }

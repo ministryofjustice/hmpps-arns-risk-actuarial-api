@@ -18,6 +18,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
 import java.time.LocalDate
+import kotlin.test.assertFailsWith
 
 @ExtendWith(MockitoExtension::class)
 class OGRS3RiskProducerServiceTest {
@@ -197,25 +198,22 @@ class OGRS3RiskProducerServiceTest {
   }
 
   @Test
-  fun `should return null OGRS3Object with error message for exceptions thrown during calculation`() {
+  fun `should throw with error message for exceptions thrown during calculation`() {
     // When
-    val result = ogrs3RiskProducerService.getRiskScore(
-      validRiskScoreRequest().copy(
-        dateOfBirth = LocalDate.of(2002, 12, 13),
-        dateOfCurrentConviction = LocalDate.of(2000, 12, 13),
-      ),
-      emptyContext(),
+    val exception = assertFailsWith<IllegalArgumentException>(
+      block = {
+        ogrs3RiskProducerService.getRiskScore(
+          validRiskScoreRequest().copy(
+            dateOfBirth = LocalDate.of(2002, 12, 13),
+            dateOfCurrentConviction = LocalDate.of(2000, 12, 13),
+          ),
+          emptyContext(),
+        )
+      },
     )
 
     // Then
-    assertNotNull(result)
-    assertNull(result.OGRS3?.ogrs3OneYear)
-    assertNull(result.OGRS3?.ogrs3TwoYear)
-    assertNull(result.OGRS3?.band)
-    assertEquals(1, result.OGRS3?.validationError?.size)
-    val error = result.OGRS3?.validationError?.first()
-    assertEquals(ValidationErrorType.NO_MATCHING_INPUT, error?.type)
-    assertEquals("Error: Conviction date cannot be before date of birth.", error?.message)
+    assertEquals("Conviction date cannot be before date of birth.", exception.message)
   }
 
   private fun validRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(

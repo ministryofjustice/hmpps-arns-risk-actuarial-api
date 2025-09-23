@@ -13,8 +13,9 @@ enum class ValidationErrorType(val message: String) {
   LDS_NOT_ENOUGH_FIELDS_PRESENT("At least three input fields must be provided"),
   OFFENCE_CODE_INCORRECT_FORMAT("Offence code must be a string of 5 digits"),
   OFFENCE_CODE_MAPPING_NOT_FOUND("No offence code to actuarial weighting mapping found for offence code"),
+  UNEXPECTED_ERROR("An unexpected error occurred"),
 
-  // Potential Legacy
+  // TODO - All below are to be deprecated.
   NOT_APPLICABLE("ERR1 - Does not meet eligibility criteria"),
   BELOW_MIN_VALUE("ERR2 - Below minimum value"),
   ABOVE_MAX_VALUE("ERR3 - Above minimum value"),
@@ -24,4 +25,10 @@ enum class ValidationErrorType(val message: String) {
   ;
 
   fun asErrorResponse(fields: List<String>): ValidationErrorResponse = ValidationErrorResponse(this, message, fields)
+
+  fun asErrorResponseForUnexpectedError(message: String): ValidationErrorResponse = ValidationErrorResponse(
+    this,
+    "Unexpected error thrown during calculation, see logs for further details: $message",
+    listOf(),
+  )
 }

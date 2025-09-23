@@ -40,28 +40,34 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.roundToNDecimals
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sigmoid
 
 @Service
-class SNSVRiskProducerService : RiskScoreProducer {
+class SNSVRiskProducerService : BaseRiskScoreProducer() {
 
   @Autowired
   lateinit var offenceGroupParametersService: OffenceGroupParametersService
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
     val errors = validateSNSV(request)
+    if (errors.isNotEmpty()) {
+      return applyErrorsToContextAndReturn(context, errors)
+    }
     return context.apply {
       SNSV =
-        if (errors.isNotEmpty()) {
-          SNSVObject(null, null, errors)
-        } else {
+        run {
           val scoreType = isSNSVDynamic(request)
           getSNSVObject(scoreType, request)
         }
     }
   }
 
+  override fun applyErrorsToContextAndReturn(
+    context: RiskScoreContext,
+    validationErrorResponses: List<ValidationErrorResponse>,
+  ): RiskScoreContext = context.apply { SNSV = SNSVObject(null, null, validationErrorResponses) }
+
   fun getSNSVObject(
     scoreType: ScoreType,
     request: RiskScoreRequest,
-  ): SNSVObject = runCatching {
+  ): SNSVObject {
     val errors = mutableListOf<ValidationErrorResponse>()
     val weightingSNSV = retrieveWeightingSNSV(scoreType, request)
     val weightingSNSVVATP = retrieveWeightingSNSVVATP(scoreType, request)
@@ -72,22 +78,10 @@ class SNSVRiskProducerService : RiskScoreProducer {
       return SNSVObject(null, scoreType, errors)
     }
     snsvDynamicValidation(request, errors)
-    when (scoreType) {
+    return when (scoreType) {
       ScoreType.STATIC -> snvsStaticSum(request.toSNSVStaticRequestValidated(weightingSNSVVATP!!, weightingSNSV!!))
       ScoreType.DYNAMIC -> snvsDynamicSum(request.toSNSVDynamicRequestValidated(weightingSNSVVATP!!, weightingSNSV!!))
     }.let { SNSVObject(it.sigmoid().roundToNDecimals(16), scoreType, errors) }
-  }.getOrElse {
-    SNSVObject(
-      null,
-      scoreType,
-      arrayListOf(
-        ValidationErrorResponse(
-          type = ValidationErrorType.UNEXPECTED_VALUE,
-          message = "Error: ${it.message}",
-          fields = emptyList(),
-        ),
-      ),
-    )
   }
 
   private fun retrieveWeightingSNSV(scoreType: ScoreType, request: RiskScoreRequest): Double? = when (scoreType) {
