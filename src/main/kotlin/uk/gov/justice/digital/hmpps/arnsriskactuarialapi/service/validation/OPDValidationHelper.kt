@@ -26,14 +26,16 @@ private fun validateDomesticAbuse(
   request: RiskScoreRequest,
   errors: MutableList<ValidationErrorResponse>,
 ) {
-  val unexpectedFields = arrayListOf<String>()
-  if (request.evidenceOfDomesticAbuse == null || !request.evidenceOfDomesticAbuse) {
-    if (request.domesticAbuseAgainstPartner != null) unexpectedFields.add(RiskScoreRequest::domesticAbuseAgainstPartner.name)
-    if (request.domesticAbuseAgainstFamily != null) unexpectedFields.add(RiskScoreRequest::domesticAbuseAgainstFamily.name)
-  }
-
-  if (unexpectedFields.isNotEmpty()) {
-    errors += ValidationErrorType.UNEXPECTED_VALUE.asErrorResponse(unexpectedFields)
+  val hasNoEvidenceOfDomesticAbuse = request.evidenceOfDomesticAbuse == null || !request.evidenceOfDomesticAbuse
+  val hasDomesticAbuseFieldsNotNull = request.domesticAbuseAgainstPartner != null || request.domesticAbuseAgainstFamily != null
+  if (hasNoEvidenceOfDomesticAbuse && hasDomesticAbuseFieldsNotNull) {
+    errors += ValidationErrorType.DOMESTIC_ABUSE_INCONSISTENT_INPUT.asErrorResponse(
+      listOf(
+        RiskScoreRequest::evidenceOfDomesticAbuse.name,
+        RiskScoreRequest::domesticAbuseAgainstFamily.name,
+        RiskScoreRequest::domesticAbuseAgainstPartner.name,
+      ),
+    )
   }
 }
 
