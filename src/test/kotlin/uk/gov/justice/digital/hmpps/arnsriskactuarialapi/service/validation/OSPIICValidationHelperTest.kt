@@ -80,8 +80,8 @@ class OSPIICValidationHelperTest {
     val result = validateOSPIIC(request)
 
     val error = result.first()
-    assertEquals(ValidationErrorType.UNEXPECTED_VALUE, error.type)
-    assertEquals("Error: Sexual motivation/offending identified - please complete sexual offence counts.", error.message)
+    assertEquals(ValidationErrorType.SEXUAL_OFFENDING_MISSING_COUNTS, error.type)
+    assertEquals("Sexual motivation/offending identified - complete sexual offence counts", error.message)
     assertEquals(expectedFields, error.fields)
   }
 }

@@ -51,17 +51,14 @@ private fun validateMaleSexualOffences(request: RiskScoreRequest, errors: Mutabl
     request.totalIndecentImageSanctions == 0 &&
     request.totalNonContactSexualOffences == 0
   ) {
-    errors +=
-      ValidationErrorResponse(
-        type = ValidationErrorType.UNEXPECTED_VALUE,
-        message = "Error: Sexual motivation/offending identified - please complete sexual offence counts.",
-        fields = arrayListOf(
-          RiskScoreRequest::totalContactAdultSexualSanctions.name,
-          RiskScoreRequest::totalContactChildSexualSanctions.name,
-          RiskScoreRequest::totalIndecentImageSanctions.name,
-          RiskScoreRequest::totalNonContactSexualOffences.name,
-        ),
-      )
+    errors += ValidationErrorType.SEXUAL_OFFENDING_MISSING_COUNTS.asErrorResponse(
+      listOf(
+        RiskScoreRequest::totalContactAdultSexualSanctions.name,
+        RiskScoreRequest::totalContactChildSexualSanctions.name,
+        RiskScoreRequest::totalIndecentImageSanctions.name,
+        RiskScoreRequest::totalNonContactSexualOffences.name,
+      ),
+    )
   }
 }
 
