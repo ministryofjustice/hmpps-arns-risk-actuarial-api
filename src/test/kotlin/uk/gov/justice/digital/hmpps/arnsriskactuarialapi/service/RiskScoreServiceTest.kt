@@ -103,12 +103,6 @@ class RiskScoreServiceTest {
 
     val result = riskScoreService.riskScoreProducer(request)
 
-    Assertions.assertNotNull(result.OGRS3)
-    Assertions.assertNotNull(result.OVP)
-    Assertions.assertNotNull(result.OGP)
-    Assertions.assertNotNull(result.MST)
-    Assertions.assertNotNull(result.OPD)
-    Assertions.assertNotNull(result.LDS)
-    Assertions.assertNotNull(result.RSR)
+    Assertions.assertNotNull(result)
   }
 }

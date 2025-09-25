@@ -8,8 +8,8 @@ import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.MotivationLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.YesSometimesNo
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPInputValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPObject
 
@@ -35,7 +35,7 @@ class OGPRiskProducerServiceCompanionTest {
       OGPObject(
         ogpReoffendingOneYear = 53,
         ogpReoffendingTwoYear = 68,
-        bandOGP = OGPBand.HIGH,
+        bandOGP = RiskBand.HIGH,
         totalOGPScore = 62,
         validationError = emptyList(),
       ),
@@ -56,7 +56,7 @@ class OGPRiskProducerServiceCompanionTest {
       OGPObject(
         ogpReoffendingOneYear = 40,
         ogpReoffendingTwoYear = 55,
-        bandOGP = OGPBand.MEDIUM,
+        bandOGP = RiskBand.MEDIUM,
         totalOGPScore = 53,
         validationError = emptyList(),
       ),
@@ -77,7 +77,7 @@ class OGPRiskProducerServiceCompanionTest {
       OGPObject(
         ogpReoffendingOneYear = 26,
         ogpReoffendingTwoYear = 39,
-        bandOGP = OGPBand.MEDIUM,
+        bandOGP = RiskBand.MEDIUM,
         totalOGPScore = 43,
         validationError = emptyList(),
       ),
@@ -98,7 +98,7 @@ class OGPRiskProducerServiceCompanionTest {
       OGPObject(
         ogpReoffendingOneYear = 15,
         ogpReoffendingTwoYear = 24,
-        bandOGP = OGPBand.LOW,
+        bandOGP = RiskBand.LOW,
         totalOGPScore = 31,
         validationError = emptyList(),
       ),
@@ -123,7 +123,7 @@ class OGPRiskProducerServiceCompanionTest {
     val expected = OGPObject(
       ogpReoffendingOneYear = 53,
       ogpReoffendingTwoYear = 68,
-      bandOGP = OGPBand.HIGH,
+      bandOGP = RiskBand.HIGH,
       totalOGPScore = 62,
       validationError = emptyList(),
     )

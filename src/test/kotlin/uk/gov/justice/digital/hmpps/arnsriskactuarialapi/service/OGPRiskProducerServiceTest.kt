@@ -5,11 +5,11 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.MotivationLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.YesSometimesNo
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3Object
 
@@ -46,7 +46,7 @@ class OGPRiskProducerServiceTest {
       OGP = OGPObject(
         ogpReoffendingOneYear = 53,
         ogpReoffendingTwoYear = 68,
-        bandOGP = OGPBand.HIGH,
+        bandOGP = RiskBand.HIGH,
         totalOGPScore = 62,
         validationError = emptyList(),
       ),

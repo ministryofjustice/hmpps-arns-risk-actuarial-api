@@ -41,13 +41,13 @@ fun omittedPNI(): PNIObject = PNIObject(ProgrammeNeedIdentifier.OMISSION, null)
 
 fun emptyLDS(): LDSObject = LDSObject(null, null)
 
-fun emptyOSPDC(): OSPDCObject = OSPDCObject(null, null, null, null)
+fun emptyOSPDC(): OSPDCObject = OSPDCObject(null, null, null, null, null, null)
 
 fun emptySNSV(): SNSVObject = SNSVObject(null, null, null)
 
-fun emptyRSR(): RSRObject = RSRObject(null, null, null, null, null, null, null, null, null)
+fun emptyRSR(): RSRObject = RSRObject(null, null, null, null, null, null, null, null, null, null, null)
 
-fun emptyOSPIIC(): OSPIICObject = OSPIICObject(null, null, emptyList())
+fun emptyOSPIIC(): OSPIICObject = OSPIICObject(null, null, null, null, emptyList())
 
 fun emptyContext() = RiskScoreContext(version = RiskScoreVersion.V1_0)
 
