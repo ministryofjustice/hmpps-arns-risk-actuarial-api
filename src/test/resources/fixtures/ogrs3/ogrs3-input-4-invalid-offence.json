@@ -1,22 +1,33 @@
 {
-  "request":{
-  "version": "V1_0",
-  "gender": "MALE",
-  "dateOfBirth": "1964-10-15",
-  "dateOfCurrentConviction": "2014-12-12",
-  "dateAtStartOfFollowup": "2027-12-12",
-  "totalNumberOfSanctionsForAllOffences": 10,
-  "ageAtFirstSanction": 30,
-  "currentOffenceCode": "ABC"
+  "request": {
+    "version": "V1_0",
+    "gender": "MALE",
+    "dateOfBirth": "1964-10-15",
+    "dateOfCurrentConviction": "2014-12-12",
+    "dateAtStartOfFollowup": "2027-12-12",
+    "totalNumberOfSanctionsForAllOffences": 10,
+    "ageAtFirstSanction": 30,
+    "currentOffenceCode": "ABC"
   },
   "response": {
-    "ogrs3OneYear" : null,
-    "ogrs3TwoYear" : null,
-    "band" : null,
-    "validationError" : [ {
-      "type" : "OFFENCE_CODE_INCORRECT_FORMAT",
-      "message" : "Offence code must be a string of 5 digits",
-      "fields" : [ "currentOffenceCode" ]
-    } ]
+    "algorithm": "OGRS3",
+    "type": "STATIC",
+    "modelVersion": "1.0",
+    "thresholdsVersion": "1.0",
+    "output": {
+      "band": null,
+      "oneYearScore": null,
+      "twoYearScore": null
+    },
+    "featureValues": [],
+    "validationErrors": [
+      {
+        "type": "OFFENCE_CODE_INCORRECT_FORMAT",
+        "message": "Offence code must be a string of 5 digits",
+        "fields": [
+          "currentOffenceCode"
+        ]
+      }
+    ]
   }
 }

@@ -18,9 +18,17 @@
     "hasCurrentPsychiatricTreatment": false
   },
   "response": {
-    "provenViolentTypeReoffendingOneYear": 80,
-    "provenViolentTypeReoffendingTwoYear": 89,
-    "band": "VERY_HIGH",
-    "validationError": []
+    "algorithm": "OVP",
+    "type": "DYNAMIC",
+    "modelVersion": "1.0",
+    "thresholdsVersion": "1.0",
+    "output": {
+      "band": "VERY_HIGH",
+      "oneYearScore": 80,
+      "twoYearScore": 89,
+      "pointScore": 82
+    },
+    "featureValues": [],
+    "validationErrors": []
   }
 }

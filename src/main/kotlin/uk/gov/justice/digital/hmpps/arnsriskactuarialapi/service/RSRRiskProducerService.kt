@@ -1,6 +1,7 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
 import org.springframework.stereotype.Service
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
@@ -17,8 +18,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.roundToNDecimals
 class RSRRiskProducerService : BaseRiskScoreProducer() {
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
-    val ospdc = context.OSPDC ?: OSPDCObject(null, null, null, null)
-    val ospiic = context.OSPIIC ?: OSPIICObject(null, null, null)
+    val ospdc = context.OSPDC ?: OSPDCObject(null, null, null, null, null, null, null)
+    val ospiic = context.OSPIIC ?: OSPIICObject(null, null, null, null, null)
     val snsv = context.SNSV ?: SNSVObject(null, null, null)
 
     val errors = listOfNotNull(
@@ -55,6 +56,8 @@ class RSRRiskProducerService : BaseRiskScoreProducer() {
         rsrBand,
         scoreType,
         ospRiskReduction,
+        request.gender == Gender.FEMALE,
+        request.hasEverCommittedSexualOffence,
         errors,
       )
     }
@@ -65,6 +68,8 @@ class RSRRiskProducerService : BaseRiskScoreProducer() {
     validationErrorResponses: List<ValidationErrorResponse>,
   ): RiskScoreContext = context.apply {
     RSR = RSRObject(
+      null,
+      null,
       null,
       null,
       null,

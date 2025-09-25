@@ -11,9 +11,16 @@
     "assessmentDate": "2025-08-01"
   },
   "response": {
-    "ogrs3OneYear": 24,
-    "ogrs3TwoYear": 39,
-    "band": "LOW",
-    "validationError": []
+    "algorithm": "OGRS3",
+    "type": "STATIC",
+    "modelVersion": "1.0",
+    "thresholdsVersion": "1.0",
+    "output": {
+      "band": "LOW",
+      "oneYearScore": 24,
+      "twoYearScore": 39
+    },
+    "featureValues": [],
+    "validationErrors": []
   }
 }

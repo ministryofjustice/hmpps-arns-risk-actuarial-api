@@ -9,7 +9,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResp
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ospiic.OSPIICInputValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ospiic.OSPIICObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OSPIICTransformationHelper.Companion.ospiicHierarchyBand
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OSPIICTransformationHelper.Companion.toOSPIICOutput
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateMaleSexualOffencesInconsistentFields
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateOSPIIC
 
@@ -25,7 +24,7 @@ class OSPIICRiskProducerService : BaseRiskScoreProducer() {
     return context.apply {
       when (request.gender!!) {
         Gender.FEMALE -> {
-          OSPIIC = OSPIICObject(RiskBand.NOT_APPLICABLE, 0.0, errors)
+          OSPIIC = OSPIICObject(RiskBand.NOT_APPLICABLE, 0.0, true, request.hasEverCommittedSexualOffence, errors)
         }
         Gender.MALE -> {
           val maleErrors = mutableListOf<ValidationErrorResponse>()
@@ -34,6 +33,8 @@ class OSPIICRiskProducerService : BaseRiskScoreProducer() {
             OSPIIC = OSPIICObject(
               RiskBand.NOT_APPLICABLE,
               0.0,
+              false,
+              request.hasEverCommittedSexualOffence,
               maleErrors,
             )
           } else {
@@ -43,7 +44,10 @@ class OSPIICRiskProducerService : BaseRiskScoreProducer() {
               totalIndecentImageSanctions = request.totalIndecentImageSanctions!!,
               totalNonContactSexualOffences = request.totalNonContactSexualOffences!!,
             )
-            OSPIIC = toOSPIICOutput(ospiicHierarchyBand(validInput))
+            OSPIIC = run {
+              val hierarchyBand = ospiicHierarchyBand(validInput)
+              OSPIICObject(hierarchyBand.band, hierarchyBand.rsrContribution, false, request.hasEverCommittedSexualOffence, emptyList())
+            }
           }
         }
       }
@@ -53,5 +57,5 @@ class OSPIICRiskProducerService : BaseRiskScoreProducer() {
   override fun applyErrorsToContextAndReturn(
     context: RiskScoreContext,
     validationErrorResponses: List<ValidationErrorResponse>,
-  ): RiskScoreContext = context.apply { OSPIIC = OSPIICObject(null, null, validationErrorResponses) }
+  ): RiskScoreContext = context.apply { OSPIIC = OSPIICObject(null, null, null, null, validationErrorResponses) }
 }

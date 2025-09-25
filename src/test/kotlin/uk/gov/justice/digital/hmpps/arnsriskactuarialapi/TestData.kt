@@ -27,7 +27,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.rsr.RSRObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.SNSVObject
 import java.time.LocalDate
 
-fun emptyOVP(): OVPObject = OVPObject(null, null, null, null)
+fun emptyOVP(): OVPObject = OVPObject(null, null, null, null, null)
 
 fun emptyOGRS3(): OGRS3Object = OGRS3Object(null, null, null, null)
 
@@ -41,13 +41,13 @@ fun omittedPNI(): PNIObject = PNIObject(ProgrammeNeedIdentifier.OMISSION, null)
 
 fun emptyLDS(): LDSObject = LDSObject(null, null)
 
-fun emptyOSPDC(): OSPDCObject = OSPDCObject(null, null, null, null)
+fun emptyOSPDC(): OSPDCObject = OSPDCObject(null, null, null, null, null, null, null)
 
 fun emptySNSV(): SNSVObject = SNSVObject(null, null, null)
 
-fun emptyRSR(): RSRObject = RSRObject(null, null, null, null, null, null, null, null, null)
+fun emptyRSR(): RSRObject = RSRObject(null, null, null, null, null, null, null, null, null, null, null)
 
-fun emptyOSPIIC(): OSPIICObject = OSPIICObject(null, null, emptyList())
+fun emptyOSPIIC(): OSPIICObject = OSPIICObject(null, null, null, null, emptyList())
 
 fun emptyContext() = RiskScoreContext(version = RiskScoreVersion.V1_0)
 
@@ -68,6 +68,7 @@ fun highOgrs2() = OGRS3Object(
 fun highOvp() = OVPObject(
   77,
   88,
+  123,
   RiskBand.VERY_HIGH,
   emptyList(),
 )
@@ -88,18 +89,6 @@ object RiskScoreRequestTestConstants {
     understandsOtherPeoplesViews = ProblemLevel.NO_PROBLEMS,
     proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
   )
-  val ALT_NULL_OGP_REQUEST = RiskScoreRequest(
-    version = RiskScoreVersion.V1_0,
-    isCurrentlyOfNoFixedAbodeOrTransientAccommodation = null,
-    isUnemployed = false,
-    regularOffendingActivities = null,
-    currentDrugMisuse = ProblemLevel.NO_PROBLEMS,
-    motivationToTackleDrugMisuse = null,
-    problemSolvingSkills = ProblemLevel.NO_PROBLEMS,
-    awarenessOfConsequences = null,
-    understandsOtherPeoplesViews = ProblemLevel.NO_PROBLEMS,
-    proCriminalAttitudes = null,
-  )
   val OGP_REQUEST_39 = RiskScoreRequest(
     version = RiskScoreVersion.V1_0,
     isCurrentlyOfNoFixedAbodeOrTransientAccommodation = true,
@@ -108,18 +97,6 @@ object RiskScoreRequestTestConstants {
     currentDrugMisuse = ProblemLevel.NO_PROBLEMS,
     motivationToTackleDrugMisuse = MotivationLevel.FULL_MOTIVATION,
     problemSolvingSkills = ProblemLevel.NO_PROBLEMS,
-    awarenessOfConsequences = YesSometimesNo.YES,
-    understandsOtherPeoplesViews = ProblemLevel.NO_PROBLEMS,
-    proCriminalAttitudes = null,
-  )
-  val OGP_REQUEST_0458 = RiskScoreRequest(
-    version = RiskScoreVersion.V1_0,
-    isCurrentlyOfNoFixedAbodeOrTransientAccommodation = null,
-    isUnemployed = false,
-    regularOffendingActivities = ProblemLevel.NO_PROBLEMS,
-    currentDrugMisuse = ProblemLevel.NO_PROBLEMS,
-    motivationToTackleDrugMisuse = null,
-    problemSolvingSkills = null,
     awarenessOfConsequences = YesSometimesNo.YES,
     understandsOtherPeoplesViews = ProblemLevel.NO_PROBLEMS,
     proCriminalAttitudes = null,

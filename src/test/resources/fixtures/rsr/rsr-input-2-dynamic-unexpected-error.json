@@ -26,16 +26,84 @@
     ]
   },
   "response": {
-    "ospdcBand": "NOT_APPLICABLE",
-    "ospdcScore": 0.0,
-    "ospiicBand": "NOT_APPLICABLE",
-    "ospiicScore": 0.0,
-    "snsvScore": null,
-    "rsrScore": 0.0,
-    "rsrBand": "LOW",
-    "scoreType": null,
-    "ospRiskReduction": null,
-    "validationError": [
+    "algorithm": "RSR",
+    "type": "COMBINED",
+    "modelVersion": "1.0",
+    "thresholdsVersion": "1.0",
+    "output": {
+      "band": "LOW",
+      "overallScore": 0.0,
+      "femaleVersion": false,
+      "hasSexualOffenceHistory": null,
+      "componentScores": [
+        {
+          "algorithm": "OSPDC",
+          "type": "STATIC",
+          "modelVersion": "1.0",
+          "thresholdsVersion": "1.0",
+          "output": {
+            "band": null,
+            "pointScore": null,
+            "score": null,
+            "femaleVersion": null,
+            "hasSexualOffenceHistory": null,
+            "riskBandReductionApplied": null
+          },
+          "featureValues": [],
+          "validationErrors": [
+            {
+              "type": "MISSING_MANDATORY_INPUT",
+              "message": "Mandatory input field(s) missing",
+              "fields": [
+                "totalContactAdultSexualSanctions",
+                "totalContactChildSexualSanctions",
+                "totalNonContactSexualOffences",
+                "totalIndecentImageSanctions"
+              ]
+            }
+          ]
+        },
+        {
+          "algorithm": "OGRS3",
+          "type": "STATIC",
+          "modelVersion": "1.0",
+          "thresholdsVersion": "1.0",
+          "output": {
+            "band": null,
+            "oneYearScore": null,
+            "twoYearScore": null
+          },
+          "featureValues": [],
+          "validationErrors": [
+            {
+              "type": "UNEXPECTED_ERROR",
+              "message": "Unexpected error thrown during calculation, see logs for further details: Conviction date cannot be before date of birth.",
+              "fields": []
+            }
+          ]
+        },
+        {
+          "algorithm": "SNSV",
+          "type": null,
+          "modelVersion": "1.0",
+          "thresholdsVersion": "1.0",
+          "output": {
+            "band": null,
+            "score": null
+          },
+          "featureValues": [],
+          "validationErrors": [
+            {
+              "type": "UNEXPECTED_ERROR",
+              "message": "Unexpected error thrown during calculation, see logs for further details: Age at date at start of followup cannot be less than 10",
+              "fields": []
+            }
+          ]
+        }
+      ]
+    },
+    "featureValues": [],
+    "validationErrors": [
       {
         "type": "MISSING_MANDATORY_INPUT",
         "message": "Mandatory input field(s) missing",
