@@ -12,20 +12,13 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateMST
 
 @Service
-class MSTRiskProducerService : RiskScoreProducer {
+class MSTRiskProducerService : BaseRiskScoreProducer() {
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
     val errors = validateMST(request)
 
     if (errors.isNotEmpty()) {
-      return context.apply {
-        MST = MSTObject(
-          maturityScore = null,
-          maturityFlag = null,
-          isMstApplicable = null,
-          validationError = errors,
-        )
-      }
+      return applyErrorsToContextAndReturn(context, errors)
     }
 
     val validRequest = MSTRequestValidated(
@@ -44,7 +37,21 @@ class MSTRiskProducerService : RiskScoreProducer {
       understandsOtherPeoplesViews = request.understandsOtherPeoplesViews,
     )
 
-    return context.apply { MST = getMstObject(validRequest, errors) }
+    return context.apply {
+      MST = getMstObject(validRequest, errors)
+    }
+  }
+
+  override fun applyErrorsToContextAndReturn(
+    context: RiskScoreContext,
+    validationErrorResponses: List<ValidationErrorResponse>,
+  ): RiskScoreContext = context.apply {
+    MST = MSTObject(
+      null,
+      null,
+      null,
+      validationErrorResponses,
+    )
   }
 
   private fun getMstObject(

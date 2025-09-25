@@ -4,13 +4,13 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertNull
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validOSPDCRiskScoreRequest
 import java.time.LocalDate
+import kotlin.test.assertFailsWith
 
 class OSPDCRiskProducerServiceTest {
 
@@ -154,22 +154,18 @@ class OSPDCRiskProducerServiceTest {
   }
 
   @Test
-  fun `should return UNEXPECTED_VALUE OSPDCObject when calculation error`() {
+  fun `should throw exception when calculation error`() {
     // When
-    val result = service.getRiskScore(
-      validOSPDCRiskScoreRequest().copy(
-        totalNonContactSexualOffences = -1,
-      ),
-      emptyContext(),
+    val exception = assertFailsWith<IllegalArgumentException>(
+      block = {
+        service.getRiskScore(
+          validOSPDCRiskScoreRequest().copy(totalNonContactSexualOffences = -1),
+          emptyContext(),
+        )
+      },
     )
 
     // Then
-    assertNotNull(result)
-    assertNull(result.OSPDC?.ospdcScore)
-    assertNull(result.OSPDC?.ospdcBand)
-    assertEquals(1, result.OSPDC?.validationError?.size)
-    val error = result.OSPDC?.validationError?.first()
-    assertEquals(ValidationErrorType.UNEXPECTED_VALUE, error?.type)
-    assertEquals("Error: Invalid total non-contact sexual offences excluding indecent images value: -1", error?.message)
+    assertEquals("Invalid total non-contact sexual offences excluding indecent images value: -1", exception.message)
   }
 }

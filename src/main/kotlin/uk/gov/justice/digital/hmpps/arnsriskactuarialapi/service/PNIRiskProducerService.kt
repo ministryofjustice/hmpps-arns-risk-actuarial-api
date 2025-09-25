@@ -6,6 +6,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.ProgrammeNeedIdentifier
@@ -28,16 +29,16 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.addM
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validatePNI
 
 @Service
-class PNIRiskProducerService : RiskScoreProducer {
+class PNIRiskProducerService : BaseRiskScoreProducer() {
 
   override fun getRiskScore(
     request: RiskScoreRequest,
     context: RiskScoreContext,
   ): RiskScoreContext {
-    var errors = validatePNI(request)
+    val errors = validatePNI(request)
 
     if (errors.isNotEmpty()) {
-      return context.apply { PNI = PNIObject(ProgrammeNeedIdentifier.OMISSION, errors) }
+      return applyErrorsToContextAndReturn(context, errors)
     }
 
     val requestValidated = PNIRequestValidated(
@@ -69,9 +70,9 @@ class PNIRiskProducerService : RiskScoreProducer {
 
     val overallNeed = overallNeedsGroupingCalculation(requestValidated)
     val overallNeedScore = overallNeed.first
-    errors = addMissingFields(overallNeed.third.toList(), errors)
+    val additionalErrors = addMissingFields(overallNeed.third.toList(), errors)
     if (overallNeedScore == null) {
-      return context.apply { PNI = PNIObject(ProgrammeNeedIdentifier.OMISSION, errors) }
+      return context.apply { PNI = PNIObject(ProgrammeNeedIdentifier.OMISSION, additionalErrors) }
     }
 
     val overallRisk = when {
@@ -116,7 +117,17 @@ class PNIRiskProducerService : RiskScoreProducer {
       }
     }
 
-    return context.apply { PNI = PNIObject(pniPathway, errors) }
+    return context.apply { PNI = PNIObject(pniPathway, additionalErrors) }
+  }
+
+  override fun applyErrorsToContextAndReturn(
+    context: RiskScoreContext,
+    validationErrorResponses: List<ValidationErrorResponse>,
+  ): RiskScoreContext = context.apply {
+    PNI = PNIObject(
+      ProgrammeNeedIdentifier.OMISSION,
+      validationErrorResponses,
+    )
   }
 
   /**

@@ -18,6 +18,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.opd.OPDResult
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOPD
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validOPDRiskScoreRequest
+import kotlin.test.assertFailsWith
 
 @ExtendWith(MockitoExtension::class)
 class OPDRiskProducerServiceTest {
@@ -29,7 +30,7 @@ class OPDRiskProducerServiceTest {
   lateinit var service: OPDRiskProducerService
 
   @Test
-  fun `should handle exceptions with error result`() {
+  fun `should throw exceptions`() {
     whenever(offenceGroupParametersService.isViolentOrSexualType("02504"))
       .thenThrow(IllegalArgumentException("Something"))
 
@@ -43,19 +44,11 @@ class OPDRiskProducerServiceTest {
       hasCustodialSentence = true,
     )
 
-    val result = service.getRiskScore(request, context).OPD!!
-    assertEquals(false, result.opdCheck)
-    assertEquals(null, result.opdResult)
-
-    assertTrue(result.validationError?.isNotEmpty() == true)
-    assertEquals(
-      ValidationErrorResponse(
-        type = ValidationErrorType.NO_MATCHING_INPUT,
-        message = "Error: Something",
-        fields = emptyList(),
-      ),
-      result.validationError?.first(),
+    val exception = assertFailsWith<IllegalArgumentException>(
+      block = { service.getRiskScore(request, context).OPD!! },
     )
+
+    assertEquals("Something", exception.message)
   }
 
   @Test

@@ -56,6 +56,6 @@ class RiskScoreService {
     ospiicRiskProducerService,
     rsrRiskProducerService,
   ).fold(RiskScoreContext(riskScoreRequest.version)) { context, service ->
-    service.getRiskScore(riskScoreRequest, context)
+    service.calculateRiskScore(riskScoreRequest, context)
   }.toRiskScoreResponse()
 }

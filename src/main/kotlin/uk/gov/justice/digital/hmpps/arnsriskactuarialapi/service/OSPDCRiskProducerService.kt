@@ -6,7 +6,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.osp.OSPDCObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.osp.OSPDCRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getAgeAtLastSanctionForSexualOffenceWeight
@@ -26,15 +25,13 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.vali
 const val FIXED_RSR_CONTRIBUTION = 0.00383142
 
 @Service
-class OSPDCRiskProducerService : RiskScoreProducer {
+class OSPDCRiskProducerService : BaseRiskScoreProducer() {
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
     val errors = validateOSPDC(request)
 
     if (errors.isNotEmpty()) {
-      return context.apply {
-        OSPDC = OSPDCObject(null, null, null, errors)
-      }
+      return applyErrorsToContextAndReturn(context, errors)
     }
 
     if (request.hasEverCommittedSexualOffence == false) {
@@ -81,9 +78,14 @@ class OSPDCRiskProducerService : RiskScoreProducer {
     }
   }
 
+  override fun applyErrorsToContextAndReturn(
+    context: RiskScoreContext,
+    validationErrorResponses: List<ValidationErrorResponse>,
+  ): RiskScoreContext = context.apply { OSPDC = OSPDCObject(null, null, null, validationErrorResponses) }
+
   private fun getOSPDCObject(
     request: OSPDCRequestValidated,
-  ): OSPDCObject = runCatching {
+  ): OSPDCObject {
     listOf(
       getTotalContactAdultSexualSanctionsWeight(request.totalContactAdultSexualSanctions),
       getTotalContactChildSexualSanctionsWeight(request.totalContactChildSexualSanctions),
@@ -100,7 +102,7 @@ class OSPDCRiskProducerService : RiskScoreProducer {
     ).sum()
       .let { ospdc64PointScore ->
         if (ospdc64PointScore == 0) {
-          OSPDCObject(
+          return OSPDCObject(
             getOSPDCBand(ospdc64PointScore),
             getOSPDCScore(ospdc64PointScore),
             null,
@@ -117,7 +119,7 @@ class OSPDCRiskProducerService : RiskScoreProducer {
             request.assessmentDate,
             ospdcBand,
           )
-          OSPDCObject(
+          return OSPDCObject(
             getOSPDCRiskBandReduction(ospRiskReduction, ospdcBand),
             getOSPDCScore(ospdc64PointScore),
             ospRiskReduction,
@@ -125,18 +127,5 @@ class OSPDCRiskProducerService : RiskScoreProducer {
           )
         }
       }
-  }.getOrElse {
-    OSPDCObject(
-      null,
-      null,
-      null,
-      arrayListOf(
-        ValidationErrorResponse(
-          type = ValidationErrorType.UNEXPECTED_VALUE,
-          message = "Error: ${it.message}",
-          fields = emptyList(),
-        ),
-      ),
-    )
   }
 }

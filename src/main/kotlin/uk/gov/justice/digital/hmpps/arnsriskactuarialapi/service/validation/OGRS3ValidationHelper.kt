@@ -3,7 +3,6 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3Object
 import kotlin.reflect.KProperty1
 
 private const val MIN_CONVICTION_AGE = 10
@@ -48,10 +47,3 @@ fun validateAgeAtFirstSanction(ageAtFirstSanction: Int, ageAtCurrentConviction: 
 } else {
   null
 }
-
-fun returnOGRS3ObjectWithError(validationErrorResponse: ValidationErrorResponse): OGRS3Object = OGRS3Object(
-  null,
-  null,
-  null,
-  listOf(validationErrorResponse),
-)

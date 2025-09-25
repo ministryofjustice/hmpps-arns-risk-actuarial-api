@@ -45,7 +45,7 @@ private const val ODP_MALE_INDICATOR_SCORE_MIN = 2
 private const val ODP_FEMALE_SCORE_MIN = 10
 
 @Service
-class OPDRiskProducerService : RiskScoreProducer {
+class OPDRiskProducerService : BaseRiskScoreProducer() {
 
   @Autowired
   lateinit var offenceGroupParametersService: OffenceGroupParametersService
@@ -54,38 +54,45 @@ class OPDRiskProducerService : RiskScoreProducer {
     request: RiskScoreRequest,
     context: RiskScoreContext,
   ): RiskScoreContext {
-    try {
-      // validation
-      val errors = validateOPD(request)
-      if (errors.isNotEmpty()) {
-        return invalidInformationResult(context, errors)
-      }
-
-      val validatedRequest = mapRequestValidated(request)
-
-      // checks
-      if (hasAllMaleQuestionsUnanswered(request) || hasAllFemaleQuestionsUnanswered(request)) {
-        return notApplicableResult(context)
-      }
-      val isViolentOrSexualType =
-        offenceGroupParametersService.isViolentOrSexualType(validatedRequest.currentOffenceCode)
-          ?: return invalidInformationResult(
-            context,
-            listOf(
-              ValidationErrorType.OFFENCE_CODE_MAPPING_NOT_FOUND.asErrorResponse(
-                listOf(RiskScoreRequest::currentOffenceCode.name),
-              ),
-            ),
-          )
-
-      if (!isOpdApplicable(validatedRequest, isViolentOrSexualType)) {
-        return screenOutResult(context)
-      }
-
-      return getOPDResult(validatedRequest, context)
-    } catch (error: Throwable) {
-      return errorResult(error, context)
+    // validation
+    val errors = validateOPD(request)
+    if (errors.isNotEmpty()) {
+      return invalidInformationResult(context, errors)
     }
+
+    val validatedRequest = mapRequestValidated(request)
+
+    // checks
+    if (hasAllMaleQuestionsUnanswered(request) || hasAllFemaleQuestionsUnanswered(request)) {
+      return notApplicableResult(context)
+    }
+    val isViolentOrSexualType =
+      offenceGroupParametersService.isViolentOrSexualType(validatedRequest.currentOffenceCode)
+        ?: return invalidInformationResult(
+          context,
+          listOf(
+            ValidationErrorType.OFFENCE_CODE_MAPPING_NOT_FOUND.asErrorResponse(
+              listOf(RiskScoreRequest::currentOffenceCode.name),
+            ),
+          ),
+        )
+
+    if (!isOpdApplicable(validatedRequest, isViolentOrSexualType)) {
+      return screenOutResult(context)
+    }
+
+    return getOPDResult(validatedRequest, context)
+  }
+
+  override fun applyErrorsToContextAndReturn(
+    context: RiskScoreContext,
+    validationErrorResponses: List<ValidationErrorResponse>,
+  ): RiskScoreContext = context.apply {
+    OPD = OPDObject(
+      opdCheck = false,
+      opdResult = null,
+      validationError = validationErrorResponses,
+    )
   }
 
   private fun mapRequestValidated(request: RiskScoreRequest): OPDRequestValidated = OPDRequestValidated(
@@ -255,20 +262,6 @@ class OPDRiskProducerService : RiskScoreProducer {
     return context.apply {
       OPD = OPDObject(opdCheck = true, opdResult = opdResult, opdOverride = opdOverride, validationError = emptyList())
     }
-  }
-
-  private fun errorResult(
-    throwable: Throwable,
-    context: RiskScoreContext,
-  ): RiskScoreContext {
-    val errors = listOf(
-      ValidationErrorResponse(
-        type = ValidationErrorType.NO_MATCHING_INPUT,
-        message = "Error: ${throwable.message}",
-        fields = emptyList(),
-      ),
-    )
-    return context.apply { OPD = OPDObject(opdCheck = false, opdResult = null, validationError = errors) }
   }
 
   /**

@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPInputValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.OGPTransformationHelper.Companion.awarenessOfConsequencesOffendersScore
@@ -32,15 +31,13 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateOGP
 
 @Service
-class OGPRiskProducerService : RiskScoreProducer {
+class OGPRiskProducerService : BaseRiskScoreProducer() {
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
     val errors = validateOGP(request, context)
 
     if (errors.isNotEmpty()) {
-      return context.apply {
-        OGP = OGPObject(null, null, null, null, errors)
-      }
+      return applyErrorsToContextAndReturn(context, errors)
     }
 
     val validInput = OGPInputValidated(
@@ -59,79 +56,77 @@ class OGPRiskProducerService : RiskScoreProducer {
     return context.apply { OGP = getOGPOutput(validInput) }
   }
 
-  companion object {
-    fun getOGPOutput(input: OGPInputValidated): OGPObject = runCatching {
-      // Transformation Step
-      val isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScore =
-        isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScore(input.isCurrentlyOfNoFixedAbodeOrTransientAccommodation)
-      val isUnemployedOffendersScore =
-        isUnemployedOffendersScore(input.isUnemployed)
-      val regularOffendingActivitiesOffendersScore =
-        regularOffendingActivitiesOffendersScore(input.regularOffendingActivities)
-      val currentDrugMisuseOffendersScore =
-        currentDrugMisuseOffendersScore(input.currentDrugMisuse)
-      val motivationToTackleDrugMisuseOffendersScore =
-        motivationToTackleDrugMisuseOffendersScore(input.motivationToTackleDrugMisuse)
-      val problemSolvingSkillsOffendersScore =
-        problemSolvingSkillsOffendersScore(input.problemSolvingSkills)
-      val awarenessOfConsequencesOffendersScore =
-        awarenessOfConsequencesOffendersScore(input.awarenessOfConsequences)
-      val understandsOtherPeoplesViewsOffendersScore =
-        understandsOtherPeoplesViewsOffendersScore(input.understandsOtherPeoplesViews)
-      val proCriminalAttitudesOffendersScore =
-        proCriminalAttitudesOffendersScore(input.proCriminalAttitudes)
-      val drugMisuseNonViolentOffendersScore =
-        drugMisuseNonViolentOffendersScore(currentDrugMisuseOffendersScore, motivationToTackleDrugMisuseOffendersScore)
-      val thinkingAndBehaviourNonViolentOffendersScore =
-        thinkingAndBehaviourNonViolentOffendersScore(
-          problemSolvingSkillsOffendersScore,
-          awarenessOfConsequencesOffendersScore,
-          understandsOtherPeoplesViewsOffendersScore,
-        )
-      // Weighted Scores
-      val ogrs3TwoYearWeighted = ogrs3TwoYearWeighted(input.ogrs3TwoYear)
-      val isCurrentlyOfNoFixedAbodeOrTransientAccommodationWeighted =
-        isCurrentlyOfNoFixedAbodeOrTransientAccommodationWeighted(isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScore)
-      val isUnemployedWeighted =
-        isUnemployedWeighted(isUnemployedOffendersScore)
-      val regularOffendingActivitiesWeighted =
-        regularOffendingActivitiesWeighted(regularOffendingActivitiesOffendersScore)
-      val drugMisuseNonViolentWeighted = drugMisuseNonViolentWeighted(drugMisuseNonViolentOffendersScore)
-      val thinkingAndBehaviourNonViolentWeighted =
-        thinkingAndBehaviourNonViolentWeighted(thinkingAndBehaviourNonViolentOffendersScore)
-      val proCriminalAttitudesWeighted =
-        proCriminalAttitudesWeighted(proCriminalAttitudesOffendersScore)
-      // Final Outputs
-      val totalOGPScore =
-        totalOGPScore(
-          ogrs3TwoYearWeighted,
-          isCurrentlyOfNoFixedAbodeOrTransientAccommodationWeighted,
-          isUnemployedWeighted,
-          regularOffendingActivitiesWeighted,
-          drugMisuseNonViolentWeighted,
-          thinkingAndBehaviourNonViolentWeighted,
-          proCriminalAttitudesWeighted,
-        )
-      val ogpReoffendingOneYear = ogpReoffendingOneYear(totalOGPScore)
-      val ogpReoffendingTwoYear = ogpReoffendingTwoYear(totalOGPScore)
-      val bandOGP = bandOGP(ogpReoffendingTwoYear)
-      // Create OGP Output
-      OGPObject(ogpReoffendingOneYear, ogpReoffendingTwoYear, bandOGP, totalOGPScore, emptyList())
-    }.getOrElse {
-      // Create OGP Output
-      OGPObject(
-        null,
-        null,
-        null,
-        null,
-        listOf(
-          ValidationErrorResponse(
-            type = ValidationErrorType.UNEXPECTED_VALUE,
-            message = "Error: ${it.message}",
-            fields = emptyList(),
-          ),
-        ),
+  override fun applyErrorsToContextAndReturn(
+    context: RiskScoreContext,
+    validationErrorResponses: List<ValidationErrorResponse>,
+  ): RiskScoreContext = context.apply {
+    OGP = OGPObject(
+      null,
+      null,
+      null,
+      null,
+      validationErrorResponses,
+    )
+  }
+
+  fun getOGPOutput(input: OGPInputValidated): OGPObject {
+    // Transformation Step
+    val isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScore =
+      isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScore(input.isCurrentlyOfNoFixedAbodeOrTransientAccommodation)
+    val isUnemployedOffendersScore =
+      isUnemployedOffendersScore(input.isUnemployed)
+    val regularOffendingActivitiesOffendersScore =
+      regularOffendingActivitiesOffendersScore(input.regularOffendingActivities)
+    val currentDrugMisuseOffendersScore =
+      currentDrugMisuseOffendersScore(input.currentDrugMisuse)
+    val motivationToTackleDrugMisuseOffendersScore =
+      motivationToTackleDrugMisuseOffendersScore(input.motivationToTackleDrugMisuse)
+    val problemSolvingSkillsOffendersScore =
+      problemSolvingSkillsOffendersScore(input.problemSolvingSkills)
+    val awarenessOfConsequencesOffendersScore =
+      awarenessOfConsequencesOffendersScore(input.awarenessOfConsequences)
+    val understandsOtherPeoplesViewsOffendersScore =
+      understandsOtherPeoplesViewsOffendersScore(input.understandsOtherPeoplesViews)
+    val proCriminalAttitudesOffendersScore =
+      proCriminalAttitudesOffendersScore(input.proCriminalAttitudes)
+    val drugMisuseNonViolentOffendersScore =
+      drugMisuseNonViolentOffendersScore(currentDrugMisuseOffendersScore, motivationToTackleDrugMisuseOffendersScore)
+    val thinkingAndBehaviourNonViolentOffendersScore =
+      thinkingAndBehaviourNonViolentOffendersScore(
+        problemSolvingSkillsOffendersScore,
+        awarenessOfConsequencesOffendersScore,
+        understandsOtherPeoplesViewsOffendersScore,
       )
-    }
+    // Weighted Scores
+    val ogrs3TwoYearWeighted = ogrs3TwoYearWeighted(input.ogrs3TwoYear)
+    val isCurrentlyOfNoFixedAbodeOrTransientAccommodationWeighted =
+      isCurrentlyOfNoFixedAbodeOrTransientAccommodationWeighted(
+        isCurrentlyOfNoFixedAbodeOrTransientAccommodationOffendersScore,
+      )
+    val isUnemployedWeighted =
+      isUnemployedWeighted(isUnemployedOffendersScore)
+    val regularOffendingActivitiesWeighted =
+      regularOffendingActivitiesWeighted(regularOffendingActivitiesOffendersScore)
+    val drugMisuseNonViolentWeighted = drugMisuseNonViolentWeighted(drugMisuseNonViolentOffendersScore)
+    val thinkingAndBehaviourNonViolentWeighted =
+      thinkingAndBehaviourNonViolentWeighted(thinkingAndBehaviourNonViolentOffendersScore)
+    val proCriminalAttitudesWeighted =
+      proCriminalAttitudesWeighted(proCriminalAttitudesOffendersScore)
+    // Final Outputs
+    val totalOGPScore =
+      totalOGPScore(
+        ogrs3TwoYearWeighted,
+        isCurrentlyOfNoFixedAbodeOrTransientAccommodationWeighted,
+        isUnemployedWeighted,
+        regularOffendingActivitiesWeighted,
+        drugMisuseNonViolentWeighted,
+        thinkingAndBehaviourNonViolentWeighted,
+        proCriminalAttitudesWeighted,
+      )
+    val ogpReoffendingOneYear = ogpReoffendingOneYear(totalOGPScore)
+    val ogpReoffendingTwoYear = ogpReoffendingTwoYear(totalOGPScore)
+    val bandOGP = bandOGP(ogpReoffendingTwoYear)
+    // Create OGP Output
+    return OGPObject(ogpReoffendingOneYear, ogpReoffendingTwoYear, bandOGP, totalOGPScore, emptyList())
   }
 }

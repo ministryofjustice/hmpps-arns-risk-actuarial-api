@@ -14,15 +14,14 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.vali
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateOSPIIC
 
 @Service
-class OSPIICRiskProducerService : RiskScoreProducer {
+class OSPIICRiskProducerService : BaseRiskScoreProducer() {
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
     val errors = validateOSPIIC(request)
 
     if (errors.isNotEmpty()) {
-      return context.apply { OSPIIC = OSPIICObject(null, null, errors) }
+      return applyErrorsToContextAndReturn(context, errors)
     }
-
     return context.apply {
       when (request.gender!!) {
         Gender.FEMALE -> {
@@ -50,4 +49,9 @@ class OSPIICRiskProducerService : RiskScoreProducer {
       }
     }
   }
+
+  override fun applyErrorsToContextAndReturn(
+    context: RiskScoreContext,
+    validationErrorResponses: List<ValidationErrorResponse>,
+  ): RiskScoreContext = context.apply { OSPIIC = OSPIICObject(null, null, validationErrorResponses) }
 }

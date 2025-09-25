@@ -98,7 +98,7 @@ class RiskScoreServiceTest {
     for ((service, transform) in steps) {
       val contextBefore = context.copy()
       transform(context)
-      whenever(service.getRiskScore(request, contextBefore)).thenReturn(context.copy())
+      whenever(service.calculateRiskScore(request, contextBefore)).thenReturn(context.copy())
     }
 
     val result = riskScoreService.riskScoreProducer(request)
