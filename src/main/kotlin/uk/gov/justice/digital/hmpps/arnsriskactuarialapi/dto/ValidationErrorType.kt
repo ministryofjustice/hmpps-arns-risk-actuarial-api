@@ -31,4 +31,10 @@ enum class ValidationErrorType(val message: String) {
     "Unexpected error thrown during calculation, see logs for further details: $message",
     listOf(),
   )
+
+  fun asErrorResponseForOffenceCodeMappingNotFound(offenceCode: String?, fields: List<String>): ValidationErrorResponse = ValidationErrorResponse(
+    this,
+    "No offence code to actuarial weighting mapping found for $offenceCode",
+    fields,
+  )
 }

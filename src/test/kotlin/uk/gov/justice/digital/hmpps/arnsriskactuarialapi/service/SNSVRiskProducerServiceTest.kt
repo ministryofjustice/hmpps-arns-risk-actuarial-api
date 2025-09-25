@@ -94,7 +94,7 @@ class SNSVRiskProducerServiceTest {
     assertNotNull(result)
     assertEquals(1, result.SNSV!!.validationError?.size)
     assertEquals(ValidationErrorType.OFFENCE_CODE_MAPPING_NOT_FOUND, result.SNSV!!.validationError?.first()?.type)
-    assertEquals("No offence code to actuarial weighting mapping found for offence code", result.SNSV!!.validationError?.first()?.message)
+    assertEquals("No offence code to actuarial weighting mapping found for 02700", result.SNSV!!.validationError?.first()?.message)
     assertEquals(listOf("currentOffenceCode"), result.SNSV!!.validationError?.first()?.fields)
   }
 
