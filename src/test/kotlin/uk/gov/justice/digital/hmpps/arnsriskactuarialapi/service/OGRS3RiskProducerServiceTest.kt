@@ -102,7 +102,7 @@ class OGRS3RiskProducerServiceTest {
     assertNull(result.OGRS3?.band)
     assertEquals(1, result.OGRS3?.validationError?.size)
     assertEquals(ValidationErrorType.OFFENCE_CODE_MAPPING_NOT_FOUND, result.OGRS3?.validationError?.get(0)?.type)
-    assertEquals("No offence code to actuarial weighting mapping found for offence code", result.OGRS3?.validationError?.get(0)?.message)
+    assertEquals("No offence code to actuarial weighting mapping found for 02700", result.OGRS3?.validationError?.get(0)?.message)
     assertEquals(listOf("currentOffenceCode"), result.OGRS3?.validationError?.get(0)?.fields)
   }
 

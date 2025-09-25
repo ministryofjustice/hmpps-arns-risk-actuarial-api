@@ -1,5 +1,6 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
@@ -47,6 +48,8 @@ private const val ODP_FEMALE_SCORE_MIN = 10
 @Service
 class OPDRiskProducerService : BaseRiskScoreProducer() {
 
+  private val log = LoggerFactory.getLogger(this::class.java)
+
   @Autowired
   lateinit var offenceGroupParametersService: OffenceGroupParametersService
 
@@ -68,14 +71,18 @@ class OPDRiskProducerService : BaseRiskScoreProducer() {
     }
     val isViolentOrSexualType =
       offenceGroupParametersService.isViolentOrSexualType(validatedRequest.currentOffenceCode)
-        ?: return invalidInformationResult(
-          context,
-          listOf(
-            ValidationErrorType.OFFENCE_CODE_MAPPING_NOT_FOUND.asErrorResponse(
-              listOf(RiskScoreRequest::currentOffenceCode.name),
-            ),
+    if (isViolentOrSexualType == null) {
+      log.warn("No offence code to actuarial weighting mapping found for ${request.currentOffenceCode}")
+      return invalidInformationResult(
+        context,
+        listOf(
+          ValidationErrorType.OFFENCE_CODE_MAPPING_NOT_FOUND.asErrorResponseForOffenceCodeMappingNotFound(
+            request.currentOffenceCode,
+            listOf(RiskScoreRequest::currentOffenceCode.name),
           ),
-        )
+        ),
+      )
+    }
 
     if (!isOpdApplicable(validatedRequest, isViolentOrSexualType)) {
       return screenOutResult(context)

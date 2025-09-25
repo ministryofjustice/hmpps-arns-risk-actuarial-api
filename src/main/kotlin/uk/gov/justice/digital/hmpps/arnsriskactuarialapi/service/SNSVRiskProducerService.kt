@@ -1,5 +1,6 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
@@ -42,6 +43,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sigmoid
 @Service
 class SNSVRiskProducerService : BaseRiskScoreProducer() {
 
+  private val log = LoggerFactory.getLogger(this::class.java)
+
   @Autowired
   lateinit var offenceGroupParametersService: OffenceGroupParametersService
 
@@ -72,7 +75,8 @@ class SNSVRiskProducerService : BaseRiskScoreProducer() {
     val weightingSNSV = retrieveWeightingSNSV(scoreType, request)
     val weightingSNSVVATP = retrieveWeightingSNSVVATP(scoreType, request)
     if (weightingSNSV == null || weightingSNSVVATP == null) {
-      errors += ValidationErrorType.OFFENCE_CODE_MAPPING_NOT_FOUND.asErrorResponse(listOf(RiskScoreRequest::currentOffenceCode.name))
+      log.warn("No offence code to actuarial weighting mapping found for ${request.currentOffenceCode}")
+      errors += ValidationErrorType.OFFENCE_CODE_MAPPING_NOT_FOUND.asErrorResponseForOffenceCodeMappingNotFound(request.currentOffenceCode, listOf(RiskScoreRequest::currentOffenceCode.name))
     }
     if (errors.isNotEmpty()) {
       return SNSVObject(null, scoreType, errors)
