@@ -1,28 +1,105 @@
 {
-  "request":{
-  "version": "V1_0",
-  "gender": "MALE",
-  "dateOfBirth": "1980-01-01",
-  "assessmentDate": "2025-01-01",
-  "currentOffenceCode": "02700",
-  "totalNumberOfSanctionsForAllOffences": 1,
-  "supervisionStatus": "COMMUNITY",
-  "totalNumberOfViolentSanctions": 1
+  "request": {
+    "version": "V1_0",
+    "gender": "MALE",
+    "dateOfBirth": "1980-01-01",
+    "assessmentDate": "2025-01-01",
+    "currentOffenceCode": "02700",
+    "totalNumberOfSanctionsForAllOffences": 1,
+    "supervisionStatus": "COMMUNITY",
+    "totalNumberOfViolentSanctions": 1
   },
   "response": {
-    "ospdcBand": "NOT_APPLICABLE",
-    "ospdcScore": 0.0,
-    "ospiicBand": "NOT_APPLICABLE",
-    "ospiicScore": 0.0,
-    "snsvScore": null,
-    "rsrScore": 0.0,
-    "rsrBand": "LOW",
-    "scoreType": null,
-    "ospRiskReduction": null,
-    "validationError": [
+    "algorithm": "RSR",
+    "type": "COMBINED",
+    "modelVersion": "1.0",
+    "thresholdsVersion": "1.0",
+    "output": {
+      "band": "LOW",
+      "overallScore": 0.0,
+      "femaleVersion": false,
+      "hasSexualOffenceHistory": null,
+      "componentScores": [
+        {
+          "algorithm": "OSPDC",
+          "type": "STATIC",
+          "modelVersion": "1.0",
+          "thresholdsVersion": "1.0",
+          "output": {
+            "band": null,
+            "pointScore": null,
+            "score": null,
+            "femaleVersion": null,
+            "hasSexualOffenceHistory": null,
+            "riskBandReductionApplied": null
+          },
+          "featureValues": [],
+          "validationErrors": [
+            {
+              "type": "MISSING_MANDATORY_INPUT",
+              "message": "Mandatory input field(s) missing",
+              "fields": [
+                "totalContactAdultSexualSanctions",
+                "totalContactChildSexualSanctions",
+                "totalNonContactSexualOffences",
+                "totalIndecentImageSanctions",
+                "dateAtStartOfFollowup"
+              ]
+            }
+          ]
+        },
+        {
+          "algorithm": "OGRS3",
+          "type": "STATIC",
+          "modelVersion": "1.0",
+          "thresholdsVersion": "1.0",
+          "output": {
+            "band": null,
+            "oneYearScore": null,
+            "twoYearScore": null
+          },
+          "featureValues": [],
+          "validationErrors": [
+            {
+              "type": "MISSING_MANDATORY_INPUT",
+              "message": "Mandatory input field(s) missing",
+              "fields": [
+                "dateOfCurrentConviction",
+                "dateAtStartOfFollowup",
+                "ageAtFirstSanction"
+              ]
+            }
+          ]
+        },
+        {
+          "algorithm": "SNSV",
+          "type": null,
+          "modelVersion": "1.0",
+          "thresholdsVersion": "1.0",
+          "output": {
+            "band": null,
+            "score": null
+          },
+          "featureValues": [],
+          "validationErrors": [
+            {
+              "type": "MISSING_MANDATORY_INPUT",
+              "message": "Mandatory input field(s) missing",
+              "fields": [
+                "dateOfCurrentConviction",
+                "ageAtFirstSanction",
+                "dateAtStartOfFollowup"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "featureValues": [],
+    "validationErrors": [
       {
-        "type" : "MISSING_MANDATORY_INPUT",
-        "message" : "Mandatory input field(s) missing",
+        "type": "MISSING_MANDATORY_INPUT",
+        "message": "Mandatory input field(s) missing",
         "fields": [
           "totalContactAdultSexualSanctions",
           "totalContactChildSexualSanctions",
@@ -32,8 +109,8 @@
         ]
       },
       {
-        "type" : "MISSING_MANDATORY_INPUT",
-        "message" : "Mandatory input field(s) missing",
+        "type": "MISSING_MANDATORY_INPUT",
+        "message": "Mandatory input field(s) missing",
         "fields": [
           "totalContactAdultSexualSanctions",
           "totalContactChildSexualSanctions",
@@ -42,8 +119,8 @@
         ]
       },
       {
-        "type" : "MISSING_MANDATORY_INPUT",
-        "message" : "Mandatory input field(s) missing",
+        "type": "MISSING_MANDATORY_INPUT",
+        "message": "Mandatory input field(s) missing",
         "fields": [
           "dateOfCurrentConviction",
           "ageAtFirstSanction",

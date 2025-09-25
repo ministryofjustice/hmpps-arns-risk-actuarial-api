@@ -17,14 +17,26 @@
     "proCriminalAttitudes": "SOME_PROBLEMS"
   },
   "response": {
-    "ogpReoffendingOneYear" : null,
-    "ogpReoffendingTwoYear" : null,
-    "bandOGP" : null,
-    "totalOGPScore" : null,
-    "validationError" : [ {
-      "type" : "MISSING_MANDATORY_INPUT",
-      "message" : "Mandatory input field(s) missing",
-      "fields" : [ "regularOffendingActivities", "currentDrugMisuse" ]
-    } ]
+    "algorithm": "OGP",
+    "type": "DYNAMIC",
+    "modelVersion": "1.0",
+    "thresholdsVersion": "1.0",
+    "output": {
+      "band": null,
+      "oneYearScore": null,
+      "twoYearScore": null,
+      "pointScore": null
+    },
+    "featureValues": [],
+    "validationErrors": [
+      {
+        "type": "MISSING_MANDATORY_INPUT",
+        "message": "Mandatory input field(s) missing",
+        "fields": [
+          "regularOffendingActivities",
+          "currentDrugMisuse"
+        ]
+      }
+    ]
   }
 }

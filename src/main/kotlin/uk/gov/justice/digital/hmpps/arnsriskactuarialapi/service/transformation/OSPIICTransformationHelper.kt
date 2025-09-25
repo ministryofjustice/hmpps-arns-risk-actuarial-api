@@ -2,7 +2,6 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ospiic.OSPIICHierarchyBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ospiic.OSPIICInputValidated
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ospiic.OSPIICObject
 
 class OSPIICTransformationHelper {
   companion object {
@@ -32,9 +31,5 @@ class OSPIICTransformationHelper {
       { input -> (input.totalContactChildSexualSanctions == 1) }
 
     fun ospiicHierarchyBand(input: OSPIICInputValidated): OSPIICHierarchyBand = OSPIICHierarchyBand.entries.find { band -> band.isMatchFor(input) }!!
-
-    // outputs
-
-    fun toOSPIICOutput(hierarchyBand: OSPIICHierarchyBand): OSPIICObject = OSPIICObject(hierarchyBand.band, hierarchyBand.rsrContribution, emptyList())
   }
 }

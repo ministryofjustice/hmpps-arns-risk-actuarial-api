@@ -10,10 +10,17 @@
     "currentOffenceCode": "08800"
   },
   "response": {
-    "ogrs3OneYear": null,
-    "ogrs3TwoYear": null,
-    "band": null,
-    "validationError": [
+    "algorithm": "OGRS3",
+    "type": "STATIC",
+    "modelVersion": "1.0",
+    "thresholdsVersion": "1.0",
+    "output": {
+      "band": null,
+      "oneYearScore": null,
+      "twoYearScore": null
+    },
+    "featureValues": [],
+    "validationErrors": [
       {
         "type": "NEED_DETAILS_OF_EXACT_OFFENCE",
         "message": "For this group of offences, the OGRS 3 offence category takes different values depending on the nature of the exact offence. Therefore, it is not possible to calculate an OGRS 3 score without details of the exact offence.",

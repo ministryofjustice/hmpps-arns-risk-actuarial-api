@@ -26,15 +26,3 @@ data class RiskScoreContext(
   var SNSV: SNSVObject? = null,
   var RSR: RSRObject? = null,
 )
-
-fun RiskScoreContext.toRiskScoreResponse(): RiskScoreResponse = RiskScoreResponse(
-  this.version,
-  this.OGRS3,
-  this.OVP,
-  this.OGP,
-  this.MST,
-  this.OPD,
-  this.PNI,
-  this.LDS,
-  this.RSR,
-)

@@ -14,5 +14,7 @@ data class RSRObject(
   val rsrBand: RiskBand? = null,
   val scoreType: ScoreType? = null,
   val ospRiskReduction: Boolean? = null,
+  val femaleVersion: Boolean?,
+  val sexualOffenceHistory: Boolean?,
   val validationError: List<ValidationErrorResponse>? = null,
 )

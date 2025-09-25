@@ -2,8 +2,8 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.MotivationLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.YesSometimesNo
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.ConversionUtils.Companion.booleanToScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asPercentage
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.roundToInt
@@ -100,6 +100,15 @@ class OGPTransformationHelper {
       .asPercentage()
       .sanitisePercentage()
 
-    fun bandOGP(ogpReoffendingTwoYear: Int) = OGPBand.findBand(ogpReoffendingTwoYear)
+    fun bandOGP(ogpReoffendingTwoYear: Int): RiskBand {
+      require(ogpReoffendingTwoYear in 1..99) { "Percentage $ogpReoffendingTwoYear should be between 1 and 99" }
+      return when (ogpReoffendingTwoYear) {
+        in 1..33 -> RiskBand.LOW
+        in 34..66 -> RiskBand.MEDIUM
+        in 67..84 -> RiskBand.HIGH
+        in 85..99 -> RiskBand.VERY_HIGH
+        else -> throw IllegalArgumentException("Unexpected percentage value: $ogpReoffendingTwoYear")
+      }
+    }
   }
 }

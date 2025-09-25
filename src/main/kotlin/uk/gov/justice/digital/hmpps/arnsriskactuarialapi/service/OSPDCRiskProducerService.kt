@@ -41,6 +41,8 @@ class OSPDCRiskProducerService : BaseRiskScoreProducer() {
           0.0,
           null,
           null,
+          false,
+          listOf(),
         )
       }
     }
@@ -52,7 +54,9 @@ class OSPDCRiskProducerService : BaseRiskScoreProducer() {
           RiskBand.NOT_APPLICABLE,
           FIXED_RSR_CONTRIBUTION,
           null,
-          addMissingCriteriaValidation(arrayListOf(RiskScoreRequest::gender.name), emptyList()),
+          femaleVersion = true,
+          sexualOffenceHistory = true,
+          validationError = addMissingCriteriaValidation(arrayListOf(RiskScoreRequest::gender.name), emptyList()),
         )
       }
     }
@@ -81,7 +85,7 @@ class OSPDCRiskProducerService : BaseRiskScoreProducer() {
   override fun applyErrorsToContextAndReturn(
     context: RiskScoreContext,
     validationErrorResponses: List<ValidationErrorResponse>,
-  ): RiskScoreContext = context.apply { OSPDC = OSPDCObject(null, null, null, validationErrorResponses) }
+  ): RiskScoreContext = context.apply { OSPDC = OSPDCObject(null, null, null, null, null, validationErrorResponses) }
 
   private fun getOSPDCObject(
     request: OSPDCRequestValidated,
@@ -106,6 +110,8 @@ class OSPDCRiskProducerService : BaseRiskScoreProducer() {
             getOSPDCBand(ospdc64PointScore),
             getOSPDCScore(ospdc64PointScore),
             null,
+            request.gender == Gender.FEMALE,
+            request.hasEverCommittedSexualOffence,
             emptyList(),
           )
         } else {
@@ -123,6 +129,8 @@ class OSPDCRiskProducerService : BaseRiskScoreProducer() {
             getOSPDCRiskBandReduction(ospRiskReduction, ospdcBand),
             getOSPDCScore(ospdc64PointScore),
             ospRiskReduction,
+            request.gender == Gender.FEMALE,
+            request.hasEverCommittedSexualOffence,
             emptyList(),
           )
         }
