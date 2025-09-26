@@ -12,7 +12,9 @@
   "dateAtStartOfFollowup": "2024-01-01",
   "totalNumberOfViolentSanctions": 1,
   "evidenceOfDomesticAbuse": true,
-  "domesticAbuseAgainstPartner": true
+  "domesticAbuseAgainstPartner": true,
+  "hasEverCommittedSexualOffence": false,
+  "isCurrentOffenceSexuallyMotivated": false
   },
   "response": {
     "ospdcBand": "NOT_APPLICABLE",

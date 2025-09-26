@@ -27,6 +27,10 @@ class RSRRiskProducerService : BaseRiskScoreProducer() {
       snsv.validationError,
     ).flatten()
 
+    if (sexualSectionAllNull(request) || sexualOffenceHistoryTrueButSanctionsZero(request)) {
+      return applyErrorsToContextAndReturn(context, errors)
+    }
+
     val ospdcScore = ospdc.ospdcScore?.asDoublePercentage() ?: 0.0
     val ospdcBand = ospdc.ospdcBand ?: RiskBand.NOT_APPLICABLE
     val ospRiskReduction = ospdc.ospRiskReduction
@@ -44,6 +48,24 @@ class RSRRiskProducerService : BaseRiskScoreProducer() {
     } else {
       null
     }
+
+    if (sexualOffenceHistoryFalseButSanctionsNull(request)) {
+      return context.apply {
+        RSR = RSRObject(
+          null,
+          ospdcScore,
+          null,
+          ospiicScore,
+          snsvScore,
+          rsrScore,
+          rsrBand,
+          scoreType,
+          ospRiskReduction,
+          errors,
+        )
+      }
+    }
+
     return context.apply {
       RSR = RSRObject(
         ospdcBand,

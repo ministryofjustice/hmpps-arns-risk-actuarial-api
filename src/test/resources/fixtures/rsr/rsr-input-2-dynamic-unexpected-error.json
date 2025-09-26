@@ -23,7 +23,9 @@
     "evidenceOfDomesticAbuse": false,
     "previousConvictions": [
       "WOUNDING_GBH"
-    ]
+    ],
+    "hasEverCommittedSexualOffence": false,
+    "isCurrentOffenceSexuallyMotivated": false
   },
   "response": {
     "ospdcBand": "NOT_APPLICABLE",

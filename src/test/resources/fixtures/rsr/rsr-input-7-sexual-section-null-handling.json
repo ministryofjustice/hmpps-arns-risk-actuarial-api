@@ -4,21 +4,33 @@
   "gender": "MALE",
   "dateOfBirth": "1980-01-01",
   "assessmentDate": "2025-01-01",
-  "currentOffenceCode": "027007",
+  "dateOfCurrentConviction": "2020-01-01",
+  "currentOffenceCode": "02700",
   "totalNumberOfSanctionsForAllOffences": 1,
+  "ageAtFirstSanction": 40,
   "supervisionStatus": "COMMUNITY",
+  "dateAtStartOfFollowup": "2027-01-01",
   "totalNumberOfViolentSanctions": 1,
-  "hasEverCommittedSexualOffence": false,
-  "isCurrentOffenceSexuallyMotivated": false
+  "didOffenceInvolveCarryingOrUsingWeapon": false,
+  "suitabilityOfAccommodation": "NO_PROBLEMS",
+  "isUnemployed": false,
+  "currentRelationshipWithPartner": "NO_PROBLEMS",
+  "currentAlcoholUseProblems": "NO_PROBLEMS",
+  "excessiveAlcoholUse": "NO_PROBLEMS",
+  "impulsivityProblems": "NO_PROBLEMS",
+  "temperControl": "NO_PROBLEMS",
+  "proCriminalAttitudes": "NO_PROBLEMS",
+  "evidenceOfDomesticAbuse": false,
+  "previousConvictions":["WOUNDING_GBH"]
   },
   "response": {
-    "ospdcBand": "NOT_APPLICABLE",
-    "ospdcScore": 0.0,
-    "ospiicBand": "NOT_APPLICABLE",
-    "ospiicScore": 0.0,
+    "ospdcBand": null,
+    "ospdcScore": null,
+    "ospiicBand": null,
+    "ospiicScore": null,
     "snsvScore": null,
-    "rsrScore": 0.0,
-    "rsrBand": "LOW",
+    "rsrScore": null,
+    "rsrBand": null,
     "scoreType": null,
     "ospRiskReduction": null,
     "validationError": [
@@ -29,8 +41,7 @@
           "totalContactAdultSexualSanctions",
           "totalContactChildSexualSanctions",
           "totalNonContactSexualOffences",
-          "totalIndecentImageSanctions",
-          "dateAtStartOfFollowup"
+          "totalIndecentImageSanctions"
         ]
       },
       {
@@ -42,19 +53,6 @@
           "totalIndecentImageSanctions",
           "totalNonContactSexualOffences"
         ]
-      },
-      {
-        "type" : "MISSING_MANDATORY_INPUT",
-        "message" : "Mandatory input field(s) missing",
-        "fields": [
-          "dateOfCurrentConviction",
-          "ageAtFirstSanction",
-          "dateAtStartOfFollowup"
-        ]
-      }, {
-        "type" : "OFFENCE_CODE_INCORRECT_FORMAT",
-        "message" : "Offence code must be a string of 5 digits",
-        "fields" : [ "currentOffenceCode" ]
       }
     ]
   }
