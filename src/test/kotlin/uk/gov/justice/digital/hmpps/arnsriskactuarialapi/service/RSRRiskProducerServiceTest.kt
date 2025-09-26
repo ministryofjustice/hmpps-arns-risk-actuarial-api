@@ -42,7 +42,7 @@ class RSRRiskProducerServiceTest {
       SNSV = SNSVObject(snsvScore = 0.0312312312, scoreType = ScoreType.DYNAMIC, validationError = emptyList()),
     )
 
-    val result = service.getRiskScore(RiskScoreRequest(), context)
+    val result = service.getRiskScore(RiskScoreRequest(hasEverCommittedSexualOffence = false, isCurrentOffenceSexuallyMotivated = false), context)
 
     val rsr = result.RSR!!
     assertEquals(RiskBand.LOW, rsr.ospdcBand)
@@ -89,13 +89,74 @@ class RSRRiskProducerServiceTest {
   fun `should handle null OSPDC and OSPIIC inputs gracefully`() {
     val context = emptyContext()
 
-    val result = service.getRiskScore(RiskScoreRequest(), context)
+    val result = service.getRiskScore(RiskScoreRequest(hasEverCommittedSexualOffence = false, isCurrentOffenceSexuallyMotivated = false), context)
 
     val rsr = result.RSR!!
     assertEquals(0.0, rsr.ospdcScore)
     assertEquals(RiskBand.NOT_APPLICABLE, rsr.ospdcBand)
     assertEquals(0.0, rsr.ospiicScore)
     assertEquals(RiskBand.NOT_APPLICABLE, rsr.ospiicBand)
+    assertEquals(0.0, rsr.rsrScore)
+    assertNotNull(rsr.rsrBand)
+    assertNull(rsr.scoreType)
+    assertTrue(rsr.validationError?.isEmpty() == true)
+  }
+
+  @Test
+  fun `should handle sexualSectionAllNull`() {
+    val context = emptyContext()
+
+    val result = service.getRiskScore(RiskScoreRequest(), context)
+
+    val rsr = result.RSR!!
+    assertEquals(null, rsr.ospdcScore)
+    assertEquals(null, rsr.ospdcBand)
+    assertEquals(null, rsr.ospiicScore)
+    assertEquals(null, rsr.ospiicBand)
+    assertEquals(null, rsr.rsrScore)
+    assertNull(rsr.rsrBand)
+    assertNull(rsr.scoreType)
+    assertTrue(rsr.validationError?.isEmpty() == true)
+  }
+
+  @Test
+  fun `should handle sexualOffenceHistoryTrueButSanctionsZero`() {
+    val context = emptyContext()
+
+    val result = service.getRiskScore(
+      RiskScoreRequest(
+        hasEverCommittedSexualOffence = true,
+        isCurrentOffenceSexuallyMotivated = true,
+        totalContactAdultSexualSanctions = 0,
+        totalContactChildSexualSanctions = 0,
+        totalNonContactSexualOffences = 0,
+        totalIndecentImageSanctions = 0,
+      ),
+      context,
+    )
+
+    val rsr = result.RSR!!
+    assertEquals(null, rsr.ospdcScore)
+    assertEquals(null, rsr.ospdcBand)
+    assertEquals(null, rsr.ospiicScore)
+    assertEquals(null, rsr.ospiicBand)
+    assertEquals(null, rsr.rsrScore)
+    assertNull(rsr.rsrBand)
+    assertNull(rsr.scoreType)
+    assertTrue(rsr.validationError?.isEmpty() == true)
+  }
+
+  @Test
+  fun `should handle sexualOffenceHistoryFalseButSanctionsNull`() {
+    val context = emptyContext()
+
+    val result = service.getRiskScore(RiskScoreRequest(hasEverCommittedSexualOffence = false), context)
+
+    val rsr = result.RSR!!
+    assertEquals(0.0, rsr.ospdcScore)
+    assertEquals(null, rsr.ospdcBand)
+    assertEquals(0.0, rsr.ospiicScore)
+    assertEquals(null, rsr.ospiicBand)
     assertEquals(0.0, rsr.rsrScore)
     assertNotNull(rsr.rsrBand)
     assertNull(rsr.scoreType)

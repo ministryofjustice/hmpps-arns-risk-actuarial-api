@@ -21,8 +21,8 @@ class OSPDCRiskProducerServiceTest {
     val result = service.getRiskScore(
       validOSPDCRiskScoreRequest()
         .copy(
-          gender = Gender.FEMALE,
-          hasEverCommittedSexualOffence = null,
+          gender = Gender.MALE,
+          hasEverCommittedSexualOffence = true,
           totalNumberOfSanctionsForAllOffences = 1 as Integer,
           totalContactAdultSexualSanctions = 0,
           totalContactChildSexualSanctions = 0,
@@ -121,6 +121,10 @@ class OSPDCRiskProducerServiceTest {
     val result = service.getRiskScore(
       validOSPDCRiskScoreRequest().copy(
         hasEverCommittedSexualOffence = false,
+        totalContactAdultSexualSanctions = null,
+        totalContactChildSexualSanctions = null,
+        totalNonContactSexualOffences = null,
+        totalIndecentImageSanctions = null,
       ),
       emptyContext(),
     )
@@ -140,7 +144,7 @@ class OSPDCRiskProducerServiceTest {
         totalContactAdultSexualSanctions = 0,
         totalContactChildSexualSanctions = 0,
         totalNonContactSexualOffences = 0,
-        totalIndecentImageSanctions = 0,
+        totalIndecentImageSanctions = 1,
         dateOfMostRecentSexualOffence = LocalDate.of(1963, 1, 1),
         totalNumberOfSanctionsForAllOffences = 1 as Integer,
         isCurrentOffenceAgainstVictimStranger = false,

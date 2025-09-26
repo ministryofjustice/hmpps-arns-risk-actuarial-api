@@ -9,6 +9,10 @@ fun ArrayList<String>.addIfNull(request: RiskScoreRequest, prop: KProperty1<Risk
   if (prop.get(request) == null) this.add(prop.name)
 }
 
+fun ArrayList<String>.addIfNotNull(request: RiskScoreRequest, prop: KProperty1<RiskScoreRequest, Any?>) {
+  if (prop.get(request) != null) this.add(prop.name)
+}
+
 fun validateRequiredFields(request: RiskScoreRequest, errors: MutableList<ValidationErrorResponse>, requiredFields: List<KProperty1<RiskScoreRequest, Any?>>) {
   val missingFields = arrayListOf<String>()
 

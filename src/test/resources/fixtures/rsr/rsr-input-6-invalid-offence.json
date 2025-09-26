@@ -7,7 +7,8 @@
     "currentOffenceCode": "027007",
     "totalNumberOfSanctionsForAllOffences": 1,
     "supervisionStatus": "COMMUNITY",
-    "totalNumberOfViolentSanctions": 1
+    "totalNumberOfViolentSanctions": 1,
+    "hasEverCommittedSexualOffence": false
   },
   "response": {
     "algorithm": "RSR",
@@ -15,9 +16,9 @@
     "modelVersion": "1.0",
     "thresholdsVersion": "1.0",
     "output": {
-      "band": "LOW",
-      "overallScore": 0.0,
-      "femaleVersion": false,
+      "band": null,
+      "overallScore": null,
+      "femaleVersion": null,
       "hasSexualOffenceHistory": null,
       "componentScores": [
         {
@@ -39,44 +40,24 @@
               "type": "MISSING_MANDATORY_INPUT",
               "message": "Mandatory input field(s) missing",
               "fields": [
-                "totalContactAdultSexualSanctions",
-                "totalContactChildSexualSanctions",
-                "totalNonContactSexualOffences",
-                "totalIndecentImageSanctions",
                 "dateAtStartOfFollowup"
               ]
             }
           ]
         },
         {
-          "algorithm": "OGRS3",
+          "algorithm": "OSPIIC",
           "type": "STATIC",
           "modelVersion": "1.0",
           "thresholdsVersion": "1.0",
           "output": {
-            "band": null,
-            "oneYearScore": null,
-            "twoYearScore": null
+            "band": "NOT_APPLICABLE",
+            "score": 0.0,
+            "femaleVersion": false,
+            "hasSexualOffenceHistory": false
           },
           "featureValues": [],
-          "validationErrors": [
-            {
-              "type": "MISSING_MANDATORY_INPUT",
-              "message": "Mandatory input field(s) missing",
-              "fields": [
-                "dateOfCurrentConviction",
-                "dateAtStartOfFollowup",
-                "ageAtFirstSanction"
-              ]
-            },
-            {
-              "type": "OFFENCE_CODE_INCORRECT_FORMAT",
-              "message": "Offence code must be a string of 5 digits",
-              "fields": [
-                "currentOffenceCode"
-              ]
-            }
-          ]
+          "validationErrors": []
         },
         {
           "algorithm": "SNSV",
@@ -115,21 +96,7 @@
         "type": "MISSING_MANDATORY_INPUT",
         "message": "Mandatory input field(s) missing",
         "fields": [
-          "totalContactAdultSexualSanctions",
-          "totalContactChildSexualSanctions",
-          "totalNonContactSexualOffences",
-          "totalIndecentImageSanctions",
           "dateAtStartOfFollowup"
-        ]
-      },
-      {
-        "type": "MISSING_MANDATORY_INPUT",
-        "message": "Mandatory input field(s) missing",
-        "fields": [
-          "totalContactAdultSexualSanctions",
-          "totalContactChildSexualSanctions",
-          "totalIndecentImageSanctions",
-          "totalNonContactSexualOffences"
         ]
       },
       {

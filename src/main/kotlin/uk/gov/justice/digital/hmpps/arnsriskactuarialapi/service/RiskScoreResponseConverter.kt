@@ -155,7 +155,7 @@ private fun buildPredictorResponseForSeriousPredictor(riskScoreContext: RiskScor
       rsr.sexualOffenceHistory,
       listOf(
         buildPredictorResponseForDirectContactSexualPredictor(riskScoreContext),
-        buildPredictorResponseForAllPredictor(riskScoreContext),
+        buildPredictorResponseForIndirectContactSexualPredictor(riskScoreContext),
         buildPredictorResponseForSeriousViolencePredictor(riskScoreContext),
       ),
     ),
