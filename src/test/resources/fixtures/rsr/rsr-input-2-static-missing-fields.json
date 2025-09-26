@@ -7,7 +7,9 @@
   "currentOffenceCode": "02700",
   "totalNumberOfSanctionsForAllOffences": 1,
   "supervisionStatus": "COMMUNITY",
-  "totalNumberOfViolentSanctions": 1
+  "totalNumberOfViolentSanctions": 1,
+  "hasEverCommittedSexualOffence": false,
+  "isCurrentOffenceSexuallyMotivated": false
   },
   "response": {
     "ospdcBand": "NOT_APPLICABLE",

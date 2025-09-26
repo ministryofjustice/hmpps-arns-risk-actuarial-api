@@ -21,7 +21,9 @@
   "temperControl": "NO_PROBLEMS",
   "proCriminalAttitudes": "NO_PROBLEMS",
   "evidenceOfDomesticAbuse": false,
-  "previousConvictions":["WOUNDING_GBH"]
+  "previousConvictions":["WOUNDING_GBH"],
+  "hasEverCommittedSexualOffence": false,
+  "isCurrentOffenceSexuallyMotivated": false
   },
   "response": {
     "ospdcBand": "NOT_APPLICABLE",
