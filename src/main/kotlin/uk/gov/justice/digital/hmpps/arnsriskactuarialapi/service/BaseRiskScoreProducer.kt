@@ -14,7 +14,7 @@ abstract class BaseRiskScoreProducer {
     runCatching {
       return getRiskScore(request, context)
     }.getOrElse {
-      logger.error("Unexpected error calculating risk score for request: $request", it)
+      logger.error("Unexpected error calculating risk score", it)
       return applyErrorsToContextAndReturn(
         context,
         listOf(ValidationErrorType.UNEXPECTED_ERROR.asErrorResponseForUnexpectedError("${it.message}")),

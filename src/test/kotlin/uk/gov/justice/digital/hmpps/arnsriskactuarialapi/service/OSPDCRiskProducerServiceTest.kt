@@ -21,6 +21,8 @@ class OSPDCRiskProducerServiceTest {
     val result = service.getRiskScore(
       validOSPDCRiskScoreRequest()
         .copy(
+          gender = Gender.FEMALE,
+          hasEverCommittedSexualOffence = null,
           totalNumberOfSanctionsForAllOffences = 1 as Integer,
           totalContactAdultSexualSanctions = 0,
           totalContactChildSexualSanctions = 0,

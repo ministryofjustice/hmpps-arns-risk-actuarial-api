@@ -55,7 +55,7 @@ class OVPRiskProducerService : BaseRiskScoreProducer() {
   override fun applyErrorsToContextAndReturn(
     context: RiskScoreContext,
     validationErrorResponses: List<ValidationErrorResponse>,
-  ): RiskScoreContext = context.apply { OVP = OVPObject(null, null, null, validationErrorResponses) }
+  ): RiskScoreContext = context.apply { OVP = OVPObject(null, null, null, null, validationErrorResponses) }
 
   private fun getOVPObject(
     request: OVPRequestValidated,
@@ -93,6 +93,7 @@ class OVPRiskProducerService : BaseRiskScoreProducer() {
     return OVPObject(
       provenViolentTypeReoffendingOneYear = oneYear,
       provenViolentTypeReoffendingTwoYear = twoYear,
+      pointScore = totalOVPScore,
       band = band,
       validationError = emptyList(),
     )

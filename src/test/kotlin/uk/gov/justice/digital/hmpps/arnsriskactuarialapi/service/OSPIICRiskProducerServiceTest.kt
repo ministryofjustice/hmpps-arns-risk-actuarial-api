@@ -66,6 +66,8 @@ class OSPIICRiskProducerServiceTest {
     val expected = OSPIICObject(
       null,
       null,
+      null,
+      null,
       validationError = listOf(
         ValidationErrorResponse(
           type = ValidationErrorType.MISSING_MANDATORY_INPUT,
@@ -96,6 +98,8 @@ class OSPIICRiskProducerServiceTest {
     val expected = OSPIICObject(
       RiskBand.NOT_APPLICABLE,
       0.0,
+      femaleVersion = false,
+      sexualOffenceHistory = false,
       validationError = listOf(
         ValidationErrorResponse(
           type = ValidationErrorType.SEXUAL_OFFENDING_INCONSISTENT_INPUT,
@@ -126,6 +130,8 @@ class OSPIICRiskProducerServiceTest {
     val expected = OSPIICObject(
       null,
       null,
+      femaleVersion = null,
+      sexualOffenceHistory = null,
       validationError = listOf(
         ValidationErrorResponse(
           type = ValidationErrorType.MISSING_MANDATORY_INPUT,

@@ -1,15 +1,32 @@
 {
-  "request":{
-  "version": "V1_0"
+  "request": {
+    "version": "V1_0"
   },
   "response": {
-    "ogrs3OneYear" : null,
-    "ogrs3TwoYear" : null,
-    "band" : null,
-    "validationError" : [ {
-      "type" : "MISSING_MANDATORY_INPUT",
-      "message" : "Mandatory input field(s) missing",
-      "fields" : [ "gender", "dateOfBirth", "dateOfCurrentConviction", "dateAtStartOfFollowup", "totalNumberOfSanctionsForAllOffences", "ageAtFirstSanction", "currentOffenceCode" ]
-    } ]
+    "algorithm": "OGRS3",
+    "type": "STATIC",
+    "modelVersion": "1.0",
+    "thresholdsVersion": "1.0",
+    "output": {
+      "band": null,
+      "oneYearScore": null,
+      "twoYearScore": null
+    },
+    "featureValues": [],
+    "validationErrors": [
+      {
+        "type": "MISSING_MANDATORY_INPUT",
+        "message": "Mandatory input field(s) missing",
+        "fields": [
+          "gender",
+          "dateOfBirth",
+          "dateOfCurrentConviction",
+          "dateAtStartOfFollowup",
+          "totalNumberOfSanctionsForAllOffences",
+          "ageAtFirstSanction",
+          "currentOffenceCode"
+        ]
+      }
+    ]
   }
 }

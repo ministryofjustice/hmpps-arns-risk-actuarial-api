@@ -22,6 +22,17 @@ class ApiIntegrationTest : IntegrationTestBase() {
 
     private const val FIXTURE_ROOT = "fixtures"
     private val MODELS = listOf("ogrs3", "lds", "mst", "ogp", "opd", "ovp", "rsr", "pni")
+    private val PREDICTOR_JSON_PATH = mapOf<String, String>(
+      Pair("rsr", "/actuarialPredictors/seriousPredictor"),
+      Pair("snsv", "/actuarialPredictors/seriousViolencePredictor"),
+      Pair("ogp", "/actuarialPredictors/nonViolentPredictor"),
+      Pair("ovp", "/actuarialPredictors/violentPredictor"),
+      Pair("ogrs3", "/actuarialPredictors/allPredictor"),
+      Pair("lds", "/lds"),
+      Pair("mst", "/mst"),
+      Pair("opd", "/opd"),
+      Pair("pni", "/pni"),
+    )
 
     @JvmStatic
     fun requestResponseProvider(): Stream<Array<String>> {
@@ -69,7 +80,8 @@ class ApiIntegrationTest : IntegrationTestBase() {
       .returnResult()
       .responseBody ?: fail("No response body received")
 
-    val actualJson: JsonNode = objectMapper.readTree(responseBody).path(predictorName)
+    val jsonPointerExpression = PREDICTOR_JSON_PATH.getValue(predictorName)
+    val actualJson: JsonNode = objectMapper.readTree(responseBody).at(jsonPointerExpression)
 
     if (expectedJson != actualJson) {
       println("Fixture file: $fixturePath")

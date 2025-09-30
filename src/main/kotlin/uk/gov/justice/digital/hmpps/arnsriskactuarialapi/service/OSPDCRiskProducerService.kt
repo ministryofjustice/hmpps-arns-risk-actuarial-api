@@ -41,6 +41,9 @@ class OSPDCRiskProducerService : BaseRiskScoreProducer() {
           0.0,
           null,
           null,
+          request.gender == Gender.FEMALE,
+          false,
+          listOf(),
         )
       }
     }
@@ -52,7 +55,10 @@ class OSPDCRiskProducerService : BaseRiskScoreProducer() {
           RiskBand.NOT_APPLICABLE,
           FIXED_RSR_CONTRIBUTION,
           null,
-          addMissingCriteriaValidation(arrayListOf(RiskScoreRequest::gender.name), emptyList()),
+          null,
+          femaleVersion = true,
+          sexualOffenceHistory = true,
+          validationError = addMissingCriteriaValidation(arrayListOf(RiskScoreRequest::gender.name), emptyList()),
         )
       }
     }
@@ -81,7 +87,7 @@ class OSPDCRiskProducerService : BaseRiskScoreProducer() {
   override fun applyErrorsToContextAndReturn(
     context: RiskScoreContext,
     validationErrorResponses: List<ValidationErrorResponse>,
-  ): RiskScoreContext = context.apply { OSPDC = OSPDCObject(null, null, null, validationErrorResponses) }
+  ): RiskScoreContext = context.apply { OSPDC = OSPDCObject(null, null, null, null, null, null, validationErrorResponses) }
 
   private fun getOSPDCObject(
     request: OSPDCRequestValidated,
@@ -101,11 +107,15 @@ class OSPDCRiskProducerService : BaseRiskScoreProducer() {
       getIsCurrentOffenceAgainstVictimStrangerWeight(request.isCurrentOffenceAgainstVictimStranger),
     ).sum()
       .let { ospdc64PointScore ->
+        // Use ospdc64PointScore as pointScore
         if (ospdc64PointScore == 0) {
           return OSPDCObject(
             getOSPDCBand(ospdc64PointScore),
             getOSPDCScore(ospdc64PointScore),
+            ospdc64PointScore,
             null,
+            request.gender == Gender.FEMALE,
+            request.hasEverCommittedSexualOffence,
             emptyList(),
           )
         } else {
@@ -122,7 +132,10 @@ class OSPDCRiskProducerService : BaseRiskScoreProducer() {
           return OSPDCObject(
             getOSPDCRiskBandReduction(ospRiskReduction, ospdcBand),
             getOSPDCScore(ospdc64PointScore),
+            ospdc64PointScore,
             ospRiskReduction,
+            request.gender == Gender.FEMALE,
+            request.hasEverCommittedSexualOffence,
             emptyList(),
           )
         }

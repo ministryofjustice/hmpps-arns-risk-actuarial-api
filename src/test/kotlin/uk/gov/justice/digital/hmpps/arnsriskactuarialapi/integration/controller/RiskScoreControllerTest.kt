@@ -33,10 +33,6 @@ class RiskScoreControllerTest : IntegrationTestBase() {
       .isOk
       .expectBody()
       .jsonPath("$.version").isEqualTo(RiskScoreVersion.V1_0)
-      .jsonPath("$.ogrs3.ogrs3OneYear").isEqualTo(20)
-      .jsonPath("$.ogrs3.ogrs3TwoYear").isEqualTo(34)
-      .jsonPath("$.ogrs3.band").isEqualTo("LOW")
-      .jsonPath("$.ogrs3.validationError").isEmpty()
   }
 
   @Test

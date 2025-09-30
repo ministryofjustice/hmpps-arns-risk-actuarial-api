@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.config.ROLE_ARNS_RISK_ACTUARIAL
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.RiskScoreResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.RiskScoreService
 import uk.gov.justice.hmpps.kotlin.common.ErrorResponse
 

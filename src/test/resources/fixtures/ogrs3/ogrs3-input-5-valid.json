@@ -1,18 +1,25 @@
 {
-  "request":{
-  "version": "V1_0",
-  "gender": "MALE",
-  "dateOfBirth": "1965-12-07",
-  "dateOfCurrentConviction": "2025-05-13",
-  "dateAtStartOfFollowup": "2026-12-12",
-  "totalNumberOfSanctionsForAllOffences": 2,
-  "ageAtFirstSanction": 47,
-  "currentOffenceCode": "02700"
+  "request": {
+    "version": "V1_0",
+    "gender": "MALE",
+    "dateOfBirth": "1965-12-07",
+    "dateOfCurrentConviction": "2025-05-13",
+    "dateAtStartOfFollowup": "2026-12-12",
+    "totalNumberOfSanctionsForAllOffences": 2,
+    "ageAtFirstSanction": 47,
+    "currentOffenceCode": "02700"
   },
   "response": {
-    "ogrs3OneYear" : 8,
-    "ogrs3TwoYear" : 16,
-    "band" : "LOW",
-    "validationError" : [ ]
+    "algorithm": "OGRS3",
+    "type": "STATIC",
+    "modelVersion": "1.0",
+    "thresholdsVersion": "1.0",
+    "output": {
+      "band": "LOW",
+      "oneYearScore": 8,
+      "twoYearScore": 16
+    },
+    "featureValues": [],
+    "validationErrors": []
   }
 }

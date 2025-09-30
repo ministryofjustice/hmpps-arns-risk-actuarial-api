@@ -1,33 +1,89 @@
 {
-  "request":{
-  "version": "V1_0",
-  "gender": "MALE",
-  "dateOfBirth": "1980-01-01",
-  "assessmentDate": "2025-01-01",
-  "dateOfCurrentConviction": "2020-01-01",
-  "currentOffenceCode": "02700",
-  "totalNumberOfSanctionsForAllOffences": 1,
-  "ageAtFirstSanction": 40,
-  "supervisionStatus": "COMMUNITY",
-  "dateAtStartOfFollowup": "2024-01-01",
-  "totalNumberOfViolentSanctions": 1,
-  "evidenceOfDomesticAbuse": true,
-  "domesticAbuseAgainstPartner": true
+  "request": {
+    "version": "V1_0",
+    "gender": "MALE",
+    "dateOfBirth": "1980-01-01",
+    "assessmentDate": "2025-01-01",
+    "dateOfCurrentConviction": "2020-01-01",
+    "currentOffenceCode": "02700",
+    "totalNumberOfSanctionsForAllOffences": 1,
+    "ageAtFirstSanction": 40,
+    "supervisionStatus": "COMMUNITY",
+    "dateAtStartOfFollowup": "2024-01-01",
+    "totalNumberOfViolentSanctions": 1,
+    "evidenceOfDomesticAbuse": true,
+    "domesticAbuseAgainstPartner": true
   },
   "response": {
-    "ospdcBand": "NOT_APPLICABLE",
-    "ospdcScore": 0.0,
-    "ospiicBand": "NOT_APPLICABLE",
-    "ospiicScore": 0.0,
-    "snsvScore": 0.14,
-    "rsrScore": 0.14,
-    "rsrBand": "LOW",
-    "scoreType": "STATIC",
-    "ospRiskReduction": null,
-    "validationError": [
+    "algorithm": "RSR",
+    "type": "COMBINED",
+    "modelVersion": "1.0",
+    "thresholdsVersion": "1.0",
+    "output": {
+      "band": "LOW",
+      "overallScore": 0.14,
+      "femaleVersion": false,
+      "hasSexualOffenceHistory": null,
+      "componentScores": [
+        {
+          "algorithm": "OSPDC",
+          "type": "STATIC",
+          "modelVersion": "1.0",
+          "thresholdsVersion": "1.0",
+          "output": {
+            "band": null,
+            "pointScore": null,
+            "score": null,
+            "femaleVersion": null,
+            "hasSexualOffenceHistory": null,
+            "riskBandReductionApplied": null
+          },
+          "featureValues": [],
+          "validationErrors": [
+            {
+              "type": "MISSING_MANDATORY_INPUT",
+              "message": "Mandatory input field(s) missing",
+              "fields": [
+                "totalContactAdultSexualSanctions",
+                "totalContactChildSexualSanctions",
+                "totalNonContactSexualOffences",
+                "totalIndecentImageSanctions"
+              ]
+            }
+          ]
+        },
+        {
+          "algorithm": "OGRS3",
+          "type": "STATIC",
+          "modelVersion": "1.0",
+          "thresholdsVersion": "1.0",
+          "output": {
+            "band": "LOW",
+            "oneYearScore": 11,
+            "twoYearScore": 20
+          },
+          "featureValues": [],
+          "validationErrors": []
+        },
+        {
+          "algorithm": "SNSV",
+          "type": "STATIC",
+          "modelVersion": "1.0",
+          "thresholdsVersion": "1.0",
+          "output": {
+            "band": null,
+            "score": 0.0013621503445161
+          },
+          "featureValues": [],
+          "validationErrors": []
+        }
+      ]
+    },
+    "featureValues": [],
+    "validationErrors": [
       {
-        "type" : "MISSING_MANDATORY_INPUT",
-        "message" : "Mandatory input field(s) missing",
+        "type": "MISSING_MANDATORY_INPUT",
+        "message": "Mandatory input field(s) missing",
         "fields": [
           "totalContactAdultSexualSanctions",
           "totalContactChildSexualSanctions",
@@ -36,8 +92,8 @@
         ]
       },
       {
-        "type" : "MISSING_MANDATORY_INPUT",
-        "message" : "Mandatory input field(s) missing",
+        "type": "MISSING_MANDATORY_INPUT",
+        "message": "Mandatory input field(s) missing",
         "fields": [
           "totalContactAdultSexualSanctions",
           "totalContactChildSexualSanctions",
