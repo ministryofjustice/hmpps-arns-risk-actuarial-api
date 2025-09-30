@@ -40,7 +40,7 @@
               "type": "MISSING_MANDATORY_INPUT",
               "message": "Mandatory input field(s) missing",
               "fields": [
-                "dateAtStartOfFollowup"
+                "dateAtStartOfFollowupUserInput"
               ]
             }
           ]
@@ -76,7 +76,7 @@
               "fields": [
                 "dateOfCurrentConviction",
                 "ageAtFirstSanction",
-                "dateAtStartOfFollowup"
+                "dateAtStartOfFollowupUserInput"
               ]
             },
             {
@@ -96,7 +96,7 @@
         "type": "MISSING_MANDATORY_INPUT",
         "message": "Mandatory input field(s) missing",
         "fields": [
-          "dateAtStartOfFollowup"
+          "dateAtStartOfFollowupUserInput"
         ]
       },
       {
@@ -105,7 +105,7 @@
         "fields": [
           "dateOfCurrentConviction",
           "ageAtFirstSanction",
-          "dateAtStartOfFollowup"
+          "dateAtStartOfFollowupUserInput"
         ]
       },
       {
