@@ -98,7 +98,6 @@
         "fields": [
           "dateOfCurrentConviction",
           "ageAtFirstSanction",
-          "dateAtStartOfFollowupCalculated",
           "dateAtStartOfFollowupUserInput"
         ]
       }
