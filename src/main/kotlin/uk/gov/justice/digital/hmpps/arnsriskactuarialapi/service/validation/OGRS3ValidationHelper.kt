@@ -11,7 +11,7 @@ val OGRS3_REQUIRED_FIELDS: List<KProperty1<RiskScoreRequest, Any?>> = listOf(
   RiskScoreRequest::gender,
   RiskScoreRequest::dateOfBirth,
   RiskScoreRequest::dateOfCurrentConviction,
-  RiskScoreRequest::dateAtStartOfFollowup,
+  RiskScoreRequest::dateAtStartOfFollowupCalculated,
   RiskScoreRequest::totalNumberOfSanctionsForAllOffences,
   RiskScoreRequest::ageAtFirstSanction,
   RiskScoreRequest::currentOffenceCode,
