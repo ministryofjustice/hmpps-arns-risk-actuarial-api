@@ -4,13 +4,13 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertNotNull
-import org.junit.jupiter.api.assertNull
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.FIXED_TEST_DATE
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import java.time.LocalDate
 
@@ -76,13 +76,17 @@ class OGRS3ValidationHelperTest {
   @ParameterizedTest
   @ValueSource(ints = [10, 11])
   fun `validateAgeAtCurrentConviction when age equal to or greater than minimum conviction age`(inputAge: Int) {
-    val validationError = validateAgeAtCurrentConviction(inputAge)
-    assertNull(validationError)
+    val errors = mutableListOf<ValidationErrorResponse>()
+    validateAgeAtCurrentConviction(inputAge, errors)
+    assertTrue(errors.isEmpty())
   }
 
   @Test
   fun `validateAgeAtCurrentConviction when age is less than minimum conviction age`() {
-    val validationError = validateAgeAtCurrentConviction(9)
+    val errors = mutableListOf<ValidationErrorResponse>()
+    validateAgeAtCurrentConviction(9, errors)
+    assertEquals(1, errors.size)
+    val validationError = errors[0]
     assertNotNull(validationError)
     assertEquals(ValidationErrorType.AGE_AT_CURRENT_CONVICTION_LESS_THAN_TEN, validationError.type)
     assertEquals("Age at current conviction must be 10 or greater", validationError.message)
@@ -91,14 +95,20 @@ class OGRS3ValidationHelperTest {
 
   @ParameterizedTest
   @ValueSource(ints = [10, 11])
-  fun `validateAgeAtFirstSanction when age at first sanction is equal to or less than age  at current conviction`(ageAtFirstSanctionInput: Int) {
-    val validationError = validateAgeAtFirstSanction(ageAtFirstSanctionInput, 11)
-    assertNull(validationError)
+  fun `validateAgeAtFirstSanction when age at first sanction is equal to or less than age  at current conviction`(
+    ageAtFirstSanctionInput: Int,
+  ) {
+    val errors = mutableListOf<ValidationErrorResponse>()
+    validateAgeAtFirstSanction(ageAtFirstSanctionInput, 11, errors)
+    assertTrue(errors.isEmpty())
   }
 
   @Test
   fun `validateAgeAtFirstSanction when age at first sanction is greater than age  at current conviction`() {
-    val validationError = validateAgeAtFirstSanction(20, 1)
+    val errors = mutableListOf<ValidationErrorResponse>()
+    validateAgeAtFirstSanction(20, 1, errors)
+    assertEquals(1, errors.size)
+    val validationError = errors[0]
     assertNotNull(validationError)
     assertEquals(ValidationErrorType.AGE_AT_FIRST_SANCTION_AFTER_AGE_AT_CURRENT_CONVICTION, validationError.type)
     assertEquals("Age at first sanction must be before age at current conviction", validationError.message)

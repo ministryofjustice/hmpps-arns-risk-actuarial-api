@@ -63,7 +63,6 @@ class OGRS3RiskProducerService : BaseRiskScoreProducer() {
       request.dateOfBirth,
       request.dateOfCurrentConviction,
     )
-
     val followUpDate = if (isWithinLastTwoYears(request.dateAtStartOfFollowup)) {
       request.dateAtStartOfFollowup
     } else {
@@ -73,16 +72,16 @@ class OGRS3RiskProducerService : BaseRiskScoreProducer() {
       request.dateOfBirth,
       followUpDate,
     )
-    validateAgeAtCurrentConviction(ageAtCurrentConviction)?.let { return buildErrorObject(listOf(it)) }
-    validateAgeAtFirstSanction(request.ageAtFirstSanction, ageAtCurrentConviction)?.let { return buildErrorObject(listOf(it)) }
-
-    val offenderConvictionStatus = getOffenderConvictionStatus(request.totalNumberOfSanctionsForAllOffences)
 
     val errors = mutableListOf<ValidationErrorResponse>()
+    validateAgeAtCurrentConviction(ageAtCurrentConviction, errors)
+    validateAgeAtFirstSanction(request.ageAtFirstSanction, ageAtCurrentConviction, errors)
     val ogrS3Weighting = validateAndRetrieveOGRS3Weighting(request, errors)
     if (errors.isNotEmpty()) {
       return OGRS3Object(null, null, null, errors)
     }
+
+    val offenderConvictionStatus = getOffenderConvictionStatus(request.totalNumberOfSanctionsForAllOffences)
 
     listOf(
       getAgeGenderScore(ageAtStartOfFollowup, request.gender),
