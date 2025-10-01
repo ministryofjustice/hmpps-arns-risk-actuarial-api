@@ -225,6 +225,6 @@ class OGRS3RiskProducerServiceTest {
     10 as Integer?,
     30 as Integer?,
     "05110",
-    dateAtStartOfFollowupCalculated =  LocalDate.of(2014, 12, 13),
+    dateAtStartOfFollowupCalculated = LocalDate.of(2014, 12, 13),
   )
 }
