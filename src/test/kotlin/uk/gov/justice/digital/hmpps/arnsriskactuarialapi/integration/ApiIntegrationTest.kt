@@ -8,6 +8,7 @@ import org.springframework.core.io.ClassPathResource
 import org.springframework.http.MediaType
 import java.io.File
 import java.util.stream.Stream
+import kotlin.test.assertEquals
 import kotlin.test.fail
 
 /**
@@ -83,11 +84,6 @@ class ApiIntegrationTest : IntegrationTestBase() {
     val jsonPointerExpression = PREDICTOR_JSON_PATH.getValue(predictorName)
     val actualJson: JsonNode = objectMapper.readTree(responseBody).at(jsonPointerExpression)
 
-    if (expectedJson != actualJson) {
-      println("Fixture file: $fixturePath")
-      println("Expected JSON:\n${objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(expectedJson)}")
-      println("Actual JSON:\n${objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actualJson)}")
-      fail("Response JSON did not match expected output.")
-    }
+    assertEquals(expectedJson.toPrettyString(), actualJson.toPrettyString(), "Error with Fixture file: $fixturePath")
   }
 }
