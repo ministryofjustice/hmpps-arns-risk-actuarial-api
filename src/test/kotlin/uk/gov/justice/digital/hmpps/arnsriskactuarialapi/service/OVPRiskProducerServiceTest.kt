@@ -95,7 +95,7 @@ class OVPRiskProducerServiceTest {
     val expectedFields = listOf(
       "gender",
       "dateOfBirth",
-      "dateAtStartOfFollowup",
+      "dateAtStartOfFollowupCalculated",
       "totalNumberOfSanctionsForAllOffences",
       "totalNumberOfViolentSanctions",
       "doesRecogniseImpactOfOffendingOnOthers",
@@ -128,7 +128,7 @@ class OVPRiskProducerServiceTest {
         service.getRiskScore(
           validOVPRiskScoreRequest().copy(
             dateOfBirth = LocalDate.of(2002, 12, 13),
-            dateAtStartOfFollowup = LocalDate.of(2000, 12, 13),
+            dateAtStartOfFollowupCalculated = LocalDate.of(2000, 12, 13),
           ),
           emptyContext(),
         )

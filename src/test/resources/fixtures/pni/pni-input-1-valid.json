@@ -4,7 +4,7 @@
     "gender": "MALE",
     "dateOfBirth": "2000-10-15",
     "dateOfCurrentConviction": "2014-12-12",
-    "dateAtStartOfFollowup": "2019-12-12",
+    "dateAtStartOfFollowupUserInput": "2019-12-12",
     "totalNumberOfSanctionsForAllOffences": 31,
     "totalNumberOfViolentSanctions": 17,
     "ageAtFirstSanction": 30,
