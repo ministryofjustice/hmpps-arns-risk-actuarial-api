@@ -25,25 +25,29 @@ fun validateOGRS3(request: RiskScoreRequest): List<ValidationErrorResponse> {
   return errors
 }
 
-fun validateAgeAtCurrentConviction(ageAtCurrentConviction: Int): ValidationErrorResponse? = if (ageAtCurrentConviction < MIN_CONVICTION_AGE) {
-  ValidationErrorType.AGE_AT_CURRENT_CONVICTION_LESS_THAN_TEN.asErrorResponse(
-    listOf(
-      RiskScoreRequest::dateOfBirth.name,
-      RiskScoreRequest::dateOfCurrentConviction.name,
-    ),
-  )
-} else {
-  null
+fun validateAgeAtCurrentConviction(ageAtCurrentConviction: Int, errors: MutableList<ValidationErrorResponse>) {
+  if (ageAtCurrentConviction < MIN_CONVICTION_AGE) {
+    errors += ValidationErrorType.AGE_AT_CURRENT_CONVICTION_LESS_THAN_TEN.asErrorResponse(
+      listOf(
+        RiskScoreRequest::dateOfBirth.name,
+        RiskScoreRequest::dateOfCurrentConviction.name,
+      ),
+    )
+  }
 }
 
-fun validateAgeAtFirstSanction(ageAtFirstSanction: Int, ageAtCurrentConviction: Int): ValidationErrorResponse? = if (ageAtFirstSanction > ageAtCurrentConviction) {
-  ValidationErrorType.AGE_AT_FIRST_SANCTION_AFTER_AGE_AT_CURRENT_CONVICTION.asErrorResponse(
-    listOf(
-      RiskScoreRequest::dateOfBirth.name,
-      RiskScoreRequest::dateOfCurrentConviction.name,
-      RiskScoreRequest::ageAtFirstSanction.name,
-    ),
-  )
-} else {
-  null
+fun validateAgeAtFirstSanction(
+  ageAtFirstSanction: Int,
+  ageAtCurrentConviction: Int,
+  errors: MutableList<ValidationErrorResponse>,
+) {
+  if (ageAtFirstSanction > ageAtCurrentConviction) {
+    errors += ValidationErrorType.AGE_AT_FIRST_SANCTION_AFTER_AGE_AT_CURRENT_CONVICTION.asErrorResponse(
+      listOf(
+        RiskScoreRequest::dateOfBirth.name,
+        RiskScoreRequest::dateOfCurrentConviction.name,
+        RiskScoreRequest::ageAtFirstSanction.name,
+      ),
+    )
+  }
 }

@@ -60,20 +60,18 @@ class OPDRiskProducerService : BaseRiskScoreProducer() {
     // validation
     val errors = validateOPD(request)
     if (errors.isNotEmpty()) {
-      return invalidInformationResult(context, errors)
+      return applyErrorsToContextAndReturn(context, errors)
+    }
+
+    if (hasAllMaleQuestionsUnanswered(request) || hasAllFemaleQuestionsUnanswered(request)) {
+      return applyErrorsToContextAndReturn(context, listOf())
     }
 
     val validatedRequest = mapRequestValidated(request)
-
-    // checks
-    if (hasAllMaleQuestionsUnanswered(request) || hasAllFemaleQuestionsUnanswered(request)) {
-      return notApplicableResult(context)
-    }
-    val isViolentOrSexualType =
-      offenceGroupParametersService.isViolentOrSexualType(validatedRequest.currentOffenceCode)
+    val isViolentOrSexualType = offenceGroupParametersService.isViolentOrSexualType(validatedRequest.currentOffenceCode)
     if (isViolentOrSexualType == null) {
       log.warn("No offence code to actuarial weighting mapping found for ${request.currentOffenceCode}")
-      return invalidInformationResult(
+      return applyErrorsToContextAndReturn(
         context,
         listOf(
           ValidationErrorType.OFFENCE_CODE_MAPPING_NOT_FOUND.asErrorResponseForOffenceCodeMappingNotFound(
@@ -135,11 +133,11 @@ class OPDRiskProducerService : BaseRiskScoreProducer() {
     evidenceOfDomesticAbuse = request.evidenceOfDomesticAbuse ?: false,
     relationshipIssuesLinkedToRisk = request.relationshipIssuesLinkedToRisk ?: false,
     areEmotionalIssuesLinkedToRisk = request.areEmotionalIssuesLinkedToRisk ?: false,
-    areThinkingAndBehaviourIssuesLinkedToRisk = request.areThinkingAndBehaviourIssuesLinkedToRisk
-      ?: false,
+    areThinkingAndBehaviourIssuesLinkedToRisk = request.areThinkingAndBehaviourIssuesLinkedToRisk ?: false,
     hasHistoryOfPsychiatricTreatment = request.hasHistoryOfPsychiatricTreatment ?: false,
     hasBeenOnMedicationForMentalHealthProblems = request.hasBeenOnMedicationForMentalHealthProblems ?: false,
-    hasEverBeenInSpecialHospitalOrRegionalSecureUnit = request.hasEverBeenInSpecialHospitalOrRegionalSecureUnit ?: false,
+    hasEverBeenInSpecialHospitalOrRegionalSecureUnit = request.hasEverBeenInSpecialHospitalOrRegionalSecureUnit
+      ?: false,
     hasDisplayedObsessiveBehaviourLinkedToOffending = request.hasDisplayedObsessiveBehaviourLinkedToOffending ?: false,
     hasSelfHarmOrAttemptedSuicide = request.hasSelfHarmOrAttemptedSuicide ?: false,
     hasAssaultedOrThreatenedStaff = request.hasAssaultedOrThreatenedStaff ?: false,
@@ -162,31 +160,18 @@ class OPDRiskProducerService : BaseRiskScoreProducer() {
   private fun isOpdApplicableMale(
     request: OPDRequestValidated,
     isViolentOrSexualType: Boolean,
-  ): Boolean = (request.overallRiskForAssessment in arrayOf(RiskBand.HIGH, RiskBand.VERY_HIGH)) &&
+  ): Boolean = (
+    request.overallRiskForAssessment in arrayOf(
+      RiskBand.HIGH,
+      RiskBand.VERY_HIGH,
+    )
+    ) &&
     isViolentOrSexualType &&
     request.hasCustodialSentence
 
   private fun isOpdApplicableFemale(
     request: OPDRequestValidated,
-  ): Boolean = (request.overallRiskForAssessment in arrayOf(RiskBand.HIGH, RiskBand.VERY_HIGH)) ||
-    request.isEligibleForMappa
-
-  /**
-   * Validation failed, will contain errors.
-   */
-  private fun invalidInformationResult(
-    context: RiskScoreContext,
-    errors: List<ValidationErrorResponse>,
-  ): RiskScoreContext = context.apply { OPD = OPDObject(opdCheck = false, opdResult = null, validationError = errors) }
-
-  /**
-   * Based on information provided or lack thereof, the OPD is not applicable, does not contain errors.
-   */
-  private fun notApplicableResult(
-    context: RiskScoreContext,
-  ): RiskScoreContext = context.apply {
-    OPD = OPDObject(opdCheck = false, opdResult = null, validationError = emptyList())
-  }
+  ): Boolean = (request.overallRiskForAssessment in arrayOf(RiskBand.HIGH, RiskBand.VERY_HIGH)) || request.isEligibleForMappa
 
   private fun screenOutResult(
     context: RiskScoreContext,
@@ -203,31 +188,27 @@ class OPDRiskProducerService : BaseRiskScoreProducer() {
   ): RiskScoreContext {
     val opdResult: OPDResult? = when (validatedRequest.gender) {
       Gender.MALE -> {
-        val opdMalePersonalityScore =
-          listOf(
-            ageAtFirstSanctionOffendersScore(validatedRequest),
-            didOffenceInvolveViolenceOrThreatOfViolenceOffendersScore(validatedRequest),
-            didOffenceInvolveExcessiveUseOfViolenceOffendersScore(validatedRequest),
-            doesRecogniseImpactOfOffendingOnOthersOffendersScoreOpd(validatedRequest),
-            overRelianceOnOthersForFinancialSupportOffendersScore(validatedRequest),
-            manipulativeOrPredatoryBehaviourOffendersScore(validatedRequest),
-            recklessnessAndRiskTakingBehaviourOffendersScoreOpd(validatedRequest),
-            isEvidenceOfChildhoodBehaviouralProblemsOffendersScore(validatedRequest),
-            impulsivityProblemsOffendersScore(validatedRequest),
-            controllingOrAggressiveBehaviourOffendersScore(validatedRequest),
-          ).sum()
+        val opdMalePersonalityScore = listOf(
+          ageAtFirstSanctionOffendersScore(validatedRequest),
+          didOffenceInvolveViolenceOrThreatOfViolenceOffendersScore(validatedRequest),
+          didOffenceInvolveExcessiveUseOfViolenceOffendersScore(validatedRequest),
+          doesRecogniseImpactOfOffendingOnOthersOffendersScoreOpd(validatedRequest),
+          overRelianceOnOthersForFinancialSupportOffendersScore(validatedRequest),
+          manipulativeOrPredatoryBehaviourOffendersScore(validatedRequest),
+          recklessnessAndRiskTakingBehaviourOffendersScoreOpd(validatedRequest),
+          isEvidenceOfChildhoodBehaviouralProblemsOffendersScore(validatedRequest),
+          impulsivityProblemsOffendersScore(validatedRequest),
+          controllingOrAggressiveBehaviourOffendersScore(validatedRequest),
+        ).sum()
 
-        val opdMaleIndicatorScore =
-          listOf(
-            presenceOfChildhoodDifficultiesOffendersScore(validatedRequest),
-            historyOfMentalHealthDifficultiesOffendersScore(validatedRequest),
-            hasSelfHarmOrAttemptedSuicideOffendersScore(validatedRequest),
-            severeChallengingBehavioursOffendersScore(validatedRequest),
-          ).sum()
+        val opdMaleIndicatorScore = listOf(
+          presenceOfChildhoodDifficultiesOffendersScore(validatedRequest),
+          historyOfMentalHealthDifficultiesOffendersScore(validatedRequest),
+          hasSelfHarmOrAttemptedSuicideOffendersScore(validatedRequest),
+          severeChallengingBehavioursOffendersScore(validatedRequest),
+        ).sum()
 
-        if (opdMalePersonalityScore >= ODP_MALE_PERSONALITY_SCORE_MIN ||
-          opdMaleIndicatorScore >= ODP_MALE_INDICATOR_SCORE_MIN
-        ) {
+        if (opdMalePersonalityScore >= ODP_MALE_PERSONALITY_SCORE_MIN || opdMaleIndicatorScore >= ODP_MALE_INDICATOR_SCORE_MIN) {
           OPDResult.SCREEN_IN
         } else {
           OPDResult.SCREEN_OUT
@@ -253,8 +234,7 @@ class OPDRiskProducerService : BaseRiskScoreProducer() {
           areThinkingAndBehaviourIssuesLinkedToRiskOffendersScore(validatedRequest),
         ).sum()
 
-        if (opdFemaleScore >= ODP_FEMALE_SCORE_MIN
-        ) {
+        if (opdFemaleScore >= ODP_FEMALE_SCORE_MIN) {
           OPDResult.SCREEN_IN
         } else {
           OPDResult.SCREEN_OUT
