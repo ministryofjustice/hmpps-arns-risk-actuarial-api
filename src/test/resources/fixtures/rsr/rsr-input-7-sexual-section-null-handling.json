@@ -4,11 +4,26 @@
     "gender": "MALE",
     "dateOfBirth": "1980-01-01",
     "assessmentDate": "2025-01-01",
+    "dateOfCurrentConviction": "2020-01-01",
     "currentOffenceCode": "02700",
     "totalNumberOfSanctionsForAllOffences": 1,
+    "ageAtFirstSanction": 40,
     "supervisionStatus": "COMMUNITY",
+    "dateAtStartOfFollowup": "2027-01-01",
     "totalNumberOfViolentSanctions": 1,
-    "hasEverCommittedSexualOffence": false
+    "didOffenceInvolveCarryingOrUsingWeapon": false,
+    "suitabilityOfAccommodation": "NO_PROBLEMS",
+    "isUnemployed": false,
+    "currentRelationshipWithPartner": "NO_PROBLEMS",
+    "currentAlcoholUseProblems": "NO_PROBLEMS",
+    "excessiveAlcoholUse": "NO_PROBLEMS",
+    "impulsivityProblems": "NO_PROBLEMS",
+    "temperControl": "NO_PROBLEMS",
+    "proCriminalAttitudes": "NO_PROBLEMS",
+    "evidenceOfDomesticAbuse": false,
+    "previousConvictions": [
+      "WOUNDING_GBH"
+    ]
   },
   "response": {
     "algorithm": "RSR",
@@ -40,7 +55,7 @@
               "type": "MISSING_MANDATORY_INPUT",
               "message": "Mandatory input field(s) missing",
               "fields": [
-                "dateAtStartOfFollowup"
+                "hasEverCommittedSexualOffence"
               ]
             }
           ]
@@ -51,22 +66,10 @@
           "modelVersion": "1.0",
           "thresholdsVersion": "1.0",
           "output": {
-            "band": "NOT_APPLICABLE",
-            "score": 0.0,
-            "femaleVersion": false,
-            "hasSexualOffenceHistory": false
-          },
-          "featureValues": [],
-          "validationErrors": []
-        },
-        {
-          "algorithm": "SNSV",
-          "type": null,
-          "modelVersion": "1.0",
-          "thresholdsVersion": "1.0",
-          "output": {
             "band": null,
-            "score": null
+            "score": null,
+            "femaleVersion": null,
+            "hasSexualOffenceHistory": null
           },
           "featureValues": [],
           "validationErrors": [
@@ -74,12 +77,22 @@
               "type": "MISSING_MANDATORY_INPUT",
               "message": "Mandatory input field(s) missing",
               "fields": [
-                "dateOfCurrentConviction",
-                "ageAtFirstSanction",
-                "dateAtStartOfFollowup"
+                "hasEverCommittedSexualOffence"
               ]
             }
           ]
+        },
+        {
+          "algorithm": "SNSV",
+          "type": "DYNAMIC",
+          "modelVersion": "1.0",
+          "thresholdsVersion": "1.0",
+          "output": {
+            "band": null,
+            "score": 0.0024431433274692
+          },
+          "featureValues": [],
+          "validationErrors": []
         }
       ]
     },
@@ -89,16 +102,7 @@
         "type": "MISSING_MANDATORY_INPUT",
         "message": "Mandatory input field(s) missing",
         "fields": [
-          "dateAtStartOfFollowup"
-        ]
-      },
-      {
-        "type": "MISSING_MANDATORY_INPUT",
-        "message": "Mandatory input field(s) missing",
-        "fields": [
-          "dateOfCurrentConviction",
-          "ageAtFirstSanction",
-          "dateAtStartOfFollowup"
+          "hasEverCommittedSexualOffence"
         ]
       }
     ]

@@ -2,7 +2,7 @@
   "request": {
     "version": "V1_0",
     "gender": "MALE",
-    "dateOfBirth": "2025-01-01",
+    "dateOfBirth": "1980-01-01",
     "assessmentDate": "2025-01-01",
     "dateOfCurrentConviction": "2020-01-01",
     "currentOffenceCode": "02700",
@@ -24,7 +24,12 @@
     "previousConvictions": [
       "WOUNDING_GBH"
     ],
-    "hasEverCommittedSexualOffence": false
+    "isCurrentOffenceSexuallyMotivated": true,
+    "hasEverCommittedSexualOffence": true,
+    "totalContactAdultSexualSanctions": 0,
+    "totalContactChildSexualSanctions": 0,
+    "totalNonContactSexualOffences": 0,
+    "totalIndecentImageSanctions": 0
   },
   "response": {
     "algorithm": "RSR",
@@ -43,15 +48,26 @@
           "modelVersion": "1.0",
           "thresholdsVersion": "1.0",
           "output": {
-            "band": "NOT_APPLICABLE",
+            "band": null,
             "pointScore": null,
-            "score": 0.0,
-            "femaleVersion": false,
-            "hasSexualOffenceHistory": false,
+            "score": null,
+            "femaleVersion": null,
+            "hasSexualOffenceHistory": null,
             "riskBandReductionApplied": null
           },
           "featureValues": [],
-          "validationErrors": []
+          "validationErrors": [
+            {
+              "type": "SEXUAL_OFFENDING_MISSING_COUNTS",
+              "message": "Sexual motivation/offending identified - complete sexual offence counts",
+              "fields": [
+                "totalContactAdultSexualSanctions",
+                "totalContactChildSexualSanctions",
+                "totalIndecentImageSanctions",
+                "totalNonContactSexualOffences"
+              ]
+            }
+          ]
         },
         {
           "algorithm": "OSPIIC",
@@ -59,40 +75,50 @@
           "modelVersion": "1.0",
           "thresholdsVersion": "1.0",
           "output": {
-            "band": "NOT_APPLICABLE",
-            "score": 0.0,
-            "femaleVersion": false,
-            "hasSexualOffenceHistory": false
-          },
-          "featureValues": [],
-          "validationErrors": []
-        },
-        {
-          "algorithm": "SNSV",
-          "type": null,
-          "modelVersion": "1.0",
-          "thresholdsVersion": "1.0",
-          "output": {
             "band": null,
-            "score": null
+            "score": null,
+            "femaleVersion": null,
+            "hasSexualOffenceHistory": null
           },
           "featureValues": [],
           "validationErrors": [
             {
-              "type": "UNEXPECTED_ERROR",
-              "message": "Unexpected error thrown during calculation, see logs for further details: Age at date at start of followup cannot be less than 10",
-              "fields": []
+              "type": "SEXUAL_OFFENDING_MISSING_COUNTS",
+              "message": "Sexual motivation/offending identified - complete sexual offence counts",
+              "fields": [
+                "totalContactAdultSexualSanctions",
+                "totalContactChildSexualSanctions",
+                "totalIndecentImageSanctions",
+                "totalNonContactSexualOffences"
+              ]
             }
           ]
+        },
+        {
+          "algorithm": "SNSV",
+          "type": "DYNAMIC",
+          "modelVersion": "1.0",
+          "thresholdsVersion": "1.0",
+          "output": {
+            "band": null,
+            "score": 0.0024431433274692
+          },
+          "featureValues": [],
+          "validationErrors": []
         }
       ]
     },
     "featureValues": [],
     "validationErrors": [
       {
-        "type": "UNEXPECTED_ERROR",
-        "message": "Unexpected error thrown during calculation, see logs for further details: Age at date at start of followup cannot be less than 10",
-        "fields": []
+        "type": "SEXUAL_OFFENDING_MISSING_COUNTS",
+        "message": "Sexual motivation/offending identified - complete sexual offence counts",
+        "fields": [
+          "totalContactAdultSexualSanctions",
+          "totalContactChildSexualSanctions",
+          "totalIndecentImageSanctions",
+          "totalNonContactSexualOffences"
+        ]
       }
     ]
   }

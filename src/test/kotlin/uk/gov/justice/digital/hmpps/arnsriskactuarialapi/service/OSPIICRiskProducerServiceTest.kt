@@ -24,6 +24,8 @@ class OSPIICRiskProducerServiceTest {
     )
     val request = RiskScoreRequest(
       gender = Gender.MALE,
+      hasEverCommittedSexualOffence = true,
+      isCurrentOffenceSexuallyMotivated = false,
       totalContactChildSexualSanctions = 2,
       totalIndecentImageSanctions = 4,
       totalContactAdultSexualSanctions = 5,
@@ -43,6 +45,7 @@ class OSPIICRiskProducerServiceTest {
     )
     val request = RiskScoreRequest(
       gender = Gender.FEMALE,
+      hasEverCommittedSexualOffence = true,
     )
     val result = service.getRiskScore(request, context)
     val output = result.OSPIIC
@@ -90,41 +93,10 @@ class OSPIICRiskProducerServiceTest {
       totalIndecentImageSanctions = 4,
       totalContactAdultSexualSanctions = 5,
       totalNonContactSexualOffences = 6,
-      hasEverCommittedSexualOffence = false,
+      hasEverCommittedSexualOffence = null,
+      isCurrentOffenceSexuallyMotivated = null,
     )
 
-    val result = service.getRiskScore(request, context)
-    val output = result.OSPIIC
-    val expected = OSPIICObject(
-      RiskBand.NOT_APPLICABLE,
-      0.0,
-      femaleVersion = false,
-      sexualOffenceHistory = false,
-      validationError = listOf(
-        ValidationErrorResponse(
-          type = ValidationErrorType.SEXUAL_OFFENDING_INCONSISTENT_INPUT,
-          message = "No sexual motivation/offending identified - additional fields should not be provided",
-          fields = listOf(
-            "totalContactAdultSexualSanctions",
-            "totalContactChildSexualSanctions",
-            "totalIndecentImageSanctions",
-            "totalNonContactSexualOffences",
-          ),
-        ),
-      ),
-    )
-    assertEquals(expected, output)
-  }
-
-  @Test
-  fun `missing fields when gender is male`() {
-    val context = RiskScoreContext(
-      version = RiskScoreVersion.V1_0,
-    )
-    val request = RiskScoreRequest(
-      gender = Gender.MALE,
-      totalIndecentImageSanctions = 4,
-    )
     val result = service.getRiskScore(request, context)
     val output = result.OSPIIC
     val expected = OSPIICObject(
@@ -136,6 +108,109 @@ class OSPIICRiskProducerServiceTest {
         ValidationErrorResponse(
           type = ValidationErrorType.MISSING_MANDATORY_INPUT,
           message = "Mandatory input field(s) missing",
+          fields = listOf(
+            "hasEverCommittedSexualOffence",
+          ),
+        ),
+      ),
+    )
+    assertEquals(expected, output)
+  }
+
+  @Test
+  fun `sexual offending inconsistent input, fields should not be populated when sexual offence history is false`() {
+    val context = RiskScoreContext(
+      version = RiskScoreVersion.V1_0,
+    )
+    val request = RiskScoreRequest(
+      gender = Gender.MALE,
+      hasEverCommittedSexualOffence = false,
+      isCurrentOffenceSexuallyMotivated = true,
+      totalContactChildSexualSanctions = 2,
+      totalIndecentImageSanctions = 4,
+      totalContactAdultSexualSanctions = 5,
+      totalNonContactSexualOffences = 6,
+    )
+
+    val result = service.getRiskScore(request, context)
+    val output = result.OSPIIC
+    val expected = OSPIICObject(
+      null,
+      null,
+      femaleVersion = null,
+      sexualOffenceHistory = null,
+      validationError = listOf(
+        ValidationErrorResponse(
+          type = ValidationErrorType.SEXUAL_OFFENDING_INCONSISTENT_INPUT,
+          message = "No sexual motivation/offending identified - additional fields should not be provided",
+          fields = listOf(
+            "totalContactAdultSexualSanctions",
+            "totalContactChildSexualSanctions",
+            "totalNonContactSexualOffences",
+            "totalIndecentImageSanctions",
+          ),
+        ),
+      ),
+    )
+    assertEquals(expected, output)
+  }
+
+  @Test
+  fun `sexual offending missing count, fields should be populated when sexual offence history is true`() {
+    val context = RiskScoreContext(
+      version = RiskScoreVersion.V1_0,
+    )
+    val request = RiskScoreRequest(
+      gender = Gender.MALE,
+      hasEverCommittedSexualOffence = true,
+      isCurrentOffenceSexuallyMotivated = false,
+    )
+
+    val result = service.getRiskScore(request, context)
+    val output = result.OSPIIC
+    val expected = OSPIICObject(
+      null,
+      null,
+      femaleVersion = null,
+      sexualOffenceHistory = null,
+      validationError = listOf(
+        ValidationErrorResponse(
+          type = ValidationErrorType.SEXUAL_OFFENDING_MISSING_COUNTS,
+          message = "Sexual motivation/offending identified - complete sexual offence counts",
+          fields = listOf(
+            "totalContactAdultSexualSanctions",
+            "totalContactChildSexualSanctions",
+            "totalNonContactSexualOffences",
+            "totalIndecentImageSanctions",
+          ),
+        ),
+      ),
+    )
+    assertEquals(expected, output)
+  }
+
+  @Test
+  fun `missing fields when gender is male and hasEverCommittedSexualOffence is true`() {
+    val context = RiskScoreContext(
+      version = RiskScoreVersion.V1_0,
+    )
+    val request = RiskScoreRequest(
+      gender = Gender.MALE,
+      hasEverCommittedSexualOffence = true,
+      isCurrentOffenceSexuallyMotivated = false,
+      totalIndecentImageSanctions = 4,
+    )
+    val result = service.getRiskScore(request, context)
+    val output = result.OSPIIC
+    val expected = OSPIICObject(
+      null,
+      null,
+      femaleVersion = null,
+      sexualOffenceHistory = null,
+      validationError = listOf(
+        ValidationErrorResponse(
+          type = ValidationErrorType.SEXUAL_OFFENDING_MISSING_COUNTS,
+          message = "Sexual motivation/offending identified - complete sexual offence counts",
           fields = listOf(
             "totalContactAdultSexualSanctions",
             "totalContactChildSexualSanctions",

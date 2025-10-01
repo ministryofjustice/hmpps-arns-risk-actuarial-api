@@ -4,10 +4,26 @@
     "gender": "MALE",
     "dateOfBirth": "1980-01-01",
     "assessmentDate": "2025-01-01",
+    "dateOfCurrentConviction": "2020-01-01",
     "currentOffenceCode": "02700",
     "totalNumberOfSanctionsForAllOffences": 1,
+    "ageAtFirstSanction": 40,
     "supervisionStatus": "COMMUNITY",
+    "dateAtStartOfFollowup": "2027-01-01",
     "totalNumberOfViolentSanctions": 1,
+    "didOffenceInvolveCarryingOrUsingWeapon": false,
+    "suitabilityOfAccommodation": "NO_PROBLEMS",
+    "isUnemployed": false,
+    "currentRelationshipWithPartner": "NO_PROBLEMS",
+    "currentAlcoholUseProblems": "NO_PROBLEMS",
+    "excessiveAlcoholUse": "NO_PROBLEMS",
+    "impulsivityProblems": "NO_PROBLEMS",
+    "temperControl": "NO_PROBLEMS",
+    "proCriminalAttitudes": "NO_PROBLEMS",
+    "evidenceOfDomesticAbuse": false,
+    "previousConvictions": [
+      "WOUNDING_GBH"
+    ],
     "hasEverCommittedSexualOffence": false
   },
   "response": {
@@ -16,10 +32,10 @@
     "modelVersion": "1.0",
     "thresholdsVersion": "1.0",
     "output": {
-      "band": null,
-      "overallScore": null,
-      "femaleVersion": null,
-      "hasSexualOffenceHistory": null,
+      "band": "LOW",
+      "overallScore": 0.24,
+      "femaleVersion": false,
+      "hasSexualOffenceHistory": false,
       "componentScores": [
         {
           "algorithm": "OSPDC",
@@ -27,23 +43,15 @@
           "modelVersion": "1.0",
           "thresholdsVersion": "1.0",
           "output": {
-            "band": null,
+            "band": "NOT_APPLICABLE",
             "pointScore": null,
-            "score": null,
-            "femaleVersion": null,
-            "hasSexualOffenceHistory": null,
+            "score": 0.0,
+            "femaleVersion": false,
+            "hasSexualOffenceHistory": false,
             "riskBandReductionApplied": null
           },
           "featureValues": [],
-          "validationErrors": [
-            {
-              "type": "MISSING_MANDATORY_INPUT",
-              "message": "Mandatory input field(s) missing",
-              "fields": [
-                "dateAtStartOfFollowup"
-              ]
-            }
-          ]
+          "validationErrors": []
         },
         {
           "algorithm": "OSPIIC",
@@ -61,46 +69,19 @@
         },
         {
           "algorithm": "SNSV",
-          "type": null,
+          "type": "DYNAMIC",
           "modelVersion": "1.0",
           "thresholdsVersion": "1.0",
           "output": {
             "band": null,
-            "score": null
+            "score": 0.0024431433274692
           },
           "featureValues": [],
-          "validationErrors": [
-            {
-              "type": "MISSING_MANDATORY_INPUT",
-              "message": "Mandatory input field(s) missing",
-              "fields": [
-                "dateOfCurrentConviction",
-                "ageAtFirstSanction",
-                "dateAtStartOfFollowup"
-              ]
-            }
-          ]
+          "validationErrors": []
         }
       ]
     },
     "featureValues": [],
-    "validationErrors": [
-      {
-        "type": "MISSING_MANDATORY_INPUT",
-        "message": "Mandatory input field(s) missing",
-        "fields": [
-          "dateAtStartOfFollowup"
-        ]
-      },
-      {
-        "type": "MISSING_MANDATORY_INPUT",
-        "message": "Mandatory input field(s) missing",
-        "fields": [
-          "dateOfCurrentConviction",
-          "ageAtFirstSanction",
-          "dateAtStartOfFollowup"
-        ]
-      }
-    ]
+    "validationErrors": []
   }
 }
