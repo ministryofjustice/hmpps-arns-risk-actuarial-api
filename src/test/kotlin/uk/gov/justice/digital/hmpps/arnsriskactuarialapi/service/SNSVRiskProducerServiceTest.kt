@@ -133,7 +133,7 @@ class SNSVRiskProducerServiceTest {
         service.getRiskScore(
           validSNSVStaticRiskScoreRequest().copy(
             dateOfBirth = LocalDate.of(2025, Month.JANUARY, 1),
-            dateAtStartOfFollowup = LocalDate.of(2027, 1, 1),
+            dateAtStartOfFollowupUserInput = LocalDate.of(2027, 1, 1),
           ),
           emptyContext(),
         )

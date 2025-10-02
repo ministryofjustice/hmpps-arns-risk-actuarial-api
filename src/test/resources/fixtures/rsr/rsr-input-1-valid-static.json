@@ -9,7 +9,7 @@
     "totalNumberOfSanctionsForAllOffences": 1,
     "ageAtFirstSanction": 40,
     "supervisionStatus": "COMMUNITY",
-    "dateAtStartOfFollowup": "2024-01-01",
+    "dateAtStartOfFollowupUserInput": "2024-01-01",
     "totalNumberOfViolentSanctions": 1,
     "evidenceOfDomesticAbuse": true,
     "domesticAbuseAgainstPartner": true,

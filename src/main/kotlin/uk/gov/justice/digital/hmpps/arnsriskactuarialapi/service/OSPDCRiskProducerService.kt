@@ -71,7 +71,7 @@ class OSPDCRiskProducerService : BaseRiskScoreProducer() {
       request.totalContactChildSexualSanctions!!,
       request.totalNonContactSexualOffences!!,
       request.totalIndecentImageSanctions!!,
-      request.dateAtStartOfFollowup!!,
+      request.dateAtStartOfFollowupUserInput!!,
       request.totalNumberOfSanctionsForAllOffences!!.toInt(),
       request.dateOfMostRecentSexualOffence,
       request.isCurrentOffenceAgainstVictimStranger,

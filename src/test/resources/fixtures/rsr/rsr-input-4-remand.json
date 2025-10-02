@@ -25,7 +25,7 @@
     "totalContactChildSexualSanctions": null,
     "totalIndecentImageSanctions": null,
     "totalNonContactSexualOffences": null,
-    "dateAtStartOfFollowup": "2024-01-05",
+    "dateAtStartOfFollowupUserInput": "2024-01-05",
     "dateOfMostRecentSexualOffence": null,
     "isCurrentOffenceAgainstVictimStranger": null,
     "totalNumberOfViolentSanctions": 10,

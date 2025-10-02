@@ -37,7 +37,7 @@ class OVPRiskProducerService : BaseRiskScoreProducer() {
     val validRequest = OVPRequestValidated(
       request.totalNumberOfSanctionsForAllOffences!!.toInt(),
       request.totalNumberOfViolentSanctions!!.toInt(),
-      request.dateAtStartOfFollowup!!,
+      request.dateAtStartOfFollowupCalculated!!,
       request.dateOfBirth!!,
       request.gender!!,
       request.doesRecogniseImpactOfOffendingOnOthers!!,

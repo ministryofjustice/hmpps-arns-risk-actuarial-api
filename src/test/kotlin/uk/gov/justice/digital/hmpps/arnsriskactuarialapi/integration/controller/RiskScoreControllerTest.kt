@@ -13,13 +13,13 @@ class RiskScoreControllerTest : IntegrationTestBase() {
   private val basicRequest = RiskScoreRequest(
     RiskScoreVersion.V1_0,
     Gender.MALE,
-    assessmentDate = LocalDate.of(2025, 1, 1),
+    LocalDate.of(2025, 1, 1),
     LocalDate.of(1964, 10, 15),
     LocalDate.of(2014, 12, 13),
-    LocalDate.of(2027, 12, 12),
     10 as Integer?,
     30 as Integer?,
     "05101",
+    dateAtStartOfFollowupUserInput = LocalDate.of(2027, 12, 12),
   )
 
   @Test
@@ -47,7 +47,7 @@ class RiskScoreControllerTest : IntegrationTestBase() {
           "gender": "MALE",
           "dateOfBirth": "1965-01-01",
           "dateOfCurrentConviction": "2024-01-01",
-          "dateAtStartOfFollowup": "2027-01-01",
+          "dateAtStartOfFollowupUserInput": "2027-01-01",
           "totalNumberOfSanctionsForAllOffences": 3,
           "ageAtFirstSanction": 50,
           "currentOffenceCode": "05101"
