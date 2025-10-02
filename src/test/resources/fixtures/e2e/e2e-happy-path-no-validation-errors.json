@@ -9,7 +9,8 @@
     "totalNumberOfSanctionsForAllOffences": 1,
     "ageAtFirstSanction": 40,
     "supervisionStatus": "COMMUNITY",
-    "dateAtStartOfFollowup": "2027-01-01",
+    "dateAtStartOfFollowupUserInput": "2040-01-01",
+    "dateAtStartOfFollowupCalculated": "2040-01-01",
     "totalNumberOfViolentSanctions": 1,
     "didOffenceInvolveCarryingOrUsingWeapon": false,
     "suitabilityOfAccommodation": "NO_PROBLEMS",
@@ -115,8 +116,8 @@
         "output" : {
           "band" : "LOW",
           "oneYearScore" : 4,
-          "twoYearScore" : 8,
-          "pointScore" : 20
+          "twoYearScore" : 7,
+          "pointScore" : 18
         },
         "featureValues" : [ ],
         "validationErrors" : [ ]
@@ -142,8 +143,8 @@
         "thresholdsVersion" : "1.0",
         "output" : {
           "band" : "HIGH",
-          "pointScore" : 35,
-          "score" : 0.04563810242340296,
+          "pointScore" : 30,
+          "score" : 0.021055770881897785,
           "femaleVersion" : false,
           "hasSexualOffenceHistory" : true,
           "riskBandReductionApplied" : false
@@ -172,7 +173,7 @@
         "thresholdsVersion" : "1.0",
         "output" : {
           "band" : null,
-          "score" : 0.0026587424338094
+          "score" : 0.0013470306852831
         },
         "featureValues" : [ ],
         "validationErrors" : [ ]
@@ -184,7 +185,7 @@
         "thresholdsVersion" : "1.0",
         "output" : {
           "band" : "HIGH",
-          "overallScore" : 15.14,
+          "overallScore" : 12.55,
           "femaleVersion" : false,
           "hasSexualOffenceHistory" : true,
           "componentScores" : [ {
@@ -194,8 +195,8 @@
             "thresholdsVersion" : "1.0",
             "output" : {
               "band" : "HIGH",
-              "pointScore" : 35,
-              "score" : 0.04563810242340296,
+              "pointScore" : 30,
+              "score" : 0.021055770881897785,
               "femaleVersion" : false,
               "hasSexualOffenceHistory" : true,
               "riskBandReductionApplied" : false
@@ -222,7 +223,7 @@
             "thresholdsVersion" : "1.0",
             "output" : {
               "band" : null,
-              "score" : 0.0026587424338094
+              "score" : 0.0013470306852831
             },
             "featureValues" : [ ],
             "validationErrors" : [ ]

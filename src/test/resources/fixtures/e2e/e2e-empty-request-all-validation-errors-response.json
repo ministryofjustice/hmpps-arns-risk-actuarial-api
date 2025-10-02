@@ -17,7 +17,7 @@
         "validationErrors" : [ {
           "type" : "MISSING_MANDATORY_INPUT",
           "message" : "Mandatory input field(s) missing",
-          "fields" : [ "gender", "dateOfBirth", "dateOfCurrentConviction", "dateAtStartOfFollowup", "totalNumberOfSanctionsForAllOffences", "ageAtFirstSanction", "currentOffenceCode" ]
+          "fields" : [ "gender", "dateOfBirth", "dateOfCurrentConviction", "dateAtStartOfFollowupCalculated", "totalNumberOfSanctionsForAllOffences", "ageAtFirstSanction", "currentOffenceCode" ]
         } ]
       },
       "violentPredictor" : {
@@ -35,7 +35,7 @@
         "validationErrors" : [ {
           "type" : "MISSING_MANDATORY_INPUT",
           "message" : "Mandatory input field(s) missing",
-          "fields" : [ "gender", "dateOfBirth", "dateAtStartOfFollowup", "totalNumberOfSanctionsForAllOffences", "totalNumberOfViolentSanctions", "doesRecogniseImpactOfOffendingOnOthers", "isCurrentlyOfNoFixedAbodeOrTransientAccommodation", "isUnemployed", "currentAlcoholUseProblems", "excessiveAlcoholUse", "hasCurrentPsychiatricTreatment", "temperControl", "proCriminalAttitudes" ]
+          "fields" : [ "gender", "dateOfBirth", "dateAtStartOfFollowupCalculated", "totalNumberOfSanctionsForAllOffences", "totalNumberOfViolentSanctions", "doesRecogniseImpactOfOffendingOnOthers", "isCurrentlyOfNoFixedAbodeOrTransientAccommodation", "isUnemployed", "currentAlcoholUseProblems", "excessiveAlcoholUse", "hasCurrentPsychiatricTreatment", "temperControl", "proCriminalAttitudes" ]
         } ]
       },
       "nonViolentPredictor" : {
@@ -73,7 +73,7 @@
         "validationErrors" : [ {
           "type" : "MISSING_MANDATORY_INPUT",
           "message" : "Mandatory input field(s) missing",
-          "fields" : [ "gender", "hasEverCommittedSexualOffence", "dateOfBirth", "dateAtStartOfFollowup", "totalNumberOfSanctionsForAllOffences", "supervisionStatus" ]
+          "fields" : [ "gender", "hasEverCommittedSexualOffence", "dateOfBirth", "dateAtStartOfFollowupUserInput", "totalNumberOfSanctionsForAllOffences", "supervisionStatus" ]
         } ]
       },
       "indirectContactSexualPredictor" : {
@@ -107,7 +107,7 @@
         "validationErrors" : [ {
           "type" : "MISSING_MANDATORY_INPUT",
           "message" : "Mandatory input field(s) missing",
-          "fields" : [ "gender", "dateOfBirth", "dateOfCurrentConviction", "currentOffenceCode", "totalNumberOfSanctionsForAllOffences", "ageAtFirstSanction", "supervisionStatus", "dateAtStartOfFollowup", "totalNumberOfViolentSanctions" ]
+          "fields" : [ "gender", "dateOfBirth", "dateOfCurrentConviction", "currentOffenceCode", "totalNumberOfSanctionsForAllOffences", "ageAtFirstSanction", "supervisionStatus", "dateAtStartOfFollowupUserInput", "totalNumberOfViolentSanctions" ]
         } ]
       },
       "seriousPredictor" : {
@@ -137,7 +137,7 @@
             "validationErrors" : [ {
               "type" : "MISSING_MANDATORY_INPUT",
               "message" : "Mandatory input field(s) missing",
-              "fields" : [ "gender", "hasEverCommittedSexualOffence", "dateOfBirth", "dateAtStartOfFollowup", "totalNumberOfSanctionsForAllOffences", "supervisionStatus" ]
+              "fields" : [ "gender", "hasEverCommittedSexualOffence", "dateOfBirth", "dateAtStartOfFollowupUserInput", "totalNumberOfSanctionsForAllOffences", "supervisionStatus" ]
             } ]
           }, {
             "algorithm" : "OSPIIC",
@@ -169,7 +169,7 @@
             "validationErrors" : [ {
               "type" : "MISSING_MANDATORY_INPUT",
               "message" : "Mandatory input field(s) missing",
-              "fields" : [ "gender", "dateOfBirth", "dateOfCurrentConviction", "currentOffenceCode", "totalNumberOfSanctionsForAllOffences", "ageAtFirstSanction", "supervisionStatus", "dateAtStartOfFollowup", "totalNumberOfViolentSanctions" ]
+              "fields" : [ "gender", "dateOfBirth", "dateOfCurrentConviction", "currentOffenceCode", "totalNumberOfSanctionsForAllOffences", "ageAtFirstSanction", "supervisionStatus", "dateAtStartOfFollowupUserInput", "totalNumberOfViolentSanctions" ]
             } ]
           } ]
         },
@@ -177,7 +177,7 @@
         "validationErrors" : [ {
           "type" : "MISSING_MANDATORY_INPUT",
           "message" : "Mandatory input field(s) missing",
-          "fields" : [ "gender", "hasEverCommittedSexualOffence", "dateOfBirth", "dateAtStartOfFollowup", "totalNumberOfSanctionsForAllOffences", "supervisionStatus" ]
+          "fields" : [ "gender", "hasEverCommittedSexualOffence", "dateOfBirth", "dateAtStartOfFollowupUserInput", "totalNumberOfSanctionsForAllOffences", "supervisionStatus" ]
         }, {
           "type" : "MISSING_MANDATORY_INPUT",
           "message" : "Mandatory input field(s) missing",
@@ -185,7 +185,7 @@
         }, {
           "type" : "MISSING_MANDATORY_INPUT",
           "message" : "Mandatory input field(s) missing",
-          "fields" : [ "gender", "dateOfBirth", "dateOfCurrentConviction", "currentOffenceCode", "totalNumberOfSanctionsForAllOffences", "ageAtFirstSanction", "supervisionStatus", "dateAtStartOfFollowup", "totalNumberOfViolentSanctions" ]
+          "fields" : [ "gender", "dateOfBirth", "dateOfCurrentConviction", "currentOffenceCode", "totalNumberOfSanctionsForAllOffences", "ageAtFirstSanction", "supervisionStatus", "dateAtStartOfFollowupUserInput", "totalNumberOfViolentSanctions" ]
         } ]
       }
     },
