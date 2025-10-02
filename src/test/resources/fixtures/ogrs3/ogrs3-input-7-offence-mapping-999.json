@@ -4,7 +4,7 @@
     "gender": "MALE",
     "dateOfBirth": "2001-01-01",
     "dateOfCurrentConviction": "2021-01-01",
-    "dateAtStartOfFollowup": "2025-01-01",
+    "dateAtStartOfFollowupCalculated": "2025-01-01",
     "totalNumberOfSanctionsForAllOffences": 2,
     "ageAtFirstSanction": 18,
     "currentOffenceCode": "08800"

@@ -48,7 +48,7 @@ class OVPValidationHelperTest {
     val expectedFields = listOf(
       "gender",
       "dateOfBirth",
-      "dateAtStartOfFollowup",
+      "dateAtStartOfFollowupCalculated",
       "totalNumberOfSanctionsForAllOffences",
       "totalNumberOfViolentSanctions",
       "doesRecogniseImpactOfOffendingOnOthers",
@@ -71,7 +71,7 @@ class OVPValidationHelperTest {
     version = RiskScoreVersion.V1_0,
     gender = Gender.MALE,
     dateOfBirth = LocalDate.of(1990, 1, 1),
-    dateAtStartOfFollowup = LocalDate.of(2021, 1, 1),
+    dateAtStartOfFollowupCalculated = LocalDate.of(2021, 1, 1),
     totalNumberOfSanctionsForAllOffences = 1 as Integer?,
     totalNumberOfViolentSanctions = 1 as Integer?,
     doesRecogniseImpactOfOffendingOnOthers = true,

@@ -25,7 +25,7 @@ class SNSVValidationHelperTest {
       totalNumberOfSanctionsForAllOffences = null,
       ageAtFirstSanction = null,
       supervisionStatus = null,
-      dateAtStartOfFollowup = null,
+      dateAtStartOfFollowupUserInput = null,
       totalNumberOfViolentSanctions = null,
     )
 
@@ -39,7 +39,7 @@ class SNSVValidationHelperTest {
       "totalNumberOfSanctionsForAllOffences",
       "ageAtFirstSanction",
       "supervisionStatus",
-      "dateAtStartOfFollowup",
+      "dateAtStartOfFollowupUserInput",
       "totalNumberOfViolentSanctions",
     )
 

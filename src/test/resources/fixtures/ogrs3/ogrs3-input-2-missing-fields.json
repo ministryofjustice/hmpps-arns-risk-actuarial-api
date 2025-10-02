@@ -21,7 +21,7 @@
           "gender",
           "dateOfBirth",
           "dateOfCurrentConviction",
-          "dateAtStartOfFollowup",
+          "dateAtStartOfFollowupCalculated",
           "totalNumberOfSanctionsForAllOffences",
           "ageAtFirstSanction",
           "currentOffenceCode"

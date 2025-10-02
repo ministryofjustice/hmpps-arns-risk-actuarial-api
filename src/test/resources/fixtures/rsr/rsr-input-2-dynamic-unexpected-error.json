@@ -9,7 +9,7 @@
     "totalNumberOfSanctionsForAllOffences": 1,
     "ageAtFirstSanction": 40,
     "supervisionStatus": "COMMUNITY",
-    "dateAtStartOfFollowup": "2027-01-01",
+    "dateAtStartOfFollowupUserInput": "2027-01-01",
     "totalNumberOfViolentSanctions": 1,
     "didOffenceInvolveCarryingOrUsingWeapon": false,
     "suitabilityOfAccommodation": "NO_PROBLEMS",

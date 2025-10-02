@@ -61,7 +61,7 @@ class OGRS3ValidationHelperTest {
       "gender",
       "dateOfBirth",
       "dateOfCurrentConviction",
-      "dateAtStartOfFollowup",
+      "dateAtStartOfFollowupCalculated",
       "totalNumberOfSanctionsForAllOffences",
       "ageAtFirstSanction",
       "currentOffenceCode",
@@ -121,9 +121,9 @@ class OGRS3ValidationHelperTest {
     FIXED_TEST_DATE,
     LocalDate.of(1964, 10, 15),
     LocalDate.of(2014, 12, 13),
-    LocalDate.of(2027, 12, 12),
     10 as Integer?,
     30 as Integer?,
     "05110",
+    dateAtStartOfFollowupCalculated = LocalDate.of(2027, 12, 12),
   )
 }

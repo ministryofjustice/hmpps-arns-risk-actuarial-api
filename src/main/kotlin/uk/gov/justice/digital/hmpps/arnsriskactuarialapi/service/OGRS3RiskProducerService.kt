@@ -47,7 +47,7 @@ class OGRS3RiskProducerService : BaseRiskScoreProducer() {
       request.dateOfBirth!!,
       request.assessmentDate,
       request.dateOfCurrentConviction!!,
-      request.dateAtStartOfFollowup!!,
+      request.dateAtStartOfFollowupCalculated!!,
       request.totalNumberOfSanctionsForAllOffences!!.toInt(),
       request.ageAtFirstSanction!!.toInt(),
       request.currentOffenceCode!!,

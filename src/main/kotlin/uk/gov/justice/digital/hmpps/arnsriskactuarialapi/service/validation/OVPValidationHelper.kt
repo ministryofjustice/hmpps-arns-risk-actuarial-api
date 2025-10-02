@@ -6,7 +6,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResp
 val OVP_REQUIRED_FIELDS = listOf(
   RiskScoreRequest::gender,
   RiskScoreRequest::dateOfBirth,
-  RiskScoreRequest::dateAtStartOfFollowup,
+  RiskScoreRequest::dateAtStartOfFollowupCalculated,
   RiskScoreRequest::totalNumberOfSanctionsForAllOffences,
   RiskScoreRequest::totalNumberOfViolentSanctions,
   RiskScoreRequest::doesRecogniseImpactOfOffendingOnOthers,

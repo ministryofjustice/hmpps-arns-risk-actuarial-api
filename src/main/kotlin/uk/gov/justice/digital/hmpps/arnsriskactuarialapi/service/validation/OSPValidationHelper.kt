@@ -20,7 +20,7 @@ val OSP_CONDITIONAL_FIELDS: List<KProperty1<RiskScoreRequest, Any?>> = listOf(
 val OSPDC_REQUIRED_FIELDS: List<KProperty1<RiskScoreRequest, Any?>> = listOf(
   RiskScoreRequest::hasEverCommittedSexualOffence,
   RiskScoreRequest::dateOfBirth,
-  RiskScoreRequest::dateAtStartOfFollowup,
+  RiskScoreRequest::dateAtStartOfFollowupUserInput,
   RiskScoreRequest::totalNumberOfSanctionsForAllOffences,
   RiskScoreRequest::supervisionStatus,
 )

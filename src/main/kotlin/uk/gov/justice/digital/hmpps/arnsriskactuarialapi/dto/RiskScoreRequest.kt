@@ -9,12 +9,12 @@ data class RiskScoreRequest(
   val assessmentDate: LocalDate = LocalDate.now(),
   val dateOfBirth: LocalDate? = null,
   val dateOfCurrentConviction: LocalDate? = null,
-  val dateAtStartOfFollowup: LocalDate? = null,
   val totalNumberOfSanctionsForAllOffences: Integer? = null,
   val ageAtFirstSanction: Integer? = null,
   val currentOffenceCode: String? = null,
 
   // OVP additional properties
+  val dateAtStartOfFollowupCalculated: LocalDate? = null,
   val totalNumberOfViolentSanctions: Integer? = null,
   val doesRecogniseImpactOfOffendingOnOthers: Boolean? = null,
   val isCurrentlyOfNoFixedAbodeOrTransientAccommodation: Boolean? = null,
@@ -100,6 +100,7 @@ data class RiskScoreRequest(
   val professionalOrVocationalQualifications: HasQualifications? = null,
 
   // RSR
+  val dateAtStartOfFollowupUserInput: LocalDate? = null,
   val totalContactAdultSexualSanctions: Int? = null,
   val totalContactChildSexualSanctions: Int? = null,
   val totalIndecentImageSanctions: Int? = null,

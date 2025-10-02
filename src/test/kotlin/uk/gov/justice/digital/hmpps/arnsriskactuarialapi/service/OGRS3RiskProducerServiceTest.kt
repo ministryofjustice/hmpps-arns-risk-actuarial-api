@@ -36,7 +36,7 @@ class OGRS3RiskProducerServiceTest {
       validRiskScoreRequest().copy(
         dateOfBirth = LocalDate.of(2000, 1, 1),
         dateOfCurrentConviction = LocalDate.of(2009, 1, 1),
-        dateAtStartOfFollowup = LocalDate.of(2026, 12, 6),
+        dateAtStartOfFollowupCalculated = LocalDate.of(2026, 12, 6),
         totalNumberOfSanctionsForAllOffences = Integer.valueOf(2) as Integer?,
         ageAtFirstSanction = Integer.valueOf(9) as Integer?,
         currentOffenceCode = "02700",
@@ -60,7 +60,7 @@ class OGRS3RiskProducerServiceTest {
       validRiskScoreRequest().copy(
         dateOfBirth = LocalDate.of(1990, 1, 1),
         dateOfCurrentConviction = LocalDate.of(2009, 1, 1),
-        dateAtStartOfFollowup = LocalDate.of(2026, 12, 6),
+        dateAtStartOfFollowupCalculated = LocalDate.of(2026, 12, 6),
         totalNumberOfSanctionsForAllOffences = Integer.valueOf(2) as Integer?,
         ageAtFirstSanction = Integer.valueOf(40) as Integer?,
         currentOffenceCode = "02700",
@@ -87,7 +87,7 @@ class OGRS3RiskProducerServiceTest {
       validRiskScoreRequest().copy(
         dateOfBirth = LocalDate.of(1965, 12, 7),
         dateOfCurrentConviction = LocalDate.of(2025, 5, 13),
-        dateAtStartOfFollowup = LocalDate.of(2026, 12, 6),
+        dateAtStartOfFollowupCalculated = LocalDate.of(2026, 12, 6),
         totalNumberOfSanctionsForAllOffences = Integer.valueOf(2) as Integer?,
         ageAtFirstSanction = Integer.valueOf(47) as Integer?,
         currentOffenceCode = "02700",
@@ -116,7 +116,7 @@ class OGRS3RiskProducerServiceTest {
       validRiskScoreRequest().copy(
         dateOfBirth = LocalDate.of(1965, 12, 7),
         dateOfCurrentConviction = LocalDate.of(2025, 5, 13),
-        dateAtStartOfFollowup = LocalDate.of(2026, 12, 6),
+        dateAtStartOfFollowupCalculated = LocalDate.of(2026, 12, 6),
         totalNumberOfSanctionsForAllOffences = Integer.valueOf(2) as Integer?,
         ageAtFirstSanction = Integer.valueOf(47) as Integer?,
         currentOffenceCode = "02700",
@@ -142,7 +142,7 @@ class OGRS3RiskProducerServiceTest {
       validRiskScoreRequest().copy(
         dateOfBirth = LocalDate.of(1991, 7, 17),
         dateOfCurrentConviction = LocalDate.of(2021, 8, 5),
-        dateAtStartOfFollowup = LocalDate.of(2021, 12, 12),
+        dateAtStartOfFollowupCalculated = LocalDate.of(2021, 12, 12),
         totalNumberOfSanctionsForAllOffences = Integer.valueOf(2) as Integer?,
         ageAtFirstSanction = Integer.valueOf(21) as Integer?,
         currentOffenceCode = "11618",
@@ -179,7 +179,7 @@ class OGRS3RiskProducerServiceTest {
       "gender",
       "dateOfBirth",
       "dateOfCurrentConviction",
-      "dateAtStartOfFollowup",
+      "dateAtStartOfFollowupCalculated",
       "totalNumberOfSanctionsForAllOffences",
       "ageAtFirstSanction",
       "currentOffenceCode",
@@ -221,10 +221,10 @@ class OGRS3RiskProducerServiceTest {
     Gender.MALE,
     FIXED_TEST_DATE,
     LocalDate.of(1964, 10, 15),
-    LocalDate.of(2014, 12, 13),
     LocalDate.of(2027, 12, 12),
     10 as Integer?,
     30 as Integer?,
     "05110",
+    dateAtStartOfFollowupCalculated = LocalDate.of(2014, 12, 13),
   )
 }

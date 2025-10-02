@@ -4,7 +4,7 @@
     "gender": "MALE",
     "dateOfBirth": "1964-10-15",
     "dateOfCurrentConviction": "2014-12-12",
-    "dateAtStartOfFollowup": "2027-12-12",
+    "dateAtStartOfFollowupCalculated": "2027-12-12",
     "totalNumberOfSanctionsForAllOffences": 10,
     "ageAtFirstSanction": 30,
     "currentOffenceCode": "ABC"
