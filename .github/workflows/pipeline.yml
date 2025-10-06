@@ -43,6 +43,25 @@ jobs:
     name: Validate the kotlin
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/kotlin_validate.yml@v2 # WORKFLOW_VERSION
     secrets: inherit
+  k6_performance_test:
+    name: Run K6 performance test
+    if: github.ref != 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Stand up a test environment
+        run: docker compose -f docker-compose.yml up --wait --no-recreate
+      - name: Setup K6
+        uses: grafana/setup-k6-action@v1
+      - name: Run local k6 test
+        env:
+          CLIENT_ID: ${{ secrets.LOCAL_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.LOCAL_CLIENT_SECRET }}
+          AUTH_URL: http://localhost:8090/auth/oauth/token
+        uses: grafana/run-k6-action@v1
+        with:
+          path: ./k6/performance-test.js
   build:
     name: Build docker image from hmpps-github-actions
     if: github.ref == 'refs/heads/main'
