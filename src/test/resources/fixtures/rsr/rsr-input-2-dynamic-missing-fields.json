@@ -68,7 +68,7 @@
           "validationErrors": [
             {
               "type": "MISSING_DYNAMIC_INPUT",
-              "message": "ERR5 - Field is Null",
+              "message": "Dynamic input field(s) missing",
               "fields": [
                 "domesticAbuseAgainstPartner"
               ]
@@ -81,7 +81,7 @@
     "validationErrors": [
       {
         "type": "MISSING_DYNAMIC_INPUT",
-        "message": "ERR5 - Field is Null",
+        "message": "Dynamic input field(s) missing",
         "fields": [
           "domesticAbuseAgainstPartner"
         ]
