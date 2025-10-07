@@ -21,6 +21,7 @@ enum class ValidationErrorType(val message: String) {
   ABOVE_MAX_VALUE("ERR3 - Above minimum value"),
   NO_MATCHING_INPUT("ERR4 - Does not match agreed input"),
   MISSING_INPUT("ERR5 - Field is Null"),
+  MISSING_DYNAMIC_INPUT("ERR5 - Field is Null"),
   UNEXPECTED_VALUE("ERR6 - Field is unexpected"),
   ;
 

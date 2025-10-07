@@ -64,7 +64,7 @@ class SNSVValidationHelperTest {
     )
 
     assertEquals(1, errors.size)
-    assertEquals(ValidationErrorType.MISSING_INPUT, errors.first().type)
+    assertEquals(ValidationErrorType.MISSING_DYNAMIC_INPUT, errors.first().type)
     assertEquals("ERR5 - Field is Null", errors.first().message)
     assertEquals(expectedFields, errors.first().fields)
   }
