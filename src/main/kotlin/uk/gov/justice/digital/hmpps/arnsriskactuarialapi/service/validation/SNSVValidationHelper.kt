@@ -53,7 +53,7 @@ fun snsvDynamicValidation(request: RiskScoreRequest, errors: MutableList<Validat
         ),
       ),
       emptyList(),
-      isDynamic = true
+      isDynamic = true,
     )
   }
 }

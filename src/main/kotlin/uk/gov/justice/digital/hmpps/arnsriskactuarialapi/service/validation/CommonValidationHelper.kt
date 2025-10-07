@@ -40,11 +40,11 @@ fun validateCurrentOffenceCode(request: RiskScoreRequest, errors: MutableList<Va
 fun addMissingFields(
   missingFields: List<String>,
   errors: List<ValidationErrorResponse>,
-  isDynamic: Boolean = false
+  isDynamic: Boolean = false,
 ): List<ValidationErrorResponse> = addValidationErrorResponse(
   missingFields,
   errors,
-  if (isDynamic) ValidationErrorType.MISSING_DYNAMIC_INPUT else ValidationErrorType.MISSING_INPUT
+  if (isDynamic) ValidationErrorType.MISSING_DYNAMIC_INPUT else ValidationErrorType.MISSING_INPUT,
 )
 
 fun addMissingCriteriaValidation(
