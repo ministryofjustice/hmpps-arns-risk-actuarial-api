@@ -16,7 +16,7 @@ class SNSVValidationHelperTest {
   }
 
   @Test
-  fun `snsvstaticInitialValidation missing field error with all fields null`() {
+  fun `snsvStaticInitialValidation missing field error with all fields null`() {
     val request = validSNSVStaticRiskScoreRequest().copy(
       gender = null,
       dateOfBirth = null,
@@ -59,8 +59,17 @@ class SNSVValidationHelperTest {
     snsvDynamicValidation(request, errors)
 
     val expectedFields = listOf(
+      "didOffenceInvolveCarryingOrUsingWeapon",
+      "suitabilityOfAccommodation",
+      "isUnemployed",
+      "currentRelationshipWithPartner",
+      "currentAlcoholUseProblems",
+      "excessiveAlcoholUse",
+      "impulsivityProblems",
+      "temperControl",
+      "proCriminalAttitudes",
+      "previousConvictions",
       "evidenceOfDomesticAbuse",
-      "domesticAbuseAgainstPartner",
     )
 
     assertEquals(1, errors.size)

@@ -70,6 +70,16 @@
               "type": "MISSING_DYNAMIC_INPUT",
               "message": "Dynamic input field(s) missing",
               "fields": [
+                "didOffenceInvolveCarryingOrUsingWeapon",
+                "suitabilityOfAccommodation",
+                "isUnemployed",
+                "currentRelationshipWithPartner",
+                "currentAlcoholUseProblems",
+                "excessiveAlcoholUse",
+                "impulsivityProblems",
+                "temperControl",
+                "proCriminalAttitudes",
+                "previousConvictions",
                 "domesticAbuseAgainstPartner"
               ]
             }
@@ -83,6 +93,16 @@
         "type": "MISSING_DYNAMIC_INPUT",
         "message": "Dynamic input field(s) missing",
         "fields": [
+          "didOffenceInvolveCarryingOrUsingWeapon",
+          "suitabilityOfAccommodation",
+          "isUnemployed",
+          "currentRelationshipWithPartner",
+          "currentAlcoholUseProblems",
+          "excessiveAlcoholUse",
+          "impulsivityProblems",
+          "temperControl",
+          "proCriminalAttitudes",
+          "previousConvictions",
           "domesticAbuseAgainstPartner"
         ]
       }
