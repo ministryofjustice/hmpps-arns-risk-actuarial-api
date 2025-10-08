@@ -90,21 +90,9 @@
     "featureValues": [],
     "validationErrors": [
       {
-        "type": "MISSING_DYNAMIC_INPUT",
-        "message": "Dynamic input field(s) missing",
-        "fields": [
-          "didOffenceInvolveCarryingOrUsingWeapon",
-          "suitabilityOfAccommodation",
-          "isUnemployed",
-          "currentRelationshipWithPartner",
-          "currentAlcoholUseProblems",
-          "excessiveAlcoholUse",
-          "impulsivityProblems",
-          "temperControl",
-          "proCriminalAttitudes",
-          "previousConvictions",
-          "domesticAbuseAgainstPartner"
-        ]
+        "type": "COMPONENT_VALIDATION_ERROR",
+        "message": "Validation error(s) in component scores",
+        "fields": [ "SNSV" ]
       }
     ]
   }
