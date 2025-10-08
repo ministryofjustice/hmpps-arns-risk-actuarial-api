@@ -13,15 +13,12 @@ enum class ValidationErrorType(val message: String) {
   LDS_NOT_ENOUGH_FIELDS_PRESENT("At least three input fields must be provided"),
   OFFENCE_CODE_INCORRECT_FORMAT("Offence code must be a string of 5 digits"),
   OFFENCE_CODE_MAPPING_NOT_FOUND("No offence code to actuarial weighting mapping found for offence code"),
+  COMPONENT_VALIDATION_ERROR("Validation error(s) in component scores"),
   UNEXPECTED_ERROR("An unexpected error occurred"),
 
   // TODO - All below are to be deprecated.
   NOT_APPLICABLE("ERR1 - Does not meet eligibility criteria"),
-  BELOW_MIN_VALUE("ERR2 - Below minimum value"),
-  ABOVE_MAX_VALUE("ERR3 - Above minimum value"),
-  NO_MATCHING_INPUT("ERR4 - Does not match agreed input"),
   MISSING_INPUT("ERR5 - Field is Null"),
-  UNEXPECTED_VALUE("ERR6 - Field is unexpected"),
   ;
 
   fun asErrorResponse(fields: List<String>): ValidationErrorResponse = ValidationErrorResponse(this, message, fields)

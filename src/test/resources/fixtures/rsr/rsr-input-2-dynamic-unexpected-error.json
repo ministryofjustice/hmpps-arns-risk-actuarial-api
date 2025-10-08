@@ -90,9 +90,11 @@
     "featureValues": [],
     "validationErrors": [
       {
-        "type": "UNEXPECTED_ERROR",
-        "message": "Unexpected error thrown during calculation, see logs for further details: Age at date at start of followup cannot be less than 10",
-        "fields": []
+        "type": "COMPONENT_VALIDATION_ERROR",
+        "message": "Validation error(s) in component scores",
+        "fields": [
+          "SNSV"
+        ]
       }
     ]
   }
