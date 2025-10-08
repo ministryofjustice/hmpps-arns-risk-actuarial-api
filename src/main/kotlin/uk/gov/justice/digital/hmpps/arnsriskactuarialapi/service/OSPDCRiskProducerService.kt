@@ -19,10 +19,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getTotalContactChildSexualSanctionsWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getTotalNonContactSexualOffencesWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getTotalNumberOfSanctionsForAllOffencesWeight
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.addMissingCriteriaValidation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateOSP
-
-const val FIXED_RSR_CONTRIBUTION = 0.00383142
 
 @Service
 class OSPDCRiskProducerService : BaseRiskScoreProducer() {
@@ -44,21 +41,6 @@ class OSPDCRiskProducerService : BaseRiskScoreProducer() {
           request.gender == Gender.FEMALE,
           false,
           listOf(),
-        )
-      }
-    }
-
-    // When female, there is no score or band produced
-    if (request.gender == Gender.FEMALE && request.hasEverCommittedSexualOffence == true) {
-      return context.apply {
-        OSPDC = OSPDCObject(
-          RiskBand.NOT_APPLICABLE,
-          FIXED_RSR_CONTRIBUTION,
-          null,
-          null,
-          femaleVersion = true,
-          sexualOffenceHistory = true,
-          validationError = addMissingCriteriaValidation(arrayListOf(RiskScoreRequest::gender.name), emptyList()),
         )
       }
     }

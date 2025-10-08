@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validOSPDCRiskScoreRequest
 import java.time.LocalDate
@@ -95,7 +94,7 @@ class OSPDCRiskProducerServiceTest {
   }
 
   @Test
-  fun `should return NOT_APPLICABLE when FEMALE with sexual offences`() {
+  fun `should return valid OVPObject when FEMALE with sexual offences`() {
     // When
     val result = service.getRiskScore(
       validOSPDCRiskScoreRequest().copy(
@@ -107,12 +106,9 @@ class OSPDCRiskProducerServiceTest {
 
     // Then
     assertNotNull(result)
-    assertEquals(0.00383142, result.OSPDC?.ospdcScore)
-    assertEquals(RiskBand.NOT_APPLICABLE, result.OSPDC?.ospdcBand)
-    assertEquals(1, result.OSPDC?.validationError?.size)
-    val error = result.OSPDC?.validationError?.first()
-    assertEquals(ValidationErrorType.NOT_APPLICABLE, error?.type)
-    assertEquals("ERR1 - Does not meet eligibility criteria", error?.message)
+    assertEquals(0.024614429829673733, result.OSPDC?.ospdcScore)
+    assertEquals(RiskBand.HIGH, result.OSPDC?.ospdcBand)
+    assertTrue(result.OSPDC!!.validationError!!.isEmpty())
   }
 
   @Test

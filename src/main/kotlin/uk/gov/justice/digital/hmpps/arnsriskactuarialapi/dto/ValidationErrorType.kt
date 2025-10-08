@@ -18,7 +18,6 @@ enum class ValidationErrorType(val message: String) {
   UNEXPECTED_ERROR("An unexpected error occurred"),
 
   // TODO - All below are to be deprecated.
-  NOT_APPLICABLE("ERR1 - Does not meet eligibility criteria"),
   MISSING_INPUT("ERR5 - Field is Null"),
   ;
 
