@@ -47,15 +47,6 @@ fun addMissingFields(
   if (isDynamic) ValidationErrorType.MISSING_DYNAMIC_INPUT else ValidationErrorType.MISSING_INPUT,
 )
 
-fun addMissingCriteriaValidation(
-  criteriaFields: List<String>,
-  errors: List<ValidationErrorResponse>,
-): List<ValidationErrorResponse> = addValidationErrorResponse(
-  criteriaFields,
-  errors,
-  ValidationErrorType.NOT_APPLICABLE,
-)
-
 fun addValidationErrorResponse(
   fields: List<String>,
   errors: List<ValidationErrorResponse>,

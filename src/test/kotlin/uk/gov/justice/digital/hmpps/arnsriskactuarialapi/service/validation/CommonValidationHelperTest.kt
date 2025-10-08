@@ -10,25 +10,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 class CommonValidationHelperTest {
 
   @Test
-  fun `addMissingCriteriaValidation no errors present`() {
-    val errorResponses = addMissingCriteriaValidation(mutableListOf(), mutableListOf())
-    assertTrue { errorResponses.isEmpty() }
-  }
-
-  @Test
-  fun `addMissingCriteriaValidation all criteria fields`() {
-    val errorResponses = addMissingCriteriaValidation(mutableListOf("Gender", "dateOfBirth"), mutableListOf())
-    val expected = listOf(
-      ValidationErrorResponse(
-        ValidationErrorType.NOT_APPLICABLE,
-        "ERR1 - Does not meet eligibility criteria",
-        listOf("Gender", "dateOfBirth"),
-      ),
-    )
-    assertEquals(expected, errorResponses)
-  }
-
-  @Test
   fun `getCurrentOffenceCodeValidation no errors`() {
     val riskScoreRequestInput = RiskScoreRequest(currentOffenceCode = "00101")
     val validationErrorResponses = mutableListOf<ValidationErrorResponse>()
