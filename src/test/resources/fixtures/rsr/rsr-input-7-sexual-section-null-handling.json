@@ -99,10 +99,11 @@
     "featureValues": [],
     "validationErrors": [
       {
-        "type": "MISSING_MANDATORY_INPUT",
-        "message": "Mandatory input field(s) missing",
+        "type": "COMPONENT_VALIDATION_ERROR",
+        "message": "Validation error(s) in component scores",
         "fields": [
-          "hasEverCommittedSexualOffence"
+          "OSPDC",
+          "OSPIIC"
         ]
       }
     ]

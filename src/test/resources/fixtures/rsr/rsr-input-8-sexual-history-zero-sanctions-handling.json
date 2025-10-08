@@ -111,13 +111,11 @@
     "featureValues": [],
     "validationErrors": [
       {
-        "type": "SEXUAL_OFFENDING_MISSING_COUNTS",
-        "message": "Sexual motivation/offending identified - complete sexual offence counts",
+        "type": "COMPONENT_VALIDATION_ERROR",
+        "message": "Validation error(s) in component scores",
         "fields": [
-          "totalContactAdultSexualSanctions",
-          "totalContactChildSexualSanctions",
-          "totalIndecentImageSanctions",
-          "totalNonContactSexualOffences"
+          "OSPDC",
+          "OSPIIC"
         ]
       }
     ]

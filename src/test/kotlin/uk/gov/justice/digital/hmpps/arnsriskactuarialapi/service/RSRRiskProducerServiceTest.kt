@@ -10,6 +10,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.osp.OSPDCObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ospiic.OSPIICObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.SNSVObject
@@ -59,9 +60,9 @@ class RSRRiskProducerServiceTest {
   fun `should return null RSR and null scoreType when blocking errors exist `() {
     val errors = listOf(
       ValidationErrorResponse(
-        type = ValidationErrorType.MISSING_INPUT,
-        message = "ERR",
-        fields = listOf(RiskScoreRequest::isCurrentOffenceSexuallyMotivated.name),
+        type = ValidationErrorType.COMPONENT_VALIDATION_ERROR,
+        message = "Validation error(s) in component scores",
+        fields = listOf(AlgorithmResponse.OSPDC.name),
       ),
     )
     val context = emptyContext().copy(

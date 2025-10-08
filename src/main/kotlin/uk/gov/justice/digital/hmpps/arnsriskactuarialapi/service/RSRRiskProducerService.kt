@@ -6,6 +6,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.osp.OSPDCObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ospiic.OSPIICObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.rsr.RSRObject
@@ -22,15 +24,25 @@ class RSRRiskProducerService : BaseRiskScoreProducer() {
     val ospiic = context.OSPIIC ?: OSPIICObject(null, null, null, null, null)
     val snsv = context.SNSV ?: SNSVObject(null, null, null)
 
+    val componentErrorNames = mutableListOf<String>()
+    context.OSPDC?.validationError?.let { validationErrors -> if (validationErrors.isNotEmpty()) componentErrorNames += AlgorithmResponse.OSPDC.name }
+    context.OSPIIC?.validationError?.let { validationErrors -> if (validationErrors.isNotEmpty()) componentErrorNames += AlgorithmResponse.OSPIIC.name }
+    context.SNSV?.validationError?.let { validationErrors -> if (validationErrors.isNotEmpty()) componentErrorNames += AlgorithmResponse.SNSV.name }
+
+    if (componentErrorNames.isNotEmpty()) {
+      return applyErrorsToContextAndReturn(
+        context,
+        listOf(
+          ValidationErrorType.COMPONENT_VALIDATION_ERROR.asErrorResponse(componentErrorNames),
+        ),
+      )
+    }
+
     val errors = listOfNotNull(
       ospdc.validationError,
       ospiic.validationError,
       snsv.validationError,
     ).flatten().distinct()
-
-    if (errors.isNotEmpty()) {
-      return applyErrorsToContextAndReturn(context, errors)
-    }
 
     if (sexualSectionAllNull(request) || sexualOffenceHistoryTrueButSanctionsZero(request)) {
       return applyErrorsToContextAndReturn(context, errors)

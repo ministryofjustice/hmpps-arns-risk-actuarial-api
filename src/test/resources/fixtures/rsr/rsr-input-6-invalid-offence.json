@@ -93,26 +93,11 @@
     "featureValues": [],
     "validationErrors": [
       {
-        "type": "MISSING_MANDATORY_INPUT",
-        "message": "Mandatory input field(s) missing",
+        "type": "COMPONENT_VALIDATION_ERROR",
+        "message": "Validation error(s) in component scores",
         "fields": [
-          "dateAtStartOfFollowupUserInput"
-        ]
-      },
-      {
-        "type": "MISSING_MANDATORY_INPUT",
-        "message": "Mandatory input field(s) missing",
-        "fields": [
-          "dateOfCurrentConviction",
-          "ageAtFirstSanction",
-          "dateAtStartOfFollowupUserInput"
-        ]
-      },
-      {
-        "type": "OFFENCE_CODE_INCORRECT_FORMAT",
-        "message": "Offence code must be a string of 5 digits",
-        "fields": [
-          "currentOffenceCode"
+          "OSPDC",
+          "SNSV"
         ]
       }
     ]
