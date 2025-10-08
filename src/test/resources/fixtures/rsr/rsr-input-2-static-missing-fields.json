@@ -84,6 +84,12 @@
       ]
     },
     "featureValues": [],
-    "validationErrors": []
+    "validationErrors": [
+      {
+        "type": "COMPONENT_VALIDATION_ERROR",
+        "message": "Validation error(s) in component scores",
+        "fields": [ "SNSV" ]
+      }
+    ]
   }
 }
