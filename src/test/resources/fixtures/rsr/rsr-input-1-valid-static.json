@@ -19,10 +19,10 @@
     "modelVersion": "1.0",
     "thresholdsVersion": "1.0",
     "output": {
-      "band": null,
-      "overallScore": null,
-      "femaleVersion": null,
-      "hasSexualOffenceHistory": null,
+      "band": "LOW",
+      "overallScore": 0.14,
+      "femaleVersion": false,
+      "hasSexualOffenceHistory": false,
       "componentScores": [
         {
           "algorithm": "OSPDC",
