@@ -11,8 +11,6 @@
     "supervisionStatus": "COMMUNITY",
     "dateAtStartOfFollowupUserInput": "2024-01-01",
     "totalNumberOfViolentSanctions": 1,
-    "evidenceOfDomesticAbuse": true,
-    "domesticAbuseAgainstPartner": true,
     "hasEverCommittedSexualOffence": false
   },
   "response": {
@@ -66,7 +64,25 @@
             "score": 0.0013621503445161
           },
           "featureValues": [],
-          "validationErrors": []
+          "validationErrors": [
+            {
+              "type": "MISSING_DYNAMIC_INPUT",
+              "message": "Dynamic input field(s) missing",
+              "fields": [
+                "didOffenceInvolveCarryingOrUsingWeapon",
+                "suitabilityOfAccommodation",
+                "isUnemployed",
+                "currentRelationshipWithPartner",
+                "currentAlcoholUseProblems",
+                "excessiveAlcoholUse",
+                "impulsivityProblems",
+                "temperControl",
+                "proCriminalAttitudes",
+                "previousConvictions",
+                "evidenceOfDomesticAbuse"
+              ]
+            }
+          ]
         }
       ]
     },

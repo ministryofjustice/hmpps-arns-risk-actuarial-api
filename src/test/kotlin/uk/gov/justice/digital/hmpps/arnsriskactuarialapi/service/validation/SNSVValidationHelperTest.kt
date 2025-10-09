@@ -16,7 +16,7 @@ class SNSVValidationHelperTest {
   }
 
   @Test
-  fun `snsvstaticInitialValidation missing field error with all fields null`() {
+  fun `snsvStaticInitialValidation missing field error with all fields null`() {
     val request = validSNSVStaticRiskScoreRequest().copy(
       gender = null,
       dateOfBirth = null,
@@ -59,13 +59,51 @@ class SNSVValidationHelperTest {
     snsvDynamicValidation(request, errors)
 
     val expectedFields = listOf(
+      "didOffenceInvolveCarryingOrUsingWeapon",
+      "suitabilityOfAccommodation",
+      "isUnemployed",
+      "currentRelationshipWithPartner",
+      "currentAlcoholUseProblems",
+      "excessiveAlcoholUse",
+      "impulsivityProblems",
+      "temperControl",
+      "proCriminalAttitudes",
+      "previousConvictions",
       "evidenceOfDomesticAbuse",
+    )
+
+    assertEquals(1, errors.size)
+    assertEquals(ValidationErrorType.MISSING_DYNAMIC_INPUT, errors.first().type)
+    assertEquals("Dynamic input field(s) missing", errors.first().message)
+    assertEquals(expectedFields, errors.first().fields)
+  }
+
+  @Test
+  fun `snsvDynamicValidation missing field error with derived domesticViolencePerpetrator question true but domesticAbuseAgainstPartner is null`() {
+    val request = validSNSVStaticRiskScoreRequest().copy(
+      evidenceOfDomesticAbuse = true,
+      domesticAbuseAgainstPartner = null,
+    )
+    val errors = mutableListOf<ValidationErrorResponse>()
+    snsvDynamicValidation(request, errors)
+
+    val expectedFields = listOf(
+      "didOffenceInvolveCarryingOrUsingWeapon",
+      "suitabilityOfAccommodation",
+      "isUnemployed",
+      "currentRelationshipWithPartner",
+      "currentAlcoholUseProblems",
+      "excessiveAlcoholUse",
+      "impulsivityProblems",
+      "temperControl",
+      "proCriminalAttitudes",
+      "previousConvictions",
       "domesticAbuseAgainstPartner",
     )
 
     assertEquals(1, errors.size)
-    assertEquals(ValidationErrorType.MISSING_INPUT, errors.first().type)
-    assertEquals("ERR5 - Field is Null", errors.first().message)
+    assertEquals(ValidationErrorType.MISSING_DYNAMIC_INPUT, errors.first().type)
+    assertEquals("Dynamic input field(s) missing", errors.first().message)
     assertEquals(expectedFields, errors.first().fields)
   }
 

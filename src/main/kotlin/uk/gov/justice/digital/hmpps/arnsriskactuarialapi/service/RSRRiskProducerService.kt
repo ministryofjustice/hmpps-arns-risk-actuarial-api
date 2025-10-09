@@ -27,7 +27,9 @@ class RSRRiskProducerService : BaseRiskScoreProducer() {
     val componentErrorNames = mutableListOf<String>()
     context.OSPDC?.validationError?.let { validationErrors -> if (validationErrors.isNotEmpty()) componentErrorNames += AlgorithmResponse.OSPDC.name }
     context.OSPIIC?.validationError?.let { validationErrors -> if (validationErrors.isNotEmpty()) componentErrorNames += AlgorithmResponse.OSPIIC.name }
-    context.SNSV?.validationError?.let { validationErrors -> if (validationErrors.isNotEmpty()) componentErrorNames += AlgorithmResponse.SNSV.name }
+    context.SNSV?.validationError?.let { validationErrors ->
+      if (validationErrors.any { it.type != ValidationErrorType.MISSING_DYNAMIC_INPUT }) componentErrorNames += AlgorithmResponse.SNSV.name
+    }
 
     if (componentErrorNames.isNotEmpty()) {
       return applyErrorsToContextAndReturn(
@@ -42,7 +44,9 @@ class RSRRiskProducerService : BaseRiskScoreProducer() {
       ospdc.validationError,
       ospiic.validationError,
       snsv.validationError,
-    ).flatten().distinct()
+    ).flatten()
+      .filter { it.type != ValidationErrorType.MISSING_DYNAMIC_INPUT }
+      .distinct()
 
     if (sexualSectionAllNull(request) || sexualOffenceHistoryTrueButSanctionsZero(request)) {
       return applyErrorsToContextAndReturn(context, errors)
