@@ -27,8 +27,8 @@
     "pniPathway": "OMISSION",
     "validationError": [
       {
-        "type": "MISSING_INPUT",
-        "message": "ERR5 - Field is Null",
+        "type": "MISSING_MANDATORY_INPUT",
+        "message": "Mandatory input field(s) missing",
         "fields": [
           "sexualPreoccupation",
           "offenceRelatedSexualInterests",

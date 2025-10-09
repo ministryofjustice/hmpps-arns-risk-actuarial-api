@@ -7,6 +7,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.ProgrammeNeedIdentifier
@@ -25,7 +26,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isRsrHigh
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isRsrMedium
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.overallNeedsGroupingCalculation
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.addMissingFields
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validatePNI
 
 @Service
@@ -70,7 +70,11 @@ class PNIRiskProducerService : BaseRiskScoreProducer() {
 
     val overallNeed = overallNeedsGroupingCalculation(requestValidated)
     val overallNeedScore = overallNeed.first
-    val additionalErrors = addMissingFields(overallNeed.third.toList(), errors)
+    val additionalErrors = mutableListOf<ValidationErrorResponse>()
+    val missingFieldErrors = overallNeed.third.toList()
+    if (missingFieldErrors.isNotEmpty()) {
+      additionalErrors += ValidationErrorType.MISSING_MANDATORY_INPUT.asErrorResponse(missingFieldErrors)
+    }
     if (overallNeedScore == null) {
       return context.apply { PNI = PNIObject(ProgrammeNeedIdentifier.OMISSION, additionalErrors) }
     }
