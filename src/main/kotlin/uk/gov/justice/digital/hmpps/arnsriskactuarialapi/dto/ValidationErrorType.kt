@@ -16,9 +16,6 @@ enum class ValidationErrorType(val message: String) {
   OFFENCE_CODE_MAPPING_NOT_FOUND("No offence code to actuarial weighting mapping found for offence code"),
   COMPONENT_VALIDATION_ERROR("Validation error(s) in component scores"),
   UNEXPECTED_ERROR("An unexpected error occurred"),
-
-  // TODO - All below are to be deprecated.
-  MISSING_INPUT("ERR5 - Field is Null"),
   ;
 
   fun asErrorResponse(fields: List<String>): ValidationErrorResponse = ValidationErrorResponse(this, message, fields)

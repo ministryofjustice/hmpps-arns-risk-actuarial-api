@@ -170,15 +170,15 @@ class RSRRiskProducerServiceTest {
 
     val blockingError = listOf(
       ValidationErrorResponse(
-        type = ValidationErrorType.MISSING_INPUT,
-        message = "ERR",
+        type = ValidationErrorType.MISSING_MANDATORY_INPUT,
+        message = "THIS DOES NOT GET ASSERTED",
         fields = listOf(RiskScoreRequest::isCurrentOffenceSexuallyMotivated.name),
       ),
     )
     val nonBlockingError = listOf(
       ValidationErrorResponse(
-        type = ValidationErrorType.MISSING_INPUT,
-        message = "ERR",
+        type = ValidationErrorType.MISSING_MANDATORY_INPUT,
+        message = "THIS DOES NOT GET ASSERTED",
         fields = listOf(RiskScoreRequest::hasEverCommittedSexualOffence.name),
       ),
     )

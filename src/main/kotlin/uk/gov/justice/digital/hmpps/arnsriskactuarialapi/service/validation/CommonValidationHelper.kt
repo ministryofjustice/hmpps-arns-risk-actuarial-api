@@ -44,7 +44,7 @@ fun addMissingFields(
 ): List<ValidationErrorResponse> = addValidationErrorResponse(
   missingFields,
   errors,
-  if (isDynamic) ValidationErrorType.MISSING_DYNAMIC_INPUT else ValidationErrorType.MISSING_INPUT,
+  if (isDynamic) ValidationErrorType.MISSING_DYNAMIC_INPUT else ValidationErrorType.MISSING_MANDATORY_INPUT,
 )
 
 fun addValidationErrorResponse(
