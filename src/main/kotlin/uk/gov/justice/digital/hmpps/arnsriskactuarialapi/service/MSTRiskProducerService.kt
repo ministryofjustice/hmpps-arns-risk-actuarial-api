@@ -8,8 +8,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.mst.MSTObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.mst.MSTRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.calculateAge
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getMaturityFlag
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getMstApplicable
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isValidMstAge
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.getMstApplicable
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.isNotNullAndInvalidMstAge
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateMST
 
 @Service
@@ -18,7 +18,7 @@ class MSTRiskProducerService : BaseRiskScoreProducer() {
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
     val currentAge: Int? = request.dateOfBirth?.let { calculateAge(it, request.assessmentDate) }
 
-    if (currentAge != null && !isValidMstAge(currentAge)) {
+    if (isNotNullAndInvalidMstAge(currentAge)) {
       return context.apply {
         MST = MSTObject(
           maturityScore = null,

@@ -1,5 +1,6 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
@@ -44,3 +45,11 @@ private fun validateRequiredFields(request: RiskScoreRequest, errors: MutableLis
     errors += ValidationErrorType.MISSING_MANDATORY_INPUT.asErrorResponse(missingFields)
   }
 }
+
+fun getMstApplicable(gender: Gender, age: Int): Boolean = isValidMstGender(gender) && isValidMstAge(age)
+
+fun isValidMstAge(age: Int): Boolean = age in 18..25
+
+fun isValidMstGender(gender: Gender): Boolean = gender == Gender.MALE
+
+fun isNotNullAndInvalidMstAge(age: Int?): Boolean = age != null && !isValidMstAge(age)
