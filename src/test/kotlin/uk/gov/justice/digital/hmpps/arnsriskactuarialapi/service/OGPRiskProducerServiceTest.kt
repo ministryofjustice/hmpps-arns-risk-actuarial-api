@@ -25,6 +25,7 @@ class OGPRiskProducerServiceTest {
       ogrs3TwoYear = 81,
       band = null,
       validationError = null,
+      featureValues = null,
     )
     val context = RiskScoreContext(
       version = RiskScoreVersion.V1_0,

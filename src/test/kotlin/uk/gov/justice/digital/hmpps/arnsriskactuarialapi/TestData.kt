@@ -29,7 +29,7 @@ import java.time.LocalDate
 
 fun emptyOVP(): OVPObject = OVPObject(null, null, null, null, null)
 
-fun emptyOGRS3(): OGRS3Object = OGRS3Object(null, null, null, null)
+fun emptyOGRS3(): OGRS3Object = OGRS3Object(null, null, null, null, null)
 
 fun emptyOGP(): OGPObject = OGPObject(null, null, null, null, null)
 
@@ -41,9 +41,9 @@ fun omittedPNI(): PNIObject = PNIObject(ProgrammeNeedIdentifier.OMISSION, null)
 
 fun emptyLDS(): LDSObject = LDSObject(null, null)
 
-fun emptyOSPDC(): OSPDCObject = OSPDCObject(null, null, null, null, null, null, null)
+fun emptyOSPDC(): OSPDCObject = OSPDCObject(null, null, null, null, null, null, null, null)
 
-fun emptySNSV(): SNSVObject = SNSVObject(null, null, null)
+fun emptySNSV(): SNSVObject = SNSVObject(null, null, null, null)
 
 fun emptyRSR(): RSRObject = RSRObject(null, null, null, null, null, null, null, null, null, null, null)
 
@@ -56,6 +56,7 @@ fun lowOgrs2() = OGRS3Object(
   20,
   RiskBand.LOW,
   emptyList(),
+  emptyMap(),
 )
 
 fun highOgrs2() = OGRS3Object(
@@ -63,6 +64,7 @@ fun highOgrs2() = OGRS3Object(
   90,
   RiskBand.VERY_HIGH,
   emptyList(),
+  emptyMap(),
 )
 
 fun highOvp() = OVPObject(
@@ -130,14 +132,6 @@ object RiskScoreRequestTestConstants {
     hasProblemsWithNumeracy = null,
     learningDifficulties = ProblemLevel.SOME_PROBLEMS,
     professionalOrVocationalQualifications = HasQualifications.ANY_QUALIFICATION,
-  )
-  val FULL_OSPIIC_REQUEST = RiskScoreRequest(
-    version = RiskScoreVersion.V1_0,
-    gender = Gender.MALE,
-    totalContactAdultSexualSanctions = 5,
-    totalContactChildSexualSanctions = 2,
-    totalIndecentImageSanctions = 4,
-    totalNonContactSexualOffences = 6,
   )
 }
 
