@@ -24,9 +24,8 @@ fun getOffenderCopasScore(
   if (denominator <= 0.0) {
     throw IllegalArgumentException("Invalid age values leading to non-positive denominator")
   }
-  val logValue = ln(numerator / denominator)
 
-  return logValue.roundTo5Decimals()
+  return ln(numerator / denominator)
 }
 
 fun getConvictionStatusScore(offenderConvictionStatus: OffenderConvictionStatus) = if (offenderConvictionStatus == OffenderConvictionStatus.REPEAT_OFFENDER) 0.46306 else 0.12614

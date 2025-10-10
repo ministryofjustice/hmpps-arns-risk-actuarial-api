@@ -9,6 +9,8 @@ import org.springframework.http.MediaType
 import org.springframework.test.json.JsonCompareMode
 import java.io.File
 import java.util.stream.Stream
+import kotlin.test.assertEquals
+import kotlin.test.fail
 
 /**
  * Snapshot testing for risk score calculations.
@@ -54,14 +56,19 @@ class ApiE2ETest : IntegrationTestBase() {
     val requestBody = fixtureJson["request"].toString()
     val expectedJson: JsonNode = fixtureJson["response"]
 
-    webTestClient.post()
+    val responseBody = webTestClient.post()
       .uri("/risk-scores/v1")
       .contentType(MediaType.APPLICATION_JSON)
       .headers(setAuthorisation(roles = listOf("ARNS_RISK_ACTUARIAL")))
       .bodyValue(requestBody)
       .exchange()
       .expectStatus().isOk
-      .expectBody()
-      .json(expectedJson.toPrettyString(), JsonCompareMode.STRICT)
+      .expectBody(String::class.java)
+      .returnResult()
+      .responseBody ?: fail("No response body received")
+
+    val actualJson: JsonNode = objectMapper.readTree(responseBody).at("")
+
+    assertEquals(expectedJson.toPrettyString(), actualJson.toPrettyString(), "Error with Fixture file: $fixturePath")
   }
 }

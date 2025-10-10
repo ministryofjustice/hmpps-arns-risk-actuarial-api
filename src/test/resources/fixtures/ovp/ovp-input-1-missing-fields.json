@@ -20,7 +20,7 @@
       "twoYearScore": null,
       "pointScore": null
     },
-    "featureValues": [],
+    "featureValues": {},
     "validationErrors": [
       {
         "type": "MISSING_MANDATORY_INPUT",

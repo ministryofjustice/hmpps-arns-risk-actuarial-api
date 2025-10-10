@@ -65,7 +65,7 @@ class SNSVRiskProducerService : BaseRiskScoreProducer() {
   override fun applyErrorsToContextAndReturn(
     context: RiskScoreContext,
     validationErrorResponses: List<ValidationErrorResponse>,
-  ): RiskScoreContext = context.apply { SNSV = SNSVObject(null, null, validationErrorResponses) }
+  ): RiskScoreContext = context.apply { SNSV = SNSVObject(null, null, validationErrorResponses, null) }
 
   fun getSNSVObject(
     scoreType: ScoreType,
@@ -79,13 +79,13 @@ class SNSVRiskProducerService : BaseRiskScoreProducer() {
       errors += ValidationErrorType.OFFENCE_CODE_MAPPING_NOT_FOUND.asErrorResponseForOffenceCodeMappingNotFound(request.currentOffenceCode, listOf(RiskScoreRequest::currentOffenceCode.name))
     }
     if (errors.isNotEmpty()) {
-      return SNSVObject(null, scoreType, errors)
+      return SNSVObject(null, scoreType, errors, null)
     }
     snsvDynamicValidation(request, errors)
     return when (scoreType) {
       ScoreType.STATIC -> snvsStaticSum(request.toSNSVStaticRequestValidated(weightingSNSVVATP!!, weightingSNSV!!))
       ScoreType.DYNAMIC -> snvsDynamicSum(request.toSNSVDynamicRequestValidated(weightingSNSVVATP!!, weightingSNSV!!))
-    }.let { SNSVObject(it.sigmoid().roundToNDecimals(16), scoreType, errors) }
+    }.let { SNSVObject(it.first.sigmoid().roundToNDecimals(16), scoreType, errors, it.second) }
   }
 
   private fun retrieveWeightingSNSV(scoreType: ScoreType, request: RiskScoreRequest): Double? = when (scoreType) {
@@ -145,98 +145,191 @@ class SNSVRiskProducerService : BaseRiskScoreProducer() {
     weightingSNSV,
   )
 
-  private fun snvsStaticSum(request: SNSVStaticRequestValidated): Double = listOf(
-    get2YearInterceptWeight(false),
-    getGenderWeight(request.gender, false),
-    getAgeGenderPolynomialWeight(request.gender, request.dateOfBirth, request.dateAtStartOfFollowup, false),
-    request.snsvWeighting,
-    getNumberOfSanctionWeight(request.totalNumberOfSanctionsForAllOffences, false),
-    getTotalSanctionWeight(request.totalNumberOfSanctionsForAllOffences, false),
-
-    getSecondSanctionCasesOnlyWeight(
+  private fun snvsStaticSum(request: SNSVStaticRequestValidated): Pair<Double, Map<String, String>> {
+    val get2YearInterceptWeight = get2YearInterceptWeight(false)
+    val genderWeight = getGenderWeight(request.gender, false)
+    val ageGenderPolynomialWeight =
+      getAgeGenderPolynomialWeight(request.gender, request.dateOfBirth, request.dateAtStartOfFollowup, false)
+    val snsvWeighting = request.snsvWeighting
+    val numberOfSanctionWeight = getNumberOfSanctionWeight(request.totalNumberOfSanctionsForAllOffences, false)
+    val totalSanctionWeight = getTotalSanctionWeight(request.totalNumberOfSanctionsForAllOffences, false)
+    val secondSanctionCasesOnlyWeight = getSecondSanctionCasesOnlyWeight(
       request.totalNumberOfSanctionsForAllOffences,
       request.gender,
       request.dateOfBirth,
       request.dateOfCurrentConviction,
       request.ageAtFirstSanction,
       false,
-    ),
-    getMonthsSinceLastSanctionWeight(
+    )
+    val monthsSinceLastSanctionWeight = getMonthsSinceLastSanctionWeight(
       request.supervisionStatus,
       request.dateAtStartOfFollowup,
       request.assessmentDate,
       false,
-    ),
-    getThreePlusSanctionsWeight(
+    )
+    val threePlusSanctionsWeight = getThreePlusSanctionsWeight(
       request.gender,
       request.totalNumberOfSanctionsForAllOffences,
       request.ageAtFirstSanction,
       request.dateOfBirth,
       request.dateOfCurrentConviction,
       false,
-    ),
-    getViolentHistoryWeight(request.totalNumberOfViolentSanctions, request.gender, false),
-    getViolentSanctionsWeight(request.totalNumberOfViolentSanctions, false), //
-    getViolenceRateWeight(
+    )
+    val violentHistoryWeight = getViolentHistoryWeight(request.totalNumberOfViolentSanctions, request.gender, false)
+    val violentSanctionsWeight = getViolentSanctionsWeight(request.totalNumberOfViolentSanctions, false)
+    val violenceRateWeight = getViolenceRateWeight(
       request.dateOfBirth,
       request.dateOfCurrentConviction,
       request.ageAtFirstSanction,
       request.totalNumberOfViolentSanctions,
       false,
-    ), //
-    request.snsvvatpWeighting,
-  ).sum()
+    )
+    val snsvvatpWeighting = request.snsvvatpWeighting
 
-  private fun snvsDynamicSum(request: SNSVDynamicRequestValidated): Double = listOf(
-    get2YearInterceptWeight(true),
-    getGenderWeight(request.gender, true),
-    getAgeGenderPolynomialWeight(request.gender, request.dateOfBirth, request.dateAtStartOfFollowup, true),
-    request.snsvWeighting,
-    getNumberOfSanctionWeight(request.totalNumberOfSanctionsForAllOffences, true),
-    getTotalSanctionWeight(request.totalNumberOfSanctionsForAllOffences, true),
-    getSecondSanctionCasesOnlyWeight(
+    val sum = listOf(
+      get2YearInterceptWeight,
+      genderWeight,
+      ageGenderPolynomialWeight,
+      snsvWeighting,
+      numberOfSanctionWeight,
+      totalSanctionWeight,
+      secondSanctionCasesOnlyWeight,
+      monthsSinceLastSanctionWeight,
+      threePlusSanctionsWeight,
+      violentHistoryWeight,
+      violentSanctionsWeight,
+      violenceRateWeight,
+      snsvvatpWeighting,
+    ).sum()
+
+    return Pair(
+      sum,
+      mapOf(
+        FeatureValue.TWO_YEAR_INTERCEPT_WEIGHT.asPair(get2YearInterceptWeight.toString()),
+        FeatureValue.GENDER_WEIGHT.asPair(genderWeight.toString()),
+        FeatureValue.AGE_GENDER_POLYNOMIAL_WEIGHT.asPair(ageGenderPolynomialWeight.toString()),
+        FeatureValue.SNSV_WEIGHT.asPair(snsvWeighting.toString()),
+        FeatureValue.SECOND_SANCTION_CASES_ONLY_WEIGHT.asPair(secondSanctionCasesOnlyWeight.toString()),
+        FeatureValue.MONTHS_SINCE_LAST_SANCTION_WEIGHT.asPair(monthsSinceLastSanctionWeight.toString()),
+        FeatureValue.THREE_PLUS_SANCTIONS_WEIGHT.asPair(threePlusSanctionsWeight.toString()),
+        FeatureValue.VIOLENT_HISTORY_WEIGHT.asPair(violentHistoryWeight.toString()),
+        FeatureValue.VIOLENT_SANCTIONS_WEIGHT.asPair(violentSanctionsWeight.toString()),
+        FeatureValue.VIOLENCE_RATE_WEIGHT.asPair(violenceRateWeight.toString()),
+        FeatureValue.SNSV_VATP_WEIGHT.asPair(snsvvatpWeighting.toString()),
+        // Looking at where this comes from it states OGRS3 so i've used the same FeatureValue enum
+        FeatureValue.TOTAL_NUMBER_OF_SANCTIONS_FOR_ALL_OFFENCES_WEIGHT.asPair(totalSanctionWeight.toString()),
+        FeatureValue.NUMBER_OF_SANCTIONS_WEIGHT.asPair(numberOfSanctionWeight.toString()),
+      ),
+    )
+  }
+
+  private fun snvsDynamicSum(request: SNSVDynamicRequestValidated): Pair<Double, Map<String, String>> {
+    val get2YearInterceptWeight = get2YearInterceptWeight(true)
+    val genderWeight = getGenderWeight(request.gender, true)
+    val ageGenderPolynomialWeight =
+      getAgeGenderPolynomialWeight(request.gender, request.dateOfBirth, request.dateAtStartOfFollowup, true)
+    val snsvWeighting = request.snsvWeighting
+    val numberOfSanctionWeight = getNumberOfSanctionWeight(request.totalNumberOfSanctionsForAllOffences, true)
+    val totalSanctionWeight = getTotalSanctionWeight(request.totalNumberOfSanctionsForAllOffences, true)
+    val secondSanctionCasesOnlyWeight = getSecondSanctionCasesOnlyWeight(
       request.totalNumberOfSanctionsForAllOffences,
       request.gender,
       request.dateOfBirth,
       request.dateOfCurrentConviction,
       request.ageAtFirstSanction,
       true,
-    ),
-    getMonthsSinceLastSanctionWeight(
+    )
+    val monthsSinceLastSanctionWeight = getMonthsSinceLastSanctionWeight(
       request.supervisionStatus,
       request.dateAtStartOfFollowup,
       request.assessmentDate,
       true,
-    ),
-    getThreePlusSanctionsWeight(
+    )
+    val threePlusSanctionsWeight = getThreePlusSanctionsWeight(
       request.gender,
       request.totalNumberOfSanctionsForAllOffences,
       request.ageAtFirstSanction,
       request.dateOfBirth,
       request.dateOfCurrentConviction,
       true,
-    ),
-    getViolentHistoryWeight(request.totalNumberOfViolentSanctions, request.gender, true),
-    getViolentSanctionsWeight(request.totalNumberOfViolentSanctions, true),
-    getViolenceRateWeight(
+    )
+    val violenceRateWeight = getViolenceRateWeight(
       request.dateOfBirth,
       request.dateOfCurrentConviction,
       request.ageAtFirstSanction,
       request.totalNumberOfViolentSanctions,
       true,
-    ),
-    request.snsvvatpWeighting,
-    // Dynamic Additions
-    didOffenceInvolveCarryingOrUsingWeaponWeight(request.didOffenceInvolveCarryingOrUsingWeapon),
-    suitabilityOfAccommodationWeight(request.suitabilityOfAccommodation),
-    isUnemployedWeight(request.isUnemployed),
-    currentRelationshipWithPartnerWeight(request.currentRelationshipWithPartner),
-    chronicDrinkingProblemsWeight(request.currentAlcoholUseProblems),
-    bingeDrinkingProblemWeight(request.excessiveAlcoholUse),
-    impulsivityProblemsWeight(request.impulsivityProblems),
-    temperControlWeight(request.temperControl),
-    proCriminalAttitudesWeight(request.proCriminalAttitudes),
-    domesticViolenceWeight(request.domesticViolencePerpetrator),
-    previousConvictionsWeight(request.previousConvictions),
-  ).sum()
+    )
+    val violentHistoryWeight = getViolentHistoryWeight(request.totalNumberOfViolentSanctions, request.gender, true)
+    val violentSanctionsWeight = getViolentSanctionsWeight(request.totalNumberOfViolentSanctions, true)
+    val snsvvatpWeighting = request.snsvvatpWeighting
+    val offenceInvolveCarryingOrUsingWeaponWeight = didOffenceInvolveCarryingOrUsingWeaponWeight(request.didOffenceInvolveCarryingOrUsingWeapon)
+    val suitabilityOfAccommodationWeight = suitabilityOfAccommodationWeight(request.suitabilityOfAccommodation)
+    val unemployedWeight = isUnemployedWeight(request.isUnemployed)
+    val currentRelationshipWithPartnerWeight = currentRelationshipWithPartnerWeight(request.currentRelationshipWithPartner)
+    val chronicDrinkingProblemsWeight = chronicDrinkingProblemsWeight(request.currentAlcoholUseProblems)
+    val bingeDrinkingProblemWeight = bingeDrinkingProblemWeight(request.excessiveAlcoholUse)
+    val impulsivityProblemsWeight = impulsivityProblemsWeight(request.impulsivityProblems)
+    val temperControlWeight = temperControlWeight(request.temperControl)
+    val proCriminalAttitudesWeight = proCriminalAttitudesWeight(request.proCriminalAttitudes)
+    val domesticViolenceWeight = domesticViolenceWeight(request.domesticViolencePerpetrator)
+    val previousConvictionsWeight = previousConvictionsWeight(request.previousConvictions)
+    val sum = listOf(
+      get2YearInterceptWeight,
+      genderWeight,
+      ageGenderPolynomialWeight,
+      snsvWeighting,
+      numberOfSanctionWeight,
+      totalSanctionWeight,
+      secondSanctionCasesOnlyWeight,
+      monthsSinceLastSanctionWeight,
+      threePlusSanctionsWeight,
+      violentHistoryWeight,
+      violentSanctionsWeight,
+      violenceRateWeight,
+      snsvvatpWeighting,
+      // Dynamic Additions
+      offenceInvolveCarryingOrUsingWeaponWeight,
+      suitabilityOfAccommodationWeight,
+      unemployedWeight,
+      currentRelationshipWithPartnerWeight,
+      chronicDrinkingProblemsWeight,
+      bingeDrinkingProblemWeight,
+      impulsivityProblemsWeight,
+      temperControlWeight,
+      proCriminalAttitudesWeight,
+      domesticViolenceWeight,
+      previousConvictionsWeight,
+    ).sum()
+    return Pair(
+      sum,
+      mapOf(
+        FeatureValue.TWO_YEAR_INTERCEPT_WEIGHT.asPair(get2YearInterceptWeight.toString()),
+        FeatureValue.GENDER_WEIGHT.asPair(genderWeight.toString()),
+        FeatureValue.AGE_GENDER_POLYNOMIAL_WEIGHT.asPair(ageGenderPolynomialWeight.toString()),
+        FeatureValue.SNSV_WEIGHT.asPair(snsvWeighting.toString()),
+        FeatureValue.SECOND_SANCTION_CASES_ONLY_WEIGHT.asPair(secondSanctionCasesOnlyWeight.toString()),
+        FeatureValue.MONTHS_SINCE_LAST_SANCTION_WEIGHT.asPair(monthsSinceLastSanctionWeight.toString()),
+        FeatureValue.THREE_PLUS_SANCTIONS_WEIGHT.asPair(threePlusSanctionsWeight.toString()),
+        FeatureValue.VIOLENT_HISTORY_WEIGHT.asPair(violentHistoryWeight.toString()),
+        FeatureValue.VIOLENT_SANCTIONS_WEIGHT.asPair(violentSanctionsWeight.toString()),
+        FeatureValue.VIOLENCE_RATE_WEIGHT.asPair(violenceRateWeight.toString()),
+        FeatureValue.SNSV_VATP_WEIGHT.asPair(snsvvatpWeighting.toString()),
+        // Looking at where this comes from it states OGRS3 so i've used the same FeatureValue enum
+        FeatureValue.TOTAL_NUMBER_OF_SANCTIONS_FOR_ALL_OFFENCES_WEIGHT.asPair(totalSanctionWeight.toString()),
+        FeatureValue.NUMBER_OF_SANCTIONS_WEIGHT.asPair(numberOfSanctionWeight.toString()),
+        FeatureValue.OFFENCE_INVOLVE_CARRYING_OR_USING_WEAPONS_WEIGHT.asPair(offenceInvolveCarryingOrUsingWeaponWeight.toString()),
+        FeatureValue.SUITABILITY_OF_ACCOMMODATION_WEIGHT.asPair(suitabilityOfAccommodationWeight.toString()),
+        FeatureValue.UNEMPLOYED_WEIGHT.asPair(unemployedWeight.toString()),
+        FeatureValue.CURRENT_RELATIONSHIP_WITH_PARTNER.asPair(currentRelationshipWithPartnerWeight.toString()),
+        FeatureValue.CHRONIC_DRINKING_PROBLEMS_WEIGHT.asPair(chronicDrinkingProblemsWeight.toString()),
+        FeatureValue.BINGE_DRINKING_PROBLEMS_WEIGHT.asPair(bingeDrinkingProblemWeight.toString()),
+        FeatureValue.IMPULSIVITY_PROBLEMS_WEIGHT.asPair(impulsivityProblemsWeight.toString()),
+        FeatureValue.TEMPER_CONTROL_WEIGHT.asPair(temperControlWeight.toString()),
+        FeatureValue.PRO_CRIMINAL_ATTITUDES_WEIGHT.asPair(proCriminalAttitudesWeight.toString()),
+        FeatureValue.DOMESTIC_VIOLENCE_WEIGHT.asPair(domesticViolenceWeight.toString()),
+        FeatureValue.PREVIOUS_CONVICTIONS_WEIGHT.asPair(previousConvictionsWeight.toString()),
+      ),
+    )
+  }
 }

@@ -13,7 +13,7 @@
           "oneYearScore": null,
           "twoYearScore": null
         },
-        "featureValues": [],
+        "featureValues": {},
         "validationErrors": [
           {
             "type": "MISSING_MANDATORY_INPUT",
@@ -41,7 +41,7 @@
           "twoYearScore": null,
           "pointScore": null
         },
-        "featureValues": [],
+        "featureValues": {},
         "validationErrors": [
           {
             "type": "MISSING_MANDATORY_INPUT",
@@ -75,7 +75,7 @@
           "twoYearScore": null,
           "pointScore": null
         },
-        "featureValues": [],
+        "featureValues": {},
         "validationErrors": [
           {
             "type": "MISSING_MANDATORY_INPUT",
@@ -108,7 +108,7 @@
           "hasSexualOffenceHistory": null,
           "riskBandReductionApplied": null
         },
-        "featureValues": [],
+        "featureValues": {},
         "validationErrors": [
           {
             "type": "MISSING_MANDATORY_INPUT",
@@ -135,7 +135,7 @@
           "femaleVersion": null,
           "hasSexualOffenceHistory": null
         },
-        "featureValues": [],
+        "featureValues": {},
         "validationErrors": [
           {
             "type": "MISSING_MANDATORY_INPUT",
@@ -155,7 +155,7 @@
           "band": null,
           "score": null
         },
-        "featureValues": [],
+        "featureValues": {},
         "validationErrors": [
           {
             "type": "MISSING_MANDATORY_INPUT",
@@ -198,7 +198,7 @@
                 "hasSexualOffenceHistory": null,
                 "riskBandReductionApplied": null
               },
-              "featureValues": [],
+              "featureValues": {},
               "validationErrors": [
                 {
                   "type": "MISSING_MANDATORY_INPUT",
@@ -225,7 +225,7 @@
                 "femaleVersion": null,
                 "hasSexualOffenceHistory": null
               },
-              "featureValues": [],
+              "featureValues": {},
               "validationErrors": [
                 {
                   "type": "MISSING_MANDATORY_INPUT",
@@ -245,7 +245,7 @@
                 "band": null,
                 "score": null
               },
-              "featureValues": [],
+              "featureValues": {},
               "validationErrors": [
                 {
                   "type": "MISSING_MANDATORY_INPUT",
@@ -266,7 +266,7 @@
             }
           ]
         },
-        "featureValues": [],
+        "featureValues": {},
         "validationErrors": [
           {
             "type": "COMPONENT_VALIDATION_ERROR",

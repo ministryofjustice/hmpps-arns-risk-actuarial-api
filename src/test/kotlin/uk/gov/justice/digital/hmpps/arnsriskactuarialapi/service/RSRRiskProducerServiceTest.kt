@@ -33,6 +33,7 @@ class RSRRiskProducerServiceTest {
         femaleVersion = false,
         sexualOffenceHistory = false,
         ospRiskReduction = null,
+        featureValues = null,
       ),
       OSPIIC = OSPIICObject(
         score = 0.0212312312,
@@ -41,7 +42,7 @@ class RSRRiskProducerServiceTest {
         femaleVersion = true,
         validationError = emptyList(),
       ),
-      SNSV = SNSVObject(snsvScore = 0.0312312312, scoreType = ScoreType.DYNAMIC, validationError = emptyList()),
+      SNSV = SNSVObject(snsvScore = 0.0312312312, scoreType = ScoreType.DYNAMIC, validationError = emptyList(), featureValues = null),
     )
 
     val result = service.getRiskScore(RiskScoreRequest(hasEverCommittedSexualOffence = false, isCurrentOffenceSexuallyMotivated = false), context)
@@ -68,6 +69,7 @@ class RSRRiskProducerServiceTest {
         femaleVersion = true,
         sexualOffenceHistory = true,
         ospRiskReduction = null,
+        featureValues = null,
       ),
       OSPIIC = OSPIICObject(
         score = 0.0,
@@ -76,7 +78,7 @@ class RSRRiskProducerServiceTest {
         femaleVersion = true,
         validationError = emptyList(),
       ),
-      SNSV = SNSVObject(snsvScore = 0.1, scoreType = ScoreType.DYNAMIC, validationError = emptyList()),
+      SNSV = SNSVObject(snsvScore = 0.1, scoreType = ScoreType.DYNAMIC, validationError = emptyList(), featureValues = null)
     )
 
     val result = service.getRiskScore(
@@ -113,6 +115,7 @@ class RSRRiskProducerServiceTest {
         ospRiskReduction = null,
         femaleVersion = false,
         sexualOffenceHistory = true,
+        featureValues = null,
       ),
     )
 
