@@ -20,7 +20,7 @@ class MSTRiskProducerService : BaseRiskScoreProducer() {
 
     if (isNotNullAndInvalidMstAge(currentAge)) {
       return context.apply {
-        MST = createNonApplicableMstObject();
+        MST = createNonApplicableMstObject()
       }
     }
 
@@ -95,12 +95,10 @@ class MSTRiskProducerService : BaseRiskScoreProducer() {
     return createNonApplicableMstObject()
   }
 
-  fun createNonApplicableMstObject(): MSTObject {
-    return MSTObject(
-      maturityScore = null,
-      maturityFlag = false,
-      isMstApplicable = false,
-      listOf(),
-    )
-  }
+  fun createNonApplicableMstObject(): MSTObject = MSTObject(
+    maturityScore = null,
+    maturityFlag = false,
+    isMstApplicable = false,
+    listOf(),
+  )
 }
