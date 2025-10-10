@@ -50,7 +50,7 @@
             "hasSexualOffenceHistory": false,
             "riskBandReductionApplied": null
           },
-          "featureValues": [],
+          "featureValues": {},
           "validationErrors": []
         },
         {
@@ -64,7 +64,7 @@
             "femaleVersion": false,
             "hasSexualOffenceHistory": false
           },
-          "featureValues": [],
+          "featureValues": {},
           "validationErrors": []
         },
         {
@@ -76,7 +76,7 @@
             "band": null,
             "score": null
           },
-          "featureValues": [],
+          "featureValues": {},
           "validationErrors": [
             {
               "type": "UNEXPECTED_ERROR",
@@ -87,7 +87,7 @@
         }
       ]
     },
-    "featureValues": [],
+    "featureValues": {},
     "validationErrors": [
       {
         "type": "COMPONENT_VALIDATION_ERROR",

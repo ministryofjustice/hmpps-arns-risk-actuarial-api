@@ -1,0 +1,41 @@
+package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
+
+enum class FeatureValue(val outputName: String) {
+  AGE_GENDER_SCORE("ageGenderScore"),
+  CONVICTION_STATUS_SCORE("convictionStatusScore"),
+  COPAS_SCORE("COPASScore"),
+  OFFENCE_GROUP_PARAMETER("offenceGroupParameter"),
+  TOTAL_CONTACT_ADULT_SEXUAL_SANCTIONS_WEIGHT("totalContactAdultSexualSanctionsWeight"),
+  TOTAL_CONTACT_CHILD_SEXUAL_SANCTIONS_WEIGHT("totalContactChildSexualSanctionsWeight"),
+  TOTAL_NON_CONTACT_SEXUAL_OFFENCES_WEIGHT("totalNonContactSexualOffencesWeight"),
+  AGE_AT_START_OF_FOLLOW_UP_WEIGHT("ageAtStartOfFollowUpWeight"),
+  AGE_AT_LAST_SANCTION_FOR_SEXUAL_OFFENCE_WEIGHT("ageAtLastSanctionForSexualOffenceWeight"),
+  TOTAL_NUMBER_OF_SANCTIONS_FOR_ALL_OFFENCES_WEIGHT("totalNumberOfSanctionsForAllOffencesWeight"),
+  CURRENT_OFFENCE_AGAINST_VICTIM_STRANGER_WEIGHT("currentOffenceAgainstVictimStrangerWeight"),
+  TWO_YEAR_INTERCEPT_WEIGHT("twoYearInterceptWeight"),
+  GENDER_WEIGHT("genderWeight"),
+  AGE_GENDER_POLYNOMIAL_WEIGHT("ageGenderPolynomialWeight"),
+  SNSV_WEIGHT("SNSVWeighting"),
+  SECOND_SANCTION_CASES_ONLY_WEIGHT("secondSanctionCasesOnlyWeight"),
+  MONTHS_SINCE_LAST_SANCTION_WEIGHT("monthsSinceLastSanctionWeight"),
+  THREE_PLUS_SANCTIONS_WEIGHT("threePlusSanctionWeight"),
+  VIOLENT_HISTORY_WEIGHT("violentHistoryWeight"),
+  VIOLENT_SANCTIONS_WEIGHT("violentSanctionsWeight"),
+  VIOLENCE_RATE_WEIGHT("violenceRateWeight"),
+  SNSV_VATP_WEIGHT("SNSVVATPWeight"),
+  NUMBER_OF_SANCTIONS_WEIGHT("numberOfSanctionsWeight"),
+  OFFENCE_INVOLVE_CARRYING_OR_USING_WEAPONS_WEIGHT("offenceInvolveCarryingOrUsingWeaponsWeight"),
+  SUITABILITY_OF_ACCOMMODATION_WEIGHT("suitabilityOfAccommodationWeight"),
+  UNEMPLOYED_WEIGHT("unemployedWeight"),
+  CURRENT_RELATIONSHIP_WITH_PARTNER("currentRelationshipWithPartner"),
+  CHRONIC_DRINKING_PROBLEMS_WEIGHT("chronicDrinkingProblemsWeight"),
+  BINGE_DRINKING_PROBLEMS_WEIGHT("bingeDrinkingProblemsWeight"),
+  IMPULSIVITY_PROBLEMS_WEIGHT("impulsivityProblemsWeight"),
+  TEMPER_CONTROL_WEIGHT("temperControlWeight"),
+  PRO_CRIMINAL_ATTITUDES_WEIGHT("proCriminalAttitudesWeight"),
+  DOMESTIC_VIOLENCE_WEIGHT("domesticViolenceWeight"),
+  PREVIOUS_CONVICTIONS_WEIGHT("previousConvictionsWeight"),
+  ;
+
+  fun asPair(value: String): Pair<String, String> = Pair(outputName, value)
+}

@@ -65,6 +65,7 @@ private fun buildPredictorResponseForAllPredictor(riskScoreContext: RiskScoreCon
       ogrS3.ogrs3TwoYear,
     ),
     validationErrors = ogrS3.validationError ?: emptyList(),
+    featureValues = ogrS3.featureValues ?: emptyMap(),
   )
 }
 
@@ -112,6 +113,7 @@ private fun buildPredictorResponseForDirectContactSexualPredictor(riskScoreConte
       ospdc.ospRiskReduction,
     ),
     validationErrors = ospdc.validationError ?: emptyList(),
+    featureValues = ospdc.featureValues ?: emptyMap(),
   )
 }
 
@@ -140,6 +142,7 @@ private fun buildPredictorResponseForSeriousViolencePredictor(riskScoreContext: 
       snsv.snsvScore,
     ),
     validationErrors = snsv.validationError ?: emptyList(),
+    featureValues = snsv.featureValues ?: emptyMap(),
   )
 }
 

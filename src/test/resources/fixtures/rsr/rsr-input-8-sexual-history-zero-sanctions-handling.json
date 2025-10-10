@@ -55,7 +55,7 @@
             "hasSexualOffenceHistory": null,
             "riskBandReductionApplied": null
           },
-          "featureValues": [],
+          "featureValues": {},
           "validationErrors": [
             {
               "type": "SEXUAL_OFFENDING_MISSING_COUNTS",
@@ -80,7 +80,7 @@
             "femaleVersion": null,
             "hasSexualOffenceHistory": null
           },
-          "featureValues": [],
+          "featureValues": {},
           "validationErrors": [
             {
               "type": "SEXUAL_OFFENDING_MISSING_COUNTS",
@@ -103,12 +103,37 @@
             "band": null,
             "score": 0.0024431433274692
           },
-          "featureValues": [],
+          "featureValues": {
+            "twoYearInterceptWeight": "2.39022796091603",
+            "genderWeight": "0.0",
+            "ageGenderPolynomialWeight": "-6.796865619791115",
+            "SNSVWeighting": "0.123617390798186",
+            "secondSanctionCasesOnlyWeight": "0.0",
+            "monthsSinceLastSanctionWeight": "0.0",
+            "threePlusSanctionWeight": "0.0",
+            "violentHistoryWeight": "-0.101514048705338",
+            "violentSanctionsWeight": "0.021160895925655",
+            "violenceRateWeight": "-0.1868345173738685",
+            "SNSVVATPWeight": "0.0",
+            "totalNumberOfSanctionsForAllOffencesWeight": "-0.0182592921752245",
+            "numberOfSanctionsWeight": "-1.89458617745666",
+            "offenceInvolveCarryingOrUsingWeaponsWeight": "0.0",
+            "suitabilityOfAccommodationWeight": "0.0",
+            "unemployedWeight": "0.0",
+            "currentRelationshipWithPartner": "0.0",
+            "chronicDrinkingProblemsWeight": "0.0",
+            "bingeDrinkingProblemsWeight": "0.0",
+            "impulsivityProblemsWeight": "0.0",
+            "temperControlWeight": "0.0",
+            "proCriminalAttitudesWeight": "0.0",
+            "domesticViolenceWeight": "0.0",
+            "previousConvictionsWeight": "0.451029720739399"
+          },
           "validationErrors": []
         }
       ]
     },
-    "featureValues": [],
+    "featureValues": {},
     "validationErrors": [
       {
         "type": "COMPONENT_VALIDATION_ERROR",

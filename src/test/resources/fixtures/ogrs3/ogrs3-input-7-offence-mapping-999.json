@@ -19,7 +19,7 @@
       "oneYearScore": null,
       "twoYearScore": null
     },
-    "featureValues": [],
+    "featureValues": {},
     "validationErrors": [
       {
         "type": "NEED_DETAILS_OF_EXACT_OFFENCE",
