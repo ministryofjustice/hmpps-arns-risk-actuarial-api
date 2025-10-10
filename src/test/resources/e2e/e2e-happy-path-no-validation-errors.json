@@ -1,0 +1,261 @@
+{
+  "request": {
+    "version": "V1_0",
+    "gender": "MALE",
+    "dateOfBirth": "1980-01-01",
+    "assessmentDate": "2025-01-01",
+    "dateOfCurrentConviction": "2020-01-01",
+    "currentOffenceCode": "02700",
+    "totalNumberOfSanctionsForAllOffences": 1,
+    "ageAtFirstSanction": 40,
+    "supervisionStatus": "COMMUNITY",
+    "dateAtStartOfFollowupUserInput": "2040-01-01",
+    "dateAtStartOfFollowupCalculated": "2040-01-01",
+    "totalNumberOfViolentSanctions": 1,
+    "didOffenceInvolveCarryingOrUsingWeapon": false,
+    "suitabilityOfAccommodation": "NO_PROBLEMS",
+    "isUnemployed": false,
+    "currentRelationshipWithPartner": "NO_PROBLEMS",
+    "currentAlcoholUseProblems": "NO_PROBLEMS",
+    "excessiveAlcoholUse": "NO_PROBLEMS",
+    "impulsivityProblems": "NO_PROBLEMS",
+    "temperControl": "NO_PROBLEMS",
+    "proCriminalAttitudes": "NO_PROBLEMS",
+    "evidenceOfDomesticAbuse": true,
+    "previousConvictions": [
+      "WOUNDING_GBH"
+    ],
+    "hasEverCommittedSexualOffence": true,
+    "isCurrentOffenceSexuallyMotivated": false,
+    "totalContactAdultSexualSanctions": 5,
+    "totalContactChildSexualSanctions": 5,
+    "totalNonContactSexualOffences": 5,
+    "totalIndecentImageSanctions": 5,
+    "isCurrentlyOfNoFixedAbodeOrTransientAccommodation": true,
+    "workRelatedSkills": "SIGNIFICANT_PROBLEMS",
+    "problemsWithReadingWritingNumeracy": "SIGNIFICANT_PROBLEMS",
+    "hasProblemsWithReading": true,
+    "hasProblemsWithNumeracy": true,
+    "learningDifficulties": "SIGNIFICANT_PROBLEMS",
+    "professionalOrVocationalQualifications": "ANY_QUALIFICATION",
+    "hasPeerGroupInfluences": true,
+    "influenceFromCriminalAssociates": "SOME_PROBLEMS",
+    "recklessnessAndRiskTakingBehaviour": "SOME_PROBLEMS",
+    "difficultiesCoping": "SOME_PROBLEMS",
+    "attitudesTowardsSelf": "SOME_PROBLEMS",
+    "problemSolvingSkills": "SOME_PROBLEMS",
+    "awarenessOfConsequences": "YES",
+    "understandsOtherPeoplesViews": "NO_PROBLEMS",
+    "regularOffendingActivities": "SOME_PROBLEMS",
+    "currentDrugMisuse": "SIGNIFICANT_PROBLEMS",
+    "motivationToTackleDrugMisuse": "FULL_MOTIVATION",
+    "applyOPDOverride": null,
+    "didOffenceInvolveViolenceOrThreatOfViolence": true,
+    "didOffenceInvolveExcessiveUseOfViolence": false,
+    "didOffenceInvolveArson": false,
+    "offenceMotivationEmotionalState": false,
+    "isAnalysisOfOffenceIssuesLinkedToRisk": true,
+    "hasAccommodationIssuesLinkedToRisk": true,
+    "experienceOfChildhood": "NO_PROBLEMS",
+    "domesticAbuseAgainstPartner": true,
+    "domesticAbuseAgainstFamily": true,
+    "relationshipIssuesLinkedToRisk": true,
+    "currentPsychologicalProblems": "SIGNIFICANT_PROBLEMS",
+    "currentPsychiatricProblems": "SOME_PROBLEMS",
+    "hasCurrentPsychiatricTreatment": false,
+    "areEmotionalIssuesLinkedToRisk": true,
+    "areThinkingAndBehaviourIssuesLinkedToRisk": true,
+    "hasCustodialSentence": true,
+    "overRelianceOnOthersForFinancialSupport": "SIGNIFICANT_PROBLEMS",
+    "manipulativeOrPredatoryBehaviour": "SOME_PROBLEMS",
+    "isEvidenceOfChildhoodBehaviouralProblems": false,
+    "hasHistoryOfPsychiatricTreatment": false,
+    "hasBeenOnMedicationForMentalHealthProblems": true,
+    "hasEverBeenInSpecialHospitalOrRegionalSecureUnit": false,
+    "hasSelfHarmOrAttemptedSuicide": true,
+    "attitudeTowardsSupervisionOrLicence": "SOME_PROBLEMS",
+    "controllingOrAggressiveBehaviour": "SOME_PROBLEMS",
+    "hasEscapedOrAbsconded": false,
+    "doesRecogniseImpactOfOffendingOnOthers": true,
+    "hasDisplayedObsessiveBehaviourLinkedToOffending": false,
+    "hasAssaultedOrThreatenedStaff": false,
+    "isEligibleForMappa": false,
+    "overallRiskForAssessment": "HIGH",
+    "highestRiskLevelOverAllAssessments": "HIGH",
+    "hasControlIssues": false,
+    "sexualPreoccupation": "SIGNIFICANT_PROBLEMS",
+    "offenceRelatedSexualInterests": "SIGNIFICANT_PROBLEMS",
+    "emotionalCongruenceWithChildren": "SIGNIFICANT_PROBLEMS",
+    "saraRiskToOthers": "HIGH",
+    "hostileOrientation": "NO_PROBLEMS",
+    "currentRelationshipWithFamilyMembers": "NO_PROBLEMS",
+    "previousCloseRelationships": "NO_PROBLEMS",
+    "easilyInfluencedByCriminalAssociates": "NO_PROBLEMS"
+  },
+  "response": {
+    "version": "V1_0",
+    "actuarialPredictors": {
+      "allPredictor": {
+        "algorithm": "OGRS3",
+        "type": "STATIC",
+        "modelVersion": "1.0",
+        "thresholdsVersion": "1.0",
+        "output": {
+          "band": "LOW",
+          "oneYearScore": 11,
+          "twoYearScore": 20
+        },
+        "featureValues": [],
+        "validationErrors": []
+      },
+      "violentPredictor": {
+        "algorithm": "OVP",
+        "type": "DYNAMIC",
+        "modelVersion": "1.0",
+        "thresholdsVersion": "1.0",
+        "output": {
+          "band": "LOW",
+          "oneYearScore": 4,
+          "twoYearScore": 7,
+          "pointScore": 18
+        },
+        "featureValues": [],
+        "validationErrors": []
+      },
+      "nonViolentPredictor": {
+        "algorithm": "OGP",
+        "type": "DYNAMIC",
+        "modelVersion": "1.0",
+        "thresholdsVersion": "1.0",
+        "output": {
+          "band": "LOW",
+          "oneYearScore": 13,
+          "twoYearScore": 22,
+          "pointScore": 29
+        },
+        "featureValues": [],
+        "validationErrors": []
+      },
+      "directContactSexualPredictor": {
+        "algorithm": "OSPDC",
+        "type": "STATIC",
+        "modelVersion": "1.0",
+        "thresholdsVersion": "1.0",
+        "output": {
+          "band": "HIGH",
+          "pointScore": 30,
+          "score": 0.021055770881897785,
+          "femaleVersion": false,
+          "hasSexualOffenceHistory": true,
+          "riskBandReductionApplied": false
+        },
+        "featureValues": [],
+        "validationErrors": []
+      },
+      "indirectContactSexualPredictor": {
+        "algorithm": "OSPIIC",
+        "type": "STATIC",
+        "modelVersion": "1.0",
+        "thresholdsVersion": "1.0",
+        "output": {
+          "band": "HIGH",
+          "score": 0.1031,
+          "femaleVersion": false,
+          "hasSexualOffenceHistory": true
+        },
+        "featureValues": [],
+        "validationErrors": []
+      },
+      "seriousViolencePredictor": {
+        "algorithm": "SNSV",
+        "type": "DYNAMIC",
+        "modelVersion": "1.0",
+        "thresholdsVersion": "1.0",
+        "output": {
+          "band": null,
+          "score": 0.0013470306852831
+        },
+        "featureValues": [],
+        "validationErrors": []
+      },
+      "seriousPredictor": {
+        "algorithm": "RSR",
+        "type": "COMBINED",
+        "modelVersion": "1.0",
+        "thresholdsVersion": "1.0",
+        "output": {
+          "band": "HIGH",
+          "overallScore": 12.55,
+          "femaleVersion": false,
+          "hasSexualOffenceHistory": true,
+          "componentScores": [
+            {
+              "algorithm": "OSPDC",
+              "type": "STATIC",
+              "modelVersion": "1.0",
+              "thresholdsVersion": "1.0",
+              "output": {
+                "band": "HIGH",
+                "pointScore": 30,
+                "score": 0.021055770881897785,
+                "femaleVersion": false,
+                "hasSexualOffenceHistory": true,
+                "riskBandReductionApplied": false
+              },
+              "featureValues": [],
+              "validationErrors": []
+            },
+            {
+              "algorithm": "OSPIIC",
+              "type": "STATIC",
+              "modelVersion": "1.0",
+              "thresholdsVersion": "1.0",
+              "output": {
+                "band": "HIGH",
+                "score": 0.1031,
+                "femaleVersion": false,
+                "hasSexualOffenceHistory": true
+              },
+              "featureValues": [],
+              "validationErrors": []
+            },
+            {
+              "algorithm": "SNSV",
+              "type": "DYNAMIC",
+              "modelVersion": "1.0",
+              "thresholdsVersion": "1.0",
+              "output": {
+                "band": null,
+                "score": 0.0013470306852831
+              },
+              "featureValues": [],
+              "validationErrors": []
+            }
+          ]
+        },
+        "featureValues": [],
+        "validationErrors": []
+      }
+    },
+    "lds": {
+      "ldsScore": 2,
+      "validationError": []
+    },
+    "mst": {
+      "maturityScore": null,
+      "maturityFlag": false,
+      "isMstApplicable": false,
+      "validationError": []
+    },
+    "opd": {
+      "opdCheck": true,
+      "opdOverride": null,
+      "opdResult": "SCREEN_OUT",
+      "validationError": []
+    },
+    "pni": {
+      "pniPathway": "MODERATE",
+      "validationError": []
+    }
+  }
+}

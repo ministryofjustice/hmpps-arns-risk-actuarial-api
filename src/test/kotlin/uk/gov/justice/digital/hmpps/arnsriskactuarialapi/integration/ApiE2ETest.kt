@@ -16,52 +16,26 @@ import kotlin.test.fail
  * Each test fixture contains both request and expected response JSON in one file.
  * To add a new test file go to test/resources/fixtures and add in the relevant subfolder copying the existing structure.
  */
-class ApiIntegrationTest : IntegrationTestBase() {
+class ApiE2ETest : IntegrationTestBase() {
 
   companion object {
     private val objectMapper = ObjectMapper()
 
-    fun getModelDirectoryNames(fixtureDir: String): List<String> {
-      val dir = File(fixtureDir)
-      require(dir.exists() && dir.isDirectory) { "Invalid fixture directory: $fixtureDir" }
-
-      return dir.listFiles { file -> file.isDirectory }
-        ?.map { it.name }
-        ?.sorted()
-        ?: emptyList()
-    }
-
-    private const val FIXTURE_ROOT = "fixtures"
-    private val MODELS = getModelDirectoryNames("src/test/resources/fixtures")
-    private val PREDICTOR_JSON_PATH = mapOf<String, String>(
-      Pair("ospdc", "/actuarialPredictors/directContactSexualPredictor"),
-      Pair("ospiic", "/actuarialPredictors/indirectContactSexualPredictor"),
-      Pair("snsv", "/actuarialPredictors/seriousViolencePredictor"),
-      Pair("rsr", "/actuarialPredictors/seriousPredictor"),
-      Pair("ogp", "/actuarialPredictors/nonViolentPredictor"),
-      Pair("ovp", "/actuarialPredictors/violentPredictor"),
-      Pair("ogrs3", "/actuarialPredictors/allPredictor"),
-      Pair("lds", "/lds"),
-      Pair("mst", "/mst"),
-      Pair("opd", "/opd"),
-      Pair("pni", "/pni"),
-    )
+    private const val FIXTURE_ROOT = "e2e"
 
     @JvmStatic
     fun requestResponseProvider(): Stream<Array<String>> {
       val classLoader = Thread.currentThread().contextClassLoader
 
-      return MODELS
-        .flatMap { model ->
-          val dirUrl = classLoader.getResource("$FIXTURE_ROOT/$model")
-            ?: throw IllegalArgumentException("Missing fixtures directory: $FIXTURE_ROOT/$model")
+      val dirUrl = classLoader.getResource(FIXTURE_ROOT)
+        ?: throw IllegalArgumentException("Missing fixtures directory: $FIXTURE_ROOT")
 
-          File(dirUrl.toURI())
-            .listFiles { f -> f.isFile && f.name.endsWith(".json") }
-            ?.map { arrayOf(model, "$FIXTURE_ROOT/$model/${it.name}") }
-            ?: emptyList()
-        }
-        .stream()
+      val files = File(dirUrl.toURI())
+        .listFiles { f -> f.isFile && f.name.endsWith(".json") }
+        ?.map { arrayOf("${FIXTURE_ROOT}/${it.name}") }
+        ?: emptyList()
+
+      return files.stream()
     }
 
     private fun readFixture(path: String): JsonNode {
@@ -74,7 +48,6 @@ class ApiIntegrationTest : IntegrationTestBase() {
   @ParameterizedTest
   @MethodSource("requestResponseProvider")
   fun `post risk score returns expected response`(
-    predictorName: String,
     fixturePath: String,
   ) {
     val fixtureJson = readFixture(fixturePath)
@@ -93,8 +66,7 @@ class ApiIntegrationTest : IntegrationTestBase() {
       .returnResult()
       .responseBody ?: fail("No response body received")
 
-    val jsonPointerExpression = PREDICTOR_JSON_PATH.getValue(predictorName)
-    val actualJson: JsonNode = objectMapper.readTree(responseBody).at(jsonPointerExpression)
+    val actualJson: JsonNode = objectMapper.readTree(responseBody)
 
     assertEquals(expectedJson.toPrettyString(), actualJson.toPrettyString(), "Error with Fixture file: $fixturePath")
   }

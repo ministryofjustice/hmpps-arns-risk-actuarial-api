@@ -1,0 +1,41 @@
+{
+  "request": {
+    "version": "V1_0",
+    "gender": "FEMALE",
+    "dateOfBirth": "1980-01-01",
+    "totalNumberOfSanctionsForAllOffences": 1,
+    "supervisionStatus": "COMMUNITY",
+    "dateAtStartOfFollowupUserInput": "2027-01-01",
+    "totalNumberOfViolentSanctions": 1,
+    "hasEverCommittedSexualOffence": true,
+    "isCurrentOffenceSexuallyMotivated": true,
+    "totalContactAdultSexualSanctions": 1,
+    "totalContactChildSexualSanctions": 2,
+    "totalNonContactSexualOffences": 3,
+    "totalIndecentImageSanctions": 4
+  },
+  "response": {
+    "algorithm": "OSPDC",
+    "type": "STATIC",
+    "modelVersion": "1.0",
+    "thresholdsVersion": "1.0",
+    "output": {
+      "band": "NOT_APPLICABLE",
+      "pointScore": null,
+      "score": 0.00383142,
+      "femaleVersion": true,
+      "hasSexualOffenceHistory": true,
+      "riskBandReductionApplied": null
+    },
+    "featureValues": [],
+    "validationErrors": [
+      {
+        "type": "NOT_APPLICABLE",
+        "message": "ERR1 - Does not meet eligibility criteria",
+        "fields": [
+          "gender"
+        ]
+      }
+    ]
+  }
+}
