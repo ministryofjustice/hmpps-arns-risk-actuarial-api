@@ -26,6 +26,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds.LDSObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.mst.MSTObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.opd.OPDObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIObject
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asDoublePercentage
 
 fun RiskScoreContext.toRiskScoreResponse(): RiskScoreResponse = RiskScoreResponse(
   this.version,
@@ -106,7 +107,7 @@ private fun buildPredictorResponseForDirectContactSexualPredictor(riskScoreConte
     output = DirectContactSexualPredictorOutputResponse(
       ospdc.ospdcBand.toRiskBandResponse(),
       ospdc.pointScore,
-      ospdc.ospdcScore,
+      ospdc.ospdcScore?.asDoublePercentage(),
       ospdc.femaleVersion,
       ospdc.sexualOffenceHistory,
       ospdc.ospRiskReduction,
@@ -122,7 +123,7 @@ private fun buildPredictorResponseForIndirectContactSexualPredictor(riskScoreCon
     STATIC,
     output = IndirectContactSexualPredictorPredictorOutputResponse(
       ospiic.band.toRiskBandResponse(),
-      ospiic.score,
+      ospiic.score?.asDoublePercentage(),
       ospiic.femaleVersion,
       ospiic.sexualOffenceHistory,
     ),

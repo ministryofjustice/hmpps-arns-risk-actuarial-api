@@ -16,6 +16,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asDoublePercentage
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.roundToNDecimals
 
+const val FEMALE_SEXUAL_OFFENDER_RSR_CONTRIBUTION = 0.00383141762
+
 @Service
 class RSRRiskProducerService : BaseRiskScoreProducer() {
 
@@ -58,10 +60,11 @@ class RSRRiskProducerService : BaseRiskScoreProducer() {
     val ospiicScore = ospiic.score?.asDoublePercentage() ?: 0.0
     val ospiicBand = ospiic.band ?: RiskBand.NOT_APPLICABLE
     val snsvScore = snsv.snsvScore?.asDoublePercentage()
+    val femaleOSPDCWeight = if (Gender.FEMALE == request.gender && request.hasEverCommittedSexualOffence == true) FEMALE_SEXUAL_OFFENDER_RSR_CONTRIBUTION.asDoublePercentage() else 0.0
     val rsrScore = if (hasBlockingErrors(errors)) {
       null
     } else {
-      listOfNotNull(snsvScore, ospdcScore, ospiicScore).sum().roundToNDecimals(2)
+      listOfNotNull(snsvScore, ospdcScore, ospiicScore, femaleOSPDCWeight).sum().roundToNDecimals(2)
     }
     val rsrBand = getRSRBand(rsrScore)
     val scoreType = if (rsrScore != null) {
