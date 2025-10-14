@@ -21,11 +21,23 @@ class ApiIntegrationTest : IntegrationTestBase() {
   companion object {
     private val objectMapper = ObjectMapper()
 
+    fun getModelDirectoryNames(fixtureDir: String): List<String> {
+      val dir = File(fixtureDir)
+      require(dir.exists() && dir.isDirectory) { "Invalid fixture directory: $fixtureDir" }
+
+      return dir.listFiles { file -> file.isDirectory }
+        ?.map { it.name }
+        ?.sorted()
+        ?: emptyList()
+    }
+
     private const val FIXTURE_ROOT = "fixtures"
-    private val MODELS = listOf("ogrs3", "lds", "mst", "ogp", "opd", "ovp", "rsr", "pni")
+    private val MODELS = getModelDirectoryNames("src/test/resources/fixtures")
     private val PREDICTOR_JSON_PATH = mapOf<String, String>(
-      Pair("rsr", "/actuarialPredictors/seriousPredictor"),
+      Pair("ospdc", "/actuarialPredictors/directContactSexualPredictor"),
+      Pair("ospiic", "/actuarialPredictors/indirectContactSexualPredictor"),
       Pair("snsv", "/actuarialPredictors/seriousViolencePredictor"),
+      Pair("rsr", "/actuarialPredictors/seriousPredictor"),
       Pair("ogp", "/actuarialPredictors/nonViolentPredictor"),
       Pair("ovp", "/actuarialPredictors/violentPredictor"),
       Pair("ogrs3", "/actuarialPredictors/allPredictor"),

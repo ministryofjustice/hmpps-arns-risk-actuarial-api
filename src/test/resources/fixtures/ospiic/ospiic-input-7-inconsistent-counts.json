@@ -1,0 +1,37 @@
+{
+  "request": {
+    "version": "V1_0",
+    "gender": "MALE",
+    "hasEverCommittedSexualOffence": false,
+    "isCurrentOffenceSexuallyMotivated": true,
+    "totalContactAdultSexualSanctions": 1,
+    "totalContactChildSexualSanctions": 2,
+    "totalNonContactSexualOffences": 3,
+    "totalIndecentImageSanctions": 4
+  },
+  "response": {
+    "algorithm": "OSPIIC",
+    "type": "STATIC",
+    "modelVersion": "1.0",
+    "thresholdsVersion": "1.0",
+    "output": {
+      "band": null,
+      "score": null,
+      "femaleVersion": null,
+      "hasSexualOffenceHistory": null
+    },
+    "featureValues": [],
+    "validationErrors": [
+      {
+        "type": "SEXUAL_OFFENDING_INCONSISTENT_INPUT",
+        "message": "No sexual motivation/offending identified - additional fields should not be provided",
+        "fields": [
+          "totalContactAdultSexualSanctions",
+          "totalContactChildSexualSanctions",
+          "totalNonContactSexualOffences",
+          "totalIndecentImageSanctions"
+        ]
+      }
+    ]
+  }
+}
