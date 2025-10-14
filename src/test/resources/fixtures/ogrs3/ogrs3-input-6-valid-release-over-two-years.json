@@ -16,9 +16,9 @@
     "modelVersion": "1.0",
     "thresholdsVersion": "1.0",
     "output": {
-      "band": "LOW",
-      "oneYearScore": 24,
-      "twoYearScore": 39
+      "band": "MEDIUM",
+      "oneYearScore": 35,
+      "twoYearScore": 52
     },
     "featureValues": [],
     "validationErrors": []

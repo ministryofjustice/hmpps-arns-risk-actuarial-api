@@ -82,7 +82,7 @@ class OSPDCTransformationHelperTest {
     val ex = assertThrows<IllegalArgumentException> {
       getAgeAtStartOfFollowupWeight(dob, followupDate)
     }
-    assertTrue(ex.message!!.contains("Invalid age at start of follow up"))
+    assertEquals("dateAtStartOfFollowup cannot be before date of birth.", ex.message)
   }
 
   @ParameterizedTest

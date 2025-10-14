@@ -136,6 +136,6 @@ class OVPRiskProducerServiceTest {
     )
 
     // Then
-    assertEquals("Invalid ageAtStartOfFollowup value: -2", exception.message)
+    assertEquals("dateAtStartOfFollowup cannot be before date of birth.", exception.message)
   }
 }

@@ -2,6 +2,8 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils
 
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.time.LocalDate
+import java.time.Period
 import kotlin.collections.fold
 import kotlin.math.exp
 import kotlin.math.pow
@@ -24,3 +26,15 @@ fun Int.sanitisePercentage(): Int = when {
 fun Double.sigmoid(): Double = exp(this).let { it / (1 + it) }
 
 fun calculatePolynomial(coeffs: DoubleArray, x: Double): Double = (0..<coeffs.size).fold(0.0) { sum, i -> sum + coeffs[i] * x.pow(i) }
+
+fun getAgeAtDate(
+  dateOfBirth: LocalDate,
+  date: LocalDate,
+  fieldName: String,
+): Int {
+  if (date.isEqual(dateOfBirth) || date.isBefore(dateOfBirth)) {
+    throw IllegalArgumentException("$fieldName cannot be before date of birth.")
+  }
+  val ageAtCurrentConviction = Period.between(dateOfBirth, date).years
+  return ageAtCurrentConviction
+}

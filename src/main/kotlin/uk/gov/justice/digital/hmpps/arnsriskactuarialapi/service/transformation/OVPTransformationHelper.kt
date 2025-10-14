@@ -5,6 +5,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ovp.OVPRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.ConversionUtils.Companion.booleanToScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asPercentage
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.getAgeAtDate
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sanitisePercentage
 import kotlin.math.ceil
 import kotlin.math.exp
@@ -40,7 +41,7 @@ fun getIsCurrentlyOfNoFixedAbodeOrTransientAccommodationWeightedOVP(isCurrentlyO
 
 fun getIsUnemployedWeightedOVP(isUnemployedScore: Int): Int = isUnemployedScore.numberToScore()
 
-fun getAgeAtStartOfFollowup(request: OVPRequestValidated): Int = getAgeAtStartOfFollowup(request.dateOfBirth, request.dateAtStartOfFollowup)
+fun getAgeAtStartOfFollowup(request: OVPRequestValidated): Int = getAgeAtDate(request.dateOfBirth, request.dateAtStartOfFollowup, "dateAtStartOfFollowup")
 
 fun getAnyPreviousSanctionsWeighted(request: OVPRequestValidated): Int = when (request.totalNumberOfSanctionsForAllOffences) {
   0 -> 0
