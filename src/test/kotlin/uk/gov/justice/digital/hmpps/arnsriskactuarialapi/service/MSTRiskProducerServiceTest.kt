@@ -147,4 +147,19 @@ class MSTRiskProducerServiceTest {
     assertEquals(false, result.MST?.isMstApplicable)
     assertEquals(result.MST?.validationError, listOf<ValidationErrorResponse>())
   }
+
+  @Test
+  fun `should return valid MstObject with isMstApplicable=false and no validation errors when out of age range and gender is null`() {
+    val isMstApplicableFalseInput =
+      validMSTRiskScoreRequest().copy(gender = null, dateOfBirth = FIXED_TEST_DATE.minusYears(26))
+    // When
+    val result = mstRiskProducerService.getRiskScore(isMstApplicableFalseInput, emptyContext())
+
+    // Then
+    assertNotNull(result)
+    assertEquals(null, result.MST?.maturityScore)
+    assertEquals(false, result.MST?.maturityFlag)
+    assertEquals(false, result.MST?.isMstApplicable)
+    assertEquals(result.MST?.validationError, listOf<ValidationErrorResponse>())
+  }
 }
