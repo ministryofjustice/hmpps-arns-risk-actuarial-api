@@ -102,8 +102,8 @@
         "thresholdsVersion": "1.0",
         "output": {
           "band": "LOW",
-          "oneYearScore": 11,
-          "twoYearScore": 20
+          "oneYearScore": 7,
+          "twoYearScore": 13
         },
         "featureValues": [],
         "validationErrors": []
@@ -129,9 +129,9 @@
         "thresholdsVersion": "1.0",
         "output": {
           "band": "LOW",
-          "oneYearScore": 13,
-          "twoYearScore": 22,
-          "pointScore": 29
+          "oneYearScore": 10,
+          "twoYearScore": 18,
+          "pointScore": 25
         },
         "featureValues": [],
         "validationErrors": []
