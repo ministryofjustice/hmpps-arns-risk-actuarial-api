@@ -23,7 +23,7 @@
     "validationErrors": [
       {
         "type": "UNEXPECTED_ERROR",
-        "message": "Unexpected error thrown during calculation, see logs for further details: Conviction date cannot be before date of birth.",
+        "message": "Unexpected error thrown during calculation, see logs for further details: dateOfCurrentConviction cannot be on or before date of birth.",
         "fields": []
       }
     ]

@@ -1,69 +1,15 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertThrows
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
-import java.time.LocalDate
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class OGRS3TransformationHelperTest {
-
-  private val today = LocalDate.of(2025, 1, 1)
-
-  @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-  @Nested
-  inner class AgeTest {
-
-    @Test
-    fun `getAgeDiffAtOffenceDate age should be greater than min value`() {
-      val dob = today.minusYears(10)
-      val result = getAgeDiffAtOffenceDate(dob, today)
-
-      assertEquals(10, result)
-    }
-
-    @Test
-    fun `getAgeDiffAtOffenceDate should round down months`() {
-      val dob = today.minusYears(10).minusMonths(3)
-      val result = getAgeDiffAtOffenceDate(dob, today)
-      assertEquals(10, result)
-    }
-
-    @Test
-    fun `getAgeDiffAtOffenceDate null dateOfBirth should return error`() {
-      val result = runCatching {
-        getAgeDiffAtOffenceDate(
-          dateOfBirth = LocalDate.parse(null),
-          offenceDate = today,
-        )
-      }
-      assertTrue(result.isFailure)
-    }
-
-    @Test
-    fun `getAgeAtStartOfFollowup exact`() {
-      val dob = today.minusYears(15)
-      assertEquals(
-        15,
-        getAgeAtStartOfFollowup(dob, today),
-      )
-    }
-
-    @Test
-    fun `getAgeAtStartOfFollowup round down`() {
-      val dob = today.minusYears(15).minusMonths(3)
-      assertEquals(
-        15,
-        getAgeAtStartOfFollowup(dob, today),
-      )
-    }
-  }
 
   @TestInstance(TestInstance.Lifecycle.PER_CLASS)
   @Nested
@@ -200,35 +146,5 @@ class OGRS3TransformationHelperTest {
         getRiskBand(-1)
       }
     }
-  }
-
-  @Test
-  fun `isWithinLastTwoYears should be true for 18 months ago`() {
-    val date = LocalDate.now().minusMonths(18)
-    assertTrue(isWithinLastTwoYears(date))
-  }
-
-  @Test
-  fun `isWithinLastTwoYears should be true for 24 months ago exactly`() {
-    val date = LocalDate.now().minusMonths(24)
-    assertTrue(isWithinLastTwoYears(date))
-  }
-
-  @Test
-  fun `isWithinLastTwoYears should be true for today`() {
-    val date = LocalDate.now()
-    assertTrue(isWithinLastTwoYears(date))
-  }
-
-  @Test
-  fun `isWithinLastTwoYears should be false for 24 months and 1 day ago exactly`() {
-    val date = LocalDate.now().minusMonths(24).minusDays(1)
-    assertFalse(isWithinLastTwoYears(date))
-  }
-
-  @Test
-  fun `isWithinLastTwoYears should be false for tomorrows date`() {
-    val date = LocalDate.now().plusDays(1)
-    assertFalse(isWithinLastTwoYears(date))
   }
 }

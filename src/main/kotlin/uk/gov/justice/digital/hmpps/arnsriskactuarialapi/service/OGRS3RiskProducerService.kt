@@ -9,7 +9,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResp
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3Object
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3RequestValidated
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getAgeDiffAtOffenceDate
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getAgeGenderScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getConvictionStatusScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getOffenderConvictionStatus
@@ -18,11 +17,11 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getOgrs3OneYear
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getOgrs3TwoYear
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getRiskBand
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isWithinLastTwoYears
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateAgeAtCurrentConviction
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateAgeAtFirstSanction
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateOGRS3
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asPercentage
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.getAgeAtDate
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sanitisePercentage
 
 @Service
@@ -59,18 +58,15 @@ class OGRS3RiskProducerService : BaseRiskScoreProducer() {
   private fun getOGRS3Object(
     request: OGRS3RequestValidated,
   ): OGRS3Object {
-    val ageAtCurrentConviction = getAgeDiffAtOffenceDate(
+    val ageAtCurrentConviction = getAgeAtDate(
       request.dateOfBirth,
       request.dateOfCurrentConviction,
+      "dateOfCurrentConviction",
     )
-    val followUpDate = if (isWithinLastTwoYears(request.dateAtStartOfFollowup)) {
-      request.dateAtStartOfFollowup
-    } else {
-      request.assessmentDate
-    }
-    val ageAtStartOfFollowup = getAgeDiffAtOffenceDate(
+    val ageAtStartOfFollowup = getAgeAtDate(
       request.dateOfBirth,
-      followUpDate,
+      request.dateAtStartOfFollowup,
+      "dateAtStartOfFollowup",
     )
 
     val errors = mutableListOf<ValidationErrorResponse>()

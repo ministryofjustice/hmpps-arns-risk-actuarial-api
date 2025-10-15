@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.time.LocalDate
 import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.cosh
@@ -21,6 +22,8 @@ class NumbersUtilsTest {
     val cubic = doubleArrayOf(-1.0, 0.0, 0.0, 1.0)
     val linear = doubleArrayOf(-1.0, 1.0)
     val quadratic = doubleArrayOf(1.0, 1.0, 1.0)
+
+    private val today = LocalDate.of(2025, 1, 1)
   }
 
   @Test
@@ -87,5 +90,39 @@ class NumbersUtilsTest {
     val productOfPolynomials = { x: Double -> calculatePolynomial(linear, x) * calculatePolynomial(quadratic, x) }
     val cubicPolynomial = { x: Double -> calculatePolynomial(cubic, x) }
     assertEquals(productOfPolynomials(x), cubicPolynomial(x), 0.00001)
+  }
+
+  @Test
+  fun `getAgeAtDate exact`() {
+    val dob = today.minusYears(15)
+    assertEquals(
+      15,
+      getAgeAtDate(dob, today, "fieldName"),
+    )
+  }
+
+  @Test
+  fun `getAgeAtDate should round down months`() {
+    val dob = today.minusYears(10).minusMonths(3)
+    val result = getAgeAtDate(dob, today, "fieldName")
+    assertEquals(10, result)
+  }
+
+  @Test
+  fun `getAgeAtDate date before dateOfBirth should return error`() {
+    val result = runCatching {
+      getAgeAtDate(today, today.minusYears(10), "fieldName")
+    }
+    assertTrue(result.isFailure)
+    assertEquals("fieldName cannot be on or before date of birth.", result.exceptionOrNull()?.message)
+  }
+
+  @Test
+  fun `getAgeAtDate date equal to dateOfBirth should return error`() {
+    val result = runCatching {
+      getAgeAtDate(today, today, "fieldName")
+    }
+    assertTrue(result.isFailure)
+    assertEquals("fieldName cannot be on or before date of birth.", result.exceptionOrNull()?.message)
   }
 }

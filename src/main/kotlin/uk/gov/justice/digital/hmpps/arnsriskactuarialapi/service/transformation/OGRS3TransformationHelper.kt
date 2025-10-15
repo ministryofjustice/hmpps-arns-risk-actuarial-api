@@ -4,28 +4,12 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.OffenderConvictionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.roundTo5Decimals
-import java.time.LocalDate
-import java.time.Period
-import java.time.temporal.ChronoUnit
 import kotlin.math.exp
 import kotlin.math.ln
 
 private const val FIXED_CAPAS_VALUE = 1.25112
 private const val FIXED_ONE_YEAR_SCORE_VALUE = 1.40256
 private const val FIXED_TWO_YEAR_SCORE_VALUE = 2.1217
-
-fun getAgeDiffAtOffenceDate(
-  dateOfBirth: LocalDate,
-  offenceDate: LocalDate,
-): Int {
-  if (offenceDate.isBefore(dateOfBirth)) {
-    throw IllegalArgumentException("Conviction date cannot be before date of birth.")
-  }
-  val ageAtCurrentConviction = Period.between(dateOfBirth, offenceDate).years
-  return ageAtCurrentConviction
-}
-
-fun getAgeAtStartOfFollowup(dateOfBirth: LocalDate, dateAtStartOfFollowup: LocalDate): Int = ChronoUnit.YEARS.between(dateOfBirth, dateAtStartOfFollowup).toInt()
 
 fun getOffenderConvictionStatus(totalNumberOfSanctionsForAllOffences: Int) = if (totalNumberOfSanctionsForAllOffences == 1) OffenderConvictionStatus.FIRST_TIME_OFFENDER else OffenderConvictionStatus.REPEAT_OFFENDER
 
@@ -112,9 +96,4 @@ fun getAgeGenderScore(age: Int, gender: Gender): Double {
   return params.firstOrNull { age in it.first }
     ?.second
     ?: throw IllegalArgumentException("Unhandled age: $age")
-}
-
-fun isWithinLastTwoYears(date: LocalDate): Boolean {
-  val twoYearsAgo = LocalDate.now().minusYears(2)
-  return !date.isBefore(twoYearsAgo) && !date.isAfter(LocalDate.now())
 }

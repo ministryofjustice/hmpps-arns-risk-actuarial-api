@@ -3,6 +3,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.getAgeAtDate
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sigmoid
 import java.time.LocalDate
 import java.time.Period
@@ -33,8 +34,7 @@ fun getTotalNonContactSexualOffencesWeight(totalNonContactSexualOffences: Int): 
 }
 
 fun getAgeAtStartOfFollowupWeight(dob: LocalDate, dateAtStartOfFollowup: LocalDate): Int {
-  val ageAtStartOfFollowup = getAgeAtStartOfFollowup(dob, dateAtStartOfFollowup)
-  if (ageAtStartOfFollowup < 1) throw IllegalArgumentException("Invalid age at start of follow up value: $ageAtStartOfFollowup")
+  val ageAtStartOfFollowup = getAgeAtDate(dob, dateAtStartOfFollowup, "dateAtStartOfFollowup")
   if (ageAtStartOfFollowup >= 60) return 0
   return 14 - maxOf(0, (ageAtStartOfFollowup - 18) / 3)
 }
