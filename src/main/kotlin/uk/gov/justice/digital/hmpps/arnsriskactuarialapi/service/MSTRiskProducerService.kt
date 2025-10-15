@@ -8,13 +8,22 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.mst.MSTObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.mst.MSTRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.calculateAge
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getMaturityFlag
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getMstApplicable
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.getMstApplicable
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.isNotNullAndInvalidMstAge
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateMST
 
 @Service
 class MSTRiskProducerService : BaseRiskScoreProducer() {
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
+    val currentAge: Int? = request.dateOfBirth?.let { calculateAge(it, request.assessmentDate) }
+
+    if (isNotNullAndInvalidMstAge(currentAge)) {
+      return context.apply {
+        MST = nonApplicableMstObject
+      }
+    }
+
     val errors = validateMST(request)
 
     if (errors.isNotEmpty()) {
@@ -38,7 +47,7 @@ class MSTRiskProducerService : BaseRiskScoreProducer() {
     )
 
     return context.apply {
-      MST = getMstObject(validRequest, errors)
+      MST = getMstObject(validRequest, errors, currentAge!!)
     }
   }
 
@@ -57,8 +66,8 @@ class MSTRiskProducerService : BaseRiskScoreProducer() {
   private fun getMstObject(
     request: MSTRequestValidated,
     errors: List<ValidationErrorResponse>,
+    currentAge: Int,
   ): MSTObject {
-    val currentAge = calculateAge(request.dateOfBirth, request.assessmentDate)
     val isMstApplicable = getMstApplicable(request.gender, currentAge)
 
     if (isMstApplicable) {
@@ -83,11 +92,13 @@ class MSTRiskProducerService : BaseRiskScoreProducer() {
       )
     }
 
-    return MSTObject(
-      maturityScore = null,
-      maturityFlag = false,
-      isMstApplicable = false,
-      listOf(),
-    )
+    return nonApplicableMstObject
   }
+
+  private val nonApplicableMstObject = MSTObject(
+    maturityScore = null,
+    maturityFlag = false,
+    isMstApplicable = false,
+    listOf(),
+  )
 }
