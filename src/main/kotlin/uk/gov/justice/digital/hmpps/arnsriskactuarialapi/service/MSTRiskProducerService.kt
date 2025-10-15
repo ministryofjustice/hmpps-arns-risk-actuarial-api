@@ -95,7 +95,7 @@ class MSTRiskProducerService : BaseRiskScoreProducer() {
     return createNonApplicableMstObject
   }
 
-  private val createNonApplicableMstObject: MSTObject = MSTObject(
+  private val nonApplicableMstObject = MSTObject(
     maturityScore = null,
     maturityFlag = false,
     isMstApplicable = false,
