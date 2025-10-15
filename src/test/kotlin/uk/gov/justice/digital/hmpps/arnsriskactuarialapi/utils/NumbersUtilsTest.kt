@@ -114,7 +114,7 @@ class NumbersUtilsTest {
       getAgeAtDate(today, today.minusYears(10), "fieldName")
     }
     assertTrue(result.isFailure)
-    assertEquals("fieldName cannot be before date of birth.", result.exceptionOrNull()?.message)
+    assertEquals("fieldName cannot be on or before date of birth.", result.exceptionOrNull()?.message)
   }
 
   @Test
@@ -123,6 +123,6 @@ class NumbersUtilsTest {
       getAgeAtDate(today, today, "fieldName")
     }
     assertTrue(result.isFailure)
-    assertEquals("fieldName cannot be before date of birth.", result.exceptionOrNull()?.message)
+    assertEquals("fieldName cannot be on or before date of birth.", result.exceptionOrNull()?.message)
   }
 }

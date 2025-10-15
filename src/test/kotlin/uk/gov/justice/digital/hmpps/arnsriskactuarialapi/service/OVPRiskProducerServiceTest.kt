@@ -136,6 +136,6 @@ class OVPRiskProducerServiceTest {
     )
 
     // Then
-    assertEquals("dateAtStartOfFollowup cannot be before date of birth.", exception.message)
+    assertEquals("dateAtStartOfFollowup cannot be on or before date of birth.", exception.message)
   }
 }

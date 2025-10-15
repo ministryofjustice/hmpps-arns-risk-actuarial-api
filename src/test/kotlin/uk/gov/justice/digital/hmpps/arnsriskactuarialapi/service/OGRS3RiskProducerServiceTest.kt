@@ -213,7 +213,7 @@ class OGRS3RiskProducerServiceTest {
     )
 
     // Then
-    assertEquals("dateOfCurrentConviction cannot be before date of birth.", exception.message)
+    assertEquals("dateOfCurrentConviction cannot be on or before date of birth.", exception.message)
   }
 
   private fun validRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(

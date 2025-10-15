@@ -33,7 +33,7 @@ fun getAgeAtDate(
   fieldName: String,
 ): Int {
   if (date.isEqual(dateOfBirth) || date.isBefore(dateOfBirth)) {
-    throw IllegalArgumentException("$fieldName cannot be before date of birth.")
+    throw IllegalArgumentException("$fieldName cannot be on or before date of birth.")
   }
   val ageAtCurrentConviction = Period.between(dateOfBirth, date).years
   return ageAtCurrentConviction
