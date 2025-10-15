@@ -1,0 +1,33 @@
+{
+  "request": {
+    "version": "V1_0",
+    "gender": "FEMALE",
+    "dateOfBirth": "1980-01-01",
+    "totalNumberOfSanctionsForAllOffences": 1,
+    "supervisionStatus": "COMMUNITY",
+    "dateAtStartOfFollowupUserInput": "2027-01-01",
+    "totalNumberOfViolentSanctions": 1,
+    "hasEverCommittedSexualOffence": true,
+    "isCurrentOffenceSexuallyMotivated": true,
+    "totalContactAdultSexualSanctions": 1,
+    "totalContactChildSexualSanctions": 2,
+    "totalNonContactSexualOffences": 3,
+    "totalIndecentImageSanctions": 4
+  },
+  "response": {
+    "algorithm": "OSPDC",
+    "type": "STATIC",
+    "modelVersion": "1.0",
+    "thresholdsVersion": "1.0",
+    "output": {
+      "band": "MEDIUM",
+      "pointScore": 22,
+      "score": 0.00595411967816986,
+      "femaleVersion": true,
+      "hasSexualOffenceHistory": true,
+      "riskBandReductionApplied": false
+    },
+    "featureValues": [],
+    "validationErrors": []
+  }
+}

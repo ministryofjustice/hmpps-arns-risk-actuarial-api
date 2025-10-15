@@ -1,0 +1,40 @@
+{
+  "request": {
+    "version": "V1_0",
+    "gender": null,
+    "dateOfBirth": null,
+    "currentOffenceCode": null,
+    "totalNumberOfSanctionsForAllOffences": null,
+    "supervisionStatus": null,
+    "totalNumberOfViolentSanctions": null,
+    "hasEverCommittedSexualOffence": null
+  },
+  "response": {
+    "algorithm": "SNSV",
+    "type": null,
+    "modelVersion": "1.0",
+    "thresholdsVersion": "1.0",
+    "output": {
+      "band": null,
+      "score": null
+    },
+    "featureValues": [],
+    "validationErrors": [
+      {
+        "type": "MISSING_MANDATORY_INPUT",
+        "message": "Mandatory input field(s) missing",
+        "fields": [
+          "gender",
+          "dateOfBirth",
+          "dateOfCurrentConviction",
+          "currentOffenceCode",
+          "totalNumberOfSanctionsForAllOffences",
+          "ageAtFirstSanction",
+          "supervisionStatus",
+          "dateAtStartOfFollowupUserInput",
+          "totalNumberOfViolentSanctions"
+        ]
+      }
+    ]
+  }
+}

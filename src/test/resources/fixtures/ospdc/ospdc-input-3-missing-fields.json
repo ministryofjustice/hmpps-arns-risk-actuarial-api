@@ -1,0 +1,46 @@
+{
+  "request": {
+    "version": "V1_0",
+    "gender": null,
+    "dateOfBirth": null,
+    "totalNumberOfSanctionsForAllOffences": null,
+    "supervisionStatus": null,
+    "dateAtStartOfFollowupUserInput": null,
+    "totalNumberOfViolentSanctions": null,
+    "hasEverCommittedSexualOffence": null,
+    "isCurrentOffenceSexuallyMotivated": null,
+    "totalContactAdultSexualSanctions": null,
+    "totalContactChildSexualSanctions": null,
+    "totalNonContactSexualOffences": null,
+    "totalIndecentImageSanctions": null
+  },
+  "response": {
+    "algorithm": "OSPDC",
+    "type": "STATIC",
+    "modelVersion": "1.0",
+    "thresholdsVersion": "1.0",
+    "output": {
+      "band": null,
+      "pointScore": null,
+      "score": null,
+      "femaleVersion": null,
+      "hasSexualOffenceHistory": null,
+      "riskBandReductionApplied": null
+    },
+    "featureValues": [],
+    "validationErrors": [
+      {
+        "type": "MISSING_MANDATORY_INPUT",
+        "message": "Mandatory input field(s) missing",
+        "fields": [
+          "gender",
+          "hasEverCommittedSexualOffence",
+          "dateOfBirth",
+          "dateAtStartOfFollowupUserInput",
+          "totalNumberOfSanctionsForAllOffences",
+          "supervisionStatus"
+        ]
+      }
+    ]
+  }
+}

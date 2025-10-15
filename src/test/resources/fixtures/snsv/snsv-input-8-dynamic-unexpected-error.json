@@ -1,0 +1,47 @@
+{
+  "request": {
+    "version": "V1_0",
+    "gender": "MALE",
+    "dateOfBirth": "2025-01-01",
+    "assessmentDate": "2025-01-01",
+    "dateOfCurrentConviction": "2020-01-01",
+    "currentOffenceCode": "02700",
+    "totalNumberOfSanctionsForAllOffences": 1,
+    "ageAtFirstSanction": 40,
+    "supervisionStatus": "COMMUNITY",
+    "dateAtStartOfFollowupUserInput": "2027-01-01",
+    "totalNumberOfViolentSanctions": 1,
+    "didOffenceInvolveCarryingOrUsingWeapon": false,
+    "suitabilityOfAccommodation": "NO_PROBLEMS",
+    "isUnemployed": false,
+    "currentRelationshipWithPartner": "NO_PROBLEMS",
+    "currentAlcoholUseProblems": "NO_PROBLEMS",
+    "excessiveAlcoholUse": "NO_PROBLEMS",
+    "impulsivityProblems": "NO_PROBLEMS",
+    "temperControl": "NO_PROBLEMS",
+    "proCriminalAttitudes": "NO_PROBLEMS",
+    "evidenceOfDomesticAbuse": false,
+    "previousConvictions": [
+      "WOUNDING_GBH"
+    ],
+    "hasEverCommittedSexualOffence": false
+  },
+  "response": {
+    "algorithm": "SNSV",
+    "type": null,
+    "modelVersion": "1.0",
+    "thresholdsVersion": "1.0",
+    "output": {
+      "band": null,
+      "score": null
+    },
+    "featureValues": [],
+    "validationErrors": [
+      {
+        "type": "UNEXPECTED_ERROR",
+        "message": "Unexpected error thrown during calculation, see logs for further details: Age at date at start of followup cannot be less than 10",
+        "fields": []
+      }
+    ]
+  }
+}
