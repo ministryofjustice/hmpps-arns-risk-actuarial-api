@@ -17,6 +17,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.RiskScoreRespon
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.ScoreTypeResponse.COMBINED
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.ScoreTypeResponse.DYNAMIC
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.ScoreTypeResponse.STATIC
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.SeriousPredictorComponentScores
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.SeriousPredictorPredictorOutputResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.SeriousViolencePredictorPredictorOutputResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.ViolentOrNonViolentPredictorPredictorOutputResponse
@@ -55,7 +56,7 @@ private fun buildActuarialPredictorsResponse(riskScoreContext: RiskScoreContext)
   buildPredictorResponseForSeriousPredictor(riskScoreContext),
 )
 
-private fun buildPredictorResponseForAllPredictor(riskScoreContext: RiskScoreContext): PredictorResponse {
+private fun buildPredictorResponseForAllPredictor(riskScoreContext: RiskScoreContext): PredictorResponse<AllPredictorPredictorOutputResponse> {
   val ogrS3 = riskScoreContext.OGRS3!!
   return PredictorResponse(
     OGRS3,
@@ -69,7 +70,7 @@ private fun buildPredictorResponseForAllPredictor(riskScoreContext: RiskScoreCon
   )
 }
 
-private fun buildPredictorResponseForViolentPredictor(riskScoreContext: RiskScoreContext): PredictorResponse {
+private fun buildPredictorResponseForViolentPredictor(riskScoreContext: RiskScoreContext): PredictorResponse<ViolentOrNonViolentPredictorPredictorOutputResponse> {
   val ovp = riskScoreContext.OVP!!
   return PredictorResponse(
     OVP,
@@ -84,7 +85,7 @@ private fun buildPredictorResponseForViolentPredictor(riskScoreContext: RiskScor
   )
 }
 
-private fun buildPredictorResponseForNonViolentPredictor(riskScoreContext: RiskScoreContext): PredictorResponse {
+private fun buildPredictorResponseForNonViolentPredictor(riskScoreContext: RiskScoreContext): PredictorResponse<ViolentOrNonViolentPredictorPredictorOutputResponse> {
   val ogp = riskScoreContext.OGP!!
   return PredictorResponse(
     OGP,
@@ -99,7 +100,7 @@ private fun buildPredictorResponseForNonViolentPredictor(riskScoreContext: RiskS
   )
 }
 
-private fun buildPredictorResponseForDirectContactSexualPredictor(riskScoreContext: RiskScoreContext): PredictorResponse {
+private fun buildPredictorResponseForDirectContactSexualPredictor(riskScoreContext: RiskScoreContext): PredictorResponse<DirectContactSexualPredictorOutputResponse> {
   val ospdc = riskScoreContext.OSPDC!!
   return PredictorResponse(
     OSPDC,
@@ -116,7 +117,7 @@ private fun buildPredictorResponseForDirectContactSexualPredictor(riskScoreConte
   )
 }
 
-private fun buildPredictorResponseForIndirectContactSexualPredictor(riskScoreContext: RiskScoreContext): PredictorResponse {
+private fun buildPredictorResponseForIndirectContactSexualPredictor(riskScoreContext: RiskScoreContext): PredictorResponse<IndirectContactSexualPredictorPredictorOutputResponse> {
   val ospiic = riskScoreContext.OSPIIC!!
   return PredictorResponse(
     OSPIIC,
@@ -131,7 +132,7 @@ private fun buildPredictorResponseForIndirectContactSexualPredictor(riskScoreCon
   )
 }
 
-private fun buildPredictorResponseForSeriousViolencePredictor(riskScoreContext: RiskScoreContext): PredictorResponse {
+private fun buildPredictorResponseForSeriousViolencePredictor(riskScoreContext: RiskScoreContext): PredictorResponse<SeriousViolencePredictorPredictorOutputResponse> {
   val snsv = riskScoreContext.SNSV!!
   return PredictorResponse(
     SNSV,
@@ -144,7 +145,7 @@ private fun buildPredictorResponseForSeriousViolencePredictor(riskScoreContext: 
   )
 }
 
-private fun buildPredictorResponseForSeriousPredictor(riskScoreContext: RiskScoreContext): PredictorResponse {
+private fun buildPredictorResponseForSeriousPredictor(riskScoreContext: RiskScoreContext): PredictorResponse<SeriousPredictorPredictorOutputResponse> {
   val rsr = riskScoreContext.RSR!!
   return PredictorResponse(
     RSR,
@@ -154,7 +155,7 @@ private fun buildPredictorResponseForSeriousPredictor(riskScoreContext: RiskScor
       rsr.rsrScore,
       rsr.femaleVersion,
       rsr.sexualOffenceHistory,
-      listOf(
+      componentScores = SeriousPredictorComponentScores(
         buildPredictorResponseForDirectContactSexualPredictor(riskScoreContext),
         buildPredictorResponseForIndirectContactSexualPredictor(riskScoreContext),
         buildPredictorResponseForSeriousViolencePredictor(riskScoreContext),

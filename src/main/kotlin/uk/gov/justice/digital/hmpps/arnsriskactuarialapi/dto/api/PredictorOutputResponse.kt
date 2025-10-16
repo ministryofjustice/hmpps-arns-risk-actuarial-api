@@ -43,5 +43,11 @@ data class SeriousPredictorPredictorOutputResponse(
   val overallScore: Double?,
   val femaleVersion: Boolean?,
   val hasSexualOffenceHistory: Boolean?,
-  val componentScores: List<PredictorResponse>,
+  val componentScores: SeriousPredictorComponentScores,
 ) : PredictorOutputResponse(band)
+
+data class SeriousPredictorComponentScores(
+  val directContactSexualPredictorScore: PredictorResponse<DirectContactSexualPredictorOutputResponse>,
+  val indirectContactSexualPredictorScore: PredictorResponse<IndirectContactSexualPredictorPredictorOutputResponse>,
+  val seriousViolencePredictorScore: PredictorResponse<SeriousViolencePredictorPredictorOutputResponse>,
+)
