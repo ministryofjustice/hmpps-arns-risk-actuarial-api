@@ -16,7 +16,7 @@
     "thresholdsVersion": "1.0",
     "output": {
       "band": "HIGH",
-      "score": 0.1031,
+      "score": 10.31,
       "femaleVersion": false,
       "hasSexualOffenceHistory": true
     },

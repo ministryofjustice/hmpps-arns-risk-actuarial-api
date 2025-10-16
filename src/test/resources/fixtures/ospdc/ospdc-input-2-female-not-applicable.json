@@ -15,19 +15,19 @@
     "totalIndecentImageSanctions": 4
   },
   "response": {
-    "algorithm": "OSPDC",
-    "type": "STATIC",
-    "modelVersion": "1.0",
-    "thresholdsVersion": "1.0",
-    "output": {
-      "band": "MEDIUM",
-      "pointScore": 22,
-      "score": 0.00595411967816986,
-      "femaleVersion": true,
-      "hasSexualOffenceHistory": true,
-      "riskBandReductionApplied": false
+    "algorithm" : "OSPDC",
+    "type" : "STATIC",
+    "modelVersion" : "1.0",
+    "thresholdsVersion" : "1.0",
+    "output" : {
+      "band" : "NOT_APPLICABLE",
+      "pointScore" : null,
+      "score" : 0.0,
+      "femaleVersion" : true,
+      "hasSexualOffenceHistory" : false,
+      "riskBandReductionApplied" : null
     },
-    "featureValues": [],
-    "validationErrors": []
+    "featureValues" : [ ],
+    "validationErrors" : [ ]
   }
 }

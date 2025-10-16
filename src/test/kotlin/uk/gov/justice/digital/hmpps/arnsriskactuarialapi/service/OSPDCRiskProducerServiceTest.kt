@@ -94,7 +94,7 @@ class OSPDCRiskProducerServiceTest {
   }
 
   @Test
-  fun `should return valid OVPObject when FEMALE with sexual offences`() {
+  fun `should return NOT_APPLICABLE OSPDCObject when FEMALE with sexual offences`() {
     // When
     val result = service.getRiskScore(
       validOSPDCRiskScoreRequest().copy(
@@ -106,8 +106,8 @@ class OSPDCRiskProducerServiceTest {
 
     // Then
     assertNotNull(result)
-    assertEquals(0.024614429829673733, result.OSPDC?.ospdcScore)
-    assertEquals(RiskBand.HIGH, result.OSPDC?.ospdcBand)
+    assertEquals(0.0, result.OSPDC?.ospdcScore)
+    assertEquals(RiskBand.NOT_APPLICABLE, result.OSPDC?.ospdcBand)
     assertTrue(result.OSPDC!!.validationError!!.isEmpty())
   }
 

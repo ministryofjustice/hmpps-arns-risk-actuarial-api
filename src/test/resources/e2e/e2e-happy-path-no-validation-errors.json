@@ -144,7 +144,7 @@
         "output": {
           "band": "HIGH",
           "pointScore": 30,
-          "score": 0.021055770881897785,
+          "score": 2.11,
           "femaleVersion": false,
           "hasSexualOffenceHistory": true,
           "riskBandReductionApplied": false
@@ -159,7 +159,7 @@
         "thresholdsVersion": "1.0",
         "output": {
           "band": "HIGH",
-          "score": 0.1031,
+          "score": 10.31,
           "femaleVersion": false,
           "hasSexualOffenceHistory": true
         },
@@ -197,7 +197,7 @@
               "output": {
                 "band": "HIGH",
                 "pointScore": 30,
-                "score": 0.021055770881897785,
+                "score": 2.11,
                 "femaleVersion": false,
                 "hasSexualOffenceHistory": true,
                 "riskBandReductionApplied": false
@@ -212,7 +212,7 @@
               "thresholdsVersion": "1.0",
               "output": {
                 "band": "HIGH",
-                "score": 0.1031,
+                "score": 10.31,
                 "femaleVersion": false,
                 "hasSexualOffenceHistory": true
               },

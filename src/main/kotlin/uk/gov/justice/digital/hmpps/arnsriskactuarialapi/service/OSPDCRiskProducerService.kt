@@ -45,6 +45,20 @@ class OSPDCRiskProducerService : BaseRiskScoreProducer() {
       }
     }
 
+    if (Gender.FEMALE == request.gender && request.hasEverCommittedSexualOffence == true) {
+      return context.apply {
+        OSPDC = OSPDCObject(
+          RiskBand.NOT_APPLICABLE,
+          0.0,
+          null,
+          null,
+          true,
+          false,
+          listOf(),
+        )
+      }
+    }
+
     val validRequest = OSPDCRequestValidated(
       request.gender!!,
       request.dateOfBirth!!,

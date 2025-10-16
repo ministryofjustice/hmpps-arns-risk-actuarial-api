@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertNotNull
 import org.junit.jupiter.api.assertNull
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
@@ -51,6 +52,44 @@ class RSRRiskProducerServiceTest {
     assertEquals(RiskBand.MEDIUM, rsr.ospiicBand)
     assertEquals(2.12, rsr.ospiicScore)
     assertEquals(10.36, rsr.rsrScore)
+    assertNotNull(rsr.rsrBand)
+    assertEquals(ScoreType.DYNAMIC, rsr.scoreType)
+    assertTrue(rsr.validationError?.isEmpty() == true)
+  }
+
+  @Test
+  fun `should calculate RSR score when female with female contribution to rsr no validation errors`() {
+    val context = emptyContext().copy(
+      OSPDC = OSPDCObject(
+        ospdcScore = 0.0,
+        ospdcBand = RiskBand.NOT_APPLICABLE,
+        pointScore = null,
+        validationError = emptyList(),
+        femaleVersion = true,
+        sexualOffenceHistory = true,
+        ospRiskReduction = null,
+      ),
+      OSPIIC = OSPIICObject(
+        score = 0.0,
+        band = RiskBand.NOT_APPLICABLE,
+        sexualOffenceHistory = true,
+        femaleVersion = true,
+        validationError = emptyList(),
+      ),
+      SNSV = SNSVObject(snsvScore = 0.1, scoreType = ScoreType.DYNAMIC, validationError = emptyList()),
+    )
+
+    val result = service.getRiskScore(
+      RiskScoreRequest(
+        gender = Gender.FEMALE,
+        hasEverCommittedSexualOffence = true,
+        isCurrentOffenceSexuallyMotivated = false,
+      ),
+      context,
+    )
+
+    val rsr = result.RSR!!
+    assertEquals(10.38, rsr.rsrScore)
     assertNotNull(rsr.rsrBand)
     assertEquals(ScoreType.DYNAMIC, rsr.scoreType)
     assertTrue(rsr.validationError?.isEmpty() == true)
