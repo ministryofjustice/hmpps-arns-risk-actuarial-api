@@ -8,6 +8,13 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.osp.OSPDCObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.osp.OSPDCRequestValidated
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.FeatureValue.AGE_AT_LAST_SANCTION_FOR_SEXUAL_OFFENCE_WEIGHT
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.FeatureValue.AGE_AT_START_OF_FOLLOW_UP_WEIGHT
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.FeatureValue.CURRENT_OFFENCE_AGAINST_VICTIM_STRANGER_WEIGHT
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.FeatureValue.TOTAL_CONTACT_ADULT_SEXUAL_SANCTIONS_WEIGHT
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.FeatureValue.TOTAL_CONTACT_CHILD_SEXUAL_SANCTIONS_WEIGHT
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.FeatureValue.TOTAL_NON_CONTACT_SEXUAL_OFFENCES_WEIGHT
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.FeatureValue.TOTAL_NUMBER_OF_SANCTIONS_FOR_ALL_OFFENCES_WEIGHT
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getAgeAtLastSanctionForSexualOffenceWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getAgeAtStartOfFollowupWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getIsCurrentOffenceAgainstVictimStrangerWeight
@@ -41,6 +48,7 @@ class OSPDCRiskProducerService : BaseRiskScoreProducer() {
           request.gender == Gender.FEMALE,
           false,
           listOf(),
+          null,
         )
       }
     }
@@ -55,6 +63,7 @@ class OSPDCRiskProducerService : BaseRiskScoreProducer() {
           true,
           false,
           listOf(),
+          null,
         )
       }
     }
@@ -83,26 +92,49 @@ class OSPDCRiskProducerService : BaseRiskScoreProducer() {
   override fun applyErrorsToContextAndReturn(
     context: RiskScoreContext,
     validationErrorResponses: List<ValidationErrorResponse>,
-  ): RiskScoreContext = context.apply { OSPDC = OSPDCObject(null, null, null, null, null, null, validationErrorResponses) }
+  ): RiskScoreContext = context.apply { OSPDC = OSPDCObject(null, null, null, null, null, null, validationErrorResponses, null) }
 
   private fun getOSPDCObject(
     request: OSPDCRequestValidated,
   ): OSPDCObject {
+    val totalContactAdultSexualSanctionsWeight =
+      getTotalContactAdultSexualSanctionsWeight(request.totalContactAdultSexualSanctions)
+    val totalContactChildSexualSanctionsWeight =
+      getTotalContactChildSexualSanctionsWeight(request.totalContactChildSexualSanctions)
+    val totalNonContactSexualOffencesWeight =
+      getTotalNonContactSexualOffencesWeight(request.totalNonContactSexualOffences)
+    val ageAtStartOfFollowupWeight = getAgeAtStartOfFollowupWeight(request.dateOfBirth, request.dateAtStartOfFollowup)
+    val ageAtLastSanctionForSexualOffenceWeight = request.dateOfMostRecentSexualOffence?.let { date ->
+      getAgeAtLastSanctionForSexualOffenceWeight(
+        request.dateOfBirth,
+        date,
+      )
+    } ?: 0
+    val totalNumberOfSanctionsForAllOffencesWeight =
+      getTotalNumberOfSanctionsForAllOffencesWeight(request.totalNumberOfSanctionsForAllOffences)
+    val currentOffenceAgainstVictimStrangerWeight =
+      getIsCurrentOffenceAgainstVictimStrangerWeight(request.isCurrentOffenceAgainstVictimStranger)
     listOf(
-      getTotalContactAdultSexualSanctionsWeight(request.totalContactAdultSexualSanctions),
-      getTotalContactChildSexualSanctionsWeight(request.totalContactChildSexualSanctions),
-      getTotalNonContactSexualOffencesWeight(request.totalNonContactSexualOffences),
-      getAgeAtStartOfFollowupWeight(request.dateOfBirth, request.dateAtStartOfFollowup),
-      request.dateOfMostRecentSexualOffence?.let { date ->
-        getAgeAtLastSanctionForSexualOffenceWeight(
-          request.dateOfBirth,
-          date,
-        )
-      } ?: 0,
-      getTotalNumberOfSanctionsForAllOffencesWeight(request.totalNumberOfSanctionsForAllOffences),
-      getIsCurrentOffenceAgainstVictimStrangerWeight(request.isCurrentOffenceAgainstVictimStranger),
+      totalContactAdultSexualSanctionsWeight,
+      totalContactChildSexualSanctionsWeight,
+      totalNonContactSexualOffencesWeight,
+      ageAtStartOfFollowupWeight,
+      ageAtLastSanctionForSexualOffenceWeight,
+      totalNumberOfSanctionsForAllOffencesWeight,
+      currentOffenceAgainstVictimStrangerWeight,
     ).sum()
       .let { ospdc64PointScore ->
+
+        val featureValues = buildFeatureValues(
+          totalContactAdultSexualSanctionsWeight,
+          totalContactChildSexualSanctionsWeight,
+          totalNonContactSexualOffencesWeight,
+          ageAtStartOfFollowupWeight,
+          ageAtLastSanctionForSexualOffenceWeight,
+          totalNumberOfSanctionsForAllOffencesWeight,
+          currentOffenceAgainstVictimStrangerWeight,
+        )
+
         // Use ospdc64PointScore as pointScore
         if (ospdc64PointScore == 0) {
           return OSPDCObject(
@@ -113,6 +145,7 @@ class OSPDCRiskProducerService : BaseRiskScoreProducer() {
             request.gender == Gender.FEMALE,
             request.hasEverCommittedSexualOffence,
             emptyList(),
+            featureValues,
           )
         } else {
           val ospdcBand = getOSPDCBand(ospdc64PointScore)
@@ -133,8 +166,27 @@ class OSPDCRiskProducerService : BaseRiskScoreProducer() {
             request.gender == Gender.FEMALE,
             request.hasEverCommittedSexualOffence,
             emptyList(),
+            featureValues,
           )
         }
       }
   }
+
+  private fun buildFeatureValues(
+    totalContactAdultSexualSanctionsWeight: Int,
+    totalContactChildSexualSanctionsWeight: Int,
+    totalNonContactSexualOffencesWeight: Int,
+    ageAtStartOfFollowupWeight: Int,
+    ageAtLastSanctionForSexualOffenceWeight: Int,
+    totalNumberOfSanctionsForAllOffencesWeight: Int,
+    currentOffenceAgainstVictimStrangerWeight: Int,
+  ): Map<String, String> = mapOf(
+    TOTAL_CONTACT_ADULT_SEXUAL_SANCTIONS_WEIGHT.asPair(totalContactAdultSexualSanctionsWeight.toString()),
+    TOTAL_CONTACT_CHILD_SEXUAL_SANCTIONS_WEIGHT.asPair(totalContactChildSexualSanctionsWeight.toString()),
+    TOTAL_NON_CONTACT_SEXUAL_OFFENCES_WEIGHT.asPair(totalNonContactSexualOffencesWeight.toString()),
+    AGE_AT_START_OF_FOLLOW_UP_WEIGHT.asPair(ageAtStartOfFollowupWeight.toString()),
+    AGE_AT_LAST_SANCTION_FOR_SEXUAL_OFFENCE_WEIGHT.asPair(ageAtLastSanctionForSexualOffenceWeight.toString()),
+    TOTAL_NUMBER_OF_SANCTIONS_FOR_ALL_OFFENCES_WEIGHT.asPair(totalNumberOfSanctionsForAllOffencesWeight.toString()),
+    CURRENT_OFFENCE_AGAINST_VICTIM_STRANGER_WEIGHT.asPair(currentOffenceAgainstVictimStrangerWeight.toString()),
+  )
 }

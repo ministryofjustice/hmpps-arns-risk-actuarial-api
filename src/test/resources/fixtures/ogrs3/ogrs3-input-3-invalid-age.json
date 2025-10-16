@@ -19,7 +19,7 @@
       "oneYearScore": null,
       "twoYearScore": null
     },
-    "featureValues": [],
+    "featureValues": {},
     "validationErrors": [
       {
         "type": "UNEXPECTED_ERROR",

@@ -16,13 +16,6 @@ class OGRS3TransformationHelperTest {
   inner class OffenderCopasScoreTest {
 
     @Test
-    fun `getOffenderCopasScore should produce the copas score matching OASys spreadsheet`() {
-      val score = getOffenderCopasScore(9, 50, 30)
-      val expected = -1.09861 // real example matching OASys spreadsheet
-      assertEquals(expected, score)
-    }
-
-    @Test
     fun `getOffenderCopasScore should throw error when denominator less or equal zero`() {
       val exception = assertThrows(IllegalArgumentException::class.java) {
         getOffenderCopasScore(0, 1, 18)

@@ -19,6 +19,7 @@ class OGPValidationHelperTest {
       ogrs3TwoYear = 50,
       band = null,
       validationError = null,
+      featureValues = null,
     )
     val CONTEXT_WITH_OSGR3_TWO_YEAR = RiskScoreContext(version = RiskScoreVersion.V1_0, OGRS3 = TEST_OSGR3_OBJECT)
     val CONTEXT_WITH_NO_OSGR3_TWO_YEAR = RiskScoreContext(version = RiskScoreVersion.V1_0, OGRS3 = TEST_OSGR3_OBJECT.copy(ogrs3TwoYear = null))

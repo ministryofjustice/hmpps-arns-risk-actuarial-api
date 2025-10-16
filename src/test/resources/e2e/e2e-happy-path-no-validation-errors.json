@@ -105,7 +105,12 @@
           "oneYearScore": 7,
           "twoYearScore": 13
         },
-        "featureValues": [],
+        "featureValues": {
+          "ageGenderScore": "-2.0253",
+          "convictionStatusScore": "0.12614",
+          "COPASScore": "-2.8808102615467104",
+          "offenceGroupParameter": "0.7606"
+        },
         "validationErrors": []
       },
       "violentPredictor": {
@@ -119,7 +124,7 @@
           "twoYearScore": 7,
           "pointScore": 18
         },
-        "featureValues": [],
+        "featureValues": {},
         "validationErrors": []
       },
       "nonViolentPredictor": {
@@ -133,7 +138,7 @@
           "twoYearScore": 18,
           "pointScore": 25
         },
-        "featureValues": [],
+        "featureValues": {},
         "validationErrors": []
       },
       "directContactSexualPredictor": {
@@ -149,7 +154,15 @@
           "hasSexualOffenceHistory": true,
           "riskBandReductionApplied": false
         },
-        "featureValues": [],
+        "featureValues": {
+          "totalContactAdultSexualSanctionsWeight": "15",
+          "totalContactChildSexualSanctionsWeight": "9",
+          "totalNonContactSexualOffencesWeight": "6",
+          "ageAtStartOfFollowUpWeight": "0",
+          "ageAtLastSanctionForSexualOffenceWeight": "0",
+          "totalNumberOfSanctionsForAllOffencesWeight": "0",
+          "currentOffenceAgainstVictimStrangerWeight": "0"
+        },
         "validationErrors": []
       },
       "indirectContactSexualPredictor": {
@@ -163,7 +176,7 @@
           "femaleVersion": false,
           "hasSexualOffenceHistory": true
         },
-        "featureValues": [],
+        "featureValues": {},
         "validationErrors": []
       },
       "seriousViolencePredictor": {
@@ -175,7 +188,32 @@
           "band": null,
           "score": 0.0013470306852831
         },
-        "featureValues": [],
+        "featureValues": {
+          "twoYearInterceptWeight": "2.39022796091603",
+          "genderWeight": "0.0",
+          "ageGenderPolynomialWeight": "-7.478130528338287",
+          "SNSVWeighting": "0.123617390798186",
+          "secondSanctionCasesOnlyWeight": "0.0",
+          "monthsSinceLastSanctionWeight": "0.0",
+          "threePlusSanctionWeight": "0.0",
+          "violentHistoryWeight": "-0.101514048705338",
+          "violentSanctionsWeight": "0.021160895925655",
+          "violenceRateWeight": "-0.1868345173738685",
+          "SNSVVATPWeight": "0.0",
+          "totalNumberOfSanctionsForAllOffencesWeight": "-0.0182592921752245",
+          "numberOfSanctionsWeight": "-1.89458617745666",
+          "offenceInvolveCarryingOrUsingWeaponsWeight": "0.0",
+          "suitabilityOfAccommodationWeight": "0.0",
+          "unemployedWeight": "0.0",
+          "currentRelationshipWithPartner": "0.0",
+          "chronicDrinkingProblemsWeight": "0.0",
+          "bingeDrinkingProblemsWeight": "0.0",
+          "impulsivityProblemsWeight": "0.0",
+          "temperControlWeight": "0.0",
+          "proCriminalAttitudesWeight": "0.0",
+          "domesticViolenceWeight": "0.0847839330659903",
+          "previousConvictionsWeight": "0.451029720739399"
+        },
         "validationErrors": []
       },
       "seriousPredictor": {
@@ -202,7 +240,15 @@
                 "hasSexualOffenceHistory": true,
                 "riskBandReductionApplied": false
               },
-              "featureValues": [],
+              "featureValues": {
+                "totalContactAdultSexualSanctionsWeight": "15",
+                "totalContactChildSexualSanctionsWeight": "9",
+                "totalNonContactSexualOffencesWeight": "6",
+                "ageAtStartOfFollowUpWeight": "0",
+                "ageAtLastSanctionForSexualOffenceWeight": "0",
+                "totalNumberOfSanctionsForAllOffencesWeight": "0",
+                "currentOffenceAgainstVictimStrangerWeight": "0"
+              },
               "validationErrors": []
             },
             {
@@ -216,7 +262,7 @@
                 "femaleVersion": false,
                 "hasSexualOffenceHistory": true
               },
-              "featureValues": [],
+              "featureValues": {},
               "validationErrors": []
             },
             {
@@ -228,12 +274,37 @@
                 "band": null,
                 "score": 0.0013470306852831
               },
-              "featureValues": [],
+              "featureValues": {
+                "twoYearInterceptWeight": "2.39022796091603",
+                "genderWeight": "0.0",
+                "ageGenderPolynomialWeight": "-7.478130528338287",
+                "SNSVWeighting": "0.123617390798186",
+                "secondSanctionCasesOnlyWeight": "0.0",
+                "monthsSinceLastSanctionWeight": "0.0",
+                "threePlusSanctionWeight": "0.0",
+                "violentHistoryWeight": "-0.101514048705338",
+                "violentSanctionsWeight": "0.021160895925655",
+                "violenceRateWeight": "-0.1868345173738685",
+                "SNSVVATPWeight": "0.0",
+                "totalNumberOfSanctionsForAllOffencesWeight": "-0.0182592921752245",
+                "numberOfSanctionsWeight": "-1.89458617745666",
+                "offenceInvolveCarryingOrUsingWeaponsWeight": "0.0",
+                "suitabilityOfAccommodationWeight": "0.0",
+                "unemployedWeight": "0.0",
+                "currentRelationshipWithPartner": "0.0",
+                "chronicDrinkingProblemsWeight": "0.0",
+                "bingeDrinkingProblemsWeight": "0.0",
+                "impulsivityProblemsWeight": "0.0",
+                "temperControlWeight": "0.0",
+                "proCriminalAttitudesWeight": "0.0",
+                "domesticViolenceWeight": "0.0847839330659903",
+                "previousConvictionsWeight": "0.451029720739399"
+              },
               "validationErrors": []
             }
           ]
         },
-        "featureValues": [],
+        "featureValues": {},
         "validationErrors": []
       }
     },

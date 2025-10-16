@@ -19,7 +19,7 @@
       "oneYearScore": null,
       "twoYearScore": null
     },
-    "featureValues": [],
+    "featureValues": {},
     "validationErrors": [
       {
         "type": "OFFENCE_CODE_INCORRECT_FORMAT",

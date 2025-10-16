@@ -22,9 +22,9 @@ const val FEMALE_SEXUAL_OFFENDER_RSR_CONTRIBUTION = 0.00383141762
 class RSRRiskProducerService : BaseRiskScoreProducer() {
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
-    val ospdc = context.OSPDC ?: OSPDCObject(null, null, null, null, null, null, null)
+    val ospdc = context.OSPDC ?: OSPDCObject(null, null, null, null, null, null, null, null)
     val ospiic = context.OSPIIC ?: OSPIICObject(null, null, null, null, null)
-    val snsv = context.SNSV ?: SNSVObject(null, null, null)
+    val snsv = context.SNSV ?: SNSVObject(null, null, null, null)
 
     val componentErrorNames = mutableListOf<String>()
     context.OSPDC?.validationError?.let { validationErrors -> if (validationErrors.isNotEmpty()) componentErrorNames += AlgorithmResponse.OSPDC.name }
