@@ -313,7 +313,8 @@ class SNSVRiskProducerService : BaseRiskScoreProducer() {
         FeatureValue.THREE_PLUS_SANCTIONS_WEIGHT.asPair(threePlusSanctionsWeight.toString()),
         FeatureValue.VIOLENT_HISTORY_WEIGHT.asPair(violentHistoryWeight.toString()),
         FeatureValue.VIOLENT_SANCTIONS_WEIGHT.asPair(violentSanctionsWeight.toString()),
-        FeatureValue.VIOLENCE_RATE_WEIGHT.asPair(violenceRateWeight.toString()),
+        // TODO: Remove this rounding in ACT-224 - Added due to floating point precision differences across envs
+        FeatureValue.VIOLENCE_RATE_WEIGHT.asPair(violenceRateWeight.roundToNDecimals(16).toString()),
         FeatureValue.SNSV_VATP_WEIGHT.asPair(snsvvatpWeighting.toString()),
         // Looking at where this comes from it states OGRS3 so i've used the same FeatureValue enum
         FeatureValue.TOTAL_NUMBER_OF_SANCTIONS_FOR_ALL_OFFENCES_WEIGHT.asPair(totalSanctionWeight.toString()),
