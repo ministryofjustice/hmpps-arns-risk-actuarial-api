@@ -6,7 +6,6 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import org.springframework.core.io.ClassPathResource
 import org.springframework.http.MediaType
-import org.springframework.test.json.JsonCompareMode
 import java.io.File
 import java.util.stream.Stream
 import kotlin.test.assertEquals

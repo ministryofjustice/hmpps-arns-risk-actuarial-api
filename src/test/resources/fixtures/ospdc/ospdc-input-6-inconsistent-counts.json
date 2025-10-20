@@ -27,7 +27,7 @@
       "hasSexualOffenceHistory": null,
       "riskBandReductionApplied": null
     },
-    "featureValues": [],
+    "featureValues": {},
     "validationErrors": [
       {
         "type": "SEXUAL_OFFENDING_INCONSISTENT_INPUT",

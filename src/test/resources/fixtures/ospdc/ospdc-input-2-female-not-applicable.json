@@ -27,7 +27,7 @@
       "hasSexualOffenceHistory" : false,
       "riskBandReductionApplied" : null
     },
-    "featureValues" : [ ],
-    "validationErrors" : [ ]
+    "featureValues" : {},
+    "validationErrors" : []
   }
 }

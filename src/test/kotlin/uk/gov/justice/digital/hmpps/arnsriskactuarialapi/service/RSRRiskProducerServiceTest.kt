@@ -78,7 +78,7 @@ class RSRRiskProducerServiceTest {
         femaleVersion = true,
         validationError = emptyList(),
       ),
-      SNSV = SNSVObject(snsvScore = 0.1, scoreType = ScoreType.DYNAMIC, validationError = emptyList(), featureValues = null)
+      SNSV = SNSVObject(snsvScore = 0.1, scoreType = ScoreType.DYNAMIC, validationError = emptyList(), featureValues = null),
     )
 
     val result = service.getRiskScore(

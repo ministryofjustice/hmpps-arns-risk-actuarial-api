@@ -21,7 +21,7 @@
       "twoYearScore": 52
     },
     "featureValues" : {
-      "ageGenderScore" : "-2.0253",
+      "ageGenderScore" : "-1.4997",
       "convictionStatusScore" : "0.46306",
       "COPASScore" : "-0.20900470640378052",
       "offenceGroupParameter" : "-0.7956"

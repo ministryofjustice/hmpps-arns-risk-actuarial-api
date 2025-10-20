@@ -22,7 +22,7 @@
       "band": null,
       "score": null
     },
-    "featureValues": [],
+    "featureValues": {},
     "validationErrors": [
       {
         "type": "OFFENCE_CODE_INCORRECT_FORMAT",

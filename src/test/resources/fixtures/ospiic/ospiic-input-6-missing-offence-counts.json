@@ -20,7 +20,7 @@
       "femaleVersion": null,
       "hasSexualOffenceHistory": null
     },
-    "featureValues": [],
+    "featureValues": {},
     "validationErrors": [
       {
         "type": "SEXUAL_OFFENDING_MISSING_COUNTS",
