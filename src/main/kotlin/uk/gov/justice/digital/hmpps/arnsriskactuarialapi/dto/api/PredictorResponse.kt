@@ -8,6 +8,6 @@ data class PredictorResponse(
   val modelVersion: String = "1.0",
   val thresholdsVersion: String = "1.0",
   val output: PredictorOutputResponse,
-  val featureValues: Map<String, String> = emptyMap(),
+  val featureValues: Map<String, Any> = emptyMap(),
   val validationErrors: List<ValidationErrorResponse>,
 )

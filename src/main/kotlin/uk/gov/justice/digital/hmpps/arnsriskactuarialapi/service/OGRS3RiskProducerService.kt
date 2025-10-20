@@ -109,10 +109,10 @@ class OGRS3RiskProducerService : BaseRiskScoreProducer() {
           riskBand,
           emptyList(),
           mapOf(
-            AGE_GENDER_SCORE.asPair(ageGenderScore.toString()),
-            CONVICTION_STATUS_SCORE.asPair(convictionStatusScore.toString()),
-            COPAS_SCORE.asPair(offenderCopasFinalScore.toString()),
-            OFFENCE_GROUP_PARAMETER.asPair(ogrS3Weighting.toString()),
+            AGE_GENDER_SCORE.asPair(ageGenderScore),
+            CONVICTION_STATUS_SCORE.asPair(convictionStatusScore),
+            COPAS_SCORE.asPair(offenderCopasFinalScore),
+            OFFENCE_GROUP_PARAMETER.asPair(ogrS3Weighting),
           ),
         )
       }

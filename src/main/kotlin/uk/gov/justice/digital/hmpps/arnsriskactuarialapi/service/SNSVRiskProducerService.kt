@@ -145,7 +145,7 @@ class SNSVRiskProducerService : BaseRiskScoreProducer() {
     weightingSNSV,
   )
 
-  private fun snvsStaticSum(request: SNSVStaticRequestValidated): Pair<Double, Map<String, String>> {
+  private fun snvsStaticSum(request: SNSVStaticRequestValidated): Pair<Double, Map<String, Any>> {
     val get2YearInterceptWeight = get2YearInterceptWeight(false)
     val genderWeight = getGenderWeight(request.gender, false)
     val ageGenderPolynomialWeight =
@@ -205,25 +205,24 @@ class SNSVRiskProducerService : BaseRiskScoreProducer() {
     return Pair(
       sum,
       mapOf(
-        FeatureValue.TWO_YEAR_INTERCEPT_WEIGHT.asPair(get2YearInterceptWeight.toString()),
-        FeatureValue.GENDER_WEIGHT.asPair(genderWeight.toString()),
-        FeatureValue.AGE_GENDER_POLYNOMIAL_WEIGHT.asPair(ageGenderPolynomialWeight.toString()),
-        FeatureValue.SNSV_WEIGHT.asPair(snsvWeighting.toString()),
-        FeatureValue.SECOND_SANCTION_CASES_ONLY_WEIGHT.asPair(secondSanctionCasesOnlyWeight.toString()),
-        FeatureValue.MONTHS_SINCE_LAST_SANCTION_WEIGHT.asPair(monthsSinceLastSanctionWeight.toString()),
-        FeatureValue.THREE_PLUS_SANCTIONS_WEIGHT.asPair(threePlusSanctionsWeight.toString()),
-        FeatureValue.VIOLENT_HISTORY_WEIGHT.asPair(violentHistoryWeight.toString()),
-        FeatureValue.VIOLENT_SANCTIONS_WEIGHT.asPair(violentSanctionsWeight.toString()),
-        FeatureValue.VIOLENCE_RATE_WEIGHT.asPair(violenceRateWeight.toString()),
-        FeatureValue.SNSV_VATP_WEIGHT.asPair(snsvvatpWeighting.toString()),
-        // Looking at where this comes from it states OGRS3 so i've used the same FeatureValue enum
-        FeatureValue.TOTAL_NUMBER_OF_SANCTIONS_FOR_ALL_OFFENCES_WEIGHT.asPair(totalSanctionWeight.toString()),
-        FeatureValue.NUMBER_OF_SANCTIONS_WEIGHT.asPair(numberOfSanctionWeight.toString()),
+        FeatureValue.TWO_YEAR_INTERCEPT_WEIGHT.asPair(get2YearInterceptWeight),
+        FeatureValue.GENDER_WEIGHT.asPair(genderWeight),
+        FeatureValue.AGE_GENDER_POLYNOMIAL_WEIGHT.asPair(ageGenderPolynomialWeight),
+        FeatureValue.SNSV_WEIGHT.asPair(snsvWeighting),
+        FeatureValue.SECOND_SANCTION_CASES_ONLY_WEIGHT.asPair(secondSanctionCasesOnlyWeight),
+        FeatureValue.MONTHS_SINCE_LAST_SANCTION_WEIGHT.asPair(monthsSinceLastSanctionWeight),
+        FeatureValue.THREE_PLUS_SANCTIONS_WEIGHT.asPair(threePlusSanctionsWeight),
+        FeatureValue.VIOLENT_HISTORY_WEIGHT.asPair(violentHistoryWeight),
+        FeatureValue.VIOLENT_SANCTIONS_WEIGHT.asPair(violentSanctionsWeight),
+        FeatureValue.VIOLENCE_RATE_WEIGHT.asPair(violenceRateWeight),
+        FeatureValue.SNSV_VATP_WEIGHT.asPair(snsvvatpWeighting),
+        FeatureValue.TOTAL_NUMBER_OF_SANCTIONS_FOR_ALL_OFFENCES_WEIGHT.asPair(totalSanctionWeight),
+        FeatureValue.NUMBER_OF_SANCTIONS_WEIGHT.asPair(numberOfSanctionWeight),
       ),
     )
   }
 
-  private fun snvsDynamicSum(request: SNSVDynamicRequestValidated): Pair<Double, Map<String, String>> {
+  private fun snvsDynamicSum(request: SNSVDynamicRequestValidated): Pair<Double, Map<String, Any>> {
     val get2YearInterceptWeight = get2YearInterceptWeight(true)
     val genderWeight = getGenderWeight(request.gender, true)
     val ageGenderPolynomialWeight =
@@ -304,32 +303,31 @@ class SNSVRiskProducerService : BaseRiskScoreProducer() {
     return Pair(
       sum,
       mapOf(
-        FeatureValue.TWO_YEAR_INTERCEPT_WEIGHT.asPair(get2YearInterceptWeight.toString()),
-        FeatureValue.GENDER_WEIGHT.asPair(genderWeight.toString()),
-        FeatureValue.AGE_GENDER_POLYNOMIAL_WEIGHT.asPair(ageGenderPolynomialWeight.toString()),
-        FeatureValue.SNSV_WEIGHT.asPair(snsvWeighting.toString()),
-        FeatureValue.SECOND_SANCTION_CASES_ONLY_WEIGHT.asPair(secondSanctionCasesOnlyWeight.toString()),
-        FeatureValue.MONTHS_SINCE_LAST_SANCTION_WEIGHT.asPair(monthsSinceLastSanctionWeight.toString()),
-        FeatureValue.THREE_PLUS_SANCTIONS_WEIGHT.asPair(threePlusSanctionsWeight.toString()),
-        FeatureValue.VIOLENT_HISTORY_WEIGHT.asPair(violentHistoryWeight.toString()),
-        FeatureValue.VIOLENT_SANCTIONS_WEIGHT.asPair(violentSanctionsWeight.toString()),
+        FeatureValue.TWO_YEAR_INTERCEPT_WEIGHT.asPair(get2YearInterceptWeight),
+        FeatureValue.GENDER_WEIGHT.asPair(genderWeight),
+        FeatureValue.AGE_GENDER_POLYNOMIAL_WEIGHT.asPair(ageGenderPolynomialWeight),
+        FeatureValue.SNSV_WEIGHT.asPair(snsvWeighting),
+        FeatureValue.SECOND_SANCTION_CASES_ONLY_WEIGHT.asPair(secondSanctionCasesOnlyWeight),
+        FeatureValue.MONTHS_SINCE_LAST_SANCTION_WEIGHT.asPair(monthsSinceLastSanctionWeight),
+        FeatureValue.THREE_PLUS_SANCTIONS_WEIGHT.asPair(threePlusSanctionsWeight),
+        FeatureValue.VIOLENT_HISTORY_WEIGHT.asPair(violentHistoryWeight),
+        FeatureValue.VIOLENT_SANCTIONS_WEIGHT.asPair(violentSanctionsWeight),
         // TODO: Remove this rounding in ACT-224 - Added due to floating point precision differences across envs
-        FeatureValue.VIOLENCE_RATE_WEIGHT.asPair(violenceRateWeight.roundToNDecimals(16).toString()),
-        FeatureValue.SNSV_VATP_WEIGHT.asPair(snsvvatpWeighting.toString()),
-        // Looking at where this comes from it states OGRS3 so i've used the same FeatureValue enum
-        FeatureValue.TOTAL_NUMBER_OF_SANCTIONS_FOR_ALL_OFFENCES_WEIGHT.asPair(totalSanctionWeight.toString()),
-        FeatureValue.NUMBER_OF_SANCTIONS_WEIGHT.asPair(numberOfSanctionWeight.toString()),
-        FeatureValue.OFFENCE_INVOLVE_CARRYING_OR_USING_WEAPONS_WEIGHT.asPair(offenceInvolveCarryingOrUsingWeaponWeight.toString()),
-        FeatureValue.SUITABILITY_OF_ACCOMMODATION_WEIGHT.asPair(suitabilityOfAccommodationWeight.toString()),
-        FeatureValue.UNEMPLOYED_WEIGHT.asPair(unemployedWeight.toString()),
-        FeatureValue.CURRENT_RELATIONSHIP_WITH_PARTNER.asPair(currentRelationshipWithPartnerWeight.toString()),
-        FeatureValue.CHRONIC_DRINKING_PROBLEMS_WEIGHT.asPair(chronicDrinkingProblemsWeight.toString()),
-        FeatureValue.BINGE_DRINKING_PROBLEMS_WEIGHT.asPair(bingeDrinkingProblemWeight.toString()),
-        FeatureValue.IMPULSIVITY_PROBLEMS_WEIGHT.asPair(impulsivityProblemsWeight.toString()),
-        FeatureValue.TEMPER_CONTROL_WEIGHT.asPair(temperControlWeight.toString()),
-        FeatureValue.PRO_CRIMINAL_ATTITUDES_WEIGHT.asPair(proCriminalAttitudesWeight.toString()),
-        FeatureValue.DOMESTIC_VIOLENCE_WEIGHT.asPair(domesticViolenceWeight.toString()),
-        FeatureValue.PREVIOUS_CONVICTIONS_WEIGHT.asPair(previousConvictionsWeight.toString()),
+        FeatureValue.VIOLENCE_RATE_WEIGHT.asPair(violenceRateWeight.roundToNDecimals(16)),
+        FeatureValue.SNSV_VATP_WEIGHT.asPair(snsvvatpWeighting),
+        FeatureValue.TOTAL_NUMBER_OF_SANCTIONS_FOR_ALL_OFFENCES_WEIGHT.asPair(totalSanctionWeight),
+        FeatureValue.NUMBER_OF_SANCTIONS_WEIGHT.asPair(numberOfSanctionWeight),
+        FeatureValue.OFFENCE_INVOLVE_CARRYING_OR_USING_WEAPONS_WEIGHT.asPair(offenceInvolveCarryingOrUsingWeaponWeight),
+        FeatureValue.SUITABILITY_OF_ACCOMMODATION_WEIGHT.asPair(suitabilityOfAccommodationWeight),
+        FeatureValue.UNEMPLOYED_WEIGHT.asPair(unemployedWeight),
+        FeatureValue.CURRENT_RELATIONSHIP_WITH_PARTNER.asPair(currentRelationshipWithPartnerWeight),
+        FeatureValue.CHRONIC_DRINKING_PROBLEMS_WEIGHT.asPair(chronicDrinkingProblemsWeight),
+        FeatureValue.BINGE_DRINKING_PROBLEMS_WEIGHT.asPair(bingeDrinkingProblemWeight),
+        FeatureValue.IMPULSIVITY_PROBLEMS_WEIGHT.asPair(impulsivityProblemsWeight),
+        FeatureValue.TEMPER_CONTROL_WEIGHT.asPair(temperControlWeight),
+        FeatureValue.PRO_CRIMINAL_ATTITUDES_WEIGHT.asPair(proCriminalAttitudesWeight),
+        FeatureValue.DOMESTIC_VIOLENCE_WEIGHT.asPair(domesticViolenceWeight),
+        FeatureValue.PREVIOUS_CONVICTIONS_WEIGHT.asPair(previousConvictionsWeight),
       ),
     )
   }

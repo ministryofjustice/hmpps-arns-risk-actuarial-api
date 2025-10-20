@@ -11,5 +11,5 @@ data class OSPDCObject(
   val femaleVersion: Boolean?,
   val sexualOffenceHistory: Boolean?,
   val validationError: List<ValidationErrorResponse>?,
-  val featureValues: Map<String, String>?,
+  val featureValues: Map<String, Any>?,
 )

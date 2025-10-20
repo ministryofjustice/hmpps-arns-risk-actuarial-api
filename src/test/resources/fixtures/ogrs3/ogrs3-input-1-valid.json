@@ -20,10 +20,10 @@
       "twoYearScore": 17
     },
     "featureValues" : {
-      "ageGenderScore" : "-1.326",
-      "convictionStatusScore" : "0.46306",
-      "COPASScore" : "-2.8166361950725585",
-      "offenceGroupParameter" : "-0.0607"
+      "ageGenderScore" : -1.326,
+      "convictionStatusScore" : 0.46306,
+      "COPASScore" : -2.8166361950725585,
+      "offenceGroupParameter" : -0.0607
     },
     "validationErrors": []
   }
