@@ -23,8 +23,8 @@
       "overallScore": 0.14,
       "femaleVersion": false,
       "hasSexualOffenceHistory": false,
-      "componentScores": [
-        {
+      "componentScores": {
+        "directContactSexualPredictorScore": {
           "algorithm": "OSPDC",
           "type": "STATIC",
           "modelVersion": "1.0",
@@ -40,7 +40,7 @@
           "featureValues": {},
           "validationErrors": []
         },
-        {
+        "indirectContactSexualPredictorScore": {
           "algorithm": "OSPIIC",
           "type": "STATIC",
           "modelVersion": "1.0",
@@ -54,7 +54,7 @@
           "featureValues": {},
           "validationErrors": []
         },
-        {
+        "seriousViolencePredictorScore": {
           "algorithm": "SNSV",
           "type": "STATIC",
           "modelVersion": "1.0",
@@ -98,7 +98,7 @@
             }
           ]
         }
-      ]
+      }
     },
     "featureValues": {},
     "validationErrors": []
