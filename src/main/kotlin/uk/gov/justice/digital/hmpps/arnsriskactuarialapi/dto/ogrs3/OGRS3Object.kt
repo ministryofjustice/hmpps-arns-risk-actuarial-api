@@ -8,5 +8,5 @@ data class OGRS3Object(
   val ogrs3TwoYear: Int?,
   val band: RiskBand?,
   val validationError: List<ValidationErrorResponse>?,
-  val featureValues: Map<String, Any>?,
+  val featureValues: Map<String, Double>?,
 )

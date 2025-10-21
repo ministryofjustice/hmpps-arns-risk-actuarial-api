@@ -145,7 +145,7 @@ class SNSVRiskProducerService : BaseRiskScoreProducer() {
     weightingSNSV,
   )
 
-  private fun snvsStaticSum(request: SNSVStaticRequestValidated): Pair<Double, Map<String, Any>> {
+  private fun snvsStaticSum(request: SNSVStaticRequestValidated): Pair<Double, Map<String, Double>> {
     val get2YearInterceptWeight = get2YearInterceptWeight(false)
     val genderWeight = getGenderWeight(request.gender, false)
     val ageGenderPolynomialWeight =
@@ -222,7 +222,7 @@ class SNSVRiskProducerService : BaseRiskScoreProducer() {
     )
   }
 
-  private fun snvsDynamicSum(request: SNSVDynamicRequestValidated): Pair<Double, Map<String, Any>> {
+  private fun snvsDynamicSum(request: SNSVDynamicRequestValidated): Pair<Double, Map<String, Double>> {
     val get2YearInterceptWeight = get2YearInterceptWeight(true)
     val genderWeight = getGenderWeight(request.gender, true)
     val ageGenderPolynomialWeight =

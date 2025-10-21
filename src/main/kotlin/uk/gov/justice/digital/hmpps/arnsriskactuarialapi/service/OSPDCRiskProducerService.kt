@@ -180,13 +180,13 @@ class OSPDCRiskProducerService : BaseRiskScoreProducer() {
     ageAtLastSanctionForSexualOffenceWeight: Int,
     totalNumberOfSanctionsForAllOffencesWeight: Int,
     currentOffenceAgainstVictimStrangerWeight: Int,
-  ): Map<String, Any> = mapOf(
-    TOTAL_CONTACT_ADULT_SEXUAL_SANCTIONS_WEIGHT.asPair(totalContactAdultSexualSanctionsWeight),
-    TOTAL_CONTACT_CHILD_SEXUAL_SANCTIONS_WEIGHT.asPair(totalContactChildSexualSanctionsWeight),
-    TOTAL_NON_CONTACT_SEXUAL_OFFENCES_WEIGHT.asPair(totalNonContactSexualOffencesWeight),
-    AGE_AT_START_OF_FOLLOW_UP_WEIGHT.asPair(ageAtStartOfFollowupWeight),
-    AGE_AT_LAST_SANCTION_FOR_SEXUAL_OFFENCE_WEIGHT.asPair(ageAtLastSanctionForSexualOffenceWeight),
-    TOTAL_NUMBER_OF_SANCTIONS_FOR_ALL_OFFENCES_WEIGHT.asPair(totalNumberOfSanctionsForAllOffencesWeight),
-    CURRENT_OFFENCE_AGAINST_VICTIM_STRANGER_WEIGHT.asPair(currentOffenceAgainstVictimStrangerWeight),
+  ): Map<String, Double> = mapOf(
+    TOTAL_CONTACT_ADULT_SEXUAL_SANCTIONS_WEIGHT.asPair(totalContactAdultSexualSanctionsWeight.toDouble()),
+    TOTAL_CONTACT_CHILD_SEXUAL_SANCTIONS_WEIGHT.asPair(totalContactChildSexualSanctionsWeight.toDouble()),
+    TOTAL_NON_CONTACT_SEXUAL_OFFENCES_WEIGHT.asPair(totalNonContactSexualOffencesWeight.toDouble()),
+    AGE_AT_START_OF_FOLLOW_UP_WEIGHT.asPair(ageAtStartOfFollowupWeight.toDouble()),
+    AGE_AT_LAST_SANCTION_FOR_SEXUAL_OFFENCE_WEIGHT.asPair(ageAtLastSanctionForSexualOffenceWeight.toDouble()),
+    TOTAL_NUMBER_OF_SANCTIONS_FOR_ALL_OFFENCES_WEIGHT.asPair(totalNumberOfSanctionsForAllOffencesWeight.toDouble()),
+    CURRENT_OFFENCE_AGAINST_VICTIM_STRANGER_WEIGHT.asPair(currentOffenceAgainstVictimStrangerWeight.toDouble()),
   )
 }

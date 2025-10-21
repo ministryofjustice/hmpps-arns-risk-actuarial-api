@@ -28,13 +28,13 @@
       "riskBandReductionApplied": false
     },
     "featureValues": {
-      "totalContactAdultSexualSanctionsWeight" : 5,
-      "totalContactChildSexualSanctionsWeight" : 6,
-      "totalNonContactSexualOffencesWeight" : 6,
-      "ageAtStartOfFollowUpWeight" : 5,
-      "ageAtLastSanctionForSexualOffenceWeight" : 0,
-      "totalNumberOfSanctionsForAllOffencesWeight" : 0,
-      "currentOffenceAgainstVictimStrangerWeight" : 0
+      "totalContactAdultSexualSanctionsWeight" : 5.0,
+      "totalContactChildSexualSanctionsWeight" : 6.0,
+      "totalNonContactSexualOffencesWeight" : 6.0,
+      "ageAtStartOfFollowUpWeight" : 5.0,
+      "ageAtLastSanctionForSexualOffenceWeight" : 0.0,
+      "totalNumberOfSanctionsForAllOffencesWeight" : 0.0,
+      "currentOffenceAgainstVictimStrangerWeight" : 0.0
     },
     "validationErrors": []
   }

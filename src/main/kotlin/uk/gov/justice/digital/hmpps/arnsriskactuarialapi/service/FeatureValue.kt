@@ -37,5 +37,5 @@ enum class FeatureValue(val outputName: String) {
   PREVIOUS_CONVICTIONS_WEIGHT("previousConvictionsWeight"),
   ;
 
-  fun asPair(value: Any): Pair<String, Any> = Pair(outputName, value)
+  fun asPair(value: Double): Pair<String, Double> = Pair(outputName, value)
 }

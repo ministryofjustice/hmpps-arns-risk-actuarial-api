@@ -6,5 +6,5 @@ data class SNSVObject(
   val snsvScore: Double?,
   val scoreType: ScoreType?,
   val validationError: List<ValidationErrorResponse>?,
-  val featureValues: Map<String, Any>?,
+  val featureValues: Map<String, Double>?,
 )

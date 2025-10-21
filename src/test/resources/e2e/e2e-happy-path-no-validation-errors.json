@@ -155,13 +155,13 @@
           "riskBandReductionApplied": false
         },
         "featureValues": {
-          "totalContactAdultSexualSanctionsWeight": 15,
-          "totalContactChildSexualSanctionsWeight": 9,
-          "totalNonContactSexualOffencesWeight": 6,
-          "ageAtStartOfFollowUpWeight": 0,
-          "ageAtLastSanctionForSexualOffenceWeight": 0,
-          "totalNumberOfSanctionsForAllOffencesWeight": 0,
-          "currentOffenceAgainstVictimStrangerWeight": 0
+          "totalContactAdultSexualSanctionsWeight": 15.0,
+          "totalContactChildSexualSanctionsWeight": 9.0,
+          "totalNonContactSexualOffencesWeight": 6.0,
+          "ageAtStartOfFollowUpWeight": 0.0,
+          "ageAtLastSanctionForSexualOffenceWeight": 0.0,
+          "totalNumberOfSanctionsForAllOffencesWeight": 0.0,
+          "currentOffenceAgainstVictimStrangerWeight": 0.0
         },
         "validationErrors": []
       },
@@ -241,13 +241,13 @@
                 "riskBandReductionApplied": false
               },
               "featureValues": {
-                "totalContactAdultSexualSanctionsWeight": 15,
-                "totalContactChildSexualSanctionsWeight": 9,
-                "totalNonContactSexualOffencesWeight": 6,
-                "ageAtStartOfFollowUpWeight": 0,
-                "ageAtLastSanctionForSexualOffenceWeight": 0,
-                "totalNumberOfSanctionsForAllOffencesWeight": 0,
-                "currentOffenceAgainstVictimStrangerWeight": 0
+                "totalContactAdultSexualSanctionsWeight": 15.0,
+                "totalContactChildSexualSanctionsWeight": 9.0,
+                "totalNonContactSexualOffencesWeight": 6.0,
+                "ageAtStartOfFollowUpWeight": 0.0,
+                "ageAtLastSanctionForSexualOffenceWeight": 0.0,
+                "totalNumberOfSanctionsForAllOffencesWeight": 0.0,
+                "currentOffenceAgainstVictimStrangerWeight": 0.0
               },
               "validationErrors": []
             },
