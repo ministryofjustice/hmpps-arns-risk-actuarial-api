@@ -9,6 +9,10 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResp
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3Object
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3RequestValidated
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.FeatureValue.AGE_GENDER_SCORE
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.FeatureValue.CONVICTION_STATUS_SCORE
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.FeatureValue.COPAS_SCORE
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.FeatureValue.OFFENCE_GROUP_PARAMETER
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getAgeGenderScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getConvictionStatusScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getOffenderConvictionStatus
@@ -74,21 +78,24 @@ class OGRS3RiskProducerService : BaseRiskScoreProducer() {
     validateAgeAtFirstSanction(request.ageAtFirstSanction, ageAtCurrentConviction, errors)
     val ogrS3Weighting = validateAndRetrieveOGRS3Weighting(request, errors)
     if (errors.isNotEmpty()) {
-      return OGRS3Object(null, null, null, errors)
+      return OGRS3Object(null, null, null, errors, null)
     }
 
     val offenderConvictionStatus = getOffenderConvictionStatus(request.totalNumberOfSanctionsForAllOffences)
 
-    listOf(
-      getAgeGenderScore(ageAtStartOfFollowup, request.gender),
-      getConvictionStatusScore(offenderConvictionStatus),
-      getOffenderCopasFinalScore(
-        getOffenderCopasScore(
-          request.totalNumberOfSanctionsForAllOffences - 1,
-          ageAtCurrentConviction,
-          request.ageAtFirstSanction,
-        ),
+    val ageGenderScore = getAgeGenderScore(ageAtStartOfFollowup, request.gender)
+    val convictionStatusScore = getConvictionStatusScore(offenderConvictionStatus)
+    val offenderCopasFinalScore = getOffenderCopasFinalScore(
+      getOffenderCopasScore(
+        request.totalNumberOfSanctionsForAllOffences - 1,
+        ageAtCurrentConviction,
+        request.ageAtFirstSanction,
       ),
+    )
+    listOf(
+      ageGenderScore,
+      convictionStatusScore,
+      offenderCopasFinalScore,
       ogrS3Weighting!!,
     ).sum()
       .let { totalScore ->
@@ -96,7 +103,18 @@ class OGRS3RiskProducerService : BaseRiskScoreProducer() {
         val twoYear = getOgrs3TwoYear(totalScore).asPercentage().sanitisePercentage()
         val riskBand = getRiskBand(twoYear)
 
-        return OGRS3Object(oneYear, twoYear, riskBand, emptyList())
+        return OGRS3Object(
+          oneYear,
+          twoYear,
+          riskBand,
+          emptyList(),
+          mapOf(
+            AGE_GENDER_SCORE.asPair(ageGenderScore),
+            CONVICTION_STATUS_SCORE.asPair(convictionStatusScore),
+            COPAS_SCORE.asPair(offenderCopasFinalScore),
+            OFFENCE_GROUP_PARAMETER.asPair(ogrS3Weighting),
+          ),
+        )
       }
   }
 
@@ -118,5 +136,6 @@ class OGRS3RiskProducerService : BaseRiskScoreProducer() {
     null,
     null,
     validationErrorResponse,
+    null,
   )
 }

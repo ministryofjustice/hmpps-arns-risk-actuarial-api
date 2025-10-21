@@ -35,7 +35,7 @@
       "band": null,
       "score": null
     },
-    "featureValues": [],
+    "featureValues": {},
     "validationErrors": [
       {
         "type": "UNEXPECTED_ERROR",

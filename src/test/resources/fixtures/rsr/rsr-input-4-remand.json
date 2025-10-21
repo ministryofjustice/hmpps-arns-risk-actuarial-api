@@ -61,7 +61,7 @@
             "hasSexualOffenceHistory": false,
             "riskBandReductionApplied": null
           },
-          "featureValues": [],
+          "featureValues": {},
           "validationErrors": []
         },
         "indirectContactSexualPredictorScore": {
@@ -75,7 +75,7 @@
             "femaleVersion": false,
             "hasSexualOffenceHistory": false
           },
-          "featureValues": [],
+          "featureValues": {},
           "validationErrors": []
         },
         "seriousViolencePredictorScore": {
@@ -87,12 +87,37 @@
             "band": null,
             "score": 0.0204422226214563
           },
-          "featureValues": [],
+          "featureValues": {
+            "twoYearInterceptWeight": 2.39022796091603,
+            "genderWeight": 0.0,
+            "ageGenderPolynomialWeight": -6.432479857432594,
+            "SNSVWeighting": 0.0187611938936452,
+            "secondSanctionCasesOnlyWeight": 0.0,
+            "monthsSinceLastSanctionWeight": -0.2877120977930866,
+            "threePlusSanctionWeight": -0.10305028987756591,
+            "violentHistoryWeight": 0.0,
+            "violentSanctionsWeight": 0.21160895925655,
+            "violenceRateWeight": -0.0926372389585085,
+            "SNSVVATPWeight": 0.0,
+            "totalNumberOfSanctionsForAllOffencesWeight": -0.5660380574319596,
+            "numberOfSanctionsWeight": 0.0,
+            "offenceInvolveCarryingOrUsingWeaponsWeight": 0.15071282416667,
+            "suitabilityOfAccommodationWeight": 0.0,
+            "unemployedWeight": 0.0,
+            "currentRelationshipWithPartner": 0.0518214537535236,
+            "chronicDrinkingProblemsWeight": 0.1871344883030516,
+            "bingeDrinkingProblemsWeight": 0.1134255792691182,
+            "impulsivityProblemsWeight": 0.077212834605957,
+            "temperControlWeight": 0.0965784069376604,
+            "proCriminalAttitudesWeight": 0.130830533773332,
+            "domesticViolenceWeight": 0.0,
+            "previousConvictionsWeight": 0.184104582611966
+          },
           "validationErrors": []
         }
       }
     },
-    "featureValues": [],
+    "featureValues": {},
     "validationErrors": []
   }
 }

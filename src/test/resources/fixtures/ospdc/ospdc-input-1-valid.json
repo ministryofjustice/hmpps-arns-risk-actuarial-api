@@ -27,7 +27,15 @@
       "hasSexualOffenceHistory": true,
       "riskBandReductionApplied": false
     },
-    "featureValues": [],
+    "featureValues": {
+      "totalContactAdultSexualSanctionsWeight" : 5.0,
+      "totalContactChildSexualSanctionsWeight" : 6.0,
+      "totalNonContactSexualOffencesWeight" : 6.0,
+      "ageAtStartOfFollowUpWeight" : 5.0,
+      "ageAtLastSanctionForSexualOffenceWeight" : 0.0,
+      "totalNumberOfSanctionsForAllOffencesWeight" : 0.0,
+      "currentOffenceAgainstVictimStrangerWeight" : 0.0
+    },
     "validationErrors": []
   }
 }

@@ -34,7 +34,7 @@
             "hasSexualOffenceHistory": null,
             "riskBandReductionApplied": null
           },
-          "featureValues": [],
+          "featureValues": {},
           "validationErrors": [
             {
               "type": "MISSING_MANDATORY_INPUT",
@@ -56,7 +56,7 @@
             "femaleVersion": false,
             "hasSexualOffenceHistory": false
           },
-          "featureValues": [],
+          "featureValues": {},
           "validationErrors": []
         },
         "seriousViolencePredictorScore": {
@@ -68,7 +68,7 @@
             "band": null,
             "score": null
           },
-          "featureValues": [],
+          "featureValues": {},
           "validationErrors": [
             {
               "type": "MISSING_MANDATORY_INPUT",
@@ -90,7 +90,7 @@
         }
       }
     },
-    "featureValues": [],
+    "featureValues": {},
     "validationErrors": [
       {
         "type": "COMPONENT_VALIDATION_ERROR",
