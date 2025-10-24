@@ -85,7 +85,7 @@
           "thresholdsVersion": "1.0",
           "output": {
             "band": null,
-            "score": 0.0204422226214563
+            "score": 2.04
           },
           "featureValues": {
             "twoYearInterceptWeight": 2.39022796091603,

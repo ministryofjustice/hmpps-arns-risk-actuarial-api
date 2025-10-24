@@ -141,7 +141,7 @@ private fun buildPredictorResponseForSeriousViolencePredictor(riskScoreContext: 
     snsv.scoreType.toScoreTypeResponse(),
     output = SeriousViolencePredictorPredictorOutputResponse(
       null,
-      snsv.snsvScore,
+      snsv.snsvScore?.asDoublePercentage(),
     ),
     validationErrors = snsv.validationError ?: emptyList(),
     featureValues = snsv.featureValues ?: emptyMap(),
