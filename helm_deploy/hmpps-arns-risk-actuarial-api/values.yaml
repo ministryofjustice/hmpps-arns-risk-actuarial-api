@@ -13,6 +13,13 @@ generic-service:
     enabled: true
     host: app-hostname.local # override per environment
     tlsSecretName: hmpps-arns-risk-actuarial-cert
+    annotations:
+      nginx.ingress.kubernetes.io/server-snippet: |
+        server_tokens off;
+        location /admin/update-offence-mapping {
+          deny all;
+          return 401;
+        }
 
   # Environment variables to load into the deployment
   env:
