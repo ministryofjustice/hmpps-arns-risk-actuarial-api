@@ -39,6 +39,8 @@ dependencies {
   }
   testImplementation("org.junit.jupiter:junit-jupiter-params:5.11.4")
   testImplementation(kotlin("test"))
+  testImplementation("com.oracle.database.jdbc:ojdbc11:23.9.0.25.07")
+  testImplementation("com.oracle.database.xml:xdb:23.9.0.25.07")
 }
 
 kotlin {
