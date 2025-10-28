@@ -12,7 +12,6 @@ import java.io.File
 import kotlin.concurrent.atomics.AtomicLong
 import kotlin.concurrent.atomics.ExperimentalAtomicApi
 import kotlin.concurrent.atomics.incrementAndFetch
-import kotlin.math.roundToLong
 
 @ExperimentalAtomicApi
 @SpringBootTest
@@ -89,14 +88,14 @@ class RSRRegressionTest(
         if (testFailed || !saveOnlyFailures) {
           val passFailPostfix = if (!testFailed) "pass" else "fail"
           val testType = if (!errorCase) "happy" else "error"
-          val output = File("$testOutputPath/${testNum}-$testType-$passFailPostfix.txt")
+          val output = File("$testOutputPath/$testNum-$testType-$passFailPostfix.txt")
           output.appendText(
             getTestOutputText(
               testNum,
               arnsResponse,
               oasysResponse,
-              testFailed
-            )
+              testFailed,
+            ),
           )
         }
       }

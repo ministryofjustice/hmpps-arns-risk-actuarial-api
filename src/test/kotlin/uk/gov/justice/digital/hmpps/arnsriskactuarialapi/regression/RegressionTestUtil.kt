@@ -62,10 +62,10 @@ data class OASysRequestAndResponse(
 )
 
 fun convertDefault() = { input: Any? ->
-  when(input) {
+  when (input) {
     null -> "NULL"
     is Int -> "'$input'"
-    is String -> if (isDateString(input)) "to_date('${input}', 'YYYY-MM-DD')" else "'${input}'"
+    is String -> if (isDateString(input)) "to_date('$input', 'YYYY-MM-DD')" else "'$input'"
     else -> throw IllegalArgumentException("Value must be a string or null")
   }
 }
@@ -168,13 +168,13 @@ fun String.convertOASysBand() = when (this) {
   else -> throw IllegalArgumentException("Unexpected OASys band $this")
 }
 
-fun String.convertOASysBoolean() = when(this) {
+fun String.convertOASysBoolean() = when (this) {
   "Y" -> true
   "N" -> false
   else -> throw IllegalArgumentException("Unexpected OASys boolean $this")
 }
 
-fun String.convertOASysScoreType() = when(this) {
+fun String.convertOASysScoreType() = when (this) {
   "Static" -> ScoreTypeResponse.STATIC
   "Dynamic" -> ScoreTypeResponse.DYNAMIC
   else -> throw IllegalArgumentException("Unexpected OASys score type $this")
@@ -258,10 +258,8 @@ fun <T> runTestCasesInBatches(
   println("Finished. Total test cases executed: $casesRun across $batchCount batches.")
 }
 
-private fun <T> generateSingleTestCase(inputs: List<List<T>>, random: Random): List<T> {
-  return inputs.map { inputList ->
-    inputList[random.nextInt(inputList.size)]
-  }
+private fun <T> generateSingleTestCase(inputs: List<List<T>>, random: Random): List<T> = inputs.map { inputList ->
+  inputList[random.nextInt(inputList.size)]
 }
 
 fun mapInputs(inputBatch: List<List<InputFieldWithOption>>) = inputBatch.map { i ->
@@ -273,7 +271,6 @@ fun mapInputs(inputBatch: List<List<InputFieldWithOption>>) = inputBatch.map { i
       it.oasysFieldName to it.oasysOption
     },
   )
-
 }
 
 fun runBatchIntoRiskScoreService(inputMappings: List<InputMapping>, riskScoreService: RiskScoreService) = inputMappings.map { inputMapping ->
@@ -352,8 +349,7 @@ fun runBatchIntoOASys(inputMappings: List<InputMapping>, connection: Connection)
           o.results_object.Error_Message as Error_Message,
           o.results_object.OSP_RISK_REDUCTION as OSP_RISK_REDUCTION
         from outputs o
-      """.trimIndent()
-
+  """.trimIndent()
 
   val statement = connection.createStatement()
   val oasysResponse = statement.executeQuery(oasysSqlStatement)
@@ -374,8 +370,8 @@ fun runBatchIntoOASys(inputMappings: List<InputMapping>, connection: Connection)
           ospRiskReduction = oasysResponse.getString("OSP_RISK_REDUCTION")?.convertOASysBoolean(),
           snsvScore = oasysResponse.getString("SNSV_SCORE")?.toDoubleOrNull(),
           errorMessage = oasysResponse.getString("Error_Message"),
-        )
-      )
+        ),
+      ),
     )
   }
   statement.close()
@@ -383,19 +379,18 @@ fun runBatchIntoOASys(inputMappings: List<InputMapping>, connection: Connection)
   return oasysResponseObjects
 }
 
-fun arnsAndOasysResultsNotEqual(arnsResponse: RiskScoreResponse, oasysResponse: OASysRSROutput) =
-    // Check RSR score and band
-    arnsResponse.actuarialPredictors.seriousPredictor.output.band != oasysResponse.rsrBand
-    || arnsResponse.actuarialPredictors.seriousPredictor.output.overallScore != oasysResponse.rsrScore
+fun arnsAndOasysResultsNotEqual(arnsResponse: RiskScoreResponse, oasysResponse: OASysRSROutput) = // Check RSR score and band
+  arnsResponse.actuarialPredictors.seriousPredictor.output.band != oasysResponse.rsrBand ||
+    arnsResponse.actuarialPredictors.seriousPredictor.output.overallScore != oasysResponse.rsrScore ||
     // Check OSP/DC score and band
-    || arnsResponse.actuarialPredictors.directContactSexualPredictor.output.band != oasysResponse.ospdcBand
-    || arnsResponse.actuarialPredictors.directContactSexualPredictor.output.score != oasysResponse.ospdcScore
-    || arnsResponse.actuarialPredictors.directContactSexualPredictor.output.riskBandReductionApplied != oasysResponse.ospRiskReduction
+    arnsResponse.actuarialPredictors.directContactSexualPredictor.output.band != oasysResponse.ospdcBand ||
+    arnsResponse.actuarialPredictors.directContactSexualPredictor.output.score != oasysResponse.ospdcScore ||
+    arnsResponse.actuarialPredictors.directContactSexualPredictor.output.riskBandReductionApplied != oasysResponse.ospRiskReduction ||
     // Check OSP/IIC score and band
-    || arnsResponse.actuarialPredictors.indirectContactSexualPredictor.output.band != oasysResponse.ospiicBand
-    || arnsResponse.actuarialPredictors.indirectContactSexualPredictor.output.score != oasysResponse.ospiicScore
+    arnsResponse.actuarialPredictors.indirectContactSexualPredictor.output.band != oasysResponse.ospiicBand ||
+    arnsResponse.actuarialPredictors.indirectContactSexualPredictor.output.score != oasysResponse.ospiicScore ||
     // Check SNSV score
-    || arnsResponse.actuarialPredictors.seriousViolencePredictor.output.score != oasysResponse.snsvScore
+    arnsResponse.actuarialPredictors.seriousViolencePredictor.output.score != oasysResponse.snsvScore
 
 fun getTestOutputText(testNum: Long, arnsResponse: ARNSRequestAndResponse, oasysResponse: OASysRequestAndResponse, testFailed: Boolean) =
   """
