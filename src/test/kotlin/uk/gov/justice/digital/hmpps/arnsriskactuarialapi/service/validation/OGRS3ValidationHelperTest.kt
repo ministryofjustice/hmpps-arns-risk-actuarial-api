@@ -1,7 +1,6 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertNotNull
@@ -127,19 +126,4 @@ class OGRS3ValidationHelperTest {
     "05110",
     dateAtStartOfFollowupCalculated = LocalDate.of(2027, 12, 12),
   )
-
-  @Test
-  fun `validateDisallowedCurrentOffenceCode throws exception for disallowed code '00000'`() {
-    val disallowedCurrentOffenceCode = "00000"
-    val riskScoreRequestInput = RiskScoreRequest(currentOffenceCode = disallowedCurrentOffenceCode)
-
-    val exception = assertThrows(IllegalArgumentException::class.java) {
-      validateDisallowedCurrentOffenceCode(riskScoreRequestInput)
-    }
-
-    assertTrue(
-      exception.message!! == "Offence code cannot be '$disallowedCurrentOffenceCode'",
-      "Exception message should contain offence code '$disallowedCurrentOffenceCode'",
-    )
-  }
 }

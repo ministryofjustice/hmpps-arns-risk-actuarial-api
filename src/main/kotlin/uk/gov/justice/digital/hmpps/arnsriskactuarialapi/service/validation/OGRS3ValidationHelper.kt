@@ -22,14 +22,7 @@ fun validateOGRS3(request: RiskScoreRequest): List<ValidationErrorResponse> {
   validateRequiredFields(request, errors, OGRS3_REQUIRED_FIELDS)
   validateTotalNumberOfSanctionsForAllOffences(request, errors)
   validateCurrentOffenceCode(request, errors)
-  validateDisallowedCurrentOffenceCode(request)
   return errors
-}
-
-fun validateDisallowedCurrentOffenceCode(request: RiskScoreRequest) {
-  if(request.currentOffenceCode != null && request.currentOffenceCode == "00000") {
-    throw IllegalArgumentException("Offence code cannot be '${request.currentOffenceCode}'")
-  }
 }
 
 fun validateAgeAtCurrentConviction(ageAtCurrentConviction: Int, errors: MutableList<ValidationErrorResponse>) {
