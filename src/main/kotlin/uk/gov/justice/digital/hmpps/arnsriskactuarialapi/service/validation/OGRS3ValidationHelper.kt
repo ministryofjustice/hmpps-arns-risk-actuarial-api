@@ -27,7 +27,7 @@ fun validateOGRS3(request: RiskScoreRequest): List<ValidationErrorResponse> {
 }
 
 fun validateDisallowedCurrentOffenceCode(request: RiskScoreRequest) {
-  if (request.currentOffenceCode != null && request.currentOffenceCode == "00000") {
+  if(request.currentOffenceCode != null && request.currentOffenceCode == "00000") {
     throw IllegalArgumentException("Offence code cannot be '${request.currentOffenceCode}'")
   }
 }
