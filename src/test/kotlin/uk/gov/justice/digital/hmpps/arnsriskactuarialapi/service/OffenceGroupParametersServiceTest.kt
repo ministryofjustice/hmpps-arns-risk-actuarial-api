@@ -18,8 +18,8 @@ class OffenceGroupParametersServiceTest {
 
   @Test
   fun `Test OGRS3 Map values that are present`() {
-    assertEquals(0.0, service.getOGRS3Weighting("00000"))
-    assertEquals(0.0, service.getOGRS3Weighting("00001"))
+    assertEquals(0.0, service.getOGRS3Weighting("00100"))
+    assertEquals(0.0, service.getOGRS3Weighting("00101"))
     assertEquals(0.2622, service.getOGRS3Weighting("00408"))
     assertEquals(-0.6534, service.getOGRS3Weighting("01618"))
   }
@@ -38,8 +38,8 @@ class OffenceGroupParametersServiceTest {
 
   @ParameterizedTest
   @CsvSource(
-    "00000, false",
-    "00001, true",
+    "00100, true",
+    "00404, false",
     "99968, false",
     "99959, true",
   )
