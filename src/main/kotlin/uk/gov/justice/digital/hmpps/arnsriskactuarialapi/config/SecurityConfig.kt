@@ -27,7 +27,6 @@ class SecurityConfig {
             "/v3/api-docs/**",
             "/admin/update-offence-mapping",
           ).permitAll()
-          .requestMatchers("/risk-scores/v1").hasAnyAuthority(ROLE_ARNS_RISK_ACTUARIAL)
           .anyRequest().authenticated()
       }
       .oauth2ResourceServer { it.jwt { jwt -> jwt.jwtAuthenticationConverter(AuthAwareTokenConverter()) } }
