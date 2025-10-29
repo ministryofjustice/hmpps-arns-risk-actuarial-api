@@ -42,7 +42,7 @@
     "isEligibleForMappa": false,
     "overallRiskForAssessment": "HIGH",
     "highestRiskLevelOverAllAssessments": "HIGH",
-    "currentOffenceCode": "00001",
+    "currentOffenceCode": "00100",
     "hasControlIssues": false
   },
   "response": {
