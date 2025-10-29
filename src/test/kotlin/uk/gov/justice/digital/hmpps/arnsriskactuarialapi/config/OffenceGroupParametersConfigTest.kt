@@ -28,8 +28,8 @@ class OffenceGroupParametersConfigTest {
 
   @Test
   fun `Test OGRS3 Map Values`() {
-    assertEquals(0.0, offenceGroupParameters["00000"]?.ogrs3Weighting)
-    assertEquals(0.0, offenceGroupParameters["00001"]?.ogrs3Weighting)
+    assertEquals(0.0, offenceGroupParameters["00100"]?.ogrs3Weighting)
+    assertEquals(0.0, offenceGroupParameters["00101"]?.ogrs3Weighting)
     assertEquals(0.2622, offenceGroupParameters["00408"]?.ogrs3Weighting)
     assertEquals(-0.6534, offenceGroupParameters["01618"]?.ogrs3Weighting)
     assertNull(offenceGroupParameters["95006"]?.ogrs3Weighting)
