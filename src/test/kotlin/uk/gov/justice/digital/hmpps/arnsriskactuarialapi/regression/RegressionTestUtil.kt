@@ -207,10 +207,6 @@ fun flattenInputOptions(input: Map<InputField, List<Any?>>) = input.toMutableMap
   }
 }
 
-fun <T> findNumberOfCombinations(inputCombinations: List<List<T>>) = inputCombinations.fold(1L) { acc, list ->
-  acc * list.size
-}
-
 fun <T> runTestCasesInBatches(
   inputs: List<List<T>>,
   totalCount: Int,
