@@ -22,12 +22,12 @@ class AdminController {
       ApiResponse(
         responseCode = "200",
         description = "Offence mappings successfully updated.",
-        content = [Content()]
+        content = [Content()],
       ),
       ApiResponse(
         responseCode = "500",
         description = "Internal server error",
-        content = [Content(mediaType = "application/json", schema = Schema(implementation = ErrorResponse::class))]
+        content = [Content(mediaType = "application/json", schema = Schema(implementation = ErrorResponse::class))],
       ),
     ],
     security = [],

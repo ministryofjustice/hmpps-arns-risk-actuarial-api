@@ -3,7 +3,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.integration.controller
 import org.junit.jupiter.api.Test
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.integration.IntegrationTestBase
 
-class AdminControllerIntegrationTest : IntegrationTestBase() {
+class AdminControllerTest : IntegrationTestBase() {
 
   @Test
   fun `postUpdateOffenceMappings returns 200 OK when called without Auth`() {

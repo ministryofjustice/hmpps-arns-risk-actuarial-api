@@ -1,5 +1,6 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.integration
 
+import com.jayway.jsonpath.JsonPath
 import io.swagger.v3.parser.OpenAPIV3Parser
 import net.minidev.json.JSONArray
 import org.assertj.core.api.Assertions.assertThat
@@ -99,12 +100,29 @@ class OpenApiDocsTest : IntegrationTestBase() {
 
   @Test
   fun `all endpoints have a security scheme defined`() {
-    webTestClient.get()
+    val allowedUnsecuredPaths = listOf("/admin/update-offence-mapping")
+
+    val jsonResponse = webTestClient.get()
       .uri("/v3/api-docs")
       .accept(MediaType.APPLICATION_JSON)
       .exchange()
       .expectStatus().isOk
       .expectBody()
-      .jsonPath("$.paths[*][*][?(!@.security)]").doesNotExist()
+      .returnResult()
+      .responseBody
+      ?.toString(Charsets.UTF_8)
+      ?: error("No response body")
+
+    val paths: Map<String, Map<String, Any>> = JsonPath.parse(jsonResponse).read("$.paths")
+
+    paths
+      .filterKeys { it !in allowedUnsecuredPaths }
+      .forEach { (path, operations) ->
+        operations.forEach { (method, operation) ->
+          check((operation as Map<*, *>).containsKey("security")) {
+            "Missing security for $method $path"
+          }
+        }
+      }
   }
 }
