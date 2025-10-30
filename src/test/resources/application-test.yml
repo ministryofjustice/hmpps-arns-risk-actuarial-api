@@ -7,3 +7,14 @@ management.endpoint:
 
 hmpps-auth:
   url: "http://localhost:8090/auth"
+
+# Set properties for the regression test against OASys
+regression-test:
+  output-path: "/${HOME}/tmp/regression-test"
+  number-of-test-cases: 100000
+  batch-size: 250
+  save-only-failures: false # Set to `true` to save a test report only for failed test (helps save disk space)
+  oracle:
+    username: "${OASYS_ORACLE_USERNAME:system}"
+    password: "${OASYS_ORACLE_PASSWORD:oracle}" # Don't set password here, export environment variable before running test
+    connection-string: "jdbc:oracle:thin:@//${OASYS_ORACLE_HOST:localhost}:${OASYS_ORACLE_PORT:1521}/${OASYS_ORACLE_SERVICE_NAME:ORCLPDB1}" # Ensure that the connection string matches the environment under test
