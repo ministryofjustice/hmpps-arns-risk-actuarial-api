@@ -73,7 +73,7 @@ fun getOSPDCScore(ospdc64PointScore: Int): Double {
   if (ospdc64PointScore == 0) {
     return 0.0
   }
-  val z = -8.6333 + (0.1598 * ospdc64PointScore)
+  val z = -8.633 + (0.1598 * ospdc64PointScore)
   return z.sigmoid()
 }
 
