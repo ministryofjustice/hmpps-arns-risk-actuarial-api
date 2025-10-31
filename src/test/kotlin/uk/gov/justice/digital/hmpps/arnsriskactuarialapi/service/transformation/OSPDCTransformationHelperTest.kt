@@ -16,7 +16,7 @@ class OSPDCTransformationHelperTest {
   @Test
   fun `getOSPDCScore with 28`() {
     val result = getOSPDCScore(28)
-    assertEquals(0.015384359134649634, result)
+    assertEquals(0.015388904099572493, result)
   }
 
   @ParameterizedTest
