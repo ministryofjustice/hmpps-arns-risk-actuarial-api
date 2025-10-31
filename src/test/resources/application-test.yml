@@ -12,6 +12,7 @@ hmpps-auth:
 regression-test:
   output-path: "/${HOME}/tmp/regression-test"
   number-of-test-cases: 100000
+  test-seed: null # Set to a number to seed the test cases (allows repeatability) or leave as null for a new random selection
   batch-size: 250
   save-only-failures: false # Set to `true` to save a test report only for failed test (helps save disk space)
   oracle:
