@@ -1,5 +1,6 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.regression
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import oracle.jdbc.OracleConnection
 import oracle.jdbc.datasource.impl.OracleDataSource
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
@@ -18,7 +19,6 @@ import java.time.LocalDate
 import java.time.format.DateTimeParseException
 import java.util.Properties
 import kotlin.random.Random
-import kotlin.reflect.full.memberProperties
 
 data class InputField(
   val arnsFieldName: String,
@@ -128,7 +128,7 @@ fun convertProblemLevelToInt() = { input: Any? ->
 fun convertDomesticAbuseBooleanListToInt() = { input: Any? ->
   when (input) {
     listOf(true, true) -> "1"
-    listOf(true, false) -> "1"
+    listOf(true, false) -> "0"
     listOf(false, true) -> "0"
     listOf(false, false) -> "0"
     null -> "NULL"
@@ -211,7 +211,7 @@ fun <T> runTestCasesInBatches(
   inputs: List<List<T>>,
   totalCount: Int,
   batchSize: Int,
-  seed: Long = System.nanoTime(),
+  seed: Long,
   testExecutor: (List<List<T>>) -> Unit,
 ) {
   require(inputs.isNotEmpty() && inputs.all { it.isNotEmpty() }) {
@@ -388,16 +388,17 @@ fun arnsAndOasysResultsNotEqual(arnsResponse: RiskScoreResponse, oasysResponse: 
     // Check SNSV score
     arnsResponse.actuarialPredictors.seriousViolencePredictor.output.score != oasysResponse.snsvScore
 
-fun getTestOutputText(testNum: Long, arnsResponse: ARNSRequestAndResponse, oasysResponse: OASysRequestAndResponse, testFailed: Boolean) =
+fun getTestOutputText(objectMapper: ObjectMapper, testNum: Long, arnsResponse: ARNSRequestAndResponse, oasysResponse: OASysRequestAndResponse, testFailed: Boolean, seed: Long) =
   """
     # Test $testNum
+    # Seed $seed
     
     # Input
     # ARNS input
-    ${arnsResponse.request.printNonNullProperties()}
+    ${objectMapper.writeValueAsString(arnsResponse.request)}
     
     # OASys input
-    ${oasysResponse.request}
+    ${printOASysInputsAsSQL(oasysResponse.request)}
     
     # Output
     ARNS score type  = ${arnsResponse.response.actuarialPredictors.seriousViolencePredictor.type}
@@ -449,21 +450,6 @@ fun knownValidationIssue(inputMapping: InputMapping): Boolean {
   return hasEverCommitedSexualOffence == false && (totalContactAdultSexualSanctions != null || totalContactChildSexualSanctions != null || totalIndecentImageSanctions != null || totalNonContactSexualOffences != null || dateOfMostRecentSexualOffence != null)
 }
 
-fun Any.printNonNullProperties(): String {
-  val properties = this::class.memberProperties
-  val nonNullFields = properties.mapNotNull { prop ->
-    val value = try {
-      prop.getter.call(this)
-    } catch (_: Exception) {
-      null
-    }
-
-    if (value != null) {
-      "${prop.name}=$value"
-    } else {
-      null
-    }
-  }
-
-  return "${this::class.simpleName}(${nonNullFields.joinToString(", ")})"
-}
+fun printOASysInputsAsSQL(inputs: Map<String, Any?>) = inputs.map {
+  "${it.key} => ${it.value}"
+}.joinToString(", ")

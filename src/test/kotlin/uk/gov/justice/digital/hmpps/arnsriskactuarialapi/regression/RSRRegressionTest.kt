@@ -1,5 +1,6 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.regression
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -18,8 +19,10 @@ import kotlin.concurrent.atomics.incrementAndFetch
 @ActiveProfiles("test")
 class RSRRegressionTest(
   @param:Autowired private val riskScoreService: RiskScoreService,
+  @param:Autowired private val objectMapper: ObjectMapper,
   @param:Autowired @param:Value("\${regression-test.output-path}") private val outputPath: String,
   @param:Autowired @param:Value("\${regression-test.number-of-test-cases}") private val numberOfTestCases: Int,
+  @param:Autowired @param:Value("\${regression-test.test-seed}") private val testSeed: Long?,
   @param:Autowired @param:Value("\${regression-test.batch-size}") private val batchSize: Int,
   @param:Autowired @param:Value("\${regression-test.save-only-failures}") private val saveOnlyFailures: Boolean,
   @param:Autowired @param:Value("\${regression-test.oracle.username}") private val oracleUsername: String,
@@ -40,9 +43,12 @@ class RSRRegressionTest(
     // Flatten input options into lists of lists
     val inputCombinations = flattenInputOptions(rsrInputFields)
 
+    // Use the provided seed or generate a new one if not provided
+    val seed = testSeed ?: System.nanoTime()
+
     // Iterate through batches of input combinations
     val currentBatchNumber = AtomicLong(0)
-    runTestCasesInBatches(inputCombinations, numberOfTestCases, batchSize) { inputBatch ->
+    runTestCasesInBatches(inputCombinations, numberOfTestCases, batchSize, seed) { inputBatch ->
 
       // Map inputs by arns and oasys field names
       val inputMappings = mapInputs(inputBatch)
@@ -91,10 +97,12 @@ class RSRRegressionTest(
           val output = File("$testOutputPath/$testNum-$testType-$passFailPostfix.txt")
           output.appendText(
             getTestOutputText(
+              objectMapper,
               testNum,
               arnsResponse,
               oasysResponse,
               testFailed,
+              seed,
             ),
           )
         }
