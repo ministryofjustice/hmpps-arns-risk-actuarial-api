@@ -162,7 +162,6 @@ class SNSVRiskProducerService : BaseRiskScoreProducer() {
       false,
     )
     val monthsSinceLastSanctionWeight = getMonthsSinceLastSanctionWeight(
-      request.supervisionStatus,
       request.dateAtStartOfFollowup,
       request.assessmentDate,
       false,
@@ -239,7 +238,6 @@ class SNSVRiskProducerService : BaseRiskScoreProducer() {
       true,
     )
     val monthsSinceLastSanctionWeight = getMonthsSinceLastSanctionWeight(
-      request.supervisionStatus,
       request.dateAtStartOfFollowup,
       request.assessmentDate,
       true,

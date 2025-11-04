@@ -144,7 +144,6 @@ class SNSVTransformationHelperTest {
     assertEquals(
       -0.1635176921525733,
       getMonthsSinceLastSanctionWeight(
-        supervisionStatus = SupervisionStatus.COMMUNITY,
         dateAtStartOfFollowup = dateAtStartOfFollowup,
         assessmentDate = assessmentDate,
         isSNSVDynamic = true,
@@ -328,7 +327,6 @@ class SNSVTransformationHelperTest {
     expected: Double,
   ) {
     val result = getMonthsSinceLastSanctionWeight(
-      supervisionStatus,
       dateAtStartOfFollowup,
       assessmentDate,
       isSNSVDynamic,

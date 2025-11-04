@@ -141,12 +141,11 @@ class SNSVTransformationHelper {
     }
 
     fun getMonthsSinceLastSanctionWeight(
-      supervisionStatus: SupervisionStatus,
       dateAtStartOfFollowup: LocalDate,
       assessmentDate: LocalDate,
       isSNSVDynamic: Boolean,
     ): Double {
-      if (supervisionStatus == SupervisionStatus.CUSTODY || dateAtStartOfFollowup >= assessmentDate) {
+      if (dateAtStartOfFollowup >= assessmentDate) {
         return 0.0
       }
       val monthsSinceLastSanctionPreCheck = ChronoUnit.MONTHS.between(dateAtStartOfFollowup, assessmentDate).toInt()
