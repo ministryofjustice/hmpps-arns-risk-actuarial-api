@@ -20,11 +20,15 @@ const val RSR_COEFFICIENTS_PATH = "ADD ME"
 // Path to CSV output of ogrs_description_weight_map
 const val OGRS_DESCRIPTION_PATH = "ADD ME"
 
+// Path to CSV output of RSR_COEFFICIENTS_extended
+const val RSR_COEFFICIENTS_UPDATE_PATH = "ADD ME"
+
 // Do not check in this file. Once happy with output copy contents to replace offence-code-mapping.csv.
 @OptIn(ExperimentalTime::class)
 val OUTPUT_FILE =
   "src/main/resources/offencegroupparameters/offence-code-mapping-${Clock.System.now().epochSeconds}.csv"
 val FLYWAY_OUTPUT_FILE = File("src/main/resources/offencegroupparameters/V66__seed_risk_actuarial.sql")
+val FLYWAY_OUTPUT_UPDATE_FILE = File("src/main/resources/offencegroupparameters/V67__risk_actuarial_weighting_update.sql")
 
 fun main(args: Array<String>) {
   val ctOffenceInputStream = File(CT_OFFENCES_PATH).inputStream()
@@ -73,10 +77,20 @@ fun main(args: Array<String>) {
     }
   }
 
+  val rsrCoefficientsUpdateInputStream = File(RSR_COEFFICIENTS_UPDATE_PATH).inputStream()
+  val rsrUpdateCoefficients = rsrCoefficientsUpdateInputStream.bufferedReader().use { reader ->
+    val csvParser = CSVParser(reader, csvFormat)
+    csvParser.map { csvRecord ->
+      RSRCoefficient(
+        coefficientName = csvRecord.get("COEFFICIENTS_NAME"),
+        snsvStatic = csvRecord.get("SNSV_STATIC").toDoubleOrNull(),
+        snsvDynamic = csvRecord.get("SNSV_DYNAMIC").toDoubleOrNull(),
+      )
+    }
+  }
+
   val offenceCodeMapping = ctOffences.filterNot {
-    val groupCode = StringUtils.leftPad(it.offenceGroupCode, 3, '0')
-    val subCode = StringUtils.leftPad(it.subCode, 2, '0')
-    (groupCode == "000" && (subCode == "00" || subCode == "01"))
+    filterCategory000(it.offenceGroupCode, it.subCode)
   }.map { ctOffence ->
     val ogrs3Description = ogrs3Descriptions.firstOrNull {
       it.ogrs3Weighting == ctOffence.ogrs3Weighting
@@ -150,11 +164,7 @@ fun main(args: Array<String>) {
       val descSql = desc?.replace("'", "''")?.let { "'$it'" } ?: "NULL"
       val is999 = value == 999.0
       val errorCode = if (name == "ogrs3Weighting" && is999) "'NEED_DETAILS_OF_EXACT_OFFENCE'" else "NULL"
-      val valueSql = when {
-        value == null -> "NULL"
-        is999 -> "NULL"
-        else -> value.toString()
-      }
+      val valueSql = handle999Value(value)
       "SELECT id, '$name', $valueSql, $descSql, $errorCode FROM inserted"
     }
 
@@ -179,6 +189,71 @@ fun main(args: Array<String>) {
   }
 
   FLYWAY_OUTPUT_FILE.writeText(sqlSeedFileContent.joinToString("\n\n"))
+
+  val offenceCodeMappingUpdate = ctOffences.filterNot {
+    filterCategory000(it.offenceGroupCode, it.subCode)
+  }.map { ctOffence ->
+    WeightingMapping(
+      offenceGroupCode = StringUtils.leftPad(ctOffence.offenceGroupCode, 3, '0'),
+      subCode = StringUtils.leftPad(ctOffence.subCode, 2, '0'),
+      ogrs3Weighting = ctOffence.ogrs3Weighting,
+      snsvStaticWeighting = rsrUpdateCoefficients.firstOrNull { it.coefficientName == ctOffence.ogrs4CategoryDesc }?.snsvStatic,
+      snsvDynamicWeighting = rsrUpdateCoefficients.firstOrNull { it.coefficientName == ctOffence.ogrs4CategoryDesc }?.snsvDynamic,
+      snsvVatpStaticWeighting = lookupVatpWeighting(ctOffence, rsrUpdateCoefficients, true),
+      snsvVatpDynamicWeighting = lookupVatpWeighting(ctOffence, rsrUpdateCoefficients, false),
+    )
+  }
+
+  val weightingUpdateSql = StringBuilder()
+  weightingUpdateSql.append("BEGIN;\n\n")
+
+  offenceCodeMappingUpdate.forEach { mapping ->
+    val valueSql = handle999Value(mapping.ogrs3Weighting)
+    val weightings = listOf(
+      WeightingUpdate(mapping.offenceGroupCode, mapping.subCode, "ogrs3Weighting", valueSql),
+      WeightingUpdate(mapping.offenceGroupCode, mapping.subCode, "snsvStaticWeighting", mapping.snsvStaticWeighting),
+      WeightingUpdate(mapping.offenceGroupCode, mapping.subCode, "snsvDynamicWeighting", mapping.snsvDynamicWeighting),
+      WeightingUpdate(mapping.offenceGroupCode, mapping.subCode, "snsvVatpStaticWeighting", mapping.snsvVatpStaticWeighting),
+      WeightingUpdate(mapping.offenceGroupCode, mapping.subCode, "snsvVatpDynamicWeighting", mapping.snsvVatpDynamicWeighting),
+    )
+
+    weightings.forEach { weighting ->
+      weightingUpdateSql.append(
+        """
+      UPDATE risk_actuarial_ho_code_weightings AS w
+      SET
+          weighting_value = ${weighting.value}
+      FROM risk_actuarial_ho_code AS r
+      WHERE w.risk_actuarial_ho_code_id = r.id
+        AND r.category = '${escape(weighting.category)}'
+        AND r.sub_category = '${escape(weighting.subCategory)}'
+        AND w.weighting_name = '${escape(weighting.name)}';
+
+        """.trimIndent(),
+      ).append("\n")
+    }
+  }
+
+  weightingUpdateSql.append("COMMIT;\n")
+
+  FLYWAY_OUTPUT_UPDATE_FILE.writeText(weightingUpdateSql.toString())
+}
+
+private fun escape(value: String): String = value.replace("'", "''")
+
+private fun handle999Value(weighting: Double?): Double? {
+  val is999 = weighting == 999.0
+  return when {
+    weighting == null -> null
+    is999 -> null
+    else -> weighting
+  }
+}
+
+private fun filterCategory000(offenceGroupCode: String?, subCode: String?): Boolean {
+  val groupCode = StringUtils.leftPad(offenceGroupCode, 3, '0')
+  val sub = StringUtils.leftPad(subCode, 2, '0')
+  return groupCode == "000" && (sub == "00" || sub == "01")
 }
 
 internal fun formatDouble(value: Double?) = if (value?.compareTo(value.toInt()) == 0) DecimalFormat("#").format(value) else value?.toString() ?: ""
@@ -195,6 +270,23 @@ internal fun lookupVatpWeighting(ctOffence: CTOffence, rsrCoefficients: List<RSR
 } else {
   0.0
 }
+
+data class WeightingMapping(
+  val offenceGroupCode: String,
+  val subCode: String,
+  val ogrs3Weighting: Double?,
+  val snsvStaticWeighting: Double?,
+  val snsvDynamicWeighting: Double?,
+  val snsvVatpStaticWeighting: Double?,
+  val snsvVatpDynamicWeighting: Double?,
+)
+
+data class WeightingUpdate(
+  val category: String,
+  val subCategory: String,
+  val name: String,
+  val value: Double?,
+)
 
 data class CTOffence(
   val offenceGroupCode: String,
