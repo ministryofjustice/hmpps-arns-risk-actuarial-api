@@ -2,6 +2,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getDomesticViolencePerpetrator
 
 val SNSV_STATIC_REQUIRED_PROPERTIES = listOf(
@@ -33,6 +34,7 @@ fun validateSNSV(request: RiskScoreRequest): List<ValidationErrorResponse> {
   val errors = mutableListOf<ValidationErrorResponse>()
   validateRequiredFields(request, errors, SNSV_STATIC_REQUIRED_PROPERTIES)
   validateCurrentOffenceCode(request, errors)
+  validateSanctionCount(request, errors)
   return errors
 }
 
@@ -65,3 +67,18 @@ fun hasDomesticViolencePerpetrator(request: RiskScoreRequest) = getDomesticViole
   request.evidenceOfDomesticAbuse,
   request.domesticAbuseAgainstPartner,
 ) != null
+
+fun validateSanctionCount(request: RiskScoreRequest, errors: MutableList<ValidationErrorResponse>) {
+  val totalSanctions = request.totalNumberOfSanctionsForAllOffences
+  val violentSanctions = request.totalNumberOfViolentSanctions
+  if (totalSanctions != null && violentSanctions != null) {
+    if (violentSanctions.toInt() > totalSanctions.toInt()) {
+      errors += ValidationErrorType.VIOLENT_SANCTION_GREATER_THAN_TOTAL_SANCTIONS.asErrorResponse(
+        listOf(
+          RiskScoreRequest::totalNumberOfSanctionsForAllOffences.name,
+          RiskScoreRequest::totalNumberOfViolentSanctions.name,
+        ),
+      )
+    }
+  }
+}
