@@ -16,6 +16,8 @@ enum class ValidationErrorType(val message: String) {
   OFFENCE_CODE_INCORRECT_FORMAT("Offence code must be a string of 5 digits"),
   OFFENCE_CODE_MAPPING_NOT_FOUND("No offence code to actuarial weighting mapping found for offence code"),
   COMPONENT_VALIDATION_ERROR("Validation error(s) in component scores"),
+  FOLLOW_UP_DATE_BEFORE_CONVICTION_DATE("Offender's date of commencement of community sentence or earliest possible release from custody is before conviction date"),
+
   UNEXPECTED_ERROR("An unexpected error occurred"),
   ;
 

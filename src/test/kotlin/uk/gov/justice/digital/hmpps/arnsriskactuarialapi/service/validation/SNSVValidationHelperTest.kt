@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validSNSVStaticRiskScoreRequest
+import java.time.LocalDate
 
 class SNSVValidationHelperTest {
 
@@ -127,5 +128,19 @@ class SNSVValidationHelperTest {
     assertEquals(ValidationErrorType.VIOLENT_SANCTION_GREATER_THAN_TOTAL_SANCTIONS, result.first().type)
     assertEquals("Violence count is greater than total sanctions", result.first().message)
     assertEquals(listOf("totalNumberOfSanctionsForAllOffences", "totalNumberOfViolentSanctions"), result.first().fields)
+  }
+
+  @Test
+  fun `validateSNSV with follow up date before Conviction date`() {
+    val inputRiskScoreRequest = validSNSVStaticRiskScoreRequest()
+      .copy(
+        dateOfCurrentConviction = LocalDate.of(2020, 1, 1),
+        dateAtStartOfFollowupUserInput = LocalDate.of(2019, 1, 1),
+      )
+    val result = validateSNSV(inputRiskScoreRequest)
+    assertEquals(1, result.size)
+    assertEquals(ValidationErrorType.FOLLOW_UP_DATE_BEFORE_CONVICTION_DATE, result.first().type)
+    assertEquals("Offender's date of commencement of community sentence or earliest possible release from custody is before conviction date", result.first().message)
+    assertEquals(listOf("dateAtStartOfFollowupUserInput", "dateOfCurrentConviction"), result.first().fields)
   }
 }

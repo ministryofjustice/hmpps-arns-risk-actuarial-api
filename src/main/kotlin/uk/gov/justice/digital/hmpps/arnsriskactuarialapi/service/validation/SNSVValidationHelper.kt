@@ -35,6 +35,7 @@ fun validateSNSV(request: RiskScoreRequest): List<ValidationErrorResponse> {
   validateRequiredFields(request, errors, SNSV_STATIC_REQUIRED_PROPERTIES)
   validateCurrentOffenceCode(request, errors)
   validateSanctionCount(request, errors)
+  validateConvictionAndFollowUpDate(request, errors)
   return errors
 }
 
@@ -77,6 +78,21 @@ fun validateSanctionCount(request: RiskScoreRequest, errors: MutableList<Validat
         listOf(
           RiskScoreRequest::totalNumberOfSanctionsForAllOffences.name,
           RiskScoreRequest::totalNumberOfViolentSanctions.name,
+        ),
+      )
+    }
+  }
+}
+
+fun validateConvictionAndFollowUpDate(request: RiskScoreRequest, errors: MutableList<ValidationErrorResponse>) {
+  val convictionDate = request.dateOfCurrentConviction
+  val followupDate = request.dateAtStartOfFollowupUserInput
+  if (convictionDate != null && followupDate != null) {
+    if (followupDate.isBefore(convictionDate)) {
+      errors += ValidationErrorType.FOLLOW_UP_DATE_BEFORE_CONVICTION_DATE.asErrorResponse(
+        listOf(
+          RiskScoreRequest::dateAtStartOfFollowupUserInput.name,
+          RiskScoreRequest::dateOfCurrentConviction.name,
         ),
       )
     }
