@@ -32,5 +32,25 @@ services:
       - APPLICATION_AUTHENTICATION_UI_ALLOWLIST=0.0.0.0/0
       - SPRING_FLYWAY_LOCATIONS=classpath:db/auth,db/auth_h2,db/dev/data/auth_h2,db/dev/data/auth,filesystem:/auth_db
 
+  redis:
+    image: redis:8.2.2-alpine
+    networks:
+      - hmpps
+    container_name: redis
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - "6379:6379"
+
+  manage-offences-api:
+    image: rodolpheche/wiremock
+    volumes:
+      - ./wiremock-manage-offences-api:/home/wiremock
+    networks:
+      - hmpps
+    command:
+      - -verbose
+      - -global-response-templating
+
 networks:
   hmpps:

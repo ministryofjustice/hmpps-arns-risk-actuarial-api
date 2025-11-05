@@ -30,6 +30,13 @@ spring:
           hmpps-auth:
             token-uri: ${hmpps-auth.url}/oauth/token
 
+  data:
+    redis:
+      host: ${redis.host}
+      port: 6379
+      ssl:
+        enabled: false
+
 server:
   port: 8080
   servlet:
@@ -65,3 +72,10 @@ hmpps:
   arnsriskactuarial:
     offencegroupparameters:
       csv: "/offencegroupparameters/offence-code-mapping.csv"
+
+web:
+  client:
+    connect-timeout-ms: 100000
+    read-timeout-ms: 50000
+    write-timeout-ms: 5000
+    byte-buffer-size: 20971520

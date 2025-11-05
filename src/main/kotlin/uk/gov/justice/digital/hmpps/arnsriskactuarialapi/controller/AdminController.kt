@@ -8,11 +8,12 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.OffenceCodeService
 import uk.gov.justice.hmpps.kotlin.common.ErrorResponse
 
 @RestController
 @RequestMapping("/admin")
-class AdminController {
+class AdminController(private val offenceCodeService: OffenceCodeService) {
 
   @PostMapping("/update-offence-mapping")
   @Operation(
@@ -32,8 +33,6 @@ class AdminController {
     ],
     security = [],
   )
-  fun postUpdateOffenceMappings(): ResponseEntity<Unit> {
-    // TODO: ACT-215 Load mappings into Redis from Manage Offences API
-    return ResponseEntity.ok().build()
-  }
+  fun postUpdateOffenceMappings(): Unit =  offenceCodeService.updateOffenceCodeMappings()
+
 }
