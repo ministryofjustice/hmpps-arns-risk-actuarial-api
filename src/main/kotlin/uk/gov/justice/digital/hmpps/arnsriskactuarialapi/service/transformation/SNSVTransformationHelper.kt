@@ -3,7 +3,6 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.PreviousConviction
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.calculatePolynomial
 import java.time.LocalDate
 import java.time.Period
@@ -141,12 +140,11 @@ class SNSVTransformationHelper {
     }
 
     fun getMonthsSinceLastSanctionWeight(
-      supervisionStatus: SupervisionStatus,
       dateAtStartOfFollowup: LocalDate,
       assessmentDate: LocalDate,
       isSNSVDynamic: Boolean,
     ): Double {
-      if (supervisionStatus == SupervisionStatus.CUSTODY || dateAtStartOfFollowup >= assessmentDate) {
+      if (dateAtStartOfFollowup >= assessmentDate) {
         return 0.0
       }
       val monthsSinceLastSanctionPreCheck = ChronoUnit.MONTHS.between(dateAtStartOfFollowup, assessmentDate).toInt()
