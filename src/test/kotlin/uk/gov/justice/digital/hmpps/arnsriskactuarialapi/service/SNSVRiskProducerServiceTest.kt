@@ -117,7 +117,11 @@ class SNSVRiskProducerServiceTest {
     val exception = assertFailsWith<IllegalArgumentException>(
       block = {
         service.getRiskScore(
-          validSNSVDynamicRiskScoreRequest().copy(dateOfBirth = LocalDate.of(2025, Month.JANUARY, 1)),
+          validSNSVDynamicRiskScoreRequest().copy(
+            ageAtFirstSanction = 1 as Integer,
+            dateOfBirth = LocalDate.of(2020, Month.JANUARY, 1),
+            dateOfCurrentConviction = LocalDate.of(2025, Month.JANUARY, 1),
+          ),
           emptyContext(),
         )
       },
@@ -132,7 +136,9 @@ class SNSVRiskProducerServiceTest {
       block = {
         service.getRiskScore(
           validSNSVStaticRiskScoreRequest().copy(
-            dateOfBirth = LocalDate.of(2025, Month.JANUARY, 1),
+            ageAtFirstSanction = 1 as Integer,
+            dateOfBirth = LocalDate.of(2020, Month.JANUARY, 1),
+            dateOfCurrentConviction = LocalDate.of(2025, Month.JANUARY, 1),
             dateAtStartOfFollowupUserInput = LocalDate.of(2027, 1, 1),
           ),
           emptyContext(),

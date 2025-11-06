@@ -1,0 +1,33 @@
+{
+  "request": {
+    "version": "V1_0",
+    "gender": "MALE",
+    "dateOfBirth": "1980-01-01",
+    "assessmentDate": "2025-01-01",
+    "dateOfCurrentConviction": "2020-01-01",
+    "currentOffenceCode": "02700",
+    "totalNumberOfSanctionsForAllOffences": 1,
+    "ageAtFirstSanction": 45,
+    "supervisionStatus": "COMMUNITY",
+    "dateAtStartOfFollowupUserInput": "2024-01-01",
+    "totalNumberOfViolentSanctions": 1,
+    "evidenceOfDomesticAbuse": true,
+    "domesticAbuseAgainstPartner": true
+  },
+  "response": {
+    "algorithm" : "SNSV",
+    "type" : null,
+    "modelVersion" : "1.0",
+    "thresholdsVersion" : "1.0",
+    "output" : {
+      "band" : null,
+      "score" : null
+    },
+    "featureValues" : { },
+    "validationErrors" : [ {
+      "type" : "AGE_AT_FIRST_SANCTION_AFTER_AGE_AT_CURRENT_CONVICTION",
+      "message" : "Age at first sanction must be before age at current conviction",
+      "fields" : [ "ageAtFirstSanction", "dateOfBirth", "dateOfCurrentConviction" ]
+    } ]
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "request": {
+    "version": "V1_0",
+    "gender": "MALE",
+    "dateOfBirth": "1980-01-01",
+    "assessmentDate": "2025-01-01",
+    "dateOfCurrentConviction": "2020-01-01",
+    "currentOffenceCode": "02700",
+    "totalNumberOfSanctionsForAllOffences": 1,
+    "ageAtFirstSanction": 40,
+    "supervisionStatus": "COMMUNITY",
+    "dateAtStartOfFollowupUserInput": "2024-01-01",
+    "totalNumberOfViolentSanctions": 2,
+    "hasEverCommittedSexualOffence": false
+  },
+  "response": {
+    "algorithm" : "RSR",
+    "type" : "COMBINED",
+    "modelVersion" : "1.0",
+    "thresholdsVersion" : "1.0",
+    "output" : {
+      "band" : null,
+      "overallScore" : null,
+      "femaleVersion" : null,
+      "hasSexualOffenceHistory" : null,
+      "componentScores" : {
+        "directContactSexualPredictorScore" : {
+          "algorithm" : "OSPDC",
+          "type" : "STATIC",
+          "modelVersion" : "1.0",
+          "thresholdsVersion" : "1.0",
+          "output" : {
+            "band" : "NOT_APPLICABLE",
+            "pointScore" : null,
+            "score" : 0.0,
+            "femaleVersion" : false,
+            "hasSexualOffenceHistory" : false,
+            "riskBandReductionApplied" : null
+          },
+          "featureValues" : { },
+          "validationErrors" : [ ]
+        },
+        "indirectContactSexualPredictorScore" : {
+          "algorithm" : "OSPIIC",
+          "type" : "STATIC",
+          "modelVersion" : "1.0",
+          "thresholdsVersion" : "1.0",
+          "output" : {
+            "band" : "NOT_APPLICABLE",
+            "score" : 0.0,
+            "femaleVersion" : false,
+            "hasSexualOffenceHistory" : false
+          },
+          "featureValues" : { },
+          "validationErrors" : [ ]
+        },
+        "seriousViolencePredictorScore" : {
+          "algorithm" : "SNSV",
+          "type" : null,
+          "modelVersion" : "1.0",
+          "thresholdsVersion" : "1.0",
+          "output" : {
+            "band" : null,
+            "score" : null
+          },
+          "featureValues" : { },
+          "validationErrors" : [ {
+            "type" : "VIOLENT_SANCTION_GREATER_THAN_TOTAL_SANCTIONS",
+            "message" : "Violence count is greater than total sanctions",
+            "fields" : [ "totalNumberOfSanctionsForAllOffences", "totalNumberOfViolentSanctions" ]
+          } ]
+        }
+      }
+    },
+    "featureValues" : { },
+    "validationErrors" : [ {
+      "type" : "COMPONENT_VALIDATION_ERROR",
+      "message" : "Validation error(s) in component scores",
+      "fields" : [ "SNSV" ]
+    } ]
+  }
+}
