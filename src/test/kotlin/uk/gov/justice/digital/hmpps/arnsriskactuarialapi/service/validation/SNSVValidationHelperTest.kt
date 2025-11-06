@@ -117,4 +117,15 @@ class SNSVValidationHelperTest {
     assertEquals("Offence code must be a string of 5 digits", result.first().message)
     assertEquals(listOf("currentOffenceCode"), result.first().fields)
   }
+
+  @Test
+  fun `validateSNSV with invalid total and violent sanction counts`() {
+    val inputRiskScoreRequest = validSNSVStaticRiskScoreRequest()
+      .copy(totalNumberOfSanctionsForAllOffences = 1 as Integer, totalNumberOfViolentSanctions = 2 as Integer)
+    val result = validateSNSV(inputRiskScoreRequest)
+    assertEquals(1, result.size)
+    assertEquals(ValidationErrorType.VIOLENT_SANCTION_GREATER_THAN_TOTAL_SANCTIONS, result.first().type)
+    assertEquals("Violence count is greater than total sanctions", result.first().message)
+    assertEquals(listOf("totalNumberOfSanctionsForAllOffences", "totalNumberOfViolentSanctions"), result.first().fields)
+  }
 }

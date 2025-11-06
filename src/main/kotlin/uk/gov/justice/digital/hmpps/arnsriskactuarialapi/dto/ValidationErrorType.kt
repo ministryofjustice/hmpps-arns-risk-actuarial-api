@@ -10,6 +10,7 @@ enum class ValidationErrorType(val message: String) {
   MISSING_DYNAMIC_INPUT("Dynamic input field(s) missing"),
   AGE_AT_FIRST_SANCTION_AFTER_AGE_AT_CURRENT_CONVICTION("Age at first sanction must be before age at current conviction"),
   TOTAL_NUMBER_OF_SANCTIONS_LESS_THAN_ONE("Total number of sanctions must be one or greater"),
+  VIOLENT_SANCTION_GREATER_THAN_TOTAL_SANCTIONS("Violence count is greater than total sanctions"),
   AGE_AT_CURRENT_CONVICTION_LESS_THAN_TEN("Age at current conviction must be 10 or greater"),
   LDS_NOT_ENOUGH_FIELDS_PRESENT("At least three input fields must be provided"),
   OFFENCE_CODE_INCORRECT_FORMAT("Offence code must be a string of 5 digits"),
