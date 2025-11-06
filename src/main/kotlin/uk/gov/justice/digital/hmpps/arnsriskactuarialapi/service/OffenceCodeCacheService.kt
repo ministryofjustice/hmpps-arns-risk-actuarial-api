@@ -14,18 +14,17 @@ class OffenceCodeCacheService(private val redisTemplate: RedisTemplate<String, A
   val offenceCodeMappingPrefix = "offence_code_mapping_"
   val offenceCodeMappingPrefixPattern = "$offenceCodeMappingPrefix*"
 
-  fun deleteAll() {
-    val keys = redisTemplate.keys(offenceCodeMappingPrefixPattern)
-    if (!keys.isNullOrEmpty()) {
-      log.info("Deleting ${keys.size} offence code mappings from cache")
-      redisTemplate.delete(keys)
-    } else {
-      log.warn("No offence code mappings found in cache for deletion")
-    }
-  }
+  fun sync(offenceCodeMappings: Map<String, OffenceCodeValues>) {
+    val existingKeys = redisTemplate.keys(offenceCodeMappingPrefixPattern)
+    log.info("Found ${existingKeys.size} offence code mappings within cache.")
 
-  fun saveAll(offenceCodeMappings: Map<String, OffenceCodeValues>) {
     redisTemplate.opsForValue().multiSet(offenceCodeMappings.mapKeys { (key, _) -> "$offenceCodeMappingPrefix$key" })
-    log.info("Saved ${offenceCodeMappings.size} offence code mappings to cache.")
+    log.info("Created/Updated ${offenceCodeMappings.size} offence code mappings within cache.")
+
+    val keysToDelete = existingKeys - offenceCodeMappings.keys.map { "$offenceCodeMappingPrefix$it" }.toSet()
+    if (keysToDelete.isNotEmpty()) {
+      redisTemplate.delete(keysToDelete)
+      log.info("Deleted ${keysToDelete.size} offence code mappings from cache.")
+    }
   }
 }

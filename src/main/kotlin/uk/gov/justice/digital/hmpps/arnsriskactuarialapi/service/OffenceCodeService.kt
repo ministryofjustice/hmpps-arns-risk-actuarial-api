@@ -25,8 +25,7 @@ class OffenceCodeService(
 
     val offenceCodeMappings = transformHoCodesToOffenceCodeMappings(hoCodes)
 
-    cacheService.deleteAll()
-    cacheService.saveAll(offenceCodeMappings)
+    cacheService.sync(offenceCodeMappings)
   }
 
   private fun transformHoCodesToOffenceCodeMappings(hoCodes: List<HoCode>): Map<String, OffenceCodeValues> {

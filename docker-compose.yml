@@ -51,6 +51,8 @@ services:
     command:
       - -verbose
       - -global-response-templating
+    ports:
+      - "8080:8081"
 
 networks:
   hmpps:

@@ -111,7 +111,6 @@ class OffenceCodeServiceTest {
     offenceCodeService.updateOffenceCodeMappings()
 
     verify(manageOffencesClient, times(1)).getActuarialMapping()
-    verify(cacheService, times(1)).deleteAll()
 
     val expectedOffenceCodeMappings = mapOf(
       "00100" to OffenceCodeValues(
@@ -140,7 +139,7 @@ class OffenceCodeServiceTest {
       ),
     )
 
-    verify(cacheService, times(1)).saveAll(expectedOffenceCodeMappings)
+    verify(cacheService, times(1)).sync(expectedOffenceCodeMappings)
   }
 
   @Test
@@ -152,8 +151,7 @@ class OffenceCodeServiceTest {
     }
 
     verify(manageOffencesClient, times(1)).getActuarialMapping()
-    verify(cacheService, never()).deleteAll()
-    verify(cacheService, never()).saveAll(any())
+    verify(cacheService, never()).sync(any())
 
     assertEquals("Received empty Actuarial Mapping list from Manage Offences API.", exception.message)
   }

@@ -13,26 +13,9 @@ class OffenceCodeCacheServiceTest {
   private val service: OffenceCodeCacheService = OffenceCodeCacheService(redisTemplate)
 
   @Test
-  fun `deleteAll should delete keys when keys are found`() {
-    val keys = setOf("offence_code_mapping_00100", "offence_code_mapping_00101")
-    whenever(redisTemplate.keys(service.offenceCodeMappingPrefixPattern)).thenReturn(keys)
-
-    service.deleteAll()
-
-    verify(redisTemplate).delete(keys)
-  }
-
-  @Test
-  fun `deleteAll should not delete when no keys are found`() {
-    whenever(redisTemplate.keys(service.offenceCodeMappingPrefixPattern)).thenReturn(emptySet())
-
-    service.deleteAll()
-
-    verify(redisTemplate, never()).delete(any<String>())
-  }
-
-  @Test
-  fun `saveAll should save all mappings with correct prefix`() {
+  fun `sync should add new keys, update existing keys, and delete obsolete keys`() {
+    val existingKeys = setOf("offence_code_mapping_00100", "offence_code_mapping_00101", "offence_code_mapping_01212")
+    whenever(redisTemplate.keys(service.offenceCodeMappingPrefixPattern)).thenReturn(existingKeys)
     whenever(redisTemplate.opsForValue()).thenReturn(valueOperations)
 
     val offenceCodeMappings = mapOf(
@@ -62,7 +45,7 @@ class OffenceCodeCacheServiceTest {
       ),
     )
 
-    service.saveAll(offenceCodeMappings)
+    service.sync(offenceCodeMappings)
 
     val expectedOffenceCodeMappingsMap = mapOf(
       "offence_code_mapping_00100" to OffenceCodeValues(
@@ -90,7 +73,9 @@ class OffenceCodeCacheServiceTest {
         opdViolenceSexFlag = null,
       ),
     )
-
     verify(valueOperations).multiSet(expectedOffenceCodeMappingsMap)
+
+    val keysToDelete = setOf("offence_code_mapping_00101", "offence_code_mapping_01212")
+    verify(redisTemplate).delete(keysToDelete)
   }
 }
