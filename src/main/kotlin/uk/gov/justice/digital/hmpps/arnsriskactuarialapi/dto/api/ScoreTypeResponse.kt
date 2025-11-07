@@ -12,7 +12,7 @@ enum class ScoreTypeResponse {
 }
 
 fun ScoreType?.toScoreTypeResponse(): ScoreTypeResponse? = when (this) {
-  ScoreType.STATIC -> STATIC
+  ScoreType.STATIC, ScoreType.STATIC_WITH_VALIDATION_ERRORS -> STATIC
   ScoreType.DYNAMIC -> DYNAMIC
   null -> null
 }

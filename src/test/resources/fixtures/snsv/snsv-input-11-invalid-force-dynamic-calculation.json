@@ -1,0 +1,46 @@
+{
+  "request": {
+    "version": "V1_0",
+    "gender": "MALE",
+    "dateOfBirth": "1980-01-01",
+    "assessmentDate": "2025-01-01",
+    "dateOfCurrentConviction": "2020-01-01",
+    "currentOffenceCode": "02700",
+    "totalNumberOfSanctionsForAllOffences": 1,
+    "ageAtFirstSanction": 40,
+    "supervisionStatus": "COMMUNITY",
+    "dateAtStartOfFollowupUserInput": "2027-01-01",
+    "totalNumberOfViolentSanctions": 1,
+    "didOffenceInvolveCarryingOrUsingWeapon": false,
+    "suitabilityOfAccommodation": "NO_PROBLEMS",
+    "snsvStaticOrDynamic": "DYNAMIC"
+  },
+  "response": {
+    "algorithm": "SNSV",
+    "type": null,
+    "modelVersion": "1.0",
+    "thresholdsVersion": "1.0",
+    "output": {
+      "band": null,
+      "score": null
+    },
+    "featureValues": {},
+    "validationErrors": [
+      {
+        "type": "MISSING_DYNAMIC_INPUT",
+        "message": "Dynamic input field(s) missing",
+        "fields": [
+          "isUnemployed",
+          "currentRelationshipWithPartner",
+          "currentAlcoholUseProblems",
+          "excessiveAlcoholUse",
+          "impulsivityProblems",
+          "temperControl",
+          "proCriminalAttitudes",
+          "previousConvictions",
+          "evidenceOfDomesticAbuse"
+        ]
+      }
+    ]
+  }
+}

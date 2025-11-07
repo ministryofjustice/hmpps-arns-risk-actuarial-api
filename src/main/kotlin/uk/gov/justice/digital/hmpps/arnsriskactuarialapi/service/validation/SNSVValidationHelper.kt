@@ -1,6 +1,7 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getDomesticViolencePerpetrator
@@ -33,6 +34,11 @@ val SNSV_DYNAMIC_ADDITIONAL_REQUIRED_PROPERTIES = listOf(
 fun validateSNSV(request: RiskScoreRequest): List<ValidationErrorResponse> {
   val errors = mutableListOf<ValidationErrorResponse>()
   validateRequiredFields(request, errors, SNSV_STATIC_REQUIRED_PROPERTIES)
+
+  // If the user requests a dynamic calculation, do the validation now so the calculation is skipped
+  if (request.snsvStaticOrDynamic == StaticOrDynamic.DYNAMIC) {
+    snsvDynamicValidation(request, errors)
+  }
   validateCurrentOffenceCode(request, errors)
   validateSanctionCount(request, errors)
   return errors

@@ -6,7 +6,10 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import java.time.LocalDate
 
-data class SNSVDynamicRequestValidated(
+data class SNSVRequestValidated(
+  val scoreType: ScoreType,
+
+  // Static items
   val gender: Gender,
   val dateOfBirth: LocalDate,
   val assessmentDate: LocalDate,
@@ -17,17 +20,19 @@ data class SNSVDynamicRequestValidated(
   val supervisionStatus: SupervisionStatus,
   val dateAtStartOfFollowup: LocalDate,
   val totalNumberOfViolentSanctions: Int,
-  val didOffenceInvolveCarryingOrUsingWeapon: Boolean,
-  val suitabilityOfAccommodation: ProblemLevel,
-  val isUnemployed: Boolean,
-  val currentRelationshipWithPartner: ProblemLevel,
-  val currentAlcoholUseProblems: ProblemLevel,
-  val excessiveAlcoholUse: ProblemLevel,
-  val impulsivityProblems: ProblemLevel,
-  val temperControl: ProblemLevel,
-  val proCriminalAttitudes: ProblemLevel,
-  val domesticViolencePerpetrator: Boolean,
-  val previousConvictions: List<PreviousConviction>,
   val snsvvatpWeighting: Double,
   val snsvWeighting: Double,
+
+  // Dynamic items
+  val didOffenceInvolveCarryingOrUsingWeapon: Boolean?,
+  val suitabilityOfAccommodation: ProblemLevel?,
+  val isUnemployed: Boolean?,
+  val currentRelationshipWithPartner: ProblemLevel?,
+  val currentAlcoholUseProblems: ProblemLevel?,
+  val excessiveAlcoholUse: ProblemLevel?,
+  val impulsivityProblems: ProblemLevel?,
+  val temperControl: ProblemLevel?,
+  val proCriminalAttitudes: ProblemLevel?,
+  val domesticViolencePerpetrator: Boolean?,
+  val previousConvictions: List<PreviousConviction>?,
 )
