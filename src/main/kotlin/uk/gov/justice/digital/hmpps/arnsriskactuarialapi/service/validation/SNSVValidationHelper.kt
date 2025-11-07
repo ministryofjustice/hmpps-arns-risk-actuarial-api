@@ -4,6 +4,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getDomesticViolencePerpetrator
+import java.time.Period
 
 val SNSV_STATIC_REQUIRED_PROPERTIES = listOf(
   RiskScoreRequest::gender,
@@ -36,6 +37,7 @@ fun validateSNSV(request: RiskScoreRequest): List<ValidationErrorResponse> {
   validateCurrentOffenceCode(request, errors)
   validateSanctionCount(request, errors)
   validateConvictionAndFollowUpDate(request, errors)
+  validateAgeAtFirstSanctionAndCurrentConviction(request, errors)
   return errors
 }
 
@@ -92,6 +94,24 @@ fun validateConvictionAndFollowUpDate(request: RiskScoreRequest, errors: Mutable
       errors += ValidationErrorType.FOLLOW_UP_DATE_BEFORE_CONVICTION_DATE.asErrorResponse(
         listOf(
           RiskScoreRequest::dateAtStartOfFollowupUserInput.name,
+          RiskScoreRequest::dateOfCurrentConviction.name,
+        ),
+      )
+    }
+  }
+}
+
+fun validateAgeAtFirstSanctionAndCurrentConviction(request: RiskScoreRequest, errors: MutableList<ValidationErrorResponse>) {
+  val ageAtFirstSanction = request.ageAtFirstSanction
+  val dob = request.dateOfBirth
+  val dateOfCurrentConviction = request.dateOfCurrentConviction
+  if (ageAtFirstSanction != null && dob != null && dateOfCurrentConviction != null) {
+    val ageAtCurrentConviction = Period.between(dob, dateOfCurrentConviction).years
+    if (ageAtFirstSanction > ageAtCurrentConviction) {
+      errors += ValidationErrorType.AGE_AT_FIRST_SANCTION_AFTER_AGE_AT_CURRENT_CONVICTION.asErrorResponse(
+        listOf(
+          RiskScoreRequest::ageAtFirstSanction.name,
+          RiskScoreRequest::dateOfBirth.name,
           RiskScoreRequest::dateOfCurrentConviction.name,
         ),
       )

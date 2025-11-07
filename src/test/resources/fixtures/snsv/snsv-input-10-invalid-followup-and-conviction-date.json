@@ -1,0 +1,33 @@
+{
+  "request": {
+    "version": "V1_0",
+    "gender": "MALE",
+    "dateOfBirth": "1980-01-01",
+    "assessmentDate": "2025-01-01",
+    "dateOfCurrentConviction": "2024-01-01",
+    "currentOffenceCode": "02700",
+    "totalNumberOfSanctionsForAllOffences": 1,
+    "ageAtFirstSanction": 40,
+    "supervisionStatus": "COMMUNITY",
+    "dateAtStartOfFollowupUserInput": "2023-01-01",
+    "totalNumberOfViolentSanctions": 1,
+    "evidenceOfDomesticAbuse": true,
+    "domesticAbuseAgainstPartner": true
+  },
+  "response": {
+    "algorithm" : "SNSV",
+    "type" : null,
+    "modelVersion" : "1.0",
+    "thresholdsVersion" : "1.0",
+    "output" : {
+      "band" : null,
+      "score" : null
+    },
+    "featureValues" : { },
+    "validationErrors" : [ {
+      "type" : "FOLLOW_UP_DATE_BEFORE_CONVICTION_DATE",
+      "message" : "Offender's date of commencement of community sentence or earliest possible release from custody is before conviction date",
+      "fields" : [ "dateAtStartOfFollowupUserInput", "dateOfCurrentConviction" ]
+    } ]
+  }
+}

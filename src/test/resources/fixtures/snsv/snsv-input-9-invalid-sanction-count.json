@@ -1,0 +1,33 @@
+{
+  "request": {
+    "version": "V1_0",
+    "gender": "MALE",
+    "dateOfBirth": "1980-01-01",
+    "assessmentDate": "2025-01-01",
+    "dateOfCurrentConviction": "2020-01-01",
+    "currentOffenceCode": "02700",
+    "totalNumberOfSanctionsForAllOffences": 1,
+    "ageAtFirstSanction": 40,
+    "supervisionStatus": "COMMUNITY",
+    "dateAtStartOfFollowupUserInput": "2024-01-01",
+    "totalNumberOfViolentSanctions": 2,
+    "evidenceOfDomesticAbuse": true,
+    "domesticAbuseAgainstPartner": true
+  },
+  "response": {
+    "algorithm" : "SNSV",
+    "type" : null,
+    "modelVersion" : "1.0",
+    "thresholdsVersion" : "1.0",
+    "output" : {
+      "band" : null,
+      "score" : null
+    },
+    "featureValues" : { },
+    "validationErrors" : [ {
+      "type" : "VIOLENT_SANCTION_GREATER_THAN_TOTAL_SANCTIONS",
+      "message" : "Violence count is greater than total sanctions",
+      "fields" : [ "totalNumberOfSanctionsForAllOffences", "totalNumberOfViolentSanctions" ]
+    } ]
+  }
+}

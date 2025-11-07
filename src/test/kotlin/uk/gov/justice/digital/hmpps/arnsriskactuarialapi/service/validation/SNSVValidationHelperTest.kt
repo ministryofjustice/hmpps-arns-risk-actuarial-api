@@ -143,4 +143,17 @@ class SNSVValidationHelperTest {
     assertEquals("Offender's date of commencement of community sentence or earliest possible release from custody is before conviction date", result.first().message)
     assertEquals(listOf("dateAtStartOfFollowupUserInput", "dateOfCurrentConviction"), result.first().fields)
   }
+
+  @Test
+  fun `validateSNSV when age at first sanction is higher than age at current conviction`() {
+    val inputRiskScoreRequest = validSNSVStaticRiskScoreRequest()
+      .copy(
+        ageAtFirstSanction = 46 as Integer,
+      )
+    val result = validateSNSV(inputRiskScoreRequest)
+    assertEquals(1, result.size)
+    assertEquals(ValidationErrorType.AGE_AT_FIRST_SANCTION_AFTER_AGE_AT_CURRENT_CONVICTION, result.first().type)
+    assertEquals("Age at first sanction must be before age at current conviction", result.first().message)
+    assertEquals(listOf("ageAtFirstSanction", "dateOfBirth", "dateOfCurrentConviction"), result.first().fields)
+  }
 }
