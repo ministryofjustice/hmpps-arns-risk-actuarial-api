@@ -12,7 +12,7 @@ redis:
   host: "http://localhost"
 
 manage-offences-api:
-  url: "http://localhost:8080"
+  url: "http://localhost:8085"
 
 # Set properties for the regression test against OASys
 regression-test:

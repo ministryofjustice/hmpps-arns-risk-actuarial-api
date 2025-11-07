@@ -5,4 +5,4 @@ redis:
   host: "http://localhost"
 
 manage-offences-api:
-  url: "http://localhost:8080"
+  url: "http://localhost:8085"

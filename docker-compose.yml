@@ -52,7 +52,7 @@ services:
       - -verbose
       - -global-response-templating
     ports:
-      - "8080:8081"
+      - "8085:8080"
 
 networks:
   hmpps:

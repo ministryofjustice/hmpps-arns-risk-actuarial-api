@@ -16,7 +16,7 @@ class OffenceCodeCacheService(private val redisTemplate: RedisTemplate<String, A
 
   fun sync(offenceCodeMappings: Map<String, OffenceCodeValues>) {
     val existingKeys = redisTemplate.keys(offenceCodeMappingPrefixPattern)
-    log.info("Found ${existingKeys.size} offence code mappings within cache.")
+    log.info("Found ${existingKeys.size} existing offence code mappings within cache.")
 
     redisTemplate.opsForValue().multiSet(offenceCodeMappings.mapKeys { (key, _) -> "$offenceCodeMappingPrefix$key" })
     log.info("Created/Updated ${offenceCodeMappings.size} offence code mappings within cache.")
