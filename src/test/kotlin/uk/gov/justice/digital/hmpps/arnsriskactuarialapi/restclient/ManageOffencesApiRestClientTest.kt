@@ -31,8 +31,8 @@ import kotlin.test.assertFailsWith
 @ExtendWith(MockitoExtension::class)
 class ManageOffencesApiRestClientTest {
 
-  private val webClientMock: AuthenticatingRestClient = mock()
-  private val requestHeadersSpecMock: RequestHeadersSpec<*> = mock()
+  private val webClientMock: WebClient = mock()
+  private val requestHeadersSpecMock: WebClient.RequestHeadersUriSpec<*> = mock()
   private val responseSpecMock: ResponseSpec = mock()
 
   private lateinit var apiClient: ManageOffencesApiRestClient
@@ -41,7 +41,7 @@ class ManageOffencesApiRestClientTest {
   fun setup() {
     apiClient = ManageOffencesApiRestClient(webClientMock)
 
-    whenever(webClientMock.get("/actuarial-mapping")) doReturn requestHeadersSpecMock
+    whenever(webClientMock.get()) doReturn requestHeadersSpecMock
     whenever(requestHeadersSpecMock.retrieve()) doReturn responseSpecMock
     whenever(responseSpecMock.onStatus(any(), any())) doReturn responseSpecMock
   }

@@ -2,23 +2,25 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.restclient
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Component
-import org.springframework.web.reactive.function.client.bodyToMono
+import org.springframework.web.reactive.function.client.WebClient
+import org.springframework.web.reactive.function.client.bodyToFlux
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.offencecode.HoCode
+
 
 @Component
 class ManageOffencesApiRestClient(
-  @Qualifier("manageOffencesApiWebClient") private val webClient: AuthenticatingRestClient,
+  private val manageOffencesApiWebClient: WebClient,
 ) {
 
   val log: Logger = LoggerFactory.getLogger(this::class.java)
 
   fun getActuarialMapping(): List<HoCode> {
     val path = "/actuarial-mapping"
-    return webClient
-      .get(path)
+    return manageOffencesApiWebClient
+      .get()
+      .uri(path)
       .retrieve()
       .onStatus({ it.is4xxClientError }) {
         log.error("4xx Error retrieving actuarial mapping: ${it.statusCode().value()}")
@@ -38,7 +40,8 @@ class ManageOffencesApiRestClient(
           ExternalService.MANAGE_OFFENCES_API,
         )
       }
-      .bodyToMono<List<HoCode>>()
+      .bodyToFlux<HoCode>()
+      .collectList()
       .block().also { log.info("Retrieved actuarial mapping containing ${it?.size ?: 0} entries") }!!
   }
 }
