@@ -153,8 +153,8 @@ val rsrInputFields = mapOf(
   InputField(arnsFieldName = "previousConvictions/ARSON", oasysFieldName = "pastarson", transformFunction = convertBooleanToInt()) to
     listOf(true, false),
 
-  InputField(arnsFieldName = "staticCalc(not used)", oasysFieldName = "static_calc", transformFunction = convertBoolean()) to
-    listOf(true, false),
+  InputField(arnsFieldName = "snsvStaticOrDynamic", oasysFieldName = "static_calc", transformFunction = convertStaticDynamicToBoolean()) to
+    listOf("STATIC", "DYNAMIC"),
 
   InputField(arnsFieldName = "isCurrentOffenceSexuallyMotivated", oasysFieldName = "CURR_SEX_OFF_MOTIVATION", transformFunction = convertBooleanWithOmission()) to
     listOf(null, true, false),

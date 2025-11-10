@@ -97,7 +97,7 @@ class SNSVTransformationHelper {
       Gender.FEMALE -> if (isSNSVDynamic) DYNAMIC_FEMALE_WEIGHT else STATIC_FEMALE_WEIGHT
     }
 
-    fun getNumberOfSanctionWeight(totalNumberOfSanctionsForAllOffences: Int, isSNSVDynamic: Boolean): Double = // OGRS3 contribution
+    fun getNumberOfSanctionsWeight(totalNumberOfSanctionsForAllOffences: Int, isSNSVDynamic: Boolean): Double = // OGRS3 contribution
       when (isSNSVDynamic) {
         true -> DYNAMIC_NUMBER_OF_SANCTIONS_WEIGHTS
         false -> STATIC_NUMBER_OF_SANCTIONS_WEIGHTS

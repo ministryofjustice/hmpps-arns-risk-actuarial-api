@@ -1,0 +1,68 @@
+{
+  "request": {
+    "version": "V1_0",
+    "gender": "FEMALE",
+    "assessmentDate": "2025-01-01",
+    "dateOfBirth": "1990-01-01",
+    "dateOfCurrentConviction": "2025-01-01",
+    "totalNumberOfSanctionsForAllOffences": 1,
+    "ageAtFirstSanction": 30,
+    "currentOffenceCode": "14112",
+    "totalNumberOfViolentSanctions": 1,
+    "isUnemployed": true,
+    "currentAlcoholUseProblems": "SOME_PROBLEMS",
+    "excessiveAlcoholUse": "SIGNIFICANT_PROBLEMS",
+    "temperControl": "NO_PROBLEMS",
+    "proCriminalAttitudes": "SOME_PROBLEMS",
+    "impulsivityProblems": "NO_PROBLEMS",
+    "supervisionStatus": "COMMUNITY",
+    "hasEverCommittedSexualOffence": true,
+    "didOffenceInvolveCarryingOrUsingWeapon": true,
+    "evidenceOfDomesticAbuse": false,
+    "domesticAbuseAgainstPartner": false,
+    "dateAtStartOfFollowupUserInput": "2028-05-04",
+    "totalContactAdultSexualSanctions": 1,
+    "totalContactChildSexualSanctions": 1,
+    "totalIndecentImageSanctions": 2,
+    "totalNonContactSexualOffences": 3,
+    "dateOfMostRecentSexualOffence": "2025-01-01",
+    "isCurrentOffenceAgainstVictimStranger": true,
+    "suitabilityOfAccommodation": "SOME_PROBLEMS",
+    "currentRelationshipWithPartner": "SIGNIFICANT_PROBLEMS",
+    "previousConvictions": [
+      "WOUNDING_GBH",
+      "AGGRAVATED_BURGLARY",
+      "WEAPON",
+      "CRIMINAL_DAMAGE"
+    ],
+    "isCurrentOffenceSexuallyMotivated": false,
+    "mostRecentOffenceDate": "2003-09-01",
+    "snsvStaticOrDynamic": "STATIC"
+  },
+  "response": {
+    "algorithm": "SNSV",
+    "type": "STATIC",
+    "modelVersion": "1.0",
+    "thresholdsVersion": "1.0",
+    "output": {
+      "band": null,
+      "score": 0.22
+    },
+    "featureValues": {
+      "twoYearInterceptWeight": 3.60407707356772,
+      "genderWeight": -16.6220270089011,
+      "ageGenderPolynomialWeight": 9.686622307803411,
+      "SNSVWeighting": 0.0841789642942883,
+      "secondSanctionCasesOnlyWeight": 0.0,
+      "monthsSinceLastSanctionWeight": 0.0,
+      "threePlusSanctionWeight": 0.0,
+      "violentHistoryWeight": -0.0633592949212861,
+      "violentSanctionsWeight": 0.0188685880078656,
+      "violenceRateWeight": -0.7375300330710902,
+      "SNSVVATPWeight": 0.0,
+      "totalNumberOfSanctionsForAllOffencesWeight": -0.0147495874606046,
+      "numberOfSanctionsWeight": -2.09447596484765
+    },
+    "validationErrors": []
+  }
+}

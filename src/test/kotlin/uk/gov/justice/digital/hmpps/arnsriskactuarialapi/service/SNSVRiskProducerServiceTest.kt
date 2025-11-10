@@ -10,6 +10,7 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.whenever
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.ScoreType
@@ -30,9 +31,29 @@ class SNSVRiskProducerServiceTest {
   lateinit var service: SNSVRiskProducerService
 
   @Test
-  fun `isSNSVDynamic should return ScoreType STATIC`() {
-    val result = service.isSNSVDynamic(
+  fun `getSNSVScoreType should return STATIC_WITH_VALIDATION_ERRORS when snsv type not specified`() {
+    val result = service.getSNSVScoreType(
       validSNSVStaticRiskScoreRequest(),
+    )
+
+    assertNotNull(result)
+    assertEquals(ScoreType.STATIC_WITH_VALIDATION_ERRORS, result)
+  }
+
+  @Test
+  fun `getSNSVScoreType should return DYNAMIC when snsv type not specified`() {
+    val result = service.getSNSVScoreType(
+      validSNSVDynamicRiskScoreRequest(),
+    )
+
+    assertNotNull(result)
+    assertEquals(ScoreType.DYNAMIC, result)
+  }
+
+  @Test
+  fun `getSNSVScoreType should return STATIC when snsv type specified`() {
+    val result = service.getSNSVScoreType(
+      validSNSVDynamicRiskScoreRequest().copy(snsvStaticOrDynamic = StaticOrDynamic.STATIC),
     )
 
     assertNotNull(result)
@@ -40,9 +61,9 @@ class SNSVRiskProducerServiceTest {
   }
 
   @Test
-  fun `getRiskScore should return ScoreType DYNAMIC`() {
-    val result = service.isSNSVDynamic(
-      validSNSVDynamicRiskScoreRequest(),
+  fun `getSNSVScoreType should return DYNAMIC when snsv type specified`() {
+    val result = service.getSNSVScoreType(
+      validSNSVStaticRiskScoreRequest().copy(snsvStaticOrDynamic = StaticOrDynamic.DYNAMIC),
     )
 
     assertNotNull(result)
@@ -77,7 +98,7 @@ class SNSVRiskProducerServiceTest {
     )
 
     assertNotNull(result)
-    assertEquals(ScoreType.STATIC, result.SNSV!!.scoreType)
+    assertEquals(ScoreType.STATIC_WITH_VALIDATION_ERRORS, result.SNSV!!.scoreType)
     assertEquals(0.0021598644399697, result.SNSV!!.snsvScore!!, 1E-8)
   }
 
@@ -108,7 +129,7 @@ class SNSVRiskProducerServiceTest {
     )
 
     assertNotNull(result)
-    assertEquals(ScoreType.STATIC, result.SNSV!!.scoreType)
+    assertEquals(ScoreType.STATIC_WITH_VALIDATION_ERRORS, result.SNSV!!.scoreType)
     assertEquals(0.0020745554019918, result.SNSV!!.snsvScore!!, 1E-8)
   }
 

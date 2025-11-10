@@ -22,7 +22,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getDomesticViolencePerpetrator
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getGenderWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getMonthsSinceLastSanctionWeight
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getNumberOfSanctionWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getNumberOfSanctionsWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getSecondSanctionCasesOnlyWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getThreePlusSanctionsWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SNSVTransformationHelper.Companion.getTotalSanctionWeight
@@ -226,7 +226,7 @@ class SNSVTransformationHelperTest {
     isSNSVDynamic: Boolean,
     expected: Double,
   ) {
-    val result = getNumberOfSanctionWeight(totalNumberOfSanctionsForAllOffences, isSNSVDynamic)
+    val result = getNumberOfSanctionsWeight(totalNumberOfSanctionsForAllOffences, isSNSVDynamic)
     assertEquals(expected, result, 1e-9)
   }
 
@@ -237,7 +237,7 @@ class SNSVTransformationHelperTest {
     isSNSVDynamic: Boolean,
   ) {
     val exception = assertThrows(IllegalArgumentException::class.java) {
-      getNumberOfSanctionWeight(totalNumberOfSanctionsForAllOffences, isSNSVDynamic)
+      getNumberOfSanctionsWeight(totalNumberOfSanctionsForAllOffences, isSNSVDynamic)
     }
     assertEquals(
       "Invalid total number of sanctions value: $totalNumberOfSanctionsForAllOffences",

@@ -112,4 +112,6 @@ data class RiskScoreRequest(
   val previousConvictions: List<PreviousConviction>? = null,
   val isCurrentOffenceSexuallyMotivated: Boolean? = null,
   val mostRecentOffenceDate: LocalDate? = null,
+  // Force static or dynamic calculation of SNSV
+  val snsvStaticOrDynamic: StaticOrDynamic? = null,
 )
