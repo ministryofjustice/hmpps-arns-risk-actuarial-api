@@ -2,7 +2,7 @@ hmpps-auth:
   url: "http://localhost:8090/auth"
 
 redis:
-  host: "http://localhost"
+  host: "localhost"
 
 manage-offences-api:
   url: "http://localhost:8085"
