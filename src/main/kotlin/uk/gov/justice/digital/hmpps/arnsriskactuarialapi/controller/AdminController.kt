@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -33,6 +32,5 @@ class AdminController(private val offenceCodeService: OffenceCodeService) {
     ],
     security = [],
   )
-  fun postUpdateOffenceMappings(): Unit =  offenceCodeService.updateOffenceCodeMappings()
-
+  fun postUpdateOffenceMappings(): Unit = offenceCodeService.updateOffenceCodeMappings()
 }

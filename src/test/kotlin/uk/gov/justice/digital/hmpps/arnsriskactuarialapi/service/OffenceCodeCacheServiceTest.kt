@@ -1,15 +1,17 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
 import org.junit.jupiter.api.Test
-import org.mockito.kotlin.*
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.data.redis.core.ValueOperations
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.offencecode.OffenceCodeValues
 
 class OffenceCodeCacheServiceTest {
 
-  private val redisTemplate: RedisTemplate<String, Any> = mock()
-  private val valueOperations: ValueOperations<String, Any> = mock()
+  private val redisTemplate: RedisTemplate<String, OffenceCodeValues> = mock()
+  private val valueOperations: ValueOperations<String, OffenceCodeValues> = mock()
   private val service: OffenceCodeCacheService = OffenceCodeCacheService(redisTemplate)
 
   @Test

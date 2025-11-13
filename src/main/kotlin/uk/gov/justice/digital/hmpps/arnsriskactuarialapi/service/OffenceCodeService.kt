@@ -28,21 +28,19 @@ class OffenceCodeService(
     cacheService.sync(offenceCodeMappings)
   }
 
-  private fun transformHoCodesToOffenceCodeMappings(hoCodes: List<HoCode>): Map<String, OffenceCodeValues> {
-    return hoCodes.associate { hoCode ->
-      val offenceKey = "%03d%02d".format(hoCode.category, hoCode.subCategory)
+  private fun transformHoCodesToOffenceCodeMappings(hoCodes: List<HoCode>): Map<String, OffenceCodeValues> = hoCodes.associate { hoCode ->
+    val offenceKey = "%03d%02d".format(hoCode.category, hoCode.subCategory)
 
-      val weightings = hoCode.weightings.associateBy { it.name }
-      val flags = hoCode.flags.associateBy { it.name }
+    val weightings = hoCode.weightings.associateBy { it.name }
+    val flags = hoCode.flags.associateBy { it.name }
 
-      offenceKey to OffenceCodeValues(
-        ogrs3Weighting = weightings["ogrs3Weighting"]?.value,
-        snsvStaticWeighting = weightings["snsvStaticWeighting"]?.value,
-        snsvDynamicWeighting = weightings["snsvDynamicWeighting"]?.value,
-        snsvVatpStaticWeighting = weightings["snsvVatpStaticWeighting"]?.value,
-        snsvVatpDynamicWeighting = weightings["snsvVatpDynamicWeighting"]?.value,
-        opdViolenceSexFlag = flags["opdViolSex"]?.value
-      )
-    }
+    offenceKey to OffenceCodeValues(
+      ogrs3Weighting = weightings["ogrs3Weighting"]?.value,
+      snsvStaticWeighting = weightings["snsvStaticWeighting"]?.value,
+      snsvDynamicWeighting = weightings["snsvDynamicWeighting"]?.value,
+      snsvVatpStaticWeighting = weightings["snsvVatpStaticWeighting"]?.value,
+      snsvVatpDynamicWeighting = weightings["snsvVatpDynamicWeighting"]?.value,
+      opdViolenceSexFlag = flags["opdViolSex"]?.value,
+    )
   }
 }

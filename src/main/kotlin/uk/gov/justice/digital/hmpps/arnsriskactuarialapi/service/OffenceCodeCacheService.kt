@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.offencecode.OffenceCodeValues
 
 @Service
-class OffenceCodeCacheService(private val redisTemplate: RedisTemplate<String, Any>) {
+class OffenceCodeCacheService(private val redisTemplate: RedisTemplate<String, OffenceCodeValues>) {
 
   val log: Logger = LoggerFactory.getLogger(this::class.java)
 

@@ -1,6 +1,6 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.offencecode
 
-data class OffenceCodeValues (
+data class OffenceCodeValues(
   val ogrs3Weighting: Double?,
   val snsvStaticWeighting: Double?,
   val snsvDynamicWeighting: Double?,

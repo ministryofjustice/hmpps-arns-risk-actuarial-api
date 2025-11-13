@@ -42,6 +42,8 @@ dependencies {
   testImplementation(kotlin("test"))
   testImplementation("com.oracle.database.jdbc:ojdbc11:23.9.0.25.07")
   testImplementation("com.oracle.database.xml:xdb:23.9.0.25.07")
+  testImplementation(platform("org.testcontainers:testcontainers-bom:2.0.1"))
+  testImplementation("org.testcontainers:testcontainers")
 }
 
 kotlin {

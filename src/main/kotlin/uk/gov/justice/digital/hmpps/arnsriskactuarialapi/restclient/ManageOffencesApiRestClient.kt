@@ -8,7 +8,6 @@ import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.bodyToFlux
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.offencecode.HoCode
 
-
 @Component
 class ManageOffencesApiRestClient(
   private val manageOffencesApiWebClient: WebClient,

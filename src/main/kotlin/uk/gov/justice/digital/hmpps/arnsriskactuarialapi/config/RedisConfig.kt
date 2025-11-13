@@ -1,23 +1,30 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.config
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.redis.connection.RedisConnectionFactory
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer
 import org.springframework.data.redis.serializer.StringRedisSerializer
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.offencecode.OffenceCodeValues
 
 @Configuration
-class RedisConfig {
+class RedisConfig(private val objectMapper: ObjectMapper) {
 
   @Bean
-  fun redisTemplate(connectionFactory: RedisConnectionFactory): RedisTemplate<String, Any> {
-    val template = RedisTemplate<String, Any>()
+  fun redisTemplate(connectionFactory: RedisConnectionFactory): RedisTemplate<String, OffenceCodeValues> {
+    objectMapper.registerKotlinModule()
+
+    val serializer = GenericJackson2JsonRedisSerializer(objectMapper)
+
+    val template = RedisTemplate<String, OffenceCodeValues>()
     template.connectionFactory = connectionFactory
     template.keySerializer = StringRedisSerializer()
     template.hashKeySerializer = StringRedisSerializer()
-    template.valueSerializer = GenericJackson2JsonRedisSerializer()
-    template.hashValueSerializer = GenericJackson2JsonRedisSerializer()
+    template.valueSerializer = serializer
+    template.hashValueSerializer = serializer
     template.afterPropertiesSet()
     return template
   }
