@@ -1,8 +1,10 @@
 hmpps-auth:
   url: "http://localhost:8090/auth"
 
-redis:
-  host: "localhost"
-
 manage-offences-api:
   url: "http://localhost:8085"
+
+spring:
+  data:
+    redis:
+      host: "localhost"
