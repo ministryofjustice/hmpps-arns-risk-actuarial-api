@@ -32,5 +32,5 @@ class AdminController(private val offenceCodeService: OffenceCodeService) {
     ],
     security = [],
   )
-  fun postUpdateOffenceMappings(): Unit = offenceCodeService.updateOffenceCodeMappings()
+  fun postUpdateOffenceMappings() = offenceCodeService.updateOffenceCodeMappings()
 }
