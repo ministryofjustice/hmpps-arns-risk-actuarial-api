@@ -11,7 +11,7 @@ necessary when deploying to kubernetes as these values are included in the helm 
 e.g. `values-dev.yaml`.
 
 There is also a `docker-compose.yml` that can be used to run a local instance of the template in docker and also an
-instance of HMPPS Auth (required if your service calls out to other services using a token).
+instance of Redis, Manage-Offences-Api (wiremock) & HMPPS Auth (required if your service calls out to other services using a token).
 
 ```bash
 docker compose -f docker-compose.yml down #Stop
@@ -24,9 +24,9 @@ docker compose -f docker-compose.yml up #Start
 docker compose pull && docker compose up --scale hmpps-arns-risk-actuarial-api=0
 ```
 
-will just start a docker instance of HMPPS Auth. The application should then be started with a `dev` active profile
+will just start a docker instance of Redis, Manage-Offences-Api (wiremock) & HMPPS Auth. The application should then be started with a `dev` active profile
 in Intellij. Alternatively use a command like:
-`HMPPS_AUTH_URL=https://sign-in-dev.hmpps.service.justice.gov.uk/auth SPRING_PROFILES_ACTIVE=dev ./gradlew bootRun`
+`HMPPS_AUTH_URL=https://localhost:8090/auth SPRING_PROFILES_ACTIVE=dev ./gradlew bootRun`
 
 ### Running the K6 performance tests locally
 

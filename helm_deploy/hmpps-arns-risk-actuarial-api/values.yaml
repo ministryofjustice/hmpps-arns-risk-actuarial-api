@@ -38,6 +38,10 @@ generic-service:
     hmpps-arns-risk-actuarial-api-client-creds:
       API_CLIENT_ID: "API_CLIENT_ID"
       API_CLIENT_SECRET: "API_CLIENT_SECRET"
+    elasticache-redis:
+      SPRING_DATA_REDIS_HOST: "primary_endpoint_address"
+      SPRING_DATA_REDIS_PASSWORD: "auth_token"
+
 
   allowlist:
     groups:
