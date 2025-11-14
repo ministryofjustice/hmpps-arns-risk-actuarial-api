@@ -26,7 +26,7 @@ docker compose pull && docker compose up --scale hmpps-arns-risk-actuarial-api=0
 
 will just start a docker instance of Redis, Manage-Offences-Api (wiremock) & HMPPS Auth. The application should then be started with a `dev` active profile
 in Intellij. Alternatively use a command like:
-`HMPPS_AUTH_URL=https://localhost/auth SPRING_PROFILES_ACTIVE=dev ./gradlew bootRun`
+`HMPPS_AUTH_URL=https://localhost:8090/auth SPRING_PROFILES_ACTIVE=dev ./gradlew bootRun`
 
 ### Running the K6 performance tests locally
 
