@@ -8,3 +8,10 @@ spring:
   data:
     redis:
       host: "localhost"
+  security:
+    oauth2:
+      client:
+        registration:
+          manage-offences-api:
+            client-id: "hmpps-arns-risk-actuarial-api-dev"
+            client-secret: "test-secret"

@@ -23,8 +23,8 @@ spring:
         registration:
           manage-offences-api:
             provider: hmpps-auth
-            client-id: ${manage-offences-api.client.id:hmpps-arns-risk-actuarial-api-dev}
-            client-secret: ${manage-offences-api.api.client.secret:test-secret}
+            client-id: ${API_CLIENT_ID}
+            client-secret: ${API_CLIENT_SECRET}
             authorization-grant-type: client_credentials
         provider:
           hmpps-auth:

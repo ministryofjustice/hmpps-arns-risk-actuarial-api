@@ -17,14 +17,14 @@ class RedisConfig(private val objectMapper: ObjectMapper) {
   fun redisTemplate(connectionFactory: RedisConnectionFactory): RedisTemplate<String, OffenceCodeValues> {
     objectMapper.registerKotlinModule()
 
-    val serializer = Jackson2JsonRedisSerializer(objectMapper, OffenceCodeValues::class.java)
+    val offenceCodeValuesSerializer = Jackson2JsonRedisSerializer(objectMapper, OffenceCodeValues::class.java)
 
     val template = RedisTemplate<String, OffenceCodeValues>()
     template.connectionFactory = connectionFactory
     template.keySerializer = StringRedisSerializer()
     template.hashKeySerializer = StringRedisSerializer()
-    template.valueSerializer = serializer
-    template.hashValueSerializer = serializer
+    template.valueSerializer = offenceCodeValuesSerializer
+    template.hashValueSerializer = offenceCodeValuesSerializer
     template.afterPropertiesSet()
     return template
   }
