@@ -21,7 +21,7 @@ spring:
 
       client:
         registration:
-          hmpps-arns-risk-actuarial-api:
+          manage-offences-api:
             provider: hmpps-auth
             client-id: ${API_CLIENT_ID}
             client-secret: ${API_CLIENT_SECRET}
@@ -29,6 +29,11 @@ spring:
         provider:
           hmpps-auth:
             token-uri: ${hmpps-auth.url}/oauth/token
+
+  data:
+    redis:
+      ssl:
+        enabled: false
 
 server:
   port: 8080

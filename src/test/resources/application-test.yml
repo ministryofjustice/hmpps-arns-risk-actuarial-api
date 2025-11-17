@@ -8,6 +8,14 @@ management.endpoint:
 hmpps-auth:
   url: "http://localhost:8090/auth"
 
+manage-offences-api:
+  url: "http://localhost:8085"
+
+spring:
+  data:
+    redis:
+      host: "localhost"
+
 # Set properties for the regression test against OASys
 regression-test:
   output-path: "/${HOME}/tmp/regression-test"

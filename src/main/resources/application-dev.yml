@@ -1,2 +1,17 @@
 hmpps-auth:
   url: "http://localhost:8090/auth"
+
+manage-offences-api:
+  url: "http://localhost:8085"
+
+spring:
+  data:
+    redis:
+      host: "localhost"
+  security:
+    oauth2:
+      client:
+        registration:
+          manage-offences-api:
+            client-id: "hmpps-arns-risk-actuarial-api-dev"
+            client-secret: "test-secret"
