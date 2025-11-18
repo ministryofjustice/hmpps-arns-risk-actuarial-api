@@ -25,7 +25,7 @@ import kotlin.test.assertFailsWith
 class SNSVRiskProducerServiceTest {
 
   @Mock
-  lateinit var offenceGroupParametersService: OffenceGroupParametersService
+  lateinit var offenceCodeCacheService: OffenceCodeCacheService
 
   @InjectMocks
   lateinit var service: SNSVRiskProducerService
@@ -73,8 +73,8 @@ class SNSVRiskProducerServiceTest {
   @ParameterizedTest
   @CsvSource(value = ["COMMUNITY, REMAND"])
   fun `getRiskScore should return valid SNSVObject with ScoreType DYNAMIC`(supervisionStatus: SupervisionStatus) {
-    whenever(offenceGroupParametersService.getSNSVDynamicWeighting("02700")).thenReturn(0.123)
-    whenever(offenceGroupParametersService.getSNSVVATPDynamicWeighting("02700")).thenReturn(0.123)
+    whenever(offenceCodeCacheService.getSNSVDynamicWeighting("02700")).thenReturn(0.123)
+    whenever(offenceCodeCacheService.getSNSVVATPDynamicWeighting("02700")).thenReturn(0.123)
 
     val result = service.getRiskScore(
       validSNSVDynamicRiskScoreRequest().copy(supervisionStatus = supervisionStatus),
@@ -89,8 +89,8 @@ class SNSVRiskProducerServiceTest {
   @ParameterizedTest
   @CsvSource(value = ["COMMUNITY, REMAND"])
   fun `getRiskScore should return valid SNSVObject with ScoreType STATIC`(supervisionStatus: SupervisionStatus) {
-    whenever(offenceGroupParametersService.getSNSVStaticWeighting("02700")).thenReturn(0.123)
-    whenever(offenceGroupParametersService.getSNSVVATPStaticWeighting("02700")).thenReturn(0.123)
+    whenever(offenceCodeCacheService.getSNSVStaticWeighting("02700")).thenReturn(0.123)
+    whenever(offenceCodeCacheService.getSNSVVATPStaticWeighting("02700")).thenReturn(0.123)
 
     val result = service.getRiskScore(
       validSNSVStaticRiskScoreRequest().copy(supervisionStatus = supervisionStatus),
@@ -104,8 +104,8 @@ class SNSVRiskProducerServiceTest {
 
   @Test
   fun `getRiskScore should return validation error SNSVObject with ScoreType STATIC and no offence code mapping`() {
-    whenever(offenceGroupParametersService.getSNSVStaticWeighting("02700")).thenReturn(null)
-    whenever(offenceGroupParametersService.getSNSVVATPStaticWeighting("02700")).thenReturn(null)
+    whenever(offenceCodeCacheService.getSNSVStaticWeighting("02700")).thenReturn(null)
+    whenever(offenceCodeCacheService.getSNSVVATPStaticWeighting("02700")).thenReturn(null)
 
     val result = service.getRiskScore(
       validSNSVStaticRiskScoreRequest().copy(supervisionStatus = SupervisionStatus.COMMUNITY),

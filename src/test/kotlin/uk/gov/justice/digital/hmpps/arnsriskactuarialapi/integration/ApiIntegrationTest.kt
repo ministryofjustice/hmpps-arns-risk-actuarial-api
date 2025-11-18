@@ -2,10 +2,14 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.integration
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.ClassPathResource
 import org.springframework.http.MediaType
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.OffenceCodeService
 import java.io.File
 import java.util.stream.Stream
 import kotlin.test.assertEquals
@@ -16,7 +20,16 @@ import kotlin.test.fail
  * Each test fixture contains both request and expected response JSON in one file.
  * To add a new test file go to test/resources/fixtures and add in the relevant subfolder copying the existing structure.
  */
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ApiIntegrationTest : IntegrationTestBase() {
+
+  @Autowired
+  lateinit var offenceCodeService: OffenceCodeService
+
+  @BeforeAll
+  fun setup() {
+    offenceCodeService.updateOffenceCodeMappings()
+  }
 
   companion object {
     private val objectMapper = ObjectMapper()

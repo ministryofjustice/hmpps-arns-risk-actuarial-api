@@ -46,7 +46,7 @@ class SNSVRiskProducerService : BaseRiskScoreProducer() {
   private val log = LoggerFactory.getLogger(this::class.java)
 
   @Autowired
-  lateinit var offenceGroupParametersService: OffenceGroupParametersService
+  lateinit var offenceCodeCacheService: OffenceCodeCacheService
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
     val errors = validateSNSV(request)
@@ -90,13 +90,13 @@ class SNSVRiskProducerService : BaseRiskScoreProducer() {
   }
 
   private fun retrieveWeightingSNSV(scoreType: ScoreType, request: RiskScoreRequest): Double? = when (scoreType) {
-    ScoreType.STATIC, ScoreType.STATIC_WITH_VALIDATION_ERRORS -> offenceGroupParametersService.getSNSVStaticWeighting(request.currentOffenceCode!!)
-    ScoreType.DYNAMIC -> offenceGroupParametersService.getSNSVDynamicWeighting(request.currentOffenceCode!!)
+    ScoreType.STATIC, ScoreType.STATIC_WITH_VALIDATION_ERRORS -> offenceCodeCacheService.getSNSVStaticWeighting(request.currentOffenceCode!!)
+    ScoreType.DYNAMIC -> offenceCodeCacheService.getSNSVDynamicWeighting(request.currentOffenceCode!!)
   }
 
   private fun retrieveWeightingSNSVVATP(scoreType: ScoreType, request: RiskScoreRequest): Double? = when (scoreType) {
-    ScoreType.STATIC, ScoreType.STATIC_WITH_VALIDATION_ERRORS -> offenceGroupParametersService.getSNSVVATPStaticWeighting(request.currentOffenceCode!!)
-    ScoreType.DYNAMIC -> offenceGroupParametersService.getSNSVVATPDynamicWeighting(request.currentOffenceCode!!)
+    ScoreType.STATIC, ScoreType.STATIC_WITH_VALIDATION_ERRORS -> offenceCodeCacheService.getSNSVVATPStaticWeighting(request.currentOffenceCode!!)
+    ScoreType.DYNAMIC -> offenceCodeCacheService.getSNSVVATPDynamicWeighting(request.currentOffenceCode!!)
   }
 
   fun getSNSVScoreType(request: RiskScoreRequest): ScoreType = if (request.snsvStaticOrDynamic == StaticOrDynamic.STATIC) {

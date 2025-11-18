@@ -24,7 +24,7 @@ import kotlin.test.assertFailsWith
 class OGRS3RiskProducerServiceTest {
 
   @Mock
-  lateinit var offenceGroupParametersService: OffenceGroupParametersService
+  lateinit var offenceCodeCacheService: OffenceCodeCacheService
 
   @InjectMocks
   lateinit var ogrs3RiskProducerService: OGRS3RiskProducerService
@@ -80,7 +80,7 @@ class OGRS3RiskProducerServiceTest {
   @Test
   fun `should return validation error when no offence code mapping is found`() {
     // Given
-    whenever(offenceGroupParametersService.getOGRS3Weighting("02700")).thenReturn(null)
+    whenever(offenceCodeCacheService.getOGRS3Weighting("02700")).thenReturn(null)
 
     // When
     val result = ogrs3RiskProducerService.getRiskScore(
@@ -109,7 +109,7 @@ class OGRS3RiskProducerServiceTest {
   @Test
   fun `should return valid OGRS3Object for valid input ACT-62 scenario 1`() {
     // Given
-    whenever(offenceGroupParametersService.getOGRS3Weighting("02700")).thenReturn(0.7606)
+    whenever(offenceCodeCacheService.getOGRS3Weighting("02700")).thenReturn(0.7606)
 
     // When
     val result = ogrs3RiskProducerService.getRiskScore(
@@ -135,7 +135,7 @@ class OGRS3RiskProducerServiceTest {
   @Test
   fun `should return valid OGRS3Object for valid input ACT-62 scenario 2`() {
     // Given
-    whenever(offenceGroupParametersService.getOGRS3Weighting("11618")).thenReturn(0.1599)
+    whenever(offenceCodeCacheService.getOGRS3Weighting("11618")).thenReturn(0.1599)
 
     // When
     val result = ogrs3RiskProducerService.getRiskScore(

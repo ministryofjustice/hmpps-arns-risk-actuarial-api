@@ -33,10 +33,8 @@ class OGRS3RiskProducerService : BaseRiskScoreProducer() {
 
   private val log = LoggerFactory.getLogger(this::class.java)
 
-  val invalidOffenceCodeWeighting: Double = 999.0
-
   @Autowired
-  lateinit var offenceGroupParametersService: OffenceGroupParametersService
+  lateinit var offenceCodeCacheService: OffenceCodeCacheService
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
     val errors = validateOGRS3(request)
@@ -119,12 +117,10 @@ class OGRS3RiskProducerService : BaseRiskScoreProducer() {
   }
 
   private fun validateAndRetrieveOGRS3Weighting(request: OGRS3RequestValidated, errors: MutableList<ValidationErrorResponse>): Double? {
-    val ogrS3Weighting = offenceGroupParametersService.getOGRS3Weighting(request.currentOffenceCode)
+    val ogrS3Weighting = offenceCodeCacheService.getOGRS3Weighting(request.currentOffenceCode)
     if (ogrS3Weighting == null) {
       log.warn("No offence code to actuarial weighting mapping found for ${request.currentOffenceCode}")
       errors += ValidationErrorType.OFFENCE_CODE_MAPPING_NOT_FOUND.asErrorResponseForOffenceCodeMappingNotFound(request.currentOffenceCode, listOf(RiskScoreRequest::currentOffenceCode.name))
-    } else if (invalidOffenceCodeWeighting == ogrS3Weighting) {
-      errors += ValidationErrorType.NEED_DETAILS_OF_EXACT_OFFENCE.asErrorResponse(listOf(RiskScoreRequest::currentOffenceCode.name))
     }
     return ogrS3Weighting
   }

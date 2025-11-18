@@ -18,13 +18,27 @@ class OffenceCodeCacheService(private val redisTemplate: RedisTemplate<String, O
     val existingKeys = redisTemplate.keys(offenceCodeMappingPrefixPattern)
     log.info("Found ${existingKeys.size} existing offence code mappings within cache.")
 
-    redisTemplate.opsForValue().multiSet(offenceCodeMappings.mapKeys { (key, _) -> "$offenceCodeMappingPrefix$key" })
+    redisTemplate.opsForValue().multiSet(offenceCodeMappings.mapKeys { (key, _) -> offenceCodeMappingPrefix + key })
     log.info("Created/Updated ${offenceCodeMappings.size} offence code mappings within cache.")
 
-    val keysToDelete = existingKeys - offenceCodeMappings.keys.map { "$offenceCodeMappingPrefix$it" }.toSet()
+    val keysToDelete = existingKeys - offenceCodeMappings.keys.map { offenceCodeMappingPrefix + it }.toSet()
     if (keysToDelete.isNotEmpty()) {
       redisTemplate.delete(keysToDelete)
       log.info("Deleted ${keysToDelete.size} offence code mappings from cache.")
     }
   }
+
+  private fun get(offenceKey: String): OffenceCodeValues? = redisTemplate.opsForValue().get(offenceCodeMappingPrefix + offenceKey)
+
+  fun getOGRS3Weighting(offenceKey: String): Double? = get(offenceKey)?.ogrs3Weighting
+
+  fun isViolentOrSexualType(offenceKey: String): Boolean? = get(offenceKey)?.opdViolenceSexFlag
+
+  fun getSNSVStaticWeighting(offenceKey: String): Double? = get(offenceKey)?.snsvStaticWeighting
+
+  fun getSNSVDynamicWeighting(offenceKey: String): Double? = get(offenceKey)?.snsvDynamicWeighting
+
+  fun getSNSVVATPStaticWeighting(offenceKey: String): Double? = get(offenceKey)?.snsvVatpStaticWeighting
+
+  fun getSNSVVATPDynamicWeighting(offenceKey: String): Double? = get(offenceKey)?.snsvVatpDynamicWeighting
 }
