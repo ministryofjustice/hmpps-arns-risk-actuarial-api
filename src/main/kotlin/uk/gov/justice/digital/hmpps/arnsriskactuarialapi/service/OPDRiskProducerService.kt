@@ -51,7 +51,7 @@ class OPDRiskProducerService : BaseRiskScoreProducer() {
   private val log = LoggerFactory.getLogger(this::class.java)
 
   @Autowired
-  lateinit var offenceGroupParametersService: OffenceGroupParametersService
+  lateinit var offenceCodeCacheService: OffenceCodeCacheService
 
   override fun getRiskScore(
     request: RiskScoreRequest,
@@ -68,7 +68,7 @@ class OPDRiskProducerService : BaseRiskScoreProducer() {
     }
 
     val validatedRequest = mapRequestValidated(request)
-    val isViolentOrSexualType = offenceGroupParametersService.isViolentOrSexualType(validatedRequest.currentOffenceCode)
+    val isViolentOrSexualType = offenceCodeCacheService.isViolentOrSexualType(validatedRequest.currentOffenceCode)
     if (isViolentOrSexualType == null) {
       log.warn("No offence code to actuarial weighting mapping found for ${request.currentOffenceCode}")
       return applyErrorsToContextAndReturn(

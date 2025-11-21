@@ -1,5 +1,7 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.integration
 
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -13,11 +15,13 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.config.RedisContainer
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.integration.wiremock.HmppsAuthApiExtension
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.integration.wiremock.HmppsAuthApiExtension.Companion.hmppsAuth
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.integration.wiremock.ManageOffencesApiExtension
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.OffenceCodeService
 import uk.gov.justice.hmpps.test.kotlin.auth.JwtAuthorisationHelper
 
 @ExtendWith(HmppsAuthApiExtension::class, ManageOffencesApiExtension::class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @ActiveProfiles("test")
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 abstract class IntegrationTestBase {
 
   @Autowired
@@ -25,6 +29,14 @@ abstract class IntegrationTestBase {
 
   @Autowired
   protected lateinit var jwtAuthHelper: JwtAuthorisationHelper
+
+  @Autowired
+  lateinit var offenceCodeService: OffenceCodeService
+
+  @BeforeAll
+  fun setup() {
+    offenceCodeService.updateOffenceCodeMappings()
+  }
 
   companion object {
     private val redisContainer = RedisContainer.instance
