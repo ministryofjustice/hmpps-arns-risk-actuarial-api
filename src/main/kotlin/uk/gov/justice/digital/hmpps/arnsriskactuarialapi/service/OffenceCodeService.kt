@@ -36,7 +36,7 @@ class OffenceCodeService(
     val weightings = hoCode.weightings.associateBy { it.name }
     val flags = hoCode.flags.associateBy { it.name }
 
-    fun toOffenceCodeWeighting(name: String) = weightings[name].let {
+    fun buildOffenceCodeWeighting(name: String) = weightings[name].let {
       OffenceCodeWeighting(
         value = it?.value,
         error = it?.errorCode?.let { code -> OffenceCodeError.valueOf(code.name) },
@@ -44,11 +44,11 @@ class OffenceCodeService(
     }
 
     offenceKey to OffenceCodeValues(
-      ogrs3Weighting = toOffenceCodeWeighting("ogrs3Weighting"),
-      snsvStaticWeighting = toOffenceCodeWeighting("snsvStaticWeighting"),
-      snsvDynamicWeighting = toOffenceCodeWeighting("snsvDynamicWeighting"),
-      snsvVatpStaticWeighting = toOffenceCodeWeighting("snsvVatpStaticWeighting"),
-      snsvVatpDynamicWeighting = toOffenceCodeWeighting("snsvVatpDynamicWeighting"),
+      ogrs3Weighting = buildOffenceCodeWeighting("ogrs3Weighting"),
+      snsvStaticWeighting = buildOffenceCodeWeighting("snsvStaticWeighting"),
+      snsvDynamicWeighting = buildOffenceCodeWeighting("snsvDynamicWeighting"),
+      snsvVatpStaticWeighting = buildOffenceCodeWeighting("snsvVatpStaticWeighting"),
+      snsvVatpDynamicWeighting = buildOffenceCodeWeighting("snsvVatpDynamicWeighting"),
       opdViolenceSexFlag = flags["opdViolSex"]?.value,
     )
   }
