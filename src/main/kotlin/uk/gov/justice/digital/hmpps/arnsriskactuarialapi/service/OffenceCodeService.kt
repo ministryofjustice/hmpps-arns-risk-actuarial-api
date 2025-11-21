@@ -39,7 +39,7 @@ class OffenceCodeService(
     fun buildOffenceCodeWeighting(name: String) = weightings[name].let {
       OffenceCodeWeighting(
         value = it?.value,
-        error = it?.errorCode?.let { code -> OffenceCodeError.valueOf(code.name) },
+        error = it?.errorCode?.let { error -> OffenceCodeError.valueOf(error.name) },
       )
     }
 
