@@ -7,6 +7,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.offencecode.OffenceCodeError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3Object
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3RequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.FeatureValue.AGE_GENDER_SCORE
@@ -117,12 +118,19 @@ class OGRS3RiskProducerService : BaseRiskScoreProducer() {
   }
 
   private fun validateAndRetrieveOGRS3Weighting(request: OGRS3RequestValidated, errors: MutableList<ValidationErrorResponse>): Double? {
-    val ogrS3Weighting = offenceCodeCacheService.getOGRS3Weighting(request.currentOffenceCode)
-    if (ogrS3Weighting == null) {
-      log.warn("No offence code to actuarial weighting mapping found for ${request.currentOffenceCode}")
-      errors += ValidationErrorType.OFFENCE_CODE_MAPPING_NOT_FOUND.asErrorResponseForOffenceCodeMappingNotFound(request.currentOffenceCode, listOf(RiskScoreRequest::currentOffenceCode.name))
+    val ogrS3Weighting = offenceCodeCacheService.getOgrs3Weighting(request.currentOffenceCode)
+    if (ogrS3Weighting?.value == null) {
+      if (ogrS3Weighting?.error == OffenceCodeError.NEED_DETAILS_OF_EXACT_OFFENCE) {
+        errors += ValidationErrorType.NEED_DETAILS_OF_EXACT_OFFENCE.asErrorResponse(listOf(RiskScoreRequest::currentOffenceCode.name))
+      } else {
+        log.warn("No offence code to actuarial weighting mapping found for ${request.currentOffenceCode}")
+        errors += ValidationErrorType.OFFENCE_CODE_MAPPING_NOT_FOUND.asErrorResponseForOffenceCodeMappingNotFound(
+          request.currentOffenceCode,
+          listOf(RiskScoreRequest::currentOffenceCode.name),
+        )
+      }
     }
-    return ogrS3Weighting
+    return ogrS3Weighting?.value
   }
 
   override fun applyErrorsToContextAndReturn(context: RiskScoreContext, validationErrorResponses: List<ValidationErrorResponse>): RiskScoreContext = context.apply { OGRS3 = buildErrorObject(validationErrorResponses) }

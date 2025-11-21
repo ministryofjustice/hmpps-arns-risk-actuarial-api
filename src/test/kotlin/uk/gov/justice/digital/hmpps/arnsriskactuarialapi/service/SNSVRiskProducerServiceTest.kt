@@ -73,8 +73,8 @@ class SNSVRiskProducerServiceTest {
   @ParameterizedTest
   @CsvSource(value = ["COMMUNITY, REMAND"])
   fun `getRiskScore should return valid SNSVObject with ScoreType DYNAMIC`(supervisionStatus: SupervisionStatus) {
-    whenever(offenceCodeCacheService.getSNSVDynamicWeighting("02700")).thenReturn(0.123)
-    whenever(offenceCodeCacheService.getSNSVVATPDynamicWeighting("02700")).thenReturn(0.123)
+    whenever(offenceCodeCacheService.getSnsvDynamicWeightingValue("02700")).thenReturn(0.123)
+    whenever(offenceCodeCacheService.getSnsvVatpDynamicWeightingValue("02700")).thenReturn(0.123)
 
     val result = service.getRiskScore(
       validSNSVDynamicRiskScoreRequest().copy(supervisionStatus = supervisionStatus),
@@ -89,8 +89,8 @@ class SNSVRiskProducerServiceTest {
   @ParameterizedTest
   @CsvSource(value = ["COMMUNITY, REMAND"])
   fun `getRiskScore should return valid SNSVObject with ScoreType STATIC`(supervisionStatus: SupervisionStatus) {
-    whenever(offenceCodeCacheService.getSNSVStaticWeighting("02700")).thenReturn(0.123)
-    whenever(offenceCodeCacheService.getSNSVVATPStaticWeighting("02700")).thenReturn(0.123)
+    whenever(offenceCodeCacheService.getSnsvStaticWeightingValue("02700")).thenReturn(0.123)
+    whenever(offenceCodeCacheService.getSnsvVatpStaticWeightingValue("02700")).thenReturn(0.123)
 
     val result = service.getRiskScore(
       validSNSVStaticRiskScoreRequest().copy(supervisionStatus = supervisionStatus),
@@ -104,8 +104,8 @@ class SNSVRiskProducerServiceTest {
 
   @Test
   fun `getRiskScore should return validation error SNSVObject with ScoreType STATIC and no offence code mapping`() {
-    whenever(offenceCodeCacheService.getSNSVStaticWeighting("02700")).thenReturn(null)
-    whenever(offenceCodeCacheService.getSNSVVATPStaticWeighting("02700")).thenReturn(null)
+    whenever(offenceCodeCacheService.getSnsvStaticWeightingValue("02700")).thenReturn(null)
+    whenever(offenceCodeCacheService.getSnsvVatpStaticWeightingValue("02700")).thenReturn(null)
 
     val result = service.getRiskScore(
       validSNSVStaticRiskScoreRequest().copy(supervisionStatus = SupervisionStatus.COMMUNITY),

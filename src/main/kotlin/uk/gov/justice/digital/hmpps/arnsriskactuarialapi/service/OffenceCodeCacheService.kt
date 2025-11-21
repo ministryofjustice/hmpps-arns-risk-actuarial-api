@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Service
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.offencecode.OffenceCodeValues
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.offencecode.OffenceCodeWeighting
 
 @Service
 class OffenceCodeCacheService(private val redisTemplate: RedisTemplate<String, OffenceCodeValues>) {
@@ -30,15 +31,15 @@ class OffenceCodeCacheService(private val redisTemplate: RedisTemplate<String, O
 
   private fun get(offenceKey: String): OffenceCodeValues? = redisTemplate.opsForValue().get(offenceCodeMappingPrefix + offenceKey)
 
-  fun getOGRS3Weighting(offenceKey: String): Double? = get(offenceKey)?.ogrs3Weighting
+  fun getOgrs3Weighting(offenceKey: String): OffenceCodeWeighting? = get(offenceKey)?.ogrs3Weighting
 
   fun isViolentOrSexualType(offenceKey: String): Boolean? = get(offenceKey)?.opdViolenceSexFlag
 
-  fun getSNSVStaticWeighting(offenceKey: String): Double? = get(offenceKey)?.snsvStaticWeighting
+  fun getSnsvStaticWeightingValue(offenceKey: String): Double? = get(offenceKey)?.snsvStaticWeighting?.value
 
-  fun getSNSVDynamicWeighting(offenceKey: String): Double? = get(offenceKey)?.snsvDynamicWeighting
+  fun getSnsvDynamicWeightingValue(offenceKey: String): Double? = get(offenceKey)?.snsvDynamicWeighting?.value
 
-  fun getSNSVVATPStaticWeighting(offenceKey: String): Double? = get(offenceKey)?.snsvVatpStaticWeighting
+  fun getSnsvVatpStaticWeightingValue(offenceKey: String): Double? = get(offenceKey)?.snsvVatpStaticWeighting?.value
 
-  fun getSNSVVATPDynamicWeighting(offenceKey: String): Double? = get(offenceKey)?.snsvVatpDynamicWeighting
+  fun getSnsvVatpDynamicWeightingValue(offenceKey: String): Double? = get(offenceKey)?.snsvVatpDynamicWeighting?.value
 }

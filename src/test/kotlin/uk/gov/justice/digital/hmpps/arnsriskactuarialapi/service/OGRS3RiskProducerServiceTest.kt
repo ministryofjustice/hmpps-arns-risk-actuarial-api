@@ -16,6 +16,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.offencecode.OffenceCodeError
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.offencecode.OffenceCodeWeighting
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
 import java.time.LocalDate
 import kotlin.test.assertFailsWith
@@ -31,6 +33,9 @@ class OGRS3RiskProducerServiceTest {
 
   @Test
   fun `should return validation error when age at conviction is less than minimum conviction age`() {
+    // Given
+    whenever(offenceCodeCacheService.getOgrs3Weighting("02700")).thenReturn(OffenceCodeWeighting(0.7606, null))
+
     // When
     val result = ogrs3RiskProducerService.getRiskScore(
       validRiskScoreRequest().copy(
@@ -55,6 +60,9 @@ class OGRS3RiskProducerServiceTest {
 
   @Test
   fun `should return validation error when age at first sanction is greater than age of current conviction`() {
+    // Given
+    whenever(offenceCodeCacheService.getOgrs3Weighting("02700")).thenReturn(OffenceCodeWeighting(0.7606, null))
+
     // When
     val result = ogrs3RiskProducerService.getRiskScore(
       validRiskScoreRequest().copy(
@@ -80,7 +88,7 @@ class OGRS3RiskProducerServiceTest {
   @Test
   fun `should return validation error when no offence code mapping is found`() {
     // Given
-    whenever(offenceCodeCacheService.getOGRS3Weighting("02700")).thenReturn(null)
+    whenever(offenceCodeCacheService.getOgrs3Weighting("02700")).thenReturn(null)
 
     // When
     val result = ogrs3RiskProducerService.getRiskScore(
@@ -107,9 +115,38 @@ class OGRS3RiskProducerServiceTest {
   }
 
   @Test
+  fun `should return validation error when offence code weighting is found requiring details of exact offence`() {
+    // Given
+    whenever(offenceCodeCacheService.getOgrs3Weighting("02700")).thenReturn(OffenceCodeWeighting(null, OffenceCodeError.NEED_DETAILS_OF_EXACT_OFFENCE))
+
+    // When
+    val result = ogrs3RiskProducerService.getRiskScore(
+      validRiskScoreRequest().copy(
+        dateOfBirth = LocalDate.of(1965, 12, 7),
+        dateOfCurrentConviction = LocalDate.of(2025, 5, 13),
+        dateAtStartOfFollowupCalculated = LocalDate.of(2026, 12, 6),
+        totalNumberOfSanctionsForAllOffences = Integer.valueOf(2) as Integer?,
+        ageAtFirstSanction = Integer.valueOf(47) as Integer?,
+        currentOffenceCode = "02700",
+      ),
+      emptyContext(),
+    )
+
+    // Then
+    assertNotNull(result)
+    assertNull(result.OGRS3?.ogrs3OneYear)
+    assertNull(result.OGRS3?.ogrs3TwoYear)
+    assertNull(result.OGRS3?.band)
+    assertEquals(1, result.OGRS3?.validationError?.size)
+    assertEquals(ValidationErrorType.NEED_DETAILS_OF_EXACT_OFFENCE, result.OGRS3?.validationError?.get(0)?.type)
+    assertEquals("For this group of offences, the OGRS 3 offence category takes different values depending on the nature of the exact offence. Therefore, it is not possible to calculate an OGRS 3 score without details of the exact offence.", result.OGRS3?.validationError?.get(0)?.message)
+    assertEquals(listOf("currentOffenceCode"), result.OGRS3?.validationError?.get(0)?.fields)
+  }
+
+  @Test
   fun `should return valid OGRS3Object for valid input ACT-62 scenario 1`() {
     // Given
-    whenever(offenceCodeCacheService.getOGRS3Weighting("02700")).thenReturn(0.7606)
+    whenever(offenceCodeCacheService.getOgrs3Weighting("02700")).thenReturn(OffenceCodeWeighting(0.7606, null))
 
     // When
     val result = ogrs3RiskProducerService.getRiskScore(
@@ -135,7 +172,7 @@ class OGRS3RiskProducerServiceTest {
   @Test
   fun `should return valid OGRS3Object for valid input ACT-62 scenario 2`() {
     // Given
-    whenever(offenceCodeCacheService.getOGRS3Weighting("11618")).thenReturn(0.1599)
+    whenever(offenceCodeCacheService.getOgrs3Weighting("11618")).thenReturn(OffenceCodeWeighting(0.1599, null))
 
     // When
     val result = ogrs3RiskProducerService.getRiskScore(

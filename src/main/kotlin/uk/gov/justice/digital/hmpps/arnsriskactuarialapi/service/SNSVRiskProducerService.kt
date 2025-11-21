@@ -90,13 +90,13 @@ class SNSVRiskProducerService : BaseRiskScoreProducer() {
   }
 
   private fun retrieveWeightingSNSV(scoreType: ScoreType, request: RiskScoreRequest): Double? = when (scoreType) {
-    ScoreType.STATIC, ScoreType.STATIC_WITH_VALIDATION_ERRORS -> offenceCodeCacheService.getSNSVStaticWeighting(request.currentOffenceCode!!)
-    ScoreType.DYNAMIC -> offenceCodeCacheService.getSNSVDynamicWeighting(request.currentOffenceCode!!)
+    ScoreType.STATIC, ScoreType.STATIC_WITH_VALIDATION_ERRORS -> offenceCodeCacheService.getSnsvStaticWeightingValue(request.currentOffenceCode!!)
+    ScoreType.DYNAMIC -> offenceCodeCacheService.getSnsvDynamicWeightingValue(request.currentOffenceCode!!)
   }
 
   private fun retrieveWeightingSNSVVATP(scoreType: ScoreType, request: RiskScoreRequest): Double? = when (scoreType) {
-    ScoreType.STATIC, ScoreType.STATIC_WITH_VALIDATION_ERRORS -> offenceCodeCacheService.getSNSVVATPStaticWeighting(request.currentOffenceCode!!)
-    ScoreType.DYNAMIC -> offenceCodeCacheService.getSNSVVATPDynamicWeighting(request.currentOffenceCode!!)
+    ScoreType.STATIC, ScoreType.STATIC_WITH_VALIDATION_ERRORS -> offenceCodeCacheService.getSnsvVatpStaticWeightingValue(request.currentOffenceCode!!)
+    ScoreType.DYNAMIC -> offenceCodeCacheService.getSnsvVatpDynamicWeightingValue(request.currentOffenceCode!!)
   }
 
   fun getSNSVScoreType(request: RiskScoreRequest): ScoreType = if (request.snsvStaticOrDynamic == StaticOrDynamic.STATIC) {
