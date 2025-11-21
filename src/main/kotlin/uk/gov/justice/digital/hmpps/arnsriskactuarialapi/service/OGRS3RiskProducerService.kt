@@ -118,9 +118,9 @@ class OGRS3RiskProducerService : BaseRiskScoreProducer() {
   }
 
   private fun validateAndRetrieveOGRS3Weighting(request: OGRS3RequestValidated, errors: MutableList<ValidationErrorResponse>): Double? {
-    val ogrS3Weighting = offenceCodeCacheService.getOgrs3Weighting(request.currentOffenceCode)
-    if (ogrS3Weighting?.value == null) {
-      if (ogrS3Weighting?.error == OffenceCodeError.NEED_DETAILS_OF_EXACT_OFFENCE) {
+    val ogrs3Weighting = offenceCodeCacheService.getOgrs3Weighting(request.currentOffenceCode)
+    if (ogrs3Weighting?.value == null) {
+      if (ogrs3Weighting?.error == OffenceCodeError.NEED_DETAILS_OF_EXACT_OFFENCE) {
         errors += ValidationErrorType.NEED_DETAILS_OF_EXACT_OFFENCE.asErrorResponse(listOf(RiskScoreRequest::currentOffenceCode.name))
       } else {
         log.warn("No offence code to actuarial weighting mapping found for ${request.currentOffenceCode}")
@@ -130,7 +130,7 @@ class OGRS3RiskProducerService : BaseRiskScoreProducer() {
         )
       }
     }
-    return ogrS3Weighting?.value
+    return ogrs3Weighting?.value
   }
 
   override fun applyErrorsToContextAndReturn(context: RiskScoreContext, validationErrorResponses: List<ValidationErrorResponse>): RiskScoreContext = context.apply { OGRS3 = buildErrorObject(validationErrorResponses) }

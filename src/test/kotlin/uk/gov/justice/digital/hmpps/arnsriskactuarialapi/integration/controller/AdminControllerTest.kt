@@ -1,5 +1,6 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.integration.controller
 
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertNull
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,6 +16,11 @@ class AdminControllerTest : IntegrationTestBase() {
 
   @Autowired
   protected lateinit var redisTemplate: RedisTemplate<String, OffenceCodeValues>
+
+  @BeforeAll
+  fun clearRedisCache() {
+    clearOffenceCodeCache()
+  }
 
   @Test
   fun `postUpdateOffenceMappings returns 200 OK when called without Auth`() {
@@ -64,5 +70,12 @@ class AdminControllerTest : IntegrationTestBase() {
     assertEquals(-0.215779995107354, offenceCodeValuesOffenceCodeValues99968.snsvStaticWeighting.value)
     assertEquals(0.0, offenceCodeValuesOffenceCodeValues99968.snsvVatpDynamicWeighting.value)
     assertEquals(0.0, offenceCodeValuesOffenceCodeValues99968.snsvVatpStaticWeighting.value)
+  }
+
+  private fun clearOffenceCodeCache() {
+    val keys = redisTemplate.keys("offence_code_mapping_*")
+    if (!keys.isNullOrEmpty()) {
+      redisTemplate.delete(keys)
+    }
   }
 }
