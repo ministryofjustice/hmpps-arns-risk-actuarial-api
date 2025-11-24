@@ -8,6 +8,8 @@ spring:
   data:
     redis:
       host: "localhost"
+      ssl:
+        enabled: false
   security:
     oauth2:
       client:

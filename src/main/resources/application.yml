@@ -33,7 +33,7 @@ spring:
   data:
     redis:
       ssl:
-        enabled: false
+        enabled: true
 
 server:
   port: 8080
