@@ -3,7 +3,9 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.offencecode.HoCode
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.offencecode.OffenceCodeError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.offencecode.OffenceCodeValues
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.offencecode.OffenceCodeWeighting
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.restclient.ManageOffencesApiRestClient
 
 @Service
@@ -34,12 +36,19 @@ class OffenceCodeService(
     val weightings = hoCode.weightings.associateBy { it.name }
     val flags = hoCode.flags.associateBy { it.name }
 
+    fun buildOffenceCodeWeighting(name: String) = weightings[name].let {
+      OffenceCodeWeighting(
+        value = it?.value,
+        error = it?.errorCode?.let { error -> OffenceCodeError.valueOf(error.name) },
+      )
+    }
+
     offenceKey to OffenceCodeValues(
-      ogrs3Weighting = weightings["ogrs3Weighting"]?.value,
-      snsvStaticWeighting = weightings["snsvStaticWeighting"]?.value,
-      snsvDynamicWeighting = weightings["snsvDynamicWeighting"]?.value,
-      snsvVatpStaticWeighting = weightings["snsvVatpStaticWeighting"]?.value,
-      snsvVatpDynamicWeighting = weightings["snsvVatpDynamicWeighting"]?.value,
+      ogrs3Weighting = buildOffenceCodeWeighting("ogrs3Weighting"),
+      snsvStaticWeighting = buildOffenceCodeWeighting("snsvStaticWeighting"),
+      snsvDynamicWeighting = buildOffenceCodeWeighting("snsvDynamicWeighting"),
+      snsvVatpStaticWeighting = buildOffenceCodeWeighting("snsvVatpStaticWeighting"),
+      snsvVatpDynamicWeighting = buildOffenceCodeWeighting("snsvVatpDynamicWeighting"),
       opdViolenceSexFlag = flags["opdViolSex"]?.value,
     )
   }
