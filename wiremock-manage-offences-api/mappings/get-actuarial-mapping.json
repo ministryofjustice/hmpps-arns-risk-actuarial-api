@@ -3,7 +3,7 @@
     {
       "request": {
         "method": "GET",
-        "url": "/actuarial-mapping"
+        "url": "/offences/actuarial-mapping"
       },
       "response": {
         "status": 200,
