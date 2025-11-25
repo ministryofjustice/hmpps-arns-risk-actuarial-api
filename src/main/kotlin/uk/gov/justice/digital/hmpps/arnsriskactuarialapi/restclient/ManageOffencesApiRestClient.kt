@@ -16,7 +16,7 @@ class ManageOffencesApiRestClient(
   val log: Logger = LoggerFactory.getLogger(this::class.java)
 
   fun getActuarialMapping(): List<HoCode> {
-    val path = "/actuarial-mapping"
+    val path = "/offences/actuarial-mapping"
     return manageOffencesApiWebClient
       .get()
       .uri(path)

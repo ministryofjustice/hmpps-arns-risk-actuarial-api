@@ -45,7 +45,7 @@ class ManageOffencesMockServer : WireMockServer(WIREMOCK_PORT) {
     val responsePath = "wiremock-manage-offences-api/__files/actuarial-mapping.json"
 
     stubFor(
-      get(urlEqualTo("/actuarial-mapping"))
+      get(urlEqualTo("/offences/actuarial-mapping"))
         .willReturn(
           aResponse()
             .withHeaders(HttpHeaders(HttpHeader("Content-Type", "application/json")))

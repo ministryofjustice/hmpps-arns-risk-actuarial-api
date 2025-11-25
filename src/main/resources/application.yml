@@ -66,7 +66,3 @@ management:
     info:
       cache:
         time-to-live: 2000ms
-hmpps:
-  arnsriskactuarial:
-    offencegroupparameters:
-      csv: "/offencegroupparameters/offence-code-mapping.csv"
