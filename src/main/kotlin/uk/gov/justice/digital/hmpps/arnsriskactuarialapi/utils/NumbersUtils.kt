@@ -23,6 +23,12 @@ fun Int.sanitisePercentage(): Int = when {
   else -> this
 }
 
+fun Double.sanitisePercentage(): Double = when {
+  this <= 0.0 -> 0.0
+  this >= 100.0 -> 99.99
+  else -> this
+}
+
 fun Double.sigmoid(): Double = exp(this).let { it / (1 + it) }
 
 fun calculatePolynomial(coeffs: DoubleArray, x: Double): Double = (0..<coeffs.size).fold(0.0) { sum, i -> sum + coeffs[i] * x.pow(i) }

@@ -61,23 +61,8 @@ class RSRRiskProducerServiceTest {
   @Test
   fun `should calculate RSR score when female with female contribution to rsr no validation errors`() {
     val context = emptyContext().copy(
-      OSPDC = OSPDCObject(
-        ospdcScore = 0.0,
-        ospdcBand = RiskBand.NOT_APPLICABLE,
-        pointScore = null,
-        validationError = emptyList(),
-        femaleVersion = true,
-        sexualOffenceHistory = true,
-        ospRiskReduction = null,
-        featureValues = null,
-      ),
-      OSPIIC = OSPIICObject(
-        score = 0.0,
-        band = RiskBand.NOT_APPLICABLE,
-        sexualOffenceHistory = true,
-        femaleVersion = true,
-        validationError = emptyList(),
-      ),
+      OSPDC = ospdcNotApplicable(),
+      OSPIIC = ospiicNotApplicable(),
       SNSV = SNSVObject(snsvScore = 0.1, scoreType = ScoreType.DYNAMIC, validationError = emptyList(), featureValues = null),
     )
 
@@ -227,4 +212,73 @@ class RSRRiskProducerServiceTest {
     assertTrue(service.hasBlockingErrors(blockingError))
     assertFalse(service.hasBlockingErrors(nonBlockingError))
   }
+
+  @Test
+  fun `should calculate RSR score when upper score limit exceeded and sanitise`() {
+    val context = emptyContext().copy(
+      OSPDC = ospdcNotApplicable(),
+      OSPIIC = ospiicNotApplicable(),
+      SNSV = SNSVObject(
+        snsvScore = 100.0,
+        scoreType = ScoreType.DYNAMIC,
+        validationError = emptyList(),
+        featureValues = null,
+      ),
+    )
+
+    val result = service.getRiskScore(
+      RiskScoreRequest(
+        gender = Gender.MALE,
+        hasEverCommittedSexualOffence = true,
+        isCurrentOffenceSexuallyMotivated = false,
+      ),
+      context,
+    )
+
+    assertEquals(99.99, result.RSR!!.rsrScore)
+  }
+
+  @Test
+  fun `should calculate RSR score when lower score limit exceeded and sanitise`() {
+    val context = emptyContext().copy(
+      OSPDC = ospdcNotApplicable(),
+      OSPIIC = ospiicNotApplicable(),
+      SNSV = SNSVObject(
+        snsvScore = -0.1,
+        scoreType = ScoreType.DYNAMIC,
+        validationError = emptyList(),
+        featureValues = null,
+      ),
+    )
+
+    val result = service.getRiskScore(
+      RiskScoreRequest(
+        gender = Gender.MALE,
+        hasEverCommittedSexualOffence = true,
+        isCurrentOffenceSexuallyMotivated = false,
+      ),
+      context,
+    )
+
+    assertEquals(0.0, result.RSR!!.rsrScore)
+  }
+
+  private fun ospdcNotApplicable(): OSPDCObject = OSPDCObject(
+    ospdcScore = 0.0,
+    ospdcBand = RiskBand.NOT_APPLICABLE,
+    pointScore = null,
+    validationError = emptyList(),
+    femaleVersion = true,
+    sexualOffenceHistory = true,
+    ospRiskReduction = null,
+    featureValues = null,
+  )
+
+  private fun ospiicNotApplicable(): OSPIICObject = OSPIICObject(
+    score = 0.0,
+    band = RiskBand.NOT_APPLICABLE,
+    sexualOffenceHistory = true,
+    femaleVersion = true,
+    validationError = emptyList(),
+  )
 }
