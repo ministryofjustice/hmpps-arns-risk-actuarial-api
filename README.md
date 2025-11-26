@@ -28,6 +28,11 @@ will just start a docker instance of Redis, Manage-Offences-Api (wiremock) & HMP
 in Intellij. Alternatively use a command like:
 `HMPPS_AUTH_URL=https://localhost:8090/auth SPRING_PROFILES_ACTIVE=dev ./gradlew bootRun`
 
+### Initialising Offence-Code Actuarial Mappings
+
+Before calling the `risk-scores` endpoint, you must first initialise the offence-code actuarial mappings in Redis.
+To do this, call the `/admin/update-offence-mapping` endpoint (no authentication required).
+
 ### Running the K6 performance tests locally
 
 Ensure the service is running locally then run the following;
