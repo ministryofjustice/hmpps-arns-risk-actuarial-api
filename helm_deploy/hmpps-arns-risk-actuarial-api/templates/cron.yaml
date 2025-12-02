@@ -17,6 +17,6 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - curl -v -X POST http://hmpps-arns-risk-actuarial-api/admin/update-offence-mapping
+                - curl -v -f -X POST http://hmpps-arns-risk-actuarial-api/admin/update-offence-mapping
           restartPolicy: Never
   concurrencyPolicy: Forbid
