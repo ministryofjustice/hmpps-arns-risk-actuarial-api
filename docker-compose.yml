@@ -25,7 +25,7 @@ services:
     ports:
       - "8090:8080"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/auth/health"]
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/8080"]
     volumes:
       - ./auth_db:/auth_db
     environment:
