@@ -1,11 +1,11 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.integration
 
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import org.springframework.core.io.ClassPathResource
 import org.springframework.http.MediaType
+import tools.jackson.databind.JsonNode
+import tools.jackson.databind.ObjectMapper
 import java.io.File
 import java.util.stream.Stream
 import kotlin.test.assertEquals

@@ -30,12 +30,12 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asDoublePercentage
 
 fun RiskScoreContext.toRiskScoreResponse(): RiskScoreResponse = RiskScoreResponse(
-  this.version,
-  buildActuarialPredictorsResponse(this),
-  buildPredictorResponseForPNI(this),
-  buildPredictorResponseForLDS(this),
-  buildPredictorResponseForOPD(this),
-  buildPredictorResponseForMST(this),
+  version = this.version,
+  actuarialPredictors = buildActuarialPredictorsResponse(this),
+  lds = buildPredictorResponseForLDS(this),
+  mst = buildPredictorResponseForMST(this),
+  opd = buildPredictorResponseForOPD(this),
+  pni = buildPredictorResponseForPNI(this),
 )
 
 private fun buildPredictorResponseForPNI(riskScoreContext: RiskScoreContext): PNIObject? = riskScoreContext.PNI
