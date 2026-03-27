@@ -1,8 +1,8 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.regression
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import oracle.jdbc.OracleConnection
 import oracle.jdbc.datasource.impl.OracleDataSource
+import tools.jackson.databind.ObjectMapper
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.PreviousConviction
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
