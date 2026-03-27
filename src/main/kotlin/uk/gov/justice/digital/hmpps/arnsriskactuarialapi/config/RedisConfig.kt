@@ -14,7 +14,6 @@ class RedisConfig(private val objectMapper: ObjectMapper) {
 
   @Bean
   fun redisTemplate(connectionFactory: RedisConnectionFactory): RedisTemplate<String, OffenceCodeValues> {
-
     val offenceCodeValuesSerializer = JacksonJsonRedisSerializer(objectMapper, OffenceCodeValues::class.java)
 
     val template = RedisTemplate<String, OffenceCodeValues>()
