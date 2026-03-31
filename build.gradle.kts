@@ -2,7 +2,7 @@ import kotlinx.kover.gradle.plugin.dsl.AggregationType
 import kotlinx.kover.gradle.plugin.dsl.CoverageUnit
 
 plugins {
-  id("uk.gov.justice.hmpps.gradle-spring-boot") version "10.1.1"
+  id("uk.gov.justice.hmpps.gradle-spring-boot") version "10.1.2"
   id("org.jetbrains.kotlinx.kover") version "0.9.8"
   kotlin("plugin.spring") version "2.3.20"
 }
@@ -42,8 +42,8 @@ dependencies {
   }
   testImplementation("org.junit.jupiter:junit-jupiter-params")
   testImplementation(kotlin("test"))
-  testImplementation("com.oracle.database.jdbc:ojdbc11:23.9.0.25.07")
-  testImplementation("com.oracle.database.xml:xdb:23.9.0.25.07")
+  testImplementation("com.oracle.database.jdbc:ojdbc11:23.26.1.0.0")
+  testImplementation("com.oracle.database.xml:xdb:23.26.1.0.0")
   testImplementation(platform("org.testcontainers:testcontainers-bom:2.0.4"))
   testImplementation("org.testcontainers:testcontainers")
 }
