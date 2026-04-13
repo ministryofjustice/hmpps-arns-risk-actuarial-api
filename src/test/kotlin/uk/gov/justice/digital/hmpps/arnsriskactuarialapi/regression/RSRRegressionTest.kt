@@ -1,6 +1,5 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.regression
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -8,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
+import tools.jackson.databind.ObjectMapper
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.RiskScoreService
 import java.io.File
 import kotlin.concurrent.atomics.AtomicLong
