@@ -42,8 +42,8 @@ dependencies {
   }
   testImplementation("org.junit.jupiter:junit-jupiter-params")
   testImplementation(kotlin("test"))
-  testImplementation("com.oracle.database.jdbc:ojdbc11:23.9.0.25.07")
-  testImplementation("com.oracle.database.xml:xdb:23.9.0.25.07")
+  testImplementation("com.oracle.database.jdbc:ojdbc11:23.26.1.0.0")
+  testImplementation("com.oracle.database.xml:xdb:23.26.1.0.0")
   testImplementation(platform("org.testcontainers:testcontainers-bom:2.0.4"))
   testImplementation("org.testcontainers:testcontainers")
 }
