@@ -105,7 +105,7 @@ class RiskScoreControllerTest : IntegrationTestBase() {
   @Test
   fun `postRiskScores returns 400 if incorrect enum numeric value used`() {
     val expectedError =
-      "JSON parse error: Cannot deserialize value of type `uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender` from number 1: not allowed to deserialize Enum value out of number: disable DeserializationConfig.DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS to allow"
+      "JSON parse error: Cannot deserialize value of type `uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender` from number 1: not allowed to deserialize Enum value out of number: disable DeserializationConfig.EnumFeature.FAIL_ON_NUMBERS_FOR_ENUMS to allow"
     webTestClient.post()
       .uri("/risk-scores/v1")
       .headers(setAuthorisation(roles = listOf("ARNS_RISK_ACTUARIAL")))
@@ -189,7 +189,7 @@ class RiskScoreControllerTest : IntegrationTestBase() {
   @Test
   fun `postRiskScores returns 400 if unknown field is passed`() {
     val expectedError =
-      "JSON parse error: Unrecognized field \"IdoNotExists\" (class uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest), not marked as ignorable"
+      "JSON parse error: Unrecognized property \"IdoNotExists\" (class uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest), not marked as ignorable"
     webTestClient.post()
       .uri("/risk-scores/v1")
       .headers(setAuthorisation(roles = listOf("ARNS_RISK_ACTUARIAL")))

@@ -25,7 +25,7 @@ services:
     ports:
       - "8090:8080"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/auth/health"]
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/8080"]
     volumes:
       - ./auth_db:/auth_db
     environment:
@@ -35,7 +35,7 @@ services:
       - SPRING_FLYWAY_LOCATIONS=classpath:db/auth,db/auth_h2,db/dev/data/auth_h2,db/dev/data/auth,filesystem:/auth_db
 
   redis:
-    image: redis:8.2.2-alpine
+    image: redis:8.6.2-alpine
     networks:
       - hmpps
     container_name: redis

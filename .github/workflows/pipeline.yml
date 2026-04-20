@@ -33,47 +33,43 @@ jobs:
   helm_lint:
     strategy:
       matrix:
-        environments: [ 'dev', 'preprod', 'prod' ]
+        environments: ['dev', 'preprod', 'prod']
     name: helm lint
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/test_helm_lint.yml@v2 # WORKFLOW_VERSION
     secrets: inherit
     with:
       environment: ${{ matrix.environments }}
-  kotlin_validate:
-    name: Validate the kotlin
-    uses: ministryofjustice/hmpps-github-actions/.github/workflows/kotlin_validate.yml@v2 # WORKFLOW_VERSION
-    secrets: inherit
-  k6_performance_test:
-    name: Run K6 performance test
-    if: github.ref != 'refs/heads/main'
+  app_version:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.app_version.outputs.version }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Stand up a test environment
-        run: docker compose -f docker-compose.yml up --wait --no-recreate
-      - name: Setup K6
-        uses: grafana/setup-k6-action@v1
-      - name: Run local k6 test
-        env:
-          CLIENT_ID: ${{ secrets.LOCAL_CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.LOCAL_CLIENT_SECRET }}
-          AUTH_URL: http://localhost:8090/auth/oauth/token
-        uses: grafana/run-k6-action@v1
-        with:
-          path: ./k6/performance-test.js
+      - id: app_version
+        name: Application version creators
+        uses: ministryofjustice/hmpps-github-shared-actions/.github/actions/build-test-and-deploy/create_app_version@f52dbae537425d92f2216c4a2d9e0e44e603abb1 #v1
+  gradle_verify:
+    name: Validate the kotlin
+    uses: ministryofjustice/hmpps-github-actions/.github/workflows/gradle_verify.yml@v2 # WORKFLOW_VERSION
+    secrets: inherit
+    with:
+      gradle-command: 'BUILD_NUMBER=${{ needs.app_version.outputs.version}} ./gradlew assemble check'
+      upload-build-artifacts: ${{ github.ref == 'refs/heads/main' }}
+      java-version: "25"
+    needs:
+      - app_version
   build:
     name: Build docker image from hmpps-github-actions
     if: github.ref == 'refs/heads/main'
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/docker_build.yml@v2 # WORKFLOW_VERSION
     needs:
-      - kotlin_validate
+      - gradle_verify
     with:
       docker_registry: 'ghcr.io'
       registry_org: 'ministryofjustice'
       additional_docker_tag: ${{ inputs.additional_docker_tag }}
-      push: ${{ inputs.push || true }}
+      push: ${{ inputs.push || inputs.push == null }}
       docker_multiplatform: false
+      download_build_artifacts: true
   deploy_dev:
     name: Deploy to the development environment
     needs:
