@@ -4,13 +4,13 @@
 [![Docker Repository on ghcr](https://img.shields.io/badge/ghcr.io-repository-2496ED.svg?logo=docker)](https://ghcr.io/ministryofjustice/hmpps-arns-risk-actuarial-api)
 [![API docs](https://img.shields.io/badge/API_docs_-view-85EA2D.svg?logo=swagger)](https://arns-risk-actuarial-api-dev.hmpps.service.justice.gov.uk/swagger-ui/index.html)
 
-## Running the application locally
+## Running the application locally in Docker (not recommended)
 
 The application comes with a `dev` spring profile that includes default settings for running locally. This is not
 necessary when deploying to kubernetes as these values are included in the helm configuration templates -
 e.g. `values-dev.yaml`.
 
-There is also a `docker-compose.yml` that can be used to run a local instance of the template in docker and also an
+There is also a `docker-compose.yml` that can be used to run the latest version from main in docker and also an
 instance of Redis, Manage-Offences-Api (wiremock) & HMPPS Auth (required if your service calls out to other services using a token).
 
 ```bash
@@ -18,7 +18,7 @@ docker compose -f docker-compose.yml down #Stop
 docker compose -f docker-compose.yml up #Start
 ```
 
-### Running the application in Intellij
+### Running the application in Intellij (recommended)
 
 ```bash
 docker compose pull && docker compose up --scale hmpps-arns-risk-actuarial-api=0
@@ -27,6 +27,24 @@ docker compose pull && docker compose up --scale hmpps-arns-risk-actuarial-api=0
 will just start a docker instance of Redis, Manage-Offences-Api (wiremock) & HMPPS Auth. The application should then be started with a `dev` active profile
 in Intellij. Alternatively use a command like:
 `HMPPS_AUTH_URL=https://localhost:8090/auth SPRING_PROFILES_ACTIVE=dev ./gradlew bootRun`
+
+### Calling the API locally
+You will need to generate a JWT token to call the API. This can be done by running the following command
+```bash
+curl -X POST http://localhost:8090/auth/oauth/token \
+     -H "Authorization: Basic aG1wcHMtYXJucy1yaXNrLWFjdHVhcmlhbC1hcGktZGV2OnRlc3Qtc2VjcmV0" \
+     -H "Content-Type: application/x-www-form-urlencoded" \
+     -d "grant_type=client_credentials"
+```
+Alternatively use the following settings in Postman (in the Authorization)
+* Type: OAuth 2.0
+* Grant Type: Client Credentials
+* Access Token URL: http://localhost:8090/auth/oauth/token
+* Client ID: hmpps-arns-risk-actuarial-api-dev
+* Client Secret: test-secret
+* Client Authentication: Send as Basic Auth header
+
+Use the `access_token` returned in the header of your request to the API e.g. `Authorization: Bearer ${access_token}`
 
 ### Initialising Offence-Code Actuarial Mappings
 
