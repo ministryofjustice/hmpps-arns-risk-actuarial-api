@@ -38,7 +38,6 @@ class ApiIntegrationTest : IntegrationTestBase() {
       Pair("ospiic", "/actuarialPredictors/indirectContactSexualPredictor"),
       Pair("snsv", "/actuarialPredictors/seriousViolencePredictor"),
       Pair("rsr", "/actuarialPredictors/seriousPredictor"),
-      Pair("ogp", "/actuarialPredictors/nonViolentPredictor"),
       Pair("ovp", "/actuarialPredictors/violentPredictor"),
       Pair("ogrs3", "/actuarialPredictors/allPredictor"),
       Pair("lds", "/lds"),

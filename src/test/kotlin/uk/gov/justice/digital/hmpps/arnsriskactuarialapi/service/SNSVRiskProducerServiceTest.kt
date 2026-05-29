@@ -139,7 +139,7 @@ class SNSVRiskProducerServiceTest {
       block = {
         service.getRiskScore(
           validSNSVDynamicRiskScoreRequest().copy(
-            ageAtFirstSanction = 1 as Integer,
+            ageAtFirstSanction = 1,
             dateOfBirth = LocalDate.of(2020, Month.JANUARY, 1),
             dateOfCurrentConviction = LocalDate.of(2025, Month.JANUARY, 1),
           ),
@@ -157,7 +157,7 @@ class SNSVRiskProducerServiceTest {
       block = {
         service.getRiskScore(
           validSNSVStaticRiskScoreRequest().copy(
-            ageAtFirstSanction = 1 as Integer,
+            ageAtFirstSanction = 1,
             dateOfBirth = LocalDate.of(2020, Month.JANUARY, 1),
             dateOfCurrentConviction = LocalDate.of(2025, Month.JANUARY, 1),
             dateAtStartOfFollowupUserInput = LocalDate.of(2027, 1, 1),

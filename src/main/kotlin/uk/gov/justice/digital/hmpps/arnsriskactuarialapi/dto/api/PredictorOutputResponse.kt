@@ -10,7 +10,7 @@ data class AllPredictorPredictorOutputResponse(
   val twoYearScore: Int?,
 ) : PredictorOutputResponse(band)
 
-data class ViolentOrNonViolentPredictorPredictorOutputResponse(
+data class ViolentPredictorPredictorOutputResponse(
   override val band: RiskBandResponse?,
   val oneYearScore: Int?,
   val twoYearScore: Int?,

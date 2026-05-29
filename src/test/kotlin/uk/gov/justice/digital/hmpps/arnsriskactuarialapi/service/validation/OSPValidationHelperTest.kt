@@ -65,7 +65,7 @@ class OSPValidationHelperTest {
       totalIndecentImageSanctions = null,
       dateAtStartOfFollowupUserInput = LocalDate.of(2030, 1, 1),
       dateOfMostRecentSexualOffence = null,
-      totalNumberOfSanctionsForAllOffences = 1 as Integer?,
+      totalNumberOfSanctionsForAllOffences = 1,
       supervisionStatus = SupervisionStatus.COMMUNITY,
       mostRecentOffenceDate = null,
     )
@@ -98,7 +98,7 @@ class OSPValidationHelperTest {
       totalIndecentImageSanctions = 0,
       dateAtStartOfFollowupUserInput = LocalDate.of(2030, 1, 1),
       dateOfMostRecentSexualOffence = null,
-      totalNumberOfSanctionsForAllOffences = 1 as Integer?,
+      totalNumberOfSanctionsForAllOffences = 1,
       supervisionStatus = SupervisionStatus.COMMUNITY,
       mostRecentOffenceDate = null,
     )

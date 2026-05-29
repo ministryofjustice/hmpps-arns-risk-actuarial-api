@@ -25,7 +25,7 @@ class OGRS3ValidationHelperTest {
   @Test
   fun `validateOGRS3 totalNumberOfSanctions validation error`() {
     val riskScoreRequest = validOGRS3RiskScoreRequest()
-      .copy(totalNumberOfSanctionsForAllOffences = 0 as Integer)
+      .copy(totalNumberOfSanctionsForAllOffences = 0)
     val errors = validateOGRS3(riskScoreRequest)
     assertEquals(1, errors.size)
     assertEquals(ValidationErrorType.TOTAL_NUMBER_OF_SANCTIONS_LESS_THAN_ONE, errors[0].type)
@@ -121,8 +121,8 @@ class OGRS3ValidationHelperTest {
     FIXED_TEST_DATE,
     LocalDate.of(1964, 10, 15),
     LocalDate.of(2014, 12, 13),
-    10 as Integer?,
-    30 as Integer?,
+    10,
+    30,
     "05110",
     dateAtStartOfFollowupCalculated = LocalDate.of(2027, 12, 12),
   )

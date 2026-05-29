@@ -127,20 +127,6 @@
         "featureValues": {},
         "validationErrors": []
       },
-      "nonViolentPredictor": {
-        "algorithm": "OGP",
-        "type": "DYNAMIC",
-        "modelVersion": "1.0",
-        "thresholdsVersion": "1.0",
-        "output": {
-          "band": "LOW",
-          "oneYearScore": 10,
-          "twoYearScore": 18,
-          "pointScore": 25
-        },
-        "featureValues": {},
-        "validationErrors": []
-      },
       "directContactSexualPredictor": {
         "algorithm": "OSPDC",
         "type": "STATIC",

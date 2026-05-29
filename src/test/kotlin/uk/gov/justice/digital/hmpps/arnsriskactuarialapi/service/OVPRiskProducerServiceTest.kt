@@ -25,8 +25,8 @@ class OVPRiskProducerServiceTest {
     val result = service.getRiskScore(
       validOVPRiskScoreRequest()
         .copy(
-          totalNumberOfSanctionsForAllOffences = 1 as Integer,
-          totalNumberOfViolentSanctions = 0 as Integer,
+          totalNumberOfSanctionsForAllOffences = 1,
+          totalNumberOfViolentSanctions = 0,
           doesRecogniseImpactOfOffendingOnOthers = false,
         ),
       emptyContext(),
@@ -57,8 +57,8 @@ class OVPRiskProducerServiceTest {
     val result = service.getRiskScore(
       validOVPRiskScoreRequest()
         .copy(
-          totalNumberOfSanctionsForAllOffences = 55 as Integer,
-          totalNumberOfViolentSanctions = 40 as Integer,
+          totalNumberOfSanctionsForAllOffences = 55,
+          totalNumberOfViolentSanctions = 40,
           doesRecogniseImpactOfOffendingOnOthers = true,
           temperControl = ProblemLevel.SIGNIFICANT_PROBLEMS,
           currentAlcoholUseProblems = ProblemLevel.SOME_PROBLEMS,
