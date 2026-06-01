@@ -47,5 +47,5 @@ enum class AllReoffendingPredictorDynamic(val label: String, val coefficient: Bi
   BENZODIAZEPINES("benzo", BigDecimal(0.0764353348164513)),
   CANNABIS("cannabis", BigDecimal(0.049300440360878)),
   STEROIDS("steroid", BigDecimal(0.202231737251706)),
-  OTHER_DRUGS("otherdrug_code_iln", BigDecimal(0.0267794308651123));
+  OTHER_DRUGS("otherdrug_code_iln", BigDecimal(0.0267794308651123)),
 }

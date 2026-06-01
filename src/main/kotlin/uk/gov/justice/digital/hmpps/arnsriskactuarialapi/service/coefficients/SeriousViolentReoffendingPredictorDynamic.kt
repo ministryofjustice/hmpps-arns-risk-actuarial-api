@@ -2,7 +2,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.coefficients
 
 import java.math.BigDecimal
 
-enum class SeriousViolentReoffendingPredictorDynamic (val label: String, val coefficient: BigDecimal) {
+enum class SeriousViolentReoffendingPredictorDynamic(val label: String, val coefficient: BigDecimal) {
 
   TWO_YEAR_CONSTANT("Intercept_2", BigDecimal(-1.70588696906607)),
   AAI_MALE("maleaai", BigDecimal(-0.0343861125060411)),
@@ -42,5 +42,5 @@ enum class SeriousViolentReoffendingPredictorDynamic (val label: String, val coe
   PAST_AGGRAVATED_BURGLARY_OFFENCE("pastaggrburg", BigDecimal(0.183891831607701)),
   PAST_WEAPON_OFFENCE("pastweapon", BigDecimal(0.231407077551008)),
   PAST_CRIMINAL_DAMAGE_OFFENCE("pastcdlife", BigDecimal(1.01491061134195)),
-  PAST_ARSON_OFFENCE("pastarson", BigDecimal(0.0073649024927637));
+  PAST_ARSON_OFFENCE("pastarson", BigDecimal(0.0073649024927637)),
 }

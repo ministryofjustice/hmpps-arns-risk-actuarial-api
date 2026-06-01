@@ -2,7 +2,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.coefficients
 
 import java.math.BigDecimal
 
-enum class ViolentReoffendingPredictorDynamic (val label: String, val coefficient: BigDecimal) {
+enum class ViolentReoffendingPredictorDynamic(val label: String, val coefficient: BigDecimal) {
 
   TWO_YEAR_CONSTANT("Intercept_2", BigDecimal(1.81687448362791)),
   AAI_MALE("maleaai", BigDecimal(-0.0645236564493287)),
@@ -48,5 +48,5 @@ enum class ViolentReoffendingPredictorDynamic (val label: String, val coefficien
   BENZODIAZEPINES("benzo", BigDecimal(0.0587469123708279)),
   CANNABIS("cannabis", BigDecimal(0.001864706197971)),
   STEROIDS("steroid", BigDecimal(0.342197551153158)),
-  OTHER_DRUGS("otherdrug_code_iln", BigDecimal(0.150053208890266));
+  OTHER_DRUGS("otherdrug_code_iln", BigDecimal(0.150053208890266)),
 }

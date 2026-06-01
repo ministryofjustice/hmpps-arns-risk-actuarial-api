@@ -2,7 +2,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.coefficients
 
 import java.math.BigDecimal
 
-enum class SeriousViolentReoffendingPredictorStatic (val label: String, val coefficient: BigDecimal) {
+enum class SeriousViolentReoffendingPredictorStatic(val label: String, val coefficient: BigDecimal) {
 
   TWO_YEAR_CONSTANT("Intercept_2", BigDecimal(-0.970734555223987)),
   AAI_MALE("maleaai", BigDecimal(-0.035211251525685)),

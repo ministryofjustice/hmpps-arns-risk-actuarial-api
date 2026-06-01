@@ -27,5 +27,5 @@ enum class AllReoffendingPredictorStatic(val label: String, val coefficient: Big
   THREE_PLUS_SANCTIONS_COPAS_G_MALE("malethreeplussanctionsogrs4g_rat", BigDecimal(1.55298303083717)),
   THREE_PLUS_SANCTIONS_COPAS_SQUARED_MALE("malethreeplussanctionsogrs4g_rao", BigDecimal(0.129334968245905)),
   THREE_PLUS_SANCTIONS_COPAS_G_FEMALE("femalethreeplussanctionsogrs4g_r", BigDecimal(1.01980307124196)),
-  THREE_PLUS_SANCTIONS_COPAS_SQUARED_FEMALE("femalethreeplussanctionsogrs4g_o", BigDecimal(-0.039439197041062));
+  THREE_PLUS_SANCTIONS_COPAS_SQUARED_FEMALE("femalethreeplussanctionsogrs4g_o", BigDecimal(-0.039439197041062)),
 }
