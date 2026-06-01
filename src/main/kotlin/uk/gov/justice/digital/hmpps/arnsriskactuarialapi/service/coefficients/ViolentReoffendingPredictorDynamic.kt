@@ -40,7 +40,7 @@ enum class ViolentReoffendingPredictorDynamic(val label: String, val coefficient
   BINGE_DRINKING("S9Q2", BigDecimal(0.0981126172766304)),
   IMPULSIVITY("S11Q2", BigDecimal(0.0323581330157977)),
   TEMPER("S11Q4", BigDecimal(0.091904896744703)),
-  METHADONE(label = "methadone", coefficient = BigDecimal(0.0576906845544844)),
+  METHADONE("methadone", BigDecimal(0.0576906845544844)),
   OTHER_OPIATE("otheropiate", BigDecimal(0.0753935224854228)),
   CRACK_COCAINE("crack", BigDecimal(0.0902595215602798)),
   POWDER_COCAINE("cokepowder", BigDecimal(0.087313111600886)),

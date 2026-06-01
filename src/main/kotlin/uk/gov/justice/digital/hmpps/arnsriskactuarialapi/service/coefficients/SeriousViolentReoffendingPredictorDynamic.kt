@@ -34,7 +34,7 @@ enum class SeriousViolentReoffendingPredictorDynamic(val label: String, val coef
   CHRONIC_DRINKING("S9Q1", BigDecimal(0.0765545992903705)),
   TEMPER("S11Q4", BigDecimal(0.124207407357376)),
   PRO_CRIMINAL_ATTITUDE("S12Q1", BigDecimal(0.0982315473681468)),
-  PAST_HOMICIDE_OFFENCE(label = "pasthomicide", coefficient = BigDecimal(0.355308819798017)),
+  PAST_HOMICIDE_OFFENCE("pasthomicide", BigDecimal(0.355308819798017)),
   PAST_GBH_OFFENCE("pastwoundinggbh", BigDecimal(0.399845826788494)),
   PAST_KIDNAPPING_OFFENCE("pastkidnap", BigDecimal(0.534510912919277)),
   PAST_FIREARMS_OFFENCE("pastfirearm", BigDecimal(0.780403925884582)),

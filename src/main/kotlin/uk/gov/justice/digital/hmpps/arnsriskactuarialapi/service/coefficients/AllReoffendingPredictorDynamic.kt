@@ -39,7 +39,7 @@ enum class AllReoffendingPredictorDynamic(val label: String, val coefficient: Bi
   BINGE_DRINKING("S9Q2", BigDecimal(0.0338427436465108)),
   IMPULSIVITY("S11Q2", BigDecimal(0.0421988370095297)),
   PRO_CRIMINAL_ATTITUDE("S12Q1", BigDecimal(0.0439083095441417)),
-  HEROIN(label = "heroin", coefficient = BigDecimal(0.182096496867273)),
+  HEROIN("heroin", BigDecimal(0.182096496867273)),
   OTHER_OPIATE("otheropiate", BigDecimal(0.17892958261215)),
   CRACK_COCAINE("crack", BigDecimal(0.109095964190426)),
   POWDER_COCAINE("cokepowder", BigDecimal(0.0605135470691152)),
