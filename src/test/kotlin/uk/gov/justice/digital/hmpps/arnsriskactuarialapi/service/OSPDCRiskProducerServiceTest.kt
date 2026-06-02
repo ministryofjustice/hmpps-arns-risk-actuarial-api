@@ -22,7 +22,7 @@ class OSPDCRiskProducerServiceTest {
         .copy(
           gender = Gender.MALE,
           hasEverCommittedSexualOffence = true,
-          totalNumberOfSanctionsForAllOffences = 1 as Integer,
+          totalNumberOfSanctionsForAllOffences = 1,
           totalContactAdultSexualSanctions = 0,
           totalContactChildSexualSanctions = 0,
           totalNonContactSexualOffences = 1,
@@ -41,7 +41,7 @@ class OSPDCRiskProducerServiceTest {
     val result = service.getRiskScore(
       validOSPDCRiskScoreRequest()
         .copy(
-          totalNumberOfSanctionsForAllOffences = 1 as Integer,
+          totalNumberOfSanctionsForAllOffences = 1,
           totalContactAdultSexualSanctions = 1,
           totalContactChildSexualSanctions = 1,
           totalNonContactSexualOffences = 1,
@@ -60,7 +60,7 @@ class OSPDCRiskProducerServiceTest {
     val result = service.getRiskScore(
       validOSPDCRiskScoreRequest()
         .copy(
-          totalNumberOfSanctionsForAllOffences = 1 as Integer,
+          totalNumberOfSanctionsForAllOffences = 1,
           totalContactAdultSexualSanctions = 2,
           totalContactChildSexualSanctions = 2,
           totalNonContactSexualOffences = 1,
@@ -79,7 +79,7 @@ class OSPDCRiskProducerServiceTest {
     val result = service.getRiskScore(
       validOSPDCRiskScoreRequest()
         .copy(
-          totalNumberOfSanctionsForAllOffences = 1 as Integer,
+          totalNumberOfSanctionsForAllOffences = 1,
           totalContactAdultSexualSanctions = 3,
           totalContactChildSexualSanctions = 3,
           totalNonContactSexualOffences = 1,
@@ -142,7 +142,7 @@ class OSPDCRiskProducerServiceTest {
         totalNonContactSexualOffences = 0,
         totalIndecentImageSanctions = 1,
         dateOfMostRecentSexualOffence = LocalDate.of(1963, 1, 1),
-        totalNumberOfSanctionsForAllOffences = 1 as Integer,
+        totalNumberOfSanctionsForAllOffences = 1,
         isCurrentOffenceAgainstVictimStranger = false,
       ),
       emptyContext(),

@@ -122,7 +122,7 @@ class SNSVValidationHelperTest {
   @Test
   fun `validateSNSV with invalid total and violent sanction counts`() {
     val inputRiskScoreRequest = validSNSVStaticRiskScoreRequest()
-      .copy(totalNumberOfSanctionsForAllOffences = 1 as Integer, totalNumberOfViolentSanctions = 2 as Integer)
+      .copy(totalNumberOfSanctionsForAllOffences = 1, totalNumberOfViolentSanctions = 2)
     val result = validateSNSV(inputRiskScoreRequest)
     assertEquals(1, result.size)
     assertEquals(ValidationErrorType.VIOLENT_SANCTION_GREATER_THAN_TOTAL_SANCTIONS, result.first().type)
@@ -148,7 +148,7 @@ class SNSVValidationHelperTest {
   fun `validateSNSV when age at first sanction is higher than age at current conviction`() {
     val inputRiskScoreRequest = validSNSVStaticRiskScoreRequest()
       .copy(
-        ageAtFirstSanction = 46 as Integer,
+        ageAtFirstSanction = 46,
       )
     val result = validateSNSV(inputRiskScoreRequest)
     assertEquals(1, result.size)

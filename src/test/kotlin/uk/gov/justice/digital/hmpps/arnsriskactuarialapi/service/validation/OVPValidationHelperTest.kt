@@ -22,7 +22,7 @@ class OVPValidationHelperTest {
   @Test
   fun `validateOVP totalNumberOfSanctions validation error`() {
     val request = validOVPRiskScoreRequest()
-      .copy(totalNumberOfSanctionsForAllOffences = 0 as Integer)
+      .copy(totalNumberOfSanctionsForAllOffences = 0)
     val errors = validateOVP(request)
     assertEquals(1, errors.size)
     assertEquals(ValidationErrorType.TOTAL_NUMBER_OF_SANCTIONS_LESS_THAN_ONE, errors[0].type)
@@ -72,8 +72,8 @@ class OVPValidationHelperTest {
     gender = Gender.MALE,
     dateOfBirth = LocalDate.of(1990, 1, 1),
     dateAtStartOfFollowupCalculated = LocalDate.of(2021, 1, 1),
-    totalNumberOfSanctionsForAllOffences = 1 as Integer?,
-    totalNumberOfViolentSanctions = 1 as Integer?,
+    totalNumberOfSanctionsForAllOffences = 1,
+    totalNumberOfViolentSanctions = 1,
     doesRecogniseImpactOfOffendingOnOthers = true,
     isCurrentlyOfNoFixedAbodeOrTransientAccommodation = true,
     isUnemployed = false,

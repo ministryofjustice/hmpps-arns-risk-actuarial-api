@@ -2,7 +2,6 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.ActuarialPredictorsResponse
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.OGP
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.OGRS3
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.OSPDC
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.OSPIIC
@@ -20,7 +19,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.ScoreTypeRespon
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.SeriousPredictorComponentScores
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.SeriousPredictorPredictorOutputResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.SeriousViolencePredictorPredictorOutputResponse
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.ViolentOrNonViolentPredictorPredictorOutputResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.ViolentPredictorPredictorOutputResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.toRiskBandResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.toScoreTypeResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds.LDSObject
@@ -49,7 +48,6 @@ private fun buildPredictorResponseForMST(riskScoreContext: RiskScoreContext): MS
 private fun buildActuarialPredictorsResponse(riskScoreContext: RiskScoreContext): ActuarialPredictorsResponse = ActuarialPredictorsResponse(
   buildPredictorResponseForAllPredictor(riskScoreContext),
   buildPredictorResponseForViolentPredictor(riskScoreContext),
-  buildPredictorResponseForNonViolentPredictor(riskScoreContext),
   buildPredictorResponseForDirectContactSexualPredictor(riskScoreContext),
   buildPredictorResponseForIndirectContactSexualPredictor(riskScoreContext),
   buildPredictorResponseForSeriousViolencePredictor(riskScoreContext),
@@ -71,33 +69,18 @@ private fun buildPredictorResponseForAllPredictor(riskScoreContext: RiskScoreCon
   )
 }
 
-private fun buildPredictorResponseForViolentPredictor(riskScoreContext: RiskScoreContext): PredictorResponse<ViolentOrNonViolentPredictorPredictorOutputResponse> {
+private fun buildPredictorResponseForViolentPredictor(riskScoreContext: RiskScoreContext): PredictorResponse<ViolentPredictorPredictorOutputResponse> {
   val ovp = riskScoreContext.OVP!!
   return PredictorResponse(
     OVP,
     DYNAMIC,
-    output = ViolentOrNonViolentPredictorPredictorOutputResponse(
+    output = ViolentPredictorPredictorOutputResponse(
       ovp.band.toRiskBandResponse(),
       ovp.provenViolentTypeReoffendingOneYear,
       ovp.provenViolentTypeReoffendingTwoYear,
       ovp.pointScore,
     ),
     validationErrors = ovp.validationError ?: emptyList(),
-  )
-}
-
-private fun buildPredictorResponseForNonViolentPredictor(riskScoreContext: RiskScoreContext): PredictorResponse<ViolentOrNonViolentPredictorPredictorOutputResponse> {
-  val ogp = riskScoreContext.OGP!!
-  return PredictorResponse(
-    OGP,
-    DYNAMIC,
-    output = ViolentOrNonViolentPredictorPredictorOutputResponse(
-      ogp.bandOGP.toRiskBandResponse(),
-      ogp.ogpReoffendingOneYear,
-      ogp.ogpReoffendingTwoYear,
-      ogp.totalOGPScore,
-    ),
-    validationErrors = ogp.validationError ?: emptyList(),
   )
 }
 

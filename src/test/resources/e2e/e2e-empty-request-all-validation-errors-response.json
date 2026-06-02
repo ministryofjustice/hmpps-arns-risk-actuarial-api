@@ -64,37 +64,6 @@
           }
         ]
       },
-      "nonViolentPredictor": {
-        "algorithm": "OGP",
-        "type": "DYNAMIC",
-        "modelVersion": "1.0",
-        "thresholdsVersion": "1.0",
-        "output": {
-          "band": null,
-          "oneYearScore": null,
-          "twoYearScore": null,
-          "pointScore": null
-        },
-        "featureValues": {},
-        "validationErrors": [
-          {
-            "type": "MISSING_MANDATORY_INPUT",
-            "message": "Mandatory input field(s) missing",
-            "fields": [
-              "isCurrentlyOfNoFixedAbodeOrTransientAccommodation",
-              "isUnemployed",
-              "regularOffendingActivities",
-              "currentDrugMisuse",
-              "motivationToTackleDrugMisuse",
-              "problemSolvingSkills",
-              "awarenessOfConsequences",
-              "understandsOtherPeoplesViews",
-              "proCriminalAttitudes",
-              "ogrs3TwoYear"
-            ]
-          }
-        ]
-      },
       "directContactSexualPredictor": {
         "algorithm": "OSPDC",
         "type": "STATIC",
