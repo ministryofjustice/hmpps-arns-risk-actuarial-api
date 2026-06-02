@@ -6,7 +6,7 @@ enum class AllReoffendingPredictorDynamic(val label: String, val coefficient: Bi
 
   TWO_YEAR_CONSTANT("Intercept_2", BigDecimal(3.83654148692014)),
   AAI_MALE("maleaai", BigDecimal(-0.110202179628585)),
-  AAI_QUADRATIC_MALE("maleaaiaai", BigDecimal(-0.110202179628585)),
+  AAI_QUADRATIC_MALE("maleaaiaai", BigDecimal(0.0006726723443858)),
   AAI_CUBIC_MALE("maleaaiaaiaai", BigDecimal(0.0000138719445957)),
   AAI_QUARTIC_MALE("maleaaiaaiaaiaai", BigDecimal(-0.0000001610775422)),
   AAI_FEMALE("aaifemale", BigDecimal(-0.0097677485919972)),
