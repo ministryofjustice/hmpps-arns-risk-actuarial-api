@@ -1,0 +1,46 @@
+package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.coefficients
+
+import java.math.BigDecimal
+
+enum class SeriousViolentReoffendingPredictorDynamic(val label: String, val coefficient: BigDecimal) {
+
+  TWO_YEAR_CONSTANT("Intercept_2", BigDecimal(-1.70588696906607)),
+  AAI_MALE("maleaai", BigDecimal(-0.0343861125060411)),
+  AAI_QUADRATIC_MALE("maleaaiaai", BigDecimal(-0.0002060693939063)),
+  AAI_FEMALE("aaifemale", BigDecimal(-0.0215931881507551)),
+  AAI_QUADRATIC_FEMALE("aaiaaifemale", BigDecimal(-0.0000539574087783)),
+  FEMALE("female", BigDecimal(-1.609748656497)),
+  OFFENCE_VATP_FLAG("ogrs4_targoffVATP", BigDecimal(0.110262124783647)),
+  FIRST_SANCTION("firstsanction", BigDecimal(-2.26703484992352)),
+  SECOND_SANCTION("secondsanction", BigDecimal(-1.17946726635964)),
+  SANCTION_OCCASIONS("ogrs3_sanctionoccasions", BigDecimal(-0.025992075782348)),
+  YRS_BETWEEN_FIRST_AND_SECOND_SANCTION_MALE("malesecondsanctionyearssincefirs", BigDecimal(-0.0967640128116584)),
+  YRS_BETWEEN_FIRST_AND_SECOND_SANCTION_FEMALE("femalesecondsanctionyearssincefi", BigDecimal(-0.1712941019545757)),
+  OFFENCE_FREE_MONTHS("ofm", BigDecimal(-0.029248960074744)),
+  OFFENCE_FREE_MONTHS_QUADRATIC("ofmofm", BigDecimal(0.0003119515647398)),
+  OFFENCE_FREE_MONTHS_CUBIC("ofmofmofm", BigDecimal(0.0000022269607594)),
+  OFFENCE_FREE_MONTHS_QUARTIC("ofmofmofmofm", BigDecimal(-0.0000002955293324)),
+  THREE_PLUS_SANCTIONS_COPAS_V_MALE("malethreeplussanctionsogrs4v_rat", BigDecimal(0.858101289182386)),
+  THREE_PLUS_SANCTIONS_COPAS_V_FEMALE("femalethreeplussanctionsogrs4v_r", BigDecimal(0.848200474467235)),
+  NEVER_VIOLENT_MALE("maleneverviolent", BigDecimal(-1.09871100777043)),
+  NEVER_VIOLENT_FEMALE("femaleneverviolent", BigDecimal(-1.36716291233552)),
+  ONCE_VIOLENT("onceviolent", BigDecimal(0.077746849480619)),
+  VIOLENT_SANCTIONS("ogrs3_ovp_sanct", BigDecimal(0.006532999224634)),
+  VIOLENT_RATE("ogrs4v_rate_violent", BigDecimal(0.165137054547059)),
+
+  CARRY_OR_USE_WEAPON("S2Q2A", BigDecimal(0.385215247009075)),
+  ACCOMMODATION_SUITABILITY("S3Q4", BigDecimal(0.0442239531567977)),
+  UNEMPLOYED("S4Q2", BigDecimal(0.0734628466183293)),
+  CHRONIC_DRINKING("S9Q1", BigDecimal(0.0765545992903705)),
+  TEMPER("S11Q4", BigDecimal(0.124207407357376)),
+  PRO_CRIMINAL_ATTITUDE("S12Q1", BigDecimal(0.0982315473681468)),
+  PAST_HOMICIDE_OFFENCE("pasthomicide", BigDecimal(0.355308819798017)),
+  PAST_GBH_OFFENCE("pastwoundinggbh", BigDecimal(0.399845826788494)),
+  PAST_KIDNAPPING_OFFENCE("pastkidnap", BigDecimal(0.534510912919277)),
+  PAST_FIREARMS_OFFENCE("pastfirearm", BigDecimal(0.780403925884582)),
+  PAST_ROBBERY_OFFENCE("pastrobbery", BigDecimal(0.290562230335504)),
+  PAST_AGGRAVATED_BURGLARY_OFFENCE("pastaggrburg", BigDecimal(0.183891831607701)),
+  PAST_WEAPON_OFFENCE("pastweapon", BigDecimal(0.231407077551008)),
+  PAST_CRIMINAL_DAMAGE_OFFENCE("pastcdlife", BigDecimal(1.01491061134195)),
+  PAST_ARSON_OFFENCE("pastarson", BigDecimal(0.0073649024927637)),
+}
