@@ -10,7 +10,6 @@ enum class SeriousViolentReoffendingPredictorDynamic(val label: String, val coef
   AAI_FEMALE("aaifemale", BigDecimal(-0.0215931881507551)),
   AAI_QUADRATIC_FEMALE("aaiaaifemale", BigDecimal(-0.0000539574087783)),
   FEMALE("female", BigDecimal(-1.609748656497)),
-  OFFENCE_VATP_FLAG("ogrs4_targoffVATP", BigDecimal(0.110262124783647)),
   FIRST_SANCTION("firstsanction", BigDecimal(-2.26703484992352)),
   SECOND_SANCTION("secondsanction", BigDecimal(-1.17946726635964)),
   SANCTION_OCCASIONS("ogrs3_sanctionoccasions", BigDecimal(-0.025992075782348)),
