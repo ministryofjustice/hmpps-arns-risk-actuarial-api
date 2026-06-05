@@ -93,6 +93,54 @@ class NumbersUtilsTest {
   }
 
   @Test
+  fun `running the calculator performs a step by step chain reaction from right to left`() {
+    // Explanation Horner's polynomial rule for future maintainers
+    //
+    // Multiplier (x) is usually an age of a person, lets set this to 20.
+    // Our list of coefficients is [2, 3, 4, 5] for simplicity.
+    // Because of 'foldRight', the code loops backward from right to left (5, then 4, then 3, then 2).
+    // It keeps a running tally, starting at 0.
+    //
+    // Step 1 (Start at the right with 5):
+    // (Running Tally of 0 * 20) + 5 = 5
+    //
+    // Step 2 (Move left to 4):
+    // (Running Tally of 5 * 20) + 4 = 104
+    //
+    // Step 3 (Move left to 3):
+    // (Running Tally of 104 * 20) + 3 = 2083
+    //
+    // Step 4 (Move left to 2):
+    // (Running Tally of 2083 * 20) + 2 = 41662
+    //
+    // Final total: 41662
+
+    val x = BigDecimal(20)
+    val coefficients = arrayOf(
+      BigDecimal(2),
+      BigDecimal(3),
+      BigDecimal(4),
+      BigDecimal(5)
+    )
+    val actualTotal = calculatePolynomial(coefficients, x)
+    assertEquals(BigDecimal(41662), actualTotal)
+  }
+
+  @Test
+  fun `test polynomial yields exact same results`() {
+    val coeffsDouble = doubleArrayOf(2.0, 3.0, 4.0, 5.0)
+    val xDouble = 20.0
+
+    val coeffsBigDecimal = coeffsDouble.map { BigDecimal.valueOf(it) }.toTypedArray()
+    val xBigDecimal = BigDecimal.valueOf(xDouble)
+
+    val resultDouble = calculatePolynomial(coeffsDouble, xDouble)
+    val resultBigDecimal = calculatePolynomial(coeffsBigDecimal, xBigDecimal)
+
+    assertEquals(resultBigDecimal.toDouble(), resultDouble)
+  }
+
+  @Test
   fun `getAgeAtDate exact`() {
     val dob = today.minusYears(15)
     assertEquals(
