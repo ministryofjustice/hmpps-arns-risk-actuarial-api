@@ -18,7 +18,7 @@ import java.time.temporal.ChronoUnit
 import kotlin.math.ln
 import kotlin.math.pow
 
-class AllReoffendingPredictorTransformationHelper {
+object AllReoffendingPredictorTransformationHelper {
 
   fun getYearScore(staticOrDynamic: StaticOrDynamic): BigDecimal = when (staticOrDynamic) {
     StaticOrDynamic.STATIC -> AllReoffendingPredictorStatic.TWO_YEAR_CONSTANT.coefficient
@@ -79,22 +79,22 @@ class AllReoffendingPredictorTransformationHelper {
     }
   }
 
-  fun getFirstOrSecondSanctionWeight(
+  fun getFirstSanctionWeight(
     staticOrDynamic: StaticOrDynamic,
     totalNumberOfSanctionsForAllOffences: Int,
-  ): BigDecimal = when (totalNumberOfSanctionsForAllOffences) {
-    1 -> when (staticOrDynamic) {
-      StaticOrDynamic.STATIC -> AllReoffendingPredictorStatic.FIRST_SANCTION.coefficient
-      StaticOrDynamic.DYNAMIC -> AllReoffendingPredictorDynamic.FIRST_SANCTION.coefficient
-    }
+  ): BigDecimal = if (totalNumberOfSanctionsForAllOffences == 1) when (staticOrDynamic) {
+    StaticOrDynamic.STATIC -> AllReoffendingPredictorStatic.FIRST_SANCTION.coefficient
+    StaticOrDynamic.DYNAMIC -> AllReoffendingPredictorDynamic.FIRST_SANCTION.coefficient
+  } else BigDecimal.ZERO
 
-    2 -> when (staticOrDynamic) {
-      StaticOrDynamic.STATIC -> AllReoffendingPredictorStatic.SECOND_SANCTION.coefficient
-      StaticOrDynamic.DYNAMIC -> AllReoffendingPredictorDynamic.SECOND_SANCTION.coefficient
-    }
+  fun getSecondSanctionWeight(
+    staticOrDynamic: StaticOrDynamic,
+    totalNumberOfSanctionsForAllOffences: Int,
+  ): BigDecimal = if (totalNumberOfSanctionsForAllOffences == 2) when (staticOrDynamic) {
+    StaticOrDynamic.STATIC -> AllReoffendingPredictorStatic.SECOND_SANCTION.coefficient
+    StaticOrDynamic.DYNAMIC -> AllReoffendingPredictorDynamic.SECOND_SANCTION.coefficient
+  } else BigDecimal.ZERO
 
-    else -> BigDecimal.ZERO
-  }
 
   fun getTotalSanctionWeight(staticOrDynamic: StaticOrDynamic, totalNumberOfSanctionsForAllOffences: Int): BigDecimal {
     val coefficient: BigDecimal = when (staticOrDynamic) {
@@ -169,7 +169,6 @@ class AllReoffendingPredictorTransformationHelper {
     gender: Gender,
     ageAtFirstSanction: Int,
     ageAtCurrentSanction: Int,
-    isSquared: Boolean,
   ): BigDecimal {
     if (totalNumberOfSanctionsForAllOffences < 3) return BigDecimal.ZERO
 
@@ -222,48 +221,68 @@ class AllReoffendingPredictorTransformationHelper {
     return naturalLog.pow(2).toBigDecimal() * coefficient
   }
 
-  fun getSuitableAccommodationWeight(suitabilityOfAccommodation: ProblemLevel): BigDecimal = suitabilityOfAccommodation.score.toBigDecimal() * AllReoffendingPredictorDynamic.ACCOMMODATION_SUITABILITY.coefficient
+  fun getSuitableAccommodationWeight(suitabilityOfAccommodation: ProblemLevel): BigDecimal =
+    suitabilityOfAccommodation.score.toBigDecimal() * AllReoffendingPredictorDynamic.ACCOMMODATION_SUITABILITY.coefficient
 
-  fun getUnemployedWeight(isUnemployed: Boolean): BigDecimal = if (isUnemployed) AllReoffendingPredictorDynamic.UNEMPLOYED.coefficient else BigDecimal.ZERO
+  fun getUnemployedWeight(isUnemployed: Boolean): BigDecimal =
+    if (isUnemployed) AllReoffendingPredictorDynamic.UNEMPLOYED.coefficient else BigDecimal.ZERO
 
-  fun getLiveInRelationshipWeight(currentRelationshipStatus: CurrentRelationshipStatus): BigDecimal = if (currentRelationshipStatus == CurrentRelationshipStatus.IN_RELATIONSHIP_LIVING_TOGETHER) AllReoffendingPredictorDynamic.LIVE_IN_RELATIONSHIP.coefficient else BigDecimal.ZERO
+  fun getLiveInRelationshipWeight(currentRelationshipStatus: CurrentRelationshipStatus): BigDecimal =
+    if (currentRelationshipStatus == CurrentRelationshipStatus.IN_RELATIONSHIP_LIVING_TOGETHER) AllReoffendingPredictorDynamic.LIVE_IN_RELATIONSHIP.coefficient else BigDecimal.ZERO
 
-  fun getRelationshipQualityWeight(currentRelationshipWithPartner: ProblemLevel): BigDecimal = currentRelationshipWithPartner.score.toBigDecimal() * AllReoffendingPredictorDynamic.RELATIONSHIP_QUALITY.coefficient
+  fun getRelationshipQualityWeight(currentRelationshipWithPartner: ProblemLevel): BigDecimal =
+    currentRelationshipWithPartner.score.toBigDecimal() * AllReoffendingPredictorDynamic.RELATIONSHIP_QUALITY.coefficient
 
   fun getMultiplicativeRelationshipWeight(
     currentRelationshipStatus: CurrentRelationshipStatus,
     currentRelationshipWithPartner: ProblemLevel,
-  ): BigDecimal = if (currentRelationshipStatus == CurrentRelationshipStatus.IN_RELATIONSHIP_LIVING_TOGETHER && currentRelationshipWithPartner != ProblemLevel.NO_PROBLEMS) currentRelationshipWithPartner.score.toBigDecimal() * AllReoffendingPredictorDynamic.QUALITY_OF_LIVE_IN_RELATIONSHIP.coefficient else BigDecimal.ZERO
+  ): BigDecimal =
+    if (currentRelationshipStatus == CurrentRelationshipStatus.IN_RELATIONSHIP_LIVING_TOGETHER && currentRelationshipWithPartner != ProblemLevel.NO_PROBLEMS) currentRelationshipWithPartner.score.toBigDecimal() * AllReoffendingPredictorDynamic.QUALITY_OF_LIVE_IN_RELATIONSHIP.coefficient else BigDecimal.ZERO
 
-  fun getDomesticViolenceWeight(evidenceOfDomesticAbuse: Boolean): BigDecimal = if (evidenceOfDomesticAbuse) AllReoffendingPredictorDynamic.DOMESTIC_ABUSE.coefficient else BigDecimal.ZERO
+  fun getDomesticViolenceWeight(evidenceOfDomesticAbuse: Boolean): BigDecimal =
+    if (evidenceOfDomesticAbuse) AllReoffendingPredictorDynamic.DOMESTIC_ABUSE.coefficient else BigDecimal.ZERO
 
-  fun getRegularOffendingActivitiesWeight(regularOffendingActivities: ProblemLevel): BigDecimal = regularOffendingActivities.score.toBigDecimal() * AllReoffendingPredictorDynamic.ACTIVITIES_ENCOURAGE_OFFENDING.coefficient
+  fun getRegularOffendingActivitiesWeight(regularOffendingActivities: ProblemLevel): BigDecimal =
+    regularOffendingActivities.score.toBigDecimal() * AllReoffendingPredictorDynamic.ACTIVITIES_ENCOURAGE_OFFENDING.coefficient
 
-  fun getDrugMotivationWeight(motivationToTackleDrugMisuse: MotivationLevel): BigDecimal = motivationToTackleDrugMisuse.score.toBigDecimal() * AllReoffendingPredictorDynamic.MOTIVATION_TO_TACKLE_DRUG_MISUSE.coefficient
+  fun getDrugMotivationWeight(motivationToTackleDrugMisuse: MotivationLevel): BigDecimal =
+    motivationToTackleDrugMisuse.score.toBigDecimal() * AllReoffendingPredictorDynamic.MOTIVATION_TO_TACKLE_DRUG_MISUSE.coefficient
 
-  fun getChronicDrinkingWeight(currentAlcoholUseProblems: ProblemLevel): BigDecimal = currentAlcoholUseProblems.score.toBigDecimal() * AllReoffendingPredictorDynamic.CHRONIC_DRINKING.coefficient
+  fun getChronicDrinkingWeight(currentAlcoholUseProblems: ProblemLevel): BigDecimal =
+    currentAlcoholUseProblems.score.toBigDecimal() * AllReoffendingPredictorDynamic.CHRONIC_DRINKING.coefficient
 
-  fun getBingeDrinkingWeight(excessiveAlcoholUse: ProblemLevel): BigDecimal = excessiveAlcoholUse.score.toBigDecimal() * AllReoffendingPredictorDynamic.BINGE_DRINKING.coefficient
+  fun getBingeDrinkingWeight(excessiveAlcoholUse: ProblemLevel): BigDecimal =
+    excessiveAlcoholUse.score.toBigDecimal() * AllReoffendingPredictorDynamic.BINGE_DRINKING.coefficient
 
-  fun getImpulsivityWeight(impulsivityProblems: ProblemLevel): BigDecimal = impulsivityProblems.score.toBigDecimal() * AllReoffendingPredictorDynamic.IMPULSIVITY.coefficient
+  fun getImpulsivityWeight(impulsivityProblems: ProblemLevel): BigDecimal =
+    impulsivityProblems.score.toBigDecimal() * AllReoffendingPredictorDynamic.IMPULSIVITY.coefficient
 
-  fun getCriminalAttitudeWeight(proCriminalAttitudes: ProblemLevel): BigDecimal = proCriminalAttitudes.score.toBigDecimal() * AllReoffendingPredictorDynamic.PRO_CRIMINAL_ATTITUDE.coefficient
+  fun getCriminalAttitudeWeight(proCriminalAttitudes: ProblemLevel): BigDecimal =
+    proCriminalAttitudes.score.toBigDecimal() * AllReoffendingPredictorDynamic.PRO_CRIMINAL_ATTITUDE.coefficient
 
-  fun getHeroinUsageWeight(hasHeroinUsage: Boolean): BigDecimal = if (hasHeroinUsage) AllReoffendingPredictorDynamic.HEROIN.coefficient else BigDecimal.ZERO
+  fun getHeroinUsageWeight(hasHeroinUsage: Boolean): BigDecimal =
+    if (hasHeroinUsage) AllReoffendingPredictorDynamic.HEROIN.coefficient else BigDecimal.ZERO
 
-  fun getOtherOpiateUsageWeight(hasOtherOpiateUsage: Boolean): BigDecimal = if (hasOtherOpiateUsage) AllReoffendingPredictorDynamic.OTHER_OPIATE.coefficient else BigDecimal.ZERO
+  fun getOtherOpiateUsageWeight(hasOtherOpiateUsage: Boolean): BigDecimal =
+    if (hasOtherOpiateUsage) AllReoffendingPredictorDynamic.OTHER_OPIATE.coefficient else BigDecimal.ZERO
 
-  fun getCrackCocaineUsageWeight(hasCrackCocaineUsage: Boolean): BigDecimal = if (hasCrackCocaineUsage) AllReoffendingPredictorDynamic.CRACK_COCAINE.coefficient else BigDecimal.ZERO
+  fun getCrackCocaineUsageWeight(hasCrackCocaineUsage: Boolean): BigDecimal =
+    if (hasCrackCocaineUsage) AllReoffendingPredictorDynamic.CRACK_COCAINE.coefficient else BigDecimal.ZERO
 
-  fun getPowderCocaineUsageWeight(hasPowderCocaineUsage: Boolean): BigDecimal = if (hasPowderCocaineUsage) AllReoffendingPredictorDynamic.POWDER_COCAINE.coefficient else BigDecimal.ZERO
+  fun getPowderCocaineUsageWeight(hasPowderCocaineUsage: Boolean): BigDecimal =
+    if (hasPowderCocaineUsage) AllReoffendingPredictorDynamic.POWDER_COCAINE.coefficient else BigDecimal.ZERO
 
-  fun getMisusedPrescriptionDrugUsageWeight(hasMisusedPrescriptionDrugUsage: Boolean): BigDecimal = if (hasMisusedPrescriptionDrugUsage) AllReoffendingPredictorDynamic.PRESCRIPTION_DRUG_MISUSE.coefficient else BigDecimal.ZERO
+  fun getMisusedPrescriptionDrugUsageWeight(hasMisusedPrescriptionDrugUsage: Boolean): BigDecimal =
+    if (hasMisusedPrescriptionDrugUsage) AllReoffendingPredictorDynamic.PRESCRIPTION_DRUG_MISUSE.coefficient else BigDecimal.ZERO
 
-  fun getBenzodiazepinesUsageWeight(hasBenzodiazepinesUsage: Boolean): BigDecimal = if (hasBenzodiazepinesUsage) AllReoffendingPredictorDynamic.BENZODIAZEPINES.coefficient else BigDecimal.ZERO
+  fun getBenzodiazepinesUsageWeight(hasBenzodiazepinesUsage: Boolean): BigDecimal =
+    if (hasBenzodiazepinesUsage) AllReoffendingPredictorDynamic.BENZODIAZEPINES.coefficient else BigDecimal.ZERO
 
-  fun getCannabisUsageWeight(hasCannabisUsage: Boolean): BigDecimal = if (hasCannabisUsage) AllReoffendingPredictorDynamic.CANNABIS.coefficient else BigDecimal.ZERO
+  fun getCannabisUsageWeight(hasCannabisUsage: Boolean): BigDecimal =
+    if (hasCannabisUsage) AllReoffendingPredictorDynamic.CANNABIS.coefficient else BigDecimal.ZERO
 
-  fun getSteroidsUsageWeight(hasSteroidsUsage: Boolean): BigDecimal = if (hasSteroidsUsage) AllReoffendingPredictorDynamic.STEROIDS.coefficient else BigDecimal.ZERO
+  fun getSteroidsUsageWeight(hasSteroidsUsage: Boolean): BigDecimal =
+    if (hasSteroidsUsage) AllReoffendingPredictorDynamic.STEROIDS.coefficient else BigDecimal.ZERO
 
   fun getOtherDrugsUsageWeight(
     hasOtherDrugsUsage: Boolean,
@@ -271,17 +290,19 @@ class AllReoffendingPredictorTransformationHelper {
     hasSpiceUsage: Boolean,
     hasHallucinogensUsage: Boolean,
     hasSolventsUsage: Boolean,
-  ): BigDecimal = if (hasOtherDrugsUsage || hasKetamineUsage || hasSpiceUsage || hasHallucinogensUsage || hasSolventsUsage) AllReoffendingPredictorDynamic.OTHER_DRUGS.coefficient else BigDecimal.ZERO
+  ): BigDecimal =
+    if (hasOtherDrugsUsage || hasKetamineUsage || hasSpiceUsage || hasHallucinogensUsage || hasSolventsUsage) AllReoffendingPredictorDynamic.OTHER_DRUGS.coefficient else BigDecimal.ZERO
 
-  fun calculateTwoYearPercentageScore(totalWeight: BigDecimal): Double = totalWeight.toDouble().sigmoid().asDoublePercentage().sanitisePercentage()
+  fun calculateTwoYearPercentageScore(totalWeight: BigDecimal): Double =
+    totalWeight.toDouble().sigmoid().asDoublePercentage().sanitisePercentage()
 
-  fun getRiskBand(twoYearPercentageScore: BigDecimal): RiskBand = when {
-    twoYearPercentageScore < BigDecimal.ZERO -> throw IllegalArgumentException("Two year percentage score cannot be less than 0%: $twoYearPercentageScore")
+  fun getRiskBand(twoYearPercentageScore: Double): RiskBand = when {
+    twoYearPercentageScore < 0.0 -> throw IllegalArgumentException("Two year percentage score cannot be less than 0%: $twoYearPercentageScore")
 
-    twoYearPercentageScore < 50.toBigDecimal() -> RiskBand.LOW
-    twoYearPercentageScore < 75.toBigDecimal() -> RiskBand.MEDIUM
-    twoYearPercentageScore < 90.toBigDecimal() -> RiskBand.HIGH
-    twoYearPercentageScore <= 100.toBigDecimal() -> RiskBand.VERY_HIGH
+    twoYearPercentageScore < 50.0 -> RiskBand.LOW
+    twoYearPercentageScore < 75.0 -> RiskBand.MEDIUM
+    twoYearPercentageScore < 90.0 -> RiskBand.HIGH
+    twoYearPercentageScore <= 100.0 -> RiskBand.VERY_HIGH
 
     else -> throw IllegalArgumentException("Two year percentage score cannot exceed 100%: $twoYearPercentageScore")
   }
