@@ -120,7 +120,7 @@ class NumbersUtilsTest {
       BigDecimal(2),
       BigDecimal(3),
       BigDecimal(4),
-      BigDecimal(5)
+      BigDecimal(5),
     )
     val actualTotal = calculatePolynomial(coefficients, x)
     assertEquals(BigDecimal(41662), actualTotal)
