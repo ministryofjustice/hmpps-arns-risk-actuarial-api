@@ -33,6 +33,10 @@ fun Double.sigmoid(): Double = exp(this).let { it / (1 + it) }
 
 fun calculatePolynomial(coeffs: DoubleArray, x: Double): Double = (0..<coeffs.size).fold(0.0) { sum, i -> sum + coeffs[i] * x.pow(i) }
 
+fun calculatePolynomial(coefficients: Array<BigDecimal>, x: BigDecimal): BigDecimal = coefficients.foldRight(BigDecimal.ZERO) { coefficient, sum ->
+  (sum * x) + coefficient
+}
+
 fun getAgeAtDate(
   dateOfBirth: LocalDate,
   date: LocalDate,
