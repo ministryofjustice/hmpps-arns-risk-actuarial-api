@@ -1,11 +1,10 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
-import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.allreoffendingpredictor.AllReoffendingPredictorObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.allreoffendingpredictor.AllReoffendingPredictorRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.calculateTwoYearPercentageScore
@@ -47,16 +46,15 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.getAgeAtDate
 import java.math.BigDecimal
 
 @Service
-class AllReoffendingPredictorRiskProducerService : BaseRiskScoreProducer() {
-
-  private val log = LoggerFactory.getLogger(this::class.java)
+class AllReoffendingPredictorRiskProducerService : BaseRiskScoreProducer<AllReoffendingPredictorRequestValidated>() {
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
 
-    val staticErrors = validateAllReoffendingPredictorStatic(request)
+    val staticValidationErrors = validateAllReoffendingPredictorStatic(request)
+    val dynamicValidationErrors = validateAllReoffendingPredictorDynamic(request)
 
-    if (staticErrors.isNotEmpty()) {
-      return applyErrorsToContextAndReturn(context, staticErrors)
+    if (staticValidationErrors.isNotEmpty()) {
+      return buildPredictorAndApplyToContext(context, null, staticValidationErrors, dynamicValidationErrors)
     }
 
     val validStaticRequest = AllReoffendingPredictorRequestValidated.Static(
@@ -70,12 +68,13 @@ class AllReoffendingPredictorRiskProducerService : BaseRiskScoreProducer() {
       request.dateAtStartOfFollowupCalculated!!,
     )
 
-    val dynamicErrors = validateAllReoffendingPredictorDynamic(request)
-
-    if (dynamicErrors.isNotEmpty()) {
-      context.apply { AllReoffendingPredictor = getAllReoffendingPredictorObject(validStaticRequest) }
-
-      return applyErrorsToContextAndReturn(context, dynamicErrors)
+    if (dynamicValidationErrors.isNotEmpty()) {
+      return buildPredictorAndApplyToContext(
+        context,
+        validStaticRequest,
+        staticValidationErrors,
+        dynamicValidationErrors,
+      )
     }
 
     val validDynamicRequest = AllReoffendingPredictorRequestValidated.Dynamic(
@@ -106,10 +105,27 @@ class AllReoffendingPredictorRiskProducerService : BaseRiskScoreProducer() {
       request.proCriminalAttitudes!!,
     )
 
-    return context.apply { AllReoffendingPredictor = getAllReoffendingPredictorObject(validDynamicRequest) }
+    return buildPredictorAndApplyToContext(
+      context,
+      validDynamicRequest,
+      staticValidationErrors,
+      dynamicValidationErrors,
+    )
   }
 
-  private fun getAllReoffendingPredictorObject(request: AllReoffendingPredictorRequestValidated): AllReoffendingPredictorObject {
+  override fun buildPredictorAndApplyToContext(
+    context: RiskScoreContext,
+    request: AllReoffendingPredictorRequestValidated?,
+    staticValidationErrors: List<ValidationError>,
+    dynamicValidationErrors: List<ValidationError>,
+  ): RiskScoreContext =
+    context.apply { AllReoffendingPredictor = buildPredictor(request, staticValidationErrors, dynamicValidationErrors) }
+
+  private fun buildPredictor(
+    request: AllReoffendingPredictorRequestValidated?,
+    staticValidationErrors: List<ValidationError>,
+    dynamicValidationErrors: List<ValidationError>,
+  ): AllReoffendingPredictorObject {
 
     val staticOrDynamic: StaticOrDynamic
     val staticData: AllReoffendingPredictorRequestValidated.Static
@@ -124,10 +140,19 @@ class AllReoffendingPredictorRiskProducerService : BaseRiskScoreProducer() {
         staticOrDynamic = StaticOrDynamic.DYNAMIC
         staticData = request.staticData
       }
+
+      else -> {
+        return AllReoffendingPredictorObject(
+          null,
+          null,
+          null,
+          staticValidationErrors,
+          dynamicValidationErrors,
+          null,
+        )
+      }
     }
-
-    val featureValues = mutableMapOf<String, BigDecimal>()
-
+    
     val ageAtCurrentSanction =
       getAgeAtDate(staticData.dateOfBirth, staticData.dateOfCurrentConviction, "dateOfCurrentConviction")
     val ageAtStartOfFollowup = getAgeAtDate(
@@ -136,6 +161,7 @@ class AllReoffendingPredictorRiskProducerService : BaseRiskScoreProducer() {
       "Date at start of followup calculated",
     )
 
+    val featureValues = mutableMapOf<String, BigDecimal>()
     featureValues[FeatureValue.TWO_YEAR_INTERCEPT_WEIGHT.outputName] = getYearScore(staticOrDynamic)
     featureValues[FeatureValue.AGE_GENDER_POLYNOMIAL_WEIGHT.outputName] =
       getAgeGenderPolynomial(staticOrDynamic, staticData.gender, ageAtStartOfFollowup)
@@ -146,7 +172,7 @@ class AllReoffendingPredictorRiskProducerService : BaseRiskScoreProducer() {
       getSecondSanctionWeight(staticOrDynamic, staticData.totalNumberOfSanctionsForAllOffences)
     featureValues[FeatureValue.TOTAL_NUMBER_OF_SANCTIONS_FOR_ALL_OFFENCES_WEIGHT.outputName] =
       getTotalSanctionWeight(staticOrDynamic, staticData.totalNumberOfSanctionsForAllOffences)
-    featureValues[FeatureValue.TOTAL_NUMBER_OF_SANCTIONS_FOR_ALL_OFFENCES_WEIGHT.outputName] =
+    featureValues[FeatureValue.SECOND_SANCTION_GAP_WEIGHT.outputName] =
       getGapBetweenFirstAndSecondSanctionWeight(
         staticOrDynamic,
         staticData.gender,
@@ -230,26 +256,9 @@ class AllReoffendingPredictorRiskProducerService : BaseRiskScoreProducer() {
       twoYearPercentageScore,
       band,
       staticOrDynamic,
-      null,
+      staticValidationErrors,
+      dynamicValidationErrors,
       featureValues,
     )
   }
-
-  override fun applyErrorsToContextAndReturn(
-    context: RiskScoreContext,
-    validationErrorResponses: List<ValidationErrorResponse>,
-  ): RiskScoreContext = context.apply {
-    AllReoffendingPredictor?.let { it.validationError = validationErrorResponses }
-      ?: run { AllReoffendingPredictor = buildErrorObject(validationErrorResponses) }
-  }
-
-
-  private fun buildErrorObject(validationErrorResponse: List<ValidationErrorResponse>): AllReoffendingPredictorObject =
-    AllReoffendingPredictorObject(
-      null,
-      null,
-      null,
-      validationErrorResponse,
-      null,
-    )
 }

@@ -9,7 +9,7 @@ import org.junit.jupiter.api.assertNull
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.osp.OSPDCObject
@@ -85,7 +85,7 @@ class RSRRiskProducerServiceTest {
   @Test
   fun `should return null RSR and null scoreType when blocking errors exist `() {
     val errors = listOf(
-      ValidationErrorResponse(
+      ValidationError(
         type = ValidationErrorType.COMPONENT_VALIDATION_ERROR,
         message = "Validation error(s) in component scores",
         fields = listOf(AlgorithmResponse.OSPDC.name),
@@ -196,14 +196,14 @@ class RSRRiskProducerServiceTest {
     val service = RSRRiskProducerService()
 
     val blockingError = listOf(
-      ValidationErrorResponse(
+      ValidationError(
         type = ValidationErrorType.MISSING_MANDATORY_INPUT,
         message = "THIS DOES NOT GET ASSERTED",
         fields = listOf(RiskScoreRequest::isCurrentOffenceSexuallyMotivated.name),
       ),
     )
     val nonBlockingError = listOf(
-      ValidationErrorResponse(
+      ValidationError(
         type = ValidationErrorType.MISSING_MANDATORY_INPUT,
         message = "THIS DOES NOT GET ASSERTED",
         fields = listOf(RiskScoreRequest::hasEverCommittedSexualOffence.name),

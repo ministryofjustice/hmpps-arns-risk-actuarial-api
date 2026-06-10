@@ -6,7 +6,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIRequestValidated
@@ -70,7 +70,7 @@ class PNIRiskProducerService : BaseRiskScoreProducer() {
 
     val overallNeed = overallNeedsGroupingCalculation(requestValidated)
     val overallNeedScore = overallNeed.first
-    val additionalErrors = mutableListOf<ValidationErrorResponse>()
+    val additionalErrors = mutableListOf<ValidationError>()
     val missingFieldErrors = overallNeed.third.toList()
     if (missingFieldErrors.isNotEmpty()) {
       additionalErrors += ValidationErrorType.MISSING_MANDATORY_INPUT.asErrorResponse(missingFieldErrors)
@@ -126,7 +126,7 @@ class PNIRiskProducerService : BaseRiskScoreProducer() {
 
   override fun applyErrorsToContextAndReturn(
     context: RiskScoreContext,
-    validationErrorResponses: List<ValidationErrorResponse>,
+    validationErrorResponses: List<ValidationError>,
   ): RiskScoreContext = context.apply {
     PNI = PNIObject(
       ProgrammeNeedIdentifier.OMISSION,

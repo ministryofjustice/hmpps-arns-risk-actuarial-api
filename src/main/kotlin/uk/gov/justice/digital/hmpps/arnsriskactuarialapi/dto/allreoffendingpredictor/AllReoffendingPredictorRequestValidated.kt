@@ -4,9 +4,10 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CurrentRelationship
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.MotivationLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RequestValidated
 import java.time.LocalDate
 
-sealed class AllReoffendingPredictorRequestValidated {
+sealed class AllReoffendingPredictorRequestValidated: RequestValidated {
 
   data class Static(
     val assessmentDate: LocalDate,

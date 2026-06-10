@@ -1,6 +1,6 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api
 
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 
 data class PredictorResponse<T : PredictorOutputResponse>(
   val algorithm: AlgorithmResponse,
@@ -9,5 +9,5 @@ data class PredictorResponse<T : PredictorOutputResponse>(
   val thresholdsVersion: String = "1.0",
   val output: T,
   val featureValues: Map<String, Double> = emptyMap(),
-  val validationErrors: List<ValidationErrorResponse>,
+  val validationErrors: List<ValidationError>,
 )

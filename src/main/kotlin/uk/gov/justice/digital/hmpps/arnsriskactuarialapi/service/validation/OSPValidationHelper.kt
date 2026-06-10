@@ -2,7 +2,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import kotlin.reflect.KProperty1
 
@@ -25,13 +25,13 @@ val OSPDC_REQUIRED_FIELDS: List<KProperty1<RiskScoreRequest, Any?>> = listOf(
   RiskScoreRequest::supervisionStatus,
 )
 
-fun validateOSP(request: RiskScoreRequest, isOSPDC: Boolean): List<ValidationErrorResponse> {
-  val errors = mutableListOf<ValidationErrorResponse>()
+fun validateOSP(request: RiskScoreRequest, isOSPDC: Boolean): List<ValidationError> {
+  val errors = mutableListOf<ValidationError>()
   validateRequiredFields(request, errors, isOSPDC)
   return errors
 }
 
-private fun validateRequiredFields(request: RiskScoreRequest, errors: MutableList<ValidationErrorResponse>, isOSPDC: Boolean) {
+private fun validateRequiredFields(request: RiskScoreRequest, errors: MutableList<ValidationError>, isOSPDC: Boolean) {
   val missingFields = arrayListOf<String>()
   val sexualOffendingInconsistentFields = arrayListOf<String>()
   val missingSexualSanctionCounts = arrayListOf<String>()

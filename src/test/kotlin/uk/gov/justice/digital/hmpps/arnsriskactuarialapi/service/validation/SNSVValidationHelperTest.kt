@@ -3,7 +3,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validSNSVStaticRiskScoreRequest
 import java.time.LocalDate
@@ -56,7 +56,7 @@ class SNSVValidationHelperTest {
       evidenceOfDomesticAbuse = null,
       domesticAbuseAgainstPartner = null,
     )
-    val errors = mutableListOf<ValidationErrorResponse>()
+    val errors = mutableListOf<ValidationError>()
     snsvDynamicValidation(request, errors)
 
     val expectedFields = listOf(
@@ -85,7 +85,7 @@ class SNSVValidationHelperTest {
       evidenceOfDomesticAbuse = true,
       domesticAbuseAgainstPartner = null,
     )
-    val errors = mutableListOf<ValidationErrorResponse>()
+    val errors = mutableListOf<ValidationError>()
     snsvDynamicValidation(request, errors)
 
     val expectedFields = listOf(

@@ -1,7 +1,7 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import kotlin.reflect.KProperty1
 
@@ -17,15 +17,15 @@ val OGRS3_REQUIRED_FIELDS: List<KProperty1<RiskScoreRequest, Any?>> = listOf(
   RiskScoreRequest::currentOffenceCode,
 )
 
-fun validateOGRS3(request: RiskScoreRequest): List<ValidationErrorResponse> {
-  val errors = mutableListOf<ValidationErrorResponse>()
+fun validateOGRS3(request: RiskScoreRequest): List<ValidationError> {
+  val errors = mutableListOf<ValidationError>()
   validateRequiredFields(request, errors, OGRS3_REQUIRED_FIELDS)
   validateTotalNumberOfSanctionsForAllOffences(request, errors)
   validateCurrentOffenceCode(request, errors)
   return errors
 }
 
-fun validateAgeAtCurrentConviction(ageAtCurrentConviction: Int, errors: MutableList<ValidationErrorResponse>) {
+fun validateAgeAtCurrentConviction(ageAtCurrentConviction: Int, errors: MutableList<ValidationError>) {
   if (ageAtCurrentConviction < MIN_CONVICTION_AGE) {
     errors += ValidationErrorType.AGE_AT_CURRENT_CONVICTION_LESS_THAN_TEN.asErrorResponse(
       listOf(
@@ -37,9 +37,9 @@ fun validateAgeAtCurrentConviction(ageAtCurrentConviction: Int, errors: MutableL
 }
 
 fun validateAgeAtFirstSanction(
-  ageAtFirstSanction: Int,
-  ageAtCurrentConviction: Int,
-  errors: MutableList<ValidationErrorResponse>,
+    ageAtFirstSanction: Int,
+    ageAtCurrentConviction: Int,
+    errors: MutableList<ValidationError>,
 ) {
   if (ageAtFirstSanction > ageAtCurrentConviction) {
     errors += ValidationErrorType.AGE_AT_FIRST_SANCTION_AFTER_AGE_AT_CURRENT_CONVICTION.asErrorResponse(
