@@ -1,7 +1,7 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 
 private val LDS_FIELDS_AT_LEAST_3_OF = listOf(
@@ -11,14 +11,14 @@ private val LDS_FIELDS_AT_LEAST_3_OF = listOf(
   RiskScoreRequest::professionalOrVocationalQualifications,
 )
 
-fun validateLDS(request: RiskScoreRequest): List<ValidationErrorResponse> {
-  val errors = mutableListOf<ValidationErrorResponse>()
+fun validateLDS(request: RiskScoreRequest): List<ValidationError> {
+  val errors = mutableListOf<ValidationError>()
   validateRequiredFields(request, errors)
   validateAtLeastThreeFieldsPresent(request, errors)
   return errors
 }
 
-private fun validateAtLeastThreeFieldsPresent(request: RiskScoreRequest, errors: MutableList<ValidationErrorResponse>) {
+private fun validateAtLeastThreeFieldsPresent(request: RiskScoreRequest, errors: MutableList<ValidationError>) {
   LDS_FIELDS_AT_LEAST_3_OF.mapNotNull {
     if (it.get(request) == null) it.name else null
   }.let {
@@ -28,7 +28,7 @@ private fun validateAtLeastThreeFieldsPresent(request: RiskScoreRequest, errors:
   }
 }
 
-private fun validateRequiredFields(request: RiskScoreRequest, errors: MutableList<ValidationErrorResponse>) {
+private fun validateRequiredFields(request: RiskScoreRequest, errors: MutableList<ValidationError>) {
   val missingFields = arrayListOf<String>()
 
   if (request.problemsWithReadingWritingNumeracy == null) {

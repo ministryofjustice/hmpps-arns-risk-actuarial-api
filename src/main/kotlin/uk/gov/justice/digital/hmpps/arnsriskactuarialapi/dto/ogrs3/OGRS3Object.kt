@@ -1,12 +1,12 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3
 
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 
 data class OGRS3Object(
-  val ogrs3OneYear: Int?,
-  val ogrs3TwoYear: Int?,
-  val band: RiskBand?,
-  val validationError: List<ValidationErrorResponse>?,
-  val featureValues: Map<String, Double>?,
+    val ogrs3OneYear: Int?,
+    val ogrs3TwoYear: Int?,
+    val band: RiskBand?,
+    val validationError: List<ValidationError>?,
+    val featureValues: Map<String, Double>?,
 )

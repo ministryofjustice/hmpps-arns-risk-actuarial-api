@@ -35,6 +35,13 @@ enum class FeatureValue(val outputName: String) {
   PRO_CRIMINAL_ATTITUDES_WEIGHT("proCriminalAttitudesWeight"),
   DOMESTIC_VIOLENCE_WEIGHT("domesticViolenceWeight"),
   PREVIOUS_CONVICTIONS_WEIGHT("previousConvictionsWeight"),
+  FIRST_SANCTION_WEIGHT("firstSanctionWeight"),
+  SECOND_SANCTION_WEIGHT("secondSanctionWeight"),
+  SECOND_SANCTION_GAP_WEIGHT("secondSanctionGapWeight"),
+  OFFENCE_FREE_MONTHS_WEIGHT("offenceFreeMonthsWeight"),
+  SUITABLE_ACCOMMODATION_WEIGHT("suitableAccommodationWeight"),
+  REGULAR_OFFENDING_ACTIVITIES("regularOffendingActivitiesWeight"),
+  TOTAL_WEIGHT("totalWeight"),
   ;
 
   fun asPair(value: Double): Pair<String, Double> = Pair(outputName, value)

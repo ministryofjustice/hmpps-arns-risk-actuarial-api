@@ -10,7 +10,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.FIXED_TEST_DATE
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import java.time.LocalDate
 
@@ -76,14 +76,14 @@ class OGRS3ValidationHelperTest {
   @ParameterizedTest
   @ValueSource(ints = [10, 11])
   fun `validateAgeAtCurrentConviction when age equal to or greater than minimum conviction age`(inputAge: Int) {
-    val errors = mutableListOf<ValidationErrorResponse>()
+    val errors = mutableListOf<ValidationError>()
     validateAgeAtCurrentConviction(inputAge, errors)
     assertTrue(errors.isEmpty())
   }
 
   @Test
   fun `validateAgeAtCurrentConviction when age is less than minimum conviction age`() {
-    val errors = mutableListOf<ValidationErrorResponse>()
+    val errors = mutableListOf<ValidationError>()
     validateAgeAtCurrentConviction(9, errors)
     assertEquals(1, errors.size)
     val validationError = errors[0]
@@ -98,14 +98,14 @@ class OGRS3ValidationHelperTest {
   fun `validateAgeAtFirstSanction when age at first sanction is equal to or less than age  at current conviction`(
     ageAtFirstSanctionInput: Int,
   ) {
-    val errors = mutableListOf<ValidationErrorResponse>()
+    val errors = mutableListOf<ValidationError>()
     validateAgeAtFirstSanction(ageAtFirstSanctionInput, 11, errors)
     assertTrue(errors.isEmpty())
   }
 
   @Test
   fun `validateAgeAtFirstSanction when age at first sanction is greater than age  at current conviction`() {
-    val errors = mutableListOf<ValidationErrorResponse>()
+    val errors = mutableListOf<ValidationError>()
     validateAgeAtFirstSanction(20, 1, errors)
     assertEquals(1, errors.size)
     val validationError = errors[0]
