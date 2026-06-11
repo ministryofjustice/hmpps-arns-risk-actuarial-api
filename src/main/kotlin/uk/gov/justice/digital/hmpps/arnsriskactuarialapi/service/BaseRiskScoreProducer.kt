@@ -28,10 +28,4 @@ abstract class BaseRiskScoreProducer<T> {
     context: RiskScoreContext,
     validationErrors: List<ValidationError>,
   ): RiskScoreContext
-
-  abstract fun applyPredictorToContext(
-    context: RiskScoreContext,
-    request: T,
-    validationErrors: List<ValidationError>,
-  ): RiskScoreContext
 }

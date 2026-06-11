@@ -68,11 +68,7 @@ class AllReoffendingPredictorRiskProducerService : BaseRiskScoreProducer<AllReof
     )
 
     if (dynamicValidationErrors.isNotEmpty()) {
-      return applyPredictorToContext(
-        context,
-        validStaticRequest,
-        staticValidationErrors + dynamicValidationErrors,
-      )
+      return context.apply { AllReoffendingPredictor = calculateAndBuildPredictor(validStaticRequest, staticValidationErrors + dynamicValidationErrors) }
     }
 
     val validDynamicRequest = AllReoffendingPredictorRequestValidated.Dynamic(
@@ -103,11 +99,7 @@ class AllReoffendingPredictorRiskProducerService : BaseRiskScoreProducer<AllReof
       request.proCriminalAttitudes!!,
     )
 
-    return applyPredictorToContext(
-      context,
-      validDynamicRequest,
-      staticValidationErrors + dynamicValidationErrors,
-    )
+    return context.apply { AllReoffendingPredictor = calculateAndBuildPredictor(validDynamicRequest, staticValidationErrors + dynamicValidationErrors) }
   }
 
   override fun applyErrorsToContext(
@@ -122,13 +114,6 @@ class AllReoffendingPredictorRiskProducerService : BaseRiskScoreProducer<AllReof
       null,
     )
   }
-
-  override fun applyPredictorToContext(
-    context: RiskScoreContext,
-    request: AllReoffendingPredictorRequestValidated,
-    validationErrors: List<ValidationError>,
-  ): RiskScoreContext =
-    context.apply { AllReoffendingPredictor = calculateAndBuildPredictor(request, validationErrors) }
 
   private fun calculateAndBuildPredictor(
     request: AllReoffendingPredictorRequestValidated,

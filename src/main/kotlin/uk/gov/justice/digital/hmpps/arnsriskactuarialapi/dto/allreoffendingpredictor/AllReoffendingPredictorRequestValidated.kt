@@ -6,7 +6,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.MotivationLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import java.time.LocalDate
 
-sealed class AllReoffendingPredictorRequestValidated {
+sealed interface AllReoffendingPredictorRequestValidated {
 
   data class Static(
     val assessmentDate: LocalDate,
@@ -17,7 +17,7 @@ sealed class AllReoffendingPredictorRequestValidated {
     val currentOffenceCode: String,
     val totalNumberOfSanctionsForAllOffences: Int,
     val dateAtStartOfFollowupCalculated: LocalDate,
-  ) : AllReoffendingPredictorRequestValidated()
+  ) : AllReoffendingPredictorRequestValidated
 
   data class Dynamic(
     val staticData: Static,
@@ -45,5 +45,5 @@ sealed class AllReoffendingPredictorRequestValidated {
     val excessiveAlcoholUse: ProblemLevel,
     val impulsivityProblems: ProblemLevel,
     val proCriminalAttitudes: ProblemLevel,
-  ) : AllReoffendingPredictorRequestValidated()
+  ) : AllReoffendingPredictorRequestValidated
 }
