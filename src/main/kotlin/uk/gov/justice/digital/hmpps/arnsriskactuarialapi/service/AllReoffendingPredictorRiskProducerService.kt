@@ -127,9 +127,10 @@ class AllReoffendingPredictorRiskProducerService : BaseRiskScoreProducer<AllReof
     context: RiskScoreContext,
     request: AllReoffendingPredictorRequestValidated,
     validationErrors: List<ValidationError>,
-  ): RiskScoreContext = context.apply { AllReoffendingPredictor = buildPredictor(request, validationErrors) }
+  ): RiskScoreContext =
+    context.apply { AllReoffendingPredictor = calculateAndBuildPredictor(request, validationErrors) }
 
-  private fun buildPredictor(
+  private fun calculateAndBuildPredictor(
     request: AllReoffendingPredictorRequestValidated,
     validationErrors: List<ValidationError>,
   ): AllReoffendingPredictorObject {
