@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.offencecode.OffenceCodeError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3Object
@@ -72,7 +72,7 @@ class OGRS3RiskProducerService : BaseRiskScoreProducer() {
       "dateAtStartOfFollowup",
     )
 
-    val errors = mutableListOf<ValidationError>()
+    val errors = mutableListOf<ValidationErrorResponse>()
     validateAgeAtCurrentConviction(ageAtCurrentConviction, errors)
     validateAgeAtFirstSanction(request.ageAtFirstSanction, ageAtCurrentConviction, errors)
     val ogrS3Weighting = validateAndRetrieveOGRS3Weighting(request, errors)
@@ -117,7 +117,7 @@ class OGRS3RiskProducerService : BaseRiskScoreProducer() {
       }
   }
 
-  private fun validateAndRetrieveOGRS3Weighting(request: OGRS3RequestValidated, errors: MutableList<ValidationError>): Double? {
+  private fun validateAndRetrieveOGRS3Weighting(request: OGRS3RequestValidated, errors: MutableList<ValidationErrorResponse>): Double? {
     val ogrs3Weighting = offenceCodeCacheService.getOgrs3Weighting(request.currentOffenceCode)
     if (ogrs3Weighting?.value == null) {
       if (ogrs3Weighting?.error == OffenceCodeError.NEED_DETAILS_OF_EXACT_OFFENCE) {
@@ -133,9 +133,9 @@ class OGRS3RiskProducerService : BaseRiskScoreProducer() {
     return ogrs3Weighting?.value
   }
 
-  override fun applyErrorsToContextAndReturn(context: RiskScoreContext, validationErrorResponses: List<ValidationError>): RiskScoreContext = context.apply { OGRS3 = buildErrorObject(validationErrorResponses) }
+  override fun applyErrorsToContextAndReturn(context: RiskScoreContext, validationErrorResponses: List<ValidationErrorResponse>): RiskScoreContext = context.apply { OGRS3 = buildErrorObject(validationErrorResponses) }
 
-  private fun buildErrorObject(validationErrorResponse: List<ValidationError>): OGRS3Object = OGRS3Object(
+  private fun buildErrorObject(validationErrorResponse: List<ValidationErrorResponse>): OGRS3Object = OGRS3Object(
     null,
     null,
     null,

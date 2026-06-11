@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validMSTRiskScoreRequest
 import kotlin.test.assertFalse
@@ -37,7 +37,7 @@ class MSTValidationHelperTest {
     val result = validateMST(input)
 
     // Then
-    val expectedError = ValidationError(
+    val expectedError = ValidationErrorResponse(
       ValidationErrorType.MISSING_MANDATORY_INPUT,
       "Mandatory input field(s) missing",
       listOf(
@@ -94,7 +94,7 @@ class MSTValidationHelperTest {
         temperControl = null,
       ),
     )
-    val expectedError = ValidationError(
+    val expectedError = ValidationErrorResponse(
       ValidationErrorType.MISSING_MANDATORY_INPUT,
       "Mandatory input field(s) missing",
       listOf(

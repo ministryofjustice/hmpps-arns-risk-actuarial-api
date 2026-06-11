@@ -2,7 +2,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3Object
 
@@ -18,7 +18,7 @@ val OGP_REQUIRED_FIELDS_FROM_REQUEST = listOf(
   RiskScoreRequest::proCriminalAttitudes,
 )
 
-private fun validateRequiredFields(request: RiskScoreRequest, context: RiskScoreContext, errors: MutableList<ValidationError>) {
+private fun validateRequiredFields(request: RiskScoreRequest, context: RiskScoreContext, errors: MutableList<ValidationErrorResponse>) {
   val missingFields = arrayListOf<String>()
 
   OGP_REQUIRED_FIELDS_FROM_REQUEST.forEach { field -> missingFields.addIfNull(request, field) }
@@ -32,8 +32,8 @@ private fun validateRequiredFields(request: RiskScoreRequest, context: RiskScore
   }
 }
 
-fun validateOGP(request: RiskScoreRequest, context: RiskScoreContext): List<ValidationError> {
-  val errors = mutableListOf<ValidationError>()
+fun validateOGP(request: RiskScoreRequest, context: RiskScoreContext): List<ValidationErrorResponse> {
+  val errors = mutableListOf<ValidationErrorResponse>()
   validateRequiredFields(request, context, errors)
   return errors
 }

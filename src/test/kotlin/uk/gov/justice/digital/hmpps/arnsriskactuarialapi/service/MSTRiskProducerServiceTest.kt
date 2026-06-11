@@ -12,7 +12,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validMSTRiskScoreRequest
@@ -81,7 +81,7 @@ class MSTRiskProducerServiceTest {
     assertEquals(null, result.MST?.isMstApplicable)
     assertTrue(result.MST?.validationError?.size == 1)
 
-    val expectedError = ValidationError(
+    val expectedError = ValidationErrorResponse(
       ValidationErrorType.MISSING_MANDATORY_INPUT,
       "Mandatory input field(s) missing",
       listOf(
@@ -116,7 +116,7 @@ class MSTRiskProducerServiceTest {
     assertEquals(null, result.MST?.maturityScore)
     assertEquals(false, result.MST?.maturityFlag)
     assertEquals(false, result.MST?.isMstApplicable)
-    assertEquals(result.MST?.validationError, listOf<ValidationError>())
+    assertEquals(result.MST?.validationError, listOf<ValidationErrorResponse>())
   }
 
   @Test
@@ -130,7 +130,7 @@ class MSTRiskProducerServiceTest {
     assertEquals(null, result.MST?.maturityScore)
     assertEquals(false, result.MST?.maturityFlag)
     assertEquals(false, result.MST?.isMstApplicable)
-    assertEquals(result.MST?.validationError, listOf<ValidationError>())
+    assertEquals(result.MST?.validationError, listOf<ValidationErrorResponse>())
   }
 
   @Test
@@ -145,7 +145,7 @@ class MSTRiskProducerServiceTest {
     assertEquals(null, result.MST?.maturityScore)
     assertEquals(false, result.MST?.maturityFlag)
     assertEquals(false, result.MST?.isMstApplicable)
-    assertEquals(result.MST?.validationError, listOf<ValidationError>())
+    assertEquals(result.MST?.validationError, listOf<ValidationErrorResponse>())
   }
 
   @Test
@@ -160,6 +160,6 @@ class MSTRiskProducerServiceTest {
     assertEquals(null, result.MST?.maturityScore)
     assertEquals(false, result.MST?.maturityFlag)
     assertEquals(false, result.MST?.isMstApplicable)
-    assertEquals(result.MST?.validationError, listOf<ValidationError>())
+    assertEquals(result.MST?.validationError, listOf<ValidationErrorResponse>())
   }
 }

@@ -5,7 +5,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.osp.OSPDCObject
@@ -113,7 +113,7 @@ class RSRRiskProducerService : BaseRiskScoreProducer() {
 
   override fun applyErrorsToContextAndReturn(
     context: RiskScoreContext,
-    validationErrorResponses: List<ValidationError>,
+    validationErrorResponses: List<ValidationErrorResponse>,
   ): RiskScoreContext = context.apply {
     RSR = RSRObject(
       null,
@@ -131,5 +131,5 @@ class RSRRiskProducerService : BaseRiskScoreProducer() {
     )
   }
 
-  internal fun hasBlockingErrors(errors: List<ValidationError>): Boolean = errors.any { it.fields.contains(RiskScoreRequest::isCurrentOffenceSexuallyMotivated.name) }
+  internal fun hasBlockingErrors(errors: List<ValidationErrorResponse>): Boolean = errors.any { it.fields.contains(RiskScoreRequest::isCurrentOffenceSexuallyMotivated.name) }
 }

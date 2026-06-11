@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.SNSVObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.SNSVRequestValidated
@@ -64,14 +64,14 @@ class SNSVRiskProducerService : BaseRiskScoreProducer() {
 
   override fun applyErrorsToContextAndReturn(
     context: RiskScoreContext,
-    validationErrorResponses: List<ValidationError>,
+    validationErrorResponses: List<ValidationErrorResponse>,
   ): RiskScoreContext = context.apply { SNSV = SNSVObject(null, null, validationErrorResponses, null) }
 
   fun getSNSVObject(
     scoreType: ScoreType,
     request: RiskScoreRequest,
   ): SNSVObject {
-    val errors = mutableListOf<ValidationError>()
+    val errors = mutableListOf<ValidationErrorResponse>()
     val weightingSNSV = retrieveWeightingSNSV(scoreType, request)
     val weightingSNSVVATP = retrieveWeightingSNSVVATP(scoreType, request)
     if (weightingSNSV == null || weightingSNSVVATP == null) {

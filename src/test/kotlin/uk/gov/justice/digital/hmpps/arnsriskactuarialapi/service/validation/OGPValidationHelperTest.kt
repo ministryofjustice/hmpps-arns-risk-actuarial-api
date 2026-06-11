@@ -7,7 +7,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.RiskScoreRequestTestCon
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.RiskScoreRequestTestConstants.OGP_REQUEST_39
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3Object
 
@@ -37,7 +37,7 @@ class OGPValidationHelperTest {
     assertEquals(
       result,
       listOf(
-        ValidationError(
+        ValidationErrorResponse(
           type = ValidationErrorType.MISSING_MANDATORY_INPUT,
           message = "Mandatory input field(s) missing",
           fields = listOf("ogrs3TwoYear"),
@@ -52,7 +52,7 @@ class OGPValidationHelperTest {
     assertEquals(
       result,
       listOf(
-        ValidationError(
+        ValidationErrorResponse(
           type = ValidationErrorType.MISSING_MANDATORY_INPUT,
           message = "Mandatory input field(s) missing",
           fields = listOf("regularOffendingActivities", "proCriminalAttitudes"),
@@ -67,7 +67,7 @@ class OGPValidationHelperTest {
     assertEquals(
       result,
       listOf(
-        ValidationError(
+        ValidationErrorResponse(
           type = ValidationErrorType.MISSING_MANDATORY_INPUT,
           message = "Mandatory input field(s) missing",
           fields = listOf("regularOffendingActivities", "proCriminalAttitudes", "ogrs3TwoYear"),

@@ -7,7 +7,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.RiskScoreRequestTestCon
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.RiskScoreRequestTestConstants.FULL_LDS_REQUEST
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.RiskScoreRequestTestConstants.INELIGIBLE_LDS_REQUEST
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.RiskScoreRequestTestConstants.NULL_REQUEST
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 
 class LDSValidationHelperTest {
@@ -23,7 +23,7 @@ class LDSValidationHelperTest {
     val result = validateLDS(NULL_REQUEST)
     assertEquals(
       listOf(
-        ValidationError(
+        ValidationErrorResponse(
           type = ValidationErrorType.LDS_NOT_ENOUGH_FIELDS_PRESENT,
           message = "At least three input fields must be provided",
           fields = listOf("workRelatedSkills", "problemsWithReadingWritingNumeracy", "learningDifficulties", "professionalOrVocationalQualifications"),
@@ -38,7 +38,7 @@ class LDSValidationHelperTest {
     val result = validateLDS(BAD_READING_DIFFICULTY_LDS_REQUEST)
     assertEquals(
       listOf(
-        ValidationError(
+        ValidationErrorResponse(
           type = ValidationErrorType.MISSING_MANDATORY_INPUT,
           message = "Mandatory input field(s) missing",
           fields = listOf(
@@ -55,7 +55,7 @@ class LDSValidationHelperTest {
     val result = validateLDS(INELIGIBLE_LDS_REQUEST)
     assertEquals(
       listOf(
-        ValidationError(
+        ValidationErrorResponse(
           type = ValidationErrorType.MISSING_MANDATORY_INPUT,
           message = "Mandatory input field(s) missing",
           fields = listOf(
@@ -63,7 +63,7 @@ class LDSValidationHelperTest {
             "problemsWithReadingWritingNumeracy Field Not Present But hasProblemsWithNumeracy Present",
           ),
         ),
-        ValidationError(
+        ValidationErrorResponse(
           type = ValidationErrorType.LDS_NOT_ENOUGH_FIELDS_PRESENT,
           message = "At least three input fields must be provided",
           fields = listOf("workRelatedSkills", "problemsWithReadingWritingNumeracy", "learningDifficulties", "professionalOrVocationalQualifications"),

@@ -3,7 +3,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 import org.springframework.stereotype.Service
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds.LDSInputValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds.LDSObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.LDSTransformationHelper.Companion.hasProblemsWithNumeracyOffendersScore
@@ -44,7 +44,7 @@ class LDSRiskProducerService : BaseRiskScoreProducer() {
 
   override fun applyErrorsToContextAndReturn(
     context: RiskScoreContext,
-    validationErrorResponses: List<ValidationError>,
+    validationErrorResponses: List<ValidationErrorResponse>,
   ): RiskScoreContext = context.apply {
     LDS = LDSObject(
       null,
