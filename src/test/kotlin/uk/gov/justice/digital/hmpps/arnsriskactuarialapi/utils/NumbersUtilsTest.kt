@@ -93,6 +93,29 @@ class NumbersUtilsTest {
   }
 
   @Test
+  fun `BigDecimal polynomial calculations`() {
+    val cubic: Array<BigDecimal> = arrayOf(BigDecimal("-1.0"), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal("1.0"))
+    val linear: Array<BigDecimal> = arrayOf(BigDecimal("-1.0"), BigDecimal("1.0"))
+    val quadratic: Array<BigDecimal> = arrayOf(BigDecimal("1.0"), BigDecimal("1.0"), BigDecimal("1.0"))
+
+    val result1 = calculatePolynomial(cubic, BigDecimal("2.0"))
+    assertTrue(BigDecimal("7.0").compareTo(result1) == 0, "Expected 7.0 but was $result1")
+
+    val pi = Math.PI.toBigDecimal()
+    val result2 = calculatePolynomial(linear, pi)
+    assertTrue((pi - BigDecimal.ONE).compareTo(result2) == 0, "Expected PI - 1 but was $result2")
+
+    val result3 = calculatePolynomial(quadratic, BigDecimal("4.0"))
+    assertTrue(BigDecimal("21.0").compareTo(result3) == 0, "Expected 21.0 but was $result3")
+
+    val x = pi
+    val productOfPolynomials = calculatePolynomial(linear, x) * calculatePolynomial(quadratic, x)
+    val cubicPolynomial = calculatePolynomial(cubic, x)
+
+    assertTrue(productOfPolynomials.compareTo(cubicPolynomial) == 0, "Polynomial product did not match cubic evaluation")
+  }
+
+  @Test
   fun `getAgeAtDate exact`() {
     val dob = today.minusYears(15)
     assertEquals(

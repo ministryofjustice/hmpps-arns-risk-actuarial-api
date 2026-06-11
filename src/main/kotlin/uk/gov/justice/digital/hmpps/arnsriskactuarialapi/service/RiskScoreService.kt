@@ -10,6 +10,9 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.RiskScoreRespon
 class RiskScoreService {
 
   @Autowired
+  lateinit var allReoffendingPredictorRiskProducerService: AllReoffendingPredictorRiskProducerService
+
+  @Autowired
   lateinit var ogrs3RiskProducerService: OGRS3RiskProducerService
 
   @Autowired
@@ -43,6 +46,7 @@ class RiskScoreService {
   lateinit var ospiicRiskProducerService: OSPIICRiskProducerService
 
   fun riskScoreProducer(riskScoreRequest: RiskScoreRequest): RiskScoreResponse = listOf(
+    allReoffendingPredictorRiskProducerService,
     ogrs3RiskProducerService,
     ovpRiskProducerService,
     ogpRiskProducerService,

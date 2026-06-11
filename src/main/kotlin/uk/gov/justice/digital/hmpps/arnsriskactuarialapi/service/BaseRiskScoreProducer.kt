@@ -3,10 +3,10 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 import org.slf4j.LoggerFactory
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 
-abstract class BaseRiskScoreProducer {
+abstract class BaseRiskScoreProducer<T> {
 
   private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -15,7 +15,7 @@ abstract class BaseRiskScoreProducer {
       return getRiskScore(request, context)
     }.getOrElse {
       logger.error("Unexpected error calculating risk score", it)
-      return applyErrorsToContextAndReturn(
+      return applyErrorsToContext(
         context,
         listOf(ValidationErrorType.UNEXPECTED_ERROR.asErrorResponseForUnexpectedError("${it.message}")),
       )
@@ -24,8 +24,8 @@ abstract class BaseRiskScoreProducer {
 
   abstract fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext
 
-  abstract fun applyErrorsToContextAndReturn(
+  abstract fun applyErrorsToContext(
     context: RiskScoreContext,
-    validationErrorResponses: List<ValidationErrorResponse>,
+    validationErrors: List<ValidationError>,
   ): RiskScoreContext
 }

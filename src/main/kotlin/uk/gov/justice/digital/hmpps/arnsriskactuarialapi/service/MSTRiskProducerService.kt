@@ -3,7 +3,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 import org.springframework.stereotype.Service
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.mst.MSTObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.mst.MSTRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.calculateAge
@@ -53,7 +53,7 @@ class MSTRiskProducerService : BaseRiskScoreProducer() {
 
   override fun applyErrorsToContextAndReturn(
     context: RiskScoreContext,
-    validationErrorResponses: List<ValidationErrorResponse>,
+    validationErrorResponses: List<ValidationError>,
   ): RiskScoreContext = context.apply {
     MST = MSTObject(
       null,
@@ -65,7 +65,7 @@ class MSTRiskProducerService : BaseRiskScoreProducer() {
 
   private fun getMstObject(
     request: MSTRequestValidated,
-    errors: List<ValidationErrorResponse>,
+    errors: List<ValidationError>,
     currentAge: Int,
   ): MSTObject {
     val isMstApplicable = getMstApplicable(request.gender, currentAge)

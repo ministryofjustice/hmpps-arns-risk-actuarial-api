@@ -11,7 +11,7 @@ import org.mockito.kotlin.whenever
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.opd.OPDObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.opd.OPDResult
@@ -310,7 +310,7 @@ class OPDRiskProducerServiceTest {
     assertEquals(false, result.opdCheck)
     assertTrue(result.validationError?.isNotEmpty() == true)
     assertEquals(
-      ValidationErrorResponse(
+      ValidationError(
         type = ValidationErrorType.MISSING_MANDATORY_INPUT,
         message = "Mandatory input field(s) missing",
         fields = listOf("gender"),

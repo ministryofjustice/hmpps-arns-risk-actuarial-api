@@ -1,6 +1,6 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto
 
-data class ValidationErrorResponse(
+data class ValidationError(
   val type: ValidationErrorType,
   val message: String,
   val fields: List<String>,

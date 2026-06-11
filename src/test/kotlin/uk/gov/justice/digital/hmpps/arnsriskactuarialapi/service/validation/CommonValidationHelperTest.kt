@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 
 class CommonValidationHelperTest {
@@ -12,7 +12,7 @@ class CommonValidationHelperTest {
   @Test
   fun `getCurrentOffenceCodeValidation no errors`() {
     val riskScoreRequestInput = RiskScoreRequest(currentOffenceCode = "00101")
-    val validationErrorResponses = mutableListOf<ValidationErrorResponse>()
+    val validationErrorResponses = mutableListOf<ValidationError>()
     validateCurrentOffenceCode(riskScoreRequestInput, validationErrorResponses)
     assertTrue(validationErrorResponses.isEmpty())
   }
@@ -20,7 +20,7 @@ class CommonValidationHelperTest {
   @Test
   fun `getCurrentOffenceCodeValidation no error added when current offence null`() {
     val riskScoreRequestInput = RiskScoreRequest(currentOffenceCode = null)
-    val validationErrorResponses = mutableListOf<ValidationErrorResponse>()
+    val validationErrorResponses = mutableListOf<ValidationError>()
     validateCurrentOffenceCode(riskScoreRequestInput, validationErrorResponses)
     assertTrue(validationErrorResponses.isEmpty())
   }
@@ -28,7 +28,7 @@ class CommonValidationHelperTest {
   @Test
   fun `getCurrentOffenceCodeValidation char count error`() {
     val riskScoreRequestInput = RiskScoreRequest(currentOffenceCode = "001010")
-    val validationErrorResponses = mutableListOf<ValidationErrorResponse>()
+    val validationErrorResponses = mutableListOf<ValidationError>()
     validateCurrentOffenceCode(riskScoreRequestInput, validationErrorResponses)
     assertEquals(1, validationErrorResponses.size)
     assertEquals(ValidationErrorType.OFFENCE_CODE_INCORRECT_FORMAT, validationErrorResponses.first().type)

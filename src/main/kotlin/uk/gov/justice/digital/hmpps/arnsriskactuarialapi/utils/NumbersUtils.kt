@@ -29,9 +29,14 @@ fun Double.sanitisePercentage(): Double = when {
   else -> this
 }
 
-fun Double.sigmoid(): Double = exp(this).let { it / (1 + it) }
+fun Double.sigmoid(): Double = exp(this).let { it / (1.0 + it) }
 
 fun calculatePolynomial(coeffs: DoubleArray, x: Double): Double = (0..<coeffs.size).fold(0.0) { sum, i -> sum + coeffs[i] * x.pow(i) }
+
+// Horners method
+fun calculatePolynomial(coefficients: Array<BigDecimal>, x: BigDecimal): BigDecimal = coefficients.foldRight(BigDecimal.ZERO) { coefficient, sum ->
+  (sum * x) + coefficient
+}
 
 fun getAgeAtDate(
   dateOfBirth: LocalDate,
