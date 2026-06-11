@@ -38,9 +38,9 @@ fun validateCurrentOffenceCode(request: RiskScoreRequest, errors: MutableList<Va
 }
 
 fun addMissingFields(
-    missingFields: List<String>,
-    errors: List<ValidationError>,
-    isDynamic: Boolean = false,
+  missingFields: List<String>,
+  errors: List<ValidationError>,
+  isDynamic: Boolean = false,
 ): List<ValidationError> = addValidationErrorResponse(
   missingFields,
   errors,
@@ -48,9 +48,9 @@ fun addMissingFields(
 )
 
 fun addValidationErrorResponse(
-    fields: List<String>,
-    errors: List<ValidationError>,
-    error: ValidationErrorType,
+  fields: List<String>,
+  errors: List<ValidationError>,
+  error: ValidationErrorType,
 ): List<ValidationError> = if (fields.isNotEmpty()) {
   errors + error.asErrorResponse(fields)
 } else {

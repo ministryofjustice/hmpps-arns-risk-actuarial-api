@@ -23,8 +23,8 @@ fun validateOPD(request: RiskScoreRequest): List<ValidationError> {
 }
 
 private fun validateDomesticAbuse(
-    request: RiskScoreRequest,
-    errors: MutableList<ValidationError>,
+  request: RiskScoreRequest,
+  errors: MutableList<ValidationError>,
 ) {
   val hasNoEvidenceOfDomesticAbuse = request.evidenceOfDomesticAbuse == null || !request.evidenceOfDomesticAbuse
   val hasDomesticAbuseFieldsNotNull = request.domesticAbuseAgainstPartner != null || request.domesticAbuseAgainstFamily != null
@@ -40,8 +40,8 @@ private fun validateDomesticAbuse(
 }
 
 private fun validateRequiredFields(
-    request: RiskScoreRequest,
-    errors: MutableList<ValidationError>,
+  request: RiskScoreRequest,
+  errors: MutableList<ValidationError>,
 ) {
   val missingFields = arrayListOf<String>()
   OPD_REQUIRED_FIELDS.forEach { missingFields.addIfNull(request, it) }

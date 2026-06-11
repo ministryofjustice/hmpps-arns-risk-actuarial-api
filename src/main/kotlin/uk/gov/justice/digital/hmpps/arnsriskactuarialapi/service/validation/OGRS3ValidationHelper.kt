@@ -37,9 +37,9 @@ fun validateAgeAtCurrentConviction(ageAtCurrentConviction: Int, errors: MutableL
 }
 
 fun validateAgeAtFirstSanction(
-    ageAtFirstSanction: Int,
-    ageAtCurrentConviction: Int,
-    errors: MutableList<ValidationError>,
+  ageAtFirstSanction: Int,
+  ageAtCurrentConviction: Int,
+  errors: MutableList<ValidationError>,
 ) {
   if (ageAtFirstSanction > ageAtCurrentConviction) {
     errors += ValidationErrorType.AGE_AT_FIRST_SANCTION_AFTER_AGE_AT_CURRENT_CONVICTION.asErrorResponse(

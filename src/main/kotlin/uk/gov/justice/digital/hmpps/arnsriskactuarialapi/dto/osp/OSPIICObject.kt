@@ -4,7 +4,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 
 data class OSPIICObject(
-    val ospiicBand: RiskBand?,
-    val ospiicScore: Double?,
-    val validationError: List<ValidationError>?,
+  val ospiicBand: RiskBand?,
+  val ospiicScore: Double?,
+  val validationError: List<ValidationError>?,
 )

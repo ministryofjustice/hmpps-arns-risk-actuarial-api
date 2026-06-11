@@ -4,9 +4,9 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 
 data class OGPObject(
-    val ogpReoffendingOneYear: Int?,
-    val ogpReoffendingTwoYear: Int?,
-    val bandOGP: RiskBand?,
-    val totalOGPScore: Int?,
-    val validationError: List<ValidationError>?,
+  val ogpReoffendingOneYear: Int?,
+  val ogpReoffendingTwoYear: Int?,
+  val bandOGP: RiskBand?,
+  val totalOGPScore: Int?,
+  val validationError: List<ValidationError>?,
 )

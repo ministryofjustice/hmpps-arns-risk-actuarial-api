@@ -6,10 +6,9 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import java.math.BigDecimal
 
 data class AllReoffendingPredictorObject(
-  val twoYearScore: Double?,
+  val score: Double?,
   val band: RiskBand?,
   val staticOrDynamic: StaticOrDynamic?,
-  var staticValidationErrors: List<ValidationError>?,
-  var dynamicValidationErrors: List<ValidationError>?,
+  var validationErrors: List<ValidationError>?,
   val featureValues: Map<String, BigDecimal>?,
 )

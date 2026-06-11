@@ -8,8 +8,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.allreoffendingpredictor.AllReoffendingPredictorObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.allreoffendingpredictor.AllReoffendingPredictorRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.calculateTwoYearPercentageScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateAllReoffendingPredictorStatic
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateAllReoffendingPredictorDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getAgeGenderPolynomial
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getBenzodiazepinesUsageWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getBingeDrinkingWeight
@@ -42,6 +40,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getTotalSanctionWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getUnemployedWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getYearScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateAllReoffendingPredictorDynamic
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateAllReoffendingPredictorStatic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.getAgeAtDate
 import java.math.BigDecimal
 
@@ -49,12 +49,11 @@ import java.math.BigDecimal
 class AllReoffendingPredictorRiskProducerService : BaseRiskScoreProducer<AllReoffendingPredictorRequestValidated>() {
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
-
     val staticValidationErrors = validateAllReoffendingPredictorStatic(request)
     val dynamicValidationErrors = validateAllReoffendingPredictorDynamic(request)
 
     if (staticValidationErrors.isNotEmpty()) {
-      return buildPredictorAndApplyToContext(context, null, staticValidationErrors, dynamicValidationErrors)
+      return applyErrorsToContext(context, staticValidationErrors + dynamicValidationErrors)
     }
 
     val validStaticRequest = AllReoffendingPredictorRequestValidated.Static(
@@ -69,11 +68,10 @@ class AllReoffendingPredictorRiskProducerService : BaseRiskScoreProducer<AllReof
     )
 
     if (dynamicValidationErrors.isNotEmpty()) {
-      return buildPredictorAndApplyToContext(
+      return applyPredictorToContext(
         context,
         validStaticRequest,
-        staticValidationErrors,
-        dynamicValidationErrors,
+        staticValidationErrors + dynamicValidationErrors,
       )
     }
 
@@ -105,28 +103,36 @@ class AllReoffendingPredictorRiskProducerService : BaseRiskScoreProducer<AllReof
       request.proCriminalAttitudes!!,
     )
 
-    return buildPredictorAndApplyToContext(
+    return applyPredictorToContext(
       context,
       validDynamicRequest,
-      staticValidationErrors,
-      dynamicValidationErrors,
+      staticValidationErrors + dynamicValidationErrors,
     )
   }
 
-  override fun buildPredictorAndApplyToContext(
+  override fun applyErrorsToContext(
     context: RiskScoreContext,
-    request: AllReoffendingPredictorRequestValidated?,
-    staticValidationErrors: List<ValidationError>,
-    dynamicValidationErrors: List<ValidationError>,
-  ): RiskScoreContext =
-    context.apply { AllReoffendingPredictor = buildPredictor(request, staticValidationErrors, dynamicValidationErrors) }
+    validationErrors: List<ValidationError>,
+  ): RiskScoreContext = context.apply {
+    AllReoffendingPredictor = AllReoffendingPredictorObject(
+      null,
+      null,
+      null,
+      validationErrors,
+      null,
+    )
+  }
+
+  override fun applyPredictorToContext(
+    context: RiskScoreContext,
+    request: AllReoffendingPredictorRequestValidated,
+    validationErrors: List<ValidationError>,
+  ): RiskScoreContext = context.apply { AllReoffendingPredictor = buildPredictor(request, validationErrors) }
 
   private fun buildPredictor(
-    request: AllReoffendingPredictorRequestValidated?,
-    staticValidationErrors: List<ValidationError>,
-    dynamicValidationErrors: List<ValidationError>,
+    request: AllReoffendingPredictorRequestValidated,
+    validationErrors: List<ValidationError>,
   ): AllReoffendingPredictorObject {
-
     val staticOrDynamic: StaticOrDynamic
     val staticData: AllReoffendingPredictorRequestValidated.Static
 
@@ -140,19 +146,8 @@ class AllReoffendingPredictorRiskProducerService : BaseRiskScoreProducer<AllReof
         staticOrDynamic = StaticOrDynamic.DYNAMIC
         staticData = request.staticData
       }
-
-      else -> {
-        return AllReoffendingPredictorObject(
-          null,
-          null,
-          null,
-          staticValidationErrors,
-          dynamicValidationErrors,
-          null,
-        )
-      }
     }
-    
+
     val ageAtCurrentSanction =
       getAgeAtDate(staticData.dateOfBirth, staticData.dateOfCurrentConviction, "dateOfCurrentConviction")
     val ageAtStartOfFollowup = getAgeAtDate(
@@ -249,15 +244,14 @@ class AllReoffendingPredictorRiskProducerService : BaseRiskScoreProducer<AllReof
     val totalWeight = featureValues.values.fold(BigDecimal.ZERO, BigDecimal::add)
     featureValues[FeatureValue.TOTAL_WEIGHT.outputName] = totalWeight
 
-    val twoYearPercentageScore = calculateTwoYearPercentageScore(totalWeight)
-    val band = getRiskBand(twoYearPercentageScore)
+    val score = calculateTwoYearPercentageScore(totalWeight)
+    val band = getRiskBand(score)
 
     return AllReoffendingPredictorObject(
-      twoYearPercentageScore,
+      score,
       band,
       staticOrDynamic,
-      staticValidationErrors,
-      dynamicValidationErrors,
+      validationErrors,
       featureValues,
     )
   }

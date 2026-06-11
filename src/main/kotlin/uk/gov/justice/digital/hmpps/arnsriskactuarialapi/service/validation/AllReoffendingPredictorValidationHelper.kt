@@ -14,6 +14,7 @@ val ALL_REOFFENDING_PREDICTOR_DYNAMIC_REQUIRED_FIELDS: List<KProperty1<RiskScore
 
 fun validateAllReoffendingPredictorStatic(request: RiskScoreRequest): List<ValidationError> {
   val errors = mutableListOf<ValidationError>()
+  // TODO: Ensure ValidationError.type is set to MISSING_MANDATORY_INPUT
   validateRequiredFields(request, errors, ALL_REOFFENDING_PREDICTOR_STATIC_REQUIRED_FIELDS)
   // TODO: Add further validation logic
   return errors
@@ -21,7 +22,8 @@ fun validateAllReoffendingPredictorStatic(request: RiskScoreRequest): List<Valid
 
 fun validateAllReoffendingPredictorDynamic(request: RiskScoreRequest): List<ValidationError> {
   val errors = mutableListOf<ValidationError>()
+  // TODO: Ensure ValidationError.type is set to MISSING_DYNAMIC_INPUT
   validateRequiredFields(request, errors, ALL_REOFFENDING_PREDICTOR_DYNAMIC_REQUIRED_FIELDS)
-  // TODO: Add further validation logic
+  // TODO: Add further validation logic ensuring ValidationError.type is set to MISSING_DYNAMIC_INPUT
   return errors
 }
