@@ -92,6 +92,18 @@ class AllReoffendingPredictorTransformationHelperTest {
   }
 
   @ParameterizedTest
+  @MethodSource("getTotalSanctionWeightProvider")
+  fun `getTotalSanctionWeight returns correct calculated weight`(
+    staticOrDynamic: StaticOrDynamic,
+    totalNumberOfSanctions: Int,
+    expected: BigDecimal,
+  ) {
+    val result =
+      AllReoffendingPredictorTransformationHelper.getTotalSanctionWeight(staticOrDynamic, totalNumberOfSanctions)
+    assertEquals(expected, result)
+  }
+
+  @ParameterizedTest
   @MethodSource("getGapBetweenFirstAndSecondSanctionWeightProvider")
   fun `getGapBetweenFirstAndSecondSanctionWeight returns correct calculated weight based on StaticOrDynamic only if total sanctions is 2`(
     staticOrDynamic: StaticOrDynamic,
@@ -551,6 +563,12 @@ class AllReoffendingPredictorTransformationHelperTest {
       Arguments.of(StaticOrDynamic.STATIC, 1, BigDecimal.ZERO),
       Arguments.of(StaticOrDynamic.STATIC, 2, AllReoffendingPredictorStatic.SECOND_SANCTION.coefficient),
       Arguments.of(StaticOrDynamic.DYNAMIC, 2, AllReoffendingPredictorDynamic.SECOND_SANCTION.coefficient),
+    )
+
+    @JvmStatic
+    fun getTotalSanctionWeightProvider() = listOf(
+      Arguments.of(StaticOrDynamic.STATIC, 1, AllReoffendingPredictorStatic.SANCTION_OCCASIONS.coefficient),
+      Arguments.of(StaticOrDynamic.DYNAMIC, 1, AllReoffendingPredictorDynamic.SANCTION_OCCASIONS.coefficient),
     )
 
     @JvmStatic
