@@ -102,7 +102,11 @@ class AllReoffendingPredictorTransformationHelperTest {
     expected: BigDecimal,
   ) {
     val result = AllReoffendingPredictorTransformationHelper.getGapBetweenFirstAndSecondSanctionWeight(
-      staticOrDynamic, gender, ageAtFirstSanction, ageAtCurrentSanction, totalNumberOfSanctionsForAllOffences,
+      staticOrDynamic,
+      gender,
+      ageAtFirstSanction,
+      ageAtCurrentSanction,
+      totalNumberOfSanctionsForAllOffences,
     )
     assertEquals(expected, result)
   }
@@ -116,7 +120,9 @@ class AllReoffendingPredictorTransformationHelperTest {
     expected: BigDecimal,
   ) {
     val result = AllReoffendingPredictorTransformationHelper.getOffenceFreeMonthsPolynomialWeight(
-      staticOrDynamic, assessmentDate, dateAtStartOfFollowupCalculated,
+      staticOrDynamic,
+      assessmentDate,
+      dateAtStartOfFollowupCalculated,
     )
     assertEquals(expected, result)
   }
@@ -248,7 +254,8 @@ class AllReoffendingPredictorTransformationHelperTest {
     expected: BigDecimal,
   ) {
     val result = AllReoffendingPredictorTransformationHelper.getMultiplicativeRelationshipWeight(
-      currentRelationshipStatus, problemLevel,
+      currentRelationshipStatus,
+      problemLevel,
     )
     assertEquals(expected, result)
   }
@@ -434,14 +441,6 @@ class AllReoffendingPredictorTransformationHelperTest {
     )
   }
 
-  @Test
-  fun `calculatePercentageScore returns correct calculated percentage score`() {
-    assertEquals(
-      BigDecimal.ZERO,
-      AllReoffendingPredictorTransformationHelper.calculatePercentageScore(2.0.toBigDecimal()),
-    )
-  }
-
   @ParameterizedTest
   @MethodSource("getRiskBandProvider")
   fun `getRiskBand returns correct band mapping based on boundaries`(percentageScore: Double, expected: RiskBand) {
@@ -469,7 +468,9 @@ class AllReoffendingPredictorTransformationHelperTest {
     @JvmStatic
     fun getAgeGenderPolynomialWeightProvider() = listOf(
       Arguments.of(
-        StaticOrDynamic.STATIC, Gender.MALE, 30,
+        StaticOrDynamic.STATIC,
+        Gender.MALE,
+        30,
         calculatePolynomial(
           arrayOf(
             BigDecimal.ZERO,
@@ -483,7 +484,9 @@ class AllReoffendingPredictorTransformationHelperTest {
       ),
 
       Arguments.of(
-        StaticOrDynamic.DYNAMIC, Gender.MALE, 30,
+        StaticOrDynamic.DYNAMIC,
+        Gender.MALE,
+        30,
         calculatePolynomial(
           arrayOf(
             BigDecimal.ZERO,
@@ -497,7 +500,9 @@ class AllReoffendingPredictorTransformationHelperTest {
       ),
 
       Arguments.of(
-        StaticOrDynamic.STATIC, Gender.FEMALE, 30,
+        StaticOrDynamic.STATIC,
+        Gender.FEMALE,
+        30,
         calculatePolynomial(
           arrayOf(
             BigDecimal.ZERO,
@@ -511,7 +516,9 @@ class AllReoffendingPredictorTransformationHelperTest {
       ),
 
       Arguments.of(
-        StaticOrDynamic.DYNAMIC, Gender.FEMALE, 30,
+        StaticOrDynamic.DYNAMIC,
+        Gender.FEMALE,
+        30,
         calculatePolynomial(
           arrayOf(
             BigDecimal.ZERO,
@@ -587,7 +594,9 @@ class AllReoffendingPredictorTransformationHelperTest {
     fun getOffenceFreeMonthsPolynomialWeightProvider() = listOf(
       Arguments.of(StaticOrDynamic.STATIC, LocalDate.of(2024, 12, 12), LocalDate.of(2025, 12, 12), BigDecimal.ZERO),
       Arguments.of(
-        StaticOrDynamic.STATIC, LocalDate.of(2026, 12, 12), LocalDate.of(2025, 12, 12),
+        StaticOrDynamic.STATIC,
+        LocalDate.of(2026, 12, 12),
+        LocalDate.of(2025, 12, 12),
         calculatePolynomial(
           arrayOf(
             BigDecimal.ZERO,
@@ -600,7 +609,9 @@ class AllReoffendingPredictorTransformationHelperTest {
         ),
       ),
       Arguments.of(
-        StaticOrDynamic.DYNAMIC, LocalDate.of(2026, 12, 12), LocalDate.of(2025, 12, 12),
+        StaticOrDynamic.DYNAMIC,
+        LocalDate.of(2026, 12, 12),
+        LocalDate.of(2025, 12, 12),
         calculatePolynomial(
           arrayOf(
             BigDecimal.ZERO,

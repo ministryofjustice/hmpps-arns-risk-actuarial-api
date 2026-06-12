@@ -94,7 +94,6 @@ class NumbersUtilsTest {
 
   @Test
   fun `BigDecimal polynomial calculations`() {
-
     val cubic: Array<BigDecimal> = arrayOf(BigDecimal("-1.0"), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal("1.0"))
     val linear: Array<BigDecimal> = arrayOf(BigDecimal("-1.0"), BigDecimal("1.0"))
     val quadratic: Array<BigDecimal> = arrayOf(BigDecimal("1.0"), BigDecimal("1.0"), BigDecimal("1.0"))
