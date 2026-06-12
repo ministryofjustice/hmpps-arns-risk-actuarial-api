@@ -8,7 +8,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.coefficients.AllReoffendingPredictorDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.coefficients.AllReoffendingPredictorStatic
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.constants.AllReoffendingPredictor
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.constants.AllReoffendingPredictorConstant
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asDoublePercentage
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.calculatePolynomial
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sanitisePercentage
@@ -188,7 +188,7 @@ object AllReoffendingPredictorTransformationHelper {
       return BigDecimal.ZERO
     }
 
-    val lengthOfCareer = (ageAtCurrentSanction - ageAtFirstSanction) + AllReoffendingPredictor.CAREER_BOOST
+    val lengthOfCareer = (ageAtCurrentSanction - ageAtFirstSanction) + AllReoffendingPredictorConstant.CAREER_BOOST
 
     val coefficient = when (staticOrDynamic) {
       StaticOrDynamic.STATIC -> when (gender) {
@@ -219,7 +219,7 @@ object AllReoffendingPredictorTransformationHelper {
       return BigDecimal.ZERO
     }
 
-    val lengthOfCareer = (ageAtCurrentSanction - ageAtFirstSanction) + AllReoffendingPredictor.CAREER_BOOST
+    val lengthOfCareer = (ageAtCurrentSanction - ageAtFirstSanction) + AllReoffendingPredictorConstant.CAREER_BOOST
 
     val coefficient = when (staticOrDynamic) {
       StaticOrDynamic.STATIC -> when (gender) {
@@ -293,12 +293,12 @@ object AllReoffendingPredictorTransformationHelper {
   fun calculatePercentageScore(totalWeight: BigDecimal): Double = totalWeight.toDouble().sigmoid().asDoublePercentage().sanitisePercentage()
 
   fun getRiskBand(percentageScore: Double): RiskBand = when {
-    percentageScore <= AllReoffendingPredictor.EXCLUSIVE_MIN_PERCENTAGE -> throw IllegalArgumentException("Percentage score cannot be less than 0%: $percentageScore")
+    percentageScore <= AllReoffendingPredictorConstant.EXCLUSIVE_MIN_PERCENTAGE -> throw IllegalArgumentException("Percentage score cannot be less than 0%: $percentageScore")
 
-    percentageScore < AllReoffendingPredictor.MEDIUM_BAND_LOWER_BOUND -> RiskBand.LOW
-    percentageScore < AllReoffendingPredictor.HIGH_BAND_LOWER_BOUND -> RiskBand.MEDIUM
-    percentageScore < AllReoffendingPredictor.VERY_HIGH_BAND_LOWER_BOUND -> RiskBand.HIGH
-    percentageScore < AllReoffendingPredictor.EXCLUSIVE_MAX_PERCENTAGE -> RiskBand.VERY_HIGH
+    percentageScore < AllReoffendingPredictorConstant.MEDIUM_BAND_LOWER_BOUND -> RiskBand.LOW
+    percentageScore < AllReoffendingPredictorConstant.HIGH_BAND_LOWER_BOUND -> RiskBand.MEDIUM
+    percentageScore < AllReoffendingPredictorConstant.VERY_HIGH_BAND_LOWER_BOUND -> RiskBand.HIGH
+    percentageScore < AllReoffendingPredictorConstant.EXCLUSIVE_MAX_PERCENTAGE -> RiskBand.VERY_HIGH
 
     else -> throw IllegalArgumentException("Percentage score cannot exceed 100%: $percentageScore")
   }

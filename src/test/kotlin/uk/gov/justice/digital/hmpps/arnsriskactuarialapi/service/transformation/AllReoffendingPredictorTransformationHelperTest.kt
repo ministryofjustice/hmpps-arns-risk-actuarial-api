@@ -14,7 +14,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.coefficients.AllReoffendingPredictorDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.coefficients.AllReoffendingPredictorStatic
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.constants.AllReoffendingPredictor
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.constants.AllReoffendingPredictorConstant
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.calculatePolynomial
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -162,7 +162,7 @@ class AllReoffendingPredictorTransformationHelperTest {
     val ageAtFirst = 20
     val ageAtCurrent = 30
 
-    val expectedLengthOfCareer = (ageAtCurrent - ageAtFirst) + AllReoffendingPredictor.CAREER_BOOST
+    val expectedLengthOfCareer = (ageAtCurrent - ageAtFirst) + AllReoffendingPredictorConstant.CAREER_BOOST
     val expectedRatio = totalSanctions.toDouble() / expectedLengthOfCareer
     val expectedNaturalLog = ln(expectedRatio)
     val expectedWeight = expectedNaturalLog.toBigDecimal() * expectedCoefficient
@@ -201,7 +201,7 @@ class AllReoffendingPredictorTransformationHelperTest {
     val ageAtFirst = 20
     val ageAtCurrent = 30
 
-    val expectedLengthOfCareer = (ageAtCurrent - ageAtFirst) + AllReoffendingPredictor.CAREER_BOOST
+    val expectedLengthOfCareer = (ageAtCurrent - ageAtFirst) + AllReoffendingPredictorConstant.CAREER_BOOST
     val expectedRatio = totalSanctions.toDouble() / expectedLengthOfCareer
     val expectedNaturalLog = ln(expectedRatio)
     val expectedWeight = expectedNaturalLog.pow(2).toBigDecimal() * expectedCoefficient

@@ -1,6 +1,6 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.constants
 
-class AllReoffendingPredictor {
+class AllReoffendingPredictorConstant {
   companion object {
     const val CAREER_BOOST = 26
     const val EXCLUSIVE_MIN_PERCENTAGE = 0.0
