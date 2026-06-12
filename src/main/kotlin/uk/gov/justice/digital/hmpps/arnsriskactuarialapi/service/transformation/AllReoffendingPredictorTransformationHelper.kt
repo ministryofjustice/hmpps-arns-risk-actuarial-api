@@ -8,6 +8,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.coefficients.AllReoffendingPredictorDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.coefficients.AllReoffendingPredictorStatic
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.constants.AllReoffendingPredictor
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asDoublePercentage
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.calculatePolynomial
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sanitisePercentage
@@ -20,12 +21,12 @@ import kotlin.math.pow
 
 object AllReoffendingPredictorTransformationHelper {
 
-  fun getYearScore(staticOrDynamic: StaticOrDynamic): BigDecimal = when (staticOrDynamic) {
+  fun get2YearInterceptWeight(staticOrDynamic: StaticOrDynamic): BigDecimal = when (staticOrDynamic) {
     StaticOrDynamic.STATIC -> AllReoffendingPredictorStatic.TWO_YEAR_CONSTANT.coefficient
     StaticOrDynamic.DYNAMIC -> AllReoffendingPredictorDynamic.TWO_YEAR_CONSTANT.coefficient
   }
 
-  fun getAgeGenderPolynomial(
+  fun getAgeGenderPolynomialWeight(
     staticOrDynamic: StaticOrDynamic,
     gender: Gender,
     ageAtStartOfFollowup: Int,
@@ -71,7 +72,7 @@ object AllReoffendingPredictorTransformationHelper {
     return calculatePolynomial(coefficients, ageAtStartOfFollowup.toBigDecimal())
   }
 
-  fun getFemaleWeight(staticOrDynamic: StaticOrDynamic, gender: Gender): BigDecimal = when (gender) {
+  fun getGenderWeight(staticOrDynamic: StaticOrDynamic, gender: Gender): BigDecimal = when (gender) {
     Gender.MALE -> BigDecimal.ZERO
     Gender.FEMALE -> when (staticOrDynamic) {
       StaticOrDynamic.STATIC -> AllReoffendingPredictorStatic.FEMALE.coefficient
@@ -82,19 +83,28 @@ object AllReoffendingPredictorTransformationHelper {
   fun getFirstSanctionWeight(
     staticOrDynamic: StaticOrDynamic,
     totalNumberOfSanctionsForAllOffences: Int,
-  ): BigDecimal = if (totalNumberOfSanctionsForAllOffences == 1) when (staticOrDynamic) {
-    StaticOrDynamic.STATIC -> AllReoffendingPredictorStatic.FIRST_SANCTION.coefficient
-    StaticOrDynamic.DYNAMIC -> AllReoffendingPredictorDynamic.FIRST_SANCTION.coefficient
-  } else BigDecimal.ZERO
+  ): BigDecimal {
+    if (totalNumberOfSanctionsForAllOffences != 1) {
+      return BigDecimal.ZERO
+    }
+    return when (staticOrDynamic) {
+      StaticOrDynamic.STATIC -> AllReoffendingPredictorStatic.FIRST_SANCTION.coefficient
+      StaticOrDynamic.DYNAMIC -> AllReoffendingPredictorDynamic.FIRST_SANCTION.coefficient
+    }
+  }
 
   fun getSecondSanctionWeight(
     staticOrDynamic: StaticOrDynamic,
     totalNumberOfSanctionsForAllOffences: Int,
-  ): BigDecimal = if (totalNumberOfSanctionsForAllOffences == 2) when (staticOrDynamic) {
-    StaticOrDynamic.STATIC -> AllReoffendingPredictorStatic.SECOND_SANCTION.coefficient
-    StaticOrDynamic.DYNAMIC -> AllReoffendingPredictorDynamic.SECOND_SANCTION.coefficient
-  } else BigDecimal.ZERO
-
+  ): BigDecimal {
+    if (totalNumberOfSanctionsForAllOffences != 2) {
+      return BigDecimal.ZERO
+    }
+    return when (staticOrDynamic) {
+      StaticOrDynamic.STATIC -> AllReoffendingPredictorStatic.SECOND_SANCTION.coefficient
+      StaticOrDynamic.DYNAMIC -> AllReoffendingPredictorDynamic.SECOND_SANCTION.coefficient
+    }
+  }
 
   fun getTotalSanctionWeight(staticOrDynamic: StaticOrDynamic, totalNumberOfSanctionsForAllOffences: Int): BigDecimal {
     val coefficient: BigDecimal = when (staticOrDynamic) {
@@ -112,7 +122,9 @@ object AllReoffendingPredictorTransformationHelper {
     ageAtCurrentSanction: Int,
     totalNumberOfSanctionsForAllOffences: Int,
   ): BigDecimal {
-    if (totalNumberOfSanctionsForAllOffences != 2) return BigDecimal.ZERO
+    if (totalNumberOfSanctionsForAllOffences != 2) {
+      return BigDecimal.ZERO
+    }
 
     val firstToSecondSanctionYears: Int = ageAtCurrentSanction - ageAtFirstSanction
 
@@ -131,13 +143,15 @@ object AllReoffendingPredictorTransformationHelper {
     return firstToSecondSanctionYears.toBigDecimal() * coefficient
   }
 
-  fun getOffenceFreeMonthsPolynomial(
+  fun getOffenceFreeMonthsPolynomialWeight(
     staticOrDynamic: StaticOrDynamic,
     assessmentDate: LocalDate,
     dateAtStartOfFollowupCalculated: LocalDate,
   ): BigDecimal {
     // They are not in the community
-    if (assessmentDate.isBefore(dateAtStartOfFollowupCalculated)) return BigDecimal.ZERO
+    if (assessmentDate.isBefore(dateAtStartOfFollowupCalculated)) {
+      return BigDecimal.ZERO
+    }
 
     val monthsBetweenAssessmentAndFollowup = ChronoUnit.MONTHS.between(
       dateAtStartOfFollowupCalculated,
@@ -163,16 +177,18 @@ object AllReoffendingPredictorTransformationHelper {
     return calculatePolynomial(coefficients, monthsBetweenAssessmentAndFollowup.toBigDecimal())
   }
 
-  fun getCopasScore(
+  fun getCopasWeight(
     staticOrDynamic: StaticOrDynamic,
     totalNumberOfSanctionsForAllOffences: Int,
     gender: Gender,
     ageAtFirstSanction: Int,
     ageAtCurrentSanction: Int,
   ): BigDecimal {
-    if (totalNumberOfSanctionsForAllOffences < 3) return BigDecimal.ZERO
+    if (totalNumberOfSanctionsForAllOffences < 3) {
+      return BigDecimal.ZERO
+    }
 
-    val lengthOfCareer = (ageAtCurrentSanction - ageAtFirstSanction) + 26
+    val lengthOfCareer = (ageAtCurrentSanction - ageAtFirstSanction) + AllReoffendingPredictor.CAREER_BOOST
 
     val coefficient = when (staticOrDynamic) {
       StaticOrDynamic.STATIC -> when (gender) {
@@ -192,16 +208,18 @@ object AllReoffendingPredictorTransformationHelper {
     return naturalLog.toBigDecimal() * coefficient
   }
 
-  fun getCopasScoreSquared(
+  fun getCopasSquaredWeight(
     staticOrDynamic: StaticOrDynamic,
     totalNumberOfSanctionsForAllOffences: Int,
     gender: Gender,
     ageAtFirstSanction: Int,
     ageAtCurrentSanction: Int,
   ): BigDecimal {
-    if (totalNumberOfSanctionsForAllOffences < 3) return BigDecimal.ZERO
+    if (totalNumberOfSanctionsForAllOffences < 3) {
+      return BigDecimal.ZERO
+    }
 
-    val lengthOfCareer = (ageAtCurrentSanction - ageAtFirstSanction) + 26
+    val lengthOfCareer = (ageAtCurrentSanction - ageAtFirstSanction) + AllReoffendingPredictor.CAREER_BOOST
 
     val coefficient = when (staticOrDynamic) {
       StaticOrDynamic.STATIC -> when (gender) {
@@ -257,7 +275,7 @@ object AllReoffendingPredictorTransformationHelper {
   fun getImpulsivityWeight(impulsivityProblems: ProblemLevel): BigDecimal =
     impulsivityProblems.score.toBigDecimal() * AllReoffendingPredictorDynamic.IMPULSIVITY.coefficient
 
-  fun getCriminalAttitudeWeight(proCriminalAttitudes: ProblemLevel): BigDecimal =
+  fun getProCriminalAttitudeWeight(proCriminalAttitudes: ProblemLevel): BigDecimal =
     proCriminalAttitudes.score.toBigDecimal() * AllReoffendingPredictorDynamic.PRO_CRIMINAL_ATTITUDE.coefficient
 
   fun getHeroinUsageWeight(hasHeroinUsage: Boolean): BigDecimal =
@@ -293,17 +311,17 @@ object AllReoffendingPredictorTransformationHelper {
   ): BigDecimal =
     if (hasOtherDrugsUsage || hasKetamineUsage || hasSpiceUsage || hasHallucinogensUsage || hasSolventsUsage) AllReoffendingPredictorDynamic.OTHER_DRUGS.coefficient else BigDecimal.ZERO
 
-  fun calculateTwoYearPercentageScore(totalWeight: BigDecimal): Double =
+  fun calculatePercentageScore(totalWeight: BigDecimal): Double =
     totalWeight.toDouble().sigmoid().asDoublePercentage().sanitisePercentage()
 
-  fun getRiskBand(twoYearPercentageScore: Double): RiskBand = when {
-    twoYearPercentageScore < 0.0 -> throw IllegalArgumentException("Two year percentage score cannot be less than 0%: $twoYearPercentageScore")
+  fun getRiskBand(percentageScore: Double): RiskBand = when {
+    percentageScore <= AllReoffendingPredictor.EXCLUSIVE_MIN_PERCENTAGE -> throw IllegalArgumentException("Percentage score cannot be less than 0%: $percentageScore")
 
-    twoYearPercentageScore < 50.0 -> RiskBand.LOW
-    twoYearPercentageScore < 75.0 -> RiskBand.MEDIUM
-    twoYearPercentageScore < 90.0 -> RiskBand.HIGH
-    twoYearPercentageScore <= 100.0 -> RiskBand.VERY_HIGH
+    percentageScore < AllReoffendingPredictor.MEDIUM_BAND_LOWER_BOUND -> RiskBand.LOW
+    percentageScore < AllReoffendingPredictor.HIGH_BAND_LOWER_BOUND -> RiskBand.MEDIUM
+    percentageScore < AllReoffendingPredictor.VERY_HIGH_BAND_LOWER_BOUND -> RiskBand.HIGH
+    percentageScore < AllReoffendingPredictor.EXCLUSIVE_MAX_PERCENTAGE -> RiskBand.VERY_HIGH
 
-    else -> throw IllegalArgumentException("Two year percentage score cannot exceed 100%: $twoYearPercentageScore")
+    else -> throw IllegalArgumentException("Percentage score cannot exceed 100%: $percentageScore")
   }
 }
