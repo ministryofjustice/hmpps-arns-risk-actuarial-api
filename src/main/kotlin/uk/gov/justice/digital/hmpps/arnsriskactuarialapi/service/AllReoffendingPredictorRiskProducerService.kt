@@ -7,19 +7,20 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.allreoffendingpredictor.AllReoffendingPredictorObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.allreoffendingpredictor.AllReoffendingPredictorRequestValidated
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.calculateTwoYearPercentageScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getAgeGenderPolynomial
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.calculatePercentageScore
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.get2YearInterceptWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getAgeGenderPolynomialWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getBenzodiazepinesUsageWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getBingeDrinkingWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getCannabisUsageWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getChronicDrinkingWeight
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getCopasScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getCopasScoreSquared
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getCopasSquaredWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getCopasWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getCrackCocaineUsageWeight
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getCriminalAttitudeWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getProCriminalAttitudeWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getDomesticViolenceWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getDrugMotivationWeight
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getFemaleWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getGenderWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getFirstSanctionWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getGapBetweenFirstAndSecondSanctionWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getHeroinUsageWeight
@@ -27,7 +28,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getLiveInRelationshipWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getMisusedPrescriptionDrugUsageWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getMultiplicativeRelationshipWeight
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getOffenceFreeMonthsPolynomial
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getOffenceFreeMonthsPolynomialWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getOtherDrugsUsageWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getOtherOpiateUsageWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getPowderCocaineUsageWeight
@@ -39,7 +40,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getSuitableAccommodationWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getTotalSanctionWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getUnemployedWeight
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getYearScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateAllReoffendingPredictorDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateAllReoffendingPredictorStatic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.getAgeAtDate
@@ -68,7 +68,7 @@ class AllReoffendingPredictorRiskProducerService : BaseRiskScoreProducer<AllReof
     )
 
     if (dynamicValidationErrors.isNotEmpty()) {
-      return context.apply { AllReoffendingPredictor = calculateAndBuildPredictor(validStaticRequest, staticValidationErrors + dynamicValidationErrors) }
+      return context.apply { allReoffendingPredictor = calculateAndBuildPredictor(validStaticRequest, staticValidationErrors + dynamicValidationErrors) }
     }
 
     val validDynamicRequest = AllReoffendingPredictorRequestValidated.Dynamic(
@@ -99,14 +99,14 @@ class AllReoffendingPredictorRiskProducerService : BaseRiskScoreProducer<AllReof
       request.proCriminalAttitudes!!,
     )
 
-    return context.apply { AllReoffendingPredictor = calculateAndBuildPredictor(validDynamicRequest, staticValidationErrors + dynamicValidationErrors) }
+    return context.apply { allReoffendingPredictor = calculateAndBuildPredictor(validDynamicRequest, staticValidationErrors + dynamicValidationErrors) }
   }
 
   override fun applyErrorsToContext(
     context: RiskScoreContext,
     validationErrors: List<ValidationError>,
   ): RiskScoreContext = context.apply {
-    AllReoffendingPredictor = AllReoffendingPredictorObject(
+    allReoffendingPredictor = AllReoffendingPredictorObject(
       null,
       null,
       null,
@@ -143,10 +143,10 @@ class AllReoffendingPredictorRiskProducerService : BaseRiskScoreProducer<AllReof
     )
 
     val featureValues = mutableMapOf<String, BigDecimal>()
-    featureValues[FeatureValue.TWO_YEAR_INTERCEPT_WEIGHT.outputName] = getYearScore(staticOrDynamic)
+    featureValues[FeatureValue.TWO_YEAR_INTERCEPT_WEIGHT.outputName] = get2YearInterceptWeight(staticOrDynamic)
     featureValues[FeatureValue.AGE_GENDER_POLYNOMIAL_WEIGHT.outputName] =
-      getAgeGenderPolynomial(staticOrDynamic, staticData.gender, ageAtStartOfFollowup)
-    featureValues[FeatureValue.GENDER_WEIGHT.outputName] = getFemaleWeight(staticOrDynamic, staticData.gender)
+      getAgeGenderPolynomialWeight(staticOrDynamic, staticData.gender, ageAtStartOfFollowup)
+    featureValues[FeatureValue.GENDER_WEIGHT.outputName] = getGenderWeight(staticOrDynamic, staticData.gender)
     featureValues[FeatureValue.FIRST_SANCTION_WEIGHT.outputName] =
       getFirstSanctionWeight(staticOrDynamic, staticData.totalNumberOfSanctionsForAllOffences)
     featureValues[FeatureValue.SECOND_SANCTION_WEIGHT.outputName] =
@@ -161,19 +161,19 @@ class AllReoffendingPredictorRiskProducerService : BaseRiskScoreProducer<AllReof
         ageAtCurrentSanction,
         staticData.totalNumberOfSanctionsForAllOffences,
       )
-    featureValues[FeatureValue.OFFENCE_FREE_MONTHS_WEIGHT.outputName] = getOffenceFreeMonthsPolynomial(
+    featureValues[FeatureValue.OFFENCE_FREE_MONTHS_WEIGHT.outputName] = getOffenceFreeMonthsPolynomialWeight(
       staticOrDynamic,
       staticData.assessmentDate,
       staticData.dateAtStartOfFollowupCalculated,
     )
-    featureValues[FeatureValue.COPAS_SCORE.outputName] = getCopasScore(
+    featureValues[FeatureValue.COPAS_SCORE.outputName] = getCopasWeight(
       staticOrDynamic,
       staticData.totalNumberOfSanctionsForAllOffences,
       staticData.gender,
       staticData.ageAtFirstSanction,
       ageAtCurrentSanction,
     )
-    featureValues[FeatureValue.COPAS_SCORE_SQUARED.outputName] = getCopasScoreSquared(
+    featureValues[FeatureValue.COPAS_SCORE_SQUARED.outputName] = getCopasSquaredWeight(
       staticOrDynamic,
       staticData.totalNumberOfSanctionsForAllOffences,
       staticData.gender,
@@ -204,7 +204,7 @@ class AllReoffendingPredictorRiskProducerService : BaseRiskScoreProducer<AllReof
       featureValues[FeatureValue.IMPULSIVITY_PROBLEMS_WEIGHT.outputName] =
         getImpulsivityWeight(request.impulsivityProblems)
       featureValues[FeatureValue.PRO_CRIMINAL_ATTITUDES_WEIGHT.outputName] =
-        getCriminalAttitudeWeight(request.proCriminalAttitudes)
+        getProCriminalAttitudeWeight(request.proCriminalAttitudes)
       featureValues[FeatureValue.HEROIN_USAGE_WEIGHT.outputName] = getHeroinUsageWeight(request.hasHeroinUsage)
       featureValues[FeatureValue.OTHER_OPIATE_USAGE_WEIGHT.outputName] =
         getOtherOpiateUsageWeight(request.hasOtherOpiateUsage)
@@ -230,7 +230,7 @@ class AllReoffendingPredictorRiskProducerService : BaseRiskScoreProducer<AllReof
     val totalWeight = featureValues.values.fold(BigDecimal.ZERO, BigDecimal::add)
     featureValues[FeatureValue.TOTAL_WEIGHT.outputName] = totalWeight
 
-    val score = calculateTwoYearPercentageScore(totalWeight)
+    val score = calculatePercentageScore(totalWeight)
     val band = getRiskBand(score)
 
     return AllReoffendingPredictorObject(

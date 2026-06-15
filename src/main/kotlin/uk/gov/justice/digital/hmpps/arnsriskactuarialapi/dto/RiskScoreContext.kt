@@ -15,7 +15,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.SNSVObject
 
 data class RiskScoreContext(
   val version: RiskScoreVersion,
-  var AllReoffendingPredictor: AllReoffendingPredictorObject? = null,
+  var allReoffendingPredictor: AllReoffendingPredictorObject? = null,
   var OGRS3: OGRS3Object? = null,
   var OVP: OVPObject? = null,
   var OGP: OGPObject? = null,
