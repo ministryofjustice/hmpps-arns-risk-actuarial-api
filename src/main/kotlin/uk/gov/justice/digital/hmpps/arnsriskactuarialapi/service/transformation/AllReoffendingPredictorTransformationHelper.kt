@@ -34,7 +34,6 @@ object AllReoffendingPredictorTransformationHelper {
     val coefficients: Array<BigDecimal> = when (gender) {
       Gender.MALE -> when (staticOrDynamic) {
         StaticOrDynamic.STATIC -> arrayOf(
-          BigDecimal.ZERO,
           AllReoffendingPredictorStatic.AAI_MALE.coefficient,
           AllReoffendingPredictorStatic.AAI_QUADRATIC_MALE.coefficient,
           AllReoffendingPredictorStatic.AAI_CUBIC_MALE.coefficient,
@@ -42,7 +41,6 @@ object AllReoffendingPredictorTransformationHelper {
         )
 
         StaticOrDynamic.DYNAMIC -> arrayOf(
-          BigDecimal.ZERO,
           AllReoffendingPredictorDynamic.AAI_MALE.coefficient,
           AllReoffendingPredictorDynamic.AAI_QUADRATIC_MALE.coefficient,
           AllReoffendingPredictorDynamic.AAI_CUBIC_MALE.coefficient,
@@ -52,7 +50,6 @@ object AllReoffendingPredictorTransformationHelper {
 
       Gender.FEMALE -> when (staticOrDynamic) {
         StaticOrDynamic.STATIC -> arrayOf(
-          BigDecimal.ZERO,
           AllReoffendingPredictorStatic.AAI_FEMALE.coefficient,
           AllReoffendingPredictorStatic.AAI_QUADRATIC_FEMALE.coefficient,
           AllReoffendingPredictorStatic.AAI_CUBIC_FEMALE.coefficient,
@@ -60,7 +57,6 @@ object AllReoffendingPredictorTransformationHelper {
         )
 
         StaticOrDynamic.DYNAMIC -> arrayOf(
-          BigDecimal.ZERO,
           AllReoffendingPredictorDynamic.AAI_FEMALE.coefficient,
           AllReoffendingPredictorDynamic.AAI_QUADRATIC_FEMALE.coefficient,
           AllReoffendingPredictorDynamic.AAI_CUBIC_FEMALE.coefficient,
@@ -160,7 +156,6 @@ object AllReoffendingPredictorTransformationHelper {
 
     val coefficients: Array<BigDecimal> = when (staticOrDynamic) {
       StaticOrDynamic.STATIC -> arrayOf(
-        BigDecimal.ZERO,
         AllReoffendingPredictorStatic.OFFENCE_FREE_MONTHS.coefficient,
         AllReoffendingPredictorStatic.OFFENCE_FREE_MONTHS_QUADRATIC.coefficient,
         AllReoffendingPredictorStatic.OFFENCE_FREE_MONTHS_CUBIC.coefficient,
@@ -168,7 +163,6 @@ object AllReoffendingPredictorTransformationHelper {
       )
 
       StaticOrDynamic.DYNAMIC -> arrayOf(
-        BigDecimal.ZERO,
         AllReoffendingPredictorDynamic.OFFENCE_FREE_MONTHS.coefficient,
         AllReoffendingPredictorDynamic.OFFENCE_FREE_MONTHS_QUADRATIC.coefficient,
       )

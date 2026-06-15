@@ -7,16 +7,10 @@ import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CurrentRelationshipStatus
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.MotivationLevel
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.*
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.calculatePolynomial
 import java.math.BigDecimal
 import java.time.LocalDate
-import kotlin.arrayOf
 import kotlin.math.ln
 import kotlin.math.pow
 
@@ -159,12 +153,8 @@ class AllReoffendingPredictorTransformationHelperTest {
     totalSanctions: Int,
     ageAtFirst: Int,
     ageAtCurrent: Int,
-    expectedRatio: Double,
-    expectedCoefficient: BigDecimal,
+    expectedWeight: BigDecimal,
   ) {
-    val expectedNaturalLog = ln(expectedRatio)
-    val expectedWeight = expectedNaturalLog.toBigDecimal() * expectedCoefficient
-
     val actualWeight = AllReoffendingPredictorTransformationHelper.getCopasWeight(
       staticOrDynamic,
       totalSanctions,
@@ -172,8 +162,9 @@ class AllReoffendingPredictorTransformationHelperTest {
       ageAtFirst,
       ageAtCurrent,
     )
-
-    assertEquals(expectedWeight, actualWeight)
+    assertTrue(expectedWeight.compareTo(actualWeight) == 0) {
+      "Expected $expectedWeight but got $actualWeight"
+    }
   }
 
   @Test
@@ -196,12 +187,8 @@ class AllReoffendingPredictorTransformationHelperTest {
     totalSanctions: Int,
     ageAtFirst: Int,
     ageAtCurrent: Int,
-    expectedRatio: Double,
-    expectedCoefficient: BigDecimal,
+    expectedWeight: BigDecimal,
   ) {
-    val expectedNaturalLog = ln(expectedRatio)
-    val expectedWeight = expectedNaturalLog.pow(2).toBigDecimal() * expectedCoefficient
-
     val actualWeight = AllReoffendingPredictorTransformationHelper.getCopasSquaredWeight(
       staticOrDynamic,
       totalSanctions,
@@ -209,14 +196,16 @@ class AllReoffendingPredictorTransformationHelperTest {
       ageAtFirst,
       ageAtCurrent,
     )
-
-    assertEquals(expectedWeight, actualWeight)
+    assertTrue(expectedWeight.compareTo(actualWeight) == 0) {
+      "Expected $expectedWeight but got $actualWeight"
+    }
   }
 
   @Test
   fun `getSuitableAccommodationWeight returns correct calculated weight`() {
     val expected = BigDecimal(0.1696098316711506)
-    val result = AllReoffendingPredictorTransformationHelper.getSuitableAccommodationWeight(ProblemLevel.SIGNIFICANT_PROBLEMS)
+    val result =
+      AllReoffendingPredictorTransformationHelper.getSuitableAccommodationWeight(ProblemLevel.SIGNIFICANT_PROBLEMS)
     assertTrue(expected.compareTo(result) == 0) {
       "Expected $expected but got $result"
     }
@@ -246,7 +235,8 @@ class AllReoffendingPredictorTransformationHelperTest {
   @Test
   fun `getRelationshipQualityWeight returns correct calculated weight`() {
     val expected = BigDecimal(0.0728103770010276)
-    val result = AllReoffendingPredictorTransformationHelper.getRelationshipQualityWeight(ProblemLevel.SIGNIFICANT_PROBLEMS)
+    val result =
+      AllReoffendingPredictorTransformationHelper.getRelationshipQualityWeight(ProblemLevel.SIGNIFICANT_PROBLEMS)
     assertTrue(expected.compareTo(result) == 0) {
       "Expected $expected but got $result"
     }
@@ -283,7 +273,8 @@ class AllReoffendingPredictorTransformationHelperTest {
   @Test
   fun `getRegularOffendingActivitiesWeight returns correct calculated weight`() {
     val expected = BigDecimal(0.252983205184058)
-    val result = AllReoffendingPredictorTransformationHelper.getRegularOffendingActivitiesWeight(ProblemLevel.SIGNIFICANT_PROBLEMS)
+    val result =
+      AllReoffendingPredictorTransformationHelper.getRegularOffendingActivitiesWeight(ProblemLevel.SIGNIFICANT_PROBLEMS)
     assertTrue(expected.compareTo(result) == 0) {
       "Expected $expected but got $result"
     }
@@ -328,7 +319,8 @@ class AllReoffendingPredictorTransformationHelperTest {
   @Test
   fun `getProCriminalAttitudeWeight returns correct calculated weight`() {
     val expected = BigDecimal(0.0878166190882834)
-    val result = AllReoffendingPredictorTransformationHelper.getProCriminalAttitudeWeight(ProblemLevel.SIGNIFICANT_PROBLEMS)
+    val result =
+      AllReoffendingPredictorTransformationHelper.getProCriminalAttitudeWeight(ProblemLevel.SIGNIFICANT_PROBLEMS)
     assertTrue(expected.compareTo(result) == 0) {
       "Expected $expected but got $result"
     }
@@ -475,7 +467,6 @@ class AllReoffendingPredictorTransformationHelperTest {
         30,
         calculatePolynomial(
           arrayOf(
-            BigDecimal.ZERO,
             BigDecimal(-0.142428460338541),
             BigDecimal(0.0011000413899151),
             BigDecimal(0.0000198538471606),
@@ -491,7 +482,6 @@ class AllReoffendingPredictorTransformationHelperTest {
         30,
         calculatePolynomial(
           arrayOf(
-            BigDecimal.ZERO,
             BigDecimal(-0.110202179628585),
             BigDecimal(0.0006726723443858),
             BigDecimal(0.0000138719445957),
@@ -507,7 +497,6 @@ class AllReoffendingPredictorTransformationHelperTest {
         30,
         calculatePolynomial(
           arrayOf(
-            BigDecimal.ZERO,
             BigDecimal(-0.0175014516689226),
             BigDecimal(0.0001625346907234),
             BigDecimal(0.0000003645241305),
@@ -523,7 +512,6 @@ class AllReoffendingPredictorTransformationHelperTest {
         30,
         calculatePolynomial(
           arrayOf(
-            BigDecimal.ZERO,
             BigDecimal(-0.0097677485919972),
             BigDecimal(0.000126702732348),
             BigDecimal(-0.0000006094926795),
@@ -607,7 +595,6 @@ class AllReoffendingPredictorTransformationHelperTest {
         LocalDate.of(2025, 12, 12),
         calculatePolynomial(
           arrayOf(
-            BigDecimal.ZERO,
             BigDecimal(-0.0762086223169624),
             BigDecimal(0.0016230134182902),
             BigDecimal(0.0000224473135387),
@@ -622,7 +609,6 @@ class AllReoffendingPredictorTransformationHelperTest {
         LocalDate.of(2025, 12, 12),
         calculatePolynomial(
           arrayOf(
-            BigDecimal.ZERO,
             BigDecimal(-0.0531180383905312),
             BigDecimal(0.0004075218530422),
           ),
@@ -639,8 +625,7 @@ class AllReoffendingPredictorTransformationHelperTest {
         18,
         20,
         30,
-        0.5,
-        BigDecimal(1.55298303083717),
+        BigDecimal("-1.0764458092822229259535105313016156713956661405973136425018310546875"),
       ),
       Arguments.of(
         StaticOrDynamic.STATIC,
@@ -648,8 +633,7 @@ class AllReoffendingPredictorTransformationHelperTest {
         7,
         24,
         26,
-        0.25,
-        BigDecimal(1.01980307124196),
+        BigDecimal("-1.4137472471154750807994307667240896364546642871573567390441894531250"),
       ),
       Arguments.of(
         StaticOrDynamic.DYNAMIC,
@@ -657,8 +641,7 @@ class AllReoffendingPredictorTransformationHelperTest {
         5,
         18,
         42,
-        0.1,
-        BigDecimal(1.24540523044696),
+        BigDecimal("-2.867651518363984182707421540996062248041198472492396831512451171875"),
       ),
       Arguments.of(
         StaticOrDynamic.DYNAMIC,
@@ -666,8 +649,7 @@ class AllReoffendingPredictorTransformationHelperTest {
         6,
         21,
         25,
-        0.2,
-        BigDecimal(0.829951359317464),
+        BigDecimal("-1.335755183161743137999572325975761177829781445325352251529693603515625"),
       ),
     )
 
@@ -679,8 +661,7 @@ class AllReoffendingPredictorTransformationHelperTest {
         18,
         20,
         30,
-        0.5,
-        BigDecimal(0.129334968245905),
+        BigDecimal("0.0621393752987599374032687335080660240294037066632881760597229003906250"),
       ),
       Arguments.of(
         StaticOrDynamic.STATIC,
@@ -688,8 +669,7 @@ class AllReoffendingPredictorTransformationHelperTest {
         7,
         24,
         26,
-        0.25,
-        BigDecimal(-0.039439197041062),
+        BigDecimal("-0.0757947243395682004695621971231023206172494610655121505260467529296875000"),
       ),
       Arguments.of(
         StaticOrDynamic.DYNAMIC,
@@ -697,8 +677,7 @@ class AllReoffendingPredictorTransformationHelperTest {
         5,
         18,
         42,
-        0.1,
-        BigDecimal(0.0801894262854395),
+        BigDecimal("0.42515616770311838428496597282411906260080058927997015416622161865234375"),
       ),
       Arguments.of(
         StaticOrDynamic.DYNAMIC,
@@ -706,8 +685,7 @@ class AllReoffendingPredictorTransformationHelperTest {
         6,
         21,
         25,
-        0.2,
-        BigDecimal(-0.0430018109602918),
+        BigDecimal("-0.1113871778541978141098613095013716844938755912153283134102821350097656250"),
       ),
     )
 
