@@ -1,6 +1,7 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
@@ -12,9 +13,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.MotivationLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.coefficients.AllReoffendingPredictorDynamic
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.coefficients.AllReoffendingPredictorStatic
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.constants.AllReoffendingPredictorConstant
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.calculatePolynomial
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -120,7 +118,9 @@ class AllReoffendingPredictorTransformationHelperTest {
       ageAtCurrentSanction,
       totalNumberOfSanctionsForAllOffences,
     )
-    assertEquals(expected, result)
+    assertTrue(expected.compareTo(result) == 0) {
+      "Expected $expected but got $result"
+    }
   }
 
   @ParameterizedTest
@@ -156,14 +156,12 @@ class AllReoffendingPredictorTransformationHelperTest {
   fun `getCopasWeight returns correct calculated weight`(
     staticOrDynamic: StaticOrDynamic,
     gender: Gender,
+    totalSanctions: Int,
+    ageAtFirst: Int,
+    ageAtCurrent: Int,
+    expectedRatio: Double,
     expectedCoefficient: BigDecimal,
   ) {
-    val totalSanctions = 5
-    val ageAtFirst = 20
-    val ageAtCurrent = 30
-
-    val expectedLengthOfCareer = (ageAtCurrent - ageAtFirst) + AllReoffendingPredictorConstant.CAREER_BOOST
-    val expectedRatio = totalSanctions.toDouble() / expectedLengthOfCareer
     val expectedNaturalLog = ln(expectedRatio)
     val expectedWeight = expectedNaturalLog.toBigDecimal() * expectedCoefficient
 
@@ -195,14 +193,12 @@ class AllReoffendingPredictorTransformationHelperTest {
   fun ` returns correct calculated weight`(
     staticOrDynamic: StaticOrDynamic,
     gender: Gender,
+    totalSanctions: Int,
+    ageAtFirst: Int,
+    ageAtCurrent: Int,
+    expectedRatio: Double,
     expectedCoefficient: BigDecimal,
   ) {
-    val totalSanctions = 5
-    val ageAtFirst = 20
-    val ageAtCurrent = 30
-
-    val expectedLengthOfCareer = (ageAtCurrent - ageAtFirst) + AllReoffendingPredictorConstant.CAREER_BOOST
-    val expectedRatio = totalSanctions.toDouble() / expectedLengthOfCareer
     val expectedNaturalLog = ln(expectedRatio)
     val expectedWeight = expectedNaturalLog.pow(2).toBigDecimal() * expectedCoefficient
 
@@ -219,12 +215,11 @@ class AllReoffendingPredictorTransformationHelperTest {
 
   @Test
   fun `getSuitableAccommodationWeight returns correct calculated weight`() {
-    val problemLevel = ProblemLevel.SIGNIFICANT_PROBLEMS
-    val expected =
-      problemLevel.score.toBigDecimal() * AllReoffendingPredictorDynamic.ACCOMMODATION_SUITABILITY.coefficient
-
-    val result = AllReoffendingPredictorTransformationHelper.getSuitableAccommodationWeight(problemLevel)
-    assertEquals(expected, result)
+    val expected = BigDecimal(0.1696098316711506)
+    val result = AllReoffendingPredictorTransformationHelper.getSuitableAccommodationWeight(ProblemLevel.SIGNIFICANT_PROBLEMS)
+    assertTrue(expected.compareTo(result) == 0) {
+      "Expected $expected but got $result"
+    }
   }
 
   @ParameterizedTest
@@ -250,12 +245,11 @@ class AllReoffendingPredictorTransformationHelperTest {
 
   @Test
   fun `getRelationshipQualityWeight returns correct calculated weight`() {
-    val problemLevel = ProblemLevel.SIGNIFICANT_PROBLEMS
-    val expected =
-      problemLevel.score.toBigDecimal() * AllReoffendingPredictorDynamic.RELATIONSHIP_QUALITY.coefficient
-
-    val result = AllReoffendingPredictorTransformationHelper.getRelationshipQualityWeight(problemLevel)
-    assertEquals(expected, result)
+    val expected = BigDecimal(0.0728103770010276)
+    val result = AllReoffendingPredictorTransformationHelper.getRelationshipQualityWeight(ProblemLevel.SIGNIFICANT_PROBLEMS)
+    assertTrue(expected.compareTo(result) == 0) {
+      "Expected $expected but got $result"
+    }
   }
 
   @ParameterizedTest
@@ -269,7 +263,9 @@ class AllReoffendingPredictorTransformationHelperTest {
       currentRelationshipStatus,
       problemLevel,
     )
-    assertEquals(expected, result)
+    assertTrue(expected.compareTo(result) == 0) {
+      "Expected $expected but got $result"
+    }
   }
 
   @ParameterizedTest
@@ -286,62 +282,56 @@ class AllReoffendingPredictorTransformationHelperTest {
 
   @Test
   fun `getRegularOffendingActivitiesWeight returns correct calculated weight`() {
-    val problemLevel = ProblemLevel.SOME_PROBLEMS
-    val expected =
-      problemLevel.score.toBigDecimal() * AllReoffendingPredictorDynamic.ACTIVITIES_ENCOURAGE_OFFENDING.coefficient
-
-    val result = AllReoffendingPredictorTransformationHelper.getRegularOffendingActivitiesWeight(problemLevel)
-    assertEquals(expected, result)
+    val expected = BigDecimal(0.252983205184058)
+    val result = AllReoffendingPredictorTransformationHelper.getRegularOffendingActivitiesWeight(ProblemLevel.SIGNIFICANT_PROBLEMS)
+    assertTrue(expected.compareTo(result) == 0) {
+      "Expected $expected but got $result"
+    }
   }
 
   @Test
   fun `getDrugMotivationWeight returns correct calculated weight`() {
-    val motivationLevel = MotivationLevel.PARTIAL_MOTIVATION
-    val expected =
-      motivationLevel.score.toBigDecimal() * AllReoffendingPredictorDynamic.MOTIVATION_TO_TACKLE_DRUG_MISUSE.coefficient
-
-    val result = AllReoffendingPredictorTransformationHelper.getDrugMotivationWeight(motivationLevel)
-    assertEquals(expected, result)
+    val expected = BigDecimal(0.17230849986786)
+    val result = AllReoffendingPredictorTransformationHelper.getDrugMotivationWeight(MotivationLevel.NO_MOTIVATION)
+    assertTrue(expected.compareTo(result) == 0) {
+      "Expected $expected but got $result"
+    }
   }
 
   @Test
   fun `getChronicDrinkingWeight returns correct calculated weight`() {
-    val problemLevel = ProblemLevel.SOME_PROBLEMS
-    val expected =
-      problemLevel.score.toBigDecimal() * AllReoffendingPredictorDynamic.CHRONIC_DRINKING.coefficient
-
-    val result = AllReoffendingPredictorTransformationHelper.getChronicDrinkingWeight(problemLevel)
-    assertEquals(expected, result)
+    val expected = BigDecimal(0.1490013407203544)
+    val result = AllReoffendingPredictorTransformationHelper.getChronicDrinkingWeight(ProblemLevel.SIGNIFICANT_PROBLEMS)
+    assertTrue(expected.compareTo(result) == 0) {
+      "Expected $expected but got $result"
+    }
   }
 
   @Test
   fun `getBingeDrinkingWeight returns correct calculated weight`() {
-    val problemLevel = ProblemLevel.SIGNIFICANT_PROBLEMS
-    val expected =
-      problemLevel.score.toBigDecimal() * AllReoffendingPredictorDynamic.BINGE_DRINKING.coefficient
-
-    val result = AllReoffendingPredictorTransformationHelper.getBingeDrinkingWeight(problemLevel)
-    assertEquals(expected, result)
+    val expected = BigDecimal(0.0676854872930216)
+    val result = AllReoffendingPredictorTransformationHelper.getBingeDrinkingWeight(ProblemLevel.SIGNIFICANT_PROBLEMS)
+    assertTrue(expected.compareTo(result) == 0) {
+      "Expected $expected but got $result"
+    }
   }
 
   @Test
   fun `getImpulsivityWeight returns correct calculated weight`() {
-    val problemLevel = ProblemLevel.SOME_PROBLEMS
-    val expected =
-      problemLevel.score.toBigDecimal() * AllReoffendingPredictorDynamic.IMPULSIVITY.coefficient
-
-    val result = AllReoffendingPredictorTransformationHelper.getImpulsivityWeight(problemLevel)
-    assertEquals(expected, result)
+    val expected = BigDecimal(0.0843976740190594)
+    val result = AllReoffendingPredictorTransformationHelper.getImpulsivityWeight(ProblemLevel.SIGNIFICANT_PROBLEMS)
+    assertTrue(expected.compareTo(result) == 0) {
+      "Expected $expected but got $result"
+    }
   }
 
   @Test
   fun `getProCriminalAttitudeWeight returns correct calculated weight`() {
-    val problemLevel = ProblemLevel.SIGNIFICANT_PROBLEMS
-    val expected =
-      problemLevel.score.toBigDecimal() * AllReoffendingPredictorDynamic.PRO_CRIMINAL_ATTITUDE.coefficient
-
-    val result = AllReoffendingPredictorTransformationHelper.getProCriminalAttitudeWeight(problemLevel)
-    assertEquals(expected, result)
+    val expected = BigDecimal(0.0878166190882834)
+    val result = AllReoffendingPredictorTransformationHelper.getProCriminalAttitudeWeight(ProblemLevel.SIGNIFICANT_PROBLEMS)
+    assertTrue(expected.compareTo(result) == 0) {
+      "Expected $expected but got $result"
+    }
   }
 
   @ParameterizedTest
@@ -473,8 +463,8 @@ class AllReoffendingPredictorTransformationHelperTest {
   companion object {
     @JvmStatic
     fun get2YearInterceptWeightProvider() = listOf(
-      Arguments.of(StaticOrDynamic.STATIC, AllReoffendingPredictorStatic.TWO_YEAR_CONSTANT.coefficient),
-      Arguments.of(StaticOrDynamic.DYNAMIC, AllReoffendingPredictorDynamic.TWO_YEAR_CONSTANT.coefficient),
+      Arguments.of(StaticOrDynamic.STATIC, BigDecimal(5.01702292499072)),
+      Arguments.of(StaticOrDynamic.DYNAMIC, BigDecimal(3.83654148692014)),
     )
 
     @JvmStatic
@@ -486,10 +476,10 @@ class AllReoffendingPredictorTransformationHelperTest {
         calculatePolynomial(
           arrayOf(
             BigDecimal.ZERO,
-            AllReoffendingPredictorStatic.AAI_MALE.coefficient,
-            AllReoffendingPredictorStatic.AAI_QUADRATIC_MALE.coefficient,
-            AllReoffendingPredictorStatic.AAI_CUBIC_MALE.coefficient,
-            AllReoffendingPredictorStatic.AAI_QUARTIC_MALE.coefficient,
+            BigDecimal(-0.142428460338541),
+            BigDecimal(0.0011000413899151),
+            BigDecimal(0.0000198538471606),
+            BigDecimal(-0.0000002648918335),
           ),
           30.toBigDecimal(),
         ),
@@ -502,10 +492,10 @@ class AllReoffendingPredictorTransformationHelperTest {
         calculatePolynomial(
           arrayOf(
             BigDecimal.ZERO,
-            AllReoffendingPredictorDynamic.AAI_MALE.coefficient,
-            AllReoffendingPredictorDynamic.AAI_QUADRATIC_MALE.coefficient,
-            AllReoffendingPredictorDynamic.AAI_CUBIC_MALE.coefficient,
-            AllReoffendingPredictorDynamic.AAI_QUARTIC_MALE.coefficient,
+            BigDecimal(-0.110202179628585),
+            BigDecimal(0.0006726723443858),
+            BigDecimal(0.0000138719445957),
+            BigDecimal(-0.0000001610775422),
           ),
           30.toBigDecimal(),
         ),
@@ -518,10 +508,10 @@ class AllReoffendingPredictorTransformationHelperTest {
         calculatePolynomial(
           arrayOf(
             BigDecimal.ZERO,
-            AllReoffendingPredictorStatic.AAI_FEMALE.coefficient,
-            AllReoffendingPredictorStatic.AAI_QUADRATIC_FEMALE.coefficient,
-            AllReoffendingPredictorStatic.AAI_CUBIC_FEMALE.coefficient,
-            AllReoffendingPredictorStatic.AAI_QUARTIC_FEMALE.coefficient,
+            BigDecimal(-0.0175014516689226),
+            BigDecimal(0.0001625346907234),
+            BigDecimal(0.0000003645241305),
+            BigDecimal(-0.0000000746220588),
           ),
           30.toBigDecimal(),
         ),
@@ -534,10 +524,10 @@ class AllReoffendingPredictorTransformationHelperTest {
         calculatePolynomial(
           arrayOf(
             BigDecimal.ZERO,
-            AllReoffendingPredictorDynamic.AAI_FEMALE.coefficient,
-            AllReoffendingPredictorDynamic.AAI_QUADRATIC_FEMALE.coefficient,
-            AllReoffendingPredictorDynamic.AAI_CUBIC_FEMALE.coefficient,
-            AllReoffendingPredictorDynamic.AAI_QUARTIC_FEMALE.coefficient,
+            BigDecimal(-0.0097677485919972),
+            BigDecimal(0.000126702732348),
+            BigDecimal(-0.0000006094926795),
+            BigDecimal(-0.0000000713415862),
           ),
           30.toBigDecimal(),
         ),
@@ -547,28 +537,28 @@ class AllReoffendingPredictorTransformationHelperTest {
     @JvmStatic
     fun getGenderWeightProvider() = listOf(
       Arguments.of(StaticOrDynamic.STATIC, Gender.MALE, BigDecimal.ZERO),
-      Arguments.of(StaticOrDynamic.STATIC, Gender.FEMALE, AllReoffendingPredictorStatic.FEMALE.coefficient),
-      Arguments.of(StaticOrDynamic.DYNAMIC, Gender.FEMALE, AllReoffendingPredictorDynamic.FEMALE.coefficient),
+      Arguments.of(StaticOrDynamic.STATIC, Gender.FEMALE, BigDecimal(-2.95224200717183)),
+      Arguments.of(StaticOrDynamic.DYNAMIC, Gender.FEMALE, BigDecimal(-2.68801056322021)),
     )
 
     @JvmStatic
     fun getFirstSanctionWeightProvider() = listOf(
       Arguments.of(StaticOrDynamic.STATIC, 3, BigDecimal.ZERO),
-      Arguments.of(StaticOrDynamic.STATIC, 1, AllReoffendingPredictorStatic.FIRST_SANCTION.coefficient),
-      Arguments.of(StaticOrDynamic.DYNAMIC, 1, AllReoffendingPredictorDynamic.FIRST_SANCTION.coefficient),
+      Arguments.of(StaticOrDynamic.STATIC, 1, BigDecimal(-3.94357049933093)),
+      Arguments.of(StaticOrDynamic.DYNAMIC, 1, BigDecimal(-3.39824378336932)),
     )
 
     @JvmStatic
     fun getSecondSanctionWeightProvider() = listOf(
       Arguments.of(StaticOrDynamic.STATIC, 1, BigDecimal.ZERO),
-      Arguments.of(StaticOrDynamic.STATIC, 2, AllReoffendingPredictorStatic.SECOND_SANCTION.coefficient),
-      Arguments.of(StaticOrDynamic.DYNAMIC, 2, AllReoffendingPredictorDynamic.SECOND_SANCTION.coefficient),
+      Arguments.of(StaticOrDynamic.STATIC, 2, BigDecimal(-3.06189212045904)),
+      Arguments.of(StaticOrDynamic.DYNAMIC, 2, BigDecimal(-2.60344581288004)),
     )
 
     @JvmStatic
     fun getTotalSanctionWeightProvider() = listOf(
-      Arguments.of(StaticOrDynamic.STATIC, 1, AllReoffendingPredictorStatic.SANCTION_OCCASIONS.coefficient),
-      Arguments.of(StaticOrDynamic.DYNAMIC, 1, AllReoffendingPredictorDynamic.SANCTION_OCCASIONS.coefficient),
+      Arguments.of(StaticOrDynamic.STATIC, 1, BigDecimal(-0.0042757301284995)),
+      Arguments.of(StaticOrDynamic.DYNAMIC, 1, BigDecimal(-0.0030262875646805)),
     )
 
     @JvmStatic
@@ -579,32 +569,32 @@ class AllReoffendingPredictorTransformationHelperTest {
         Gender.MALE,
         2,
         18,
-        24,
-        AllReoffendingPredictorStatic.YRS_BETWEEN_FIRST_AND_SECOND_SANCTION_MALE.coefficient * 6.toBigDecimal(),
+        19,
+        BigDecimal(-0.0432051839161834),
       ),
       Arguments.of(
         StaticOrDynamic.DYNAMIC,
         Gender.MALE,
         2,
-        18,
+        20,
         24,
-        AllReoffendingPredictorDynamic.YRS_BETWEEN_FIRST_AND_SECOND_SANCTION_MALE.coefficient * 6.toBigDecimal(),
+        BigDecimal(-0.1278900114848396),
       ),
       Arguments.of(
         StaticOrDynamic.STATIC,
         Gender.FEMALE,
         2,
-        18,
+        19,
         24,
-        AllReoffendingPredictorStatic.YRS_BETWEEN_FIRST_AND_SECOND_SANCTION_FEMALE.coefficient * 6.toBigDecimal(),
+        BigDecimal(-0.2139991579208035),
       ),
       Arguments.of(
         StaticOrDynamic.DYNAMIC,
         Gender.FEMALE,
         2,
-        18,
-        24,
-        AllReoffendingPredictorDynamic.YRS_BETWEEN_FIRST_AND_SECOND_SANCTION_FEMALE.coefficient * 6.toBigDecimal(),
+        21,
+        23,
+        BigDecimal(-0.0622824723468828),
       ),
     )
 
@@ -618,10 +608,10 @@ class AllReoffendingPredictorTransformationHelperTest {
         calculatePolynomial(
           arrayOf(
             BigDecimal.ZERO,
-            AllReoffendingPredictorStatic.OFFENCE_FREE_MONTHS.coefficient,
-            AllReoffendingPredictorStatic.OFFENCE_FREE_MONTHS_QUADRATIC.coefficient,
-            AllReoffendingPredictorStatic.OFFENCE_FREE_MONTHS_CUBIC.coefficient,
-            AllReoffendingPredictorStatic.OFFENCE_FREE_MONTHS_QUARTIC.coefficient,
+            BigDecimal(-0.0762086223169624),
+            BigDecimal(0.0016230134182902),
+            BigDecimal(0.0000224473135387),
+            BigDecimal(-0.0000012808638685),
           ),
           12.toBigDecimal(),
         ),
@@ -633,8 +623,8 @@ class AllReoffendingPredictorTransformationHelperTest {
         calculatePolynomial(
           arrayOf(
             BigDecimal.ZERO,
-            AllReoffendingPredictorDynamic.OFFENCE_FREE_MONTHS.coefficient,
-            AllReoffendingPredictorDynamic.OFFENCE_FREE_MONTHS_QUADRATIC.coefficient,
+            BigDecimal(-0.0531180383905312),
+            BigDecimal(0.0004075218530422),
           ),
           12.toBigDecimal(),
         ),
@@ -646,22 +636,38 @@ class AllReoffendingPredictorTransformationHelperTest {
       Arguments.of(
         StaticOrDynamic.STATIC,
         Gender.MALE,
-        AllReoffendingPredictorStatic.THREE_PLUS_SANCTIONS_COPAS_G_MALE.coefficient,
+        18,
+        20,
+        30,
+        0.5,
+        BigDecimal(1.55298303083717),
       ),
       Arguments.of(
         StaticOrDynamic.STATIC,
         Gender.FEMALE,
-        AllReoffendingPredictorStatic.THREE_PLUS_SANCTIONS_COPAS_G_FEMALE.coefficient,
+        7,
+        24,
+        26,
+        0.25,
+        BigDecimal(1.01980307124196),
       ),
       Arguments.of(
         StaticOrDynamic.DYNAMIC,
         Gender.MALE,
-        AllReoffendingPredictorDynamic.THREE_PLUS_SANCTIONS_COPAS_G_MALE.coefficient,
+        5,
+        18,
+        42,
+        0.1,
+        BigDecimal(1.24540523044696),
       ),
       Arguments.of(
         StaticOrDynamic.DYNAMIC,
         Gender.FEMALE,
-        AllReoffendingPredictorDynamic.THREE_PLUS_SANCTIONS_COPAS_G_FEMALE.coefficient,
+        6,
+        21,
+        25,
+        0.2,
+        BigDecimal(0.829951359317464),
       ),
     )
 
@@ -670,29 +676,45 @@ class AllReoffendingPredictorTransformationHelperTest {
       Arguments.of(
         StaticOrDynamic.STATIC,
         Gender.MALE,
-        AllReoffendingPredictorStatic.THREE_PLUS_SANCTIONS_COPAS_SQUARED_MALE.coefficient,
+        18,
+        20,
+        30,
+        0.5,
+        BigDecimal(0.129334968245905),
       ),
       Arguments.of(
         StaticOrDynamic.STATIC,
         Gender.FEMALE,
-        AllReoffendingPredictorStatic.THREE_PLUS_SANCTIONS_COPAS_SQUARED_FEMALE.coefficient,
+        7,
+        24,
+        26,
+        0.25,
+        BigDecimal(-0.039439197041062),
       ),
       Arguments.of(
         StaticOrDynamic.DYNAMIC,
         Gender.MALE,
-        AllReoffendingPredictorDynamic.THREE_PLUS_SANCTIONS_COPAS_SQUARED_MALE.coefficient,
+        5,
+        18,
+        42,
+        0.1,
+        BigDecimal(0.0801894262854395),
       ),
       Arguments.of(
         StaticOrDynamic.DYNAMIC,
         Gender.FEMALE,
-        AllReoffendingPredictorDynamic.THREE_PLUS_SANCTIONS_COPAS_SQUARED_FEMALE.coefficient,
+        6,
+        21,
+        25,
+        0.2,
+        BigDecimal(-0.0430018109602918),
       ),
     )
 
     @JvmStatic
     fun getUnemployedWeightProvider() = listOf(
       Arguments.of(false, BigDecimal.ZERO),
-      Arguments.of(true, AllReoffendingPredictorDynamic.UNEMPLOYED.coefficient),
+      Arguments.of(true, BigDecimal(0.0317783733809377)),
     )
 
     @JvmStatic
@@ -700,7 +722,7 @@ class AllReoffendingPredictorTransformationHelperTest {
       Arguments.of(CurrentRelationshipStatus.NOT_IN_RELATIONSHIP, BigDecimal.ZERO),
       Arguments.of(
         CurrentRelationshipStatus.IN_RELATIONSHIP_LIVING_TOGETHER,
-        AllReoffendingPredictorDynamic.LIVE_IN_RELATIONSHIP.coefficient,
+        BigDecimal(-0.266331545877519),
       ),
     )
 
@@ -709,12 +731,12 @@ class AllReoffendingPredictorTransformationHelperTest {
       Arguments.of(
         CurrentRelationshipStatus.IN_RELATIONSHIP_LIVING_TOGETHER,
         ProblemLevel.SOME_PROBLEMS,
-        ProblemLevel.SOME_PROBLEMS.score.toBigDecimal() * AllReoffendingPredictorDynamic.QUALITY_OF_LIVE_IN_RELATIONSHIP.coefficient,
+        BigDecimal(0.141655261924428),
       ),
       Arguments.of(
         CurrentRelationshipStatus.IN_RELATIONSHIP_LIVING_TOGETHER,
         ProblemLevel.SIGNIFICANT_PROBLEMS,
-        ProblemLevel.SIGNIFICANT_PROBLEMS.score.toBigDecimal() * AllReoffendingPredictorDynamic.QUALITY_OF_LIVE_IN_RELATIONSHIP.coefficient,
+        BigDecimal(0.283310523848856),
       ),
       Arguments.of(
         CurrentRelationshipStatus.IN_RELATIONSHIP_LIVING_TOGETHER,
@@ -727,65 +749,65 @@ class AllReoffendingPredictorTransformationHelperTest {
     @JvmStatic
     fun getDomesticViolenceWeightProvider() = listOf(
       Arguments.of(false, BigDecimal.ZERO),
-      Arguments.of(true, AllReoffendingPredictorDynamic.DOMESTIC_ABUSE.coefficient),
+      Arguments.of(true, BigDecimal(0.0635669196833949)),
     )
 
     @JvmStatic
     fun getHeroinUsageWeightProvider() = listOf(
       Arguments.of(false, BigDecimal.ZERO),
-      Arguments.of(true, AllReoffendingPredictorDynamic.HEROIN.coefficient),
+      Arguments.of(true, BigDecimal(0.182096496867273)),
     )
 
     @JvmStatic
     fun getOtherOpiateUsageWeightProvider() = listOf(
       Arguments.of(false, BigDecimal.ZERO),
-      Arguments.of(true, AllReoffendingPredictorDynamic.OTHER_OPIATE.coefficient),
+      Arguments.of(true, BigDecimal(0.17892958261215)),
     )
 
     @JvmStatic
     fun getCrackCocaineUsageWeightProvider() = listOf(
       Arguments.of(false, BigDecimal.ZERO),
-      Arguments.of(true, AllReoffendingPredictorDynamic.CRACK_COCAINE.coefficient),
+      Arguments.of(true, BigDecimal(0.109095964190426)),
     )
 
     @JvmStatic
     fun getPowderCocaineUsageWeightProvider() = listOf(
       Arguments.of(false, BigDecimal.ZERO),
-      Arguments.of(true, AllReoffendingPredictorDynamic.POWDER_COCAINE.coefficient),
+      Arguments.of(true, BigDecimal(0.0605135470691152)),
     )
 
     @JvmStatic
     fun getMisusedPrescriptionDrugUsageWeightProvider() = listOf(
       Arguments.of(false, BigDecimal.ZERO),
-      Arguments.of(true, AllReoffendingPredictorDynamic.PRESCRIPTION_DRUG_MISUSE.coefficient),
+      Arguments.of(true, BigDecimal(0.0252240614607483)),
     )
 
     @JvmStatic
     fun getBenzodiazepinesUsageWeightProvider() = listOf(
       Arguments.of(false, BigDecimal.ZERO),
-      Arguments.of(true, AllReoffendingPredictorDynamic.BENZODIAZEPINES.coefficient),
+      Arguments.of(true, BigDecimal(0.0764353348164513)),
     )
 
     @JvmStatic
     fun getCannabisUsageWeightProvider() = listOf(
       Arguments.of(false, BigDecimal.ZERO),
-      Arguments.of(true, AllReoffendingPredictorDynamic.CANNABIS.coefficient),
+      Arguments.of(true, BigDecimal(0.049300440360878)),
     )
 
     @JvmStatic
     fun getSteroidsUsageWeightProvider() = listOf(
       Arguments.of(false, BigDecimal.ZERO),
-      Arguments.of(true, AllReoffendingPredictorDynamic.STEROIDS.coefficient),
+      Arguments.of(true, BigDecimal(0.202231737251706)),
     )
 
     @JvmStatic
     fun getOtherDrugsUsageWeightProvider() = listOf(
       Arguments.of(false, false, false, false, false, BigDecimal.ZERO),
-      Arguments.of(true, false, false, false, false, AllReoffendingPredictorDynamic.OTHER_DRUGS.coefficient),
-      Arguments.of(false, true, false, false, false, AllReoffendingPredictorDynamic.OTHER_DRUGS.coefficient),
-      Arguments.of(false, false, true, false, false, AllReoffendingPredictorDynamic.OTHER_DRUGS.coefficient),
-      Arguments.of(false, false, false, true, false, AllReoffendingPredictorDynamic.OTHER_DRUGS.coefficient),
-      Arguments.of(false, false, false, false, true, AllReoffendingPredictorDynamic.OTHER_DRUGS.coefficient),
+      Arguments.of(true, false, false, false, false, BigDecimal(0.0267794308651123)),
+      Arguments.of(false, true, false, false, false, BigDecimal(0.0267794308651123)),
+      Arguments.of(false, false, true, false, false, BigDecimal(0.0267794308651123)),
+      Arguments.of(false, false, false, true, false, BigDecimal(0.0267794308651123)),
+      Arguments.of(false, false, false, false, true, BigDecimal(0.0267794308651123)),
     )
 
     @JvmStatic
