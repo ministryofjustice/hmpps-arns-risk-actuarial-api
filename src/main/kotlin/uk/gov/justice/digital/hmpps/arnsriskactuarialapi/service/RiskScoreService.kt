@@ -13,13 +13,7 @@ class RiskScoreService {
   lateinit var allReoffendingPredictorRiskProducerService: AllReoffendingPredictorRiskProducerService
 
   @Autowired
-  lateinit var ogrs3RiskProducerService: OGRS3RiskProducerService
-
-  @Autowired
   lateinit var ovpRiskProducerService: OVPRiskProducerService
-
-  @Autowired
-  lateinit var ogpRiskProducerService: OGPRiskProducerService
 
   @Autowired
   lateinit var mstRiskProducerService: MSTRiskProducerService
@@ -47,9 +41,7 @@ class RiskScoreService {
 
   fun riskScoreProducer(riskScoreRequest: RiskScoreRequest): RiskScoreResponse = listOf(
     allReoffendingPredictorRiskProducerService,
-    ogrs3RiskProducerService,
     ovpRiskProducerService,
-    ogpRiskProducerService,
     mstRiskProducerService,
     opdRiskProducerService,
     pniRiskProducerService,

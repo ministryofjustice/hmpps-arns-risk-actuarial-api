@@ -27,7 +27,7 @@ class MSTRiskProducerService : BaseRiskScoreProducer() {
     val errors = validateMST(request)
 
     if (errors.isNotEmpty()) {
-      return applyErrorsToContextAndReturn(context, errors)
+      return applyErrorsToContext(context, errors)
     }
 
     val validRequest = MSTRequestValidated(
@@ -51,15 +51,15 @@ class MSTRiskProducerService : BaseRiskScoreProducer() {
     }
   }
 
-  override fun applyErrorsToContextAndReturn(
+  override fun applyErrorsToContext(
     context: RiskScoreContext,
-    validationErrorResponses: List<ValidationError>,
+    validationErrors: List<ValidationError>,
   ): RiskScoreContext = context.apply {
     MST = MSTObject(
       null,
       null,
       null,
-      validationErrorResponses,
+      validationErrors,
     )
   }
 

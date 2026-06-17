@@ -35,7 +35,7 @@ class OSPDCRiskProducerService : BaseRiskScoreProducer() {
     val errors = validateOSP(request, true)
 
     if (errors.isNotEmpty()) {
-      return applyErrorsToContextAndReturn(context, errors)
+      return applyErrorsToContext(context, errors)
     }
 
     if (request.hasEverCommittedSexualOffence == false) {
@@ -77,7 +77,7 @@ class OSPDCRiskProducerService : BaseRiskScoreProducer() {
       request.totalNonContactSexualOffences!!,
       request.totalIndecentImageSanctions!!,
       request.dateAtStartOfFollowupUserInput!!,
-      request.totalNumberOfSanctionsForAllOffences!!.toInt(),
+      request.totalNumberOfSanctionsForAllOffences!!,
       request.dateOfMostRecentSexualOffence,
       request.isCurrentOffenceAgainstVictimStranger,
       request.supervisionStatus!!,
@@ -89,10 +89,10 @@ class OSPDCRiskProducerService : BaseRiskScoreProducer() {
     }
   }
 
-  override fun applyErrorsToContextAndReturn(
+  override fun applyErrorsToContext(
     context: RiskScoreContext,
-    validationErrorResponses: List<ValidationError>,
-  ): RiskScoreContext = context.apply { OSPDC = OSPDCObject(null, null, null, null, null, null, validationErrorResponses, null) }
+    validationErrors: List<ValidationError>,
+  ): RiskScoreContext = context.apply { OSPDC = OSPDCObject(null, null, null, null, null, null, validationErrors, null) }
 
   private fun getOSPDCObject(
     request: OSPDCRequestValidated,

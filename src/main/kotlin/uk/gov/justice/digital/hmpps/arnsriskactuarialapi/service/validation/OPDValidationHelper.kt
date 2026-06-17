@@ -29,7 +29,7 @@ private fun validateDomesticAbuse(
   val hasNoEvidenceOfDomesticAbuse = request.evidenceOfDomesticAbuse == null || !request.evidenceOfDomesticAbuse
   val hasDomesticAbuseFieldsNotNull = request.domesticAbuseAgainstPartner != null || request.domesticAbuseAgainstFamily != null
   if (hasNoEvidenceOfDomesticAbuse && hasDomesticAbuseFieldsNotNull) {
-    errors += ValidationErrorType.DOMESTIC_ABUSE_INCONSISTENT_INPUT.asErrorResponse(
+    errors += ValidationErrorType.DOMESTIC_ABUSE_INCONSISTENT_INPUT.asError(
       listOf(
         RiskScoreRequest::evidenceOfDomesticAbuse.name,
         RiskScoreRequest::domesticAbuseAgainstFamily.name,
@@ -52,6 +52,6 @@ private fun validateRequiredFields(
   }
 
   if (missingFields.isNotEmpty()) {
-    errors += ValidationErrorType.MISSING_MANDATORY_INPUT.asErrorResponse(missingFields)
+    errors += ValidationErrorType.MISSING_MANDATORY_INPUT.asError(missingFields)
   }
 }

@@ -69,14 +69,14 @@ private fun validateRequiredFields(request: RiskScoreRequest, errors: MutableLis
   }
 
   if (missingFields.isNotEmpty()) {
-    errors += ValidationErrorType.MISSING_MANDATORY_INPUT.asErrorResponse(missingFields)
+    errors += ValidationErrorType.MISSING_MANDATORY_INPUT.asError(missingFields)
   }
 
   if (sexualOffendingInconsistentFields.isNotEmpty()) {
-    errors += ValidationErrorType.SEXUAL_OFFENDING_INCONSISTENT_INPUT.asErrorResponse(sexualOffendingInconsistentFields)
+    errors += ValidationErrorType.SEXUAL_OFFENDING_INCONSISTENT_INPUT.asError(sexualOffendingInconsistentFields)
   }
 
   if (missingSexualSanctionCounts.isNotEmpty()) {
-    errors += ValidationErrorType.SEXUAL_OFFENDING_MISSING_COUNTS.asErrorResponse(missingSexualSanctionCounts)
+    errors += ValidationErrorType.SEXUAL_OFFENDING_MISSING_COUNTS.asError(missingSexualSanctionCounts)
   }
 }

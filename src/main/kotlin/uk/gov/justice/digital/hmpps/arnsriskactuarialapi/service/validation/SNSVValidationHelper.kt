@@ -81,8 +81,8 @@ fun validateSanctionCount(request: RiskScoreRequest, errors: MutableList<Validat
   val totalSanctions = request.totalNumberOfSanctionsForAllOffences
   val violentSanctions = request.totalNumberOfViolentSanctions
   if (totalSanctions != null && violentSanctions != null) {
-    if (violentSanctions.toInt() > totalSanctions.toInt()) {
-      errors += ValidationErrorType.VIOLENT_SANCTION_GREATER_THAN_TOTAL_SANCTIONS.asErrorResponse(
+    if (violentSanctions > totalSanctions) {
+      errors += ValidationErrorType.VIOLENT_SANCTION_GREATER_THAN_TOTAL_SANCTIONS.asError(
         listOf(
           RiskScoreRequest::totalNumberOfSanctionsForAllOffences.name,
           RiskScoreRequest::totalNumberOfViolentSanctions.name,
@@ -97,7 +97,7 @@ fun validateConvictionAndFollowUpDate(request: RiskScoreRequest, errors: Mutable
   val followupDate = request.dateAtStartOfFollowupUserInput
   if (convictionDate != null && followupDate != null) {
     if (followupDate.isBefore(convictionDate)) {
-      errors += ValidationErrorType.FOLLOW_UP_DATE_BEFORE_CONVICTION_DATE.asErrorResponse(
+      errors += ValidationErrorType.FOLLOW_UP_DATE_BEFORE_CONVICTION_DATE.asError(
         listOf(
           RiskScoreRequest::dateAtStartOfFollowupUserInput.name,
           RiskScoreRequest::dateOfCurrentConviction.name,
@@ -114,7 +114,7 @@ fun validateAgeAtFirstSanctionAndCurrentConviction(request: RiskScoreRequest, er
   if (ageAtFirstSanction != null && dob != null && dateOfCurrentConviction != null) {
     val ageAtCurrentConviction = Period.between(dob, dateOfCurrentConviction).years
     if (ageAtFirstSanction > ageAtCurrentConviction) {
-      errors += ValidationErrorType.AGE_AT_FIRST_SANCTION_AFTER_AGE_AT_CURRENT_CONVICTION.asErrorResponse(
+      errors += ValidationErrorType.AGE_AT_FIRST_SANCTION_AFTER_AGE_AT_CURRENT_CONVICTION.asError(
         listOf(
           RiskScoreRequest::ageAtFirstSanction.name,
           RiskScoreRequest::dateOfBirth.name,

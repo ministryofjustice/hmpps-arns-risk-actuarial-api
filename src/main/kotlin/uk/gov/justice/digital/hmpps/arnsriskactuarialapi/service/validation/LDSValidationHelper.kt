@@ -23,7 +23,7 @@ private fun validateAtLeastThreeFieldsPresent(request: RiskScoreRequest, errors:
     if (it.get(request) == null) it.name else null
   }.let {
     if (it.size > 1) {
-      errors += ValidationErrorType.LDS_NOT_ENOUGH_FIELDS_PRESENT.asErrorResponse(LDS_FIELDS_AT_LEAST_3_OF.map { property -> property.name })
+      errors += ValidationErrorType.LDS_NOT_ENOUGH_FIELDS_PRESENT.asError(LDS_FIELDS_AT_LEAST_3_OF.map { property -> property.name })
     }
   }
 }
@@ -37,7 +37,7 @@ private fun validateRequiredFields(request: RiskScoreRequest, errors: MutableLis
   }
 
   if (missingFields.isNotEmpty()) {
-    errors += ValidationErrorType.MISSING_MANDATORY_INPUT.asErrorResponse(missingFields)
+    errors += ValidationErrorType.MISSING_MANDATORY_INPUT.asError(missingFields)
   }
 }
 

@@ -6,7 +6,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 
-abstract class BaseRiskScoreProducer<T> {
+abstract class BaseRiskScoreProducer {
 
   private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -17,7 +17,7 @@ abstract class BaseRiskScoreProducer<T> {
       logger.error("Unexpected error calculating risk score", it)
       return applyErrorsToContext(
         context,
-        listOf(ValidationErrorType.UNEXPECTED_ERROR.asErrorResponseForUnexpectedError("${it.message}")),
+        listOf(ValidationErrorType.UNEXPECTED_ERROR.asErrorForUnexpectedError("${it.message}")),
       )
     }
   }

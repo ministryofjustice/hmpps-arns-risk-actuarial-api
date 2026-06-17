@@ -15,9 +15,9 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.ProgrammeNeedIdentifier
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.highOgrs2
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.highAllReoffendingPredictor
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.highOvp
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.lowOgrs2
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.lowAllReoffendingPredictor
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.pniRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validPNIRiskScoreRequest
 
@@ -28,7 +28,7 @@ class PNIRiskProducerServiceTest {
   @Test
   fun `should calculate ALTERNATIVE PNI with a valid request`() {
     val context = emptyContext().copy(
-      OGRS3 = lowOgrs2(),
+      allReoffendingPredictor = lowAllReoffendingPredictor(),
     )
     val request = validPNIRiskScoreRequest()
     val result = service.getRiskScore(request, context).PNI
@@ -41,7 +41,7 @@ class PNIRiskProducerServiceTest {
   @CsvSource(value = ["CUSTODY, REMAND"])
   fun `should calculate HIGH PNI with a valid request`(supervisionStatus: SupervisionStatus) {
     val context = emptyContext().copy(
-      OGRS3 = highOgrs2(),
+      allReoffendingPredictor = highAllReoffendingPredictor(),
       OVP = highOvp(),
     )
     val request = validPNIRiskScoreRequest().copy(
@@ -60,7 +60,7 @@ class PNIRiskProducerServiceTest {
   @Test
   fun `should calculate MODERATE PNI with a valid request`() {
     val context = emptyContext().copy(
-      OGRS3 = lowOgrs2(),
+      allReoffendingPredictor = lowAllReoffendingPredictor(),
     )
     val request = validPNIRiskScoreRequest().copy(
       sexualPreoccupation = ProblemLevel.SOME_PROBLEMS,
@@ -78,7 +78,7 @@ class PNIRiskProducerServiceTest {
   @Test
   fun `should calculate OMISSION PNI with an invalid request and aggregate missing fields from different domains`() {
     val context = emptyContext().copy(
-      OGRS3 = lowOgrs2(),
+      allReoffendingPredictor = lowAllReoffendingPredictor(),
     )
     val request = validPNIRiskScoreRequest().copy(
       sexualPreoccupation = null,
@@ -106,10 +106,10 @@ class PNIRiskProducerServiceTest {
 
     @ParameterizedTest
     @CsvSource(value = ["CUSTODY, REMAND"])
-    fun `should return true for high intensity when custody is true and OGRS and OVP are high`(supervisionStatus: SupervisionStatus) {
+    fun `should return true for high intensity when custody is true and All reoffending predictor and OVP are high`(supervisionStatus: SupervisionStatus) {
       val request = pniRequest().copy(
         supervisionStatus = supervisionStatus,
-        ogrs3TwoYear = 80,
+        allReoffendingPredictorStaticScore = 80.0,
         ovp = 65,
       )
       val result = service.isHighIntensity(request, NeedScore.MEDIUM, RiskBand.MEDIUM)
@@ -120,7 +120,7 @@ class PNIRiskProducerServiceTest {
     fun `should return false for high intensity when custody is false even if scores are high`() {
       val request = pniRequest().copy(
         supervisionStatus = SupervisionStatus.COMMUNITY,
-        ogrs3TwoYear = 80,
+        allReoffendingPredictorStaticScore = 80.0,
         ovp = 65,
       )
       val result = service.isHighIntensity(request, NeedScore.HIGH, RiskBand.HIGH)
@@ -135,10 +135,10 @@ class PNIRiskProducerServiceTest {
     }
 
     @Test
-    fun `should return true for high intensity with high sara and high ogrs`() {
+    fun `should return true for high intensity with high sara and high All reoffending predictor`() {
       val request = pniRequest().copy(
         supervisionStatus = SupervisionStatus.CUSTODY,
-        ogrs3TwoYear = 80,
+        allReoffendingPredictorStaticScore = 80.0,
         saraRiskToPartner = RiskBand.HIGH,
       )
       val result = service.isHighIntensity(request, NeedScore.MEDIUM, RiskBand.MEDIUM)
@@ -146,10 +146,10 @@ class PNIRiskProducerServiceTest {
     }
 
     @Test
-    fun `should return true for moderate intensity with high ogrs and ovp and community`() {
+    fun `should return true for moderate intensity with high All reoffending predictor and ovp and community`() {
       val request = pniRequest().copy(
         supervisionStatus = SupervisionStatus.COMMUNITY,
-        ogrs3TwoYear = 80,
+        allReoffendingPredictorStaticScore = 80.0,
         ovp = 65,
       )
       val result = service.isModerateIntensity(request, NeedScore.MEDIUM, RiskBand.MEDIUM)
@@ -184,9 +184,14 @@ class PNIRiskProducerServiceTest {
   @Nested
   inner class OverallRiskTest {
     @Test
-    fun `isHighRisk returns true when custody is true and ogrs3 is high`() {
+    fun `isHighRisk returns true when custody is true and allReoffendingPredictorStaticScore is high`() {
       val result =
-        service.isHighRisk(pniRequest().copy(supervisionStatus = SupervisionStatus.CUSTODY, ogrs3TwoYear = 80))
+        service.isHighRisk(
+          pniRequest().copy(
+            supervisionStatus = SupervisionStatus.CUSTODY,
+            allReoffendingPredictorStaticScore = 80.0,
+          ),
+        )
       assertTrue(result)
     }
 
@@ -231,7 +236,7 @@ class PNIRiskProducerServiceTest {
       val result = service.isHighRisk(
         pniRequest().copy(
           supervisionStatus = SupervisionStatus.COMMUNITY,
-          ogrs3TwoYear = 40,
+          allReoffendingPredictorStaticScore = 40.0,
           ovp = 10,
           rsr = 1,
         ),
@@ -240,8 +245,8 @@ class PNIRiskProducerServiceTest {
     }
 
     @Test
-    fun `isMediumRisk returns true for ogrs3 medium`() {
-      val result = service.isMediumRisk(pniRequest().copy(ogrs3TwoYear = 60))
+    fun `isMediumRisk returns true for All reoffending predictor medium`() {
+      val result = service.isMediumRisk(pniRequest().copy(allReoffendingPredictorStaticScore = 60.0))
       assertTrue(result)
     }
 
@@ -283,7 +288,7 @@ class PNIRiskProducerServiceTest {
 
     @Test
     fun `isMediumRisk returns false when all factors are low or null`() {
-      val result = service.isMediumRisk(pniRequest().copy(ogrs3TwoYear = 40, ovp = 10, rsr = 0))
+      val result = service.isMediumRisk(pniRequest().copy(allReoffendingPredictorStaticScore = 40.0, ovp = 10, rsr = 0))
       assertFalse(result)
     }
   }

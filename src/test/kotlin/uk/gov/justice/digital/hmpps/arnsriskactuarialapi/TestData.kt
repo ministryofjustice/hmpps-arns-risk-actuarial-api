@@ -1,5 +1,6 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi
 
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CurrentRelationshipStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.MotivationLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.PreviousConviction
@@ -8,13 +9,13 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.YesSometimesNo
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.allreoffendingpredictor.AllReoffendingPredictorObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds.HasQualifications
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds.LDSObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.mst.MSTObject
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogp.OGPObject
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ogrs3.OGRS3Object
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.opd.OPDObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.opd.OPDRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.osp.OSPDCObject
@@ -26,12 +27,11 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.ProgrammeNeedId
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.rsr.RSRObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.SNSVObject
 import java.time.LocalDate
+import kotlin.collections.emptyList
 
 fun emptyOVP(): OVPObject = OVPObject(null, null, null, null, null)
 
-fun emptyOGRS3(): OGRS3Object = OGRS3Object(null, null, null, null, null)
-
-fun emptyOGP(): OGPObject = OGPObject(null, null, null, null, null)
+fun emptyAllReoffendingPredictor(): AllReoffendingPredictorObject = AllReoffendingPredictorObject(null, null, null, null, null)
 
 fun emptyMST(): MSTObject = MSTObject(null, null, null, null)
 
@@ -51,18 +51,18 @@ fun emptyOSPIIC(): OSPIICObject = OSPIICObject(null, null, null, null, emptyList
 
 fun emptyContext() = RiskScoreContext(version = RiskScoreVersion.V1_0)
 
-fun lowOgrs2() = OGRS3Object(
-  10,
-  20,
+fun lowAllReoffendingPredictor(staticOrDynamic: StaticOrDynamic = StaticOrDynamic.STATIC) = AllReoffendingPredictorObject(
+  10.0,
   RiskBand.LOW,
+  staticOrDynamic,
   emptyList(),
   emptyMap(),
 )
 
-fun highOgrs2() = OGRS3Object(
-  88,
-  90,
+fun highAllReoffendingPredictor(staticOrDynamic: StaticOrDynamic = StaticOrDynamic.STATIC) = AllReoffendingPredictorObject(
+  90.0,
   RiskBand.VERY_HIGH,
+  staticOrDynamic,
   emptyList(),
   emptyMap(),
 )
@@ -134,6 +134,52 @@ object RiskScoreRequestTestConstants {
     professionalOrVocationalQualifications = HasQualifications.ANY_QUALIFICATION,
   )
 }
+
+fun validAllReoffendingPredictorStaticRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
+  assessmentDate = LocalDate.of(2025, 1, 1),
+  dateOfBirth = LocalDate.of(1990, 1, 1),
+  dateOfCurrentConviction = LocalDate.of(2024, 1, 1),
+  ageAtFirstSanction = 18,
+  gender = Gender.MALE,
+  currentOffenceCode = "00001",
+  totalNumberOfSanctionsForAllOffences = 2,
+  dateAtStartOfFollowupCalculated = LocalDate.of(2026, 1, 1),
+)
+
+fun validAllReoffendingPredictorDynamicRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
+  assessmentDate = LocalDate.of(2025, 1, 1),
+  dateOfBirth = LocalDate.of(1990, 1, 1),
+  dateOfCurrentConviction = LocalDate.of(2024, 1, 1),
+  ageAtFirstSanction = 18,
+  gender = Gender.MALE,
+  currentOffenceCode = "00001",
+  totalNumberOfSanctionsForAllOffences = 2,
+  dateAtStartOfFollowupCalculated = LocalDate.of(2026, 1, 1),
+  suitabilityOfAccommodation = ProblemLevel.SOME_PROBLEMS,
+  isUnemployed = true,
+  currentRelationshipWithPartner = ProblemLevel.SOME_PROBLEMS,
+  evidenceOfDomesticAbuse = false,
+  currentRelationshipStatus = CurrentRelationshipStatus.IN_RELATIONSHIP_NOT_LIVING_TOGETHER,
+  regularOffendingActivities = ProblemLevel.SOME_PROBLEMS,
+  motivationToTackleDrugMisuse = MotivationLevel.PARTIAL_MOTIVATION,
+  hasHeroinUsage = false,
+  hasOtherOpiateUsage = false,
+  hasCrackCocaineUsage = false,
+  hasPowderCocaineUsage = false,
+  hasMisusedPrescriptionDrugUsage = false,
+  hasBenzodiazepinesUsage = false,
+  hasCannabisUsage = true,
+  hasSteroidsUsage = true,
+  hasOtherDrugsUsage = false,
+  hasKetamineUsage = false,
+  hasSpiceUsage = false,
+  hasHallucinogensUsage = false,
+  hasSolventsUsage = false,
+  currentAlcoholUseProblems = ProblemLevel.SOME_PROBLEMS,
+  excessiveAlcoholUse = ProblemLevel.SOME_PROBLEMS,
+  impulsivityProblems = ProblemLevel.SOME_PROBLEMS,
+  proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
+)
 
 fun validOVPRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
   version = RiskScoreVersion.V1_0,
@@ -378,7 +424,7 @@ fun pniRequest(
   controllingOrAggressiveBehaviour = controllingOrAggressiveBehaviour,
   impulsivityProblems = impulsivityProblems,
   temperControl = temperControl,
-  ogrs3TwoYear = null,
+  allReoffendingPredictorStaticScore = null,
   ovpBand = null,
   ospDCBand = null,
   ospIICBand = null,

@@ -18,7 +18,7 @@ class OSPIICRiskProducerService : BaseRiskScoreProducer() {
     val errors = validateOSP(request, false)
 
     if (errors.isNotEmpty()) {
-      return applyErrorsToContextAndReturn(context, errors)
+      return applyErrorsToContext(context, errors)
     }
 
     if (request.gender == Gender.FEMALE) {
@@ -47,8 +47,8 @@ class OSPIICRiskProducerService : BaseRiskScoreProducer() {
     }
   }
 
-  override fun applyErrorsToContextAndReturn(
+  override fun applyErrorsToContext(
     context: RiskScoreContext,
-    validationErrorResponses: List<ValidationError>,
-  ): RiskScoreContext = context.apply { OSPIIC = OSPIICObject(null, null, null, null, validationErrorResponses) }
+    validationErrors: List<ValidationError>,
+  ): RiskScoreContext = context.apply { OSPIIC = OSPIICObject(null, null, null, null, validationErrors) }
 }

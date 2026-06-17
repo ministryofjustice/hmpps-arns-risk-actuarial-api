@@ -1,6 +1,7 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import kotlin.reflect.KProperty1
@@ -13,19 +14,27 @@ fun ArrayList<String>.addIfNotNull(request: RiskScoreRequest, prop: KProperty1<R
   if (prop.get(request) != null) this.add(prop.name)
 }
 
-fun validateRequiredFields(request: RiskScoreRequest, errors: MutableList<ValidationError>, requiredFields: List<KProperty1<RiskScoreRequest, Any?>>) {
+fun validateRequiredFields(
+  request: RiskScoreRequest,
+  errors: MutableList<ValidationError>,
+  requiredFields: List<KProperty1<RiskScoreRequest, Any?>>,
+  staticOrDynamic: StaticOrDynamic = StaticOrDynamic.STATIC,
+) {
   val missingFields = arrayListOf<String>()
 
   requiredFields.forEach { missingFields.addIfNull(request, it) }
 
   if (missingFields.isNotEmpty()) {
-    errors += ValidationErrorType.MISSING_MANDATORY_INPUT.asErrorResponse(missingFields)
+    errors += when (staticOrDynamic) {
+      StaticOrDynamic.STATIC -> ValidationErrorType.MISSING_MANDATORY_INPUT.asError(missingFields)
+      StaticOrDynamic.DYNAMIC -> ValidationErrorType.MISSING_DYNAMIC_INPUT.asError(missingFields)
+    }
   }
 }
 
 fun validateTotalNumberOfSanctionsForAllOffences(request: RiskScoreRequest, errors: MutableList<ValidationError>) {
   if (request.totalNumberOfSanctionsForAllOffences != null && request.totalNumberOfSanctionsForAllOffences < 1) {
-    errors += ValidationErrorType.TOTAL_NUMBER_OF_SANCTIONS_LESS_THAN_ONE.asErrorResponse(
+    errors += ValidationErrorType.TOTAL_NUMBER_OF_SANCTIONS_LESS_THAN_ONE.asError(
       listOf(RiskScoreRequest::totalNumberOfSanctionsForAllOffences.name),
     )
   }
@@ -33,7 +42,7 @@ fun validateTotalNumberOfSanctionsForAllOffences(request: RiskScoreRequest, erro
 
 fun validateCurrentOffenceCode(request: RiskScoreRequest, errors: MutableList<ValidationError>) {
   if (request.currentOffenceCode != null && request.currentOffenceCode.length != 5) {
-    errors += ValidationErrorType.OFFENCE_CODE_INCORRECT_FORMAT.asErrorResponse(listOf(RiskScoreRequest::currentOffenceCode.name))
+    errors += ValidationErrorType.OFFENCE_CODE_INCORRECT_FORMAT.asError(listOf(RiskScoreRequest::currentOffenceCode.name))
   }
 }
 
@@ -52,7 +61,7 @@ fun addValidationErrorResponse(
   errors: List<ValidationError>,
   error: ValidationErrorType,
 ): List<ValidationError> = if (fields.isNotEmpty()) {
-  errors + error.asErrorResponse(fields)
+  errors + error.asError(fields)
 } else {
   errors
 }

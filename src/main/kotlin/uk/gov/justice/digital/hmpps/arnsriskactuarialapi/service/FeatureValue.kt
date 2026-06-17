@@ -3,9 +3,10 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 enum class FeatureValue(val outputName: String) {
   AGE_GENDER_SCORE("ageGenderScore"),
   CONVICTION_STATUS_SCORE("convictionStatusScore"),
-  COPAS_SCORE("COPASScore"),
-  COPAS_SCORE_SQUARED("COPASScoreSquared"),
+  COPAS_SCORE("copasScore"),
+  COPAS_SCORE_SQUARED("copasScoreSquared"),
   OFFENCE_GROUP_PARAMETER("offenceGroupParameter"),
+  OFFENCE_GROUP_WEIGHT("offenceGroupWeight"),
   TOTAL_CONTACT_ADULT_SEXUAL_SANCTIONS_WEIGHT("totalContactAdultSexualSanctionsWeight"),
   TOTAL_CONTACT_CHILD_SEXUAL_SANCTIONS_WEIGHT("totalContactChildSexualSanctionsWeight"),
   TOTAL_NON_CONTACT_SEXUAL_OFFENCES_WEIGHT("totalNonContactSexualOffencesWeight"),

@@ -24,7 +24,7 @@ class LDSRiskProducerService : BaseRiskScoreProducer() {
     val errors = validateLDS(request)
 
     if (errors.isNotEmpty()) {
-      return applyErrorsToContextAndReturn(context, errors)
+      return applyErrorsToContext(context, errors)
     }
 
     val validInput = LDSInputValidated(
@@ -42,13 +42,13 @@ class LDSRiskProducerService : BaseRiskScoreProducer() {
     }
   }
 
-  override fun applyErrorsToContextAndReturn(
+  override fun applyErrorsToContext(
     context: RiskScoreContext,
-    validationErrorResponses: List<ValidationError>,
+    validationErrors: List<ValidationError>,
   ): RiskScoreContext = context.apply {
     LDS = LDSObject(
       null,
-      validationErrorResponses,
+      validationErrors,
     )
   }
 
