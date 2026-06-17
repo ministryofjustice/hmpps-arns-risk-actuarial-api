@@ -177,7 +177,6 @@ class ViolentReoffendingPredictorTransformationHelperTest {
   fun `getCopasViolentOffencesWeight returns correct calculated weight`(
     staticOrDynamic: StaticOrDynamic,
     totalViolentSanctions: Int,
-
     ageAtFirst: Int,
     ageAtCurrent: Int,
     expectedWeight: BigDecimal,
