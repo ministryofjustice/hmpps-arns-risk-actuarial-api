@@ -6,11 +6,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.MotivationLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.coefficients.AllReoffendingPredictorDynamic
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.coefficients.AllReoffendingPredictorStatic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.coefficients.ViolentReoffendingPredictorDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.coefficients.ViolentReoffendingPredictorStatic
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.constants.AllReoffendingPredictorConstant
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.constants.ViolentReoffendingPredictorConstant
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asDoublePercentage
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.calculatePolynomial
@@ -106,7 +103,7 @@ object ViolentReoffendingPredictorTransformationHelper {
   fun getTotalSanctionWeight(staticOrDynamic: StaticOrDynamic, totalNumberOfSanctionsForAllOffences: Int): BigDecimal {
     val coefficient: BigDecimal = when (staticOrDynamic) {
       StaticOrDynamic.STATIC -> ViolentReoffendingPredictorStatic.SANCTION_OCCASIONS.coefficient
-      StaticOrDynamic.DYNAMIC -> ViolentReoffendingPredictorStatic.SANCTION_OCCASIONS.coefficient
+      StaticOrDynamic.DYNAMIC -> ViolentReoffendingPredictorDynamic.SANCTION_OCCASIONS.coefficient
     }
 
     return totalNumberOfSanctionsForAllOffences.toBigDecimal() * coefficient
@@ -168,7 +165,7 @@ object ViolentReoffendingPredictorTransformationHelper {
     return calculatePolynomial(coefficients, monthsBetweenAssessmentAndFollowup.toBigDecimal())
   }
 
-  fun getCopasWeight(
+  fun getCopasVWeight(
     staticOrDynamic: StaticOrDynamic,
     totalNumberOfSanctionsForAllOffences: Int,
     gender: Gender,
@@ -197,6 +194,72 @@ object ViolentReoffendingPredictorTransformationHelper {
     val naturalLog = ln(totalSanctionsRatio)
 
     return naturalLog.toBigDecimal() * coefficient
+  }
+
+  fun getCopasViolentOffencesWeight(
+    staticOrDynamic: StaticOrDynamic,
+    totalNumberOfViolentOffences: Int,
+    ageAtFirstSanction: Int,
+    ageAtCurrentSanction: Int,
+  ): BigDecimal {
+    if (totalNumberOfViolentOffences == 0) {
+      return BigDecimal.ZERO
+    }
+
+    val lengthOfCareer = (ageAtCurrentSanction - ageAtFirstSanction) + ViolentReoffendingPredictorConstant.CAREER_BOOST
+
+    val coefficient = when (staticOrDynamic) {
+      StaticOrDynamic.STATIC -> ViolentReoffendingPredictorStatic.VIOLENT_RATE.coefficient
+      StaticOrDynamic.DYNAMIC -> ViolentReoffendingPredictorDynamic.VIOLENT_RATE.coefficient
+    }
+
+    val totalSanctionsRatio: Double = totalNumberOfViolentOffences.toDouble() / lengthOfCareer
+    val naturalLog = ln(totalSanctionsRatio)
+
+    return naturalLog.toBigDecimal() * coefficient
+  }
+
+  fun getNeverViolentWeight(
+    staticOrDynamic: StaticOrDynamic,
+    totalNumberOfSanctionsForViolentOffences: Int,
+    gender: Gender,
+  ): BigDecimal {
+    return if (totalNumberOfSanctionsForViolentOffences > 0) {
+      BigDecimal.ZERO
+    } else {
+      when (staticOrDynamic) {
+        StaticOrDynamic.STATIC -> when (gender) {
+          Gender.MALE -> ViolentReoffendingPredictorStatic.NEVER_VIOLENT_MALE.coefficient
+          Gender.FEMALE -> ViolentReoffendingPredictorStatic.NEVER_VIOLENT_FEMALE.coefficient
+        }
+
+        StaticOrDynamic.DYNAMIC -> when (gender) {
+          Gender.MALE -> ViolentReoffendingPredictorDynamic.NEVER_VIOLENT_MALE.coefficient
+          Gender.FEMALE -> ViolentReoffendingPredictorDynamic.NEVER_VIOLENT_FEMALE.coefficient
+        }
+      }
+    }
+  }
+
+  fun getOnceViolentWeight(
+    staticOrDynamic: StaticOrDynamic,
+    totalNumberOfSanctionsForViolentOffences: Int,
+  ): BigDecimal {
+    return if (totalNumberOfSanctionsForViolentOffences != 1) {
+      BigDecimal.ZERO
+    } else {
+      when (staticOrDynamic) {
+        StaticOrDynamic.STATIC -> ViolentReoffendingPredictorStatic.ONCE_VIOLENT.coefficient
+        StaticOrDynamic.DYNAMIC -> ViolentReoffendingPredictorDynamic.ONCE_VIOLENT.coefficient
+      }
+    }
+  }
+
+  fun getTotalViolentSanctionsWeight(staticOrDynamic: StaticOrDynamic): BigDecimal {
+    return when (staticOrDynamic) {
+      StaticOrDynamic.STATIC -> ViolentReoffendingPredictorStatic.VIOLENT_SANCTIONS.coefficient
+      StaticOrDynamic.DYNAMIC -> ViolentReoffendingPredictorDynamic.VIOLENT_SANCTIONS.coefficient
+    }
   }
 
   fun getSuitableAccommodationWeight(suitabilityOfAccommodation: ProblemLevel): BigDecimal =
@@ -235,6 +298,12 @@ object ViolentReoffendingPredictorTransformationHelper {
   fun getImpulsivityWeight(impulsivityProblems: ProblemLevel): BigDecimal =
     impulsivityProblems.score.toBigDecimal() * ViolentReoffendingPredictorDynamic.IMPULSIVITY.coefficient
 
+  fun getTemperWeight(temperProblems: ProblemLevel): BigDecimal =
+    temperProblems.score.toBigDecimal() * ViolentReoffendingPredictorDynamic.TEMPER.coefficient
+
+  fun getMethadoneUsageWeight(hasMethadoneUsage: Boolean): BigDecimal =
+    if (hasMethadoneUsage) ViolentReoffendingPredictorDynamic.METHADONE.coefficient else BigDecimal.ZERO
+
   fun getOtherOpiateUsageWeight(hasOtherOpiateUsage: Boolean): BigDecimal =
     if (hasOtherOpiateUsage) ViolentReoffendingPredictorDynamic.OTHER_OPIATE.coefficient else BigDecimal.ZERO
 
@@ -269,7 +338,9 @@ object ViolentReoffendingPredictorTransformationHelper {
     totalWeight.toDouble().sigmoid().asDoublePercentage().sanitisePercentage()
 
   fun getRiskBand(percentageScore: Double): RiskBand = when {
-    percentageScore <= ViolentReoffendingPredictorConstant.EXCLUSIVE_MIN_PERCENTAGE -> throw IllegalArgumentException("Percentage score cannot be less than 0%: $percentageScore")
+    percentageScore <= ViolentReoffendingPredictorConstant.EXCLUSIVE_MIN_PERCENTAGE -> throw IllegalArgumentException(
+      "Percentage score cannot be less than 0%: $percentageScore",
+    )
 
     percentageScore < ViolentReoffendingPredictorConstant.MEDIUM_BAND_LOWER_BOUND -> RiskBand.LOW
     percentageScore < ViolentReoffendingPredictorConstant.HIGH_BAND_LOWER_BOUND -> RiskBand.MEDIUM

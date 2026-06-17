@@ -140,7 +140,7 @@ class ViolentReoffendingPredictorTransformationHelperTest {
 
   @Test
   fun `getCopasWeight returns zero when total sanction is less than 3`() {
-    val result = ViolentReoffendingPredictorTransformationHelper.getCopasWeight(
+    val result = ViolentReoffendingPredictorTransformationHelper.getCopasVWeight(
       StaticOrDynamic.STATIC,
       1,
       Gender.MALE,
@@ -151,8 +151,8 @@ class ViolentReoffendingPredictorTransformationHelperTest {
   }
 
   @ParameterizedTest
-  @MethodSource("getCopasWeightProvider")
-  fun `getCopasWeight returns correct calculated weight`(
+  @MethodSource("getCopasVWeightProvider")
+  fun `getCopasVWeight returns correct calculated weight`(
     staticOrDynamic: StaticOrDynamic,
     gender: Gender,
     totalSanctions: Int,
@@ -160,12 +160,81 @@ class ViolentReoffendingPredictorTransformationHelperTest {
     ageAtCurrent: Int,
     expectedWeight: BigDecimal,
   ) {
-    val actualWeight = ViolentReoffendingPredictorTransformationHelper.getCopasWeight(
+    val actualWeight = ViolentReoffendingPredictorTransformationHelper.getCopasVWeight(
       staticOrDynamic,
       totalSanctions,
       gender,
       ageAtFirst,
       ageAtCurrent,
+    )
+    assertTrue(expectedWeight.compareTo(actualWeight) == 0) {
+      "Expected $expectedWeight but got $actualWeight"
+    }
+  }
+
+  @ParameterizedTest
+  @MethodSource("getCopasViolentOffencesWeightProvider")
+  fun `getCopasViolentOffencesWeight returns correct calculated weight`(
+    staticOrDynamic: StaticOrDynamic,
+    totalViolentSanctions: Int,
+
+    ageAtFirst: Int,
+    ageAtCurrent: Int,
+    expectedWeight: BigDecimal,
+  ) {
+    val actualWeight = ViolentReoffendingPredictorTransformationHelper.getCopasViolentOffencesWeight(
+      staticOrDynamic,
+      totalViolentSanctions,
+      ageAtFirst,
+      ageAtCurrent,
+    )
+    assertTrue(expectedWeight.compareTo(actualWeight) == 0) {
+      "Expected $expectedWeight but got $actualWeight"
+    }
+  }
+
+  @ParameterizedTest
+  @MethodSource("getNeverViolentWeightProvider")
+  fun `getNeverViolentWeight returns correct calculated weight`(
+    staticOrDynamic: StaticOrDynamic,
+    totalViolentSanctions: Int,
+    gender: Gender,
+    expectedWeight: BigDecimal,
+  ) {
+    val actualWeight = ViolentReoffendingPredictorTransformationHelper.getNeverViolentWeight(
+      staticOrDynamic,
+      totalViolentSanctions,
+      gender,
+    )
+    assertTrue(expectedWeight.compareTo(actualWeight) == 0) {
+      "Expected $expectedWeight but got $actualWeight"
+    }
+  }
+
+  @ParameterizedTest
+  @MethodSource("getOnceViolentWeightProvider")
+  fun `getOnceViolentWeight returns correct calculated weight`(
+    staticOrDynamic: StaticOrDynamic,
+    totalViolentSanctions: Int,
+    expectedWeight: BigDecimal,
+  ) {
+    val actualWeight = ViolentReoffendingPredictorTransformationHelper.getOnceViolentWeight(
+      staticOrDynamic,
+      totalViolentSanctions,
+    )
+    assertTrue(expectedWeight.compareTo(actualWeight) == 0) {
+      "Expected $expectedWeight but got $actualWeight"
+    }
+  }
+
+  @ParameterizedTest
+  @MethodSource("getTotalViolentSanctionsWeightProvider")
+  fun `getTotalViolentSanctionsWeight returns correct calculated weight`(
+    staticOrDynamic: StaticOrDynamic,
+    expectedWeight: BigDecimal,
+  ) {
+    val actualWeight = ViolentReoffendingPredictorTransformationHelper.getTotalViolentSanctionsWeight(
+      staticOrDynamic,
     )
     assertTrue(expectedWeight.compareTo(actualWeight) == 0) {
       "Expected $expectedWeight but got $actualWeight"
@@ -287,6 +356,27 @@ class ViolentReoffendingPredictorTransformationHelperTest {
     assertTrue(expected.compareTo(result) == 0) {
       "Expected $expected but got $result"
     }
+  }
+
+  @Test
+  fun `getTemperWeight returns correct calculated weight`() {
+    val expected = BigDecimal(0.183809793489406)
+    val result = ViolentReoffendingPredictorTransformationHelper.getTemperWeight(ProblemLevel.SIGNIFICANT_PROBLEMS)
+    assertTrue(expected.compareTo(result) == 0) {
+      "Expected $expected but got $result"
+    }
+  }
+
+  @ParameterizedTest
+  @MethodSource("getMethadoneUsageWeightProvider")
+  fun `getMethadoneUsageWeight returns coefficient if true else zero`(
+    hasMethadoneUsage: Boolean,
+    expected: BigDecimal,
+  ) {
+    assertEquals(
+      expected,
+      ViolentReoffendingPredictorTransformationHelper.getMethadoneUsageWeight(hasMethadoneUsage),
+    )
   }
 
   @ParameterizedTest
@@ -499,8 +589,8 @@ class ViolentReoffendingPredictorTransformationHelperTest {
 
     @JvmStatic
     fun getTotalSanctionWeightProvider() = listOf(
-      Arguments.of(StaticOrDynamic.STATIC, 1, BigDecimal(-0.0067658067744931)),
-      Arguments.of(StaticOrDynamic.DYNAMIC, 1, BigDecimal(-0.0067658067744931)),
+      Arguments.of(StaticOrDynamic.STATIC, 1, ViolentReoffendingPredictorStatic.SANCTION_OCCASIONS.coefficient),
+      Arguments.of(StaticOrDynamic.DYNAMIC, 1, ViolentReoffendingPredictorDynamic.SANCTION_OCCASIONS.coefficient),
     )
 
     @JvmStatic
@@ -572,7 +662,7 @@ class ViolentReoffendingPredictorTransformationHelperTest {
     )
 
     @JvmStatic
-    fun getCopasWeightProvider() = listOf(
+    fun getCopasVWeightProvider() = listOf(
       Arguments.of(
         StaticOrDynamic.STATIC,
         Gender.MALE,
@@ -604,6 +694,96 @@ class ViolentReoffendingPredictorTransformationHelperTest {
         21,
         25,
         BigDecimal("-0.7684233620398449673357192651473202005263374303467571735382080078125"),
+      ),
+    )
+
+    @JvmStatic
+    fun getCopasViolentOffencesWeightProvider() = listOf(
+      Arguments.of(
+        StaticOrDynamic.STATIC,
+        0,
+        20,
+        30,
+        BigDecimal.ZERO,
+      ),
+      Arguments.of(
+        StaticOrDynamic.STATIC,
+        18,
+        20,
+        30,
+        BigDecimal("-0.36201183964094633649667451877924850833778691594488918781280517578125"),
+      ),
+      Arguments.of(
+        StaticOrDynamic.DYNAMIC,
+        5,
+        18,
+        42,
+        BigDecimal("-0.9602657079419671634962092933143484874136674989131279289722442626953125"),
+      ),
+    )
+
+    @JvmStatic
+    fun getNeverViolentWeightProvider() = listOf(
+      Arguments.of(
+        StaticOrDynamic.STATIC,
+        1,
+        Gender.MALE,
+        BigDecimal.ZERO,
+      ),
+      Arguments.of(
+        StaticOrDynamic.STATIC,
+        0,
+        Gender.MALE,
+        BigDecimal("-2.1991202114131898071036630426533520221710205078125"),
+      ),
+      Arguments.of(
+        StaticOrDynamic.STATIC,
+        0,
+        Gender.FEMALE,
+        BigDecimal("-2.809090583506399951829735073260962963104248046875"),
+      ),
+      Arguments.of(
+        StaticOrDynamic.DYNAMIC,
+        0,
+        Gender.MALE,
+        BigDecimal("-1.7206770217019400348590352223254740238189697265625"),
+      ),
+      Arguments.of(
+        StaticOrDynamic.DYNAMIC,
+        0,
+        Gender.FEMALE,
+        BigDecimal("-2.240649368455450041182075437973253428936004638671875"),
+      ),
+    )
+
+    @JvmStatic
+    fun getOnceViolentWeightProvider() = listOf(
+      Arguments.of(
+        StaticOrDynamic.STATIC,
+        5,
+        BigDecimal.ZERO,
+      ),
+      Arguments.of(
+        StaticOrDynamic.STATIC,
+        1,
+        ViolentReoffendingPredictorStatic.ONCE_VIOLENT.coefficient,
+      ),
+      Arguments.of(
+        StaticOrDynamic.DYNAMIC,
+        1,
+        ViolentReoffendingPredictorDynamic.ONCE_VIOLENT.coefficient,
+      ),
+    )
+
+    @JvmStatic
+    fun getTotalViolentSanctionsWeightProvider() = listOf(
+      Arguments.of(
+        StaticOrDynamic.STATIC,
+        ViolentReoffendingPredictorStatic.VIOLENT_SANCTIONS.coefficient,
+      ),
+      Arguments.of(
+        StaticOrDynamic.DYNAMIC,
+        ViolentReoffendingPredictorDynamic.VIOLENT_SANCTIONS.coefficient,
       ),
     )
 
@@ -652,6 +832,12 @@ class ViolentReoffendingPredictorTransformationHelperTest {
     fun getHeroinUsageWeightProvider() = listOf(
       Arguments.of(false, BigDecimal.ZERO),
       Arguments.of(true, BigDecimal(0.182096496867273)),
+    )
+
+    @JvmStatic
+    fun getMethadoneUsageWeightProvider() = listOf(
+      Arguments.of(false, BigDecimal.ZERO),
+      Arguments.of(true, ViolentReoffendingPredictorDynamic.METHADONE.coefficient),
     )
 
     @JvmStatic
