@@ -45,7 +45,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.vali
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateAllReoffendingPredictorStatic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.getAgeAtDate
 import java.math.BigDecimal
-import kotlin.collections.set
 
 @Service
 class AllReoffendingPredictorRiskProducerService : BaseRiskScoreProducer() {
