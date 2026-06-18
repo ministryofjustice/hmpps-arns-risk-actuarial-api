@@ -45,6 +45,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.vali
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateAllReoffendingPredictorStatic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.getAgeAtDate
 import java.math.BigDecimal
+import kotlin.collections.set
 
 @Service
 class AllReoffendingPredictorRiskProducerService : BaseRiskScoreProducer() {
@@ -126,19 +127,35 @@ class AllReoffendingPredictorRiskProducerService : BaseRiskScoreProducer() {
     request: AllReoffendingPredictorRequestValidated,
     validationErrors: List<ValidationError>,
   ): AllReoffendingPredictorObject {
-    val staticOrDynamic: StaticOrDynamic
-    val staticData: AllReoffendingPredictorRequestValidated.Static
+    val staticOrDynamic: StaticOrDynamic = when (request) {
+      is AllReoffendingPredictorRequestValidated.Static -> StaticOrDynamic.STATIC
+      is AllReoffendingPredictorRequestValidated.Dynamic -> StaticOrDynamic.DYNAMIC
+    }
 
-    when (request) {
-      is AllReoffendingPredictorRequestValidated.Static -> {
-        staticOrDynamic = StaticOrDynamic.STATIC
-        staticData = request
-      }
+    val featureValues = buildFeatureValuesMap(
+      staticOrDynamic = staticOrDynamic,
+      request = request,
+    )
 
-      is AllReoffendingPredictorRequestValidated.Dynamic -> {
-        staticOrDynamic = StaticOrDynamic.DYNAMIC
-        staticData = request.staticData
-      }
+    val score = calculatePercentageScore(featureValues[FeatureValue.TOTAL_WEIGHT.outputName]!!)
+    val band = getRiskBand(score)
+
+    return AllReoffendingPredictorObject(
+      score,
+      band,
+      staticOrDynamic,
+      validationErrors,
+      featureValues,
+    )
+  }
+
+  private fun buildFeatureValuesMap(
+    staticOrDynamic: StaticOrDynamic,
+    request: AllReoffendingPredictorRequestValidated,
+  ): Map<String, BigDecimal> {
+    val staticData: AllReoffendingPredictorRequestValidated.Static = when (request) {
+      is AllReoffendingPredictorRequestValidated.Static -> request
+      is AllReoffendingPredictorRequestValidated.Dynamic -> request.staticData
     }
 
     val ageAtCurrentSanction =
@@ -149,104 +166,111 @@ class AllReoffendingPredictorRiskProducerService : BaseRiskScoreProducer() {
       "Date at start of followup calculated",
     )
 
-    val featureValues = mutableMapOf<String, BigDecimal>()
-    featureValues[FeatureValue.TWO_YEAR_INTERCEPT_WEIGHT.outputName] = get2YearInterceptWeight(staticOrDynamic)
-    featureValues[FeatureValue.AGE_GENDER_POLYNOMIAL_WEIGHT.outputName] =
-      getAgeGenderPolynomialWeight(staticOrDynamic, staticData.gender, ageAtStartOfFollowup)
-    featureValues[FeatureValue.GENDER_WEIGHT.outputName] = getGenderWeight(staticOrDynamic, staticData.gender)
-    featureValues[FeatureValue.OFFENCE_GROUP_WEIGHT.outputName] = getOffenceGroupWeight(staticOrDynamic, staticData.currentOffenceCode)
-    featureValues[FeatureValue.FIRST_SANCTION_WEIGHT.outputName] =
-      getFirstSanctionWeight(staticOrDynamic, staticData.totalNumberOfSanctionsForAllOffences)
-    featureValues[FeatureValue.SECOND_SANCTION_WEIGHT.outputName] =
-      getSecondSanctionWeight(staticOrDynamic, staticData.totalNumberOfSanctionsForAllOffences)
-    featureValues[FeatureValue.TOTAL_NUMBER_OF_SANCTIONS_FOR_ALL_OFFENCES_WEIGHT.outputName] =
-      getTotalSanctionWeight(staticOrDynamic, staticData.totalNumberOfSanctionsForAllOffences)
-    featureValues[FeatureValue.SECOND_SANCTION_GAP_WEIGHT.outputName] =
-      getGapBetweenFirstAndSecondSanctionWeight(
-        staticOrDynamic,
-        staticData.gender,
-        staticData.ageAtFirstSanction,
-        ageAtCurrentSanction,
-        staticData.totalNumberOfSanctionsForAllOffences,
-      )
-    featureValues[FeatureValue.OFFENCE_FREE_MONTHS_WEIGHT.outputName] = getOffenceFreeMonthsPolynomialWeight(
-      staticOrDynamic,
-      staticData.assessmentDate,
-      staticData.dateAtStartOfFollowupCalculated,
-    )
-    featureValues[FeatureValue.COPAS_SCORE.outputName] = getCopasWeight(
-      staticOrDynamic,
-      staticData.totalNumberOfSanctionsForAllOffences,
-      staticData.gender,
-      staticData.ageAtFirstSanction,
-      ageAtCurrentSanction,
-    )
-    featureValues[FeatureValue.COPAS_SCORE_SQUARED.outputName] = getCopasSquaredWeight(
-      staticOrDynamic,
-      staticData.totalNumberOfSanctionsForAllOffences,
-      staticData.gender,
-      staticData.ageAtFirstSanction,
-      ageAtCurrentSanction,
-    )
+    return buildMap {
+      fun FeatureValue.set(weight: BigDecimal) = put(this.outputName, weight)
 
-    if (request is AllReoffendingPredictorRequestValidated.Dynamic) {
-      featureValues[FeatureValue.SUITABLE_ACCOMMODATION_WEIGHT.outputName] =
-        getSuitableAccommodationWeight(request.suitabilityOfAccommodation)
-      featureValues[FeatureValue.UNEMPLOYED_WEIGHT.outputName] = getUnemployedWeight(request.isUnemployed)
-      featureValues[FeatureValue.LIVE_IN_RELATIONSHIP_WEIGHT.outputName] =
-        getLiveInRelationshipWeight(request.currentRelationshipStatus)
-      featureValues[FeatureValue.RELATIONSHIP_QUALITY_WEIGHT.outputName] =
-        getRelationshipQualityWeight(request.currentRelationshipWithPartner)
-      featureValues[FeatureValue.MULTIPLICATIVE_RELATIONSHIP_WEIGHT.outputName] =
-        getMultiplicativeRelationshipWeight(request.currentRelationshipStatus, request.currentRelationshipWithPartner)
-      featureValues[FeatureValue.DOMESTIC_VIOLENCE_WEIGHT.outputName] =
-        getDomesticViolenceWeight(request.evidenceOfDomesticAbuse)
-      featureValues[FeatureValue.REGULAR_OFFENDING_ACTIVITIES.outputName] =
-        getRegularOffendingActivitiesWeight(request.regularOffendingActivities)
-      featureValues[FeatureValue.DRUG_MOTIVATION_WEIGHT.outputName] =
-        getDrugMotivationWeight(request.motivationToTackleDrugMisuse)
-      featureValues[FeatureValue.CHRONIC_DRINKING_PROBLEMS_WEIGHT.outputName] =
-        getChronicDrinkingWeight(request.currentAlcoholUseProblems)
-      featureValues[FeatureValue.BINGE_DRINKING_PROBLEMS_WEIGHT.outputName] =
-        getBingeDrinkingWeight(request.excessiveAlcoholUse)
-      featureValues[FeatureValue.IMPULSIVITY_PROBLEMS_WEIGHT.outputName] =
-        getImpulsivityWeight(request.impulsivityProblems)
-      featureValues[FeatureValue.PRO_CRIMINAL_ATTITUDES_WEIGHT.outputName] =
-        getProCriminalAttitudeWeight(request.proCriminalAttitudes)
-      featureValues[FeatureValue.HEROIN_USAGE_WEIGHT.outputName] = getHeroinUsageWeight(request.hasHeroinUsage)
-      featureValues[FeatureValue.OTHER_OPIATE_USAGE_WEIGHT.outputName] =
-        getOtherOpiateUsageWeight(request.hasOtherOpiateUsage)
-      featureValues[FeatureValue.CRACK_COCAINE_USAGE_WEIGHT.outputName] =
-        getCrackCocaineUsageWeight(request.hasCrackCocaineUsage)
-      featureValues[FeatureValue.POWDER_COCAINE_USAGE_WEIGHT.outputName] =
-        getPowderCocaineUsageWeight(request.hasPowderCocaineUsage)
-      featureValues[FeatureValue.MISUSED_PRESCRIPTION_DRUG_USAGE_WEIGHT.outputName] =
-        getMisusedPrescriptionDrugUsageWeight(request.hasMisusedPrescriptionDrugUsage)
-      featureValues[FeatureValue.BENZODIAZEPINES_USAGE_WEIGHT.outputName] =
-        getBenzodiazepinesUsageWeight(request.hasBenzodiazepinesUsage)
-      featureValues[FeatureValue.CANNABIS_USAGE_WEIGHT.outputName] = getCannabisUsageWeight(request.hasCannabisUsage)
-      featureValues[FeatureValue.STEROID_USAGE_WEIGHT.outputName] = getSteroidsUsageWeight(request.hasSteroidsUsage)
-      featureValues[FeatureValue.OTHER_DRUG_USAGE_WEIGHT.outputName] = getOtherDrugsUsageWeight(
-        request.hasOtherDrugsUsage,
-        request.hasKetamineUsage,
-        request.hasSpiceUsage,
-        request.hasHallucinogensUsage,
-        request.hasSolventsUsage,
+      FeatureValue.TWO_YEAR_INTERCEPT_WEIGHT.set(get2YearInterceptWeight(staticOrDynamic))
+      FeatureValue.AGE_GENDER_POLYNOMIAL_WEIGHT.set(
+        getAgeGenderPolynomialWeight(
+          staticOrDynamic,
+          staticData.gender,
+          ageAtStartOfFollowup,
+        ),
       )
+      FeatureValue.GENDER_WEIGHT.set(getGenderWeight(staticOrDynamic, staticData.gender))
+      FeatureValue.OFFENCE_GROUP_WEIGHT.set(getOffenceGroupWeight(staticOrDynamic, staticData.currentOffenceCode))
+      FeatureValue.FIRST_SANCTION_WEIGHT.set(
+        getFirstSanctionWeight(
+          staticOrDynamic,
+          staticData.totalNumberOfSanctionsForAllOffences,
+        ),
+      )
+      FeatureValue.SECOND_SANCTION_WEIGHT.set(
+        getSecondSanctionWeight(
+          staticOrDynamic,
+          staticData.totalNumberOfSanctionsForAllOffences,
+        ),
+      )
+      FeatureValue.TOTAL_NUMBER_OF_SANCTIONS_FOR_ALL_OFFENCES_WEIGHT.set(
+        getTotalSanctionWeight(
+          staticOrDynamic,
+          staticData.totalNumberOfSanctionsForAllOffences,
+        ),
+      )
+      FeatureValue.SECOND_SANCTION_GAP_WEIGHT.set(
+        getGapBetweenFirstAndSecondSanctionWeight(
+          staticOrDynamic,
+          staticData.gender,
+          staticData.ageAtFirstSanction,
+          ageAtCurrentSanction,
+          staticData.totalNumberOfSanctionsForAllOffences,
+        ),
+      )
+      FeatureValue.OFFENCE_FREE_MONTHS_WEIGHT.set(
+        getOffenceFreeMonthsPolynomialWeight(
+          staticOrDynamic,
+          staticData.assessmentDate,
+          staticData.dateAtStartOfFollowupCalculated,
+        ),
+      )
+      FeatureValue.COPAS_SCORE.set(
+        getCopasWeight(
+          staticOrDynamic,
+          staticData.totalNumberOfSanctionsForAllOffences,
+          staticData.gender,
+          staticData.ageAtFirstSanction,
+          ageAtCurrentSanction,
+        ),
+      )
+      FeatureValue.COPAS_SCORE_SQUARED.set(
+        getCopasSquaredWeight(
+          staticOrDynamic,
+          staticData.totalNumberOfSanctionsForAllOffences,
+          staticData.gender,
+          staticData.ageAtFirstSanction,
+          ageAtCurrentSanction,
+        ),
+      )
+
+      if (request is AllReoffendingPredictorRequestValidated.Dynamic) {
+        FeatureValue.SUITABLE_ACCOMMODATION_WEIGHT.set(getSuitableAccommodationWeight(request.suitabilityOfAccommodation))
+        FeatureValue.UNEMPLOYED_WEIGHT.set(getUnemployedWeight(request.isUnemployed))
+        FeatureValue.LIVE_IN_RELATIONSHIP_WEIGHT.set(getLiveInRelationshipWeight(request.currentRelationshipStatus))
+        FeatureValue.RELATIONSHIP_QUALITY_WEIGHT.set(getRelationshipQualityWeight(request.currentRelationshipWithPartner))
+        FeatureValue.MULTIPLICATIVE_RELATIONSHIP_WEIGHT.set(
+          getMultiplicativeRelationshipWeight(
+            request.currentRelationshipStatus,
+            request.currentRelationshipWithPartner,
+          ),
+        )
+        FeatureValue.DOMESTIC_VIOLENCE_WEIGHT.set(getDomesticViolenceWeight(request.evidenceOfDomesticAbuse))
+        FeatureValue.REGULAR_OFFENDING_ACTIVITIES.set(getRegularOffendingActivitiesWeight(request.regularOffendingActivities))
+        FeatureValue.DRUG_MOTIVATION_WEIGHT.set(getDrugMotivationWeight(request.motivationToTackleDrugMisuse))
+        FeatureValue.CHRONIC_DRINKING_PROBLEMS_WEIGHT.set(getChronicDrinkingWeight(request.currentAlcoholUseProblems))
+        FeatureValue.BINGE_DRINKING_PROBLEMS_WEIGHT.set(getBingeDrinkingWeight(request.excessiveAlcoholUse))
+        FeatureValue.IMPULSIVITY_PROBLEMS_WEIGHT.set(getImpulsivityWeight(request.impulsivityProblems))
+        FeatureValue.PRO_CRIMINAL_ATTITUDES_WEIGHT.set(getProCriminalAttitudeWeight(request.proCriminalAttitudes))
+        FeatureValue.HEROIN_USAGE_WEIGHT.set(getHeroinUsageWeight(request.hasHeroinUsage))
+        FeatureValue.OTHER_OPIATE_USAGE_WEIGHT.set(getOtherOpiateUsageWeight(request.hasOtherOpiateUsage))
+        FeatureValue.CRACK_COCAINE_USAGE_WEIGHT.set(getCrackCocaineUsageWeight(request.hasCrackCocaineUsage))
+        FeatureValue.POWDER_COCAINE_USAGE_WEIGHT.set(getPowderCocaineUsageWeight(request.hasPowderCocaineUsage))
+        FeatureValue.MISUSED_PRESCRIPTION_DRUG_USAGE_WEIGHT.set(getMisusedPrescriptionDrugUsageWeight(request.hasMisusedPrescriptionDrugUsage))
+        FeatureValue.BENZODIAZEPINES_USAGE_WEIGHT.set(getBenzodiazepinesUsageWeight(request.hasBenzodiazepinesUsage))
+        FeatureValue.CANNABIS_USAGE_WEIGHT.set(getCannabisUsageWeight(request.hasCannabisUsage))
+        FeatureValue.STEROID_USAGE_WEIGHT.set(getSteroidsUsageWeight(request.hasSteroidsUsage))
+        FeatureValue.OTHER_DRUG_USAGE_WEIGHT.set(
+          getOtherDrugsUsageWeight(
+            request.hasOtherDrugsUsage,
+            request.hasKetamineUsage,
+            request.hasSpiceUsage,
+            request.hasHallucinogensUsage,
+            request.hasSolventsUsage,
+          ),
+        )
+      }
+
+      val totalWeight = values.fold(BigDecimal.ZERO, BigDecimal::add)
+      FeatureValue.TOTAL_WEIGHT.set(totalWeight)
     }
-
-    val totalWeight = featureValues.values.fold(BigDecimal.ZERO, BigDecimal::add)
-    featureValues[FeatureValue.TOTAL_WEIGHT.outputName] = totalWeight
-
-    val score = calculatePercentageScore(totalWeight)
-    val band = getRiskBand(score)
-
-    return AllReoffendingPredictorObject(
-      score,
-      band,
-      staticOrDynamic,
-      validationErrors,
-      featureValues,
-    )
   }
 }
