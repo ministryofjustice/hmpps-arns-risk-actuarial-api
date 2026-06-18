@@ -48,21 +48,7 @@
       "band": null,
       "score": 0.22
     },
-    "featureValues": {
-      "twoYearInterceptWeight": 3.60407707356772,
-      "genderWeight": -16.6220270089011,
-      "ageGenderPolynomialWeight": 9.686622307803411,
-      "SNSVWeighting": 0.0841789642942883,
-      "secondSanctionCasesOnlyWeight": 0.0,
-      "monthsSinceLastSanctionWeight": 0.0,
-      "threePlusSanctionWeight": 0.0,
-      "violentHistoryWeight": -0.0633592949212861,
-      "violentSanctionsWeight": 0.0188685880078656,
-      "violenceRateWeight": -0.7375300330710902,
-      "SNSVVATPWeight": 0.0,
-      "totalNumberOfSanctionsForAllOffencesWeight": -0.0147495874606046,
-      "numberOfSanctionsWeight": -2.09447596484765
-    },
+    "featureValues": {},
     "validationErrors": []
   }
 }

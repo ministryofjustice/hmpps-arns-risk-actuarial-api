@@ -1,10 +1,10 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.opd
 
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 
 data class OPDObject(
   val opdCheck: Boolean,
   val opdOverride: Boolean? = null,
   val opdResult: OPDResult?,
-  val validationError: List<ValidationErrorResponse>?,
+  val validationError: List<ValidationError>?,
 )

@@ -2,7 +2,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.ActuarialPredictorsResponse
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.OGRS3
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.ALL_REOFFENDING_PREDICTOR
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.OSPDC
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.OSPIIC
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.OVP
@@ -55,17 +55,16 @@ private fun buildActuarialPredictorsResponse(riskScoreContext: RiskScoreContext)
 )
 
 private fun buildPredictorResponseForAllPredictor(riskScoreContext: RiskScoreContext): PredictorResponse<AllPredictorPredictorOutputResponse> {
-  val ogrS3 = riskScoreContext.OGRS3!!
+  val allReoffendingPredictor = riskScoreContext.allReoffendingPredictor!!
   return PredictorResponse(
-    OGRS3,
+    ALL_REOFFENDING_PREDICTOR,
     STATIC,
     output = AllPredictorPredictorOutputResponse(
-      ogrS3.band.toRiskBandResponse(),
-      ogrS3.ogrs3OneYear,
-      ogrS3.ogrs3TwoYear,
+      allReoffendingPredictor.band.toRiskBandResponse(),
+      allReoffendingPredictor.score,
     ),
-    validationErrors = ogrS3.validationError ?: emptyList(),
-    featureValues = ogrS3.featureValues ?: emptyMap(),
+    validationErrors = allReoffendingPredictor.validationErrors ?: emptyList(),
+    featureValues = allReoffendingPredictor.featureValues ?: emptyMap(),
   )
 }
 
@@ -98,7 +97,8 @@ private fun buildPredictorResponseForDirectContactSexualPredictor(riskScoreConte
       ospdc.ospRiskReduction,
     ),
     validationErrors = ospdc.validationError ?: emptyList(),
-    featureValues = ospdc.featureValues ?: emptyMap(),
+    // TODO: Uncomment during ACT-558
+//    featureValues = ospdc.featureValues ?: emptyMap(),
   )
 }
 
@@ -127,7 +127,8 @@ private fun buildPredictorResponseForSeriousViolencePredictor(riskScoreContext: 
       snsv.snsvScore?.asDoublePercentage(),
     ),
     validationErrors = snsv.validationError ?: emptyList(),
-    featureValues = snsv.featureValues ?: emptyMap(),
+    // TODO: Uncomment during ACT-557
+//    featureValues = snsv.featureValues ?: emptyMap(),
   )
 }
 

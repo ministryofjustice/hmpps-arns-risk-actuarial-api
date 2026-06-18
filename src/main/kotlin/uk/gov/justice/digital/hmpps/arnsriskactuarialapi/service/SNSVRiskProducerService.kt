@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.SNSVObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.SNSVRequestValidated
@@ -51,7 +51,7 @@ class SNSVRiskProducerService : BaseRiskScoreProducer() {
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
     val errors = validateSNSV(request)
     if (errors.isNotEmpty()) {
-      return applyErrorsToContextAndReturn(context, errors)
+      return applyErrorsToContext(context, errors)
     }
     return context.apply {
       SNSV =
@@ -62,21 +62,21 @@ class SNSVRiskProducerService : BaseRiskScoreProducer() {
     }
   }
 
-  override fun applyErrorsToContextAndReturn(
+  override fun applyErrorsToContext(
     context: RiskScoreContext,
-    validationErrorResponses: List<ValidationErrorResponse>,
-  ): RiskScoreContext = context.apply { SNSV = SNSVObject(null, null, validationErrorResponses, null) }
+    validationErrors: List<ValidationError>,
+  ): RiskScoreContext = context.apply { SNSV = SNSVObject(null, null, validationErrors, null) }
 
   fun getSNSVObject(
     scoreType: ScoreType,
     request: RiskScoreRequest,
   ): SNSVObject {
-    val errors = mutableListOf<ValidationErrorResponse>()
+    val errors = mutableListOf<ValidationError>()
     val weightingSNSV = retrieveWeightingSNSV(scoreType, request)
     val weightingSNSVVATP = retrieveWeightingSNSVVATP(scoreType, request)
     if (weightingSNSV == null || weightingSNSVVATP == null) {
       log.warn("No offence code to actuarial weighting mapping found for ${request.currentOffenceCode}")
-      errors += ValidationErrorType.OFFENCE_CODE_MAPPING_NOT_FOUND.asErrorResponseForOffenceCodeMappingNotFound(request.currentOffenceCode, listOf(RiskScoreRequest::currentOffenceCode.name))
+      errors += ValidationErrorType.OFFENCE_CODE_MAPPING_NOT_FOUND.asErrorForOffenceCodeMappingNotFound(request.currentOffenceCode, listOf(RiskScoreRequest::currentOffenceCode.name))
     }
     if (errors.isNotEmpty()) {
       return SNSVObject(null, scoreType, errors, null)
@@ -114,11 +114,11 @@ class SNSVRiskProducerService : BaseRiskScoreProducer() {
     this.assessmentDate,
     this.dateOfCurrentConviction!!,
     this.currentOffenceCode!!,
-    this.totalNumberOfSanctionsForAllOffences!!.toInt(),
-    this.ageAtFirstSanction!!.toInt(),
+    this.totalNumberOfSanctionsForAllOffences!!,
+    this.ageAtFirstSanction!!,
     this.supervisionStatus!!,
     this.dateAtStartOfFollowupUserInput!!,
-    this.totalNumberOfViolentSanctions!!.toInt(),
+    this.totalNumberOfViolentSanctions!!,
     weightingSNSVVATP,
     weightingSNSV,
     this.didOffenceInvolveCarryingOrUsingWeapon,

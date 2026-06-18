@@ -3,7 +3,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 import org.springframework.stereotype.Service
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ovp.OVPObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ovp.OVPRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.calculateOVPPercentageOneYear
@@ -31,12 +31,12 @@ class OVPRiskProducerService : BaseRiskScoreProducer() {
     val errors = validateOVP(request)
 
     if (errors.isNotEmpty()) {
-      return applyErrorsToContextAndReturn(context, errors)
+      return applyErrorsToContext(context, errors)
     }
 
     val validRequest = OVPRequestValidated(
-      request.totalNumberOfSanctionsForAllOffences!!.toInt(),
-      request.totalNumberOfViolentSanctions!!.toInt(),
+      request.totalNumberOfSanctionsForAllOffences!!,
+      request.totalNumberOfViolentSanctions!!,
       request.dateAtStartOfFollowupCalculated!!,
       request.dateOfBirth!!,
       request.gender!!,
@@ -52,10 +52,10 @@ class OVPRiskProducerService : BaseRiskScoreProducer() {
     return context.apply { OVP = getOVPObject(validRequest) }
   }
 
-  override fun applyErrorsToContextAndReturn(
+  override fun applyErrorsToContext(
     context: RiskScoreContext,
-    validationErrorResponses: List<ValidationErrorResponse>,
-  ): RiskScoreContext = context.apply { OVP = OVPObject(null, null, null, null, validationErrorResponses) }
+    validationErrors: List<ValidationError>,
+  ): RiskScoreContext = context.apply { OVP = OVPObject(null, null, null, null, validationErrors) }
 
   private fun getOVPObject(
     request: OVPRequestValidated,

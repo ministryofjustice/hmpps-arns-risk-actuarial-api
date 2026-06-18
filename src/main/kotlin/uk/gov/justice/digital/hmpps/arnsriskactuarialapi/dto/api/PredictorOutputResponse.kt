@@ -6,8 +6,7 @@ abstract class PredictorOutputResponse(
 
 data class AllPredictorPredictorOutputResponse(
   override val band: RiskBandResponse?,
-  val oneYearScore: Int?,
-  val twoYearScore: Int?,
+  val score: Double?,
 ) : PredictorOutputResponse(band)
 
 data class ViolentPredictorPredictorOutputResponse(

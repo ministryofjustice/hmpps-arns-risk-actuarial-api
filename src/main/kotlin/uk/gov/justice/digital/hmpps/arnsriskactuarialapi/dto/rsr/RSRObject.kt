@@ -1,7 +1,7 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.rsr
 
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.ScoreType
 
 data class RSRObject(
@@ -16,5 +16,5 @@ data class RSRObject(
   val ospRiskReduction: Boolean? = null,
   val femaleVersion: Boolean?,
   val sexualOffenceHistory: Boolean?,
-  val validationError: List<ValidationErrorResponse>? = null,
+  val validationError: List<ValidationError>? = null,
 )

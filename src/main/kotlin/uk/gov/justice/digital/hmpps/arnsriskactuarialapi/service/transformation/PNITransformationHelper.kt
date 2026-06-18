@@ -109,7 +109,7 @@ private fun getLevelFromScore(overallNeedsScore: Int): NeedScore? = when (overal
   else -> null
 }
 
-fun isHighOgrs3(requestValidated: PNIRequestValidated) = requestValidated.ogrs3TwoYear?.let { it >= 75 } == true
+fun isHighAllReoffendingPredictor(requestValidated: PNIRequestValidated) = requestValidated.allReoffendingPredictorStaticScore?.let { it >= 75 } == true
 
 fun isHighOvp(requestValidated: PNIRequestValidated) = requestValidated.ovp?.let { it >= 60.00 } == true
 
@@ -133,7 +133,7 @@ fun isRsrHigh(requestValidated: PNIRequestValidated): Boolean {
 
 fun isNullOrNa(band: RiskBand?): Boolean = band == null || band == RiskBand.NOT_APPLICABLE
 
-fun isOgrs3Medium(requestValidated: PNIRequestValidated) = requestValidated.ogrs3TwoYear?.let { it in 50..74 } == true
+fun isAllReoffendingPredictorMedium(requestValidated: PNIRequestValidated) = requestValidated.allReoffendingPredictorStaticScore?.let { it in 50.0..74.0 } == true
 
 fun isOvpMedium(requestValidated: PNIRequestValidated) = requestValidated.ovp?.let { it in 30..59 } == true
 

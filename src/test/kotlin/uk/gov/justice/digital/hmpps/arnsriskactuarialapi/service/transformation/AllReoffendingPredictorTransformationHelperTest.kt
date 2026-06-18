@@ -56,6 +56,14 @@ class AllReoffendingPredictorTransformationHelperTest {
     assertEquals(expected, result)
   }
 
+  @Test
+  fun `getOffenceGroupWeight returns ZERO`() {
+    assertEquals(
+      BigDecimal.ZERO,
+      AllReoffendingPredictorTransformationHelper.getOffenceGroupWeight(StaticOrDynamic.STATIC, ""),
+    )
+  }
+
   @ParameterizedTest
   @MethodSource("getFirstSanctionWeightProvider")
   fun `getFirstSanctionWeight returns correct coefficient based on StaticOrDynamic only when total sanctions is exactly 1`(

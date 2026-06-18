@@ -5,7 +5,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.osp.OSPDCObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.osp.OSPDCRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.FeatureValue.AGE_AT_LAST_SANCTION_FOR_SEXUAL_OFFENCE_WEIGHT
@@ -35,7 +35,7 @@ class OSPDCRiskProducerService : BaseRiskScoreProducer() {
     val errors = validateOSP(request, true)
 
     if (errors.isNotEmpty()) {
-      return applyErrorsToContextAndReturn(context, errors)
+      return applyErrorsToContext(context, errors)
     }
 
     if (request.hasEverCommittedSexualOffence == false) {
@@ -77,7 +77,7 @@ class OSPDCRiskProducerService : BaseRiskScoreProducer() {
       request.totalNonContactSexualOffences!!,
       request.totalIndecentImageSanctions!!,
       request.dateAtStartOfFollowupUserInput!!,
-      request.totalNumberOfSanctionsForAllOffences!!.toInt(),
+      request.totalNumberOfSanctionsForAllOffences!!,
       request.dateOfMostRecentSexualOffence,
       request.isCurrentOffenceAgainstVictimStranger,
       request.supervisionStatus!!,
@@ -89,10 +89,10 @@ class OSPDCRiskProducerService : BaseRiskScoreProducer() {
     }
   }
 
-  override fun applyErrorsToContextAndReturn(
+  override fun applyErrorsToContext(
     context: RiskScoreContext,
-    validationErrorResponses: List<ValidationErrorResponse>,
-  ): RiskScoreContext = context.apply { OSPDC = OSPDCObject(null, null, null, null, null, null, validationErrorResponses, null) }
+    validationErrors: List<ValidationError>,
+  ): RiskScoreContext = context.apply { OSPDC = OSPDCObject(null, null, null, null, null, null, validationErrors, null) }
 
   private fun getOSPDCObject(
     request: OSPDCRequestValidated,

@@ -7,7 +7,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.opd.OPDObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.opd.OPDRequestValidated
@@ -60,21 +60,21 @@ class OPDRiskProducerService : BaseRiskScoreProducer() {
     // validation
     val errors = validateOPD(request)
     if (errors.isNotEmpty()) {
-      return applyErrorsToContextAndReturn(context, errors)
+      return applyErrorsToContext(context, errors)
     }
 
     if (hasAllMaleQuestionsUnanswered(request) || hasAllFemaleQuestionsUnanswered(request)) {
-      return applyErrorsToContextAndReturn(context, listOf())
+      return applyErrorsToContext(context, listOf())
     }
 
     val validatedRequest = mapRequestValidated(request)
     val isViolentOrSexualType = offenceCodeCacheService.isViolentOrSexualType(validatedRequest.currentOffenceCode)
     if (isViolentOrSexualType == null) {
       log.warn("No offence code to actuarial weighting mapping found for ${request.currentOffenceCode}")
-      return applyErrorsToContextAndReturn(
+      return applyErrorsToContext(
         context,
         listOf(
-          ValidationErrorType.OFFENCE_CODE_MAPPING_NOT_FOUND.asErrorResponseForOffenceCodeMappingNotFound(
+          ValidationErrorType.OFFENCE_CODE_MAPPING_NOT_FOUND.asErrorForOffenceCodeMappingNotFound(
             request.currentOffenceCode,
             listOf(RiskScoreRequest::currentOffenceCode.name),
           ),
@@ -89,14 +89,14 @@ class OPDRiskProducerService : BaseRiskScoreProducer() {
     return getOPDResult(validatedRequest, context)
   }
 
-  override fun applyErrorsToContextAndReturn(
+  override fun applyErrorsToContext(
     context: RiskScoreContext,
-    validationErrorResponses: List<ValidationErrorResponse>,
+    validationErrors: List<ValidationError>,
   ): RiskScoreContext = context.apply {
     OPD = OPDObject(
       opdCheck = false,
       opdResult = null,
-      validationError = validationErrorResponses,
+      validationError = validationErrors,
     )
   }
 
@@ -111,7 +111,7 @@ class OPDRiskProducerService : BaseRiskScoreProducer() {
     difficultiesCoping = request.difficultiesCoping,
     domesticAbuseAgainstPartner = request.domesticAbuseAgainstPartner,
     domesticAbuseAgainstFamily = request.domesticAbuseAgainstFamily,
-    ageAtFirstSanction = request.ageAtFirstSanction?.toInt(),
+    ageAtFirstSanction = request.ageAtFirstSanction,
     overRelianceOnOthersForFinancialSupport = request.overRelianceOnOthersForFinancialSupport,
     manipulativeOrPredatoryBehaviour = request.manipulativeOrPredatoryBehaviour,
     isEvidenceOfChildhoodBehaviouralProblems = request.isEvidenceOfChildhoodBehaviouralProblems ?: false,

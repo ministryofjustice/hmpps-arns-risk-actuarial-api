@@ -21,7 +21,7 @@ data class PNIRequestValidated(
   val controllingOrAggressiveBehaviour: ProblemLevel?,
   val impulsivityProblems: ProblemLevel?,
   val temperControl: ProblemLevel?,
-  val ogrs3TwoYear: Int?,
+  val allReoffendingPredictorStaticScore: Double?,
   val ovp: Int?,
   val rsr: Int?,
   val ovpBand: RiskBand?,

@@ -1,7 +1,7 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 
 val OVP_REQUIRED_FIELDS = listOf(
   RiskScoreRequest::gender,
@@ -19,8 +19,8 @@ val OVP_REQUIRED_FIELDS = listOf(
   RiskScoreRequest::proCriminalAttitudes,
 )
 
-fun validateOVP(request: RiskScoreRequest): List<ValidationErrorResponse> {
-  val errors = mutableListOf<ValidationErrorResponse>()
+fun validateOVP(request: RiskScoreRequest): List<ValidationError> {
+  val errors = mutableListOf<ValidationError>()
   validateRequiredFields(request, errors, OVP_REQUIRED_FIELDS)
   validateTotalNumberOfSanctionsForAllOffences(request, errors)
   return errors

@@ -76,6 +76,8 @@ object AllReoffendingPredictorTransformationHelper {
     }
   }
 
+  fun getOffenceGroupWeight(staticOrDynamic: StaticOrDynamic, currentOffenceCode: String): BigDecimal = BigDecimal.ZERO
+
   fun getFirstSanctionWeight(
     staticOrDynamic: StaticOrDynamic,
     totalNumberOfSanctionsForAllOffences: Int,

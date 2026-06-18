@@ -3,7 +3,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 import org.springframework.stereotype.Service
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds.LDSInputValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds.LDSObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.LDSTransformationHelper.Companion.hasProblemsWithNumeracyOffendersScore
@@ -24,7 +24,7 @@ class LDSRiskProducerService : BaseRiskScoreProducer() {
     val errors = validateLDS(request)
 
     if (errors.isNotEmpty()) {
-      return applyErrorsToContextAndReturn(context, errors)
+      return applyErrorsToContext(context, errors)
     }
 
     val validInput = LDSInputValidated(
@@ -42,13 +42,13 @@ class LDSRiskProducerService : BaseRiskScoreProducer() {
     }
   }
 
-  override fun applyErrorsToContextAndReturn(
+  override fun applyErrorsToContext(
     context: RiskScoreContext,
-    validationErrorResponses: List<ValidationErrorResponse>,
+    validationErrors: List<ValidationError>,
   ): RiskScoreContext = context.apply {
     LDS = LDSObject(
       null,
-      validationErrorResponses,
+      validationErrors,
     )
   }
 

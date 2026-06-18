@@ -9,8 +9,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.ProgrammeNeedIdentifier
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyAllReoffendingPredictor
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOGRS3
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOVP
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyRSR
 import java.io.File
@@ -176,15 +176,15 @@ class PNIRegressionTest {
       provenViolentTypeReoffendingTwoYear = ovpRiskReconElm.bandToOVPScore(),
       band = ovpRiskReconElm.toRiskBand(),
     )
-    val ogrs3 = emptyOGRS3().copy(
-      ogrs3TwoYear = ogrsY2?.bandToOGRSScore(),
+    val allReoffendingPredictor = emptyAllReoffendingPredictor().copy(
+      score = ogrsY2?.bandToAllReoffendingPredictorScore(),
     )
     val result = service.getRiskScore(
       request,
       emptyContext().copy(
         RSR = rsr,
         OVP = ovp,
-        OGRS3 = ogrs3,
+        allReoffendingPredictor = allReoffendingPredictor,
       ),
     )
     val expectedPathway =
@@ -249,11 +249,11 @@ private fun String?.bandToOVPScore(): Int? = when (this.toRiskBand()) {
   null -> null
 }
 
-private fun String?.bandToOGRSScore(): Int? = when (this.toRiskBand()) {
-  RiskBand.LOW -> 30 // between 0 and 49
-  RiskBand.MEDIUM -> 60 // between 50 and 74
-  RiskBand.HIGH -> 80 // between 75 and 89
-  RiskBand.VERY_HIGH -> 95 // 90 plus
+private fun String?.bandToAllReoffendingPredictorScore(): Double? = when (this.toRiskBand()) {
+  RiskBand.LOW -> 30.0 // between 0 and 49
+  RiskBand.MEDIUM -> 60.0 // between 50 and 74
+  RiskBand.HIGH -> 80.0 // between 75 and 89
+  RiskBand.VERY_HIGH -> 95.0 // 90 plus
   RiskBand.NOT_APPLICABLE -> null
   null -> null
 }

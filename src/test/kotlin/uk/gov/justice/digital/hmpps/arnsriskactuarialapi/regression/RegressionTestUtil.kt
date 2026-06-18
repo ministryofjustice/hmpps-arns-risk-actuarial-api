@@ -452,10 +452,10 @@ fun knownValidationIssue(inputMapping: InputMapping): Boolean {
   // Issue where hasEverCommittedSexualOffence=false and sanctions count/dates are set to non-null values
   // OASys allows this and ignores the counts/date even though the user has specified they have a sexual offence history
   val hasEverCommitedSexualOffence = inputMapping.arnsData["hasEverCommittedSexualOffence"] as Boolean?
-  val totalContactAdultSexualSanctions = inputMapping.arnsData["totalContactAdultSexualSanctions"] as Integer?
-  val totalContactChildSexualSanctions = inputMapping.arnsData["totalContactChildSexualSanctions"] as Integer?
-  val totalIndecentImageSanctions = inputMapping.arnsData["totalIndecentImageSanctions"] as Integer?
-  val totalNonContactSexualOffences = inputMapping.arnsData["totalNonContactSexualOffences"] as Integer?
+  val totalContactAdultSexualSanctions = inputMapping.arnsData["totalContactAdultSexualSanctions"] as Int?
+  val totalContactChildSexualSanctions = inputMapping.arnsData["totalContactChildSexualSanctions"] as Int?
+  val totalIndecentImageSanctions = inputMapping.arnsData["totalIndecentImageSanctions"] as Int?
+  val totalNonContactSexualOffences = inputMapping.arnsData["totalNonContactSexualOffences"] as Int?
   val dateOfMostRecentSexualOffence = inputMapping.arnsData["dateOfMostRecentSexualOffence"] as String?
 
   return hasEverCommitedSexualOffence == false && (totalContactAdultSexualSanctions != null || totalContactChildSexualSanctions != null || totalIndecentImageSanctions != null || totalNonContactSexualOffences != null || dateOfMostRecentSexualOffence != null)

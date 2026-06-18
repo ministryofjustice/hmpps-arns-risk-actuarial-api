@@ -3,7 +3,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 import org.springframework.stereotype.Service
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.mst.MSTObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.mst.MSTRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.calculateAge
@@ -27,7 +27,7 @@ class MSTRiskProducerService : BaseRiskScoreProducer() {
     val errors = validateMST(request)
 
     if (errors.isNotEmpty()) {
-      return applyErrorsToContextAndReturn(context, errors)
+      return applyErrorsToContext(context, errors)
     }
 
     val validRequest = MSTRequestValidated(
@@ -51,21 +51,21 @@ class MSTRiskProducerService : BaseRiskScoreProducer() {
     }
   }
 
-  override fun applyErrorsToContextAndReturn(
+  override fun applyErrorsToContext(
     context: RiskScoreContext,
-    validationErrorResponses: List<ValidationErrorResponse>,
+    validationErrors: List<ValidationError>,
   ): RiskScoreContext = context.apply {
     MST = MSTObject(
       null,
       null,
       null,
-      validationErrorResponses,
+      validationErrors,
     )
   }
 
   private fun getMstObject(
     request: MSTRequestValidated,
-    errors: List<ValidationErrorResponse>,
+    errors: List<ValidationError>,
     currentAge: Int,
   ): MSTObject {
     val isMstApplicable = getMstApplicable(request.gender, currentAge)

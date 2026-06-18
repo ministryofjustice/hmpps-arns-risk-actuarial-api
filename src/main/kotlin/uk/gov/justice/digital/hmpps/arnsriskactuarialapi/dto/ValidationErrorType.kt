@@ -20,15 +20,15 @@ enum class ValidationErrorType(val message: String) {
   UNEXPECTED_ERROR("An unexpected error occurred"),
   ;
 
-  fun asErrorResponse(fields: List<String>): ValidationErrorResponse = ValidationErrorResponse(this, message, fields)
+  fun asError(fields: List<String>): ValidationError = ValidationError(this, message, fields)
 
-  fun asErrorResponseForUnexpectedError(message: String): ValidationErrorResponse = ValidationErrorResponse(
+  fun asErrorForUnexpectedError(message: String): ValidationError = ValidationError(
     this,
     "Unexpected error thrown during calculation, see logs for further details: $message",
     listOf(),
   )
 
-  fun asErrorResponseForOffenceCodeMappingNotFound(offenceCode: String?, fields: List<String>): ValidationErrorResponse = ValidationErrorResponse(
+  fun asErrorForOffenceCodeMappingNotFound(offenceCode: String?, fields: List<String>): ValidationError = ValidationError(
     this,
     "No offence code to actuarial weighting mapping found for $offenceCode",
     fields,

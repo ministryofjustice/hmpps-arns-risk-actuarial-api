@@ -8,7 +8,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ospiic.OSPIICObject
 
@@ -35,7 +35,7 @@ class OSPIICRiskProducerServiceTest {
     val output = result.OSPIIC
     assertEquals(RiskBand.HIGH, output!!.band)
     assertEquals(0.1031, output.score!!, 0.00001)
-    assertEquals(emptyList<ValidationErrorResponse>(), output.validationError)
+    assertEquals(emptyList<ValidationError>(), output.validationError)
   }
 
   @Test
@@ -51,7 +51,7 @@ class OSPIICRiskProducerServiceTest {
     val output = result.OSPIIC
     assertEquals(RiskBand.NOT_APPLICABLE, output!!.band)
     assertEquals(0.0, output.score!!, 0.00001)
-    assertEquals(emptyList<ValidationErrorResponse>(), output.validationError)
+    assertEquals(emptyList<ValidationError>(), output.validationError)
   }
 
   @Test
@@ -72,7 +72,7 @@ class OSPIICRiskProducerServiceTest {
       null,
       null,
       validationError = listOf(
-        ValidationErrorResponse(
+        ValidationError(
           type = ValidationErrorType.MISSING_MANDATORY_INPUT,
           message = "Mandatory input field(s) missing",
           fields = listOf("gender"),
@@ -105,7 +105,7 @@ class OSPIICRiskProducerServiceTest {
       femaleVersion = null,
       sexualOffenceHistory = null,
       validationError = listOf(
-        ValidationErrorResponse(
+        ValidationError(
           type = ValidationErrorType.MISSING_MANDATORY_INPUT,
           message = "Mandatory input field(s) missing",
           fields = listOf(
@@ -140,7 +140,7 @@ class OSPIICRiskProducerServiceTest {
       femaleVersion = null,
       sexualOffenceHistory = null,
       validationError = listOf(
-        ValidationErrorResponse(
+        ValidationError(
           type = ValidationErrorType.SEXUAL_OFFENDING_INCONSISTENT_INPUT,
           message = "No sexual motivation/offending identified - additional fields should not be provided",
           fields = listOf(
@@ -174,7 +174,7 @@ class OSPIICRiskProducerServiceTest {
       femaleVersion = null,
       sexualOffenceHistory = null,
       validationError = listOf(
-        ValidationErrorResponse(
+        ValidationError(
           type = ValidationErrorType.SEXUAL_OFFENDING_MISSING_COUNTS,
           message = "Sexual motivation/offending identified - complete sexual offence counts",
           fields = listOf(
@@ -208,7 +208,7 @@ class OSPIICRiskProducerServiceTest {
       femaleVersion = null,
       sexualOffenceHistory = null,
       validationError = listOf(
-        ValidationErrorResponse(
+        ValidationError(
           type = ValidationErrorType.SEXUAL_OFFENDING_MISSING_COUNTS,
           message = "Sexual motivation/offending identified - complete sexual offence counts",
           fields = listOf(

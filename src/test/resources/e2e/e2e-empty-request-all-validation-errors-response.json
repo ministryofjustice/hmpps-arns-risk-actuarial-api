@@ -4,14 +4,13 @@
     "version": "V1_0",
     "actuarialPredictors": {
       "allPredictor": {
-        "algorithm": "OGRS3",
+        "algorithm": "ALL_REOFFENDING_PREDICTOR",
         "type": "STATIC",
         "modelVersion": "1.0",
         "thresholdsVersion": "1.0",
         "output": {
           "band": null,
-          "oneYearScore": null,
-          "twoYearScore": null
+          "score": null
         },
         "featureValues": {},
         "validationErrors": [
@@ -19,13 +18,43 @@
             "type": "MISSING_MANDATORY_INPUT",
             "message": "Mandatory input field(s) missing",
             "fields": [
-              "gender",
               "dateOfBirth",
               "dateOfCurrentConviction",
-              "dateAtStartOfFollowupCalculated",
-              "totalNumberOfSanctionsForAllOffences",
               "ageAtFirstSanction",
-              "currentOffenceCode"
+              "gender",
+              "currentOffenceCode",
+              "totalNumberOfSanctionsForAllOffences",
+              "dateAtStartOfFollowupCalculated"
+            ]
+          },
+          {
+            "type" : "MISSING_DYNAMIC_INPUT",
+            "message" : "Dynamic input field(s) missing",
+            "fields" : [
+              "suitabilityOfAccommodation",
+              "isUnemployed",
+              "currentRelationshipWithPartner",
+              "evidenceOfDomesticAbuse",
+              "currentRelationshipStatus",
+              "regularOffendingActivities",
+              "motivationToTackleDrugMisuse",
+              "hasHeroinUsage",
+              "hasOtherOpiateUsage",
+              "hasCrackCocaineUsage",
+              "hasPowderCocaineUsage",
+              "hasMisusedPrescriptionDrugUsage",
+              "hasBenzodiazepinesUsage",
+              "hasCannabisUsage",
+              "hasSteroidsUsage",
+              "hasOtherDrugsUsage",
+              "hasKetamineUsage",
+              "hasSpiceUsage",
+              "hasHallucinogensUsage",
+              "hasSolventsUsage",
+              "currentAlcoholUseProblems",
+              "excessiveAlcoholUse",
+              "impulsivityProblems",
+              "proCriminalAttitudes"
             ]
           }
         ]
