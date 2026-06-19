@@ -104,7 +104,6 @@ class ViolentReoffendingPredictorRiskProducerService : BaseRiskScoreProducer() {
     val test = calculateAndBuildPredictor(validDynamicRequest, staticValidationErrors + dynamicValidationErrors)
     return context.apply {
       violentReoffendingPredictor = test
-
     }
   }
 
@@ -196,7 +195,7 @@ class ViolentReoffendingPredictorRiskProducerService : BaseRiskScoreProducer() {
       )
       FeatureValue.TOTAL_NUMBER_OF_VIOLENT_SANCTIONS_WEIGHT.set(
         getTotalViolentSanctionsWeight(
-          staticOrDynamic
+          staticOrDynamic,
         ),
       )
       FeatureValue.SECOND_SANCTION_GAP_WEIGHT.set(
