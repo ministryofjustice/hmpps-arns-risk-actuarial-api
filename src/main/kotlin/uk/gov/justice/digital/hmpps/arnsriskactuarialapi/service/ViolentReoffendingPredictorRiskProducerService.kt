@@ -7,7 +7,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.violentreoffendingpredictor.ViolentReoffendingPredictorObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.violentreoffendingpredictor.ViolentReoffendingPredictorRequestValidated
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getHeroinUsageWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.ViolentReoffendingPredictorTransformationHelper.calculatePercentageScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.ViolentReoffendingPredictorTransformationHelper.get2YearInterceptWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.ViolentReoffendingPredictorTransformationHelper.getAgeGenderPolynomialWeight
@@ -40,6 +39,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.ViolentReoffendingPredictorTransformationHelper.getSuitableAccommodationWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.ViolentReoffendingPredictorTransformationHelper.getTemperControlWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.ViolentReoffendingPredictorTransformationHelper.getTotalSanctionWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.ViolentReoffendingPredictorTransformationHelper.getTotalViolentSanctionsWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.ViolentReoffendingPredictorTransformationHelper.getUnemployedWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateViolentReoffendingPredictorDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateViolentReoffendingPredictorStatic
@@ -101,9 +101,10 @@ class ViolentReoffendingPredictorRiskProducerService : BaseRiskScoreProducer() {
       request.temperControl!!,
     )
 
+    val test = calculateAndBuildPredictor(validDynamicRequest, staticValidationErrors + dynamicValidationErrors)
     return context.apply {
-      violentReoffendingPredictor =
-        calculateAndBuildPredictor(validDynamicRequest, staticValidationErrors + dynamicValidationErrors)
+      violentReoffendingPredictor = test
+
     }
   }
 
@@ -194,9 +195,8 @@ class ViolentReoffendingPredictorRiskProducerService : BaseRiskScoreProducer() {
         ),
       )
       FeatureValue.TOTAL_NUMBER_OF_VIOLENT_SANCTIONS_WEIGHT.set(
-        getTotalSanctionWeight(
-          staticOrDynamic,
-          staticData.totalNumberOfSanctionsForAllOffences,
+        getTotalViolentSanctionsWeight(
+          staticOrDynamic
         ),
       )
       FeatureValue.SECOND_SANCTION_GAP_WEIGHT.set(
@@ -252,7 +252,6 @@ class ViolentReoffendingPredictorRiskProducerService : BaseRiskScoreProducer() {
         FeatureValue.IMPULSIVITY_PROBLEMS_WEIGHT.set(getImpulsivityWeight(request.impulsivityProblems))
         FeatureValue.TEMPER_CONTROL_WEIGHT.set(getTemperControlWeight(request.impulsivityProblems))
         FeatureValue.METHADONE_USAGE_WEIGHT.set(getMethadoneUsageWeight(request.hasHeroinUsage))
-        FeatureValue.HEROIN_USAGE_WEIGHT.set(getHeroinUsageWeight(request.hasHeroinUsage))
         FeatureValue.OTHER_OPIATE_USAGE_WEIGHT.set(getOtherOpiateUsageWeight(request.hasOtherOpiateUsage))
         FeatureValue.CRACK_COCAINE_USAGE_WEIGHT.set(getCrackCocaineUsageWeight(request.hasCrackCocaineUsage))
         FeatureValue.POWDER_COCAINE_USAGE_WEIGHT.set(getPowderCocaineUsageWeight(request.hasPowderCocaineUsage))

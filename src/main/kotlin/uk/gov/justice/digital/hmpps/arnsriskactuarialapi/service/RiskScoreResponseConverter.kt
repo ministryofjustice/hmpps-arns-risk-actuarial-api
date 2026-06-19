@@ -25,6 +25,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds.LDSObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.mst.MSTObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.opd.OPDObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIObject
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.toScoreTypeResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asDoublePercentage
 
 fun RiskScoreContext.toRiskScoreResponse(): RiskScoreResponse = RiskScoreResponse(
@@ -57,7 +58,7 @@ private fun buildPredictorResponseForAllPredictor(riskScoreContext: RiskScoreCon
   val allReoffendingPredictor = riskScoreContext.allReoffendingPredictor!!
   return PredictorResponse(
     ALL_REOFFENDING_PREDICTOR,
-    STATIC,
+    allReoffendingPredictor.staticOrDynamic.toScoreTypeResponse(),
     output = AllPredictorPredictorOutputResponse(
       allReoffendingPredictor.band.toRiskBandResponse(),
       allReoffendingPredictor.score,
@@ -71,7 +72,7 @@ private fun buildPredictorResponseForViolentPredictor(riskScoreContext: RiskScor
   val violentReoffendingPredictor = riskScoreContext.violentReoffendingPredictor!!
   return PredictorResponse(
     VIOLENT_REOFFENDING_PREDICTOR,
-    STATIC,
+    violentReoffendingPredictor.staticOrDynamic.toScoreTypeResponse(),
     output = ViolentPredictorPredictorOutputResponse(
       violentReoffendingPredictor.band.toRiskBandResponse(),
       violentReoffendingPredictor.score,

@@ -5,7 +5,7 @@
     "actuarialPredictors": {
       "allPredictor": {
         "algorithm": "ALL_REOFFENDING_PREDICTOR",
-        "type": "STATIC",
+        "type": null,
         "modelVersion": "1.0",
         "thresholdsVersion": "1.0",
         "output": {
@@ -61,7 +61,7 @@
       },
       "violentPredictor": {
         "algorithm": "VIOLENT_REOFFENDING_PREDICTOR",
-        "type": "STATIC",
+        "type": null,
         "modelVersion": "1.0",
         "thresholdsVersion": "1.0",
         "output": {

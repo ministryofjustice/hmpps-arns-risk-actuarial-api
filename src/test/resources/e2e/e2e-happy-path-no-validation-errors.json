@@ -112,7 +112,7 @@
     "actuarialPredictors": {
       "allPredictor": {
         "algorithm": "ALL_REOFFENDING_PREDICTOR",
-        "type": "STATIC",
+        "type": "DYNAMIC",
         "modelVersion": "1.0",
         "thresholdsVersion": "1.0",
         "output": {
@@ -158,12 +158,12 @@
       },
       "violentPredictor": {
         "algorithm": "VIOLENT_REOFFENDING_PREDICTOR",
-        "type": "STATIC",
+        "type": "DYNAMIC",
         "modelVersion": "1.0",
         "thresholdsVersion": "1.0",
         "output" : {
           "band" : "LOW",
-          "score" : 22.02
+          "score" : 22.39
         },
         "featureValues" : {
           "twoYearInterceptWeight" : 1.81687448362791,
@@ -172,7 +172,7 @@
           "firstSanctionWeight" : -1.84616323808687,
           "secondSanctionWeight" : 0,
           "totalNumberOfSanctionsForAllOffencesWeight" : -0.0068338285932122,
-          "totalNumberOfViolentSanctionsWeight" : -0.0068338285932122,
+          "totalNumberOfViolentSanctionsWeight" : 0.0143780957599777,
           "secondSanctionGapWeight" : 0,
           "offenceFreeMonthsWeight" : 0,
           "copasScore" : 0,
@@ -190,7 +190,6 @@
           "impulsivityProblemsWeight" : 0.0,
           "temperControlWeight" : 0.0,
           "methadoneUsageWeight" : 0,
-          "heroinUsageWeight" : 0,
           "otherOpiateUsageWeight" : 0,
           "crackCocaineUsageWeight" : 0,
           "powderCocaineUsageWeight" : 0,
@@ -199,7 +198,7 @@
           "cannabisUsageWeight" : 0,
           "steroidUsageWeight" : 0,
           "otherDrugUsageWeight" : 0,
-          "totalWeight" : -1.264339410035429
+          "totalWeight" : -1.2431274856822392
         },
         "validationErrors": []
       },

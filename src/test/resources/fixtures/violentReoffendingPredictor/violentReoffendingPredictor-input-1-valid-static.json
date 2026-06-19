@@ -17,7 +17,7 @@
     "thresholdsVersion": "1.0",
     "output": {
       "band": "LOW",
-      "score": 47.65
+      "score": 48.45
     },
     "featureValues": {
       "twoYearInterceptWeight": 3.12324433235579,
@@ -26,12 +26,12 @@
       "firstSanctionWeight": 0,
       "secondSanctionWeight": -1.10995084554834,
       "totalNumberOfSanctionsForAllOffencesWeight": -0.0135316135489862,
-      "totalNumberOfViolentSanctionsWeight": -0.0135316135489862,
+      "totalNumberOfViolentSanctionsWeight": 0.0185294325031695,
       "secondSanctionGapWeight": -0.4661521068397212,
       "offenceFreeMonthsWeight": -0.0476168447456602,
       "copasScore": 0,
       "copasViolentOffencesScore": -1.4948493413623645,
-      "totalWeight": -0.09390502500235212
+      "totalWeight": -0.06184397895019642
     },
     "validationErrors": [
       {

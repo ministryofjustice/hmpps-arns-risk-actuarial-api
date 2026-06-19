@@ -4,7 +4,7 @@
   },
   "response": {
     "algorithm": "ALL_REOFFENDING_PREDICTOR",
-    "type": "STATIC",
+    "type": null,
     "modelVersion": "1.0",
     "thresholdsVersion": "1.0",
     "output": {

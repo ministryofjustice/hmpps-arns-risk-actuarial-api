@@ -33,12 +33,12 @@
   },
   "response": {
     "algorithm": "VIOLENT_REOFFENDING_PREDICTOR",
-    "type": "STATIC",
+    "type": "DYNAMIC",
     "modelVersion": "1.0",
     "thresholdsVersion": "1.0",
     "output": {
       "band": "LOW",
-      "score": 39.89
+      "score": 40.57
     },
     "featureValues": {
       "twoYearInterceptWeight": 1.81687448362791,
@@ -47,7 +47,7 @@
       "firstSanctionWeight": 0,
       "secondSanctionWeight": -1.08289822438739,
       "totalNumberOfSanctionsForAllOffencesWeight": -0.0136676571864244,
-      "totalNumberOfViolentSanctionsWeight": -0.0136676571864244,
+      "totalNumberOfViolentSanctionsWeight": 0.0143780957599777,
       "secondSanctionGapWeight": -0.40408034322907616,
       "offenceFreeMonthsWeight": -0.037817402991644794,
       "copasScore": 0,
@@ -65,7 +65,6 @@
       "impulsivityProblemsWeight": 0.0323581330157977,
       "temperControlWeight": 0.091904896744703,
       "methadoneUsageWeight": 0,
-      "heroinUsageWeight": 0,
       "otherOpiateUsageWeight": 0,
       "crackCocaineUsageWeight": 0,
       "powderCocaineUsageWeight": 0,
@@ -74,7 +73,7 @@
       "cannabisUsageWeight": 0,
       "steroidUsageWeight": 0,
       "otherDrugUsageWeight": 0,
-      "totalWeight": -0.40988850743735705
+      "totalWeight": -0.38184275449095495
     },
     "validationErrors": []
   }
