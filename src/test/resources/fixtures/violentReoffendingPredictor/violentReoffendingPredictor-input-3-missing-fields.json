@@ -1,0 +1,58 @@
+{
+  "request": {
+    "version": "V1_0"
+  },
+  "response": {
+    "algorithm": "VIOLENT_REOFFENDING_PREDICTOR",
+    "type": "STATIC",
+    "modelVersion": "1.0",
+    "thresholdsVersion": "1.0",
+    "output": {
+      "band" : null,
+      "score" : null
+    },
+    "featureValues" : {},
+    "validationErrors": [
+      {
+        "type" : "MISSING_MANDATORY_INPUT",
+        "message" : "Mandatory input field(s) missing",
+        "fields" : [
+          "dateOfBirth",
+          "dateOfCurrentConviction",
+          "ageAtFirstSanction",
+          "gender",
+          "currentOffenceCode",
+          "totalNumberOfSanctionsForAllOffences",
+          "totalNumberOfViolentSanctions",
+          "dateAtStartOfFollowupCalculated"
+        ]
+      },
+      {
+        "type" : "MISSING_DYNAMIC_INPUT",
+        "message" : "Dynamic input field(s) missing",
+        "fields" : [
+          "suitabilityOfAccommodation",
+          "isUnemployed",
+          "currentRelationshipWithPartner",
+          "evidenceOfDomesticAbuse",
+          "currentRelationshipStatus",
+          "regularOffendingActivities",
+          "motivationToTackleDrugMisuse",
+          "hasHeroinUsage",
+          "hasOtherOpiateUsage",
+          "hasCrackCocaineUsage",
+          "hasPowderCocaineUsage",
+          "hasMisusedPrescriptionDrugUsage",
+          "hasBenzodiazepinesUsage",
+          "hasCannabisUsage",
+          "hasSteroidsUsage",
+          "hasOtherDrugsUsage",
+          "hasMethadoneUsage",
+          "currentAlcoholUseProblems",
+          "excessiveAlcoholUse",
+          "temperControl"
+        ]
+      }
+    ]
+  }
+}

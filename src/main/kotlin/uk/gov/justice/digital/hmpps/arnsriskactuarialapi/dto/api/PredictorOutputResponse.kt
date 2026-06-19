@@ -11,9 +11,7 @@ data class AllPredictorPredictorOutputResponse(
 
 data class ViolentPredictorPredictorOutputResponse(
   override val band: RiskBandResponse?,
-  val oneYearScore: Int?,
-  val twoYearScore: Int?,
-  val pointScore: Int?,
+  val score: Double?,
 ) : PredictorOutputResponse(band)
 
 data class DirectContactSexualPredictorOutputResponse(

@@ -111,7 +111,7 @@ private fun getLevelFromScore(overallNeedsScore: Int): NeedScore? = when (overal
 
 fun isHighAllReoffendingPredictor(requestValidated: PNIRequestValidated) = requestValidated.allReoffendingPredictorStaticScore?.let { it >= 75 } == true
 
-fun isHighOvp(requestValidated: PNIRequestValidated) = requestValidated.ovp?.let { it >= 60.00 } == true
+fun isHighViolentReoffendingPredictor(requestValidated: PNIRequestValidated) = requestValidated.violentReoffendingPredictorStaticScore?.let { it >= 75 } == true
 
 fun isOspDcHigh(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospDCBand == RiskBand.HIGH || requestValidated.ospDCBand == RiskBand.VERY_HIGH
 
@@ -135,7 +135,7 @@ fun isNullOrNa(band: RiskBand?): Boolean = band == null || band == RiskBand.NOT_
 
 fun isAllReoffendingPredictorMedium(requestValidated: PNIRequestValidated) = requestValidated.allReoffendingPredictorStaticScore?.let { it in 50.0..74.0 } == true
 
-fun isOvpMedium(requestValidated: PNIRequestValidated) = requestValidated.ovp?.let { it in 30..59 } == true
+fun isMediumViolentReoffendingPredictor(requestValidated: PNIRequestValidated) = requestValidated.violentReoffendingPredictorStaticScore?.let { it in 50.0..74.0 } == true
 
 fun isHighSara(requestValidated: PNIRequestValidated) = requestValidated.saraRiskToOthers == RiskBand.HIGH ||
   requestValidated.saraRiskToPartner == RiskBand.HIGH

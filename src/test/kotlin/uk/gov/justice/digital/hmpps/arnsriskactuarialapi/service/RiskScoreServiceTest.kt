@@ -18,9 +18,9 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyMST
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOPD
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOSPDC
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOSPIIC
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOVP
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyRSR
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptySNSV
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyViolentReoffendingPredictor
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.omittedPNI
 
 @ExtendWith(MockitoExtension::class)
@@ -30,7 +30,7 @@ class RiskScoreServiceTest {
   private lateinit var allReoffendingPredictorRiskProducerService: AllReoffendingPredictorRiskProducerService
 
   @Mock
-  private lateinit var ovpRiskProducerService: OVPRiskProducerService
+  private lateinit var violentReoffendingPredictorRiskProducerService: ViolentReoffendingPredictorRiskProducerService
 
   @Mock
   private lateinit var mstRiskProducerService: MSTRiskProducerService
@@ -82,7 +82,12 @@ class RiskScoreServiceTest {
             emptyAllReoffendingPredictor()
         }
       },
-      Pair(ovpRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { OVP = emptyOVP() } },
+      Pair(violentReoffendingPredictorRiskProducerService) { ctx: RiskScoreContext ->
+        ctx.apply {
+          violentReoffendingPredictor =
+            emptyViolentReoffendingPredictor()
+        }
+      },
       Pair(mstRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { MST = emptyMST() } },
       Pair(opdRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { OPD = emptyOPD() } },
       Pair(pniRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { PNI = omittedPNI() } },

@@ -358,9 +358,9 @@ class ViolentReoffendingPredictorTransformationHelperTest {
   }
 
   @Test
-  fun `getTemperWeight returns correct calculated weight`() {
+  fun `getTemperControlWeight returns correct calculated weight`() {
     val expected = BigDecimal(0.183809793489406)
-    val result = ViolentReoffendingPredictorTransformationHelper.getTemperWeight(ProblemLevel.SIGNIFICANT_PROBLEMS)
+    val result = ViolentReoffendingPredictorTransformationHelper.getTemperControlWeight(ProblemLevel.SIGNIFICANT_PROBLEMS)
     assertTrue(expected.compareTo(result) == 0) {
       "Expected $expected but got $result"
     }
@@ -462,21 +462,11 @@ class ViolentReoffendingPredictorTransformationHelperTest {
   @MethodSource("getOtherDrugsUsageWeightProvider")
   fun `getOtherDrugsUsageWeight returns coefficient if any parameters are true else zero`(
     hasOtherDrugsUsage: Boolean,
-    hasKetamineUsage: Boolean,
-    hasSpiceUsage: Boolean,
-    hasHallucinogensUsage: Boolean,
-    hasSolventsUsage: Boolean,
     expected: BigDecimal,
   ) {
     assertEquals(
       expected,
-      ViolentReoffendingPredictorTransformationHelper.getOtherDrugsUsageWeight(
-        hasOtherDrugsUsage,
-        hasKetamineUsage,
-        hasSpiceUsage,
-        hasHallucinogensUsage,
-        hasSolventsUsage,
-      ),
+      ViolentReoffendingPredictorTransformationHelper.getOtherDrugsUsageWeight(hasOtherDrugsUsage),
     )
   }
 
@@ -883,12 +873,8 @@ class ViolentReoffendingPredictorTransformationHelperTest {
 
     @JvmStatic
     fun getOtherDrugsUsageWeightProvider() = listOf(
-      Arguments.of(false, false, false, false, false, BigDecimal.ZERO),
-      Arguments.of(true, false, false, false, false, BigDecimal(0.150053208890266)),
-      Arguments.of(false, true, false, false, false, BigDecimal(0.150053208890266)),
-      Arguments.of(false, false, true, false, false, BigDecimal(0.150053208890266)),
-      Arguments.of(false, false, false, true, false, BigDecimal(0.150053208890266)),
-      Arguments.of(false, false, false, false, true, BigDecimal(0.150053208890266)),
+      Arguments.of(false, BigDecimal.ZERO),
+      Arguments.of(true, BigDecimal(0.150053208890266)),
     )
 
     @JvmStatic

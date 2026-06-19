@@ -11,8 +11,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.ProgrammeNeedIdentifier
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyAllReoffendingPredictor
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOVP
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyRSR
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyViolentReoffendingPredictor
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -79,7 +79,7 @@ class PNIRegressionTest {
     s11U6: String?,
     s10U1: String?,
     ogrsY2: String?,
-    ovpRiskReconElm: String?,
+    violentReoffendingPredictorRiskReconElm: String?,
     ospCdc: String?,
     ospIiic: String?,
     rsrPercentageScore: String?,
@@ -172,9 +172,9 @@ class PNIRegressionTest {
       ospiicBand = ospIiic.toRiskBand(),
       rsrScore = rsrPercentageScore?.toDoubleOrNull(),
     )
-    val ovp = emptyOVP().copy(
-      provenViolentTypeReoffendingTwoYear = ovpRiskReconElm.bandToOVPScore(),
-      band = ovpRiskReconElm.toRiskBand(),
+    val violentReoffendingPredictor = emptyViolentReoffendingPredictor().copy(
+      score = violentReoffendingPredictorRiskReconElm.bandToViolentReoffendingPredictorScore(),
+      band = violentReoffendingPredictorRiskReconElm.toRiskBand(),
     )
     val allReoffendingPredictor = emptyAllReoffendingPredictor().copy(
       score = ogrsY2?.bandToAllReoffendingPredictorScore(),
@@ -183,7 +183,7 @@ class PNIRegressionTest {
       request,
       emptyContext().copy(
         RSR = rsr,
-        OVP = ovp,
+        violentReoffendingPredictor = violentReoffendingPredictor,
         allReoffendingPredictor = allReoffendingPredictor,
       ),
     )
@@ -204,7 +204,7 @@ class PNIRegressionTest {
         arrayListOf(
           id, scenario, expectedOutcome, community, s1U30, s6U11, s11U11, s11U12, s6U12, s12U1,
           s12U9, s6U1, s6U6, s7U3, s11U3, s11U2, s11U4, s11U6, s10U1, ogrsY2,
-          ovpRiskReconElm, ospCdc, ospIiic, rsrPercentageScore, saraRiskLevelToPartner,
+          violentReoffendingPredictorRiskReconElm, ospCdc, ospIiic, rsrPercentageScore, saraRiskLevelToPartner,
           saraRiskLevelToOther, sexDomain, thinkingDomain, relaDomain, smDomain,
           overallNeedsCheck, overallRiskScore, expectedPni, sdScore, tdScore, rdScore,
           smScore, needsScoreMissingIgnored, convertedRsrLevel, removeLeading,
@@ -240,11 +240,11 @@ private fun String?.toRiskBand(): RiskBand? = when (this) {
   else -> null
 }
 
-private fun String?.bandToOVPScore(): Int? = when (this.toRiskBand()) {
-  RiskBand.LOW -> 10 // between 1 and 29
-  RiskBand.MEDIUM -> 40 // between 30 and 59
-  RiskBand.HIGH -> 70 // between 60 and 79
-  RiskBand.VERY_HIGH -> 85 // between 80 and 99
+private fun String?.bandToViolentReoffendingPredictorScore(): Double? = when (this.toRiskBand()) {
+  RiskBand.LOW -> 30.0 // between 0 and 49
+  RiskBand.MEDIUM -> 60.0 // between 50 and 74
+  RiskBand.HIGH -> 80.0 // between 75 and 89
+  RiskBand.VERY_HIGH -> 95.0 // 90 plus
   RiskBand.NOT_APPLICABLE -> null
   null -> null
 }

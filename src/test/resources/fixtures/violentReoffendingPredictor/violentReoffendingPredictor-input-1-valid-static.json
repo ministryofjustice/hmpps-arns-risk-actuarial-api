@@ -1,0 +1,65 @@
+{
+  "request": {
+    "version": "V1_0",
+    "gender": "MALE",
+    "dateOfBirth": "1991-07-17",
+    "dateOfCurrentConviction": "2021-08-05",
+    "dateAtStartOfFollowupCalculated": "2021-12-12",
+    "totalNumberOfSanctionsForAllOffences": 2,
+    "totalNumberOfViolentSanctions": 2,
+    "ageAtFirstSanction": 21,
+    "currentOffenceCode": "11618"
+  },
+  "response": {
+    "algorithm": "VIOLENT_REOFFENDING_PREDICTOR",
+    "type": "STATIC",
+    "modelVersion": "1.0",
+    "thresholdsVersion": "1.0",
+    "output": {
+      "band": "LOW",
+      "score": 47.65
+    },
+    "featureValues": {
+      "twoYearInterceptWeight": 3.12324433235579,
+      "ageGenderPolynomialWeight": -0.071516991764084,
+      "genderWeight": 0,
+      "firstSanctionWeight": 0,
+      "secondSanctionWeight": -1.10995084554834,
+      "totalNumberOfSanctionsForAllOffencesWeight": -0.0135316135489862,
+      "totalNumberOfViolentSanctionsWeight": -0.0135316135489862,
+      "secondSanctionGapWeight": -0.4661521068397212,
+      "offenceFreeMonthsWeight": -0.0476168447456602,
+      "copasScore": 0,
+      "copasViolentOffencesScore": -1.4948493413623645,
+      "totalWeight": -0.09390502500235212
+    },
+    "validationErrors": [
+      {
+        "type": "MISSING_DYNAMIC_INPUT",
+        "message": "Dynamic input field(s) missing",
+        "fields": [
+          "suitabilityOfAccommodation",
+          "isUnemployed",
+          "currentRelationshipWithPartner",
+          "evidenceOfDomesticAbuse",
+          "currentRelationshipStatus",
+          "regularOffendingActivities",
+          "motivationToTackleDrugMisuse",
+          "hasHeroinUsage",
+          "hasOtherOpiateUsage",
+          "hasCrackCocaineUsage",
+          "hasPowderCocaineUsage",
+          "hasMisusedPrescriptionDrugUsage",
+          "hasBenzodiazepinesUsage",
+          "hasCannabisUsage",
+          "hasSteroidsUsage",
+          "hasOtherDrugsUsage",
+          "hasMethadoneUsage",
+          "currentAlcoholUseProblems",
+          "excessiveAlcoholUse",
+          "temperControl"
+        ]
+      }
+    ]
+  }
+}
