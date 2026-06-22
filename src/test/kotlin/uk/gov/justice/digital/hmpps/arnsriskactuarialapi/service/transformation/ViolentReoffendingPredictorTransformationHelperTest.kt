@@ -58,6 +58,14 @@ class ViolentReoffendingPredictorTransformationHelperTest {
     assertEquals(expected, result)
   }
 
+  @Test
+  fun `getOffenceGroupWeight returns ZERO`() {
+    assertEquals(
+      BigDecimal.ZERO,
+      ViolentReoffendingPredictorTransformationHelper.getOffenceGroupWeight(StaticOrDynamic.STATIC, ""),
+    )
+  }
+
   @ParameterizedTest
   @MethodSource("getFirstSanctionWeightProvider")
   fun `getFirstSanctionWeight returns correct coefficient based on StaticOrDynamic only when total sanctions is exactly 1`(
@@ -458,15 +466,24 @@ class ViolentReoffendingPredictorTransformationHelperTest {
     )
   }
 
-  @ParameterizedTest
   @MethodSource("getOtherDrugsUsageWeightProvider")
   fun `getOtherDrugsUsageWeight returns coefficient if any parameters are true else zero`(
     hasOtherDrugsUsage: Boolean,
+    hasKetamineUsage: Boolean,
+    hasSpiceUsage: Boolean,
+    hasHallucinogensUsage: Boolean,
+    hasSolventsUsage: Boolean,
     expected: BigDecimal,
   ) {
     assertEquals(
       expected,
-      ViolentReoffendingPredictorTransformationHelper.getOtherDrugsUsageWeight(hasOtherDrugsUsage),
+      ViolentReoffendingPredictorTransformationHelper.getOtherDrugsUsageWeight(
+        hasOtherDrugsUsage,
+        hasKetamineUsage,
+        hasSpiceUsage,
+        hasHallucinogensUsage,
+        hasSolventsUsage,
+      ),
     )
   }
 
@@ -658,7 +675,7 @@ class ViolentReoffendingPredictorTransformationHelperTest {
         18,
         20,
         30,
-        BigDecimal("-0.430166029065360978144182117356508765482203671126626431941986083984375"),
+        BigDecimal("-0.124535911906912169608439980608249886273597439867444336414337158203125"),
       ),
       Arguments.of(
         StaticOrDynamic.STATIC,
@@ -666,7 +683,7 @@ class ViolentReoffendingPredictorTransformationHelperTest {
         7,
         24,
         26,
-        BigDecimal("-0.704031642020903854107846539767900928552535333437845110893249511718750"),
+        BigDecimal("-0.352015821010451927053923269883950464276267666718922555446624755859375"),
       ),
       Arguments.of(
         StaticOrDynamic.DYNAMIC,
@@ -674,7 +691,7 @@ class ViolentReoffendingPredictorTransformationHelperTest {
         5,
         18,
         42,
-        BigDecimal("-1.379837002501239882629704225188438382332378751016221940517425537109375"),
+        BigDecimal("-1.182979102022626489455437082380484525856445543467998504638671875000000"),
       ),
       Arguments.of(
         StaticOrDynamic.DYNAMIC,
@@ -682,7 +699,7 @@ class ViolentReoffendingPredictorTransformationHelperTest {
         6,
         21,
         25,
-        BigDecimal("-0.7684233620398449673357192651473202005263374303467571735382080078125"),
+        BigDecimal("-0.4682952392033705726132414050685959239217481808736920356750488281250"),
       ),
     )
 
@@ -700,14 +717,14 @@ class ViolentReoffendingPredictorTransformationHelperTest {
         18,
         20,
         30,
-        BigDecimal("-0.36201183964094633649667451877924850833778691594488918781280517578125"),
+        BigDecimal("-0.41703875913010355298627777416244910568821069318801164627075195312500"),
       ),
       Arguments.of(
         StaticOrDynamic.DYNAMIC,
         5,
         18,
         42,
-        BigDecimal("-0.9602657079419671634962092933143484874136674989131279289722442626953125"),
+        BigDecimal("-0.992361394166722204363525829734826722017260181019082665443420410156250"),
       ),
     )
 
@@ -873,19 +890,23 @@ class ViolentReoffendingPredictorTransformationHelperTest {
 
     @JvmStatic
     fun getOtherDrugsUsageWeightProvider() = listOf(
-      Arguments.of(false, BigDecimal.ZERO),
-      Arguments.of(true, BigDecimal(0.150053208890266)),
+      Arguments.of(false, false, false, false, false, BigDecimal.ZERO),
+      Arguments.of(true, false, false, false, false, BigDecimal(0.150053208890266)),
+      Arguments.of(false, true, false, false, false, BigDecimal(0.150053208890266)),
+      Arguments.of(false, false, true, false, false, BigDecimal(0.150053208890266)),
+      Arguments.of(false, false, false, true, false, BigDecimal(0.150053208890266)),
+      Arguments.of(false, false, false, false, true, BigDecimal(0.150053208890266)),
     )
 
     @JvmStatic
     fun getRiskBandProvider() = listOf(
       Arguments.of(0.01, RiskBand.LOW),
-      Arguments.of(49.99, RiskBand.LOW),
-      Arguments.of(50.00, RiskBand.MEDIUM),
-      Arguments.of(74.99, RiskBand.MEDIUM),
-      Arguments.of(75.00, RiskBand.HIGH),
-      Arguments.of(89.99, RiskBand.HIGH),
-      Arguments.of(90.00, RiskBand.VERY_HIGH),
+      Arguments.of(29.99, RiskBand.LOW),
+      Arguments.of(30.00, RiskBand.MEDIUM),
+      Arguments.of(59.99, RiskBand.MEDIUM),
+      Arguments.of(60.00, RiskBand.HIGH),
+      Arguments.of(79.99, RiskBand.HIGH),
+      Arguments.of(80.00, RiskBand.VERY_HIGH),
       Arguments.of(99.99, RiskBand.VERY_HIGH),
     )
 

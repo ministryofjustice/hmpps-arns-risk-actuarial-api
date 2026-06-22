@@ -241,10 +241,10 @@ private fun String?.toRiskBand(): RiskBand? = when (this) {
 }
 
 private fun String?.bandToViolentReoffendingPredictorScore(): Double? = when (this.toRiskBand()) {
-  RiskBand.LOW -> 30.0 // between 0 and 49
-  RiskBand.MEDIUM -> 60.0 // between 50 and 74
-  RiskBand.HIGH -> 80.0 // between 75 and 89
-  RiskBand.VERY_HIGH -> 95.0 // 90 plus
+  RiskBand.LOW -> 0.0 // between 0 and 29
+  RiskBand.MEDIUM -> 30.0 // between 30 and 59
+  RiskBand.HIGH -> 60.0 // between 60 and 79
+  RiskBand.VERY_HIGH -> 80.0 // 80 plus
   RiskBand.NOT_APPLICABLE -> null
   null -> null
 }

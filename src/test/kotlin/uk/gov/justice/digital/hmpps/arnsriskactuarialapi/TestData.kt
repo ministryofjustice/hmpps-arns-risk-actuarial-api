@@ -68,7 +68,7 @@ fun highAllReoffendingPredictor(staticOrDynamic: StaticOrDynamic = StaticOrDynam
 )
 
 fun highViolentReoffendingPredictor(staticOrDynamic: StaticOrDynamic = StaticOrDynamic.STATIC) = ViolentReoffendingPredictorObject(
-  90.0,
+  77.0,
   RiskBand.VERY_HIGH,
   staticOrDynamic,
   emptyList(),
@@ -219,6 +219,10 @@ fun validViolentReoffendingPredictorDynamicRiskScoreRequest(): RiskScoreRequest 
   hasCannabisUsage = true,
   hasSteroidsUsage = true,
   hasOtherDrugsUsage = false,
+  hasKetamineUsage = false,
+  hasSpiceUsage = false,
+  hasHallucinogensUsage = false,
+  hasSolventsUsage = false,
   hasMethadoneUsage = true,
   currentAlcoholUseProblems = ProblemLevel.SOME_PROBLEMS,
   excessiveAlcoholUse = ProblemLevel.SOME_PROBLEMS,

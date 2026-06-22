@@ -14,6 +14,8 @@ enum class FeatureValue(val outputName: String) {
   AGE_AT_START_OF_FOLLOW_UP_WEIGHT("ageAtStartOfFollowUpWeight"),
   AGE_AT_LAST_SANCTION_FOR_SEXUAL_OFFENCE_WEIGHT("ageAtLastSanctionForSexualOffenceWeight"),
   TOTAL_NUMBER_OF_SANCTIONS_FOR_ALL_OFFENCES_WEIGHT("totalNumberOfSanctionsForAllOffencesWeight"),
+  NEVER_VIOLENT_WEIGHT("neverViolentWeight"),
+  ONCE_VIOLENT_WEIGHT("onceViolentWeight"),
   TOTAL_NUMBER_OF_VIOLENT_SANCTIONS_WEIGHT("totalNumberOfViolentSanctionsWeight"),
   CURRENT_OFFENCE_AGAINST_VICTIM_STRANGER_WEIGHT("currentOffenceAgainstVictimStrangerWeight"),
   TWO_YEAR_INTERCEPT_WEIGHT("twoYearInterceptWeight"),

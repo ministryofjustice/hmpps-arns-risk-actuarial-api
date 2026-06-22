@@ -125,9 +125,9 @@ data class RiskScoreRequest(
   val hasCannabisUsage: Boolean? = null,
   val hasSteroidsUsage: Boolean? = null,
   val hasOtherDrugsUsage: Boolean? = null,
-  val hasMethadoneUsage: Boolean? = null,
   val hasKetamineUsage: Boolean? = null,
   val hasSpiceUsage: Boolean? = null,
   val hasHallucinogensUsage: Boolean? = null,
   val hasSolventsUsage: Boolean? = null,
+  val hasMethadoneUsage: Boolean? = null,
 )

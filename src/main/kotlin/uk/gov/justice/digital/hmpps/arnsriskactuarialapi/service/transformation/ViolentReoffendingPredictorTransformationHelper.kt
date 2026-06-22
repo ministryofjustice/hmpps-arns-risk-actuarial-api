@@ -73,6 +73,8 @@ object ViolentReoffendingPredictorTransformationHelper {
     }
   }
 
+  fun getOffenceGroupWeight(staticOrDynamic: StaticOrDynamic, currentOffenceCode: String): BigDecimal = BigDecimal.ZERO
+
   fun getFirstSanctionWeight(
     staticOrDynamic: StaticOrDynamic,
     totalNumberOfSanctionsForAllOffences: Int,
@@ -175,7 +177,7 @@ object ViolentReoffendingPredictorTransformationHelper {
       return BigDecimal.ZERO
     }
 
-    val lengthOfCareer = (ageAtCurrentSanction - ageAtFirstSanction) + ViolentReoffendingPredictorConstant.CAREER_BOOST
+    val lengthOfCareer = (ageAtCurrentSanction - ageAtFirstSanction) + ViolentReoffendingPredictorConstant.CAREER_BOOST_COPAS
 
     val coefficient = when (staticOrDynamic) {
       StaticOrDynamic.STATIC -> when (gender) {
@@ -205,7 +207,7 @@ object ViolentReoffendingPredictorTransformationHelper {
       return BigDecimal.ZERO
     }
 
-    val lengthOfCareer = (ageAtCurrentSanction - ageAtFirstSanction) + ViolentReoffendingPredictorConstant.CAREER_BOOST
+    val lengthOfCareer = (ageAtCurrentSanction - ageAtFirstSanction) + ViolentReoffendingPredictorConstant.CAREER_BOOST_VIOLENT
 
     val coefficient = when (staticOrDynamic) {
       StaticOrDynamic.STATIC -> ViolentReoffendingPredictorStatic.VIOLENT_RATE.coefficient
@@ -300,7 +302,11 @@ object ViolentReoffendingPredictorTransformationHelper {
 
   fun getOtherDrugsUsageWeight(
     hasOtherDrugsUsage: Boolean,
-  ): BigDecimal = if (hasOtherDrugsUsage) ViolentReoffendingPredictorDynamic.OTHER_DRUGS.coefficient else BigDecimal.ZERO
+    hasKetamineUsage: Boolean,
+    hasSpiceUsage: Boolean,
+    hasHallucinogensUsage: Boolean,
+    hasSolventsUsage: Boolean,
+  ): BigDecimal = if (hasOtherDrugsUsage || hasKetamineUsage || hasSpiceUsage || hasHallucinogensUsage || hasSolventsUsage) ViolentReoffendingPredictorDynamic.OTHER_DRUGS.coefficient else BigDecimal.ZERO
 
   fun calculatePercentageScore(totalWeight: BigDecimal): Double = totalWeight.toDouble().sigmoid().asDoublePercentage().sanitisePercentage()
 

@@ -27,7 +27,10 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.ViolentReoffendingPredictorTransformationHelper.getMethadoneUsageWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.ViolentReoffendingPredictorTransformationHelper.getMisusedPrescriptionDrugUsageWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.ViolentReoffendingPredictorTransformationHelper.getMultiplicativeRelationshipWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.ViolentReoffendingPredictorTransformationHelper.getNeverViolentWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.ViolentReoffendingPredictorTransformationHelper.getOffenceFreeMonthsPolynomialWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.ViolentReoffendingPredictorTransformationHelper.getOffenceGroupWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.ViolentReoffendingPredictorTransformationHelper.getOnceViolentWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.ViolentReoffendingPredictorTransformationHelper.getOtherDrugsUsageWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.ViolentReoffendingPredictorTransformationHelper.getOtherOpiateUsageWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.ViolentReoffendingPredictorTransformationHelper.getPowderCocaineUsageWeight
@@ -85,7 +88,6 @@ class ViolentReoffendingPredictorRiskProducerService : BaseRiskScoreProducer() {
       request.currentRelationshipStatus!!,
       request.regularOffendingActivities!!,
       request.motivationToTackleDrugMisuse!!,
-      request.hasHeroinUsage!!,
       request.hasOtherOpiateUsage!!,
       request.hasCrackCocaineUsage!!,
       request.hasPowderCocaineUsage!!,
@@ -94,6 +96,10 @@ class ViolentReoffendingPredictorRiskProducerService : BaseRiskScoreProducer() {
       request.hasCannabisUsage!!,
       request.hasSteroidsUsage!!,
       request.hasOtherDrugsUsage!!,
+      request.hasKetamineUsage!!,
+      request.hasSpiceUsage!!,
+      request.hasHallucinogensUsage!!,
+      request.hasSolventsUsage!!,
       request.hasMethadoneUsage!!,
       request.currentAlcoholUseProblems!!,
       request.excessiveAlcoholUse!!,
@@ -101,9 +107,9 @@ class ViolentReoffendingPredictorRiskProducerService : BaseRiskScoreProducer() {
       request.temperControl!!,
     )
 
-    val test = calculateAndBuildPredictor(validDynamicRequest, staticValidationErrors + dynamicValidationErrors)
     return context.apply {
-      violentReoffendingPredictor = test
+      violentReoffendingPredictor =
+        calculateAndBuildPredictor(validDynamicRequest, staticValidationErrors + dynamicValidationErrors)
     }
   }
 
@@ -175,6 +181,7 @@ class ViolentReoffendingPredictorRiskProducerService : BaseRiskScoreProducer() {
         ),
       )
       FeatureValue.GENDER_WEIGHT.set(getGenderWeight(staticOrDynamic, staticData.gender))
+      FeatureValue.OFFENCE_GROUP_WEIGHT.set(getOffenceGroupWeight(staticOrDynamic, staticData.currentOffenceCode))
       FeatureValue.FIRST_SANCTION_WEIGHT.set(
         getFirstSanctionWeight(
           staticOrDynamic,
@@ -191,6 +198,19 @@ class ViolentReoffendingPredictorRiskProducerService : BaseRiskScoreProducer() {
         getTotalSanctionWeight(
           staticOrDynamic,
           staticData.totalNumberOfSanctionsForAllOffences,
+        ),
+      )
+      FeatureValue.NEVER_VIOLENT_WEIGHT.set(
+        getNeverViolentWeight(
+          staticOrDynamic,
+          staticData.totalNumberOfViolentSanctions,
+          staticData.gender,
+        ),
+      )
+      FeatureValue.ONCE_VIOLENT_WEIGHT.set(
+        getOnceViolentWeight(
+          staticOrDynamic,
+          staticData.totalNumberOfViolentSanctions,
         ),
       )
       FeatureValue.TOTAL_NUMBER_OF_VIOLENT_SANCTIONS_WEIGHT.set(
@@ -250,7 +270,7 @@ class ViolentReoffendingPredictorRiskProducerService : BaseRiskScoreProducer() {
         FeatureValue.BINGE_DRINKING_PROBLEMS_WEIGHT.set(getBingeDrinkingWeight(request.excessiveAlcoholUse))
         FeatureValue.IMPULSIVITY_PROBLEMS_WEIGHT.set(getImpulsivityWeight(request.impulsivityProblems))
         FeatureValue.TEMPER_CONTROL_WEIGHT.set(getTemperControlWeight(request.impulsivityProblems))
-        FeatureValue.METHADONE_USAGE_WEIGHT.set(getMethadoneUsageWeight(request.hasHeroinUsage))
+        FeatureValue.METHADONE_USAGE_WEIGHT.set(getMethadoneUsageWeight(request.hasMethadoneUsage))
         FeatureValue.OTHER_OPIATE_USAGE_WEIGHT.set(getOtherOpiateUsageWeight(request.hasOtherOpiateUsage))
         FeatureValue.CRACK_COCAINE_USAGE_WEIGHT.set(getCrackCocaineUsageWeight(request.hasCrackCocaineUsage))
         FeatureValue.POWDER_COCAINE_USAGE_WEIGHT.set(getPowderCocaineUsageWeight(request.hasPowderCocaineUsage))
@@ -258,7 +278,15 @@ class ViolentReoffendingPredictorRiskProducerService : BaseRiskScoreProducer() {
         FeatureValue.BENZODIAZEPINES_USAGE_WEIGHT.set(getBenzodiazepinesUsageWeight(request.hasBenzodiazepinesUsage))
         FeatureValue.CANNABIS_USAGE_WEIGHT.set(getCannabisUsageWeight(request.hasCannabisUsage))
         FeatureValue.STEROID_USAGE_WEIGHT.set(getSteroidsUsageWeight(request.hasSteroidsUsage))
-        FeatureValue.OTHER_DRUG_USAGE_WEIGHT.set(getOtherDrugsUsageWeight(request.hasOtherDrugsUsage))
+        FeatureValue.OTHER_DRUG_USAGE_WEIGHT.set(
+          getOtherDrugsUsageWeight(
+            request.hasOtherDrugsUsage,
+            request.hasKetamineUsage,
+            request.hasSpiceUsage,
+            request.hasHallucinogensUsage,
+            request.hasSolventsUsage,
+          ),
+        )
       }
 
       val totalWeight = values.fold(BigDecimal.ZERO, BigDecimal::add)

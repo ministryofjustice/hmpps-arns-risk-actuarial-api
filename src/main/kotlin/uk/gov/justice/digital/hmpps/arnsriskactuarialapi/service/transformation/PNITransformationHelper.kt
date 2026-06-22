@@ -4,6 +4,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.NeedScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIRequestValidated
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.constants.AllReoffendingPredictorConstant
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.constants.ViolentReoffendingPredictorConstant
 
 fun overallNeedsGroupingCalculation(request: PNIRequestValidated): Triple<NeedScore?, NeedScore?, List<String>> {
   val (sexDomainScore, projectedSexDomainScore, missingSexDomainScore) = SexDomainScore.overallDomainScore(
@@ -109,9 +111,9 @@ private fun getLevelFromScore(overallNeedsScore: Int): NeedScore? = when (overal
   else -> null
 }
 
-fun isHighAllReoffendingPredictor(requestValidated: PNIRequestValidated) = requestValidated.allReoffendingPredictorStaticScore?.let { it >= 75 } == true
+fun isHighAllReoffendingPredictor(requestValidated: PNIRequestValidated) = requestValidated.allReoffendingPredictorStaticScore?.let { it >= AllReoffendingPredictorConstant.HIGH_BAND_LOWER_BOUND } == true
 
-fun isHighViolentReoffendingPredictor(requestValidated: PNIRequestValidated) = requestValidated.violentReoffendingPredictorStaticScore?.let { it >= 75 } == true
+fun isHighViolentReoffendingPredictor(requestValidated: PNIRequestValidated) = requestValidated.violentReoffendingPredictorStaticScore?.let { it >= ViolentReoffendingPredictorConstant.HIGH_BAND_LOWER_BOUND } == true
 
 fun isOspDcHigh(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospDCBand == RiskBand.HIGH || requestValidated.ospDCBand == RiskBand.VERY_HIGH
 
@@ -133,9 +135,9 @@ fun isRsrHigh(requestValidated: PNIRequestValidated): Boolean {
 
 fun isNullOrNa(band: RiskBand?): Boolean = band == null || band == RiskBand.NOT_APPLICABLE
 
-fun isAllReoffendingPredictorMedium(requestValidated: PNIRequestValidated) = requestValidated.allReoffendingPredictorStaticScore?.let { it in 50.0..74.0 } == true
+fun isAllReoffendingPredictorMedium(requestValidated: PNIRequestValidated) = requestValidated.allReoffendingPredictorStaticScore?.let { it in AllReoffendingPredictorConstant.MEDIUM_BAND_LOWER_BOUND..74.0 } == true
 
-fun isMediumViolentReoffendingPredictor(requestValidated: PNIRequestValidated) = requestValidated.violentReoffendingPredictorStaticScore?.let { it in 50.0..74.0 } == true
+fun isMediumViolentReoffendingPredictor(requestValidated: PNIRequestValidated) = requestValidated.violentReoffendingPredictorStaticScore?.let { it in ViolentReoffendingPredictorConstant.MEDIUM_BAND_LOWER_BOUND..59.0 } == true
 
 fun isHighSara(requestValidated: PNIRequestValidated) = requestValidated.saraRiskToOthers == RiskBand.HIGH ||
   requestValidated.saraRiskToPartner == RiskBand.HIGH

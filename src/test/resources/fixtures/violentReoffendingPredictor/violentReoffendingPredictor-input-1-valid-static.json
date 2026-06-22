@@ -16,22 +16,25 @@
     "modelVersion": "1.0",
     "thresholdsVersion": "1.0",
     "output": {
-      "band": "LOW",
-      "score": 48.45
+      "band": "MEDIUM",
+      "score": 47.04
     },
     "featureValues": {
       "twoYearInterceptWeight": 3.12324433235579,
       "ageGenderPolynomialWeight": -0.071516991764084,
       "genderWeight": 0,
+      "offenceGroupWeight": 0,
       "firstSanctionWeight": 0,
       "secondSanctionWeight": -1.10995084554834,
       "totalNumberOfSanctionsForAllOffencesWeight": -0.0135316135489862,
+      "neverViolentWeight" : 0,
+      "onceViolentWeight" : 0,
       "totalNumberOfViolentSanctionsWeight": 0.0185294325031695,
       "secondSanctionGapWeight": -0.4661521068397212,
       "offenceFreeMonthsWeight": -0.0476168447456602,
       "copasScore": 0,
-      "copasViolentOffencesScore": -1.4948493413623645,
-      "totalWeight": -0.06184397895019642
+      "copasViolentOffencesScore": -1.551366340851716,
+      "totalWeight": -0.11836097843954797
     },
     "validationErrors": [
       {
@@ -45,7 +48,6 @@
           "currentRelationshipStatus",
           "regularOffendingActivities",
           "motivationToTackleDrugMisuse",
-          "hasHeroinUsage",
           "hasOtherOpiateUsage",
           "hasCrackCocaineUsage",
           "hasPowderCocaineUsage",
@@ -54,6 +56,10 @@
           "hasCannabisUsage",
           "hasSteroidsUsage",
           "hasOtherDrugsUsage",
+          "hasKetamineUsage",
+          "hasSpiceUsage",
+          "hasHallucinogensUsage",
+          "hasSolventsUsage",
           "hasMethadoneUsage",
           "currentAlcoholUseProblems",
           "excessiveAlcoholUse",
