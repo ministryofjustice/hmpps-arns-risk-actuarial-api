@@ -466,6 +466,7 @@ class ViolentReoffendingPredictorTransformationHelperTest {
     )
   }
 
+  @ParameterizedTest
   @MethodSource("getOtherDrugsUsageWeightProvider")
   fun `getOtherDrugsUsageWeight returns coefficient if any parameters are true else zero`(
     hasOtherDrugsUsage: Boolean,
