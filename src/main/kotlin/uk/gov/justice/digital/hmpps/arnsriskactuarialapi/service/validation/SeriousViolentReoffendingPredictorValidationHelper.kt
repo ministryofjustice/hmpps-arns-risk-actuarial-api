@@ -14,7 +14,6 @@ val SERIOUS_VIOLENT_REOFFENDING_PREDICTOR_STATIC_REQUIRED_FIELDS: List<KProperty
   RiskScoreRequest::currentOffenceCode,
   RiskScoreRequest::totalNumberOfSanctionsForAllOffences,
   RiskScoreRequest::totalNumberOfViolentSanctions,
-  RiskScoreRequest::dateAtStartOfFollowupCalculated,
 )
 
 val SERIOUS_VIOLENT_REOFFENDING_PREDICTOR_DYNAMIC_REQUIRED_FIELDS: List<KProperty1<RiskScoreRequest, Any?>> = listOf(

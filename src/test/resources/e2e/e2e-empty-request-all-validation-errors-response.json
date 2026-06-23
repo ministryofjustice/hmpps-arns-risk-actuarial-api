@@ -187,8 +187,7 @@
               "gender",
               "currentOffenceCode",
               "totalNumberOfSanctionsForAllOffences",
-              "totalNumberOfViolentSanctions",
-              "dateAtStartOfFollowupCalculated"
+              "totalNumberOfViolentSanctions"
             ]
           },
           {
@@ -289,8 +288,7 @@
                     "gender",
                     "currentOffenceCode",
                     "totalNumberOfSanctionsForAllOffences",
-                    "totalNumberOfViolentSanctions",
-                    "dateAtStartOfFollowupCalculated"
+                    "totalNumberOfViolentSanctions"
                   ]
                 },
                 {

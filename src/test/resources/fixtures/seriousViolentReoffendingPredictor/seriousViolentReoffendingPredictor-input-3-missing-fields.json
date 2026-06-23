@@ -30,8 +30,7 @@
           "gender",
           "currentOffenceCode",
           "totalNumberOfSanctionsForAllOffences",
-          "totalNumberOfViolentSanctions",
-          "dateAtStartOfFollowupCalculated"
+          "totalNumberOfViolentSanctions"
         ]
       },
       {

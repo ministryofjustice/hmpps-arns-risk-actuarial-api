@@ -63,7 +63,7 @@ class SeriousViolentReoffendingPredictorRiskProducerService : BaseRiskScoreProdu
       request.currentOffenceCode!!,
       request.totalNumberOfSanctionsForAllOffences!!,
       request.totalNumberOfViolentSanctions!!,
-      request.dateAtStartOfFollowupCalculated!!,
+      request.dateAtStartOfFollowupCalculated ?: request.dateOfCurrentConviction,
     )
 
     if (dynamicValidationErrors.isNotEmpty()) {

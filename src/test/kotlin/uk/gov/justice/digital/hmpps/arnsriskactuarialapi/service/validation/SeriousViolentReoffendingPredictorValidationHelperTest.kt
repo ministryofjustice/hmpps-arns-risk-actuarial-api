@@ -41,7 +41,6 @@ class SeriousViolentReoffendingPredictorValidationHelperTest {
       "currentOffenceCode",
       "totalNumberOfSanctionsForAllOffences",
       "totalNumberOfViolentSanctions",
-      "dateAtStartOfFollowupCalculated",
     )
 
     val error = result.first()

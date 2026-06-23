@@ -75,8 +75,7 @@
               "message": "Mandatory input field(s) missing",
               "fields" : [
                 "dateOfCurrentConviction",
-                "ageAtFirstSanction",
-                "dateAtStartOfFollowupCalculated"
+                "ageAtFirstSanction"
               ]
             },
             {
