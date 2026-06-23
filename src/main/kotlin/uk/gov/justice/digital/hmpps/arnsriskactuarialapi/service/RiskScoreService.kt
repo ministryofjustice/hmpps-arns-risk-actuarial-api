@@ -13,6 +13,9 @@ class RiskScoreService {
   lateinit var allReoffendingPredictorRiskProducerService: AllReoffendingPredictorRiskProducerService
 
   @Autowired
+  lateinit var directContactSexualReoffendingPredictorRiskProducerService: DirectContactSexualReoffendingPredictorRiskProducerService
+
+  @Autowired
   lateinit var violentReoffendingPredictorRiskProducerService: ViolentReoffendingPredictorRiskProducerService
 
   @Autowired
@@ -26,9 +29,6 @@ class RiskScoreService {
 
   @Autowired
   lateinit var ldsRiskProducerService: LDSRiskProducerService
-
-  @Autowired
-  lateinit var ospdcRiskProducerService: OSPDCRiskProducerService
 
   @Autowired
   lateinit var seriousViolentReoffendingPredictorRiskProducerService: SeriousViolentReoffendingPredictorRiskProducerService
@@ -46,7 +46,7 @@ class RiskScoreService {
     opdRiskProducerService,
     pniRiskProducerService,
     ldsRiskProducerService,
-    ospdcRiskProducerService,
+    directContactSexualReoffendingPredictorRiskProducerService,
     seriousViolentReoffendingPredictorRiskProducerService,
     imagesAndIndirectContactSexualReoffendingPredictorRiskProducerService,
     rsrRiskProducerService,

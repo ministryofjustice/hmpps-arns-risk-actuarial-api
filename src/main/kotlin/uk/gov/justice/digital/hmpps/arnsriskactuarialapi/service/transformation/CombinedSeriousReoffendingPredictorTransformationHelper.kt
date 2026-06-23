@@ -9,7 +9,7 @@ fun getCSRPScore(
   gender: Gender,
   sexualOffendingHistory: Boolean,
   seriousViolentPercentageScore: BigDecimal,
-  dcsrpPercentageScore: BigDecimal,
+  directContactSexualReoffendingPredictorPercentageScore: BigDecimal,
   iicsrpPercentageScore: BigDecimal,
 ): BigDecimal {
   val femaleSexualOffenderCoefficient = if (gender == Gender.FEMALE && sexualOffendingHistory) {
@@ -19,7 +19,7 @@ fun getCSRPScore(
   }
 
   return seriousViolentPercentageScore
-    .add(dcsrpPercentageScore)
+    .add(directContactSexualReoffendingPredictorPercentageScore)
     .add(iicsrpPercentageScore)
     .add(femaleSexualOffenderCoefficient)
     .min(BigDecimal("99.99"))

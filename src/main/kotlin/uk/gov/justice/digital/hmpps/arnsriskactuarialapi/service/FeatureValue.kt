@@ -70,7 +70,4 @@ enum class FeatureValue(val outputName: String) {
   REGULAR_OFFENDING_ACTIVITIES_WEIGHT("regularOffendingActivitiesWeight"),
   IMAGES_AND_INDIRECT_CONTACT_WEIGHT("imagesAndIndirectContactWeight"),
   TOTAL_WEIGHT("totalWeight"),
-  ;
-
-  fun asPair(value: Double): Pair<String, Double> = Pair(outputName, value)
 }

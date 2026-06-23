@@ -202,14 +202,14 @@ class PNIRiskProducerServiceTest {
     }
 
     @Test
-    fun `isHighRisk returns true when ospDc is high for male`() {
-      val result = service.isHighRisk(pniRequest().copy(ospDCBand = RiskBand.HIGH))
+    fun `isHighRisk returns true when directContactSexualReoffendingPredictor is high for male`() {
+      val result = service.isHighRisk(pniRequest().copy(directContactSexualReoffendingPredictorBand = RiskBand.HIGH))
       assertTrue(result)
     }
 
     @Test
-    fun `isHighRisk returns false when ospDc is high but gender is female`() {
-      val result = service.isHighRisk(pniRequest().copy(ospDCBand = RiskBand.NOT_APPLICABLE))
+    fun `isHighRisk returns false when directContactSexualReoffendingPredictor is high but gender is female`() {
+      val result = service.isHighRisk(pniRequest().copy(directContactSexualReoffendingPredictorBand = RiskBand.NOT_APPLICABLE))
       assertFalse(result)
     }
 
@@ -257,14 +257,14 @@ class PNIRiskProducerServiceTest {
     }
 
     @Test
-    fun `isMediumRisk returns true for ospDc medium for male`() {
-      val result = service.isMediumRisk(pniRequest().copy(ospDCBand = RiskBand.MEDIUM))
+    fun `isMediumRisk returns true for directContactSexualReoffendingPredictor medium for male`() {
+      val result = service.isMediumRisk(pniRequest().copy(directContactSexualReoffendingPredictorBand = RiskBand.MEDIUM))
       assertTrue(result)
     }
 
     @Test
-    fun `isMediumRisk returns false for ospDc medium for female`() {
-      val result = service.isMediumRisk(pniRequest().copy(ospDCBand = RiskBand.NOT_APPLICABLE))
+    fun `isMediumRisk returns false for directContactSexualReoffendingPredictor medium for female`() {
+      val result = service.isMediumRisk(pniRequest().copy(directContactSexualReoffendingPredictorBand = RiskBand.NOT_APPLICABLE))
       assertFalse(result)
     }
 
@@ -276,7 +276,7 @@ class PNIRiskProducerServiceTest {
 
     @Test
     fun `isMediumRisk returns false for rsr medium when male and osp scores are present`() {
-      val result = service.isMediumRisk(pniRequest().copy(rsr = 2, ospDCBand = RiskBand.HIGH))
+      val result = service.isMediumRisk(pniRequest().copy(rsr = 2, directContactSexualReoffendingPredictorBand = RiskBand.HIGH))
       assertFalse(result)
     }
 
