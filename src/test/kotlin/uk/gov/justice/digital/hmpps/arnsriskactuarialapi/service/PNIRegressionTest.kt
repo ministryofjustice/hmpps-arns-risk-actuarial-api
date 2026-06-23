@@ -168,7 +168,7 @@ class PNIRegressionTest {
     )
 
     val rsr = emptyRSR().copy(
-      ospdcBand = ospCdc.toRiskBand(),
+      directContactSexualReoffendingPredictorBand = ospCdc.toRiskBand(),
       imagesAndIndirectContactSexualReoffendingPredictorBand = ospIiic.toRiskBand(),
       rsrScore = rsrPercentageScore?.toDoubleOrNull(),
     )

@@ -22,7 +22,7 @@
       "hasSexualOffenceHistory": null,
       "componentScores": {
         "directContactSexualPredictorScore": {
-          "algorithm": "OSPDC",
+          "algorithm": "DIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR",
           "type": "STATIC",
           "modelVersion": "1.0",
           "thresholdsVersion": "1.0",
@@ -40,7 +40,7 @@
               "type": "MISSING_MANDATORY_INPUT",
               "message": "Mandatory input field(s) missing",
               "fields": [
-                "dateAtStartOfFollowupUserInput"
+                "dateAtStartOfFollowupCalculated"
               ]
             }
           ]
@@ -101,7 +101,7 @@
         "type": "COMPONENT_VALIDATION_ERROR",
         "message": "Validation error(s) in component scores",
         "fields": [
-          "OSPDC",
+          "DIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR",
           "SERIOUS_VIOLENT_REOFFENDING_PREDICTOR"
         ]
       }
