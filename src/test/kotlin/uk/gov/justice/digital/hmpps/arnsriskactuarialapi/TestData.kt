@@ -25,7 +25,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.ProgrammeNeedIdentifier
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.rsr.RSRObject
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.SNSVObject
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.seriousviolentreoffendingpredictor.SeriousViolentReoffendingPredictorObject
 import java.time.LocalDate
 import kotlin.collections.emptyList
 
@@ -43,7 +43,7 @@ fun emptyLDS(): LDSObject = LDSObject(null, null)
 
 fun emptyOSPDC(): OSPDCObject = OSPDCObject(null, null, null, null, null, null, null, null)
 
-fun emptySNSV(): SNSVObject = SNSVObject(null, null, null, null)
+fun emptySeriousViolentReoffendingPredictor(): SeriousViolentReoffendingPredictorObject = SeriousViolentReoffendingPredictorObject(null, null, null, null, null)
 
 fun emptyRSR(): RSRObject = RSRObject(null, null, null, null, null, null, null, null, null, null, null)
 
@@ -181,6 +181,37 @@ fun validAllReoffendingPredictorDynamicRiskScoreRequest(): RiskScoreRequest = Ri
   proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
 )
 
+fun validSeriousViolentReoffendingPredictorStaticRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
+  assessmentDate = LocalDate.of(2025, 1, 1),
+  dateOfBirth = LocalDate.of(1990, 1, 1),
+  dateOfCurrentConviction = LocalDate.of(2024, 1, 1),
+  ageAtFirstSanction = 18,
+  gender = Gender.MALE,
+  currentOffenceCode = "00001",
+  totalNumberOfSanctionsForAllOffences = 2,
+  totalNumberOfViolentSanctions = 2,
+  dateAtStartOfFollowupCalculated = LocalDate.of(2026, 1, 1),
+)
+
+fun validSeriousViolentReoffendingPredictorDynamicRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
+  assessmentDate = LocalDate.of(2025, 1, 1),
+  dateOfBirth = LocalDate.of(1990, 1, 1),
+  dateOfCurrentConviction = LocalDate.of(2024, 1, 1),
+  ageAtFirstSanction = 18,
+  gender = Gender.MALE,
+  currentOffenceCode = "00001",
+  totalNumberOfSanctionsForAllOffences = 2,
+  totalNumberOfViolentSanctions = 2,
+  dateAtStartOfFollowupCalculated = LocalDate.of(2026, 1, 1),
+  didOffenceInvolveCarryingOrUsingWeapon = true,
+  suitabilityOfAccommodation = ProblemLevel.SOME_PROBLEMS,
+  isUnemployed = true,
+  currentAlcoholUseProblems = ProblemLevel.SOME_PROBLEMS,
+  temperControl = ProblemLevel.SOME_PROBLEMS,
+  proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
+  previousConvictions = listOf(PreviousConviction.FIREARMS),
+)
+
 fun validOVPRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
   version = RiskScoreVersion.V1_0,
   gender = Gender.MALE,
@@ -304,46 +335,6 @@ fun validOSPDCRiskScoreRequest() = RiskScoreRequest(
   totalNumberOfSanctionsForAllOffences = 4,
   isCurrentOffenceSexuallyMotivated = false,
   supervisionStatus = SupervisionStatus.CUSTODY,
-)
-
-fun validSNSVStaticRiskScoreRequest() = RiskScoreRequest(
-  version = RiskScoreVersion.V1_0,
-  gender = Gender.MALE,
-  dateOfBirth = LocalDate.of(1980, 1, 1),
-  assessmentDate = LocalDate.of(2025, 1, 1),
-  dateOfCurrentConviction = LocalDate.of(2020, 1, 1),
-  currentOffenceCode = "02700",
-  totalNumberOfSanctionsForAllOffences = 1,
-  ageAtFirstSanction = 40,
-  supervisionStatus = SupervisionStatus.COMMUNITY,
-  dateAtStartOfFollowupUserInput = LocalDate.of(2024, 1, 1),
-  totalNumberOfViolentSanctions = 1,
-  evidenceOfDomesticAbuse = false,
-)
-
-fun validSNSVDynamicRiskScoreRequest() = RiskScoreRequest(
-  version = RiskScoreVersion.V1_0,
-  gender = Gender.MALE,
-  dateOfBirth = LocalDate.of(1980, 1, 1),
-  assessmentDate = LocalDate.of(2025, 1, 1),
-  dateOfCurrentConviction = LocalDate.of(2020, 1, 1),
-  currentOffenceCode = "02700",
-  totalNumberOfSanctionsForAllOffences = 1,
-  ageAtFirstSanction = 40,
-  supervisionStatus = SupervisionStatus.COMMUNITY,
-  dateAtStartOfFollowupUserInput = LocalDate.of(2027, 1, 1),
-  totalNumberOfViolentSanctions = 1,
-  didOffenceInvolveCarryingOrUsingWeapon = false,
-  suitabilityOfAccommodation = ProblemLevel.NO_PROBLEMS,
-  isUnemployed = false,
-  currentRelationshipWithPartner = ProblemLevel.NO_PROBLEMS,
-  currentAlcoholUseProblems = ProblemLevel.NO_PROBLEMS,
-  excessiveAlcoholUse = ProblemLevel.NO_PROBLEMS,
-  impulsivityProblems = ProblemLevel.NO_PROBLEMS,
-  temperControl = ProblemLevel.NO_PROBLEMS,
-  proCriminalAttitudes = ProblemLevel.NO_PROBLEMS,
-  evidenceOfDomesticAbuse = false,
-  previousConvictions = listOf(PreviousConviction.WOUNDING_GBH),
 )
 
 fun opdRequestValidated() = OPDRequestValidated(

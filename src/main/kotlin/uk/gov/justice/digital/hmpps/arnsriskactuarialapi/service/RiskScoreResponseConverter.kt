@@ -7,7 +7,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmRespon
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.OSPIIC
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.OVP
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.RSR
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.SNSV
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.SERIOUS_VIOLENT_REOFFENDING_PREDICTOR
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AllPredictorPredictorOutputResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.DirectContactSexualPredictorOutputResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.IndirectContactSexualPredictorPredictorOutputResponse
@@ -21,11 +21,11 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.SeriousPredicto
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.SeriousViolencePredictorPredictorOutputResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.ViolentPredictorPredictorOutputResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.toRiskBandResponse
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.toScoreTypeResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds.LDSObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.mst.MSTObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.opd.OPDObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIObject
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.toScoreTypeResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asDoublePercentage
 
 fun RiskScoreContext.toRiskScoreResponse(): RiskScoreResponse = RiskScoreResponse(
@@ -118,17 +118,16 @@ private fun buildPredictorResponseForIndirectContactSexualPredictor(riskScoreCon
 }
 
 private fun buildPredictorResponseForSeriousViolencePredictor(riskScoreContext: RiskScoreContext): PredictorResponse<SeriousViolencePredictorPredictorOutputResponse> {
-  val snsv = riskScoreContext.SNSV!!
+  val seriousViolentReoffendingPredictor = riskScoreContext.seriousViolentReoffendingPredictor!!
   return PredictorResponse(
-    SNSV,
-    snsv.scoreType.toScoreTypeResponse(),
+    SERIOUS_VIOLENT_REOFFENDING_PREDICTOR,
+    seriousViolentReoffendingPredictor.staticOrDynamic.toScoreTypeResponse(),
     output = SeriousViolencePredictorPredictorOutputResponse(
-      null,
-      snsv.snsvScore?.asDoublePercentage(),
+      seriousViolentReoffendingPredictor.band.toRiskBandResponse(),
+      seriousViolentReoffendingPredictor.score,
     ),
-    validationErrors = snsv.validationError ?: emptyList(),
-    // TODO: Uncomment during ACT-557
-//    featureValues = snsv.featureValues ?: emptyMap(),
+    validationErrors = seriousViolentReoffendingPredictor.validationErrors ?: emptyList(),
+    featureValues = seriousViolentReoffendingPredictor.featureValues ?: emptyMap(),
   )
 }
 

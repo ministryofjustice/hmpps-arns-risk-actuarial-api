@@ -8,6 +8,6 @@ enum class AlgorithmResponse(@get:JsonValue output: String) {
   OVP("OVP"),
   OSPDC("OSP/DC"),
   OSPIIC("OSP/IIC"),
-  SNSV("SNSV"),
+  SERIOUS_VIOLENT_REOFFENDING_PREDICTOR("Serious Violent Reoffending Predictor"),
   RSR("RSR"),
 }

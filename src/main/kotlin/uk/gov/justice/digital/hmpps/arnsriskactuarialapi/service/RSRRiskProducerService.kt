@@ -11,7 +11,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmRespon
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.osp.OSPDCObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ospiic.OSPIICObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.rsr.RSRObject
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.SNSVObject
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.seriousviolentreoffendingpredictor.SeriousViolentReoffendingPredictorObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getRSRBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asDoublePercentage
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.roundToNDecimals
@@ -25,13 +25,19 @@ class RSRRiskProducerService : BaseRiskScoreProducer() {
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
     val ospdc = context.OSPDC ?: OSPDCObject(null, null, null, null, null, null, null, null)
     val ospiic = context.OSPIIC ?: OSPIICObject(null, null, null, null, null)
-    val snsv = context.SNSV ?: SNSVObject(null, null, null, null)
+    val seriousViolentReoffendingPredictor = context.seriousViolentReoffendingPredictor ?: SeriousViolentReoffendingPredictorObject(
+      null,
+      null,
+      null,
+      null,
+      null,
+    )
 
     val componentErrorNames = mutableListOf<String>()
     context.OSPDC?.validationError?.let { validationErrors -> if (validationErrors.isNotEmpty()) componentErrorNames += AlgorithmResponse.OSPDC.name }
     context.OSPIIC?.validationError?.let { validationErrors -> if (validationErrors.isNotEmpty()) componentErrorNames += AlgorithmResponse.OSPIIC.name }
-    context.SNSV?.validationError?.let { validationErrors ->
-      if (validationErrors.any { it.type != ValidationErrorType.MISSING_DYNAMIC_INPUT }) componentErrorNames += AlgorithmResponse.SNSV.name
+    context.seriousViolentReoffendingPredictor?.validationErrors?.let { validationErrors ->
+      if (validationErrors.any { it.type != ValidationErrorType.MISSING_DYNAMIC_INPUT }) componentErrorNames += AlgorithmResponse.SERIOUS_VIOLENT_REOFFENDING_PREDICTOR.name
     }
 
     if (componentErrorNames.isNotEmpty()) {
@@ -46,7 +52,7 @@ class RSRRiskProducerService : BaseRiskScoreProducer() {
     val errors = listOfNotNull(
       ospdc.validationError,
       ospiic.validationError,
-      snsv.validationError,
+      seriousViolentReoffendingPredictor.validationErrors,
     ).flatten()
       .filter { it.type != ValidationErrorType.MISSING_DYNAMIC_INPUT }
       .distinct()
@@ -60,16 +66,16 @@ class RSRRiskProducerService : BaseRiskScoreProducer() {
     val ospRiskReduction = ospdc.ospRiskReduction
     val ospiicScore = ospiic.score?.asDoublePercentage() ?: 0.0
     val ospiicBand = ospiic.band ?: RiskBand.NOT_APPLICABLE
-    val snsvScore = snsv.snsvScore?.asDoublePercentage()
+    val seriousViolentReoffendingScore = seriousViolentReoffendingPredictor.score
     val femaleOSPDCWeight = if (Gender.FEMALE == request.gender && request.hasEverCommittedSexualOffence == true) FEMALE_SEXUAL_OFFENDER_RSR_CONTRIBUTION.asDoublePercentage() else 0.0
     val rsrScore = if (hasBlockingErrors(errors)) {
       null
     } else {
-      listOfNotNull(snsvScore, ospdcScore, ospiicScore, femaleOSPDCWeight).sum().roundToNDecimals(2).sanitisePercentage()
+      listOfNotNull(seriousViolentReoffendingScore, ospdcScore, ospiicScore, femaleOSPDCWeight).sum().roundToNDecimals(2).sanitisePercentage()
     }
     val rsrBand = getRSRBand(rsrScore)
     val scoreType = if (rsrScore != null) {
-      snsv.snsvScore?.let { snsv.scoreType }
+      seriousViolentReoffendingPredictor.score?.let { seriousViolentReoffendingPredictor.staticOrDynamic }
     } else {
       null
     }
@@ -81,7 +87,7 @@ class RSRRiskProducerService : BaseRiskScoreProducer() {
           ospdcScore,
           null,
           ospiicScore,
-          snsvScore,
+          seriousViolentReoffendingScore,
           rsrScore,
           rsrBand,
           scoreType,
@@ -99,7 +105,7 @@ class RSRRiskProducerService : BaseRiskScoreProducer() {
         ospdcScore,
         ospiicBand,
         ospiicScore,
-        snsvScore,
+        seriousViolentReoffendingScore,
         rsrScore,
         rsrBand,
         scoreType,

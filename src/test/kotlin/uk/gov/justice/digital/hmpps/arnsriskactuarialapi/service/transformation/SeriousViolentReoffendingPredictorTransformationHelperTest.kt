@@ -4,13 +4,43 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.PreviousConvictions
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.PreviousConviction
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.get2YearInterceptWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getAgeGenderPolynomialWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getChronicDrinkingWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getCopasWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getFirstSanctionWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getGapBetweenFirstAndSecondSanctionWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getGenderWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getNeverViolentHistoryWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getOffenceFreeMonthsPolynomialWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getOffenceInvolvedCarryingOrUsingWeaponWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getOnceViolentHistoryWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getPastAggravatedBurglaryOffenceWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getPastArsonOffenceWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getPastCriminalDamageOffenceWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getPastFirearmsOffenceWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getPastHomicideOffenceWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getPastKidnappingOffenceWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getPastNonFirearmWeaponOffenceWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getPastRobberyOffenceWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getPastWoundingGrievousBodilyHarmOffenceWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getProCriminalAttitudeWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getSecondSanctionWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getSuitableAccommodationWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getTemperControlWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getTotalSanctionWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getUnemployedWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getViolenceRateWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getViolentSanctionsWeight
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.Month
@@ -20,92 +50,187 @@ import java.util.stream.Stream
 class SeriousViolentReoffendingPredictorTransformationHelperTest {
 
   @Test
-  fun `didOffenceInvolveCarryingOrUsingWeaponWeight should lookup value`() {
+  fun `getOffenceInvolvedCarryingOrUsingWeaponWeight should lookup value`() {
     assertEquals(
       BigDecimal("0.385215247009075001383138214805512689054012298583984375"),
-      didOffenceInvolveCarryingOrUsingWeaponWeight(true),
+      getOffenceInvolvedCarryingOrUsingWeaponWeight(true),
     )
-    assertEquals(BigDecimal.ZERO, didOffenceInvolveCarryingOrUsingWeaponWeight(false))
+    assertEquals(BigDecimal.ZERO, getOffenceInvolvedCarryingOrUsingWeaponWeight(false))
   }
 
   @Test
-  fun `isUnemployedWeight should lookup value`() {
-    assertEquals(BigDecimal("0.073462846618329302739169861524715088307857513427734375"), isUnemployedWeight(true))
-    assertEquals(BigDecimal.ZERO, isUnemployedWeight(false))
+  fun `getUnemployedWeight should lookup value`() {
+    assertEquals(BigDecimal("0.073462846618329302739169861524715088307857513427734375"), getUnemployedWeight(true))
+    assertEquals(BigDecimal.ZERO, getUnemployedWeight(false))
   }
 
   @Test
-  fun `suitabilityOfAccommodationWeight should lookup value`() {
+  fun `getSuitableAccommodationWeight should lookup value`() {
     assertEquals(
       BigDecimal("0.088447906313595406335714699253003345802426338195800781250"),
-      suitabilityOfAccommodationWeight(ProblemLevel.SIGNIFICANT_PROBLEMS),
+      getSuitableAccommodationWeight(ProblemLevel.SIGNIFICANT_PROBLEMS),
     )
     assertEquals(
       BigDecimal("0.044223953156797703167857349626501672901213169097900390625"),
-      suitabilityOfAccommodationWeight(ProblemLevel.SOME_PROBLEMS),
+      getSuitableAccommodationWeight(ProblemLevel.SOME_PROBLEMS),
     )
-    assertThat(suitabilityOfAccommodationWeight(ProblemLevel.NO_PROBLEMS)).isEqualByComparingTo(BigDecimal.ZERO)
+    assertThat(getSuitableAccommodationWeight(ProblemLevel.NO_PROBLEMS)).isEqualByComparingTo(BigDecimal.ZERO)
   }
 
   @Test
-  fun `chronicDrinkingProblemsWeight should lookup value`() {
+  fun `getChronicDrinkingWeight should lookup value`() {
     assertEquals(
       BigDecimal("0.153109198580741012740702444716589525341987609863281250"),
-      chronicDrinkingProblemsWeight(ProblemLevel.SIGNIFICANT_PROBLEMS),
+      getChronicDrinkingWeight(ProblemLevel.SIGNIFICANT_PROBLEMS),
     )
     assertEquals(
       BigDecimal("0.076554599290370506370351222358294762670993804931640625"),
-      chronicDrinkingProblemsWeight(ProblemLevel.SOME_PROBLEMS),
+      getChronicDrinkingWeight(ProblemLevel.SOME_PROBLEMS),
     )
-    assertThat(chronicDrinkingProblemsWeight(ProblemLevel.NO_PROBLEMS)).isEqualByComparingTo(BigDecimal.ZERO)
+    assertThat(getChronicDrinkingWeight(ProblemLevel.NO_PROBLEMS)).isEqualByComparingTo(BigDecimal.ZERO)
   }
 
   @Test
-  fun `temperControlWeight should lookup value`() {
+  fun `getTemperControlWeight should lookup value`() {
     assertEquals(
       BigDecimal("0.24841481471475199138687628419575048610568046569824218750"),
-      temperControlWeight(ProblemLevel.SIGNIFICANT_PROBLEMS),
+      getTemperControlWeight(ProblemLevel.SIGNIFICANT_PROBLEMS),
     )
     assertEquals(
       BigDecimal("0.12420740735737599569343814209787524305284023284912109375"),
-      temperControlWeight(ProblemLevel.SOME_PROBLEMS),
+      getTemperControlWeight(ProblemLevel.SOME_PROBLEMS),
     )
-    assertThat(temperControlWeight(ProblemLevel.NO_PROBLEMS)).isEqualByComparingTo(BigDecimal.ZERO)
+    assertThat(getTemperControlWeight(ProblemLevel.NO_PROBLEMS)).isEqualByComparingTo(BigDecimal.ZERO)
   }
 
   @Test
-  fun `proCriminalAttitudesWeight should lookup value`() {
+  fun `getProCriminalAttitudeWeight should lookup value`() {
     assertEquals(
       BigDecimal("0.1964630947362935864397570639994228258728981018066406250"),
-      proCriminalAttitudesWeight(ProblemLevel.SIGNIFICANT_PROBLEMS),
+      getProCriminalAttitudeWeight(ProblemLevel.SIGNIFICANT_PROBLEMS),
     )
     assertEquals(
       BigDecimal("0.0982315473681467932198785319997114129364490509033203125"),
-      proCriminalAttitudesWeight(ProblemLevel.SOME_PROBLEMS),
+      getProCriminalAttitudeWeight(ProblemLevel.SOME_PROBLEMS),
     )
-    assertThat(proCriminalAttitudesWeight(ProblemLevel.NO_PROBLEMS)).isEqualByComparingTo(BigDecimal.ZERO)
+    assertThat(getProCriminalAttitudeWeight(ProblemLevel.NO_PROBLEMS)).isEqualByComparingTo(BigDecimal.ZERO)
   }
 
   @Test
-  fun `previousConvictionsWeight should lookup value`() {
+  fun `getPastHomicideOffenceWeight should return coefficient if applicable`() {
+    assertEquals(BigDecimal.ZERO, getPastHomicideOffenceWeight(emptyList()))
     assertEquals(
-      BigDecimal("3.798206138719296578835915578764570454950444400310516357421875"),
-      previousConvictionsWeight(
+      BigDecimal(0.355308819798017),
+      getPastHomicideOffenceWeight(
         listOf(
-          PreviousConvictions.HOMICIDE,
-          PreviousConvictions.WOUNDING_GBH,
-          PreviousConvictions.KIDNAPPING,
-          PreviousConvictions.FIREARMS,
-          PreviousConvictions.ROBBERY,
-          PreviousConvictions.AGGRAVATED_BURGLARY,
-          PreviousConvictions.WEAPON,
-          PreviousConvictions.CRIMINAL_DAMAGE,
-          PreviousConvictions.ARSON,
+          PreviousConviction.HOMICIDE,
         ),
       ),
     )
+  }
 
-    assertEquals(BigDecimal.ZERO, previousConvictionsWeight(emptyList()))
+  @Test
+  fun `getPastWoundingGrievousBodilyHarmOffenceWeight should return coefficient if applicable`() {
+    assertEquals(BigDecimal.ZERO, getPastWoundingGrievousBodilyHarmOffenceWeight(emptyList()))
+    assertEquals(
+      BigDecimal(0.399845826788494),
+      getPastWoundingGrievousBodilyHarmOffenceWeight(
+        listOf(
+          PreviousConviction.WOUNDING_GBH,
+        ),
+      ),
+    )
+  }
+
+  @Test
+  fun `getPastKidnappingOffenceWeight should return coefficient if applicable`() {
+    assertEquals(BigDecimal.ZERO, getPastKidnappingOffenceWeight(emptyList()))
+    assertEquals(
+      BigDecimal(0.534510912919277),
+      getPastKidnappingOffenceWeight(
+        listOf(
+          PreviousConviction.KIDNAPPING,
+        ),
+      ),
+    )
+  }
+
+  @Test
+  fun `getPastFirearmsOffenceWeight should return coefficient if applicable`() {
+    assertEquals(BigDecimal.ZERO, getPastFirearmsOffenceWeight(emptyList()))
+    assertEquals(
+      BigDecimal(0.780403925884582),
+      getPastFirearmsOffenceWeight(
+        listOf(
+          PreviousConviction.FIREARMS,
+        ),
+      ),
+    )
+  }
+
+  @Test
+  fun `getPastRobberyOffenceWeight should return coefficient if applicable`() {
+    assertEquals(BigDecimal.ZERO, getPastRobberyOffenceWeight(emptyList()))
+    assertEquals(
+      BigDecimal(0.290562230335504),
+      getPastRobberyOffenceWeight(
+        listOf(
+          PreviousConviction.ROBBERY,
+        ),
+      ),
+    )
+  }
+
+  @Test
+  fun `getPastAggravatedBurglaryOffenceWeight should return coefficient if applicable`() {
+    assertEquals(BigDecimal.ZERO, getPastAggravatedBurglaryOffenceWeight(emptyList()))
+    assertEquals(
+      BigDecimal(0.183891831607701),
+      getPastAggravatedBurglaryOffenceWeight(
+        listOf(
+          PreviousConviction.AGGRAVATED_BURGLARY,
+        ),
+      ),
+    )
+  }
+
+  @Test
+  fun `getPastNonFirearmWeaponOffenceWeight should return coefficient if applicable`() {
+    assertEquals(BigDecimal.ZERO, getPastNonFirearmWeaponOffenceWeight(emptyList()))
+    assertEquals(
+      BigDecimal(0.231407077551008),
+      getPastNonFirearmWeaponOffenceWeight(
+        listOf(
+          PreviousConviction.WEAPON,
+        ),
+      ),
+    )
+  }
+
+  @Test
+  fun `getPastCriminalDamageOffenceWeight should return coefficient if applicable`() {
+    assertEquals(BigDecimal.ZERO, getPastCriminalDamageOffenceWeight(emptyList()))
+    assertEquals(
+      BigDecimal(1.01491061134195),
+      getPastCriminalDamageOffenceWeight(
+        listOf(
+          PreviousConviction.CRIMINAL_DAMAGE,
+        ),
+      ),
+    )
+  }
+
+  @Test
+  fun `getPastArsonOffenceWeight should return coefficient if applicable`() {
+    assertEquals(BigDecimal.ZERO, getPastArsonOffenceWeight(emptyList()))
+    assertEquals(
+      BigDecimal(0.0073649024927637),
+      getPastArsonOffenceWeight(
+        listOf(
+          PreviousConviction.ARSON,
+        ),
+      ),
+    )
   }
 
   @ParameterizedTest
@@ -126,18 +251,18 @@ class SeriousViolentReoffendingPredictorTransformationHelperTest {
     staticOrDynamic: StaticOrDynamic,
     expected: BigDecimal,
   ) {
-    val result = getAgeGenderPolynomialWeight(gender, ageAtStartOfFollowUp, staticOrDynamic)
+    val result = getAgeGenderPolynomialWeight(staticOrDynamic, gender, ageAtStartOfFollowUp)
     assertEquals(expected, result)
   }
 
   @ParameterizedTest
-  @MethodSource("getFemaleWeightValidInputProvider")
+  @MethodSource("getGenderWeightValidInputProvider")
   fun `getFemaleWeight should calculate correct polynomial weight`(
     gender: Gender,
     staticOrDynamic: StaticOrDynamic,
     expected: BigDecimal,
   ) {
-    val result = getFemaleWeight(staticOrDynamic, gender)
+    val result = getGenderWeight(staticOrDynamic, gender)
     assertEquals(expected, result)
   }
 
@@ -195,14 +320,14 @@ class SeriousViolentReoffendingPredictorTransformationHelperTest {
   }
 
   @ParameterizedTest
-  @MethodSource("getOffenceFreeMonthsPolynomialValidInputProvider")
-  fun `getOffenceFreeMonthsPolynomial should return correct months since last sanction weight`(
+  @MethodSource("getOffenceFreeMonthsPolynomialWeightValidInputProvider")
+  fun `getOffenceFreeMonthsPolynomialWeight should return correct months since last sanction weight`(
     assessmentDate: LocalDate,
     dateAtStartOfFollowup: LocalDate,
     staticOrDynamic: StaticOrDynamic,
     expected: BigDecimal,
   ) {
-    val result = getOffenceFreeMonthsPolynomial(
+    val result = getOffenceFreeMonthsPolynomialWeight(
       staticOrDynamic,
       assessmentDate,
       dateAtStartOfFollowup,
@@ -211,8 +336,8 @@ class SeriousViolentReoffendingPredictorTransformationHelperTest {
   }
 
   @ParameterizedTest
-  @MethodSource("getThreePlusSanctionsWeightValidInputProvider")
-  fun `getThreePlusSanctionsWeight should return correct weight for 3+ sanctions`(
+  @MethodSource("getCopasWeightValidInputProvider")
+  fun `getCopasWeight should return correct weight for 3+ sanctions`(
     staticOrDynamic: StaticOrDynamic,
     totalSanctions: Int,
     gender: Gender,
@@ -220,7 +345,7 @@ class SeriousViolentReoffendingPredictorTransformationHelperTest {
     ageAtCurrentSanction: Int,
     expected: BigDecimal,
   ) {
-    val result = getThreePlusSanctionsWeight(
+    val result = getCopasWeight(
       staticOrDynamic,
       totalSanctions,
       gender,
@@ -282,6 +407,23 @@ class SeriousViolentReoffendingPredictorTransformationHelperTest {
     assertEquals(expected, result)
   }
 
+  @ParameterizedTest
+  @MethodSource("getRiskBandProvider")
+  fun `getRiskBand returns correct band mapping based on boundaries`(percentageScore: Double, expected: RiskBand) {
+    assertEquals(
+      expected,
+      SeriousViolentReoffendingPredictorTransformationHelper.getRiskBand(percentageScore),
+    )
+  }
+
+  @ParameterizedTest
+  @MethodSource("getRiskBandOutOfBoundsProvider")
+  fun `getRiskBand throws exception when percentage score is outside of upper and lower bounds`(percentageScore: Double) {
+    assertThrows<IllegalArgumentException> {
+      SeriousViolentReoffendingPredictorTransformationHelper.getRiskBand(percentageScore)
+    }
+  }
+
   companion object {
     @JvmStatic
     fun get2YearInterceptWeightProvider() = listOf(
@@ -291,7 +433,7 @@ class SeriousViolentReoffendingPredictorTransformationHelperTest {
 
     @JvmStatic
     fun getAgeGenderPolynomialWeightValidInputProvider(): Stream<Arguments> = Stream.of(
-      // Male, isSNSVDynamic = true
+      // Male, isSeriousViolentReoffendingPredictorDynamic = true
       Arguments.of(
         Gender.MALE,
         30,
@@ -304,14 +446,14 @@ class SeriousViolentReoffendingPredictorTransformationHelperTest {
         StaticOrDynamic.DYNAMIC,
         BigDecimal("-0.04077426371713640095169849109080217886003083549439907073974609375"),
       ),
-      // Male, isSNSVDynamic = false
+      // Male, isSeriousViolentReoffendingPredictorDynamic = false
       Arguments.of(
         Gender.MALE,
         30,
         StaticOrDynamic.STATIC,
         BigDecimal("-0.041515631634486001170017410721868600376183167099952697753906250"),
       ),
-      // Female, isSNSVDynamic = true
+      // Female, isSeriousViolentReoffendingPredictorDynamic = true
       Arguments.of(
         Gender.FEMALE,
         30,
@@ -324,7 +466,7 @@ class SeriousViolentReoffendingPredictorTransformationHelperTest {
         StaticOrDynamic.DYNAMIC,
         BigDecimal("-0.023265867822882398626457671475531441274142707698047161102294921875"),
       ),
-      // Female, isSNSVDynamic = false
+      // Female, isSeriousViolentReoffendingPredictorDynamic = false
       Arguments.of(
         Gender.FEMALE,
         30,
@@ -334,7 +476,7 @@ class SeriousViolentReoffendingPredictorTransformationHelperTest {
     )
 
     @JvmStatic
-    fun getFemaleWeightValidInputProvider(): Stream<Arguments> = Stream.of(
+    fun getGenderWeightValidInputProvider(): Stream<Arguments> = Stream.of(
       Arguments.of(Gender.MALE, StaticOrDynamic.DYNAMIC, BigDecimal.ZERO),
       Arguments.of(
         Gender.FEMALE,
@@ -447,7 +589,7 @@ class SeriousViolentReoffendingPredictorTransformationHelperTest {
     )
 
     @JvmStatic
-    fun getOffenceFreeMonthsPolynomialValidInputProvider(): Stream<Arguments> = Stream.of(
+    fun getOffenceFreeMonthsPolynomialWeightValidInputProvider(): Stream<Arguments> = Stream.of(
       // dateAtStartOfFollowup > assessmentDate -> 0
       Arguments.of(
         LocalDate.of(2025, Month.JANUARY, 1),
@@ -472,7 +614,7 @@ class SeriousViolentReoffendingPredictorTransformationHelperTest {
     )
 
     @JvmStatic
-    fun getThreePlusSanctionsWeightValidInputProvider(): Stream<Arguments> = Stream.of(
+    fun getCopasWeightValidInputProvider(): Stream<Arguments> = Stream.of(
       // Should return 0.0 for < 3 sanctions
       Arguments.of(StaticOrDynamic.DYNAMIC, 2, Gender.MALE, 18, 30, BigDecimal.ZERO),
 
@@ -605,6 +747,24 @@ class SeriousViolentReoffendingPredictorTransformationHelperTest {
         StaticOrDynamic.DYNAMIC,
         BigDecimal("-0.42774909019168334886759086074493330098533760974532924592494964599609375"),
       ),
+    )
+
+    @JvmStatic
+    fun getRiskBandProvider() = listOf(
+      Arguments.of(0.01, RiskBand.LOW),
+      Arguments.of(0.99, RiskBand.LOW),
+      Arguments.of(1.00, RiskBand.MEDIUM),
+      Arguments.of(2.99, RiskBand.MEDIUM),
+      Arguments.of(3.00, RiskBand.HIGH),
+      Arguments.of(6.89, RiskBand.HIGH),
+      Arguments.of(6.90, RiskBand.VERY_HIGH),
+      Arguments.of(99.99, RiskBand.VERY_HIGH),
+    )
+
+    @JvmStatic
+    fun getRiskBandOutOfBoundsProvider() = listOf(
+      Arguments.of(0.00),
+      Arguments.of(100.00),
     )
   }
 }

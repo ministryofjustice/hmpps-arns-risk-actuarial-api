@@ -9,13 +9,13 @@ import org.junit.jupiter.api.assertNull
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.osp.OSPDCObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ospiic.OSPIICObject
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.SNSVObject
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.ScoreType
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.seriousviolentreoffendingpredictor.SeriousViolentReoffendingPredictorObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
 
 class RSRRiskProducerServiceTest {
@@ -42,7 +42,13 @@ class RSRRiskProducerServiceTest {
         femaleVersion = true,
         validationError = emptyList(),
       ),
-      SNSV = SNSVObject(snsvScore = 0.0312312312, scoreType = ScoreType.DYNAMIC, validationError = emptyList(), featureValues = null),
+      seriousViolentReoffendingPredictor = SeriousViolentReoffendingPredictorObject(
+        0.0312312312,
+        RiskBand.LOW,
+        StaticOrDynamic.DYNAMIC,
+        emptyList(),
+        null,
+      ),
     )
 
     val result = service.getRiskScore(RiskScoreRequest(hasEverCommittedSexualOffence = false, isCurrentOffenceSexuallyMotivated = false), context)
@@ -52,9 +58,9 @@ class RSRRiskProducerServiceTest {
     assertEquals(5.12, rsr.ospdcScore)
     assertEquals(RiskBand.MEDIUM, rsr.ospiicBand)
     assertEquals(2.12, rsr.ospiicScore)
-    assertEquals(10.36, rsr.rsrScore)
+    assertEquals(7.27, rsr.rsrScore)
     assertNotNull(rsr.rsrBand)
-    assertEquals(ScoreType.DYNAMIC, rsr.scoreType)
+    assertEquals(StaticOrDynamic.DYNAMIC, rsr.scoreType)
     assertTrue(rsr.validationError?.isEmpty() == true)
   }
 
@@ -63,7 +69,13 @@ class RSRRiskProducerServiceTest {
     val context = emptyContext().copy(
       OSPDC = ospdcNotApplicable(),
       OSPIIC = ospiicNotApplicable(),
-      SNSV = SNSVObject(snsvScore = 0.1, scoreType = ScoreType.DYNAMIC, validationError = emptyList(), featureValues = null),
+      seriousViolentReoffendingPredictor = SeriousViolentReoffendingPredictorObject(
+        0.1,
+        RiskBand.LOW,
+        StaticOrDynamic.DYNAMIC,
+        emptyList(),
+        null,
+      ),
     )
 
     val result = service.getRiskScore(
@@ -76,9 +88,9 @@ class RSRRiskProducerServiceTest {
     )
 
     val rsr = result.RSR!!
-    assertEquals(10.38, rsr.rsrScore)
+    assertEquals(0.48, rsr.rsrScore)
     assertNotNull(rsr.rsrBand)
-    assertEquals(ScoreType.DYNAMIC, rsr.scoreType)
+    assertEquals(StaticOrDynamic.DYNAMIC, rsr.scoreType)
     assertTrue(rsr.validationError?.isEmpty() == true)
   }
 
@@ -218,11 +230,12 @@ class RSRRiskProducerServiceTest {
     val context = emptyContext().copy(
       OSPDC = ospdcNotApplicable(),
       OSPIIC = ospiicNotApplicable(),
-      SNSV = SNSVObject(
-        snsvScore = 100.0,
-        scoreType = ScoreType.DYNAMIC,
-        validationError = emptyList(),
-        featureValues = null,
+      seriousViolentReoffendingPredictor = SeriousViolentReoffendingPredictorObject(
+        100.0,
+        RiskBand.VERY_HIGH,
+        StaticOrDynamic.DYNAMIC,
+        emptyList(),
+        null,
       ),
     )
 
@@ -243,11 +256,12 @@ class RSRRiskProducerServiceTest {
     val context = emptyContext().copy(
       OSPDC = ospdcNotApplicable(),
       OSPIIC = ospiicNotApplicable(),
-      SNSV = SNSVObject(
-        snsvScore = -0.1,
-        scoreType = ScoreType.DYNAMIC,
-        validationError = emptyList(),
-        featureValues = null,
+      seriousViolentReoffendingPredictor = SeriousViolentReoffendingPredictorObject(
+        -0.1,
+        RiskBand.LOW,
+        StaticOrDynamic.DYNAMIC,
+        emptyList(),
+        null,
       ),
     )
 

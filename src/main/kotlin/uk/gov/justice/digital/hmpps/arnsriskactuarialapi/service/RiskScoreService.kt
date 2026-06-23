@@ -31,7 +31,7 @@ class RiskScoreService {
   lateinit var ospdcRiskProducerService: OSPDCRiskProducerService
 
   @Autowired
-  lateinit var snsvRiskProducerService: SNSVRiskProducerService
+  lateinit var seriousViolentReoffendingPredictorRiskProducerService: SeriousViolentReoffendingPredictorRiskProducerService
 
   @Autowired
   lateinit var rsrRiskProducerService: RSRRiskProducerService
@@ -47,7 +47,7 @@ class RiskScoreService {
     pniRiskProducerService,
     ldsRiskProducerService,
     ospdcRiskProducerService,
-    snsvRiskProducerService,
+    seriousViolentReoffendingPredictorRiskProducerService,
     ospiicRiskProducerService,
     rsrRiskProducerService,
   ).fold(RiskScoreContext(riskScoreRequest.version)) { context, service ->
