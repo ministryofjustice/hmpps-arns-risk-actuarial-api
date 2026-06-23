@@ -16,7 +16,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.ProgrammeNeedIdentifier
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.highAllReoffendingPredictor
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.highOvp
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.highViolentReoffendingPredictor
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.lowAllReoffendingPredictor
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.pniRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validPNIRiskScoreRequest
@@ -42,7 +42,7 @@ class PNIRiskProducerServiceTest {
   fun `should calculate HIGH PNI with a valid request`(supervisionStatus: SupervisionStatus) {
     val context = emptyContext().copy(
       allReoffendingPredictor = highAllReoffendingPredictor(),
-      OVP = highOvp(),
+      violentReoffendingPredictor = highViolentReoffendingPredictor(),
     )
     val request = validPNIRiskScoreRequest().copy(
       sexualPreoccupation = ProblemLevel.SIGNIFICANT_PROBLEMS,
@@ -110,7 +110,7 @@ class PNIRiskProducerServiceTest {
       val request = pniRequest().copy(
         supervisionStatus = supervisionStatus,
         allReoffendingPredictorStaticScore = 80.0,
-        ovp = 65,
+        violentReoffendingPredictorStaticScore = 75.0,
       )
       val result = service.isHighIntensity(request, NeedScore.MEDIUM, RiskBand.MEDIUM)
       assertTrue(result)
@@ -121,7 +121,7 @@ class PNIRiskProducerServiceTest {
       val request = pniRequest().copy(
         supervisionStatus = SupervisionStatus.COMMUNITY,
         allReoffendingPredictorStaticScore = 80.0,
-        ovp = 65,
+        violentReoffendingPredictorStaticScore = 75.0,
       )
       val result = service.isHighIntensity(request, NeedScore.HIGH, RiskBand.HIGH)
       assertFalse(result)
@@ -150,7 +150,7 @@ class PNIRiskProducerServiceTest {
       val request = pniRequest().copy(
         supervisionStatus = SupervisionStatus.COMMUNITY,
         allReoffendingPredictorStaticScore = 80.0,
-        ovp = 65,
+        violentReoffendingPredictorStaticScore = 65.0,
       )
       val result = service.isModerateIntensity(request, NeedScore.MEDIUM, RiskBand.MEDIUM)
       assertTrue(result)
@@ -196,8 +196,8 @@ class PNIRiskProducerServiceTest {
     }
 
     @Test
-    fun `isHighRisk returns true when ovp is high`() {
-      val result = service.isHighRisk(pniRequest().copy(ovp = 65))
+    fun `isHighRisk returns true when violentReoffendingPredictorStaticScore is high`() {
+      val result = service.isHighRisk(pniRequest().copy(violentReoffendingPredictorStaticScore = 75.0))
       assertTrue(result)
     }
 
@@ -237,7 +237,7 @@ class PNIRiskProducerServiceTest {
         pniRequest().copy(
           supervisionStatus = SupervisionStatus.COMMUNITY,
           allReoffendingPredictorStaticScore = 40.0,
-          ovp = 10,
+          violentReoffendingPredictorStaticScore = 10.0,
           rsr = 1,
         ),
       )
@@ -251,8 +251,8 @@ class PNIRiskProducerServiceTest {
     }
 
     @Test
-    fun `isMediumRisk returns true for ovp medium`() {
-      val result = service.isMediumRisk(pniRequest().copy(ovp = 45))
+    fun `isMediumRisk returns true when violentReoffendingPredictorStaticScore is medium`() {
+      val result = service.isMediumRisk(pniRequest().copy(violentReoffendingPredictorStaticScore = 55.0))
       assertTrue(result)
     }
 
@@ -288,7 +288,7 @@ class PNIRiskProducerServiceTest {
 
     @Test
     fun `isMediumRisk returns false when all factors are low or null`() {
-      val result = service.isMediumRisk(pniRequest().copy(allReoffendingPredictorStaticScore = 40.0, ovp = 10, rsr = 0))
+      val result = service.isMediumRisk(pniRequest().copy(allReoffendingPredictorStaticScore = 40.0, violentReoffendingPredictorStaticScore = 10.0, rsr = 0))
       assertFalse(result)
     }
   }

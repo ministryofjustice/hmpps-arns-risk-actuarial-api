@@ -5,7 +5,7 @@
     "actuarialPredictors": {
       "allPredictor": {
         "algorithm": "ALL_REOFFENDING_PREDICTOR",
-        "type": "STATIC",
+        "type": null,
         "modelVersion": "1.0",
         "thresholdsVersion": "1.0",
         "output": {
@@ -28,9 +28,9 @@
             ]
           },
           {
-            "type" : "MISSING_DYNAMIC_INPUT",
-            "message" : "Dynamic input field(s) missing",
-            "fields" : [
+            "type": "MISSING_DYNAMIC_INPUT",
+            "message": "Dynamic input field(s) missing",
+            "fields": [
               "suitabilityOfAccommodation",
               "isUnemployed",
               "currentRelationshipWithPartner",
@@ -60,15 +60,13 @@
         ]
       },
       "violentPredictor": {
-        "algorithm": "OVP",
-        "type": "DYNAMIC",
+        "algorithm": "VIOLENT_REOFFENDING_PREDICTOR",
+        "type": null,
         "modelVersion": "1.0",
         "thresholdsVersion": "1.0",
         "output": {
           "band": null,
-          "oneYearScore": null,
-          "twoYearScore": null,
-          "pointScore": null
+          "score": null
         },
         "featureValues": {},
         "validationErrors": [
@@ -76,19 +74,43 @@
             "type": "MISSING_MANDATORY_INPUT",
             "message": "Mandatory input field(s) missing",
             "fields": [
-              "gender",
               "dateOfBirth",
-              "dateAtStartOfFollowupCalculated",
+              "dateOfCurrentConviction",
+              "ageAtFirstSanction",
+              "gender",
+              "currentOffenceCode",
               "totalNumberOfSanctionsForAllOffences",
               "totalNumberOfViolentSanctions",
-              "doesRecogniseImpactOfOffendingOnOthers",
-              "isCurrentlyOfNoFixedAbodeOrTransientAccommodation",
+              "dateAtStartOfFollowupCalculated"
+            ]
+          },
+          {
+            "type": "MISSING_DYNAMIC_INPUT",
+            "message": "Dynamic input field(s) missing",
+            "fields": [
+              "suitabilityOfAccommodation",
               "isUnemployed",
+              "currentRelationshipWithPartner",
+              "evidenceOfDomesticAbuse",
+              "currentRelationshipStatus",
+              "regularOffendingActivities",
+              "motivationToTackleDrugMisuse",
+              "hasOtherOpiateUsage",
+              "hasCrackCocaineUsage",
+              "hasPowderCocaineUsage",
+              "hasMisusedPrescriptionDrugUsage",
+              "hasBenzodiazepinesUsage",
+              "hasCannabisUsage",
+              "hasSteroidsUsage",
+              "hasOtherDrugsUsage",
+              "hasKetamineUsage",
+              "hasSpiceUsage",
+              "hasHallucinogensUsage",
+              "hasSolventsUsage",
+              "hasMethadoneUsage",
               "currentAlcoholUseProblems",
               "excessiveAlcoholUse",
-              "hasCurrentPsychiatricTreatment",
-              "temperControl",
-              "proCriminalAttitudes"
+              "temperControl"
             ]
           }
         ]

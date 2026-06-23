@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonValue
 enum class AlgorithmResponse(@get:JsonValue output: String) {
 
   ALL_REOFFENDING_PREDICTOR("All Reoffending Predictor"),
-  OVP("OVP"),
+  VIOLENT_REOFFENDING_PREDICTOR("Violent Reoffending Predictor"),
   OSPDC("OSP/DC"),
   OSPIIC("OSP/IIC"),
   SERIOUS_VIOLENT_REOFFENDING_PREDICTOR("Serious Violent Reoffending Predictor"),
