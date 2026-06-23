@@ -5,16 +5,15 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.ActuarialPredic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.ALL_REOFFENDING_PREDICTOR
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.OSPDC
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.OSPIIC
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.OVP
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.RSR
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.SNSV
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.VIOLENT_REOFFENDING_PREDICTOR
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AllPredictorPredictorOutputResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.DirectContactSexualPredictorOutputResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.IndirectContactSexualPredictorPredictorOutputResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.PredictorResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.RiskScoreResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.ScoreTypeResponse.COMBINED
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.ScoreTypeResponse.DYNAMIC
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.ScoreTypeResponse.STATIC
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.SeriousPredictorComponentScores
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.SeriousPredictorPredictorOutputResponse
@@ -26,6 +25,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds.LDSObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.mst.MSTObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.opd.OPDObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIObject
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.toScoreTypeResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asDoublePercentage
 
 fun RiskScoreContext.toRiskScoreResponse(): RiskScoreResponse = RiskScoreResponse(
@@ -58,7 +58,7 @@ private fun buildPredictorResponseForAllPredictor(riskScoreContext: RiskScoreCon
   val allReoffendingPredictor = riskScoreContext.allReoffendingPredictor!!
   return PredictorResponse(
     ALL_REOFFENDING_PREDICTOR,
-    STATIC,
+    allReoffendingPredictor.staticOrDynamic.toScoreTypeResponse(),
     output = AllPredictorPredictorOutputResponse(
       allReoffendingPredictor.band.toRiskBandResponse(),
       allReoffendingPredictor.score,
@@ -69,17 +69,16 @@ private fun buildPredictorResponseForAllPredictor(riskScoreContext: RiskScoreCon
 }
 
 private fun buildPredictorResponseForViolentPredictor(riskScoreContext: RiskScoreContext): PredictorResponse<ViolentPredictorPredictorOutputResponse> {
-  val ovp = riskScoreContext.OVP!!
+  val violentReoffendingPredictor = riskScoreContext.violentReoffendingPredictor!!
   return PredictorResponse(
-    OVP,
-    DYNAMIC,
+    VIOLENT_REOFFENDING_PREDICTOR,
+    violentReoffendingPredictor.staticOrDynamic.toScoreTypeResponse(),
     output = ViolentPredictorPredictorOutputResponse(
-      ovp.band.toRiskBandResponse(),
-      ovp.provenViolentTypeReoffendingOneYear,
-      ovp.provenViolentTypeReoffendingTwoYear,
-      ovp.pointScore,
+      violentReoffendingPredictor.band.toRiskBandResponse(),
+      violentReoffendingPredictor.score,
     ),
-    validationErrors = ovp.validationError ?: emptyList(),
+    validationErrors = violentReoffendingPredictor.validationErrors ?: emptyList(),
+    featureValues = violentReoffendingPredictor.featureValues ?: emptyMap(),
   )
 }
 

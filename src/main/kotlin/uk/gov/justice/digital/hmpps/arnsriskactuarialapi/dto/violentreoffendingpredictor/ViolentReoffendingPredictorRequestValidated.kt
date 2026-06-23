@@ -6,7 +6,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.MotivationLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import java.time.LocalDate
 
-sealed class ViolentReoffendingPredictorRequestValidated {
+sealed interface ViolentReoffendingPredictorRequestValidated {
 
   data class Static(
     val assessmentDate: LocalDate,
@@ -16,8 +16,9 @@ sealed class ViolentReoffendingPredictorRequestValidated {
     val gender: Gender,
     val currentOffenceCode: String,
     val totalNumberOfSanctionsForAllOffences: Int,
+    val totalNumberOfViolentSanctions: Int,
     val dateAtStartOfFollowupCalculated: LocalDate,
-  ) : ViolentReoffendingPredictorRequestValidated()
+  ) : ViolentReoffendingPredictorRequestValidated
 
   data class Dynamic(
     val staticData: Static,
@@ -28,7 +29,6 @@ sealed class ViolentReoffendingPredictorRequestValidated {
     val currentRelationshipStatus: CurrentRelationshipStatus,
     val regularOffendingActivities: ProblemLevel,
     val motivationToTackleDrugMisuse: MotivationLevel,
-    val hasHeroinUsage: Boolean,
     val hasOtherOpiateUsage: Boolean,
     val hasCrackCocaineUsage: Boolean,
     val hasPowderCocaineUsage: Boolean,
@@ -41,9 +41,10 @@ sealed class ViolentReoffendingPredictorRequestValidated {
     val hasSpiceUsage: Boolean,
     val hasHallucinogensUsage: Boolean,
     val hasSolventsUsage: Boolean,
+    val hasMethadoneUsage: Boolean,
     val currentAlcoholUseProblems: ProblemLevel,
     val excessiveAlcoholUse: ProblemLevel,
     val impulsivityProblems: ProblemLevel,
-    val proCriminalAttitudes: ProblemLevel,
-  ) : ViolentReoffendingPredictorRequestValidated()
+    val temperControl: ProblemLevel,
+  ) : ViolentReoffendingPredictorRequestValidated
 }

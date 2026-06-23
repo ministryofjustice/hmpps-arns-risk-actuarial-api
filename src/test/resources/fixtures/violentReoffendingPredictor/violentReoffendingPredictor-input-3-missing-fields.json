@@ -3,7 +3,7 @@
     "version": "V1_0"
   },
   "response": {
-    "algorithm": "ALL_REOFFENDING_PREDICTOR",
+    "algorithm": "VIOLENT_REOFFENDING_PREDICTOR",
     "type": null,
     "modelVersion": "1.0",
     "thresholdsVersion": "1.0",
@@ -23,6 +23,7 @@
           "gender",
           "currentOffenceCode",
           "totalNumberOfSanctionsForAllOffences",
+          "totalNumberOfViolentSanctions",
           "dateAtStartOfFollowupCalculated"
         ]
       },
@@ -37,7 +38,6 @@
           "currentRelationshipStatus",
           "regularOffendingActivities",
           "motivationToTackleDrugMisuse",
-          "hasHeroinUsage",
           "hasOtherOpiateUsage",
           "hasCrackCocaineUsage",
           "hasPowderCocaineUsage",
@@ -50,10 +50,10 @@
           "hasSpiceUsage",
           "hasHallucinogensUsage",
           "hasSolventsUsage",
+          "hasMethadoneUsage",
           "currentAlcoholUseProblems",
           "excessiveAlcoholUse",
-          "impulsivityProblems",
-          "proCriminalAttitudes"
+          "temperControl"
         ]
       }
     ]

@@ -5,7 +5,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.ScoreTypeRespon
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.ScoreType
 
 enum class ScoreTypeResponse {
-
   STATIC,
   DYNAMIC,
   COMBINED,
