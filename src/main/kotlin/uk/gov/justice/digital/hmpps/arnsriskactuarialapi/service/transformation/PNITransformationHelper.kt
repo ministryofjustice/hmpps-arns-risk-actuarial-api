@@ -135,9 +135,9 @@ fun isRsrHigh(requestValidated: PNIRequestValidated): Boolean {
 
 fun isNullOrNa(band: RiskBand?): Boolean = band == null || band == RiskBand.NOT_APPLICABLE
 
-fun isAllReoffendingPredictorMedium(requestValidated: PNIRequestValidated) = requestValidated.allReoffendingPredictorStaticScore?.let { it in AllReoffendingPredictorConstant.MEDIUM_BAND_LOWER_BOUND..74.0 } == true
+fun isAllReoffendingPredictorMedium(requestValidated: PNIRequestValidated) = requestValidated.allReoffendingPredictorStaticScore?.let { it in AllReoffendingPredictorConstant.MEDIUM_BAND_LOWER_BOUND..74.99 } == true
 
-fun isMediumViolentReoffendingPredictor(requestValidated: PNIRequestValidated) = requestValidated.violentReoffendingPredictorStaticScore?.let { it in ViolentReoffendingPredictorConstant.MEDIUM_BAND_LOWER_BOUND..59.0 } == true
+fun isMediumViolentReoffendingPredictor(requestValidated: PNIRequestValidated) = requestValidated.violentReoffendingPredictorStaticScore?.let { it in ViolentReoffendingPredictorConstant.MEDIUM_BAND_LOWER_BOUND..59.99 } == true
 
 fun isHighSara(requestValidated: PNIRequestValidated) = requestValidated.saraRiskToOthers == RiskBand.HIGH ||
   requestValidated.saraRiskToPartner == RiskBand.HIGH
