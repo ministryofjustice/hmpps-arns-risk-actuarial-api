@@ -13,7 +13,6 @@ val ALL_REOFFENDING_PREDICTOR_STATIC_REQUIRED_FIELDS: List<KProperty1<RiskScoreR
   RiskScoreRequest::gender,
   RiskScoreRequest::currentOffenceCode,
   RiskScoreRequest::totalNumberOfSanctionsForAllOffences,
-  RiskScoreRequest::dateAtStartOfFollowupCalculated,
 )
 
 val ALL_REOFFENDING_PREDICTOR_DYNAMIC_REQUIRED_FIELDS: List<KProperty1<RiskScoreRequest, Any?>> = listOf(

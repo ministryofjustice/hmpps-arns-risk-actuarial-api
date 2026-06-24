@@ -65,7 +65,7 @@ class AllReoffendingPredictorRiskProducerService : BaseRiskScoreProducer() {
       request.gender!!,
       request.currentOffenceCode!!,
       request.totalNumberOfSanctionsForAllOffences!!,
-      request.dateAtStartOfFollowupCalculated!!,
+      request.dateAtStartOfFollowupCalculated ?: request.dateOfCurrentConviction,
     )
 
     if (dynamicValidationErrors.isNotEmpty()) {
