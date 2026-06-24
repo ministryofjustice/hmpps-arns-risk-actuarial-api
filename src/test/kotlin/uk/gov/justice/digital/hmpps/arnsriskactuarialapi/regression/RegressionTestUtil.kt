@@ -7,7 +7,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.PreviousConviction
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.RiskBandResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.RiskScoreResponse
@@ -313,7 +312,6 @@ fun runBatchIntoRiskScoreService(inputMappings: List<InputMapping>, riskScoreSer
     isCurrentOffenceSexuallyMotivated = inputs["isCurrentOffenceSexuallyMotivated"] as Boolean?,
     isCurrentOffenceAgainstVictimStranger = inputs["isCurrentOffenceAgainstVictimStranger"] as Boolean?,
     mostRecentOffenceDate = inputs["mostRecentOffenceDate"]?.let { LocalDate.parse(it as String) },
-    snsvStaticOrDynamic = inputs["snsvStaticOrDynamic"]?.let { StaticOrDynamic.valueOf(it as String) },
   )
   val response = riskScoreService.riskScoreProducer(request)
   ARNSRequestAndResponse(request, response)

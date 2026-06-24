@@ -8,7 +8,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.osp.OSPDCObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ospiic.OSPIICObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.rsr.RSRObject
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.SNSVObject
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.seriousviolentreoffendingpredictor.SeriousViolentReoffendingPredictorObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.violentreoffendingpredictor.ViolentReoffendingPredictorObject
 
 data class RiskScoreContext(
@@ -21,6 +21,6 @@ data class RiskScoreContext(
   var LDS: LDSObject? = null,
   var OSPDC: OSPDCObject? = null,
   var OSPIIC: OSPIICObject? = null,
-  var SNSV: SNSVObject? = null,
+  var seriousViolentReoffendingPredictor: SeriousViolentReoffendingPredictorObject? = null,
   var RSR: RSRObject? = null,
 )

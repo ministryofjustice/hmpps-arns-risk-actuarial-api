@@ -167,7 +167,7 @@
         ]
       },
       "seriousViolencePredictor": {
-        "algorithm": "SNSV",
+        "algorithm": "SERIOUS_VIOLENT_REOFFENDING_PREDICTOR",
         "type": null,
         "modelVersion": "1.0",
         "thresholdsVersion": "1.0",
@@ -180,16 +180,27 @@
           {
             "type": "MISSING_MANDATORY_INPUT",
             "message": "Mandatory input field(s) missing",
-            "fields": [
-              "gender",
+            "fields" : [
               "dateOfBirth",
               "dateOfCurrentConviction",
+              "ageAtFirstSanction",
+              "gender",
               "currentOffenceCode",
               "totalNumberOfSanctionsForAllOffences",
-              "ageAtFirstSanction",
-              "supervisionStatus",
-              "dateAtStartOfFollowupUserInput",
               "totalNumberOfViolentSanctions"
+            ]
+          },
+          {
+            "type" : "MISSING_DYNAMIC_INPUT",
+            "message" : "Dynamic input field(s) missing",
+            "fields" : [
+              "didOffenceInvolveCarryingOrUsingWeapon",
+              "suitabilityOfAccommodation",
+              "isUnemployed",
+              "currentAlcoholUseProblems",
+              "temperControl",
+              "proCriminalAttitudes",
+              "previousConvictions"
             ]
           }
         ]
@@ -257,7 +268,7 @@
               ]
             },
             "seriousViolencePredictorScore": {
-              "algorithm": "SNSV",
+              "algorithm": "SERIOUS_VIOLENT_REOFFENDING_PREDICTOR",
               "type": null,
               "modelVersion": "1.0",
               "thresholdsVersion": "1.0",
@@ -270,16 +281,27 @@
                 {
                   "type": "MISSING_MANDATORY_INPUT",
                   "message": "Mandatory input field(s) missing",
-                  "fields": [
-                    "gender",
+                  "fields" : [
                     "dateOfBirth",
                     "dateOfCurrentConviction",
+                    "ageAtFirstSanction",
+                    "gender",
                     "currentOffenceCode",
                     "totalNumberOfSanctionsForAllOffences",
-                    "ageAtFirstSanction",
-                    "supervisionStatus",
-                    "dateAtStartOfFollowupUserInput",
                     "totalNumberOfViolentSanctions"
+                  ]
+                },
+                {
+                  "type" : "MISSING_DYNAMIC_INPUT",
+                  "message" : "Dynamic input field(s) missing",
+                  "fields" : [
+                    "didOffenceInvolveCarryingOrUsingWeapon",
+                    "suitabilityOfAccommodation",
+                    "isUnemployed",
+                    "currentAlcoholUseProblems",
+                    "temperControl",
+                    "proCriminalAttitudes",
+                    "previousConvictions"
                   ]
                 }
               ]
@@ -294,7 +316,7 @@
             "fields": [
               "OSPDC",
               "OSPIIC",
-              "SNSV"
+              "SERIOUS_VIOLENT_REOFFENDING_PREDICTOR"
             ]
           }
         ]

@@ -243,7 +243,7 @@ class AllReoffendingPredictorRiskProducerService : BaseRiskScoreProducer() {
           ),
         )
         FeatureValue.DOMESTIC_VIOLENCE_WEIGHT.set(getDomesticViolenceWeight(request.evidenceOfDomesticAbuse))
-        FeatureValue.REGULAR_OFFENDING_ACTIVITIES.set(getRegularOffendingActivitiesWeight(request.regularOffendingActivities))
+        FeatureValue.REGULAR_OFFENDING_ACTIVITIES_WEIGHT.set(getRegularOffendingActivitiesWeight(request.regularOffendingActivities))
         FeatureValue.DRUG_MOTIVATION_WEIGHT.set(getDrugMotivationWeight(request.motivationToTackleDrugMisuse))
         FeatureValue.CHRONIC_DRINKING_PROBLEMS_WEIGHT.set(getChronicDrinkingWeight(request.currentAlcoholUseProblems))
         FeatureValue.BINGE_DRINKING_PROBLEMS_WEIGHT.set(getBingeDrinkingWeight(request.excessiveAlcoholUse))

@@ -19,7 +19,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOPD
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOSPDC
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOSPIIC
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyRSR
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptySNSV
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptySeriousViolentReoffendingPredictor
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyViolentReoffendingPredictor
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.omittedPNI
 
@@ -48,7 +48,7 @@ class RiskScoreServiceTest {
   private lateinit var ospdcRiskProducerService: OSPDCRiskProducerService
 
   @Mock
-  private lateinit var snsvRiskProducerService: SNSVRiskProducerService
+  private lateinit var seriousViolentReoffendingPredictorRiskProducerService: SeriousViolentReoffendingPredictorRiskProducerService
 
   @Mock
   private lateinit var rsrRiskProducerService: RSRRiskProducerService
@@ -93,7 +93,11 @@ class RiskScoreServiceTest {
       Pair(pniRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { PNI = omittedPNI() } },
       Pair(ldsRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { LDS = emptyLDS() } },
       Pair(ospdcRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { OSPDC = emptyOSPDC() } },
-      Pair(snsvRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { SNSV = emptySNSV() } },
+      Pair(seriousViolentReoffendingPredictorRiskProducerService) { ctx: RiskScoreContext ->
+        ctx.apply {
+          seriousViolentReoffendingPredictor = emptySeriousViolentReoffendingPredictor()
+        }
+      },
       Pair(ospiicRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { OSPIIC = emptyOSPIIC() } },
       Pair(rsrRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { RSR = emptyRSR() } },
 
