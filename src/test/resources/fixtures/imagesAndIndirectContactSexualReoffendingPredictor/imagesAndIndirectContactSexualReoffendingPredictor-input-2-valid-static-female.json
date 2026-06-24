@@ -17,7 +17,7 @@
       "score": 0.0
     },
     "featureValues": {
-      "imageAndIndirectContactWeight": 0
+      "imagesAndIndirectContactWeight": 0
     },
     "validationErrors": []
   }

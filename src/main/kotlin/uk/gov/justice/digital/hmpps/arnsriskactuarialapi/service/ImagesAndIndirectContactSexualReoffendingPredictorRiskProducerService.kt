@@ -72,9 +72,9 @@ class ImagesAndIndirectContactSexualReoffendingPredictorRiskProducerService : Ba
       request = request,
     )
 
-    val imageAndIndirectContactWeight = featureValues[FeatureValue.IMAGE_AND_INDIRECT_CONTACT_WEIGHT.outputName]!!
-    val score = calculatePercentageScore(imageAndIndirectContactWeight)
-    val band = getRiskBand(imageAndIndirectContactWeight)
+    val imagesAndIndirectContactWeight = featureValues[FeatureValue.IMAGES_AND_INDIRECT_CONTACT_WEIGHT.outputName]!!
+    val score = calculatePercentageScore(imagesAndIndirectContactWeight)
+    val band = getRiskBand(imagesAndIndirectContactWeight)
 
     return ImagesAndIndirectContactSexualReoffendingPredictorObject(
       score,
@@ -93,7 +93,7 @@ class ImagesAndIndirectContactSexualReoffendingPredictorRiskProducerService : Ba
     return buildMap {
       fun FeatureValue.set(weight: BigDecimal) = put(this.outputName, weight)
 
-      FeatureValue.IMAGE_AND_INDIRECT_CONTACT_WEIGHT.set(
+      FeatureValue.IMAGES_AND_INDIRECT_CONTACT_WEIGHT.set(
         getHierarchyWeight(
           staticData.gender,
           staticData.totalIndecentImageSanctions,

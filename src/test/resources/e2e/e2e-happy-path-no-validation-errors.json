@@ -231,7 +231,7 @@
           "score": 10.31
         },
         "featureValues": {
-          "imageAndIndirectContactWeight": 0.1031
+          "imagesAndIndirectContactWeight": 0.1031
         },
         "validationErrors": []
       },
@@ -315,7 +315,7 @@
                 "score": 10.31
               },
               "featureValues": {
-                "imageAndIndirectContactWeight": 0.1031
+                "imagesAndIndirectContactWeight": 0.1031
               },
               "validationErrors": []
             },

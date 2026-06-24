@@ -78,7 +78,7 @@ class ImagesAndIndirectContactSexualReoffendingPredictorRiskProducerServiceTest 
       staticOrDynamic = StaticOrDynamic.STATIC,
       validationErrors = emptyList(),
       featureValues = mapOf(
-        "imageAndIndirectContactWeight" to BigDecimal("0.033279999999999997084554337334338924847543239593505859375"),
+        "imagesAndIndirectContactWeight" to BigDecimal("0.033279999999999997084554337334338924847543239593505859375"),
       ),
     )
 

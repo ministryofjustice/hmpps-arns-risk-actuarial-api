@@ -31,7 +31,7 @@ object ImagesAndIndirectContactSexualReoffendingPredictorTransformationHelper {
     }
   }
 
-  fun calculatePercentageScore(imageAndIndirectContactWeight: BigDecimal): Double = imageAndIndirectContactWeight.toDouble().asDoublePercentage().sanitisePercentage()
+  fun calculatePercentageScore(imagesAndIndirectContactWeight: BigDecimal): Double = imagesAndIndirectContactWeight.toDouble().asDoublePercentage().sanitisePercentage()
 
   fun getRiskBand(hierarchyWeight: BigDecimal): RiskBand = when (hierarchyWeight) {
     TWO_OR_MORE_IMAGE_AND_INDIRECT_CONTACT_SANCTIONS.coefficient -> RiskBand.HIGH
