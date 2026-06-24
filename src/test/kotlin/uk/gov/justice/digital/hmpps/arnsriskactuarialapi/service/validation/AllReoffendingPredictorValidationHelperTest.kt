@@ -40,7 +40,6 @@ class AllReoffendingPredictorValidationHelperTest {
       "gender",
       "currentOffenceCode",
       "totalNumberOfSanctionsForAllOffences",
-      "dateAtStartOfFollowupCalculated",
     )
 
     val error = result.first()

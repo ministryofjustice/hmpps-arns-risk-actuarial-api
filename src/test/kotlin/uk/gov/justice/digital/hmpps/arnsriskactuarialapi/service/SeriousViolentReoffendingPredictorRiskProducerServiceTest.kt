@@ -156,7 +156,7 @@ class SeriousViolentReoffendingPredictorRiskProducerServiceTest {
 
   @Test
   fun `should fallback to dateOfCurrentConviction when dateAtStartOfFollowup is null`() {
-    val requestMissingdateAtStartOfFollowup = RiskScoreRequest(
+    val requestMissingDateAtStartOfFollowup = RiskScoreRequest(
       assessmentDate = LocalDate.of(2025, 1, 1),
       dateOfBirth = LocalDate.of(1990, 1, 1),
       dateOfCurrentConviction = LocalDate.of(2024, 1, 1),
@@ -167,7 +167,7 @@ class SeriousViolentReoffendingPredictorRiskProducerServiceTest {
       totalNumberOfViolentSanctions = 2,
     )
 
-    val context = service.getRiskScore(requestMissingdateAtStartOfFollowup, emptyContext())
+    val context = service.getRiskScore(requestMissingDateAtStartOfFollowup, emptyContext())
 
     assertEquals(
       BigDecimal("-0.042356215648992801134017915920537689089542254805564880371093750"),
