@@ -33,8 +33,8 @@ fun validateRequiredFields(
 }
 
 fun validateTotalNumberOfSanctionsForAllOffences(request: RiskScoreRequest, errors: MutableList<ValidationError>) {
-  if (request.totalNumberOfSanctionsForAllOffences != null && request.totalNumberOfSanctionsForAllOffences < 1) {
-    errors += ValidationErrorType.TOTAL_NUMBER_OF_SANCTIONS_LESS_THAN_ONE.asError(
+  if (request.totalNumberOfSanctionsForAllOffences != null && request.totalNumberOfSanctionsForAllOffences !in 1..999) {
+    errors += ValidationErrorType.TOTAL_NUMBER_OF_SANCTIONS_OUT_OF_RANGE.asError(
       listOf(RiskScoreRequest::totalNumberOfSanctionsForAllOffences.name),
     )
   }
@@ -44,6 +44,9 @@ fun validateCurrentOffenceCode(request: RiskScoreRequest, errors: MutableList<Va
   if (request.currentOffenceCode != null && request.currentOffenceCode.length != 5) {
     errors += ValidationErrorType.OFFENCE_CODE_INCORRECT_FORMAT.asError(listOf(RiskScoreRequest::currentOffenceCode.name))
   }
+  // TODO - extra validation once offence code to actuarial category work is done to check
+  // - that we have a mapping for that offence code
+  // - that the category is not NEED_DETAILS_OF_EXACT_OFFENCE meaning we need the user to use a more specific code
 }
 
 fun addMissingFields(

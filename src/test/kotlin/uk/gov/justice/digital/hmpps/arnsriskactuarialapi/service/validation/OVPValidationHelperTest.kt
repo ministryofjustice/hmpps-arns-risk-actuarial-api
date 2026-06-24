@@ -25,7 +25,7 @@ class OVPValidationHelperTest {
       .copy(totalNumberOfSanctionsForAllOffences = 0)
     val errors = validateOVP(request)
     assertEquals(1, errors.size)
-    assertEquals(ValidationErrorType.TOTAL_NUMBER_OF_SANCTIONS_LESS_THAN_ONE, errors[0].type)
+    assertEquals(ValidationErrorType.TOTAL_NUMBER_OF_SANCTIONS_OUT_OF_RANGE, errors[0].type)
     assertEquals("Total number of sanctions must be one or greater", errors[0].message)
     assertEquals(listOf("totalNumberOfSanctionsForAllOffences"), errors[0].fields)
   }
