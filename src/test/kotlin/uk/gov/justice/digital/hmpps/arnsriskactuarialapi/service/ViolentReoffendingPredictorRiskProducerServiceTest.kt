@@ -2,6 +2,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
@@ -12,6 +13,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validViolentReoffendingPredictorDynamicRiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validViolentReoffendingPredictorStaticRiskScoreRequest
 import java.math.BigDecimal
+import java.time.LocalDate
 
 class ViolentReoffendingPredictorRiskProducerServiceTest {
 
@@ -32,7 +34,6 @@ class ViolentReoffendingPredictorRiskProducerServiceTest {
         "currentOffenceCode",
         "totalNumberOfSanctionsForAllOffences",
         "totalNumberOfViolentSanctions",
-        "dateAtStartOfFollowupCalculated",
       ),
     )
     val expectedDynamicValidationErrors = ValidationError(
@@ -189,5 +190,30 @@ class ViolentReoffendingPredictorRiskProducerServiceTest {
     )
 
     assertEquals(expected, context.violentReoffendingPredictor)
+  }
+
+  @Test
+  fun `should fallback to dateOfCurrentConviction when dateAtStartOfFollowup is null`() {
+    val requestMissingDateAtStartOfFollowup = RiskScoreRequest(
+      assessmentDate = LocalDate.of(2025, 1, 1),
+      dateOfBirth = LocalDate.of(1990, 1, 1),
+      dateOfCurrentConviction = LocalDate.of(2024, 1, 1),
+      ageAtFirstSanction = 18,
+      gender = Gender.MALE,
+      currentOffenceCode = "00001",
+      totalNumberOfSanctionsForAllOffences = 2,
+      totalNumberOfViolentSanctions = 2,
+    )
+
+    val context = service.getRiskScore(requestMissingDateAtStartOfFollowup, emptyContext())
+
+    assertEquals(
+      BigDecimal("-0.066949464353602404884758942369728240695536669591092504560947418212890625000"),
+      context.violentReoffendingPredictor?.featureValues?.get(FeatureValue.AGE_GENDER_POLYNOMIAL_WEIGHT.outputName),
+    )
+    assertEquals(
+      BigDecimal("-0.055445244487997795806142643793013036201955401338636875152587890625000000"),
+      context.violentReoffendingPredictor?.featureValues?.get(FeatureValue.OFFENCE_FREE_MONTHS_WEIGHT.outputName),
+    )
   }
 }
