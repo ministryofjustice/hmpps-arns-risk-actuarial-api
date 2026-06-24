@@ -1,0 +1,24 @@
+{
+  "request": {
+    "version": "V1_0",
+    "gender": "MALE",
+    "totalIndecentImageSanctions": 2,
+    "totalContactAdultSexualSanctions": 0,
+    "totalContactChildSexualSanctions": 0,
+    "totalNonContactSexualOffences": 0
+  },
+  "response": {
+    "algorithm": "IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR",
+    "type": "STATIC",
+    "modelVersion": "1.0",
+    "thresholdsVersion": "1.0",
+    "output": {
+      "band": "HIGH",
+      "score": 10.31
+    },
+    "featureValues": {
+      "imageAndIndirectContactWeight": 0.10310
+    },
+    "validationErrors": []
+  }
+}

@@ -39,56 +39,54 @@
     "supervisionStatus": "REMAND"
   },
   "response": {
-    "algorithm": "RSR",
-    "type": "COMBINED",
-    "modelVersion": "1.0",
-    "thresholdsVersion": "1.0",
-    "output": {
-      "band": "HIGH",
-      "overallScore": 14.15,
-      "femaleVersion": false,
-      "hasSexualOffenceHistory": false,
-      "componentScores": {
-        "directContactSexualPredictorScore": {
-          "algorithm": "OSPDC",
-          "type": "STATIC",
-          "modelVersion": "1.0",
-          "thresholdsVersion": "1.0",
-          "output": {
-            "band": "NOT_APPLICABLE",
-            "pointScore": null,
-            "score": 0.0,
-            "femaleVersion": false,
-            "hasSexualOffenceHistory": false,
-            "riskBandReductionApplied": null
+    "algorithm" : "RSR",
+    "type" : "COMBINED",
+    "modelVersion" : "1.0",
+    "thresholdsVersion" : "1.0",
+    "output" : {
+      "band" : "HIGH",
+      "overallScore" : 14.15,
+      "femaleVersion" : false,
+      "hasSexualOffenceHistory" : false,
+      "componentScores" : {
+        "directContactSexualPredictorScore" : {
+          "algorithm" : "OSPDC",
+          "type" : "STATIC",
+          "modelVersion" : "1.0",
+          "thresholdsVersion" : "1.0",
+          "output" : {
+            "band" : "NOT_APPLICABLE",
+            "pointScore" : null,
+            "score" : 0.0,
+            "femaleVersion" : false,
+            "hasSexualOffenceHistory" : false,
+            "riskBandReductionApplied" : null
           },
-          "featureValues": {},
-          "validationErrors": []
+          "featureValues" : { },
+          "validationErrors" : [ ]
         },
-        "indirectContactSexualPredictorScore": {
-          "algorithm": "OSPIIC",
-          "type": "STATIC",
-          "modelVersion": "1.0",
-          "thresholdsVersion": "1.0",
-          "output": {
-            "band": "NOT_APPLICABLE",
-            "score": 0.0,
-            "femaleVersion": false,
-            "hasSexualOffenceHistory": false
+        "indirectContactSexualPredictorScore" : {
+          "algorithm" : "IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR",
+          "type" : "STATIC",
+          "modelVersion" : "1.0",
+          "thresholdsVersion" : "1.0",
+          "output" : {
+            "band" : "NOT_APPLICABLE",
+            "score" : 0.0
           },
-          "featureValues": {},
-          "validationErrors": []
+          "featureValues" : { },
+          "validationErrors" : [ ]
         },
-        "seriousViolencePredictorScore": {
-          "algorithm": "SERIOUS_VIOLENT_REOFFENDING_PREDICTOR",
-          "type": "DYNAMIC",
-          "modelVersion": "1.0",
-          "thresholdsVersion": "1.0",
-          "output": {
+        "seriousViolencePredictorScore" : {
+          "algorithm" : "SERIOUS_VIOLENT_REOFFENDING_PREDICTOR",
+          "type" : "DYNAMIC",
+          "modelVersion" : "1.0",
+          "thresholdsVersion" : "1.0",
+          "output" : {
             "band" : "VERY_HIGH",
             "score" : 14.15
           },
-          "featureValues": {
+          "featureValues" : {
             "twoYearInterceptWeight" : -1.70588696906607,
             "ageGenderPolynomialWeight" : -0.0415985412927616,
             "genderWeight" : 0,
@@ -120,11 +118,11 @@
             "pastArsonOffenceWeight" : 0,
             "totalWeight" : -1.8030864392443304
           },
-          "validationErrors": []
+          "validationErrors" : [ ]
         }
       }
     },
-    "featureValues": {},
-    "validationErrors": []
+    "featureValues" : { },
+    "validationErrors" : [ ]
   }
 }

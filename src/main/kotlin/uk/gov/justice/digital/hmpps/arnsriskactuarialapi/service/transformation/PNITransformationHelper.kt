@@ -117,20 +117,20 @@ fun isHighViolentReoffendingPredictor(requestValidated: PNIRequestValidated) = r
 
 fun isOspDcHigh(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospDCBand == RiskBand.HIGH || requestValidated.ospDCBand == RiskBand.VERY_HIGH
 
-fun isOspIicHigh(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospIICBand == RiskBand.HIGH || requestValidated.ospIICBand == RiskBand.VERY_HIGH
+fun isOspIicHigh(requestValidated: PNIRequestValidated): Boolean = requestValidated.imagesAndIndirectContactSexualReoffendingPredictorBand == RiskBand.HIGH || requestValidated.imagesAndIndirectContactSexualReoffendingPredictorBand == RiskBand.VERY_HIGH
 
 fun isOspDcMedium(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospDCBand == RiskBand.MEDIUM
 
-fun isOspIicMedium(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospIICBand == RiskBand.MEDIUM
+fun isOspIicMedium(requestValidated: PNIRequestValidated): Boolean = requestValidated.imagesAndIndirectContactSexualReoffendingPredictorBand == RiskBand.MEDIUM
 
 fun isRsrMedium(request: PNIRequestValidated): Boolean {
   val rsrIsMedium = request.rsr in 1..2
-  return rsrIsMedium && isNullOrNa(request.ospDCBand) && isNullOrNa(request.ospIICBand)
+  return rsrIsMedium && isNullOrNa(request.ospDCBand) && isNullOrNa(request.imagesAndIndirectContactSexualReoffendingPredictorBand)
 }
 
 fun isRsrHigh(requestValidated: PNIRequestValidated): Boolean {
   val isHighRsr = requestValidated.rsr?.let { it >= 3 } == true
-  return isHighRsr && isNullOrNa(requestValidated.ospDCBand) && isNullOrNa(requestValidated.ospIICBand)
+  return isHighRsr && isNullOrNa(requestValidated.ospDCBand) && isNullOrNa(requestValidated.imagesAndIndirectContactSexualReoffendingPredictorBand)
 }
 
 fun isNullOrNa(band: RiskBand?): Boolean = band == null || band == RiskBand.NOT_APPLICABLE

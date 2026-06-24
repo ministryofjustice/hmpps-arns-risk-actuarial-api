@@ -35,7 +35,7 @@ class ApiIntegrationTest : IntegrationTestBase() {
     private val MODELS = getModelDirectoryNames("src/test/resources/fixtures")
     private val PREDICTOR_JSON_PATH = mapOf<String, String>(
       Pair("ospdc", "/actuarialPredictors/directContactSexualPredictor"),
-      Pair("ospiic", "/actuarialPredictors/indirectContactSexualPredictor"),
+      Pair("imagesAndIndirectContactSexualReoffendingPredictor", "/actuarialPredictors/indirectContactSexualPredictor"),
       Pair("seriousViolentReoffendingPredictor", "/actuarialPredictors/seriousViolencePredictor"),
       Pair("rsr", "/actuarialPredictors/seriousPredictor"),
       Pair("allReoffendingPredictor", "/actuarialPredictors/allPredictor"),

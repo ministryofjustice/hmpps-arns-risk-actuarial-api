@@ -68,6 +68,7 @@ enum class FeatureValue(val outputName: String) {
   OFFENCE_FREE_MONTHS_WEIGHT("offenceFreeMonthsWeight"),
   SUITABLE_ACCOMMODATION_WEIGHT("suitableAccommodationWeight"),
   REGULAR_OFFENDING_ACTIVITIES_WEIGHT("regularOffendingActivitiesWeight"),
+  IMAGE_AND_INDIRECT_CONTACT_WEIGHT("imageAndIndirectContactWeight"),
   TOTAL_WEIGHT("totalWeight"),
   ;
 

@@ -26,7 +26,7 @@ data class PNIRequestValidated(
   val rsr: Int?,
   val violentReoffendingPredictorBand: RiskBand?,
   val ospDCBand: RiskBand?,
-  val ospIICBand: RiskBand?,
+  val imagesAndIndirectContactSexualReoffendingPredictorBand: RiskBand?,
   val saraRiskToPartner: RiskBand?,
   val saraRiskToOthers: RiskBand?,
 )

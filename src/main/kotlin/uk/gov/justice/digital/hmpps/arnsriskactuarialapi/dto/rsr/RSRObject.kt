@@ -7,8 +7,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 data class RSRObject(
   val ospdcBand: RiskBand? = null,
   val ospdcScore: Double? = null,
-  val ospiicBand: RiskBand? = null,
-  val ospiicScore: Double? = null,
+  val imagesAndIndirectContactSexualReoffendingPredictorBand: RiskBand? = null,
+  val imagesAndIndirectContactSexualReoffendingPredictorScore: Double? = null,
   val seriousViolentReoffendingPredictorScore: Double?,
   val rsrScore: Double? = null,
   val rsrBand: RiskBand? = null,

@@ -215,7 +215,7 @@ class PNIRiskProducerServiceTest {
 
     @Test
     fun `isHighRisk returns true when ospIic is high for male`() {
-      val result = service.isHighRisk(pniRequest().copy(ospIICBand = RiskBand.HIGH))
+      val result = service.isHighRisk(pniRequest().copy(imagesAndIndirectContactSexualReoffendingPredictorBand = RiskBand.HIGH))
       assertTrue(result)
     }
 
@@ -270,7 +270,7 @@ class PNIRiskProducerServiceTest {
 
     @Test
     fun `isMediumRisk returns true for ospIic medium for male`() {
-      val result = service.isMediumRisk(pniRequest().copy(ospIICBand = RiskBand.MEDIUM))
+      val result = service.isMediumRisk(pniRequest().copy(imagesAndIndirectContactSexualReoffendingPredictorBand = RiskBand.MEDIUM))
       assertTrue(result)
     }
 
