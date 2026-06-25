@@ -2,6 +2,7 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
@@ -12,6 +13,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validAllReoffendingPredictorDynamicRiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validAllReoffendingPredictorStaticRiskScoreRequest
 import java.math.BigDecimal
+import java.time.LocalDate
 
 class AllReoffendingPredictorRiskProducerServiceTest {
 
@@ -31,7 +33,6 @@ class AllReoffendingPredictorRiskProducerServiceTest {
         "gender",
         "currentOffenceCode",
         "totalNumberOfSanctionsForAllOffences",
-        "dateAtStartOfFollowupCalculated",
       ),
     )
     val expectedDynamicValidationErrors = ValidationError(
@@ -184,5 +185,29 @@ class AllReoffendingPredictorRiskProducerServiceTest {
     )
 
     assertEquals(expected, context.allReoffendingPredictor)
+  }
+
+  @Test
+  fun `should fallback to dateOfCurrentConviction when dateAtStartOfFollowup is null`() {
+    val requestMissingDateAtStartOfFollowup = RiskScoreRequest(
+      assessmentDate = LocalDate.of(2025, 1, 1),
+      dateOfBirth = LocalDate.of(1990, 1, 1),
+      dateOfCurrentConviction = LocalDate.of(2024, 1, 1),
+      ageAtFirstSanction = 18,
+      gender = Gender.MALE,
+      currentOffenceCode = "00001",
+      totalNumberOfSanctionsForAllOffences = 2,
+    )
+
+    val context = service.getRiskScore(requestMissingDateAtStartOfFollowup, emptyContext())
+
+    assertEquals(
+      BigDecimal("-0.09248731438765801069845388037403421943594139520428143441677093505859375000"),
+      context.allReoffendingPredictor?.featureValues?.get(FeatureValue.AGE_GENDER_POLYNOMIAL_WEIGHT.outputName),
+    )
+    assertEquals(
+      BigDecimal("-0.055713380912675204559964502182278778263935237191617488861083984375000000"),
+      context.allReoffendingPredictor?.featureValues?.get(FeatureValue.OFFENCE_FREE_MONTHS_WEIGHT.outputName),
+    )
   }
 }

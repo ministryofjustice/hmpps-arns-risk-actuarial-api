@@ -23,8 +23,7 @@
               "ageAtFirstSanction",
               "gender",
               "currentOffenceCode",
-              "totalNumberOfSanctionsForAllOffences",
-              "dateAtStartOfFollowupCalculated"
+              "totalNumberOfSanctionsForAllOffences"
             ]
           },
           {
@@ -80,8 +79,7 @@
               "gender",
               "currentOffenceCode",
               "totalNumberOfSanctionsForAllOffences",
-              "totalNumberOfViolentSanctions",
-              "dateAtStartOfFollowupCalculated"
+              "totalNumberOfViolentSanctions"
             ]
           },
           {
