@@ -47,7 +47,7 @@ fun emptySeriousViolentReoffendingPredictor(): SeriousViolentReoffendingPredicto
 
 fun emptyRSR(): RSRObject = RSRObject(null, null, null, null, null, null, null, null, null, null, null)
 
-fun emptyImagesAndIndirectContactSexualReoffendingPredictor(): ImagesAndIndirectContactSexualReoffendingPredictorObject = ImagesAndIndirectContactSexualReoffendingPredictorObject(null, null, null, null, null)
+fun emptyImagesAndIndirectContactSexualReoffendingPredictor(): ImagesAndIndirectContactSexualReoffendingPredictorObject = ImagesAndIndirectContactSexualReoffendingPredictorObject(null, null, null, null, null, null, null)
 
 fun emptyContext() = RiskScoreContext(version = RiskScoreVersion.V1_0)
 

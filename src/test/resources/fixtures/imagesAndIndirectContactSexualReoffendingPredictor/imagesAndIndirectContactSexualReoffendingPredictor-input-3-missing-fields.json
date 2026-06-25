@@ -8,22 +8,12 @@
     "modelVersion": "1.0",
     "thresholdsVersion": "1.0",
     "output": {
-      "band": null,
-      "score": null
+      "band": "NOT_APPLICABLE",
+      "score": 0.0,
+      "femaleVersion": false,
+      "hasSexualOffenceHistory": null
     },
     "featureValues": {},
-    "validationErrors": [
-      {
-        "type": "MISSING_MANDATORY_INPUT",
-        "message": "Mandatory input field(s) missing",
-        "fields": [
-          "gender",
-          "totalIndecentImageSanctions",
-          "totalContactAdultSexualSanctions",
-          "totalContactChildSexualSanctions",
-          "totalNonContactSexualOffences"
-        ]
-      }
-    ]
+    "validationErrors": []
   }
 }

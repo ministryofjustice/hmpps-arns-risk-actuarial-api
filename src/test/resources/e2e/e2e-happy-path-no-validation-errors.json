@@ -228,7 +228,9 @@
         "thresholdsVersion": "1.0",
         "output": {
           "band": "HIGH",
-          "score": 10.31
+          "score": 10.31,
+          "femaleVersion" : false,
+          "hasSexualOffenceHistory" : true
         },
         "featureValues": {
           "imagesAndIndirectContactWeight": 0.1031
@@ -312,7 +314,9 @@
               "thresholdsVersion": "1.0",
               "output": {
                 "band": "HIGH",
-                "score": 10.31
+                "score": 10.31,
+                "femaleVersion" : false,
+                "hasSexualOffenceHistory" : true
               },
               "featureValues": {
                 "imagesAndIndirectContactWeight": 0.1031

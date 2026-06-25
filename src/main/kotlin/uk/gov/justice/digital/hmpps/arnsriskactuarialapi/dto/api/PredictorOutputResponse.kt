@@ -26,6 +26,8 @@ data class DirectContactSexualPredictorOutputResponse(
 data class IndirectContactSexualPredictorPredictorOutputResponse(
   override val band: RiskBandResponse?,
   val score: Double?,
+  val femaleVersion: Boolean?,
+  val hasSexualOffenceHistory: Boolean?,
 ) : PredictorOutputResponse(band)
 
 data class SeriousViolencePredictorPredictorOutputResponse(

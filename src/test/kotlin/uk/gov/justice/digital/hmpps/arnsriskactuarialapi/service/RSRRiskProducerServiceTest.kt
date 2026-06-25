@@ -38,7 +38,9 @@ class RSRRiskProducerServiceTest {
       imagesAndIndirectContactSexualReoffendingPredictor = ImagesAndIndirectContactSexualReoffendingPredictorObject(
         score = 2.12,
         band = RiskBand.MEDIUM,
-        StaticOrDynamic.STATIC,
+        femaleVersion = false,
+        hasEverCommittedSexualOffence = true,
+        staticOrDynamic = StaticOrDynamic.STATIC,
         validationErrors = null,
         featureValues = null,
       ),
@@ -303,7 +305,9 @@ class RSRRiskProducerServiceTest {
   private fun imagesAndIndirectContactSexualReoffendingPredictorNotApplicable(): ImagesAndIndirectContactSexualReoffendingPredictorObject = ImagesAndIndirectContactSexualReoffendingPredictorObject(
     score = 0.0,
     band = RiskBand.NOT_APPLICABLE,
-    StaticOrDynamic.STATIC,
+    femaleVersion = false,
+    hasEverCommittedSexualOffence = false,
+    staticOrDynamic = StaticOrDynamic.STATIC,
     validationErrors = null,
     featureValues = null,
   )

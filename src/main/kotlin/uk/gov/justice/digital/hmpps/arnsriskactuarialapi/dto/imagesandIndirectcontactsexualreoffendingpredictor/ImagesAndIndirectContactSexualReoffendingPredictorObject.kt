@@ -8,6 +8,8 @@ import java.math.BigDecimal
 data class ImagesAndIndirectContactSexualReoffendingPredictorObject(
   val score: Double?,
   val band: RiskBand?,
+  val femaleVersion: Boolean?,
+  val hasEverCommittedSexualOffence: Boolean?,
   val staticOrDynamic: StaticOrDynamic?,
   var validationErrors: List<ValidationError>?,
   val featureValues: Map<String, BigDecimal>?,

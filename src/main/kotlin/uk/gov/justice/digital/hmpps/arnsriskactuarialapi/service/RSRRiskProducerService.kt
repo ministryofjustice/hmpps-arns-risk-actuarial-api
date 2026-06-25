@@ -31,6 +31,8 @@ class RSRRiskProducerService : BaseRiskScoreProducer() {
         null,
         null,
         null,
+        null,
+        null,
       )
     val seriousViolentReoffendingPredictor =
       context.seriousViolentReoffendingPredictor ?: SeriousViolentReoffendingPredictorObject(

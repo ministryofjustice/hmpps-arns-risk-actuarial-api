@@ -72,7 +72,9 @@
           "thresholdsVersion" : "1.0",
           "output" : {
             "band" : "NOT_APPLICABLE",
-            "score" : 0.0
+            "score" : 0.0,
+            "femaleVersion" : false,
+            "hasSexualOffenceHistory" : false
           },
           "featureValues" : { },
           "validationErrors" : [ ]

@@ -66,23 +66,14 @@
           "type": "STATIC",
           "modelVersion": "1.0",
           "thresholdsVersion": "1.0",
-          "output": {
-            "band": null,
-            "score": null
+          "output" : {
+            "band" : "NOT_APPLICABLE",
+            "score" : 0.0,
+            "femaleVersion" : false,
+            "hasSexualOffenceHistory" : null
           },
-          "featureValues": {},
-          "validationErrors": [
-            {
-              "type": "MISSING_MANDATORY_INPUT",
-              "message": "Mandatory input field(s) missing",
-              "fields": [
-                "totalIndecentImageSanctions",
-                "totalContactAdultSexualSanctions",
-                "totalContactChildSexualSanctions",
-                "totalNonContactSexualOffences"
-              ]
-            }
-          ]
+          "featureValues" : { },
+          "validationErrors" : [ ]
         },
         "seriousViolencePredictorScore": {
           "algorithm": "SERIOUS_VIOLENT_REOFFENDING_PREDICTOR",
@@ -135,8 +126,7 @@
         "type": "COMPONENT_VALIDATION_ERROR",
         "message": "Validation error(s) in component scores",
         "fields": [
-          "OSPDC",
-          "IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR"
+          "OSPDC"
         ]
       }
     ]

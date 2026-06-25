@@ -1,6 +1,7 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
 import org.springframework.stereotype.Service
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
@@ -18,11 +19,13 @@ import java.math.BigDecimal
 class ImagesAndIndirectContactSexualReoffendingPredictorRiskProducerService : BaseRiskScoreProducer() {
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
-    if (request.hasEverCommittedSexualOffence == false) {
+    if (request.hasEverCommittedSexualOffence != true) {
       return context.apply {
         imagesAndIndirectContactSexualReoffendingPredictor = ImagesAndIndirectContactSexualReoffendingPredictorObject(
           0.0,
           RiskBand.NOT_APPLICABLE,
+          request.gender == Gender.FEMALE,
+          request.hasEverCommittedSexualOffence,
           StaticOrDynamic.STATIC,
           null,
           null,
@@ -59,6 +62,8 @@ class ImagesAndIndirectContactSexualReoffendingPredictorRiskProducerService : Ba
       null,
       null,
       null,
+      null,
+      null,
       validationErrors,
       null,
     )
@@ -68,8 +73,10 @@ class ImagesAndIndirectContactSexualReoffendingPredictorRiskProducerService : Ba
     request: ImagesAndIndirectContactSexualReoffendingPredictorRequestValidated,
     validationErrors: List<ValidationError>,
   ): ImagesAndIndirectContactSexualReoffendingPredictorObject {
+    val staticData = request as ImagesAndIndirectContactSexualReoffendingPredictorRequestValidated.Static
+
     val featureValues = buildFeatureValuesMap(
-      request = request,
+      staticData = staticData,
     )
 
     val imagesAndIndirectContactWeight = featureValues[FeatureValue.IMAGES_AND_INDIRECT_CONTACT_WEIGHT.outputName]!!
@@ -79,6 +86,8 @@ class ImagesAndIndirectContactSexualReoffendingPredictorRiskProducerService : Ba
     return ImagesAndIndirectContactSexualReoffendingPredictorObject(
       score,
       band,
+      staticData.gender == Gender.FEMALE,
+      true,
       StaticOrDynamic.STATIC,
       validationErrors,
       featureValues,
@@ -86,22 +95,18 @@ class ImagesAndIndirectContactSexualReoffendingPredictorRiskProducerService : Ba
   }
 
   private fun buildFeatureValuesMap(
-    request: ImagesAndIndirectContactSexualReoffendingPredictorRequestValidated,
-  ): Map<String, BigDecimal> {
-    val staticData = request as ImagesAndIndirectContactSexualReoffendingPredictorRequestValidated.Static
+    staticData: ImagesAndIndirectContactSexualReoffendingPredictorRequestValidated.Static,
+  ): Map<String, BigDecimal> = buildMap {
+    fun FeatureValue.set(weight: BigDecimal) = put(this.outputName, weight)
 
-    return buildMap {
-      fun FeatureValue.set(weight: BigDecimal) = put(this.outputName, weight)
-
-      FeatureValue.IMAGES_AND_INDIRECT_CONTACT_WEIGHT.set(
-        getHierarchyWeight(
-          staticData.gender,
-          staticData.totalIndecentImageSanctions,
-          staticData.totalContactAdultSexualSanctions,
-          staticData.totalContactChildSexualSanctions,
-          staticData.totalNonContactSexualOffences,
-        ),
-      )
-    }
+    FeatureValue.IMAGES_AND_INDIRECT_CONTACT_WEIGHT.set(
+      getHierarchyWeight(
+        staticData.gender,
+        staticData.totalIndecentImageSanctions,
+        staticData.totalContactAdultSexualSanctions,
+        staticData.totalContactChildSexualSanctions,
+        staticData.totalNonContactSexualOffences,
+      ),
+    )
   }
 }

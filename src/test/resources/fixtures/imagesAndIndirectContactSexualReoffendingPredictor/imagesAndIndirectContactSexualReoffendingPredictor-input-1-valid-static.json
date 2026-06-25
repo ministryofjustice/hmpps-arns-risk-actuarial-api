@@ -5,7 +5,8 @@
     "totalIndecentImageSanctions": 2,
     "totalContactAdultSexualSanctions": 0,
     "totalContactChildSexualSanctions": 0,
-    "totalNonContactSexualOffences": 0
+    "totalNonContactSexualOffences": 0,
+    "hasEverCommittedSexualOffence": true
   },
   "response": {
     "algorithm": "IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR",
@@ -14,7 +15,9 @@
     "thresholdsVersion": "1.0",
     "output": {
       "band": "HIGH",
-      "score": 10.31
+      "score": 10.31,
+      "femaleVersion" : false,
+      "hasSexualOffenceHistory" : true
     },
     "featureValues": {
       "imagesAndIndirectContactWeight": 0.10310

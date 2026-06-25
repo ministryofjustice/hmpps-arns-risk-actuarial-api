@@ -106,8 +106,10 @@ private fun buildPredictorResponseForIndirectContactSexualPredictor(riskScoreCon
     IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR,
     STATIC,
     output = IndirectContactSexualPredictorPredictorOutputResponse(
-      imagesAndIndirectContactSexualReoffendingPredictor.band.toRiskBandResponse(),
-      imagesAndIndirectContactSexualReoffendingPredictor.score,
+      band = imagesAndIndirectContactSexualReoffendingPredictor.band.toRiskBandResponse(),
+      score = imagesAndIndirectContactSexualReoffendingPredictor.score,
+      femaleVersion = imagesAndIndirectContactSexualReoffendingPredictor.femaleVersion,
+      hasSexualOffenceHistory = imagesAndIndirectContactSexualReoffendingPredictor.hasEverCommittedSexualOffence,
     ),
     validationErrors = imagesAndIndirectContactSexualReoffendingPredictor.validationErrors ?: emptyList(),
     featureValues = imagesAndIndirectContactSexualReoffendingPredictor.featureValues ?: emptyMap(),
