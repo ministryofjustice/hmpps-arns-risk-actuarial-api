@@ -13,13 +13,13 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.YesSometimesNo
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.allreoffendingpredictor.AllReoffendingPredictorObject
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.imagesandIndirectcontactsexualreoffendingpredictor.ImagesAndIndirectContactSexualReoffendingPredictorObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds.HasQualifications
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds.LDSObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.mst.MSTObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.opd.OPDObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.opd.OPDRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.osp.OSPDCObject
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ospiic.OSPIICObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.ProgrammeNeedIdentifier
@@ -47,7 +47,7 @@ fun emptySeriousViolentReoffendingPredictor(): SeriousViolentReoffendingPredicto
 
 fun emptyRSR(): RSRObject = RSRObject(null, null, null, null, null, null, null, null, null, null, null)
 
-fun emptyOSPIIC(): OSPIICObject = OSPIICObject(null, null, null, null, emptyList())
+fun emptyImagesAndIndirectContactSexualReoffendingPredictor(): ImagesAndIndirectContactSexualReoffendingPredictorObject = ImagesAndIndirectContactSexualReoffendingPredictorObject(null, null, null, null, null, null, null)
 
 fun emptyContext() = RiskScoreContext(version = RiskScoreVersion.V1_0)
 
@@ -261,6 +261,15 @@ fun validViolentReoffendingPredictorDynamicRiskScoreRequest(): RiskScoreRequest 
   temperControl = ProblemLevel.SOME_PROBLEMS,
 )
 
+fun validImageAndIndirectContactPredictorStaticRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
+  gender = Gender.MALE,
+  hasEverCommittedSexualOffence = true,
+  totalContactAdultSexualSanctions = 1,
+  totalContactChildSexualSanctions = 1,
+  totalNonContactSexualOffences = 1,
+  totalIndecentImageSanctions = 1,
+)
+
 fun validMSTRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
   version = RiskScoreVersion.V1_0,
   gender = Gender.MALE,
@@ -448,7 +457,7 @@ fun pniRequest(
   violentReoffendingPredictorStaticScore = null,
   violentReoffendingPredictorBand = null,
   ospDCBand = null,
-  ospIICBand = null,
+  imagesAndIndirectContactSexualReoffendingPredictorBand = null,
   saraRiskToPartner = null,
   saraRiskToOthers = null,
   rsr = null,

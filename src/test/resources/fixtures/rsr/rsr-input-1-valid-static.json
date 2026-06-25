@@ -42,15 +42,15 @@
           "validationErrors": []
         },
         "indirectContactSexualPredictorScore": {
-          "algorithm": "OSPIIC",
+          "algorithm": "IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR",
           "type": "STATIC",
           "modelVersion": "1.0",
           "thresholdsVersion": "1.0",
           "output": {
             "band": "NOT_APPLICABLE",
             "score": 0.0,
-            "femaleVersion": false,
-            "hasSexualOffenceHistory": false
+            "femaleVersion" : false,
+            "hasSexualOffenceHistory" : false
           },
           "featureValues": {},
           "validationErrors": []
@@ -61,31 +61,31 @@
           "modelVersion": "1.0",
           "thresholdsVersion": "1.0",
           "output": {
-            "band" : "MEDIUM",
-            "score" : 1.42
+            "band": "MEDIUM",
+            "score": 1.42
           },
           "featureValues": {
-            "twoYearInterceptWeight" : -0.970734555223987,
-            "ageGenderPolynomialWeight" : -0.0444576756852598,
-            "genderWeight" : 0,
-            "offenceGroupWeight" : 0,
-            "firstSanctionWeight" : -2.3335499201698,
-            "secondSanctionWeight" : 0,
-            "totalNumberOfSanctionsForAllOffencesWeight" : -0.0250462590018653,
-            "secondSanctionGapWeight" : 0,
-            "offenceFreeMonthsWeight" : -0.028848120515419,
-            "copasScore" : 0,
-            "neverViolentWeight" : 0,
-            "onceViolentWeight" : -0.0013488533112443,
-            "violentSanctionsWeight" : 0.0141947749755811,
-            "violenceRateWeight" : -0.8519267228209279,
-            "totalWeight" : -4.241717331752922
+            "twoYearInterceptWeight": -0.970734555223987,
+            "ageGenderPolynomialWeight": -0.0444576756852598,
+            "genderWeight": 0,
+            "offenceGroupWeight": 0,
+            "firstSanctionWeight": -2.3335499201698,
+            "secondSanctionWeight": 0,
+            "totalNumberOfSanctionsForAllOffencesWeight": -0.0250462590018653,
+            "secondSanctionGapWeight": 0,
+            "offenceFreeMonthsWeight": -0.028848120515419,
+            "copasScore": 0,
+            "neverViolentWeight": 0,
+            "onceViolentWeight": -0.0013488533112443,
+            "violentSanctionsWeight": 0.0141947749755811,
+            "violenceRateWeight": -0.8519267228209279,
+            "totalWeight": -4.241717331752922
           },
           "validationErrors": [
             {
               "type": "MISSING_DYNAMIC_INPUT",
               "message": "Dynamic input field(s) missing",
-              "fields" : [
+              "fields": [
                 "didOffenceInvolveCarryingOrUsingWeapon",
                 "suitabilityOfAccommodation",
                 "isUnemployed",

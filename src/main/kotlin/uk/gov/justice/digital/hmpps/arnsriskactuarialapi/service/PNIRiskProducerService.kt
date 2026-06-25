@@ -60,7 +60,7 @@ class PNIRiskProducerService : BaseRiskScoreProducer() {
       violentReoffendingPredictorStaticScore = context.violentReoffendingPredictor?.score,
       violentReoffendingPredictorBand = context.violentReoffendingPredictor?.band,
       ospDCBand = context.RSR?.ospdcBand,
-      ospIICBand = context.RSR?.ospiicBand,
+      imagesAndIndirectContactSexualReoffendingPredictorBand = context.RSR?.imagesAndIndirectContactSexualReoffendingPredictorBand,
       rsr = context.RSR?.rsrScore?.toInt(),
       saraRiskToPartner = request.saraRiskToPartner,
       saraRiskToOthers = request.saraRiskToOthers,
@@ -88,7 +88,7 @@ class PNIRiskProducerService : BaseRiskScoreProducer() {
     val projectedRisk = when {
       isHighRisk(
         requestValidated.copy(
-          ospIICBand = requestValidated.ospIICBand ?: RiskBand.VERY_HIGH,
+          imagesAndIndirectContactSexualReoffendingPredictorBand = requestValidated.imagesAndIndirectContactSexualReoffendingPredictorBand ?: RiskBand.VERY_HIGH,
           ospDCBand = requestValidated.ospDCBand ?: RiskBand.VERY_HIGH,
           rsr = requestValidated.rsr ?: 100,
         ),

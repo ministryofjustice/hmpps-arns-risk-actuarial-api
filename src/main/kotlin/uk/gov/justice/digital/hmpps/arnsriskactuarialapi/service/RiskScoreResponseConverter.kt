@@ -3,8 +3,8 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.ActuarialPredictorsResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.ALL_REOFFENDING_PREDICTOR
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.OSPDC
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.OSPIIC
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.RSR
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.SERIOUS_VIOLENT_REOFFENDING_PREDICTOR
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.VIOLENT_REOFFENDING_PREDICTOR
@@ -101,17 +101,18 @@ private fun buildPredictorResponseForDirectContactSexualPredictor(riskScoreConte
 }
 
 private fun buildPredictorResponseForIndirectContactSexualPredictor(riskScoreContext: RiskScoreContext): PredictorResponse<IndirectContactSexualPredictorPredictorOutputResponse> {
-  val ospiic = riskScoreContext.OSPIIC!!
+  val imagesAndIndirectContactSexualReoffendingPredictor = riskScoreContext.imagesAndIndirectContactSexualReoffendingPredictor!!
   return PredictorResponse(
-    OSPIIC,
+    IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR,
     STATIC,
     output = IndirectContactSexualPredictorPredictorOutputResponse(
-      ospiic.band.toRiskBandResponse(),
-      ospiic.score?.asDoublePercentage(),
-      ospiic.femaleVersion,
-      ospiic.sexualOffenceHistory,
+      band = imagesAndIndirectContactSexualReoffendingPredictor.band.toRiskBandResponse(),
+      score = imagesAndIndirectContactSexualReoffendingPredictor.score,
+      femaleVersion = imagesAndIndirectContactSexualReoffendingPredictor.femaleVersion,
+      hasSexualOffenceHistory = imagesAndIndirectContactSexualReoffendingPredictor.hasEverCommittedSexualOffence,
     ),
-    validationErrors = ospiic.validationError ?: emptyList(),
+    validationErrors = imagesAndIndirectContactSexualReoffendingPredictor.validationErrors ?: emptyList(),
+    featureValues = imagesAndIndirectContactSexualReoffendingPredictor.featureValues ?: emptyMap(),
   )
 }
 
