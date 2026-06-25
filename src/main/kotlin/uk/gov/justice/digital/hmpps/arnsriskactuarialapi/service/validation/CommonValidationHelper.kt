@@ -4,6 +4,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.getAgeAtDate
 import kotlin.reflect.KProperty1
 
 fun ArrayList<String>.addIfNull(request: RiskScoreRequest, prop: KProperty1<RiskScoreRequest, Any?>) {
@@ -33,9 +34,26 @@ fun validateRequiredFields(
 }
 
 fun validateTotalNumberOfSanctionsForAllOffences(request: RiskScoreRequest, errors: MutableList<ValidationError>) {
-  if (request.totalNumberOfSanctionsForAllOffences != null && request.totalNumberOfSanctionsForAllOffences < 1) {
-    errors += ValidationErrorType.TOTAL_NUMBER_OF_SANCTIONS_LESS_THAN_ONE.asError(
+  if (request.totalNumberOfSanctionsForAllOffences != null && request.totalNumberOfSanctionsForAllOffences !in 1..999) {
+    errors += ValidationErrorType.TOTAL_NUMBER_OF_SANCTIONS_OUT_OF_RANGE.asError(
       listOf(RiskScoreRequest::totalNumberOfSanctionsForAllOffences.name),
+    )
+  }
+}
+
+fun validateTotalNumberOfViolentSanctions(
+  request: RiskScoreRequest,
+  errors: MutableList<ValidationError>,
+) {
+  if (request.totalNumberOfViolentSanctions != null &&
+    request.totalNumberOfSanctionsForAllOffences != null &&
+    (request.totalNumberOfViolentSanctions < 0 || request.totalNumberOfViolentSanctions > request.totalNumberOfSanctionsForAllOffences)
+  ) {
+    errors += ValidationErrorType.VIOLENT_SANCTION_OUT_OF_RANGE.asError(
+      listOf(
+        RiskScoreRequest::totalNumberOfViolentSanctions.name,
+        RiskScoreRequest::totalNumberOfSanctionsForAllOffences.name,
+      ),
     )
   }
 }
@@ -43,6 +61,40 @@ fun validateTotalNumberOfSanctionsForAllOffences(request: RiskScoreRequest, erro
 fun validateCurrentOffenceCode(request: RiskScoreRequest, errors: MutableList<ValidationError>) {
   if (request.currentOffenceCode != null && request.currentOffenceCode.length != 5) {
     errors += ValidationErrorType.OFFENCE_CODE_INCORRECT_FORMAT.asError(listOf(RiskScoreRequest::currentOffenceCode.name))
+  }
+}
+
+fun validateAgeAtFirstSanction(request: RiskScoreRequest, errors: MutableList<ValidationError>) {
+  // ageAtFirstSanction must be between 8-98 (inclusive)
+  if (request.ageAtFirstSanction != null) {
+    if (request.ageAtFirstSanction !in 8..98) {
+      errors.add(ValidationErrorType.AGE_AT_FIRST_SANCTION_OUT_OF_RANGE.asError(listOf(RiskScoreRequest::ageAtFirstSanction.name)))
+    }
+  }
+}
+
+fun validateDateOfCurrentConvictionAgainstDateOfBirth(request: RiskScoreRequest, errors: MutableList<ValidationError>) {
+  // dateOfCurrentConviction must be after dateOfBirth
+  if (request.dateOfCurrentConviction != null && request.dateOfBirth != null && request.dateOfCurrentConviction <= request.dateOfBirth) {
+    errors.add(ValidationErrorType.DATE_OF_CURRENT_CONVICTION_BEFORE_DATE_OF_BIRTH.asError(listOf(RiskScoreRequest::dateOfCurrentConviction.name)))
+  }
+}
+
+fun validateDateOfCurrentConvictionAgainstAgeAtFirstSanction(request: RiskScoreRequest, errors: MutableList<ValidationError>) {
+  // dateOfCurrentConviction must be after ageAtFirstSanction
+  if (request.dateOfCurrentConviction != null && request.ageAtFirstSanction != null && request.dateOfBirth != null) {
+    val ageAtCurrentConviction =
+      getAgeAtDate(request.dateOfBirth, request.dateOfCurrentConviction, RiskScoreRequest::dateOfCurrentConviction.name)
+    if (ageAtCurrentConviction < request.ageAtFirstSanction) {
+      errors.add(
+        ValidationErrorType.AGE_AT_FIRST_SANCTION_AFTER_AGE_AT_CURRENT_CONVICTION.asError(
+          listOf(
+            RiskScoreRequest::dateOfCurrentConviction.name,
+            RiskScoreRequest::ageAtFirstSanction.name,
+          ),
+        ),
+      )
+    }
   }
 }
 

@@ -28,14 +28,28 @@ val SERIOUS_VIOLENT_REOFFENDING_PREDICTOR_DYNAMIC_REQUIRED_FIELDS: List<KPropert
 
 fun validateSeriousViolentReoffendingPredictorStatic(request: RiskScoreRequest): List<ValidationError> {
   val errors = mutableListOf<ValidationError>()
-  validateRequiredFields(request, errors, SERIOUS_VIOLENT_REOFFENDING_PREDICTOR_STATIC_REQUIRED_FIELDS, StaticOrDynamic.STATIC)
-  // TODO: Add further validation logic
+  validateRequiredFields(
+    request,
+    errors,
+    SERIOUS_VIOLENT_REOFFENDING_PREDICTOR_STATIC_REQUIRED_FIELDS,
+    StaticOrDynamic.STATIC,
+  )
+  validateTotalNumberOfSanctionsForAllOffences(request, errors)
+  validateTotalNumberOfViolentSanctions(request, errors)
+  validateCurrentOffenceCode(request, errors)
+  validateAgeAtFirstSanction(request, errors)
+  validateDateOfCurrentConvictionAgainstDateOfBirth(request, errors)
+  validateDateOfCurrentConvictionAgainstAgeAtFirstSanction(request, errors)
   return errors
 }
 
 fun validateSeriousViolentReoffendingPredictorDynamic(request: RiskScoreRequest): List<ValidationError> {
   val errors = mutableListOf<ValidationError>()
-  validateRequiredFields(request, errors, SERIOUS_VIOLENT_REOFFENDING_PREDICTOR_DYNAMIC_REQUIRED_FIELDS, StaticOrDynamic.DYNAMIC)
-  // TODO: Add further validation logic
+  validateRequiredFields(
+    request,
+    errors,
+    SERIOUS_VIOLENT_REOFFENDING_PREDICTOR_DYNAMIC_REQUIRED_FIELDS,
+    StaticOrDynamic.DYNAMIC,
+  )
   return errors
 }
