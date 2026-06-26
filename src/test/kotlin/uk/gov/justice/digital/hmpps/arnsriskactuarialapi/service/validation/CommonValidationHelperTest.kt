@@ -347,4 +347,56 @@ class CommonValidationHelperTest {
     assertEquals(1, errors.size)
     assertEquals(expectedError, errors.first())
   }
+
+  @Test
+  fun `validateDateOfCurrentConvictionAgainstAssessmentDate should not add error when dateOfCurrentConviction is null`() {
+    val request = RiskScoreRequest(
+      assessmentDate = LocalDate.of(2026, 1, 1),
+      dateOfCurrentConviction = null,
+    )
+    val errors = mutableListOf<ValidationError>()
+
+    validateDateOfCurrentConvictionAgainstAssessmentDate(request, errors)
+    assertTrue(errors.isEmpty(), "Errors list should remain empty when dateOfCurrentConviction is null")
+  }
+
+  @Test
+  fun `validateDateOfCurrentConvictionAgainstAssessmentDate should not add error when dateOfCurrentConviction is less than 3 months after assessmentDate`() {
+    val request = RiskScoreRequest(
+      assessmentDate = LocalDate.of(2026, 1, 1),
+      dateOfCurrentConviction = LocalDate.of(2026, 2, 1),
+    )
+    val errors = mutableListOf<ValidationError>()
+
+    validateDateOfCurrentConvictionAgainstAssessmentDate(request, errors)
+    assertTrue(errors.isEmpty(), "Errors list should remain empty when dateOfCurrentConviction is less than 3 months after assessmentDate")
+  }
+
+  @Test
+  fun `validateDateOfCurrentConvictionAgainstAssessmentDate should not add error when dateOfCurrentConviction is exactly 3 months after assessmentDate`() {
+    val request = RiskScoreRequest(
+      assessmentDate = LocalDate.of(2026, 1, 1),
+      dateOfCurrentConviction = LocalDate.of(2026, 4, 1),
+    )
+    val errors = mutableListOf<ValidationError>()
+
+    validateDateOfCurrentConvictionAgainstAssessmentDate(request, errors)
+    assertTrue(errors.isEmpty(), "Expected no validation errors")
+  }
+
+  @Test
+  fun `validateDateOfCurrentConvictionAgainstAssessmentDate should add error when dateOfCurrentConviction is more than 3 months after assessmentDate`() {
+    val request = RiskScoreRequest(
+      assessmentDate = LocalDate.of(2026, 1, 1),
+      dateOfCurrentConviction = LocalDate.of(2026, 4, 2),
+    )
+    val errors = mutableListOf<ValidationError>()
+
+    validateDateOfCurrentConvictionAgainstAssessmentDate(request, errors)
+    val expectedError = ValidationErrorType.DATE_OF_CURRENT_CONVICTION_WITHIN_THREE_MONTHS_OF_ASSESSMENT_DATE.asError(
+      listOf("dateOfCurrentConviction", "assessmentDate"),
+    )
+    assertEquals(1, errors.size)
+    assertEquals(expectedError, errors.first())
+  }
 }

@@ -80,7 +80,10 @@ fun validateDateOfCurrentConvictionAgainstDateOfBirth(request: RiskScoreRequest,
   }
 }
 
-fun validateDateOfCurrentConvictionAgainstAgeAtFirstSanction(request: RiskScoreRequest, errors: MutableList<ValidationError>) {
+fun validateDateOfCurrentConvictionAgainstAgeAtFirstSanction(
+  request: RiskScoreRequest,
+  errors: MutableList<ValidationError>,
+) {
   // dateOfCurrentConviction must be after ageAtFirstSanction
   if (request.dateOfCurrentConviction != null && request.ageAtFirstSanction != null && request.dateOfBirth != null) {
     val ageAtCurrentConviction =
@@ -95,6 +98,29 @@ fun validateDateOfCurrentConvictionAgainstAgeAtFirstSanction(request: RiskScoreR
         ),
       )
     }
+  }
+}
+
+fun validateDateOfCurrentConvictionAgainstAssessmentDate(
+  request: RiskScoreRequest,
+  errors: MutableList<ValidationError>,
+) {
+  // dateOfCurrentConviction must be less than 3 months after assessmentDate
+  if (request.dateOfCurrentConviction != null &&
+    request.dateOfCurrentConviction.isAfter(
+      request.assessmentDate.plusMonths(
+        3,
+      ),
+    )
+  ) {
+    errors.add(
+      ValidationErrorType.DATE_OF_CURRENT_CONVICTION_WITHIN_THREE_MONTHS_OF_ASSESSMENT_DATE.asError(
+        listOf(
+          RiskScoreRequest::dateOfCurrentConviction.name,
+          RiskScoreRequest::assessmentDate.name,
+        ),
+      ),
+    )
   }
 }
 
