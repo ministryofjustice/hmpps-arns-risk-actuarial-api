@@ -19,38 +19,15 @@ import java.math.BigDecimal
 class ImagesAndIndirectContactSexualReoffendingPredictorRiskProducerService : BaseRiskScoreProducer() {
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
-    if (request.hasEverCommittedSexualOffence != true) {
-      return context.apply {
-        imagesAndIndirectContactSexualReoffendingPredictor = ImagesAndIndirectContactSexualReoffendingPredictorObject(
-          0.0,
-          RiskBand.NOT_APPLICABLE,
-          request.gender == Gender.FEMALE,
-          request.hasEverCommittedSexualOffence,
-          StaticOrDynamic.STATIC,
-          null,
-          null,
-        )
-      }
-    }
-
     val staticValidationErrors = validateImagesAndIndirectContactSexualReoffendingPredictor(request)
 
     if (staticValidationErrors.isNotEmpty()) {
       return applyErrorsToContext(context, staticValidationErrors)
     }
 
-    val validStaticRequest =
-      ImagesAndIndirectContactSexualReoffendingPredictorRequestValidated.Static(
-        request.gender!!,
-        request.totalIndecentImageSanctions!!,
-        request.totalContactAdultSexualSanctions!!,
-        request.totalContactChildSexualSanctions!!,
-        request.totalNonContactSexualOffences!!,
-      )
-
     return context.apply {
       imagesAndIndirectContactSexualReoffendingPredictor =
-        calculateAndBuildPredictor(validStaticRequest, staticValidationErrors)
+        calculateAndBuildPredictor(request, staticValidationErrors)
     }
   }
 
@@ -70,10 +47,30 @@ class ImagesAndIndirectContactSexualReoffendingPredictorRiskProducerService : Ba
   }
 
   private fun calculateAndBuildPredictor(
-    request: ImagesAndIndirectContactSexualReoffendingPredictorRequestValidated,
+    request: RiskScoreRequest,
     validationErrors: List<ValidationError>,
   ): ImagesAndIndirectContactSexualReoffendingPredictorObject {
-    val staticData = request as ImagesAndIndirectContactSexualReoffendingPredictorRequestValidated.Static
+    val isFemaleVersion = request.gender == Gender.FEMALE
+    if (request.hasEverCommittedSexualOffence != true) {
+      return ImagesAndIndirectContactSexualReoffendingPredictorObject(
+        0.0,
+        RiskBand.NOT_APPLICABLE,
+        isFemaleVersion,
+        request.hasEverCommittedSexualOffence,
+        StaticOrDynamic.STATIC,
+        null,
+        null,
+      )
+    }
+
+    val staticData = ImagesAndIndirectContactSexualReoffendingPredictorRequestValidated.Static(
+      request.gender!!,
+      request.totalIndecentImageSanctions!!,
+      request.totalContactAdultSexualSanctions!!,
+      request.totalContactChildSexualSanctions!!,
+      request.totalNonContactSexualOffences!!,
+      true,
+    )
 
     val featureValues = buildFeatureValuesMap(
       staticData = staticData,
@@ -86,7 +83,7 @@ class ImagesAndIndirectContactSexualReoffendingPredictorRiskProducerService : Ba
     return ImagesAndIndirectContactSexualReoffendingPredictorObject(
       score,
       band,
-      staticData.gender == Gender.FEMALE,
+      isFemaleVersion,
       true,
       StaticOrDynamic.STATIC,
       validationErrors,
