@@ -9,6 +9,7 @@ enum class ValidationErrorType(val message: String) {
   NEED_DETAILS_OF_EXACT_OFFENCE("For this group of offences, the OGRS 3 offence category takes different values depending on the nature of the exact offence. Therefore, it is not possible to calculate an OGRS 3 score without details of the exact offence."),
   MISSING_MANDATORY_INPUT("Mandatory input field(s) missing"),
   MISSING_DYNAMIC_INPUT("Dynamic input field(s) missing"),
+  AMBIGUOUS_INPUT("Ambiguous input fields"),
   AGE_AT_FIRST_SANCTION_AFTER_AGE_AT_CURRENT_CONVICTION("Age at first sanction must be before age at current conviction"),
   TOTAL_NUMBER_OF_SANCTIONS_OUT_OF_RANGE("Total number of sanctions must be between 1 and 999 (inclusive)"),
   VIOLENT_SANCTION_OUT_OF_RANGE("Violent sanctions count must be greater than 0, but less than or equal to total number of sanctions"),
