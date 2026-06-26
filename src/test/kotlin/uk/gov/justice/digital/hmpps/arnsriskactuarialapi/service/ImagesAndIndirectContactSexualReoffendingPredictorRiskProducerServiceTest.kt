@@ -2,10 +2,15 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.imagesandIndirectcontactsexualreoffendingpredictor.ImagesAndIndirectContactSexualReoffendingPredictorObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validImageAndIndirectContactPredictorStaticRiskScoreRequest
@@ -15,45 +20,32 @@ class ImagesAndIndirectContactSexualReoffendingPredictorRiskProducerServiceTest 
 
   private val service = ImagesAndIndirectContactSexualReoffendingPredictorRiskProducerService()
 
-  // TODO:Validation
-//  @Test
-//  fun `should return early with errors when static validation fails`() {
-//    val context = service.getRiskScore(RiskScoreRequest(), emptyContext())
-//
-//    val expectedStaticValidationErrors = ValidationError(
-//      ValidationErrorType.MISSING_MANDATORY_INPUT,
-//      "Mandatory input field(s) missing",
-//      listOf(
-//        "gender",
-//        "totalIndecentImageSanctions",
-//        "totalContactAdultSexualSanctions",
-//        "totalContactChildSexualSanctions",
-//        "totalNonContactSexualOffences",
-//      ),
-//    )
-//
-//    val expected = ImagesAndIndirectContactSexualReoffendingPredictorObject(
-//      score = null,
-//      band = null,
-//      null,
-//      null,
-//      staticOrDynamic = null,
-//      validationErrors = listOf(expectedStaticValidationErrors),
-//      featureValues = null,
-//    )
-//
-//    assertEquals(expected, context.imagesAndIndirectContactSexualReoffendingPredictor)
-//  }
+  @ParameterizedTest
+  @MethodSource("riskScoreRequestProvider")
+  fun `should return early with errors when validation fails`(
+    riskScoreRequest: RiskScoreRequest,
+    expectedStaticValidationErrors: ValidationError,
+  ) {
+    val context = service.getRiskScore(riskScoreRequest, emptyContext())
+
+    val expected = ImagesAndIndirectContactSexualReoffendingPredictorObject(
+      score = null,
+      band = null,
+      null,
+      null,
+      staticOrDynamic = null,
+      validationErrors = listOf(expectedStaticValidationErrors),
+      featureValues = null,
+    )
+
+    assertEquals(expected, context.imagesAndIndirectContactSexualReoffendingPredictor)
+  }
 
   @Test
   fun `should return empty object when hasEverCommittedSexualOffence is false`() {
     val request = RiskScoreRequest(
       gender = Gender.MALE,
       hasEverCommittedSexualOffence = false,
-      totalContactAdultSexualSanctions = 1,
-      totalContactChildSexualSanctions = 1,
-      totalNonContactSexualOffences = 1,
-      totalIndecentImageSanctions = 1,
     )
 
     val context = service.getRiskScore(request, emptyContext())
@@ -88,5 +80,56 @@ class ImagesAndIndirectContactSexualReoffendingPredictorRiskProducerServiceTest 
     )
 
     assertEquals(expected, context.imagesAndIndirectContactSexualReoffendingPredictor)
+  }
+
+  companion object {
+    @JvmStatic
+    fun riskScoreRequestProvider() = listOf(
+      Arguments.of(
+        RiskScoreRequest(),
+        ValidationError(
+          ValidationErrorType.MISSING_MANDATORY_INPUT,
+          "Mandatory input field(s) missing",
+          listOf("gender"),
+        ),
+      ),
+      Arguments.of(
+        RiskScoreRequest(
+          gender = Gender.MALE,
+          hasEverCommittedSexualOffence = true,
+        ),
+        ValidationError(
+          ValidationErrorType.MISSING_MANDATORY_INPUT,
+          "Mandatory input field(s) missing",
+          listOf(
+            "totalIndecentImageSanctions",
+            "totalContactAdultSexualSanctions",
+            "totalContactChildSexualSanctions",
+            "totalNonContactSexualOffences",
+          ),
+        ),
+      ),
+      Arguments.of(
+        RiskScoreRequest(
+          gender = Gender.MALE,
+          hasEverCommittedSexualOffence = false,
+          totalContactAdultSexualSanctions = 1,
+          totalContactChildSexualSanctions = 1,
+          totalNonContactSexualOffences = 1,
+          totalIndecentImageSanctions = 1,
+        ),
+        ValidationError(
+          ValidationErrorType.AMBIGUOUS_INPUT,
+          "Ambiguous input fields",
+          listOf(
+            "hasEverCommittedSexualOffence",
+            "totalIndecentImageSanctions",
+            "totalContactAdultSexualSanctions",
+            "totalContactChildSexualSanctions",
+            "totalNonContactSexualOffences",
+          ),
+        ),
+      ),
+    )
   }
 }
