@@ -3,8 +3,8 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.ActuarialPredictorsResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.ALL_REOFFENDING_PREDICTOR
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.DIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.OSPDC
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.RSR
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.SERIOUS_VIOLENT_REOFFENDING_PREDICTOR
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.VIOLENT_REOFFENDING_PREDICTOR
@@ -82,21 +82,20 @@ private fun buildPredictorResponseForViolentPredictor(riskScoreContext: RiskScor
 }
 
 private fun buildPredictorResponseForDirectContactSexualPredictor(riskScoreContext: RiskScoreContext): PredictorResponse<DirectContactSexualPredictorOutputResponse> {
-  val ospdc = riskScoreContext.OSPDC!!
+  val directContactSexualReoffendingPredictor = riskScoreContext.directContactSexualReoffendingPredictor!!
   return PredictorResponse(
-    OSPDC,
+    DIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR,
     STATIC,
     output = DirectContactSexualPredictorOutputResponse(
-      ospdc.ospdcBand.toRiskBandResponse(),
-      ospdc.pointScore,
-      ospdc.ospdcScore?.asDoublePercentage(),
-      ospdc.femaleVersion,
-      ospdc.sexualOffenceHistory,
-      ospdc.ospRiskReduction,
+      directContactSexualReoffendingPredictor.band.toRiskBandResponse(),
+      directContactSexualReoffendingPredictor.pointScore,
+      directContactSexualReoffendingPredictor.score?.asDoublePercentage(),
+      directContactSexualReoffendingPredictor.femaleVersion,
+      directContactSexualReoffendingPredictor.sexualOffenceHistory,
+      directContactSexualReoffendingPredictor.riskReduction,
     ),
-    validationErrors = ospdc.validationError ?: emptyList(),
-    // TODO: Uncomment during ACT-558
-//    featureValues = ospdc.featureValues ?: emptyMap(),
+    validationErrors = directContactSexualReoffendingPredictor.validationError ?: emptyList(),
+    featureValues = directContactSexualReoffendingPredictor.featureValues ?: emptyMap(),
   )
 }
 

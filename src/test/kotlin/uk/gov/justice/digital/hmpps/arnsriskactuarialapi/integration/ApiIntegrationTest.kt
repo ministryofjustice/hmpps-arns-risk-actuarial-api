@@ -34,12 +34,12 @@ class ApiIntegrationTest : IntegrationTestBase() {
     private const val FIXTURE_ROOT = "fixtures"
     private val MODELS = getModelDirectoryNames("src/test/resources/fixtures")
     private val PREDICTOR_JSON_PATH = mapOf<String, String>(
-      Pair("ospdc", "/actuarialPredictors/directContactSexualPredictor"),
-      Pair("imagesAndIndirectContactSexualReoffendingPredictor", "/actuarialPredictors/indirectContactSexualPredictor"),
       Pair("seriousViolentReoffendingPredictor", "/actuarialPredictors/seriousViolencePredictor"),
       Pair("rsr", "/actuarialPredictors/seriousPredictor"),
       Pair("allReoffendingPredictor", "/actuarialPredictors/allPredictor"),
       Pair("violentReoffendingPredictor", "/actuarialPredictors/violentPredictor"),
+      Pair("directContactSexualReoffendingPredictor", "/actuarialPredictors/directContactSexualPredictor"),
+      Pair("imagesAndIndirectContactSexualReoffendingPredictor", "/actuarialPredictors/indirectContactSexualPredictor"),
       Pair("lds", "/lds"),
       Pair("mst", "/mst"),
       Pair("opd", "/opd"),

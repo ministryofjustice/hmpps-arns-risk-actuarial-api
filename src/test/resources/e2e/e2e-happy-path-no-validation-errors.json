@@ -206,7 +206,7 @@
         "validationErrors": []
       },
       "directContactSexualPredictor": {
-        "algorithm": "OSPDC",
+        "algorithm": "DIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR",
         "type": "STATIC",
         "modelVersion": "1.0",
         "thresholdsVersion": "1.0",
@@ -218,7 +218,16 @@
           "hasSexualOffenceHistory": true,
           "riskBandReductionApplied": false
         },
-        "featureValues": {},
+        "featureValues": {
+          "totalContactAdultSexualSanctionsWeight" : 15,
+          "totalContactChildSexualSanctionsWeight" : 9,
+          "totalNonContactSexualOffencesWeight" : 6,
+          "ageAtStartOfFollowUpWeight" : 0,
+          "ageAtLastSanctionForSexualOffenceWeight" : 0,
+          "totalNumberOfSanctionsForAllOffencesWeight" : 0,
+          "currentOffenceAgainstVictimStrangerWeight" : 0,
+          "totalWeight" : 30
+        },
         "validationErrors": []
       },
       "indirectContactSexualPredictor": {
@@ -292,7 +301,7 @@
           "hasSexualOffenceHistory": true,
           "componentScores": {
             "directContactSexualPredictorScore": {
-              "algorithm": "OSPDC",
+              "algorithm": "DIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR",
               "type": "STATIC",
               "modelVersion": "1.0",
               "thresholdsVersion": "1.0",
@@ -304,7 +313,16 @@
                 "hasSexualOffenceHistory": true,
                 "riskBandReductionApplied": false
               },
-              "featureValues": {},
+              "featureValues": {
+                "totalContactAdultSexualSanctionsWeight" : 15,
+                "totalContactChildSexualSanctionsWeight" : 9,
+                "totalNonContactSexualOffencesWeight" : 6,
+                "ageAtStartOfFollowUpWeight" : 0,
+                "ageAtLastSanctionForSexualOffenceWeight" : 0,
+                "totalNumberOfSanctionsForAllOffencesWeight" : 0,
+                "currentOffenceAgainstVictimStrangerWeight" : 0,
+                "totalWeight" : 30
+              },
               "validationErrors": []
             },
             "indirectContactSexualPredictorScore": {

@@ -13,6 +13,9 @@ class RiskScoreService {
   lateinit var allReoffendingPredictorRiskProducerService: AllReoffendingPredictorRiskProducerService
 
   @Autowired
+  lateinit var directContactSexualReoffendingPredictorRiskProducerService: DirectContactSexualReoffendingPredictorRiskProducerService
+
+  @Autowired
   lateinit var violentReoffendingPredictorRiskProducerService: ViolentReoffendingPredictorRiskProducerService
 
   @Autowired
@@ -28,9 +31,6 @@ class RiskScoreService {
   lateinit var ldsRiskProducerService: LDSRiskProducerService
 
   @Autowired
-  lateinit var ospdcRiskProducerService: OSPDCRiskProducerService
-
-  @Autowired
   lateinit var seriousViolentReoffendingPredictorRiskProducerService: SeriousViolentReoffendingPredictorRiskProducerService
 
   @Autowired
@@ -42,11 +42,11 @@ class RiskScoreService {
   fun riskScoreProducer(riskScoreRequest: RiskScoreRequest): RiskScoreResponse = listOf(
     allReoffendingPredictorRiskProducerService,
     violentReoffendingPredictorRiskProducerService,
+    directContactSexualReoffendingPredictorRiskProducerService,
     mstRiskProducerService,
     opdRiskProducerService,
     pniRiskProducerService,
     ldsRiskProducerService,
-    ospdcRiskProducerService,
     seriousViolentReoffendingPredictorRiskProducerService,
     imagesAndIndirectContactSexualReoffendingPredictorRiskProducerService,
     rsrRiskProducerService,

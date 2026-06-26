@@ -48,11 +48,11 @@ class CombinedSeriousReoffendingPredictorTransformationHelperTest {
     gender: Gender,
     sexualOffendingHistory: Boolean,
     seriousViolent: BigDecimal,
-    dcsrp: BigDecimal,
+    directContactSexualReoffendingPredictor: BigDecimal,
     iicsrp: BigDecimal,
     expected: BigDecimal,
   ) {
-    val actual = getCSRPScore(gender, sexualOffendingHistory, seriousViolent, dcsrp, iicsrp)
+    val actual = getCSRPScore(gender, sexualOffendingHistory, seriousViolent, directContactSexualReoffendingPredictor, iicsrp)
     assertThat(actual).isEqualByComparingTo(expected)
   }
 

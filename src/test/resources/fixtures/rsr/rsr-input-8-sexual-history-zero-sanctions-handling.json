@@ -44,31 +44,29 @@
       "hasSexualOffenceHistory": null,
       "componentScores": {
         "directContactSexualPredictorScore": {
-          "algorithm": "OSPDC",
-          "type": "STATIC",
-          "modelVersion": "1.0",
-          "thresholdsVersion": "1.0",
-          "output": {
-            "band": null,
-            "pointScore": null,
-            "score": null,
-            "femaleVersion": null,
-            "hasSexualOffenceHistory": null,
-            "riskBandReductionApplied": null
+          "algorithm" : "DIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR",
+          "type" : "STATIC",
+          "modelVersion" : "1.0",
+          "thresholdsVersion" : "1.0",
+          "output" : {
+            "band" : null,
+            "pointScore" : null,
+            "score" : null,
+            "femaleVersion" : null,
+            "hasSexualOffenceHistory" : null,
+            "riskBandReductionApplied" : null
           },
-          "featureValues": {},
-          "validationErrors": [
-            {
-              "type": "SEXUAL_OFFENDING_MISSING_COUNTS",
-              "message": "Sexual motivation/offending identified - complete sexual offence counts",
-              "fields": [
-                "totalContactAdultSexualSanctions",
-                "totalContactChildSexualSanctions",
-                "totalIndecentImageSanctions",
-                "totalNonContactSexualOffences"
-              ]
-            }
-          ]
+          "featureValues" : { },
+          "validationErrors" : [ {
+            "type" : "SEXUAL_OFFENDING_MISSING_COUNTS",
+            "message" : "Sexual motivation/offending identified - complete sexual offence counts",
+            "fields" : [
+              "totalContactAdultSexualSanctions",
+              "totalContactChildSexualSanctions",
+              "totalIndecentImageSanctions",
+              "totalNonContactSexualOffences"
+            ]
+          } ]
         },
         "indirectContactSexualPredictorScore": {
           "algorithm": "IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR",
@@ -137,7 +135,7 @@
         "type": "COMPONENT_VALIDATION_ERROR",
         "message": "Validation error(s) in component scores",
         "fields": [
-          "OSPDC"
+          "DIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR",
         ]
       }
     ]

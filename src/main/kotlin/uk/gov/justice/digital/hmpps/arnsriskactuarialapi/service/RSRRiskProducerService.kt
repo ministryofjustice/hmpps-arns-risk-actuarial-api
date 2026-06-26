@@ -8,8 +8,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.directContactSexualReoffendingPredictor.DirectContactSexualReoffendingPredictorObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.imagesandIndirectcontactsexualreoffendingpredictor.ImagesAndIndirectContactSexualReoffendingPredictorObject
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.osp.OSPDCObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.rsr.RSRObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.seriousviolentreoffendingpredictor.SeriousViolentReoffendingPredictorObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getRSRBand
@@ -23,7 +23,7 @@ const val FEMALE_SEXUAL_OFFENDER_RSR_CONTRIBUTION = 0.00383141762
 class RSRRiskProducerService : BaseRiskScoreProducer() {
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
-    val ospdc = context.OSPDC ?: OSPDCObject(null, null, null, null, null, null, null, null)
+    val directContactSexualReoffendingPredictor = context.directContactSexualReoffendingPredictor ?: DirectContactSexualReoffendingPredictorObject(null, null, null, null, null, null, null, null)
     val imagesAndIndirectContactSexualReoffendingPredictor =
       context.imagesAndIndirectContactSexualReoffendingPredictor ?: ImagesAndIndirectContactSexualReoffendingPredictorObject(
         null,
@@ -44,7 +44,7 @@ class RSRRiskProducerService : BaseRiskScoreProducer() {
       )
 
     val componentErrorNames = mutableListOf<String>()
-    context.OSPDC?.validationError?.let { validationErrors -> if (validationErrors.isNotEmpty()) componentErrorNames += AlgorithmResponse.OSPDC.name }
+    context.directContactSexualReoffendingPredictor?.validationError?.let { validationErrors -> if (validationErrors.isNotEmpty()) componentErrorNames += AlgorithmResponse.DIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR.name }
     imagesAndIndirectContactSexualReoffendingPredictor.validationErrors?.let { validationErrors -> if (validationErrors.isNotEmpty()) componentErrorNames += AlgorithmResponse.IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR.name }
     context.seriousViolentReoffendingPredictor?.validationErrors?.let { validationErrors ->
       if (validationErrors.any { it.type != ValidationErrorType.MISSING_DYNAMIC_INPUT }) componentErrorNames += AlgorithmResponse.SERIOUS_VIOLENT_REOFFENDING_PREDICTOR.name
@@ -60,7 +60,7 @@ class RSRRiskProducerService : BaseRiskScoreProducer() {
     }
 
     val errors = listOfNotNull(
-      ospdc.validationError,
+      directContactSexualReoffendingPredictor.validationError,
       imagesAndIndirectContactSexualReoffendingPredictor.validationErrors,
       seriousViolentReoffendingPredictor.validationErrors,
     ).flatten()
@@ -71,24 +71,18 @@ class RSRRiskProducerService : BaseRiskScoreProducer() {
       return applyErrorsToContext(context, errors)
     }
 
-    val ospdcScore = ospdc.ospdcScore?.asDoublePercentage() ?: 0.0
-    val ospdcBand = ospdc.ospdcBand ?: RiskBand.NOT_APPLICABLE
-    val ospRiskReduction = ospdc.ospRiskReduction
+    val directContactSexualReoffendingPredictorScore = directContactSexualReoffendingPredictor.score?.asDoublePercentage() ?: 0.0
+    val directContactSexualReoffendingPredictorBand = directContactSexualReoffendingPredictor.band ?: RiskBand.NOT_APPLICABLE
+    val riskReduction = directContactSexualReoffendingPredictor.riskReduction
     val imagesAndIndirectContactSexualReoffendingPredictorScore = imagesAndIndirectContactSexualReoffendingPredictor.score ?: 0.0
     val imagesAndIndirectContactSexualReoffendingPredictorBand =
       imagesAndIndirectContactSexualReoffendingPredictor.band ?: RiskBand.NOT_APPLICABLE
     val seriousViolentReoffendingScore = seriousViolentReoffendingPredictor.score
-    val femaleOSPDCWeight =
-      if (Gender.FEMALE == request.gender && request.hasEverCommittedSexualOffence == true) FEMALE_SEXUAL_OFFENDER_RSR_CONTRIBUTION.asDoublePercentage() else 0.0
+    val femaleDirectContactSexualReoffendingPredictorWeight = if (Gender.FEMALE == request.gender && request.hasEverCommittedSexualOffence == true) FEMALE_SEXUAL_OFFENDER_RSR_CONTRIBUTION.asDoublePercentage() else 0.0
     val rsrScore = if (hasBlockingErrors(errors)) {
       null
     } else {
-      listOfNotNull(
-        seriousViolentReoffendingScore,
-        ospdcScore,
-        imagesAndIndirectContactSexualReoffendingPredictorScore,
-        femaleOSPDCWeight,
-      ).sum().roundToNDecimals(2).sanitisePercentage()
+      listOfNotNull(seriousViolentReoffendingScore, directContactSexualReoffendingPredictorScore, imagesAndIndirectContactSexualReoffendingPredictorScore, femaleDirectContactSexualReoffendingPredictorWeight).sum().roundToNDecimals(2).sanitisePercentage()
     }
     val rsrBand = getRSRBand(rsrScore)
     val scoreType = if (rsrScore != null) {
@@ -101,14 +95,14 @@ class RSRRiskProducerService : BaseRiskScoreProducer() {
       return context.apply {
         RSR = RSRObject(
           null,
-          ospdcScore,
+          directContactSexualReoffendingPredictorScore,
           null,
           imagesAndIndirectContactSexualReoffendingPredictorScore,
           seriousViolentReoffendingScore,
           rsrScore,
           rsrBand,
           scoreType,
-          ospRiskReduction,
+          riskReduction,
           request.gender == Gender.FEMALE,
           request.hasEverCommittedSexualOffence,
           errors,
@@ -118,15 +112,15 @@ class RSRRiskProducerService : BaseRiskScoreProducer() {
 
     return context.apply {
       RSR = RSRObject(
-        ospdcBand,
-        ospdcScore,
+        directContactSexualReoffendingPredictorBand,
+        directContactSexualReoffendingPredictorScore,
         imagesAndIndirectContactSexualReoffendingPredictorBand,
         imagesAndIndirectContactSexualReoffendingPredictorScore,
         seriousViolentReoffendingScore,
         rsrScore,
         rsrBand,
         scoreType,
-        ospRiskReduction,
+        riskReduction,
         request.gender == Gender.FEMALE,
         request.hasEverCommittedSexualOffence,
         errors,

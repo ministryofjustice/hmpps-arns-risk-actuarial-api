@@ -13,8 +13,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.directContactSexualReoffendingPredictor.DirectContactSexualReoffendingPredictorObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.imagesandIndirectcontactsexualreoffendingpredictor.ImagesAndIndirectContactSexualReoffendingPredictorObject
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.osp.OSPDCObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.seriousviolentreoffendingpredictor.SeriousViolentReoffendingPredictorObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
 
@@ -25,14 +25,14 @@ class RSRRiskProducerServiceTest {
   @Test
   fun `should calculate RSR score when no validation errors`() {
     val context = emptyContext().copy(
-      OSPDC = OSPDCObject(
-        ospdcScore = 0.0512312312,
-        ospdcBand = RiskBand.LOW,
+      directContactSexualReoffendingPredictor = DirectContactSexualReoffendingPredictorObject(
+        score = 0.0512312312,
+        band = RiskBand.LOW,
         pointScore = null,
         validationError = emptyList(),
         femaleVersion = false,
         sexualOffenceHistory = false,
-        ospRiskReduction = null,
+        riskReduction = null,
         featureValues = null,
       ),
       imagesAndIndirectContactSexualReoffendingPredictor = ImagesAndIndirectContactSexualReoffendingPredictorObject(
@@ -62,8 +62,8 @@ class RSRRiskProducerServiceTest {
     )
 
     val rsr = result.RSR!!
-    assertEquals(RiskBand.LOW, rsr.ospdcBand)
-    assertEquals(5.12, rsr.ospdcScore)
+    assertEquals(RiskBand.LOW, rsr.directContactSexualReoffendingPredictorBand)
+    assertEquals(5.12, rsr.directContactSexualReoffendingPredictorScore)
     assertEquals(RiskBand.MEDIUM, rsr.imagesAndIndirectContactSexualReoffendingPredictorBand)
     assertEquals(2.12, rsr.imagesAndIndirectContactSexualReoffendingPredictorScore)
     assertEquals(7.27, rsr.rsrScore)
@@ -75,7 +75,7 @@ class RSRRiskProducerServiceTest {
   @Test
   fun `should calculate RSR score when female with female contribution to rsr no validation errors`() {
     val context = emptyContext().copy(
-      OSPDC = ospdcNotApplicable(),
+      directContactSexualReoffendingPredictor = directContactSexualReoffendingPredictorNotApplicable(),
       imagesAndIndirectContactSexualReoffendingPredictor = imagesAndIndirectContactSexualReoffendingPredictorNotApplicable(),
       seriousViolentReoffendingPredictor = SeriousViolentReoffendingPredictorObject(
         0.1,
@@ -108,16 +108,16 @@ class RSRRiskProducerServiceTest {
       ValidationError(
         type = ValidationErrorType.COMPONENT_VALIDATION_ERROR,
         message = "Validation error(s) in component scores",
-        fields = listOf(AlgorithmResponse.OSPDC.name),
+        fields = listOf(AlgorithmResponse.DIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR.name),
       ),
     )
     val context = emptyContext().copy(
-      OSPDC = OSPDCObject(
-        ospdcScore = 0.02378462734,
-        ospdcBand = RiskBand.LOW,
+      directContactSexualReoffendingPredictor = DirectContactSexualReoffendingPredictorObject(
+        score = 0.02378462734,
+        band = RiskBand.LOW,
         pointScore = null,
         validationError = errors,
-        ospRiskReduction = null,
+        riskReduction = null,
         femaleVersion = false,
         sexualOffenceHistory = true,
         featureValues = null,
@@ -134,7 +134,7 @@ class RSRRiskProducerServiceTest {
   }
 
   @Test
-  fun `should handle null OSPDC and OSPIIC inputs gracefully`() {
+  fun `should handle null directContactSexualReoffendingPredictor and OSPIIC inputs gracefully`() {
     val context = emptyContext()
 
     val result = service.getRiskScore(
@@ -146,8 +146,8 @@ class RSRRiskProducerServiceTest {
     )
 
     val rsr = result.RSR!!
-    assertEquals(0.0, rsr.ospdcScore)
-    assertEquals(RiskBand.NOT_APPLICABLE, rsr.ospdcBand)
+    assertEquals(0.0, rsr.directContactSexualReoffendingPredictorScore)
+    assertEquals(RiskBand.NOT_APPLICABLE, rsr.directContactSexualReoffendingPredictorBand)
     assertEquals(0.0, rsr.imagesAndIndirectContactSexualReoffendingPredictorScore)
     assertEquals(RiskBand.NOT_APPLICABLE, rsr.imagesAndIndirectContactSexualReoffendingPredictorBand)
     assertEquals(0.0, rsr.rsrScore)
@@ -163,8 +163,8 @@ class RSRRiskProducerServiceTest {
     val result = service.getRiskScore(RiskScoreRequest(), context)
 
     val rsr = result.RSR!!
-    assertEquals(null, rsr.ospdcScore)
-    assertEquals(null, rsr.ospdcBand)
+    assertEquals(null, rsr.directContactSexualReoffendingPredictorScore)
+    assertEquals(null, rsr.directContactSexualReoffendingPredictorBand)
     assertEquals(null, rsr.imagesAndIndirectContactSexualReoffendingPredictorScore)
     assertEquals(null, rsr.imagesAndIndirectContactSexualReoffendingPredictorBand)
     assertEquals(null, rsr.rsrScore)
@@ -190,8 +190,8 @@ class RSRRiskProducerServiceTest {
     )
 
     val rsr = result.RSR!!
-    assertEquals(null, rsr.ospdcScore)
-    assertEquals(null, rsr.ospdcBand)
+    assertEquals(null, rsr.directContactSexualReoffendingPredictorScore)
+    assertEquals(null, rsr.directContactSexualReoffendingPredictorBand)
     assertEquals(null, rsr.imagesAndIndirectContactSexualReoffendingPredictorScore)
     assertEquals(null, rsr.imagesAndIndirectContactSexualReoffendingPredictorBand)
     assertEquals(null, rsr.rsrScore)
@@ -207,8 +207,8 @@ class RSRRiskProducerServiceTest {
     val result = service.getRiskScore(RiskScoreRequest(hasEverCommittedSexualOffence = false), context)
 
     val rsr = result.RSR!!
-    assertEquals(0.0, rsr.ospdcScore)
-    assertEquals(null, rsr.ospdcBand)
+    assertEquals(0.0, rsr.directContactSexualReoffendingPredictorScore)
+    assertEquals(null, rsr.directContactSexualReoffendingPredictorBand)
     assertEquals(0.0, rsr.imagesAndIndirectContactSexualReoffendingPredictorScore)
     assertEquals(null, rsr.imagesAndIndirectContactSexualReoffendingPredictorBand)
     assertEquals(0.0, rsr.rsrScore)
@@ -242,7 +242,7 @@ class RSRRiskProducerServiceTest {
   @Test
   fun `should calculate RSR score when upper score limit exceeded and sanitise`() {
     val context = emptyContext().copy(
-      OSPDC = ospdcNotApplicable(),
+      directContactSexualReoffendingPredictor = directContactSexualReoffendingPredictorNotApplicable(),
       imagesAndIndirectContactSexualReoffendingPredictor = imagesAndIndirectContactSexualReoffendingPredictorNotApplicable(),
       seriousViolentReoffendingPredictor = SeriousViolentReoffendingPredictorObject(
         100.0,
@@ -268,7 +268,7 @@ class RSRRiskProducerServiceTest {
   @Test
   fun `should calculate RSR score when lower score limit exceeded and sanitise`() {
     val context = emptyContext().copy(
-      OSPDC = ospdcNotApplicable(),
+      directContactSexualReoffendingPredictor = directContactSexualReoffendingPredictorNotApplicable(),
       imagesAndIndirectContactSexualReoffendingPredictor = imagesAndIndirectContactSexualReoffendingPredictorNotApplicable(),
       seriousViolentReoffendingPredictor = SeriousViolentReoffendingPredictorObject(
         -0.1,
@@ -291,14 +291,14 @@ class RSRRiskProducerServiceTest {
     assertEquals(0.0, result.RSR!!.rsrScore)
   }
 
-  private fun ospdcNotApplicable(): OSPDCObject = OSPDCObject(
-    ospdcScore = 0.0,
-    ospdcBand = RiskBand.NOT_APPLICABLE,
+  private fun directContactSexualReoffendingPredictorNotApplicable(): DirectContactSexualReoffendingPredictorObject = DirectContactSexualReoffendingPredictorObject(
+    score = 0.0,
+    band = RiskBand.NOT_APPLICABLE,
     pointScore = null,
     validationError = emptyList(),
     femaleVersion = true,
     sexualOffenceHistory = true,
-    ospRiskReduction = null,
+    riskReduction = null,
     featureValues = null,
   )
 
