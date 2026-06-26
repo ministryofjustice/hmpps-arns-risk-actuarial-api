@@ -17,7 +17,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.ScoreTypeRespon
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.ScoreTypeResponse.STATIC
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.SeriousPredictorComponentScores
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.SeriousPredictorPredictorOutputResponse
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.SeriousViolencePredictorPredictorOutputResponse
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.SeriousViolentPredictorPredictorOutputResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.ViolentPredictorPredictorOutputResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.toRiskBandResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds.LDSObject
@@ -49,7 +49,7 @@ private fun buildActuarialPredictorsResponse(riskScoreContext: RiskScoreContext)
   buildPredictorResponseForViolentPredictor(riskScoreContext),
   buildPredictorResponseForDirectContactSexualPredictor(riskScoreContext),
   buildPredictorResponseForIndirectContactSexualPredictor(riskScoreContext),
-  buildPredictorResponseForSeriousViolencePredictor(riskScoreContext),
+  buildPredictorResponseForSeriousViolentPredictor(riskScoreContext),
   buildPredictorResponseForSeriousPredictor(riskScoreContext),
 )
 
@@ -116,12 +116,12 @@ private fun buildPredictorResponseForIndirectContactSexualPredictor(riskScoreCon
   )
 }
 
-private fun buildPredictorResponseForSeriousViolencePredictor(riskScoreContext: RiskScoreContext): PredictorResponse<SeriousViolencePredictorPredictorOutputResponse> {
+private fun buildPredictorResponseForSeriousViolentPredictor(riskScoreContext: RiskScoreContext): PredictorResponse<SeriousViolentPredictorPredictorOutputResponse> {
   val seriousViolentReoffendingPredictor = riskScoreContext.seriousViolentReoffendingPredictor!!
   return PredictorResponse(
     SERIOUS_VIOLENT_REOFFENDING_PREDICTOR,
     seriousViolentReoffendingPredictor.staticOrDynamic.toScoreTypeResponse(),
-    output = SeriousViolencePredictorPredictorOutputResponse(
+    output = SeriousViolentPredictorPredictorOutputResponse(
       seriousViolentReoffendingPredictor.band.toRiskBandResponse(),
       seriousViolentReoffendingPredictor.score,
     ),
@@ -143,7 +143,7 @@ private fun buildPredictorResponseForSeriousPredictor(riskScoreContext: RiskScor
       componentScores = SeriousPredictorComponentScores(
         buildPredictorResponseForDirectContactSexualPredictor(riskScoreContext),
         buildPredictorResponseForIndirectContactSexualPredictor(riskScoreContext),
-        buildPredictorResponseForSeriousViolencePredictor(riskScoreContext),
+        buildPredictorResponseForSeriousViolentPredictor(riskScoreContext),
       ),
     ),
     validationErrors = rsr.validationError ?: emptyList(),

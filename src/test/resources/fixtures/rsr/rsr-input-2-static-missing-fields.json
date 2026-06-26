@@ -59,7 +59,7 @@
           "featureValues": {},
           "validationErrors": []
         },
-        "seriousViolencePredictorScore": {
+        "seriousViolentPredictorScore": {
           "algorithm": "SERIOUS_VIOLENT_REOFFENDING_PREDICTOR",
           "type": null,
           "modelVersion": "1.0",
