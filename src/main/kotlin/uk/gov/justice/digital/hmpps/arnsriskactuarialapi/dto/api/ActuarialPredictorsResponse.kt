@@ -5,6 +5,6 @@ data class ActuarialPredictorsResponse(
   val violentPredictor: PredictorResponse<ViolentPredictorPredictorOutputResponse>,
   val directContactSexualPredictor: PredictorResponse<DirectContactSexualPredictorOutputResponse>,
   val indirectContactSexualPredictor: PredictorResponse<IndirectContactSexualPredictorPredictorOutputResponse>,
-  val seriousViolencePredictor: PredictorResponse<SeriousViolencePredictorPredictorOutputResponse>,
+  val seriousViolentPredictor: PredictorResponse<SeriousViolentPredictorPredictorOutputResponse>,
   val seriousPredictor: PredictorResponse<SeriousPredictorPredictorOutputResponse>,
 )

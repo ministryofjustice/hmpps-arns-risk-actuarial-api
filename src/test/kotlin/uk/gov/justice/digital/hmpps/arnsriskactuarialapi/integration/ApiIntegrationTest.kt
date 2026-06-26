@@ -36,7 +36,7 @@ class ApiIntegrationTest : IntegrationTestBase() {
     private val PREDICTOR_JSON_PATH = mapOf<String, String>(
       Pair("ospdc", "/actuarialPredictors/directContactSexualPredictor"),
       Pair("imagesAndIndirectContactSexualReoffendingPredictor", "/actuarialPredictors/indirectContactSexualPredictor"),
-      Pair("seriousViolentReoffendingPredictor", "/actuarialPredictors/seriousViolencePredictor"),
+      Pair("seriousViolentReoffendingPredictor", "/actuarialPredictors/seriousViolentPredictor"),
       Pair("rsr", "/actuarialPredictors/seriousPredictor"),
       Pair("allReoffendingPredictor", "/actuarialPredictors/allPredictor"),
       Pair("violentReoffendingPredictor", "/actuarialPredictors/violentPredictor"),

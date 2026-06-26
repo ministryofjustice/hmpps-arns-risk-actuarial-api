@@ -30,7 +30,7 @@ data class IndirectContactSexualPredictorPredictorOutputResponse(
   val hasSexualOffenceHistory: Boolean?,
 ) : PredictorOutputResponse(band)
 
-data class SeriousViolencePredictorPredictorOutputResponse(
+data class SeriousViolentPredictorPredictorOutputResponse(
   override val band: RiskBandResponse?,
   val score: Double?,
 ) : PredictorOutputResponse(band)
@@ -46,5 +46,5 @@ data class SeriousPredictorPredictorOutputResponse(
 data class SeriousPredictorComponentScores(
   val directContactSexualPredictorScore: PredictorResponse<DirectContactSexualPredictorOutputResponse>,
   val indirectContactSexualPredictorScore: PredictorResponse<IndirectContactSexualPredictorPredictorOutputResponse>,
-  val seriousViolencePredictorScore: PredictorResponse<SeriousViolencePredictorPredictorOutputResponse>,
+  val seriousViolentPredictorScore: PredictorResponse<SeriousViolentPredictorPredictorOutputResponse>,
 )

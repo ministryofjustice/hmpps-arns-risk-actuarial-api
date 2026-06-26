@@ -237,7 +237,7 @@
         },
         "validationErrors": []
       },
-      "seriousViolencePredictor": {
+      "seriousViolentPredictor": {
         "algorithm": "SERIOUS_VIOLENT_REOFFENDING_PREDICTOR",
         "type": "DYNAMIC",
         "modelVersion": "1.0",
@@ -323,7 +323,7 @@
               },
               "validationErrors": []
             },
-            "seriousViolencePredictorScore": {
+            "seriousViolentPredictorScore": {
               "algorithm": "SERIOUS_VIOLENT_REOFFENDING_PREDICTOR",
               "type": "DYNAMIC",
               "modelVersion": "1.0",
