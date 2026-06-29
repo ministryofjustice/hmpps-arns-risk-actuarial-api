@@ -86,7 +86,7 @@
           },
           "validationErrors": []
         },
-        "seriousViolencePredictorScore": {
+        "seriousViolentPredictorScore": {
           "algorithm": "SERIOUS_VIOLENT_REOFFENDING_PREDICTOR",
           "type": "DYNAMIC",
           "modelVersion": "1.0",

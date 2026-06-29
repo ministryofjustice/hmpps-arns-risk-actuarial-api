@@ -40,6 +40,7 @@ fun validateSeriousViolentReoffendingPredictorStatic(request: RiskScoreRequest):
   validateAgeAtFirstSanction(request, errors)
   validateDateOfCurrentConvictionAgainstDateOfBirth(request, errors)
   validateDateOfCurrentConvictionAgainstAgeAtFirstSanction(request, errors)
+  validateDateOfCurrentConvictionAgainstAssessmentDate(request, errors)
   return errors
 }
 
