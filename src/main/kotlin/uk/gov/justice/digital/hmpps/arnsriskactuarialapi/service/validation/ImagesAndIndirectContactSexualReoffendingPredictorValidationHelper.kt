@@ -6,6 +6,12 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import kotlin.reflect.KProperty1
 
+val GENERAL_REQUIRED_FIELDS: List<KProperty1<RiskScoreRequest, Any?>> =
+  listOf(
+    RiskScoreRequest::gender,
+    RiskScoreRequest::hasEverCommittedSexualOffence,
+  )
+
 val IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR_REQUIRED_FIELDS: List<KProperty1<RiskScoreRequest, Any?>> =
   listOf(
     RiskScoreRequest::totalIndecentImageSanctions,
@@ -16,32 +22,23 @@ val IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR_REQUIRED_FIELDS: Li
 
 fun validateImagesAndIndirectContactSexualReoffendingPredictor(request: RiskScoreRequest): List<ValidationError> {
   val errors = mutableListOf<ValidationError>()
-  if (request.gender == null) {
-    errors += ValidationErrorType.MISSING_MANDATORY_INPUT.asError(listOf(RiskScoreRequest::gender.name))
-  }
+  validateRequiredFields(
+    request,
+    errors,
+    GENERAL_REQUIRED_FIELDS,
+    StaticOrDynamic.STATIC,
+  )
 
-  if (request.hasEverCommittedSexualOffence == true) {
-    validateSanctions(request, errors)
-  } else {
-    val existingFields = arrayListOf<String>()
-
-    IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR_REQUIRED_FIELDS.forEach {
-      existingFields.addIfNotNull(
-        request,
-        it,
-      )
-    }
-
-    if (existingFields.isNotEmpty()) {
-      existingFields.addFirst(RiskScoreRequest::hasEverCommittedSexualOffence.name)
-      errors += ValidationErrorType.AMBIGUOUS_INPUT.asError(existingFields)
-    }
+  when (request.hasEverCommittedSexualOffence) {
+    true -> validateSanctions(request, errors)
+    false -> checkForExistingFields(request, errors)
+    else -> null
   }
 
   return errors
 }
 
-fun validateSanctions(
+private fun validateSanctions(
   request: RiskScoreRequest,
   errors: MutableList<ValidationError>,
 ) {
@@ -56,5 +53,21 @@ fun validateSanctions(
     errors += ValidationErrorType.IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR_NO_SANCTIONS.asError(
       IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR_REQUIRED_FIELDS.names(),
     )
+  }
+}
+
+private fun checkForExistingFields(request: RiskScoreRequest, errors: MutableList<ValidationError>) {
+  val existingFields = arrayListOf<String>()
+
+  IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR_REQUIRED_FIELDS.forEach {
+    existingFields.addIfNotNullAndZero(
+      request,
+      it,
+    )
+  }
+
+  if (existingFields.isNotEmpty()) {
+    existingFields.addFirst(RiskScoreRequest::hasEverCommittedSexualOffence.name)
+    errors += ValidationErrorType.AMBIGUOUS_INPUT.asError(existingFields)
   }
 }

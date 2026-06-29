@@ -30,7 +30,7 @@ class ImagesAndIndirectContactSexualReoffendingPredictorValidatorHelperTest {
     )
     val result = validateImagesAndIndirectContactSexualReoffendingPredictor(request)
 
-    val expectedFields = listOf("gender")
+    val expectedFields = listOf("gender", "hasEverCommittedSexualOffence")
 
     val error = result.first()
     assertEquals(ValidationErrorType.MISSING_MANDATORY_INPUT, error.type)
@@ -84,7 +84,7 @@ class ImagesAndIndirectContactSexualReoffendingPredictorValidatorHelperTest {
 
     val error = result.first()
     assertEquals(ValidationErrorType.IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR_NO_SANCTIONS, error.type)
-    assertEquals("If a sexual offence was ever commited, at least one sexual sanction/offence must be more than 0", error.message)
+    assertEquals("If hasEverCommittedSexualOffence is true, at least one sexual sanction/offence must be more than 0", error.message)
     assertEquals(expectedFields, error.fields)
   }
 
@@ -93,10 +93,10 @@ class ImagesAndIndirectContactSexualReoffendingPredictorValidatorHelperTest {
     val request = RiskScoreRequest(
       gender = Gender.MALE,
       hasEverCommittedSexualOffence = false,
-      totalContactAdultSexualSanctions = 0,
-      totalContactChildSexualSanctions = 0,
-      totalNonContactSexualOffences = 0,
-      totalIndecentImageSanctions = 0,
+      totalContactAdultSexualSanctions = 1,
+      totalContactChildSexualSanctions = 1,
+      totalNonContactSexualOffences = 1,
+      totalIndecentImageSanctions = 1,
     )
     val result = validateImagesAndIndirectContactSexualReoffendingPredictor(request)
 

@@ -5,7 +5,7 @@
     "totalIndecentImageSanctions": 2,
     "totalContactAdultSexualSanctions": 0,
     "totalContactChildSexualSanctions": 0,
-    "totalNonContactSexualOffences": 0,
+    "totalNonContactSexualOffences": null,
     "hasEverCommittedSexualOffence": false
   },
   "response": {
@@ -26,10 +26,7 @@
         "message": "Ambiguous input fields",
         "fields": [
           "hasEverCommittedSexualOffence",
-          "totalIndecentImageSanctions",
-          "totalContactAdultSexualSanctions",
-          "totalContactChildSexualSanctions",
-          "totalNonContactSexualOffences"
+          "totalIndecentImageSanctions"
         ]
       }
     ]

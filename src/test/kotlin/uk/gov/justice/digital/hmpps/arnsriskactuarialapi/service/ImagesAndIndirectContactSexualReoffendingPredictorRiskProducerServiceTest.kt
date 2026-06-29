@@ -90,7 +90,7 @@ class ImagesAndIndirectContactSexualReoffendingPredictorRiskProducerServiceTest 
         ValidationError(
           ValidationErrorType.MISSING_MANDATORY_INPUT,
           "Mandatory input field(s) missing",
-          listOf("gender"),
+          listOf("gender", "hasEverCommittedSexualOffence"),
         ),
       ),
       Arguments.of(

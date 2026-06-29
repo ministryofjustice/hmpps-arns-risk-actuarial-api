@@ -166,7 +166,8 @@
             "type": "MISSING_MANDATORY_INPUT",
             "message": "Mandatory input field(s) missing",
             "fields": [
-              "gender"
+              "gender",
+              "hasEverCommittedSexualOffence"
             ]
           }
         ]
@@ -267,7 +268,8 @@
                   "type": "MISSING_MANDATORY_INPUT",
                   "message": "Mandatory input field(s) missing",
                   "fields": [
-                    "gender"
+                    "gender",
+                    "hasEverCommittedSexualOffence"
                   ]
                 }
               ]
