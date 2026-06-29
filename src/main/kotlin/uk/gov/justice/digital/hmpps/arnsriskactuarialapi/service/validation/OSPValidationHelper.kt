@@ -17,27 +17,27 @@ val OSP_CONDITIONAL_FIELDS: List<KProperty1<RiskScoreRequest, Any?>> = listOf(
   RiskScoreRequest::totalIndecentImageSanctions,
 )
 
-val OSPDC_REQUIRED_FIELDS: List<KProperty1<RiskScoreRequest, Any?>> = listOf(
+val DIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR_REQUIRED_FIELDS: List<KProperty1<RiskScoreRequest, Any?>> = listOf(
   RiskScoreRequest::hasEverCommittedSexualOffence,
   RiskScoreRequest::dateOfBirth,
-  RiskScoreRequest::dateAtStartOfFollowupUserInput,
+  RiskScoreRequest::dateAtStartOfFollowupCalculated,
   RiskScoreRequest::totalNumberOfSanctionsForAllOffences,
   RiskScoreRequest::supervisionStatus,
 )
 
-fun validateOSP(request: RiskScoreRequest, isOSPDC: Boolean): List<ValidationError> {
+fun validateOSP(request: RiskScoreRequest, isDirectContactSexualReoffendingPredictor: Boolean): List<ValidationError> {
   val errors = mutableListOf<ValidationError>()
-  validateRequiredFields(request, errors, isOSPDC)
+  validateRequiredFields(request, errors, isDirectContactSexualReoffendingPredictor)
   return errors
 }
 
-private fun validateRequiredFields(request: RiskScoreRequest, errors: MutableList<ValidationError>, isOSPDC: Boolean) {
+private fun validateRequiredFields(request: RiskScoreRequest, errors: MutableList<ValidationError>, isDirectContactSexualReoffendingPredictor: Boolean) {
   val missingFields = arrayListOf<String>()
   val sexualOffendingInconsistentFields = arrayListOf<String>()
   val missingSexualSanctionCounts = arrayListOf<String>()
 
   OSP_REQUIRED_FIELDS.forEach { missingFields.addIfNull(request, it) }
-  if (isOSPDC) OSPDC_REQUIRED_FIELDS.forEach { missingFields.addIfNull(request, it) }
+  if (isDirectContactSexualReoffendingPredictor) DIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR_REQUIRED_FIELDS.forEach { missingFields.addIfNull(request, it) }
 
   // Sexual sanction validation
   if (request.gender == Gender.MALE) {
@@ -64,7 +64,7 @@ private fun validateRequiredFields(request: RiskScoreRequest, errors: MutableLis
           missingSexualSanctionCounts.add(RiskScoreRequest::totalNonContactSexualOffences.name)
         }
       }
-      null -> if (!isOSPDC) missingFields.addIfNull(request, RiskScoreRequest::hasEverCommittedSexualOffence)
+      null -> if (!isDirectContactSexualReoffendingPredictor) missingFields.addIfNull(request, RiskScoreRequest::hasEverCommittedSexualOffence)
     }
   }
 

@@ -19,7 +19,7 @@ class RiskScoreControllerTest : IntegrationTestBase() {
     10,
     30,
     "05101",
-    dateAtStartOfFollowupUserInput = LocalDate.of(2027, 12, 12),
+    dateAtStartOfFollowupCalculated = LocalDate.of(2027, 12, 12),
   )
 
   @Test

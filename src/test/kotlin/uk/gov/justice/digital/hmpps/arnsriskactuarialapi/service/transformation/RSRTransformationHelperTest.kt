@@ -1,7 +1,6 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
@@ -10,6 +9,8 @@ import org.junit.jupiter.params.provider.MethodSource
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.DirectContactSexualReoffendingPredictorTransformationHelper.getRiskBandReduction
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.DirectContactSexualReoffendingPredictorTransformationHelper.getRiskReduction
 import java.time.LocalDate
 import java.util.stream.Stream
 import kotlin.test.assertNull
@@ -51,8 +52,8 @@ class RSRTransformationHelperTest {
   }
 
   @ParameterizedTest
-  @MethodSource("getOSPDCRiskReductionCases")
-  fun testGetOSPDCRiskReduction(
+  @MethodSource("getRiskReductionCases")
+  fun testGetRiskReduction(
     gender: Gender,
     supervisionStatus: SupervisionStatus,
     mostRecentOffenceDate: LocalDate?,
@@ -62,7 +63,7 @@ class RSRTransformationHelperTest {
     riskBand: RiskBand?,
     expected: Boolean?,
   ) {
-    val result = getOSPDCRiskReduction(
+    val result = getRiskReduction(
       gender,
       supervisionStatus,
       mostRecentOffenceDate,
@@ -75,44 +76,22 @@ class RSRTransformationHelperTest {
   }
 
   @ParameterizedTest
-  @MethodSource("getOSPDCRiskBandReductionCases")
-  fun testGetOSPDCRiskBandReduction(
-    ospRiskReduction: Boolean?,
-    riskBand: RiskBand?,
-    expected: RiskBand?,
-  ) {
-    val result = getOSPDCRiskBandReduction(ospRiskReduction, riskBand)
-    assertEquals(expected, result)
-  }
-
-  @ParameterizedTest
-  @MethodSource("getOSPDCRiskBandReductionExceptionCases")
-  fun testGetOSPDCRiskBandReductionExceptions(
-    ospRiskReduction: Boolean?,
+  @MethodSource("getRiskBandReductionCases")
+  fun testGetRiskBandReduction(
+    ospRiskReduction: Boolean,
     riskBand: RiskBand,
+    expected: RiskBand,
   ) {
-    assertThrows(IllegalArgumentException::class.java) {
-      getOSPDCRiskBandReduction(ospRiskReduction, riskBand)
-    }
+    val result = getRiskBandReduction(ospRiskReduction, riskBand)
+    assertEquals(expected, result)
   }
 
   companion object {
     @JvmStatic
-    fun getOSPDCRiskReductionCases(): Stream<Arguments> {
+    fun getRiskReductionCases(): Stream<Arguments> {
       val today = LocalDate.of(2025, 1, 1)
 
       return Stream.of(
-        // Case 1: Null riskBand → expect null
-        Arguments.of(
-          Gender.MALE,
-          SupervisionStatus.COMMUNITY,
-          null,
-          null,
-          today.minusYears(6),
-          today,
-          null,
-          null,
-        ),
         // Case 2: Female → should return false
         Arguments.of(
           Gender.FEMALE,
@@ -205,26 +184,14 @@ class RSRTransformationHelperTest {
     }
 
     @JvmStatic
-    fun getOSPDCRiskBandReductionCases(): Stream<Arguments> = Stream.of(
-      // ospRiskReduction == null → return riskBand
-      Arguments.of(null, RiskBand.HIGH, RiskBand.HIGH),
-
+    fun getRiskBandReductionCases(): Stream<Arguments> = Stream.of(
       // ospRiskReduction == false → return riskBand
       Arguments.of(false, RiskBand.MEDIUM, RiskBand.MEDIUM),
-
-      // riskBand == null → return null
-      Arguments.of(true, null, null),
 
       // ospRiskReduction == true, valid reductions
       Arguments.of(true, RiskBand.VERY_HIGH, RiskBand.HIGH),
       Arguments.of(true, RiskBand.HIGH, RiskBand.MEDIUM),
       Arguments.of(true, RiskBand.MEDIUM, RiskBand.LOW),
-    )
-
-    @JvmStatic
-    fun getOSPDCRiskBandReductionExceptionCases(): Stream<Arguments> = Stream.of(
-      Arguments.of(true, RiskBand.LOW),
-      Arguments.of(true, RiskBand.NOT_APPLICABLE),
     )
   }
 }
