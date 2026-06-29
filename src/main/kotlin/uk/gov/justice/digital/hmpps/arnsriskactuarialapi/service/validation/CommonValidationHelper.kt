@@ -88,7 +88,8 @@ fun validateDateOfCurrentConvictionAgainstAgeAtFirstSanction(
   errors: MutableList<ValidationError>,
 ) {
   // dateOfCurrentConviction must be after ageAtFirstSanction
-  if (request.dateOfCurrentConviction != null && request.ageAtFirstSanction != null && request.dateOfBirth != null) {
+  // if dateOfCurrentConviction is before dateOfBirth, we should skip this validation step - it should already have been raised
+  if (request.dateOfCurrentConviction != null && request.ageAtFirstSanction != null && request.dateOfBirth != null && request.dateOfCurrentConviction > request.dateOfBirth) {
     val ageAtCurrentConviction =
       getAgeAtDate(request.dateOfBirth, request.dateOfCurrentConviction, RiskScoreRequest::dateOfCurrentConviction.name)
     if (ageAtCurrentConviction < request.ageAtFirstSanction) {

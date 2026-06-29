@@ -75,14 +75,14 @@ fun validateDateAtStartOfFollowupAgainstDateOfCurrentConviction(request: RiskSco
 }
 
 fun validateDateAtStartOfFollowupAgainstDateOfBirth(request: RiskScoreRequest, errors: MutableList<ValidationError>) {
-  // dateAtStartOfFollowupCalculated must be after dateOfDate
+  // dateAtStartOfFollowupCalculated must be after dateOfBirth
   if (request.dateAtStartOfFollowupCalculated != null && request.dateOfBirth != null && request.dateAtStartOfFollowupCalculated <= request.dateOfBirth) {
     errors.add(ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_BEFORE_DATE_OF_BIRTH.asError(listOf(RiskScoreRequest::dateAtStartOfFollowupCalculated.name)))
   }
 }
 
 fun validateDateAtStartOfFollowupAge(request: RiskScoreRequest, errors: MutableList<ValidationError>) {
-  if (request.dateAtStartOfFollowupCalculated != null && request.dateOfBirth != null) {
+  if (request.dateAtStartOfFollowupCalculated != null && request.dateOfBirth != null && request.dateAtStartOfFollowupCalculated > request.dateOfBirth) {
     val ageAtStartOfFollowup = getAgeAtDate(request.dateOfBirth, request.dateAtStartOfFollowupCalculated, RiskScoreRequest::dateAtStartOfFollowupCalculated.name)
     if (ageAtStartOfFollowup >= 110) {
       errors.add(ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE.asError(listOf(RiskScoreRequest::dateAtStartOfFollowupCalculated.name)))

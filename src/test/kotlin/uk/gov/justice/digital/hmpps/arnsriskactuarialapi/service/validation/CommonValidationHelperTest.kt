@@ -312,6 +312,19 @@ class CommonValidationHelperTest {
   }
 
   @Test
+  fun `validateDateOfCurrentConvictionAgainstAgeAtFirstSanction should not add error when date of current conviction is before dateOfBirth`() {
+    val request = RiskScoreRequest(
+      dateOfBirth = LocalDate.of(2000, 1, 1),
+      ageAtFirstSanction = 18,
+      dateOfCurrentConviction = LocalDate.of(1999, 10, 12),
+    )
+    val errors = mutableListOf<ValidationError>()
+
+    validateDateOfCurrentConvictionAgainstAgeAtFirstSanction(request, errors)
+    assertTrue(errors.isEmpty(), "Validation should skip when dateOfCurrentConviction is before dateOfBirth")
+  }
+
+  @Test
   fun `validateDateOfCurrentConvictionAgainstAgeAtFirstSanction should not add error when age at current conviction is greater than or equal to age at first sanction`() {
     val validValues = listOf(LocalDate.of(2018, 1, 1), LocalDate.of(2020, 1, 1))
 

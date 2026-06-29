@@ -8,6 +8,7 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.FIXED_TEST_DATE
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
@@ -36,15 +37,15 @@ class AllReoffendingPredictorValidationHelperTest {
   @Test
   fun `validateAllReoffendingPredictorStatic missing all mandatory fields errors`() {
     val request = RiskScoreRequest(
-      RiskScoreVersion.V1_0,
-      null,
-      FIXED_TEST_DATE,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
+      version = RiskScoreVersion.V1_0,
+      gender = null,
+      assessmentDate = FIXED_TEST_DATE,
+      dateOfBirth = null,
+      dateOfCurrentConviction = null,
+      totalNumberOfSanctionsForAllOffences = null,
+      ageAtFirstSanction = null,
+      currentOffenceCode = null,
+      dateAtStartOfFollowupCalculated = null,
     )
     val result = validateAllReoffendingPredictorStatic(request)
 
@@ -64,6 +65,88 @@ class AllReoffendingPredictorValidationHelperTest {
       ValidationError(
         type = ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_REQUIRED,
         message = "Either Date at start of followup or date of current conviction must be provided",
+        fields = listOf("dateAtStartOfFollowupCalculated"),
+      ),
+    )
+
+    assertEquals(expectedErrors, result)
+  }
+
+  @Test
+  fun `validateAllReoffendingPredictorStatic custom validation errors 1`() {
+    val request = RiskScoreRequest(
+      version = RiskScoreVersion.V1_0,
+      gender = Gender.MALE,
+      assessmentDate = LocalDate.parse("2020-01-01"),
+      dateOfBirth = LocalDate.parse("2025-01-01"),
+      dateOfCurrentConviction = LocalDate.parse("2023-01-01"),
+      totalNumberOfSanctionsForAllOffences = 0,
+      ageAtFirstSanction = 102,
+      currentOffenceCode = "onetwothree",
+      dateAtStartOfFollowupCalculated = LocalDate.parse("2200-01-01"),
+    )
+    val result = validateAllReoffendingPredictorStatic(request)
+
+    val expectedErrors = listOf(
+      ValidationError(
+        type = ValidationErrorType.DATE_OF_CURRENT_CONVICTION_BEFORE_DATE_OF_BIRTH,
+        message = "Date of current conviction cannot be before date of birth",
+        fields = listOf("dateOfCurrentConviction"),
+      ),
+      ValidationError(
+        type = ValidationErrorType.DATE_OF_CURRENT_CONVICTION_WITHIN_THREE_MONTHS_OF_ASSESSMENT_DATE,
+        message = "Date of current conviction must be less than 3 months after the assessment date",
+        fields = listOf("dateOfCurrentConviction", "assessmentDate"),
+      ),
+      ValidationError(
+        type = ValidationErrorType.AGE_AT_FIRST_SANCTION_OUT_OF_RANGE,
+        message = "Age at current conviction must be between 9 and 98 (inclusive)",
+        fields = listOf("ageAtFirstSanction"),
+      ),
+      ValidationError(
+        type = ValidationErrorType.OFFENCE_CODE_INCORRECT_FORMAT,
+        message = "Offence code must be a string of 5 digits",
+        fields = listOf("currentOffenceCode"),
+      ),
+      ValidationError(
+        type = ValidationErrorType.TOTAL_NUMBER_OF_SANCTIONS_OUT_OF_RANGE,
+        message = "Total number of sanctions must be between 1 and 999 (inclusive)",
+        fields = listOf("totalNumberOfSanctionsForAllOffences"),
+      ),
+      ValidationError(
+        type = ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE,
+        message = "Age at date at start of followup must be less than 110",
+        fields = listOf("dateAtStartOfFollowupCalculated"),
+      ),
+    )
+
+    assertEquals(expectedErrors, result)
+  }
+
+  @Test
+  fun `validateAllReoffendingPredictorStatic custom validation errors 2`() {
+    val request = RiskScoreRequest(
+      version = RiskScoreVersion.V1_0,
+      gender = Gender.MALE,
+      assessmentDate = LocalDate.parse("2020-01-01"),
+      dateOfBirth = LocalDate.parse("1999-01-01"),
+      dateOfCurrentConviction = LocalDate.parse("2020-01-01"),
+      totalNumberOfSanctionsForAllOffences = 1,
+      ageAtFirstSanction = 23,
+      currentOffenceCode = "12345",
+      dateAtStartOfFollowupCalculated = LocalDate.parse("1997-01-01"),
+    )
+    val result = validateAllReoffendingPredictorStatic(request)
+
+    val expectedErrors = listOf(
+      ValidationError(
+        type = ValidationErrorType.AGE_AT_FIRST_SANCTION_AFTER_AGE_AT_CURRENT_CONVICTION,
+        message = "Age at first sanction must be before age at current conviction",
+        fields = listOf("dateOfCurrentConviction", "ageAtFirstSanction"),
+      ),
+      ValidationError(
+        type = ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_BEFORE_DATE_OF_BIRTH,
+        message = "Date of start of followup cannot be before date of birth",
         fields = listOf("dateAtStartOfFollowupCalculated"),
       ),
     )
@@ -193,6 +276,8 @@ class AllReoffendingPredictorValidationHelperTest {
     Arguments.of(null, null, false),
     Arguments.of(null, LocalDate.parse("1980-01-01"), false),
     Arguments.of(LocalDate.parse("2025-01-01"), null, false),
+    // If date of birth is after dateAtStartOfFollowup, do not error (should have already been caught)
+    Arguments.of(LocalDate.parse("2026-05-01"), LocalDate.parse("2026-08-12"), false),
     // An age of less than 110 at dateAtStartOfFollowup shouldn't result in an error
     Arguments.of(LocalDate.parse("2026-05-01"), LocalDate.parse("2000-08-12"), false),
     Arguments.of(LocalDate.parse("2025-08-31"), LocalDate.parse("1915-09-01"), false),
