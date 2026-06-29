@@ -64,6 +64,31 @@ class ImagesAndIndirectContactSexualReoffendingPredictorValidatorHelperTest {
   }
 
   @Test
+  fun `validateImagesAndIndirectContactSexualReoffendingPredictor zero sanctions fields error`() {
+    val request = RiskScoreRequest(
+      gender = Gender.MALE,
+      hasEverCommittedSexualOffence = true,
+      totalContactAdultSexualSanctions = 0,
+      totalContactChildSexualSanctions = 0,
+      totalNonContactSexualOffences = 0,
+      totalIndecentImageSanctions = 0,
+    )
+    val result = validateImagesAndIndirectContactSexualReoffendingPredictor(request)
+
+    val expectedFields = listOf(
+      "totalIndecentImageSanctions",
+      "totalContactAdultSexualSanctions",
+      "totalContactChildSexualSanctions",
+      "totalNonContactSexualOffences",
+    )
+
+    val error = result.first()
+    assertEquals(ValidationErrorType.IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR_NO_SANCTIONS, error.type)
+    assertEquals("At least one sanction must be more than 0", error.message)
+    assertEquals(expectedFields, error.fields)
+  }
+
+  @Test
   fun `validateImagesAndIndirectContactSexualReoffendingPredictor ambiguous input error`() {
     val request = RiskScoreRequest(
       gender = Gender.MALE,

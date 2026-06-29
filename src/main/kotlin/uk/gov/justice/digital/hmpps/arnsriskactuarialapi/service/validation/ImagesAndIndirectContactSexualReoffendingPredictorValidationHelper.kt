@@ -21,12 +21,7 @@ fun validateImagesAndIndirectContactSexualReoffendingPredictor(request: RiskScor
   }
 
   if (request.hasEverCommittedSexualOffence == true) {
-    validateRequiredFields(
-      request,
-      errors,
-      IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR_REQUIRED_FIELDS,
-      StaticOrDynamic.STATIC,
-    )
+    validateSanctions(request, errors)
   } else {
     val existingFields = arrayListOf<String>()
 
@@ -44,4 +39,22 @@ fun validateImagesAndIndirectContactSexualReoffendingPredictor(request: RiskScor
   }
 
   return errors
+}
+
+fun validateSanctions(
+  request: RiskScoreRequest,
+  errors: MutableList<ValidationError>,
+) {
+  validateRequiredFields(
+    request,
+    errors,
+    IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR_REQUIRED_FIELDS,
+    StaticOrDynamic.STATIC,
+  )
+
+  if (request.totalIndecentImageSanctions == 0 && request.totalContactAdultSexualSanctions == 0 && request.totalContactChildSexualSanctions == 0 && request.totalNonContactSexualOffences == 0) {
+    errors += ValidationErrorType.IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR_NO_SANCTIONS.asError(
+      IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR_REQUIRED_FIELDS.names(),
+    )
+  }
 }
