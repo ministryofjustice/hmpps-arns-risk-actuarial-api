@@ -84,7 +84,7 @@ class ImagesAndIndirectContactSexualReoffendingPredictorValidatorHelperTest {
 
     val error = result.first()
     assertEquals(ValidationErrorType.IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR_NO_SANCTIONS, error.type)
-    assertEquals("At least one sanction must be more than 0", error.message)
+    assertEquals("If a sexual offence was ever commited, at least one sexual sanction/offence must be more than 0", error.message)
     assertEquals(expectedFields, error.fields)
   }
 

@@ -85,7 +85,7 @@
           "validationErrors": [
             {
               "type": "IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR_NO_SANCTIONS",
-              "message": "At least one sanction must be more than 0",
+              "message": "If a sexual offence was ever commited, at least one sexual sanction/offence must be more than 0",
               "fields": [
                 "totalIndecentImageSanctions",
                 "totalContactAdultSexualSanctions",
