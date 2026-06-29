@@ -14,13 +14,13 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.ProgrammeNeedId
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.anyNullSara
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.bothNullSara
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isAllReoffendingPredictorMedium
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isDirectContactSexualReoffendingPredictorHigh
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isDirectContactSexualReoffendingPredictorMedium
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isHighAllReoffendingPredictor
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isHighSara
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isHighViolentReoffendingPredictor
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isMediumSara
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isMediumViolentReoffendingPredictor
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isOspDcHigh
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isOspDcMedium
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isOspIicHigh
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isOspIicMedium
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isRsrHigh
@@ -59,7 +59,7 @@ class PNIRiskProducerService : BaseRiskScoreProducer() {
       allReoffendingPredictorStaticScore = context.allReoffendingPredictor?.score,
       violentReoffendingPredictorStaticScore = context.violentReoffendingPredictor?.score,
       violentReoffendingPredictorBand = context.violentReoffendingPredictor?.band,
-      ospDCBand = context.RSR?.ospdcBand,
+      directContactSexualReoffendingPredictorBand = context.RSR?.directContactSexualReoffendingPredictorBand,
       imagesAndIndirectContactSexualReoffendingPredictorBand = context.RSR?.imagesAndIndirectContactSexualReoffendingPredictorBand,
       rsr = context.RSR?.rsrScore?.toInt(),
       saraRiskToPartner = request.saraRiskToPartner,
@@ -88,8 +88,8 @@ class PNIRiskProducerService : BaseRiskScoreProducer() {
     val projectedRisk = when {
       isHighRisk(
         requestValidated.copy(
+          directContactSexualReoffendingPredictorBand = requestValidated.directContactSexualReoffendingPredictorBand ?: RiskBand.VERY_HIGH,
           imagesAndIndirectContactSexualReoffendingPredictorBand = requestValidated.imagesAndIndirectContactSexualReoffendingPredictorBand ?: RiskBand.VERY_HIGH,
-          ospDCBand = requestValidated.ospDCBand ?: RiskBand.VERY_HIGH,
           rsr = requestValidated.rsr ?: 100,
         ),
       ) -> RiskBand.HIGH
@@ -198,7 +198,7 @@ class PNIRiskProducerService : BaseRiskScoreProducer() {
     requestValidated: PNIRequestValidated,
   ): Boolean = isHighAllReoffendingPredictor(requestValidated) ||
     isHighViolentReoffendingPredictor(requestValidated) ||
-    isOspDcHigh(requestValidated) ||
+    isDirectContactSexualReoffendingPredictorHigh(requestValidated) ||
     isOspIicHigh(requestValidated) ||
     isRsrHigh(requestValidated) ||
     isHighSara(requestValidated)
@@ -207,7 +207,7 @@ class PNIRiskProducerService : BaseRiskScoreProducer() {
     requestValidated: PNIRequestValidated,
   ): Boolean = isAllReoffendingPredictorMedium(requestValidated) ||
     isMediumViolentReoffendingPredictor(requestValidated) ||
-    isOspDcMedium(requestValidated) ||
+    isDirectContactSexualReoffendingPredictorMedium(requestValidated) ||
     isOspIicMedium(requestValidated) ||
     isMediumSara(requestValidated) ||
     isRsrMedium(requestValidated)

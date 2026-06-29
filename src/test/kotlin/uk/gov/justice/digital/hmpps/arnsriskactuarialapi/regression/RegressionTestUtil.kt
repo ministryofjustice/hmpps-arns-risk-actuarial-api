@@ -37,11 +37,11 @@ data class OASysRSROutput(
   val scoreType: ScoreTypeResponse?,
   val rsrBand: RiskBandResponse?,
   val rsrScore: Double?,
-  val ospdcBand: RiskBandResponse?,
-  val ospdcScore: Double?,
+  val directContactSexualReoffendingPredictorBand: RiskBandResponse?,
+  val directContactSexualReoffendingPredictorScore: Double?,
   val ospiicBand: RiskBandResponse?,
   val ospiicScore: Double?,
-  val ospRiskReduction: Boolean?,
+  val riskReduction: Boolean?,
   val snsvScore: Double?,
   val errorMessage: String?,
 )
@@ -289,7 +289,7 @@ fun runBatchIntoRiskScoreService(inputMappings: List<InputMapping>, riskScoreSer
     totalNumberOfSanctionsForAllOffences = inputs["totalNumberOfSanctionsForAllOffences"] as Int?,
     ageAtFirstSanction = inputs["ageAtFirstSanction"] as Int?,
     supervisionStatus = inputs["supervisionStatus"]?.let { SupervisionStatus.valueOf(it as String) },
-    dateAtStartOfFollowupUserInput = inputs["dateAtStartOfFollowupUserInput"]?.let { LocalDate.parse(it as String) },
+    dateAtStartOfFollowupCalculated = inputs["dateAtStartOfFollowupUserInput"]?.let { LocalDate.parse(it as String) },
     totalNumberOfViolentSanctions = inputs["totalNumberOfViolentSanctions"] as Int?,
     hasEverCommittedSexualOffence = inputs["hasEverCommittedSexualOffence"] as Boolean?,
     totalContactAdultSexualSanctions = inputs["totalContactAdultSexualSanctions"] as Int?,
@@ -368,11 +368,11 @@ fun runBatchIntoOASys(inputMappings: List<InputMapping>, connection: Connection)
           scoreType = oasysResponse.getString("Score_Type")?.convertOASysScoreType(),
           rsrBand = oasysResponse.getString("RSR_Band")?.convertOASysBand(),
           rsrScore = oasysResponse.getString("RSR_Score")?.toDoubleOrNull(),
-          ospdcBand = oasysResponse.getString("OSPC_Band")?.convertOASysBand(),
-          ospdcScore = oasysResponse.getString("OSPC_Score")?.toDoubleOrNull(),
+          directContactSexualReoffendingPredictorBand = oasysResponse.getString("OSPC_Band")?.convertOASysBand(),
+          directContactSexualReoffendingPredictorScore = oasysResponse.getString("OSPC_Score")?.toDoubleOrNull(),
           ospiicBand = oasysResponse.getString("OSPI_Band")?.convertOASysBand(),
           ospiicScore = oasysResponse.getString("OSPI_Score")?.toDoubleOrNull(),
-          ospRiskReduction = oasysResponse.getString("OSP_RISK_REDUCTION")?.convertOASysBoolean(),
+          riskReduction = oasysResponse.getString("SRP_RISK_REDUCTION")?.convertOASysBoolean(),
           snsvScore = oasysResponse.getString("SNSV_SCORE")?.toDoubleOrNull(),
           errorMessage = oasysResponse.getString("Error_Message"),
         ),
@@ -387,10 +387,10 @@ fun runBatchIntoOASys(inputMappings: List<InputMapping>, connection: Connection)
 fun arnsAndOasysResultsNotEqual(arnsResponse: RiskScoreResponse, oasysResponse: OASysRSROutput) = // Check RSR score and band
   arnsResponse.actuarialPredictors.seriousPredictor.output.band != oasysResponse.rsrBand ||
     arnsResponse.actuarialPredictors.seriousPredictor.output.overallScore != oasysResponse.rsrScore ||
-    // Check OSP/DC score and band
-    arnsResponse.actuarialPredictors.directContactSexualPredictor.output.band != oasysResponse.ospdcBand ||
-    arnsResponse.actuarialPredictors.directContactSexualPredictor.output.score != oasysResponse.ospdcScore ||
-    arnsResponse.actuarialPredictors.directContactSexualPredictor.output.riskBandReductionApplied != oasysResponse.ospRiskReduction ||
+    // Check directContactSexualReoffendingPredictor score and band
+    arnsResponse.actuarialPredictors.directContactSexualPredictor.output.band != oasysResponse.directContactSexualReoffendingPredictorBand ||
+    arnsResponse.actuarialPredictors.directContactSexualPredictor.output.score != oasysResponse.directContactSexualReoffendingPredictorScore ||
+    arnsResponse.actuarialPredictors.directContactSexualPredictor.output.riskBandReductionApplied != oasysResponse.riskReduction ||
     // Check OSP/IIC score and band
     arnsResponse.actuarialPredictors.indirectContactSexualPredictor.output.band != oasysResponse.ospiicBand ||
     arnsResponse.actuarialPredictors.indirectContactSexualPredictor.output.score != oasysResponse.ospiicScore ||
@@ -419,14 +419,14 @@ fun getTestOutputText(objectMapper: ObjectMapper, testNum: Long, arnsResponse: A
     ARNS RSR Score  = ${arnsResponse.response.actuarialPredictors.seriousPredictor.output.overallScore}
     OASys RSR Score = ${oasysResponse.response.rsrScore}
     
-    ARNS OSP/DC Band  = ${arnsResponse.response.actuarialPredictors.directContactSexualPredictor.output.band}
-    OASys OSP/DC Band = ${oasysResponse.response.ospdcBand}
+    ARNS directContactSexualReoffendingPredictor Band  = ${arnsResponse.response.actuarialPredictors.directContactSexualPredictor.output.band}
+    OASys directContactSexualReoffendingPredictor Band = ${oasysResponse.response.directContactSexualReoffendingPredictorBand}
     
-    ARNS OSP/DC Score  = ${arnsResponse.response.actuarialPredictors.directContactSexualPredictor.output.score}
-    OASys OSP/DC Score = ${oasysResponse.response.ospdcScore}
+    ARNS directContactSexualReoffendingPredictor Score  = ${arnsResponse.response.actuarialPredictors.directContactSexualPredictor.output.score}
+    OASys directContactSexualReoffendingPredictor Score = ${oasysResponse.response.directContactSexualReoffendingPredictorScore}
     
     ARNS OSP risk reduction  = ${arnsResponse.response.actuarialPredictors.directContactSexualPredictor.output.riskBandReductionApplied}
-    OASys OSP risk reduction = ${oasysResponse.response.ospRiskReduction}
+    OASys OSP risk reduction = ${oasysResponse.response.riskReduction}
     
     ARNS OSP/IIC Band  = ${arnsResponse.response.actuarialPredictors.indirectContactSexualPredictor.output.band}
     OASys OSP/IIC Band = ${oasysResponse.response.ospiicBand}
@@ -438,7 +438,7 @@ fun getTestOutputText(objectMapper: ObjectMapper, testNum: Long, arnsResponse: A
     OASys SNSV Score = ${oasysResponse.response.snsvScore}
     
     ARNS RSR errors     = ${arnsResponse.response.actuarialPredictors.seriousPredictor.validationErrors}
-    ARNS OSP/DC errors  = ${arnsResponse.response.actuarialPredictors.directContactSexualPredictor.validationErrors}
+    ARNS directContactSexualReoffendingPredictor errors  = ${arnsResponse.response.actuarialPredictors.directContactSexualPredictor.validationErrors}
     ARNS OSP/IIC errors = ${arnsResponse.response.actuarialPredictors.indirectContactSexualPredictor.validationErrors}
     ARNS SNSV errors    = ${arnsResponse.response.actuarialPredictors.seriousViolentPredictor.validationErrors}
     OASys errors        = ${oasysResponse.response.errorMessage}

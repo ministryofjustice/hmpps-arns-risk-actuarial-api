@@ -10,7 +10,7 @@ import org.junit.jupiter.params.provider.ValueSource
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validOSPDCRiskScoreRequest
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validDirectContactSexualReoffendingPredictorRiskScoreRequest
 import java.time.LocalDate
 import java.util.stream.Stream
 import kotlin.collections.listOf
@@ -18,18 +18,18 @@ import kotlin.collections.listOf
 class OSPValidationHelperTest {
 
   @Test
-  fun `ospdcInitialValidation no errors`() {
-    val result = validateOSP(validOSPDCRiskScoreRequest(), true)
+  fun `directContactSexualReoffendingPredictor initial validation no errors`() {
+    val result = validateOSP(validDirectContactSexualReoffendingPredictorRiskScoreRequest(), true)
     assertTrue(result.isEmpty())
   }
 
   @ParameterizedTest
   @MethodSource("missingFieldValidationProvider")
-  fun `ospInitialValidation missing field error with all field populated`(
+  fun `srpInitialValidation missing field error with all field populated`(
     includeOptional: Boolean,
     expectedFields: List<String>,
   ) {
-    val request = validOSPDCRiskScoreRequest().copy(
+    val request = validDirectContactSexualReoffendingPredictorRiskScoreRequest().copy(
       gender = null,
       dateOfBirth = null,
       hasEverCommittedSexualOffence = null,
@@ -37,7 +37,7 @@ class OSPValidationHelperTest {
       totalContactChildSexualSanctions = null,
       totalNonContactSexualOffences = null,
       totalIndecentImageSanctions = null,
-      dateAtStartOfFollowupUserInput = null,
+      dateAtStartOfFollowupCalculated = null,
       dateOfMostRecentSexualOffence = null,
       totalNumberOfSanctionsForAllOffences = null,
       supervisionStatus = null,
@@ -54,8 +54,8 @@ class OSPValidationHelperTest {
 
   @ParameterizedTest
   @ValueSource(booleans = [true, false])
-  fun `ospInitialValidation missing field error with all field populated when hasEverCommittedSexualOffence is true`(isOSPDC: Boolean) {
-    val request = validOSPDCRiskScoreRequest().copy(
+  fun `srpInitialValidation missing field error with all field populated when hasEverCommittedSexualOffence is true`(isDirectContactSexualReoffendingPredictor: Boolean) {
+    val request = validDirectContactSexualReoffendingPredictorRiskScoreRequest().copy(
       gender = Gender.MALE,
       dateOfBirth = LocalDate.of(1980, 1, 1),
       hasEverCommittedSexualOffence = true,
@@ -63,14 +63,14 @@ class OSPValidationHelperTest {
       totalContactChildSexualSanctions = null,
       totalNonContactSexualOffences = null,
       totalIndecentImageSanctions = null,
-      dateAtStartOfFollowupUserInput = LocalDate.of(2030, 1, 1),
+      dateAtStartOfFollowupCalculated = LocalDate.of(2030, 1, 1),
       dateOfMostRecentSexualOffence = null,
       totalNumberOfSanctionsForAllOffences = 1,
       supervisionStatus = SupervisionStatus.COMMUNITY,
       mostRecentOffenceDate = null,
     )
 
-    val result = validateOSP(request, isOSPDC)
+    val result = validateOSP(request, isDirectContactSexualReoffendingPredictor)
 
     val expectedFields = listOf(
       "totalContactAdultSexualSanctions",
@@ -87,8 +87,8 @@ class OSPValidationHelperTest {
 
   @ParameterizedTest
   @ValueSource(booleans = [true, false])
-  fun `ospdcInitialValidation sexual offence missing count error with all field populated when hasEverCommittedSexualOffence is true`(isOSPDC: Boolean) {
-    val request = validOSPDCRiskScoreRequest().copy(
+  fun `srpdcInitialValidation sexual offence missing count error with all field populated when hasEverCommittedSexualOffence is true`(isDirectContactSexualReoffendingPredictor: Boolean) {
+    val request = validDirectContactSexualReoffendingPredictorRiskScoreRequest().copy(
       gender = Gender.MALE,
       dateOfBirth = LocalDate.of(1980, 1, 1),
       hasEverCommittedSexualOffence = true,
@@ -96,14 +96,14 @@ class OSPValidationHelperTest {
       totalContactChildSexualSanctions = 0,
       totalNonContactSexualOffences = 0,
       totalIndecentImageSanctions = 0,
-      dateAtStartOfFollowupUserInput = LocalDate.of(2030, 1, 1),
+      dateAtStartOfFollowupCalculated = LocalDate.of(2030, 1, 1),
       dateOfMostRecentSexualOffence = null,
       totalNumberOfSanctionsForAllOffences = 1,
       supervisionStatus = SupervisionStatus.COMMUNITY,
       mostRecentOffenceDate = null,
     )
 
-    val result = validateOSP(request, isOSPDC)
+    val result = validateOSP(request, isDirectContactSexualReoffendingPredictor)
 
     val expectedFields = listOf(
       "totalContactAdultSexualSanctions",
@@ -120,14 +120,14 @@ class OSPValidationHelperTest {
 
   @ParameterizedTest
   @ValueSource(booleans = [true, false])
-  fun `ospInitialValidation missing sexual motivation question`(isOSPDC: Boolean) {
-    val request = validOSPDCRiskScoreRequest().copy(
+  fun `srpInitialValidation missing sexual motivation question`(isDirectContactSexualReoffendingPredictor: Boolean) {
+    val request = validDirectContactSexualReoffendingPredictorRiskScoreRequest().copy(
       gender = Gender.MALE,
       hasEverCommittedSexualOffence = true,
       isCurrentOffenceSexuallyMotivated = null,
     )
 
-    val result = validateOSP(request, isOSPDC)
+    val result = validateOSP(request, isDirectContactSexualReoffendingPredictor)
 
     val expectedFields = listOf(
       "isCurrentOffenceSexuallyMotivated",
@@ -141,12 +141,12 @@ class OSPValidationHelperTest {
 
   @ParameterizedTest
   @ValueSource(booleans = [true, false])
-  fun `ospdcInitialValidation no error when hasEverCommittedSexualOffence is true`(isOSPDC: Boolean) {
-    val request = validOSPDCRiskScoreRequest().copy(
+  fun `srpdcInitialValidation no error when hasEverCommittedSexualOffence is true`(isDirectContactSexualReoffendingPredictor: Boolean) {
+    val request = validDirectContactSexualReoffendingPredictorRiskScoreRequest().copy(
       hasEverCommittedSexualOffence = true,
     )
 
-    val result = validateOSP(request, isOSPDC)
+    val result = validateOSP(request, isDirectContactSexualReoffendingPredictor)
 
     assertTrue(result.isEmpty())
   }
@@ -160,7 +160,7 @@ class OSPValidationHelperTest {
           "gender",
           "hasEverCommittedSexualOffence",
           "dateOfBirth",
-          "dateAtStartOfFollowupUserInput",
+          "dateAtStartOfFollowupCalculated",
           "totalNumberOfSanctionsForAllOffences",
           "supervisionStatus",
         ),

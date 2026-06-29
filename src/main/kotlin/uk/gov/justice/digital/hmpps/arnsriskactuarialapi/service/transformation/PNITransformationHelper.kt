@@ -115,22 +115,22 @@ fun isHighAllReoffendingPredictor(requestValidated: PNIRequestValidated) = reque
 
 fun isHighViolentReoffendingPredictor(requestValidated: PNIRequestValidated) = requestValidated.violentReoffendingPredictorStaticScore?.let { it >= ViolentReoffendingPredictorConstant.HIGH_BAND_LOWER_BOUND } == true
 
-fun isOspDcHigh(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospDCBand == RiskBand.HIGH || requestValidated.ospDCBand == RiskBand.VERY_HIGH
+fun isDirectContactSexualReoffendingPredictorHigh(requestValidated: PNIRequestValidated): Boolean = requestValidated.directContactSexualReoffendingPredictorBand == RiskBand.HIGH || requestValidated.directContactSexualReoffendingPredictorBand == RiskBand.VERY_HIGH
 
 fun isOspIicHigh(requestValidated: PNIRequestValidated): Boolean = requestValidated.imagesAndIndirectContactSexualReoffendingPredictorBand == RiskBand.HIGH || requestValidated.imagesAndIndirectContactSexualReoffendingPredictorBand == RiskBand.VERY_HIGH
 
-fun isOspDcMedium(requestValidated: PNIRequestValidated): Boolean = requestValidated.ospDCBand == RiskBand.MEDIUM
+fun isDirectContactSexualReoffendingPredictorMedium(requestValidated: PNIRequestValidated): Boolean = requestValidated.directContactSexualReoffendingPredictorBand == RiskBand.MEDIUM
 
 fun isOspIicMedium(requestValidated: PNIRequestValidated): Boolean = requestValidated.imagesAndIndirectContactSexualReoffendingPredictorBand == RiskBand.MEDIUM
 
 fun isRsrMedium(request: PNIRequestValidated): Boolean {
   val rsrIsMedium = request.rsr in 1..2
-  return rsrIsMedium && isNullOrNa(request.ospDCBand) && isNullOrNa(request.imagesAndIndirectContactSexualReoffendingPredictorBand)
+  return rsrIsMedium && isNullOrNa(request.directContactSexualReoffendingPredictorBand) && isNullOrNa(request.imagesAndIndirectContactSexualReoffendingPredictorBand)
 }
 
 fun isRsrHigh(requestValidated: PNIRequestValidated): Boolean {
   val isHighRsr = requestValidated.rsr?.let { it >= 3 } == true
-  return isHighRsr && isNullOrNa(requestValidated.ospDCBand) && isNullOrNa(requestValidated.imagesAndIndirectContactSexualReoffendingPredictorBand)
+  return isHighRsr && isNullOrNa(requestValidated.directContactSexualReoffendingPredictorBand) && isNullOrNa(requestValidated.imagesAndIndirectContactSexualReoffendingPredictorBand)
 }
 
 fun isNullOrNa(band: RiskBand?): Boolean = band == null || band == RiskBand.NOT_APPLICABLE

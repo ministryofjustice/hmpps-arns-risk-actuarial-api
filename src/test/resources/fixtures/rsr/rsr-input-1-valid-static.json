@@ -26,7 +26,7 @@
       "hasSexualOffenceHistory": false,
       "componentScores": {
         "directContactSexualPredictorScore": {
-          "algorithm": "OSPDC",
+          "algorithm": "DIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR",
           "type": "STATIC",
           "modelVersion": "1.0",
           "thresholdsVersion": "1.0",
