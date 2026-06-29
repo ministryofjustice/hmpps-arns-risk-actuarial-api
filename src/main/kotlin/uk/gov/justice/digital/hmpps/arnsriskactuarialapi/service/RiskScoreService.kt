@@ -13,7 +13,7 @@ class RiskScoreService {
   lateinit var allReoffendingPredictorRiskProducerService: AllReoffendingPredictorRiskProducerService
 
   @Autowired
-  lateinit var ovpRiskProducerService: OVPRiskProducerService
+  lateinit var violentReoffendingPredictorRiskProducerService: ViolentReoffendingPredictorRiskProducerService
 
   @Autowired
   lateinit var mstRiskProducerService: MSTRiskProducerService
@@ -31,24 +31,24 @@ class RiskScoreService {
   lateinit var ospdcRiskProducerService: OSPDCRiskProducerService
 
   @Autowired
-  lateinit var snsvRiskProducerService: SNSVRiskProducerService
+  lateinit var seriousViolentReoffendingPredictorRiskProducerService: SeriousViolentReoffendingPredictorRiskProducerService
 
   @Autowired
   lateinit var rsrRiskProducerService: RSRRiskProducerService
 
   @Autowired
-  lateinit var ospiicRiskProducerService: OSPIICRiskProducerService
+  lateinit var imagesAndIndirectContactSexualReoffendingPredictorRiskProducerService: ImagesAndIndirectContactSexualReoffendingPredictorRiskProducerService
 
   fun riskScoreProducer(riskScoreRequest: RiskScoreRequest): RiskScoreResponse = listOf(
     allReoffendingPredictorRiskProducerService,
-    ovpRiskProducerService,
+    violentReoffendingPredictorRiskProducerService,
     mstRiskProducerService,
     opdRiskProducerService,
     pniRiskProducerService,
     ldsRiskProducerService,
     ospdcRiskProducerService,
-    snsvRiskProducerService,
-    ospiicRiskProducerService,
+    seriousViolentReoffendingPredictorRiskProducerService,
+    imagesAndIndirectContactSexualReoffendingPredictorRiskProducerService,
     rsrRiskProducerService,
   ).fold(RiskScoreContext(riskScoreRequest.version)) { context, service ->
     service.calculateRiskScore(riskScoreRequest, context)

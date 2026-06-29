@@ -5,7 +5,7 @@
     "actuarialPredictors": {
       "allPredictor": {
         "algorithm": "ALL_REOFFENDING_PREDICTOR",
-        "type": "STATIC",
+        "type": null,
         "modelVersion": "1.0",
         "thresholdsVersion": "1.0",
         "output": {
@@ -23,14 +23,13 @@
               "ageAtFirstSanction",
               "gender",
               "currentOffenceCode",
-              "totalNumberOfSanctionsForAllOffences",
-              "dateAtStartOfFollowupCalculated"
+              "totalNumberOfSanctionsForAllOffences"
             ]
           },
           {
-            "type" : "MISSING_DYNAMIC_INPUT",
-            "message" : "Dynamic input field(s) missing",
-            "fields" : [
+            "type": "MISSING_DYNAMIC_INPUT",
+            "message": "Dynamic input field(s) missing",
+            "fields": [
               "suitabilityOfAccommodation",
               "isUnemployed",
               "currentRelationshipWithPartner",
@@ -60,15 +59,13 @@
         ]
       },
       "violentPredictor": {
-        "algorithm": "OVP",
-        "type": "DYNAMIC",
+        "algorithm": "VIOLENT_REOFFENDING_PREDICTOR",
+        "type": null,
         "modelVersion": "1.0",
         "thresholdsVersion": "1.0",
         "output": {
           "band": null,
-          "oneYearScore": null,
-          "twoYearScore": null,
-          "pointScore": null
+          "score": null
         },
         "featureValues": {},
         "validationErrors": [
@@ -76,19 +73,42 @@
             "type": "MISSING_MANDATORY_INPUT",
             "message": "Mandatory input field(s) missing",
             "fields": [
-              "gender",
               "dateOfBirth",
-              "dateAtStartOfFollowupCalculated",
+              "dateOfCurrentConviction",
+              "ageAtFirstSanction",
+              "gender",
+              "currentOffenceCode",
               "totalNumberOfSanctionsForAllOffences",
-              "totalNumberOfViolentSanctions",
-              "doesRecogniseImpactOfOffendingOnOthers",
-              "isCurrentlyOfNoFixedAbodeOrTransientAccommodation",
+              "totalNumberOfViolentSanctions"
+            ]
+          },
+          {
+            "type": "MISSING_DYNAMIC_INPUT",
+            "message": "Dynamic input field(s) missing",
+            "fields": [
+              "suitabilityOfAccommodation",
               "isUnemployed",
+              "currentRelationshipWithPartner",
+              "evidenceOfDomesticAbuse",
+              "currentRelationshipStatus",
+              "regularOffendingActivities",
+              "motivationToTackleDrugMisuse",
+              "hasOtherOpiateUsage",
+              "hasCrackCocaineUsage",
+              "hasPowderCocaineUsage",
+              "hasMisusedPrescriptionDrugUsage",
+              "hasBenzodiazepinesUsage",
+              "hasCannabisUsage",
+              "hasSteroidsUsage",
+              "hasOtherDrugsUsage",
+              "hasKetamineUsage",
+              "hasSpiceUsage",
+              "hasHallucinogensUsage",
+              "hasSolventsUsage",
+              "hasMethadoneUsage",
               "currentAlcoholUseProblems",
               "excessiveAlcoholUse",
-              "hasCurrentPsychiatricTreatment",
-              "temperControl",
-              "proCriminalAttitudes"
+              "temperControl"
             ]
           }
         ]
@@ -123,29 +143,21 @@
         ]
       },
       "indirectContactSexualPredictor": {
-        "algorithm": "OSPIIC",
+        "algorithm": "IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR",
         "type": "STATIC",
         "modelVersion": "1.0",
         "thresholdsVersion": "1.0",
         "output": {
-          "band": null,
-          "score": null,
-          "femaleVersion": null,
+          "band": "NOT_APPLICABLE",
+          "score": 0.0,
+          "femaleVersion": false,
           "hasSexualOffenceHistory": null
         },
         "featureValues": {},
-        "validationErrors": [
-          {
-            "type": "MISSING_MANDATORY_INPUT",
-            "message": "Mandatory input field(s) missing",
-            "fields": [
-              "gender"
-            ]
-          }
-        ]
+        "validationErrors": []
       },
-      "seriousViolencePredictor": {
-        "algorithm": "SNSV",
+      "seriousViolentPredictor": {
+        "algorithm": "SERIOUS_VIOLENT_REOFFENDING_PREDICTOR",
         "type": null,
         "modelVersion": "1.0",
         "thresholdsVersion": "1.0",
@@ -159,15 +171,26 @@
             "type": "MISSING_MANDATORY_INPUT",
             "message": "Mandatory input field(s) missing",
             "fields": [
-              "gender",
               "dateOfBirth",
               "dateOfCurrentConviction",
+              "ageAtFirstSanction",
+              "gender",
               "currentOffenceCode",
               "totalNumberOfSanctionsForAllOffences",
-              "ageAtFirstSanction",
-              "supervisionStatus",
-              "dateAtStartOfFollowupUserInput",
               "totalNumberOfViolentSanctions"
+            ]
+          },
+          {
+            "type": "MISSING_DYNAMIC_INPUT",
+            "message": "Dynamic input field(s) missing",
+            "fields": [
+              "didOffenceInvolveCarryingOrUsingWeapon",
+              "suitabilityOfAccommodation",
+              "isUnemployed",
+              "currentAlcoholUseProblems",
+              "temperControl",
+              "proCriminalAttitudes",
+              "previousConvictions"
             ]
           }
         ]
@@ -213,29 +236,21 @@
               ]
             },
             "indirectContactSexualPredictorScore": {
-              "algorithm": "OSPIIC",
+              "algorithm": "IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR",
               "type": "STATIC",
               "modelVersion": "1.0",
               "thresholdsVersion": "1.0",
               "output": {
-                "band": null,
-                "score": null,
-                "femaleVersion": null,
+                "band": "NOT_APPLICABLE",
+                "score": 0.0,
+                "femaleVersion": false,
                 "hasSexualOffenceHistory": null
               },
               "featureValues": {},
-              "validationErrors": [
-                {
-                  "type": "MISSING_MANDATORY_INPUT",
-                  "message": "Mandatory input field(s) missing",
-                  "fields": [
-                    "gender"
-                  ]
-                }
-              ]
+              "validationErrors": []
             },
-            "seriousViolencePredictorScore": {
-              "algorithm": "SNSV",
+            "seriousViolentPredictorScore": {
+              "algorithm": "SERIOUS_VIOLENT_REOFFENDING_PREDICTOR",
               "type": null,
               "modelVersion": "1.0",
               "thresholdsVersion": "1.0",
@@ -249,15 +264,26 @@
                   "type": "MISSING_MANDATORY_INPUT",
                   "message": "Mandatory input field(s) missing",
                   "fields": [
-                    "gender",
                     "dateOfBirth",
                     "dateOfCurrentConviction",
+                    "ageAtFirstSanction",
+                    "gender",
                     "currentOffenceCode",
                     "totalNumberOfSanctionsForAllOffences",
-                    "ageAtFirstSanction",
-                    "supervisionStatus",
-                    "dateAtStartOfFollowupUserInput",
                     "totalNumberOfViolentSanctions"
+                  ]
+                },
+                {
+                  "type": "MISSING_DYNAMIC_INPUT",
+                  "message": "Dynamic input field(s) missing",
+                  "fields": [
+                    "didOffenceInvolveCarryingOrUsingWeapon",
+                    "suitabilityOfAccommodation",
+                    "isUnemployed",
+                    "currentAlcoholUseProblems",
+                    "temperControl",
+                    "proCriminalAttitudes",
+                    "previousConvictions"
                   ]
                 }
               ]
@@ -271,8 +297,7 @@
             "message": "Validation error(s) in component scores",
             "fields": [
               "OSPDC",
-              "OSPIIC",
-              "SNSV"
+              "SERIOUS_VIOLENT_REOFFENDING_PREDICTOR"
             ]
           }
         ]

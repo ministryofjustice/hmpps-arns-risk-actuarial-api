@@ -11,9 +11,7 @@ data class AllPredictorPredictorOutputResponse(
 
 data class ViolentPredictorPredictorOutputResponse(
   override val band: RiskBandResponse?,
-  val oneYearScore: Int?,
-  val twoYearScore: Int?,
-  val pointScore: Int?,
+  val score: Double?,
 ) : PredictorOutputResponse(band)
 
 data class DirectContactSexualPredictorOutputResponse(
@@ -32,7 +30,7 @@ data class IndirectContactSexualPredictorPredictorOutputResponse(
   val hasSexualOffenceHistory: Boolean?,
 ) : PredictorOutputResponse(band)
 
-data class SeriousViolencePredictorPredictorOutputResponse(
+data class SeriousViolentPredictorPredictorOutputResponse(
   override val band: RiskBandResponse?,
   val score: Double?,
 ) : PredictorOutputResponse(band)
@@ -48,5 +46,5 @@ data class SeriousPredictorPredictorOutputResponse(
 data class SeriousPredictorComponentScores(
   val directContactSexualPredictorScore: PredictorResponse<DirectContactSexualPredictorOutputResponse>,
   val indirectContactSexualPredictorScore: PredictorResponse<IndirectContactSexualPredictorPredictorOutputResponse>,
-  val seriousViolencePredictorScore: PredictorResponse<SeriousViolencePredictorPredictorOutputResponse>,
+  val seriousViolentPredictorScore: PredictorResponse<SeriousViolentPredictorPredictorOutputResponse>,
 )

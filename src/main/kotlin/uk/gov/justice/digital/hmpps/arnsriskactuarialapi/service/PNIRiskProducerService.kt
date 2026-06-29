@@ -15,14 +15,14 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.bothNullSara
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isAllReoffendingPredictorMedium
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isHighAllReoffendingPredictor
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isHighOvp
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isHighSara
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isHighViolentReoffendingPredictor
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isMediumSara
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isMediumViolentReoffendingPredictor
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isOspDcHigh
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isOspDcMedium
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isOspIicHigh
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isOspIicMedium
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isOvpMedium
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isRsrHigh
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isRsrMedium
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.overallNeedsGroupingCalculation
@@ -57,10 +57,10 @@ class PNIRiskProducerService : BaseRiskScoreProducer() {
       impulsivityProblems = request.impulsivityProblems,
       temperControl = request.temperControl,
       allReoffendingPredictorStaticScore = context.allReoffendingPredictor?.score,
-      ovp = context.OVP?.provenViolentTypeReoffendingTwoYear,
-      ovpBand = context.OVP?.band,
+      violentReoffendingPredictorStaticScore = context.violentReoffendingPredictor?.score,
+      violentReoffendingPredictorBand = context.violentReoffendingPredictor?.band,
       ospDCBand = context.RSR?.ospdcBand,
-      ospIICBand = context.RSR?.ospiicBand,
+      imagesAndIndirectContactSexualReoffendingPredictorBand = context.RSR?.imagesAndIndirectContactSexualReoffendingPredictorBand,
       rsr = context.RSR?.rsrScore?.toInt(),
       saraRiskToPartner = request.saraRiskToPartner,
       saraRiskToOthers = request.saraRiskToOthers,
@@ -88,7 +88,7 @@ class PNIRiskProducerService : BaseRiskScoreProducer() {
     val projectedRisk = when {
       isHighRisk(
         requestValidated.copy(
-          ospIICBand = requestValidated.ospIICBand ?: RiskBand.VERY_HIGH,
+          imagesAndIndirectContactSexualReoffendingPredictorBand = requestValidated.imagesAndIndirectContactSexualReoffendingPredictorBand ?: RiskBand.VERY_HIGH,
           ospDCBand = requestValidated.ospDCBand ?: RiskBand.VERY_HIGH,
           rsr = requestValidated.rsr ?: 100,
         ),
@@ -170,7 +170,7 @@ class PNIRiskProducerService : BaseRiskScoreProducer() {
     isHighNeedWithMediumRisk(need, risk) ||
     isMediumNeedWithMediumRisk(need, risk)
 
-  private fun isHighAllReoffendingPredictorWithHighOVP(request: PNIRequestValidated) = isHighAllReoffendingPredictor(request) && isHighOvp(request)
+  private fun isHighAllReoffendingPredictorWithHighOVP(request: PNIRequestValidated) = isHighAllReoffendingPredictor(request) && isHighViolentReoffendingPredictor(request)
 
   private fun isHighAllReoffendingPredictorWithHighSara(request: PNIRequestValidated) = isHighAllReoffendingPredictor(request) && isHighSara(request)
 
@@ -197,7 +197,7 @@ class PNIRiskProducerService : BaseRiskScoreProducer() {
   internal fun isHighRisk(
     requestValidated: PNIRequestValidated,
   ): Boolean = isHighAllReoffendingPredictor(requestValidated) ||
-    isHighOvp(requestValidated) ||
+    isHighViolentReoffendingPredictor(requestValidated) ||
     isOspDcHigh(requestValidated) ||
     isOspIicHigh(requestValidated) ||
     isRsrHigh(requestValidated) ||
@@ -206,7 +206,7 @@ class PNIRiskProducerService : BaseRiskScoreProducer() {
   internal fun isMediumRisk(
     requestValidated: PNIRequestValidated,
   ): Boolean = isAllReoffendingPredictorMedium(requestValidated) ||
-    isOvpMedium(requestValidated) ||
+    isMediumViolentReoffendingPredictor(requestValidated) ||
     isOspDcMedium(requestValidated) ||
     isOspIicMedium(requestValidated) ||
     isMediumSara(requestValidated) ||

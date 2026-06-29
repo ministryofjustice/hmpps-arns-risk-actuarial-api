@@ -13,23 +13,23 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.YesSometimesNo
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.allreoffendingpredictor.AllReoffendingPredictorObject
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.imagesandIndirectcontactsexualreoffendingpredictor.ImagesAndIndirectContactSexualReoffendingPredictorObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds.HasQualifications
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds.LDSObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.mst.MSTObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.opd.OPDObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.opd.OPDRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.osp.OSPDCObject
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ospiic.OSPIICObject
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ovp.OVPObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.ProgrammeNeedIdentifier
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.rsr.RSRObject
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.snsv.SNSVObject
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.seriousviolentreoffendingpredictor.SeriousViolentReoffendingPredictorObject
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.violentreoffendingpredictor.ViolentReoffendingPredictorObject
 import java.time.LocalDate
 import kotlin.collections.emptyList
 
-fun emptyOVP(): OVPObject = OVPObject(null, null, null, null, null)
+fun emptyViolentReoffendingPredictor(): ViolentReoffendingPredictorObject = ViolentReoffendingPredictorObject(null, null, null, null, null)
 
 fun emptyAllReoffendingPredictor(): AllReoffendingPredictorObject = AllReoffendingPredictorObject(null, null, null, null, null)
 
@@ -43,11 +43,11 @@ fun emptyLDS(): LDSObject = LDSObject(null, null)
 
 fun emptyOSPDC(): OSPDCObject = OSPDCObject(null, null, null, null, null, null, null, null)
 
-fun emptySNSV(): SNSVObject = SNSVObject(null, null, null, null)
+fun emptySeriousViolentReoffendingPredictor(): SeriousViolentReoffendingPredictorObject = SeriousViolentReoffendingPredictorObject(null, null, null, null, null)
 
 fun emptyRSR(): RSRObject = RSRObject(null, null, null, null, null, null, null, null, null, null, null)
 
-fun emptyOSPIIC(): OSPIICObject = OSPIICObject(null, null, null, null, emptyList())
+fun emptyImagesAndIndirectContactSexualReoffendingPredictor(): ImagesAndIndirectContactSexualReoffendingPredictorObject = ImagesAndIndirectContactSexualReoffendingPredictorObject(null, null, null, null, null, null, null)
 
 fun emptyContext() = RiskScoreContext(version = RiskScoreVersion.V1_0)
 
@@ -67,12 +67,12 @@ fun highAllReoffendingPredictor(staticOrDynamic: StaticOrDynamic = StaticOrDynam
   emptyMap(),
 )
 
-fun highOvp() = OVPObject(
-  77,
-  88,
-  123,
+fun highViolentReoffendingPredictor(staticOrDynamic: StaticOrDynamic = StaticOrDynamic.STATIC) = ViolentReoffendingPredictorObject(
+  77.0,
   RiskBand.VERY_HIGH,
+  staticOrDynamic,
   emptyList(),
+  emptyMap(),
 )
 
 val FIXED_TEST_DATE: LocalDate = LocalDate.of(2025, 1, 1)
@@ -181,24 +181,93 @@ fun validAllReoffendingPredictorDynamicRiskScoreRequest(): RiskScoreRequest = Ri
   proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
 )
 
-fun validOVPRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
-  version = RiskScoreVersion.V1_0,
+fun validSeriousViolentReoffendingPredictorStaticRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
+  assessmentDate = LocalDate.of(2025, 1, 1),
+  dateOfBirth = LocalDate.of(1990, 1, 1),
+  dateOfCurrentConviction = LocalDate.of(2024, 1, 1),
+  ageAtFirstSanction = 18,
   gender = Gender.MALE,
-  dateOfBirth = LocalDate.of(1964, 10, 15),
-  dateOfCurrentConviction = LocalDate.of(2014, 12, 13),
-  dateAtStartOfFollowupCalculated = LocalDate.of(2027, 12, 12),
-  totalNumberOfSanctionsForAllOffences = 30,
-  totalNumberOfViolentSanctions = 10,
-  doesRecogniseImpactOfOffendingOnOthers = true,
-  isCurrentlyOfNoFixedAbodeOrTransientAccommodation = true,
-  ageAtFirstSanction = null,
-  currentOffenceCode = null,
+  currentOffenceCode = "00001",
+  totalNumberOfSanctionsForAllOffences = 2,
+  totalNumberOfViolentSanctions = 2,
+  dateAtStartOfFollowupCalculated = LocalDate.of(2026, 1, 1),
+)
+
+fun validSeriousViolentReoffendingPredictorDynamicRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
+  assessmentDate = LocalDate.of(2025, 1, 1),
+  dateOfBirth = LocalDate.of(1990, 1, 1),
+  dateOfCurrentConviction = LocalDate.of(2024, 1, 1),
+  ageAtFirstSanction = 18,
+  gender = Gender.MALE,
+  currentOffenceCode = "00001",
+  totalNumberOfSanctionsForAllOffences = 2,
+  totalNumberOfViolentSanctions = 2,
+  dateAtStartOfFollowupCalculated = LocalDate.of(2026, 1, 1),
+  didOffenceInvolveCarryingOrUsingWeapon = true,
+  suitabilityOfAccommodation = ProblemLevel.SOME_PROBLEMS,
   isUnemployed = true,
-  currentAlcoholUseProblems = ProblemLevel.NO_PROBLEMS,
-  excessiveAlcoholUse = ProblemLevel.NO_PROBLEMS,
-  hasCurrentPsychiatricTreatment = false,
-  temperControl = ProblemLevel.NO_PROBLEMS,
-  proCriminalAttitudes = ProblemLevel.NO_PROBLEMS,
+  currentAlcoholUseProblems = ProblemLevel.SOME_PROBLEMS,
+  temperControl = ProblemLevel.SOME_PROBLEMS,
+  proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
+  previousConvictions = listOf(PreviousConviction.FIREARMS),
+)
+
+fun validViolentReoffendingPredictorStaticRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
+  assessmentDate = LocalDate.of(2025, 1, 1),
+  dateOfBirth = LocalDate.of(1990, 1, 1),
+  dateOfCurrentConviction = LocalDate.of(2024, 1, 1),
+  ageAtFirstSanction = 18,
+  gender = Gender.MALE,
+  currentOffenceCode = "00001",
+  totalNumberOfSanctionsForAllOffences = 2,
+  totalNumberOfViolentSanctions = 2,
+  dateAtStartOfFollowupCalculated = LocalDate.of(2026, 1, 1),
+)
+
+fun validViolentReoffendingPredictorDynamicRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
+  assessmentDate = LocalDate.of(2025, 1, 1),
+  dateOfBirth = LocalDate.of(1990, 1, 1),
+  dateOfCurrentConviction = LocalDate.of(2024, 1, 1),
+  ageAtFirstSanction = 18,
+  gender = Gender.MALE,
+  currentOffenceCode = "00001",
+  totalNumberOfSanctionsForAllOffences = 2,
+  totalNumberOfViolentSanctions = 2,
+  dateAtStartOfFollowupCalculated = LocalDate.of(2026, 1, 1),
+  suitabilityOfAccommodation = ProblemLevel.SOME_PROBLEMS,
+  isUnemployed = true,
+  currentRelationshipWithPartner = ProblemLevel.SOME_PROBLEMS,
+  evidenceOfDomesticAbuse = false,
+  currentRelationshipStatus = CurrentRelationshipStatus.IN_RELATIONSHIP_NOT_LIVING_TOGETHER,
+  regularOffendingActivities = ProblemLevel.SOME_PROBLEMS,
+  motivationToTackleDrugMisuse = MotivationLevel.PARTIAL_MOTIVATION,
+  hasHeroinUsage = false,
+  hasOtherOpiateUsage = false,
+  hasCrackCocaineUsage = false,
+  hasPowderCocaineUsage = false,
+  hasMisusedPrescriptionDrugUsage = false,
+  hasBenzodiazepinesUsage = false,
+  hasCannabisUsage = true,
+  hasSteroidsUsage = true,
+  hasOtherDrugsUsage = false,
+  hasKetamineUsage = false,
+  hasSpiceUsage = false,
+  hasHallucinogensUsage = false,
+  hasSolventsUsage = false,
+  hasMethadoneUsage = true,
+  currentAlcoholUseProblems = ProblemLevel.SOME_PROBLEMS,
+  excessiveAlcoholUse = ProblemLevel.SOME_PROBLEMS,
+  impulsivityProblems = ProblemLevel.SOME_PROBLEMS,
+  temperControl = ProblemLevel.SOME_PROBLEMS,
+)
+
+fun validImageAndIndirectContactPredictorStaticRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
+  gender = Gender.MALE,
+  hasEverCommittedSexualOffence = true,
+  totalContactAdultSexualSanctions = 1,
+  totalContactChildSexualSanctions = 1,
+  totalNonContactSexualOffences = 1,
+  totalIndecentImageSanctions = 1,
 )
 
 fun validMSTRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
@@ -306,46 +375,6 @@ fun validOSPDCRiskScoreRequest() = RiskScoreRequest(
   supervisionStatus = SupervisionStatus.CUSTODY,
 )
 
-fun validSNSVStaticRiskScoreRequest() = RiskScoreRequest(
-  version = RiskScoreVersion.V1_0,
-  gender = Gender.MALE,
-  dateOfBirth = LocalDate.of(1980, 1, 1),
-  assessmentDate = LocalDate.of(2025, 1, 1),
-  dateOfCurrentConviction = LocalDate.of(2020, 1, 1),
-  currentOffenceCode = "02700",
-  totalNumberOfSanctionsForAllOffences = 1,
-  ageAtFirstSanction = 40,
-  supervisionStatus = SupervisionStatus.COMMUNITY,
-  dateAtStartOfFollowupUserInput = LocalDate.of(2024, 1, 1),
-  totalNumberOfViolentSanctions = 1,
-  evidenceOfDomesticAbuse = false,
-)
-
-fun validSNSVDynamicRiskScoreRequest() = RiskScoreRequest(
-  version = RiskScoreVersion.V1_0,
-  gender = Gender.MALE,
-  dateOfBirth = LocalDate.of(1980, 1, 1),
-  assessmentDate = LocalDate.of(2025, 1, 1),
-  dateOfCurrentConviction = LocalDate.of(2020, 1, 1),
-  currentOffenceCode = "02700",
-  totalNumberOfSanctionsForAllOffences = 1,
-  ageAtFirstSanction = 40,
-  supervisionStatus = SupervisionStatus.COMMUNITY,
-  dateAtStartOfFollowupUserInput = LocalDate.of(2027, 1, 1),
-  totalNumberOfViolentSanctions = 1,
-  didOffenceInvolveCarryingOrUsingWeapon = false,
-  suitabilityOfAccommodation = ProblemLevel.NO_PROBLEMS,
-  isUnemployed = false,
-  currentRelationshipWithPartner = ProblemLevel.NO_PROBLEMS,
-  currentAlcoholUseProblems = ProblemLevel.NO_PROBLEMS,
-  excessiveAlcoholUse = ProblemLevel.NO_PROBLEMS,
-  impulsivityProblems = ProblemLevel.NO_PROBLEMS,
-  temperControl = ProblemLevel.NO_PROBLEMS,
-  proCriminalAttitudes = ProblemLevel.NO_PROBLEMS,
-  evidenceOfDomesticAbuse = false,
-  previousConvictions = listOf(PreviousConviction.WOUNDING_GBH),
-)
-
 fun opdRequestValidated() = OPDRequestValidated(
   overallRiskForAssessment = RiskBand.HIGH,
   highestRiskLevelOverAllAssessments = RiskBand.HIGH,
@@ -425,11 +454,11 @@ fun pniRequest(
   impulsivityProblems = impulsivityProblems,
   temperControl = temperControl,
   allReoffendingPredictorStaticScore = null,
-  ovpBand = null,
+  violentReoffendingPredictorStaticScore = null,
+  violentReoffendingPredictorBand = null,
   ospDCBand = null,
-  ospIICBand = null,
+  imagesAndIndirectContactSexualReoffendingPredictorBand = null,
   saraRiskToPartner = null,
   saraRiskToOthers = null,
-  ovp = null,
   rsr = null,
 )

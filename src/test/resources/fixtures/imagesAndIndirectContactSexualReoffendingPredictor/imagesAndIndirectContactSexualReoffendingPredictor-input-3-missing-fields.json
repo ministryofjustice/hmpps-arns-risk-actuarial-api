@@ -1,0 +1,19 @@
+{
+  "request": {
+    "version": "V1_0"
+  },
+  "response": {
+    "algorithm": "IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR",
+    "type": "STATIC",
+    "modelVersion": "1.0",
+    "thresholdsVersion": "1.0",
+    "output": {
+      "band": "NOT_APPLICABLE",
+      "score": 0.0,
+      "femaleVersion": false,
+      "hasSexualOffenceHistory": null
+    },
+    "featureValues": {},
+    "validationErrors": []
+  }
+}

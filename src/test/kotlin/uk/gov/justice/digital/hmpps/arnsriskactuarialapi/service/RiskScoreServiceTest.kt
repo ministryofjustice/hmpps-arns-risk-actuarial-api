@@ -13,14 +13,14 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyAllReoffendingPredictor
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyImagesAndIndirectContactSexualReoffendingPredictor
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyLDS
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyMST
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOPD
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOSPDC
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOSPIIC
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOVP
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyRSR
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptySNSV
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptySeriousViolentReoffendingPredictor
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyViolentReoffendingPredictor
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.omittedPNI
 
 @ExtendWith(MockitoExtension::class)
@@ -30,7 +30,7 @@ class RiskScoreServiceTest {
   private lateinit var allReoffendingPredictorRiskProducerService: AllReoffendingPredictorRiskProducerService
 
   @Mock
-  private lateinit var ovpRiskProducerService: OVPRiskProducerService
+  private lateinit var violentReoffendingPredictorRiskProducerService: ViolentReoffendingPredictorRiskProducerService
 
   @Mock
   private lateinit var mstRiskProducerService: MSTRiskProducerService
@@ -48,13 +48,13 @@ class RiskScoreServiceTest {
   private lateinit var ospdcRiskProducerService: OSPDCRiskProducerService
 
   @Mock
-  private lateinit var snsvRiskProducerService: SNSVRiskProducerService
+  private lateinit var seriousViolentReoffendingPredictorRiskProducerService: SeriousViolentReoffendingPredictorRiskProducerService
 
   @Mock
   private lateinit var rsrRiskProducerService: RSRRiskProducerService
 
   @Mock
-  private lateinit var ospiicRiskProducerService: OSPIICRiskProducerService
+  private lateinit var imagesAndIndirectContactSexualReoffendingPredictorRiskProducerService: ImagesAndIndirectContactSexualReoffendingPredictorRiskProducerService
 
   @InjectMocks
   private lateinit var riskScoreService: RiskScoreService
@@ -82,14 +82,28 @@ class RiskScoreServiceTest {
             emptyAllReoffendingPredictor()
         }
       },
-      Pair(ovpRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { OVP = emptyOVP() } },
+      Pair(violentReoffendingPredictorRiskProducerService) { ctx: RiskScoreContext ->
+        ctx.apply {
+          violentReoffendingPredictor =
+            emptyViolentReoffendingPredictor()
+        }
+      },
       Pair(mstRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { MST = emptyMST() } },
       Pair(opdRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { OPD = emptyOPD() } },
       Pair(pniRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { PNI = omittedPNI() } },
       Pair(ldsRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { LDS = emptyLDS() } },
       Pair(ospdcRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { OSPDC = emptyOSPDC() } },
-      Pair(snsvRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { SNSV = emptySNSV() } },
-      Pair(ospiicRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { OSPIIC = emptyOSPIIC() } },
+      Pair(seriousViolentReoffendingPredictorRiskProducerService) { ctx: RiskScoreContext ->
+        ctx.apply {
+          seriousViolentReoffendingPredictor = emptySeriousViolentReoffendingPredictor()
+        }
+      },
+      Pair(imagesAndIndirectContactSexualReoffendingPredictorRiskProducerService) { ctx: RiskScoreContext ->
+        ctx.apply {
+          imagesAndIndirectContactSexualReoffendingPredictor =
+            emptyImagesAndIndirectContactSexualReoffendingPredictor()
+        }
+      },
       Pair(rsrRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { RSR = emptyRSR() } },
 
       // add more Pairs for the other mocked risk producers here

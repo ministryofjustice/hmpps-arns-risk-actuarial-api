@@ -7,7 +7,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.PreviousConviction
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.RiskBandResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.RiskScoreResponse
@@ -313,7 +312,6 @@ fun runBatchIntoRiskScoreService(inputMappings: List<InputMapping>, riskScoreSer
     isCurrentOffenceSexuallyMotivated = inputs["isCurrentOffenceSexuallyMotivated"] as Boolean?,
     isCurrentOffenceAgainstVictimStranger = inputs["isCurrentOffenceAgainstVictimStranger"] as Boolean?,
     mostRecentOffenceDate = inputs["mostRecentOffenceDate"]?.let { LocalDate.parse(it as String) },
-    snsvStaticOrDynamic = inputs["snsvStaticOrDynamic"]?.let { StaticOrDynamic.valueOf(it as String) },
   )
   val response = riskScoreService.riskScoreProducer(request)
   ARNSRequestAndResponse(request, response)
@@ -397,7 +395,7 @@ fun arnsAndOasysResultsNotEqual(arnsResponse: RiskScoreResponse, oasysResponse: 
     arnsResponse.actuarialPredictors.indirectContactSexualPredictor.output.band != oasysResponse.ospiicBand ||
     arnsResponse.actuarialPredictors.indirectContactSexualPredictor.output.score != oasysResponse.ospiicScore ||
     // Check SNSV score
-    arnsResponse.actuarialPredictors.seriousViolencePredictor.output.score != oasysResponse.snsvScore
+    arnsResponse.actuarialPredictors.seriousViolentPredictor.output.score != oasysResponse.snsvScore
 
 fun getTestOutputText(objectMapper: ObjectMapper, testNum: Long, arnsResponse: ARNSRequestAndResponse, oasysResponse: OASysRequestAndResponse, testFailed: Boolean, seed: Long) =
   """
@@ -412,7 +410,7 @@ fun getTestOutputText(objectMapper: ObjectMapper, testNum: Long, arnsResponse: A
     ${printOASysInputsAsSQL(oasysResponse.request)}
     
     # Output
-    ARNS score type  = ${arnsResponse.response.actuarialPredictors.seriousViolencePredictor.type}
+    ARNS score type  = ${arnsResponse.response.actuarialPredictors.seriousViolentPredictor.type}
     OASys score type = ${oasysResponse.response.scoreType}
     
     ARNS RSR Band  = ${arnsResponse.response.actuarialPredictors.seriousPredictor.output.band}
@@ -436,13 +434,13 @@ fun getTestOutputText(objectMapper: ObjectMapper, testNum: Long, arnsResponse: A
     ARNS OSP/IIC Score  = ${arnsResponse.response.actuarialPredictors.indirectContactSexualPredictor.output.score}
     OASys OSP/IIC Score = ${oasysResponse.response.ospiicScore}
     
-    ARNS SNSV Score  = ${arnsResponse.response.actuarialPredictors.seriousViolencePredictor.output.score}
+    ARNS SNSV Score  = ${arnsResponse.response.actuarialPredictors.seriousViolentPredictor.output.score}
     OASys SNSV Score = ${oasysResponse.response.snsvScore}
     
     ARNS RSR errors     = ${arnsResponse.response.actuarialPredictors.seriousPredictor.validationErrors}
     ARNS OSP/DC errors  = ${arnsResponse.response.actuarialPredictors.directContactSexualPredictor.validationErrors}
     ARNS OSP/IIC errors = ${arnsResponse.response.actuarialPredictors.indirectContactSexualPredictor.validationErrors}
-    ARNS SNSV errors    = ${arnsResponse.response.actuarialPredictors.seriousViolencePredictor.validationErrors}
+    ARNS SNSV errors    = ${arnsResponse.response.actuarialPredictors.seriousViolentPredictor.validationErrors}
     OASys errors        = ${oasysResponse.response.errorMessage}
     
     ${if (!testFailed) "# TEST PASSED" else "# TEST FAILED"}

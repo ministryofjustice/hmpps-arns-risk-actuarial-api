@@ -73,6 +73,8 @@ object ViolentReoffendingPredictorTransformationHelper {
     }
   }
 
+  fun getOffenceGroupWeight(staticOrDynamic: StaticOrDynamic, currentOffenceCode: String): BigDecimal = BigDecimal.ZERO
+
   fun getFirstSanctionWeight(
     staticOrDynamic: StaticOrDynamic,
     totalNumberOfSanctionsForAllOffences: Int,
@@ -175,7 +177,7 @@ object ViolentReoffendingPredictorTransformationHelper {
       return BigDecimal.ZERO
     }
 
-    val lengthOfCareer = (ageAtCurrentSanction - ageAtFirstSanction) + ViolentReoffendingPredictorConstant.CAREER_BOOST
+    val lengthOfCareer = (ageAtCurrentSanction - ageAtFirstSanction) + ViolentReoffendingPredictorConstant.CAREER_BOOST_COPAS
 
     val coefficient = when (staticOrDynamic) {
       StaticOrDynamic.STATIC -> when (gender) {
@@ -197,22 +199,22 @@ object ViolentReoffendingPredictorTransformationHelper {
 
   fun getCopasViolentOffencesWeight(
     staticOrDynamic: StaticOrDynamic,
-    totalNumberOfViolentOffences: Int,
+    totalNumberOfViolentSanctions: Int,
     ageAtFirstSanction: Int,
     ageAtCurrentSanction: Int,
   ): BigDecimal {
-    if (totalNumberOfViolentOffences == 0) {
+    if (totalNumberOfViolentSanctions == 0) {
       return BigDecimal.ZERO
     }
 
-    val lengthOfCareer = (ageAtCurrentSanction - ageAtFirstSanction) + ViolentReoffendingPredictorConstant.CAREER_BOOST
+    val lengthOfCareer = (ageAtCurrentSanction - ageAtFirstSanction) + ViolentReoffendingPredictorConstant.CAREER_BOOST_VIOLENT
 
     val coefficient = when (staticOrDynamic) {
       StaticOrDynamic.STATIC -> ViolentReoffendingPredictorStatic.VIOLENT_RATE.coefficient
       StaticOrDynamic.DYNAMIC -> ViolentReoffendingPredictorDynamic.VIOLENT_RATE.coefficient
     }
 
-    val totalSanctionsRatio: Double = totalNumberOfViolentOffences.toDouble() / lengthOfCareer
+    val totalSanctionsRatio: Double = totalNumberOfViolentSanctions.toDouble() / lengthOfCareer
     val naturalLog = ln(totalSanctionsRatio)
 
     return naturalLog.toBigDecimal() * coefficient
@@ -280,7 +282,7 @@ object ViolentReoffendingPredictorTransformationHelper {
 
   fun getImpulsivityWeight(impulsivityProblems: ProblemLevel): BigDecimal = impulsivityProblems.score.toBigDecimal() * ViolentReoffendingPredictorDynamic.IMPULSIVITY.coefficient
 
-  fun getTemperWeight(temperProblems: ProblemLevel): BigDecimal = temperProblems.score.toBigDecimal() * ViolentReoffendingPredictorDynamic.TEMPER.coefficient
+  fun getTemperControlWeight(temperProblems: ProblemLevel): BigDecimal = temperProblems.score.toBigDecimal() * ViolentReoffendingPredictorDynamic.TEMPER.coefficient
 
   fun getMethadoneUsageWeight(hasMethadoneUsage: Boolean): BigDecimal = if (hasMethadoneUsage) ViolentReoffendingPredictorDynamic.METHADONE.coefficient else BigDecimal.ZERO
 
