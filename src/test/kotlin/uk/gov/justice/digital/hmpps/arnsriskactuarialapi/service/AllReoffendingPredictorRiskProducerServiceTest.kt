@@ -23,7 +23,7 @@ class AllReoffendingPredictorRiskProducerServiceTest {
   fun `should return early with both static and dynamic errors when static validation fails`() {
     val context = service.getRiskScore(RiskScoreRequest(), emptyContext())
 
-    val expectedStaticValidationErrors = ValidationError(
+    val expectedStaticValidationError1 = ValidationError(
       ValidationErrorType.MISSING_MANDATORY_INPUT,
       "Mandatory input field(s) missing",
       listOf(
@@ -34,6 +34,11 @@ class AllReoffendingPredictorRiskProducerServiceTest {
         "currentOffenceCode",
         "totalNumberOfSanctionsForAllOffences",
       ),
+    )
+    val expectedStaticValidationError2 = ValidationError(
+      ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_REQUIRED,
+      "Either Date at start of followup or date of current conviction must be provided",
+      listOf("dateAtStartOfFollowupCalculated"),
     )
     val expectedDynamicValidationErrors = ValidationError(
       ValidationErrorType.MISSING_DYNAMIC_INPUT,
@@ -69,7 +74,7 @@ class AllReoffendingPredictorRiskProducerServiceTest {
       score = null,
       band = null,
       staticOrDynamic = null,
-      validationErrors = listOf(expectedStaticValidationErrors, expectedDynamicValidationErrors),
+      validationErrors = listOf(expectedStaticValidationError1, expectedStaticValidationError2, expectedDynamicValidationErrors),
       featureValues = null,
     )
 
