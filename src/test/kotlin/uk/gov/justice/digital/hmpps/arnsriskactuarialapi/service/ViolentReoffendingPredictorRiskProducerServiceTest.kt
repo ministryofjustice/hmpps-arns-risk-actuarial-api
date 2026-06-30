@@ -76,6 +76,7 @@ class ViolentReoffendingPredictorRiskProducerServiceTest {
         "hasMethadoneUsage",
         "currentAlcoholUseProblems",
         "excessiveAlcoholUse",
+        "impulsivityProblems",
         "temperControl",
       ),
     )
@@ -126,6 +127,7 @@ class ViolentReoffendingPredictorRiskProducerServiceTest {
         "hasMethadoneUsage",
         "currentAlcoholUseProblems",
         "excessiveAlcoholUse",
+        "impulsivityProblems",
         "temperControl",
       ),
     )

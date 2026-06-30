@@ -57,6 +57,7 @@ class ViolentReoffendingPredictorValidatorTest {
     RiskScoreRequest::hasMethadoneUsage,
     RiskScoreRequest::currentAlcoholUseProblems,
     RiskScoreRequest::excessiveAlcoholUse,
+    RiskScoreRequest::impulsivityProblems,
     RiskScoreRequest::temperControl,
   )
 
@@ -66,17 +67,43 @@ class ViolentReoffendingPredictorValidatorTest {
     val request: RiskScoreRequest = mock()
 
     val validationError1 = ValidationErrorType.MISSING_MANDATORY_INPUT.asError(listOf("field1", "field2"))
+    val validationError2 = ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_BEFORE_DATE_OF_BIRTH.asError(listOf("field1"))
 
     // Mock common validator method calls
     whenever(commonValidator.validateRequiredFields(request, expectedStaticRequiredFields, StaticOrDynamic.STATIC)).thenReturn(validationError1)
-    // TODO update once further validation logic added
+
+    whenever(commonValidator.validateAgeAtFirstSanction(request)).thenReturn(null)
+    whenever(commonValidator.validateCurrentOffenceCode(request)).thenReturn(null)
+    whenever(commonValidator.validateTotalNumberOfSanctionsForAllOffences(request)).thenReturn(null)
+    whenever(commonValidator.validateTotalNumberOfViolentSanctions(request)).thenReturn(null)
+
+    whenever(commonValidator.validateDateOfCurrentConvictionAgainstDateOfBirth(request)).thenReturn(null)
+    whenever(commonValidator.validateDateOfCurrentConvictionAgainstAgeAtFirstSanction(request)).thenReturn(null)
+    whenever(commonValidator.validateDateOfCurrentConvictionAgainstAssessmentDate(request)).thenReturn(null)
+
+    whenever(commonValidator.validateDateAtStartOfFollowupAgainstDateOfCurrentConviction(request)).thenReturn(null)
+    whenever(commonValidator.validateDateAtStartOfFollowupAgainstDateOfBirth(request)).thenReturn(validationError2)
+    whenever(commonValidator.validateDateAtStartOfFollowupAge(request)).thenReturn(null)
 
     // Check that validation errors are returned
-    assertEquals(listOf(validationError1), validator.validateStatic(request))
+    assertEquals(listOf(validationError1, validationError2), validator.validateStatic(request))
 
     // verify each validation method is called once
     verify(commonValidator).validateRequiredFields(request, expectedStaticRequiredFields, StaticOrDynamic.STATIC)
-    // TODO update once further validation logic added
+
+    verify(commonValidator).validateAgeAtFirstSanction(request)
+    verify(commonValidator).validateCurrentOffenceCode(request)
+    verify(commonValidator).validateTotalNumberOfSanctionsForAllOffences(request)
+    verify(commonValidator).validateTotalNumberOfViolentSanctions(request)
+
+    verify(commonValidator).validateDateOfCurrentConvictionAgainstDateOfBirth(request)
+    verify(commonValidator).validateDateOfCurrentConvictionAgainstAgeAtFirstSanction(request)
+    verify(commonValidator).validateDateOfCurrentConvictionAgainstAssessmentDate(request)
+
+    verify(commonValidator).validateDateAtStartOfFollowupAgainstDateOfCurrentConviction(request)
+    verify(commonValidator).validateDateAtStartOfFollowupAgainstDateOfBirth(request)
+    verify(commonValidator).validateDateAtStartOfFollowupAge(request)
+
     verifyNoMoreInteractions(commonValidator)
   }
 

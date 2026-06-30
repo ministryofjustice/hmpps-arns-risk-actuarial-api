@@ -268,7 +268,7 @@ class ViolentReoffendingPredictorRiskProducerService(val validator: ViolentReoff
         FeatureValue.CHRONIC_DRINKING_PROBLEMS_WEIGHT.set(getChronicDrinkingWeight(request.currentAlcoholUseProblems))
         FeatureValue.BINGE_DRINKING_PROBLEMS_WEIGHT.set(getBingeDrinkingWeight(request.excessiveAlcoholUse))
         FeatureValue.IMPULSIVITY_PROBLEMS_WEIGHT.set(getImpulsivityWeight(request.impulsivityProblems))
-        FeatureValue.TEMPER_CONTROL_WEIGHT.set(getTemperControlWeight(request.impulsivityProblems))
+        FeatureValue.TEMPER_CONTROL_WEIGHT.set(getTemperControlWeight(request.temperControl))
         FeatureValue.METHADONE_USAGE_WEIGHT.set(getMethadoneUsageWeight(request.hasMethadoneUsage))
         FeatureValue.OTHER_OPIATE_USAGE_WEIGHT.set(getOtherOpiateUsageWeight(request.hasOtherOpiateUsage))
         FeatureValue.CRACK_COCAINE_USAGE_WEIGHT.set(getCrackCocaineUsageWeight(request.hasCrackCocaineUsage))

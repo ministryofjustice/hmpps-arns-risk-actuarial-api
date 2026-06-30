@@ -7,10 +7,20 @@ import kotlin.reflect.KProperty1
 
 @Component
 class ViolentReoffendingPredictorValidator(val commonValidator: CommonValidator) : AbstractActuarialValidator(commonValidator) {
-  override fun validateStaticCustom(request: RiskScoreRequest): List<ValidationError> {
-    // TODO: Add further validation logic
-    return listOfNotNull()
-  }
+  override fun validateStaticCustom(request: RiskScoreRequest): List<ValidationError> = listOfNotNull(
+    commonValidator.validateAgeAtFirstSanction(request),
+    commonValidator.validateTotalNumberOfSanctionsForAllOffences(request),
+    commonValidator.validateTotalNumberOfViolentSanctions(request),
+    commonValidator.validateCurrentOffenceCode(request),
+
+    commonValidator.validateDateOfCurrentConvictionAgainstDateOfBirth(request),
+    commonValidator.validateDateOfCurrentConvictionAgainstAgeAtFirstSanction(request),
+    commonValidator.validateDateOfCurrentConvictionAgainstAssessmentDate(request),
+
+    commonValidator.validateDateAtStartOfFollowupAgainstDateOfCurrentConviction(request),
+    commonValidator.validateDateAtStartOfFollowupAgainstDateOfBirth(request),
+    commonValidator.validateDateAtStartOfFollowupAge(request),
+  )
 
   override fun validateDynamicCustom(request: RiskScoreRequest): List<ValidationError> {
     // TODO: Add further validation logic
@@ -51,6 +61,7 @@ class ViolentReoffendingPredictorValidator(val commonValidator: CommonValidator)
     RiskScoreRequest::hasMethadoneUsage,
     RiskScoreRequest::currentAlcoholUseProblems,
     RiskScoreRequest::excessiveAlcoholUse,
+    RiskScoreRequest::impulsivityProblems,
     RiskScoreRequest::temperControl,
   )
 }
