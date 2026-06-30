@@ -15,13 +15,13 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.LDSTransformationHelper.Companion.problemsWithReadingWritingNumeracyOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.LDSTransformationHelper.Companion.professionalOrVocationalQualificationsOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.LDSTransformationHelper.Companion.workRelatedSkillsOffendersScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateLDS
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.LDSValidator
 
 @Service
-class LDSRiskProducerService : BaseRiskScoreProducer() {
+class LDSRiskProducerService(val validator: LDSValidator) : BaseRiskScoreProducer() {
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
-    val errors = validateLDS(request)
+    val errors = validator.validateLDS(request)
 
     if (errors.isNotEmpty()) {
       return applyErrorsToContext(context, errors)

@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertNotNull
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
+import org.mockito.Mock
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.NeedScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
@@ -19,11 +20,17 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.highAllReoffendingPredi
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.highViolentReoffendingPredictor
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.lowAllReoffendingPredictor
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.pniRequest
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.CommonValidator
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.PNIValidator
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validPNIRiskScoreRequest
 
 class PNIRiskProducerServiceTest {
 
-  private val service = PNIRiskProducerService()
+  @Mock
+  private val commonValidator = CommonValidator()
+  @Mock
+  private val validator = PNIValidator(commonValidator)
+  private val service = PNIRiskProducerService(validator)
 
   @Test
   fun `should calculate ALTERNATIVE PNI with a valid request`() {

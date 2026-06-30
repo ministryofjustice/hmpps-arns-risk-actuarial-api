@@ -38,17 +38,16 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getUnemployedWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getViolenceRateWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getViolentSanctionsWeight
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateSeriousViolentReoffendingPredictorDynamic
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateSeriousViolentReoffendingPredictorStatic
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.SeriousViolentReoffendingPredictorValidator
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.getAgeAtDate
 import java.math.BigDecimal
 
 @Service
-class SeriousViolentReoffendingPredictorRiskProducerService : BaseRiskScoreProducer() {
+class SeriousViolentReoffendingPredictorRiskProducerService(val validator: SeriousViolentReoffendingPredictorValidator) : BaseRiskScoreProducer() {
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
-    val staticValidationErrors = validateSeriousViolentReoffendingPredictorStatic(request)
-    val dynamicValidationErrors = validateSeriousViolentReoffendingPredictorDynamic(request)
+    val staticValidationErrors = validator.validateStatic(request)
+    val dynamicValidationErrors = validator.validateDynamic(request)
 
     if (staticValidationErrors.isNotEmpty()) {
       return applyErrorsToContext(context, staticValidationErrors + dynamicValidationErrors)

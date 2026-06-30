@@ -17,6 +17,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.opd.OPDObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.opd.OPDResult
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOPD
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.OPDValidator
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validOPDRiskScoreRequest
 import kotlin.test.assertFailsWith
 
@@ -25,6 +26,9 @@ class OPDRiskProducerServiceTest {
 
   @Mock
   lateinit var offenceCodeCacheService: OffenceCodeCacheService
+
+  @Mock
+  lateinit var validator: OPDValidator
 
   @InjectMocks
   lateinit var service: OPDRiskProducerService
@@ -305,16 +309,19 @@ class OPDRiskProducerServiceTest {
     val request = validOPDRiskScoreRequest().copy(
       gender = null,
     )
+    val expectedValidationError = ValidationError(
+      type = ValidationErrorType.MISSING_MANDATORY_INPUT,
+      message = "Mandatory input field(s) missing",
+      fields = listOf("gender"),
+    )
+
+    whenever(validator.validateOPD(request)).thenReturn(listOf(expectedValidationError))
 
     val result = service.getRiskScore(request, context).OPD!!
     assertEquals(false, result.opdCheck)
     assertTrue(result.validationError?.isNotEmpty() == true)
     assertEquals(
-      ValidationError(
-        type = ValidationErrorType.MISSING_MANDATORY_INPUT,
-        message = "Mandatory input field(s) missing",
-        fields = listOf("gender"),
-      ),
+      expectedValidationError,
       result.validationError?.first(),
     )
   }

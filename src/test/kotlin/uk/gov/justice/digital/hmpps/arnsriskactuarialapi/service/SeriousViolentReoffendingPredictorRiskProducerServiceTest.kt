@@ -2,7 +2,13 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.InjectMocks
+import org.mockito.Mock
+import org.mockito.junit.jupiter.MockitoExtension
+import org.mockito.kotlin.whenever
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
@@ -10,18 +16,24 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.seriousviolentreoffendingpredictor.SeriousViolentReoffendingPredictorObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.CommonValidator
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.SeriousViolentReoffendingPredictorValidator
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validSeriousViolentReoffendingPredictorDynamicRiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validSeriousViolentReoffendingPredictorStaticRiskScoreRequest
 import java.math.BigDecimal
 import java.time.LocalDate
 
+@ExtendWith(MockitoExtension::class)
 class SeriousViolentReoffendingPredictorRiskProducerServiceTest {
 
-  private val service = SeriousViolentReoffendingPredictorRiskProducerService()
+  @Mock
+  private lateinit var validator : SeriousViolentReoffendingPredictorValidator
+  @InjectMocks
+  private lateinit var service : SeriousViolentReoffendingPredictorRiskProducerService
 
   @Test
   fun `should return early with both static and dynamic errors when static validation fails`() {
-    val context = service.getRiskScore(RiskScoreRequest(), emptyContext())
+    val request = RiskScoreRequest()
 
     val expectedStaticValidationErrors = ValidationError(
       ValidationErrorType.MISSING_MANDATORY_INPUT,
@@ -49,6 +61,13 @@ class SeriousViolentReoffendingPredictorRiskProducerServiceTest {
         "previousConvictions",
       ),
     )
+
+    // Mock out validation
+    whenever(validator.validateStatic(request)).thenReturn(listOf(expectedStaticValidationErrors))
+    whenever(validator.validateDynamic(request)).thenReturn(listOf(expectedDynamicValidationErrors))
+
+    val context = service.getRiskScore(request, emptyContext())
+
     val expected = SeriousViolentReoffendingPredictorObject(
       score = null,
       band = null,
@@ -62,7 +81,7 @@ class SeriousViolentReoffendingPredictorRiskProducerServiceTest {
 
   @Test
   fun `should calculate STATIC predictor when static validation passes but dynamic validation fails`() {
-    val context = service.getRiskScore(validSeriousViolentReoffendingPredictorStaticRiskScoreRequest(), emptyContext())
+    val request = validSeriousViolentReoffendingPredictorStaticRiskScoreRequest()
 
     val expectedDynamicValidationErrors = ValidationError(
       ValidationErrorType.MISSING_DYNAMIC_INPUT,
@@ -77,6 +96,13 @@ class SeriousViolentReoffendingPredictorRiskProducerServiceTest {
         "previousConvictions",
       ),
     )
+
+    // Mock out validation
+    whenever(validator.validateStatic(request)).thenReturn(emptyList())
+    whenever(validator.validateDynamic(request)).thenReturn(listOf(expectedDynamicValidationErrors))
+
+    val context = service.getRiskScore(validSeriousViolentReoffendingPredictorStaticRiskScoreRequest(), emptyContext())
+
     val expectedFeatureValues = mapOf<String, BigDecimal>(
       "twoYearInterceptWeight" to BigDecimal("-0.97073455522398699457653492572717368602752685546875"),
       "ageGenderPolynomialWeight" to BigDecimal("-0.042776507656246201116018168519872233446221798658370971679687500"),
@@ -108,9 +134,15 @@ class SeriousViolentReoffendingPredictorRiskProducerServiceTest {
 
   @Test
   fun `should calculate DYNAMIC predictor when both static and dynamic validations pass`() {
-    val context = service.getRiskScore(validSeriousViolentReoffendingPredictorDynamicRiskScoreRequest(), emptyContext())
+    val request = validSeriousViolentReoffendingPredictorDynamicRiskScoreRequest()
 
-    val expectedFeatureValues = mapOf<String, BigDecimal>(
+    // Mock out validation
+    whenever(validator.validateStatic(request)).thenReturn(emptyList())
+    whenever(validator.validateDynamic(request)).thenReturn(emptyList())
+
+    val context = service.getRiskScore(request, emptyContext())
+
+    val expectedFeatureValues = mapOf(
       "twoYearInterceptWeight" to BigDecimal("-1.705886969066070069089846583665348589420318603515625"),
       "ageGenderPolynomialWeight" to BigDecimal("-0.04180461068666790089374402095145910607243422418832778930664062500"),
       "genderWeight" to BigDecimal("0"),
@@ -165,16 +197,27 @@ class SeriousViolentReoffendingPredictorRiskProducerServiceTest {
       currentOffenceCode = "00001",
       totalNumberOfSanctionsForAllOffences = 2,
       totalNumberOfViolentSanctions = 2,
+      didOffenceInvolveCarryingOrUsingWeapon = false,
+      suitabilityOfAccommodation = ProblemLevel.NO_PROBLEMS,
+      isUnemployed = false,
+      currentAlcoholUseProblems = ProblemLevel.NO_PROBLEMS,
+      temperControl = ProblemLevel.NO_PROBLEMS,
+      proCriminalAttitudes = ProblemLevel.NO_PROBLEMS,
+      previousConvictions = listOf(),
     )
+
+    // Mock out validation
+    whenever(validator.validateStatic(requestMissingDateAtStartOfFollowup)).thenReturn(emptyList())
+    whenever(validator.validateDynamic(requestMissingDateAtStartOfFollowup)).thenReturn(emptyList())
 
     val context = service.getRiskScore(requestMissingDateAtStartOfFollowup, emptyContext())
 
     assertEquals(
-      BigDecimal("-0.042356215648992801134017915920537689089542254805564880371093750"),
+      BigDecimal("-0.04139247189885530091692580900719633518747286871075630187988281250"),
       context.seriousViolentReoffendingPredictor?.featureValues?.get(FeatureValue.AGE_GENDER_POLYNOMIAL_WEIGHT.outputName),
     )
     assertEquals(
-      BigDecimal("-0.028848120515418998943682677739419606410820051678456366062164306640625000000"),
+      BigDecimal("-0.02569553363490000022091564423065701561199603020213544368743896484375000000"),
       context.seriousViolentReoffendingPredictor?.featureValues?.get(FeatureValue.OFFENCE_FREE_MONTHS_WEIGHT.outputName),
     )
   }

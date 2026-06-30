@@ -39,26 +39,23 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.recklessnessAndRiskTakingBehaviourOffendersScoreOpd
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.relationshipIssuesLinkedToRiskOffendersScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.severeChallengingBehavioursOffendersScore
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateOPD
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.OPDValidator
 
 private const val ODP_MALE_PERSONALITY_SCORE_MIN = 7
 private const val ODP_MALE_INDICATOR_SCORE_MIN = 2
 private const val ODP_FEMALE_SCORE_MIN = 10
 
 @Service
-class OPDRiskProducerService : BaseRiskScoreProducer() {
+class OPDRiskProducerService(val offenceCodeCacheService: OffenceCodeCacheService, val opdValidator: OPDValidator) : BaseRiskScoreProducer() {
 
   private val log = LoggerFactory.getLogger(this::class.java)
-
-  @Autowired
-  lateinit var offenceCodeCacheService: OffenceCodeCacheService
 
   override fun getRiskScore(
     request: RiskScoreRequest,
     context: RiskScoreContext,
   ): RiskScoreContext {
     // validation
-    val errors = validateOPD(request)
+    val errors = opdValidator.validateOPD(request)
     if (errors.isNotEmpty()) {
       return applyErrorsToContext(context, errors)
     }

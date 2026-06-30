@@ -12,7 +12,9 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validMSTRiskScoreRequest
 import kotlin.test.assertFalse
 
-class MSTValidationHelperTest {
+class MSTValidatorTest {
+
+  private val validator = MSTValidator()
 
   @Test
   fun `mstInitialValidation should return list of ValidationErrorResponse with MISSING_INPUT validationError`() {
@@ -34,7 +36,7 @@ class MSTValidationHelperTest {
     )
 
     // When
-    val result = validateMST(input)
+    val result = validator.validateMST(input)
 
     // Then
     val expectedError = ValidationError(
@@ -64,7 +66,7 @@ class MSTValidationHelperTest {
   @Test
   fun `mstInitialValidation should return empty list of ValidationErrorResponse`() {
     // When
-    val result = validateMST(validMSTRiskScoreRequest())
+    val result = validator.validateMST(validMSTRiskScoreRequest())
 
     // Then
     assertNotNull(result)
@@ -74,7 +76,7 @@ class MSTValidationHelperTest {
   @Test
   fun `mstInitialValidation should return empty list of ValidationErrorResponse when only 1 null answer`() {
     // When
-    val result = validateMST(
+    val result = validator.validateMST(
       validMSTRiskScoreRequest().copy(
         difficultiesCoping = null,
       ),
@@ -88,7 +90,7 @@ class MSTValidationHelperTest {
   @Test
   fun `mstInitialValidation should return a list of ValidationErrorResponse when 2 null answer`() {
     // When
-    val result = validateMST(
+    val result = validator.validateMST(
       validMSTRiskScoreRequest().copy(
         difficultiesCoping = null,
         temperControl = null,
@@ -110,37 +112,37 @@ class MSTValidationHelperTest {
 
   @Test
   fun `getMstApplicable should return true for age limitations`() {
-    val resultLowerLimit = getMstApplicable(Gender.MALE, 18)
+    val resultLowerLimit = validator.getMstApplicable(Gender.MALE, 18)
     assertTrue(resultLowerLimit)
 
-    val resultUpperLimit = getMstApplicable(Gender.MALE, 24)
+    val resultUpperLimit = validator.getMstApplicable(Gender.MALE, 24)
     assertTrue(resultUpperLimit)
   }
 
   @Test
   fun `getMstApplicable should return false for age and gender limitations`() {
-    val resultLowerLimit = getMstApplicable(Gender.MALE, 17)
+    val resultLowerLimit = validator.getMstApplicable(Gender.MALE, 17)
     assertFalse(resultLowerLimit)
 
-    val resultUpperLimit = getMstApplicable(Gender.MALE, 26)
+    val resultUpperLimit = validator.getMstApplicable(Gender.MALE, 26)
     assertFalse(resultUpperLimit)
 
-    val resultForFemale = getMstApplicable(Gender.FEMALE, 18)
+    val resultForFemale = validator.getMstApplicable(Gender.FEMALE, 18)
     assertFalse(resultForFemale)
   }
 
   @Test
   fun `isNotNullAndInvalidMstAge should return false for null and within range age`() {
-    val resultNullAge = isNotNullAndInvalidMstAge(null)
+    val resultNullAge = validator.isNotNullAndInvalidMstAge(null)
     assertFalse(resultNullAge)
 
-    val resultWithinValidRange = isNotNullAndInvalidMstAge(22)
+    val resultWithinValidRange = validator.isNotNullAndInvalidMstAge(22)
     assertFalse(resultWithinValidRange)
   }
 
   @Test
   fun `isNotNullAndInvalidMstAge should return true for out of range age`() {
-    val resultOutOfValidRange = isNotNullAndInvalidMstAge(30)
+    val resultOutOfValidRange = validator.isNotNullAndInvalidMstAge(30)
     assertTrue(resultOutOfValidRange)
   }
 }

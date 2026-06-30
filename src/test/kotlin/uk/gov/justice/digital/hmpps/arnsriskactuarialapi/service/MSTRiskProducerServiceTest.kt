@@ -6,7 +6,9 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
+import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
+import org.mockito.kotlin.whenever
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.FIXED_TEST_DATE
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
@@ -15,18 +17,29 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.MSTValidator
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validMSTRiskScoreRequest
 
 @ExtendWith(MockitoExtension::class)
 class MSTRiskProducerServiceTest {
+
+  @Mock
+  lateinit var validator: MSTValidator
 
   @InjectMocks
   lateinit var mstRiskProducerService: MSTRiskProducerService
 
   @Test
   fun `should return valid MstObject for valid input`() {
+    val request = validMSTRiskScoreRequest()
+
+    // Mock validation
+    whenever(validator.validateMST(request)).thenReturn(listOf())
+    whenever(validator.isNotNullAndInvalidMstAge(18)).thenReturn(false)
+    whenever(validator.getMstApplicable(Gender.MALE, 18)).thenReturn(true)
+
     // When
-    val result = mstRiskProducerService.getRiskScore(validMSTRiskScoreRequest(), emptyContext())
+    val result = mstRiskProducerService.getRiskScore(request, emptyContext())
 
     // Then
     assertNotNull(result)
@@ -40,6 +53,11 @@ class MSTRiskProducerServiceTest {
   fun `should return valid MstObject for valid input where maturityFlag false`() {
     // Given
     val maturityFlagFalseInput = validMSTRiskScoreRequest().copy(attitudesTowardsSelf = ProblemLevel.NO_PROBLEMS)
+
+    // Mock validation
+    whenever(validator.validateMST(maturityFlagFalseInput)).thenReturn(listOf())
+    whenever(validator.isNotNullAndInvalidMstAge(18)).thenReturn(false)
+    whenever(validator.getMstApplicable(Gender.MALE, 18)).thenReturn(true)
 
     // When
     val result = mstRiskProducerService.getRiskScore(maturityFlagFalseInput, emptyContext())
@@ -71,16 +89,6 @@ class MSTRiskProducerServiceTest {
       understandsOtherPeoplesViews = null,
     )
 
-    // When
-    val result = mstRiskProducerService.getRiskScore(input, emptyContext())
-
-    // Then
-    assertNotNull(result)
-    assertEquals(null, result.MST?.maturityScore)
-    assertEquals(null, result.MST?.maturityFlag)
-    assertEquals(null, result.MST?.isMstApplicable)
-    assertTrue(result.MST?.validationError?.size == 1)
-
     val expectedError = ValidationError(
       ValidationErrorType.MISSING_MANDATORY_INPUT,
       "Mandatory input field(s) missing",
@@ -99,6 +107,20 @@ class MSTRiskProducerServiceTest {
         "understandsOtherPeoplesViews",
       ),
     )
+
+    // Mock validation
+    whenever(validator.validateMST(input)).thenReturn(listOf(expectedError))
+
+    // When
+    val result = mstRiskProducerService.getRiskScore(input, emptyContext())
+
+    // Then
+    assertNotNull(result)
+    assertEquals(null, result.MST?.maturityScore)
+    assertEquals(null, result.MST?.maturityFlag)
+    assertEquals(null, result.MST?.isMstApplicable)
+    assertTrue(result.MST?.validationError?.size == 1)
+
     val actualError = result.MST?.validationError
 
     assertTrue(actualError?.size == 1)
@@ -122,6 +144,10 @@ class MSTRiskProducerServiceTest {
   @Test
   fun `should return valid MstObject with isMstApplicable=false when FEMALE`() {
     val isMstApplicableFalseInput = validMSTRiskScoreRequest().copy(gender = Gender.FEMALE)
+
+    // Mock validation
+    whenever(validator.validateMST(isMstApplicableFalseInput)).thenReturn(listOf())
+
     // When
     val result = mstRiskProducerService.getRiskScore(isMstApplicableFalseInput, emptyContext())
 
@@ -137,6 +163,10 @@ class MSTRiskProducerServiceTest {
   fun `should return valid MstObject with isMstApplicable=false when FEMALE and out of age range`() {
     val isMstApplicableFalseInput =
       validMSTRiskScoreRequest().copy(gender = Gender.FEMALE, dateOfBirth = FIXED_TEST_DATE.minusYears(26))
+
+    // Mock validation
+    whenever(validator.validateMST(isMstApplicableFalseInput)).thenReturn(listOf())
+
     // When
     val result = mstRiskProducerService.getRiskScore(isMstApplicableFalseInput, emptyContext())
 
@@ -152,6 +182,10 @@ class MSTRiskProducerServiceTest {
   fun `should return valid MstObject with isMstApplicable=false and no validation errors when out of age range and gender is null`() {
     val isMstApplicableFalseInput =
       validMSTRiskScoreRequest().copy(gender = null, dateOfBirth = FIXED_TEST_DATE.minusYears(26))
+
+    // Mock validation
+    whenever(validator.isNotNullAndInvalidMstAge(26)).thenReturn(true)
+
     // When
     val result = mstRiskProducerService.getRiskScore(isMstApplicableFalseInput, emptyContext())
 

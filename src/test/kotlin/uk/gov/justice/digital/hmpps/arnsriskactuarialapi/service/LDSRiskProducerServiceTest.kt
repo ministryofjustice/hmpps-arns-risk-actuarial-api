@@ -3,12 +3,14 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.mockito.Mock
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds.HasQualifications
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds.LDSObject
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.LDSValidator
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class LDSRiskProducerServiceTest {
@@ -50,7 +52,9 @@ class LDSRiskProducerServiceTest {
     )
   }
 
-  private val service = LDSRiskProducerService()
+  @Mock
+  private val validator = LDSValidator()
+  private val service = LDSRiskProducerService(validator)
   private val context = RiskScoreContext(RiskScoreVersion.V1_0)
 
   @Test

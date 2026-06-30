@@ -8,23 +8,21 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.mst.MSTObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.mst.MSTRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.calculateAge
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.getMaturityFlag
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.getMstApplicable
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.isNotNullAndInvalidMstAge
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateMST
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.MSTValidator
 
 @Service
-class MSTRiskProducerService : BaseRiskScoreProducer() {
+class MSTRiskProducerService(val validator: MSTValidator) : BaseRiskScoreProducer() {
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
     val currentAge: Int? = request.dateOfBirth?.let { calculateAge(it, request.assessmentDate) }
 
-    if (isNotNullAndInvalidMstAge(currentAge)) {
+    if (validator.isNotNullAndInvalidMstAge(currentAge)) {
       return context.apply {
         MST = nonApplicableMstObject
       }
     }
 
-    val errors = validateMST(request)
+    val errors = validator.validateMST(request)
 
     if (errors.isNotEmpty()) {
       return applyErrorsToContext(context, errors)
@@ -68,7 +66,7 @@ class MSTRiskProducerService : BaseRiskScoreProducer() {
     errors: List<ValidationError>,
     currentAge: Int,
   ): MSTObject {
-    val isMstApplicable = getMstApplicable(request.gender, currentAge)
+    val isMstApplicable = validator.getMstApplicable(request.gender, currentAge)
 
     if (isMstApplicable) {
       val maturityScore = listOf(

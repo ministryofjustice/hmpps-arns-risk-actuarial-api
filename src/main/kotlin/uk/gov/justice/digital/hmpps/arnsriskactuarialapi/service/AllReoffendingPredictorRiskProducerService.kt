@@ -41,17 +41,16 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getSuitableAccommodationWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getTotalSanctionWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getUnemployedWeight
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateAllReoffendingPredictorDynamic
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateAllReoffendingPredictorStatic
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.AllReoffendingPredictorValidator
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.getAgeAtDate
 import java.math.BigDecimal
 
 @Service
-class AllReoffendingPredictorRiskProducerService : BaseRiskScoreProducer() {
+class AllReoffendingPredictorRiskProducerService(val inputValidator: AllReoffendingPredictorValidator) : BaseRiskScoreProducer() {
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
-    val staticValidationErrors = validateAllReoffendingPredictorStatic(request)
-    val dynamicValidationErrors = validateAllReoffendingPredictorDynamic(request)
+    val staticValidationErrors = inputValidator.validateStatic(request)
+    val dynamicValidationErrors = inputValidator.validateDynamic(request)
 
     if (staticValidationErrors.isNotEmpty()) {
       return applyErrorsToContext(context, staticValidationErrors + dynamicValidationErrors)
