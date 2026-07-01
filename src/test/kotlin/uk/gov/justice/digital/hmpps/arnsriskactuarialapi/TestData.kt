@@ -146,6 +146,16 @@ fun validAllReoffendingPredictorStaticRiskScoreRequest(): RiskScoreRequest = Ris
   dateAtStartOfFollowupCalculated = LocalDate.of(2026, 1, 1),
 )
 
+fun validMinimumAllReoffendingPredictorStaticRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
+  assessmentDate = LocalDate.of(2025, 1, 1),
+  dateOfBirth = LocalDate.of(1990, 1, 1),
+  dateOfCurrentConviction = LocalDate.of(2024, 1, 1),
+  ageAtFirstSanction = 18,
+  gender = Gender.MALE,
+  currentOffenceCode = "00001",
+  totalNumberOfSanctionsForAllOffences = 2,
+)
+
 fun validAllReoffendingPredictorDynamicRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
   assessmentDate = LocalDate.of(2025, 1, 1),
   dateOfBirth = LocalDate.of(1990, 1, 1),

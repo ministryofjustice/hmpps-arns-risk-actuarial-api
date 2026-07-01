@@ -26,16 +26,16 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isRsrHigh
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isRsrMedium
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.overallNeedsGroupingCalculation
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validatePNI
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.PNIValidator
 
 @Service
-class PNIRiskProducerService : BaseRiskScoreProducer() {
+class PNIRiskProducerService(val validator: PNIValidator) : BaseRiskScoreProducer() {
 
   override fun getRiskScore(
     request: RiskScoreRequest,
     context: RiskScoreContext,
   ): RiskScoreContext {
-    val errors = validatePNI(request)
+    val errors = validator.validatePNI(request)
 
     if (errors.isNotEmpty()) {
       return applyErrorsToContext(context, errors)
