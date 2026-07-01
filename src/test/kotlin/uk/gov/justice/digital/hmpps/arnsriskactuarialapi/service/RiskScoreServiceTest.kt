@@ -54,7 +54,7 @@ class RiskScoreServiceTest {
   private lateinit var rsrRiskProducerService: RSRRiskProducerService
 
   @Mock
-  private lateinit var imagesAndIndirectContactSexualReoffendingPredictorRiskProducerService: ImagesAndIndirectContactSexualReoffendingPredictorRiskProducerService
+  private lateinit var imagesAndIndirectContactSexualReoffendingPredictorRiskProducerService: ImagesAndIndirectContactSexualReoffendingPredictorProducerService
 
   @InjectMocks
   private lateinit var riskScoreService: RiskScoreService

@@ -1,6 +1,12 @@
 {
   "request": {
-    "version": "V1_0"
+    "version": "V1_0",
+    "gender": "FEMALE",
+    "totalIndecentImageSanctions": 2,
+    "totalContactAdultSexualSanctions": 0,
+    "totalContactChildSexualSanctions": 0,
+    "totalNonContactSexualOffences": null,
+    "hasEverCommittedSexualOffence": false
   },
   "response": {
     "algorithm": "IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR",
@@ -16,11 +22,11 @@
     "featureValues": {},
     "validationErrors": [
       {
-        "type": "MISSING_MANDATORY_INPUT",
-        "message": "Mandatory input field(s) missing",
+        "type": "AMBIGUOUS_INPUT",
+        "message": "Ambiguous input fields",
         "fields": [
-          "gender",
-          "hasEverCommittedSexualOffence"
+          "hasEverCommittedSexualOffence",
+          "totalIndecentImageSanctions"
         ]
       }
     ]
