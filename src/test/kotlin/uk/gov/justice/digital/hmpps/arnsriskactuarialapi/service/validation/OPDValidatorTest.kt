@@ -18,7 +18,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validOPDRiskScoreRequest
 import java.util.stream.Stream
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(MockitoExtension::class)
 class OPDValidatorTest {
 
@@ -27,6 +26,20 @@ class OPDValidatorTest {
 
   @InjectMocks
   private lateinit var validator: OPDValidator
+
+  companion object {
+    @JvmStatic
+    private fun domesticAbuseInconsistentInputTestInputs(): Stream<Arguments> = Stream.of(
+      Arguments.of(null, true, null),
+      Arguments.of(null, null, true),
+      Arguments.of(null, false, null),
+      Arguments.of(null, null, false),
+      Arguments.of(false, true, null),
+      Arguments.of(false, null, true),
+      Arguments.of(false, false, null),
+      Arguments.of(false, null, false),
+    )
+  }
 
   @Test
   fun `opdInitialValidation no errors`() {
@@ -108,17 +121,6 @@ class OPDValidatorTest {
     assertEquals("Mandatory input field(s) missing", error.message)
     assertEquals(expectedFields, error.fields)
   }
-
-  private fun domesticAbuseInconsistentInputTestInputs(): Stream<Arguments> = Stream.of(
-    Arguments.of(null, true, null),
-    Arguments.of(null, null, true),
-    Arguments.of(null, false, null),
-    Arguments.of(null, null, false),
-    Arguments.of(false, true, null),
-    Arguments.of(false, null, true),
-    Arguments.of(false, false, null),
-    Arguments.of(false, null, false),
-  )
 
   @ParameterizedTest
   @MethodSource("domesticAbuseInconsistentInputTestInputs")

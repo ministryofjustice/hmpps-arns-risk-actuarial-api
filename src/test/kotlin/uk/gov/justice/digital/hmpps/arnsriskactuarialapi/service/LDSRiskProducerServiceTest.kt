@@ -12,7 +12,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds.HasQualificatio
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds.LDSObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.LDSValidator
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class LDSRiskProducerServiceTest {
 
   companion object {
