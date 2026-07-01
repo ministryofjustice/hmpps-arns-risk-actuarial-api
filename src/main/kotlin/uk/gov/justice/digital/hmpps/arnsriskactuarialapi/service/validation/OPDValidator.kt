@@ -9,7 +9,7 @@ import kotlin.reflect.KProperty1
 
 @Component
 class OPDValidator(val commonValidator: CommonValidator) {
-  val OPD_REQUIRED_FIELDS: List<KProperty1<RiskScoreRequest, Any?>> = listOf(
+  val opdRequiredFields: List<KProperty1<RiskScoreRequest, Any?>> = listOf(
     RiskScoreRequest::gender,
     RiskScoreRequest::overallRiskForAssessment,
     RiskScoreRequest::highestRiskLevelOverAllAssessments,
@@ -47,7 +47,7 @@ class OPDValidator(val commonValidator: CommonValidator) {
     errors: MutableList<ValidationError>,
   ) {
     val missingFields = arrayListOf<String>()
-    OPD_REQUIRED_FIELDS.forEach { missingFields.addIfNull(request, it) }
+    opdRequiredFields.forEach { missingFields.addIfNull(request, it) }
     if (request.isEligibleForMappa == null && request.gender == Gender.FEMALE) missingFields.add(RiskScoreRequest::isEligibleForMappa.name)
     if (request.evidenceOfDomesticAbuse == true) {
       missingFields.addIfNull(request, RiskScoreRequest::domesticAbuseAgainstPartner)

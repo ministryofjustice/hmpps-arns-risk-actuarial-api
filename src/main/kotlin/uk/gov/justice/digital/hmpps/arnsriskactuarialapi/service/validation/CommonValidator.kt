@@ -74,7 +74,7 @@ class CommonValidator {
     return null
   }
 
-  fun validateDateOfCurrentConvictionAgainstDateOfBirth(request: RiskScoreRequest): ValidationError?  {
+  fun validateDateOfCurrentConvictionAgainstDateOfBirth(request: RiskScoreRequest): ValidationError? {
     // dateOfCurrentConviction must be after dateOfBirth
     if (request.dateOfCurrentConviction != null && request.dateOfBirth != null && request.dateOfCurrentConviction <= request.dateOfBirth) {
       return ValidationErrorType.DATE_OF_CURRENT_CONVICTION_BEFORE_DATE_OF_BIRTH.asError(listOf(RiskScoreRequest::dateOfCurrentConviction.name))
@@ -90,7 +90,7 @@ class CommonValidator {
         getAgeAtDate(
           request.dateOfBirth,
           request.dateOfCurrentConviction,
-          RiskScoreRequest::dateOfCurrentConviction.name
+          RiskScoreRequest::dateOfCurrentConviction.name,
         )
       if (ageAtCurrentConviction < request.ageAtFirstSanction) {
         return ValidationErrorType.AGE_AT_FIRST_SANCTION_AFTER_AGE_AT_CURRENT_CONVICTION.asError(
@@ -145,7 +145,7 @@ class CommonValidator {
       val ageAtStartOfFollowup = getAgeAtDate(
         request.dateOfBirth,
         request.dateAtStartOfFollowupCalculated,
-        RiskScoreRequest::dateAtStartOfFollowupCalculated.name
+        RiskScoreRequest::dateAtStartOfFollowupCalculated.name,
       )
       if (ageAtStartOfFollowup >= 110) {
         return ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE.asError(listOf(RiskScoreRequest::dateAtStartOfFollowupCalculated.name))

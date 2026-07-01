@@ -28,6 +28,7 @@ class PNIRiskProducerServiceTest {
 
   @Mock
   private val commonValidator = CommonValidator()
+
   @Mock
   private val validator = PNIValidator(commonValidator)
   private val service = PNIRiskProducerService(validator)

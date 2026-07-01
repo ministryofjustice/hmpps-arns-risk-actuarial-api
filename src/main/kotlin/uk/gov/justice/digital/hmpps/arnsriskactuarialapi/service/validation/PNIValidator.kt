@@ -6,11 +6,9 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 
 @Component
 class PNIValidator(val commonValidator: CommonValidator) {
-  val PNI_REQUIRED_FIELDS = listOf(
+  val pniRequiredFields = listOf(
     RiskScoreRequest::supervisionStatus,
   )
 
-  fun validatePNI(request: RiskScoreRequest): List<ValidationError> {
-    return listOfNotNull(commonValidator.validateRequiredFields(request, PNI_REQUIRED_FIELDS))
-  }
+  fun validatePNI(request: RiskScoreRequest): List<ValidationError> = listOfNotNull(commonValidator.validateRequiredFields(request, pniRequiredFields))
 }

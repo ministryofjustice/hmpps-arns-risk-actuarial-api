@@ -23,9 +23,10 @@ import java.util.stream.Stream
 class OPDValidatorTest {
 
   @Mock
-  private lateinit var commonValidator : CommonValidator
+  private lateinit var commonValidator: CommonValidator
+
   @InjectMocks
-  private lateinit var validator : OPDValidator
+  private lateinit var validator: OPDValidator
 
   @Test
   fun `opdInitialValidation no errors`() {
@@ -155,7 +156,7 @@ class OPDValidatorTest {
     val expectedError = ValidationError(
       type = ValidationErrorType.OFFENCE_CODE_INCORRECT_FORMAT,
       message = "This is a message",
-      fields = listOf("currentOffenceCode")
+      fields = listOf("currentOffenceCode"),
     )
 
     whenever(commonValidator.validateCurrentOffenceCode(request)).thenReturn(expectedError)

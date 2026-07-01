@@ -6,20 +6,18 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import kotlin.reflect.KProperty1
 
 @Component
-class AllReoffendingPredictorValidator(val commonValidator: CommonValidator): AbstractActuarialValidator(commonValidator) {
-  override fun validateStaticCustom(request: RiskScoreRequest): List<ValidationError> {
-    return listOfNotNull(
-      commonValidator.validateDateOfCurrentConvictionAgainstDateOfBirth(request),
-      commonValidator.validateDateOfCurrentConvictionAgainstAgeAtFirstSanction(request),
-      commonValidator.validateDateOfCurrentConvictionAgainstAssessmentDate(request),
-      commonValidator.validateAgeAtFirstSanction(request),
-      commonValidator.validateCurrentOffenceCode(request),
-      commonValidator.validateTotalNumberOfSanctionsForAllOffences(request),
-      commonValidator.validateDateAtStartOfFollowupAgainstDateOfCurrentConviction(request),
-      commonValidator.validateDateAtStartOfFollowupAgainstDateOfBirth(request),
-      commonValidator.validateDateAtStartOfFollowupAge(request),
-    )
-  }
+class AllReoffendingPredictorValidator(val commonValidator: CommonValidator) : AbstractActuarialValidator(commonValidator) {
+  override fun validateStaticCustom(request: RiskScoreRequest): List<ValidationError> = listOfNotNull(
+    commonValidator.validateDateOfCurrentConvictionAgainstDateOfBirth(request),
+    commonValidator.validateDateOfCurrentConvictionAgainstAgeAtFirstSanction(request),
+    commonValidator.validateDateOfCurrentConvictionAgainstAssessmentDate(request),
+    commonValidator.validateAgeAtFirstSanction(request),
+    commonValidator.validateCurrentOffenceCode(request),
+    commonValidator.validateTotalNumberOfSanctionsForAllOffences(request),
+    commonValidator.validateDateAtStartOfFollowupAgainstDateOfCurrentConviction(request),
+    commonValidator.validateDateAtStartOfFollowupAgainstDateOfBirth(request),
+    commonValidator.validateDateAtStartOfFollowupAge(request),
+  )
 
   override fun validateDynamicCustom(request: RiskScoreRequest): List<ValidationError> {
     // TODO: Add further validation logic

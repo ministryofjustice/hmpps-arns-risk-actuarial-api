@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.whenever
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
@@ -15,12 +14,13 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validPNIRiskScoreRequest
 
 @ExtendWith(MockitoExtension::class)
-class PNIValidationHelperTest {
+class PNIValidatorTest {
 
   @Mock
-  private lateinit var commonValidator : CommonValidator
+  private lateinit var commonValidator: CommonValidator
+
   @InjectMocks
-  private lateinit var validator : PNIValidator
+  private lateinit var validator: PNIValidator
 
   @Test
   fun `pniInitialValidation no errors`() {

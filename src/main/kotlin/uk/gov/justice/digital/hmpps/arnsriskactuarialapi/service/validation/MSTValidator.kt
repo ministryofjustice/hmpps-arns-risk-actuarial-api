@@ -8,14 +8,14 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 
 @Component
 class MSTValidator {
-  val MIN_MST_ANSWERS_SIZE = 9
+  val minMstAnswersSize = 9
 
-  val MST_REQUIRED_FIELDS = listOf(
+  val mstRequiredFields = listOf(
     RiskScoreRequest::gender,
     RiskScoreRequest::dateOfBirth,
   )
 
-  val MST_MINIMUM_ANSWERS = listOf(
+  val mstMinimumAnswers = listOf(
     RiskScoreRequest::hasPeerGroupInfluences,
     RiskScoreRequest::influenceFromCriminalAssociates,
     RiskScoreRequest::recklessnessAndRiskTakingBehaviour,
@@ -37,11 +37,11 @@ class MSTValidator {
   private fun validateRequiredFields(request: RiskScoreRequest, errors: MutableList<ValidationError>) {
     val missingFields = arrayListOf<String>()
 
-    MST_REQUIRED_FIELDS.forEach { missingFields.addIfNull(request, it) }
+    mstRequiredFields.forEach { missingFields.addIfNull(request, it) }
 
-    val actualNonNullAnswers = MST_MINIMUM_ANSWERS.mapNotNull { wib -> wib.get(request) }.size
-    if (actualNonNullAnswers < MIN_MST_ANSWERS_SIZE) {
-      MST_MINIMUM_ANSWERS.forEach { missingFields.addIfNull(request, it) }
+    val actualNonNullAnswers = mstMinimumAnswers.mapNotNull { wib -> wib.get(request) }.size
+    if (actualNonNullAnswers < minMstAnswersSize) {
+      mstMinimumAnswers.forEach { missingFields.addIfNull(request, it) }
     }
 
     if (missingFields.isNotEmpty()) {

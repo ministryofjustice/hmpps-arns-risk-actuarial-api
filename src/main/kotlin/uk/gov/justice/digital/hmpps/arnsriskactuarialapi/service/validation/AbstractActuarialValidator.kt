@@ -24,11 +24,7 @@ abstract class AbstractActuarialValidator(private val commonValidator: CommonVal
     return requiredFieldsValidationErrors + customValidationErrors
   }
 
-  private fun validateStaticRequiredFields(request: RiskScoreRequest): ValidationError? {
-    return commonValidator.validateRequiredFields(request, staticRequiredFields(), StaticOrDynamic.STATIC)
-  }
+  private fun validateStaticRequiredFields(request: RiskScoreRequest): ValidationError? = commonValidator.validateRequiredFields(request, staticRequiredFields(), StaticOrDynamic.STATIC)
 
-  private fun validateDynamicRequiredFields(request: RiskScoreRequest): ValidationError? {
-    return commonValidator.validateRequiredFields(request, dynamicRequiredFields(), StaticOrDynamic.DYNAMIC)
-  }
+  private fun validateDynamicRequiredFields(request: RiskScoreRequest): ValidationError? = commonValidator.validateRequiredFields(request, dynamicRequiredFields(), StaticOrDynamic.DYNAMIC)
 }

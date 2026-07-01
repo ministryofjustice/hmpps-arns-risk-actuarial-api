@@ -7,7 +7,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 
 @Component
 class LDSValidator {
-  private val LDS_FIELDS_AT_LEAST_3_OF = listOf(
+  private val ldsFieldsAtLeast3Of = listOf(
     RiskScoreRequest::workRelatedSkills,
     RiskScoreRequest::problemsWithReadingWritingNumeracy,
     RiskScoreRequest::learningDifficulties,
@@ -22,11 +22,11 @@ class LDSValidator {
   }
 
   private fun validateAtLeastThreeFieldsPresent(request: RiskScoreRequest, errors: MutableList<ValidationError>) {
-    LDS_FIELDS_AT_LEAST_3_OF.mapNotNull {
+    ldsFieldsAtLeast3Of.mapNotNull {
       if (it.get(request) == null) it.name else null
     }.let {
       if (it.size > 1) {
-        errors += ValidationErrorType.LDS_NOT_ENOUGH_FIELDS_PRESENT.asError(LDS_FIELDS_AT_LEAST_3_OF.map { property -> property.name })
+        errors += ValidationErrorType.LDS_NOT_ENOUGH_FIELDS_PRESENT.asError(ldsFieldsAtLeast3Of.map { property -> property.name })
       }
     }
   }

@@ -7,7 +7,10 @@ import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import java.time.LocalDate
@@ -445,7 +448,7 @@ class CommonValidatorTest {
         actualError,
       )
     } else {
-      assertNull( actualError)
+      assertNull(actualError)
     }
   }
 
@@ -465,4 +468,88 @@ class CommonValidatorTest {
     Arguments.of(LocalDate.parse("2025-12-20"), LocalDate.parse("1915-09-01"), true),
     Arguments.of(LocalDate.parse("2026-06-29"), LocalDate.parse("1915-09-01"), true),
   )
+
+  @Test
+  fun `test validateRequiredFields - default (static) with errors`() {
+    val request = RiskScoreRequest(
+      gender = Gender.FEMALE,
+      isUnemployed = true,
+      temperControl = ProblemLevel.NO_PROBLEMS,
+      suitabilityOfAccommodation = ProblemLevel.SOME_PROBLEMS,
+    )
+
+    val requiredFields = listOf(
+      RiskScoreRequest::dateOfBirth,
+      RiskScoreRequest::gender,
+      RiskScoreRequest::temperControl,
+      RiskScoreRequest::suitabilityOfAccommodation,
+      RiskScoreRequest::currentOffenceCode,
+    )
+
+    val expectedValidationError = ValidationError(type = ValidationErrorType.MISSING_MANDATORY_INPUT, message = "Mandatory input field(s) missing", fields = listOf("dateOfBirth", "currentOffenceCode"))
+
+    assertEquals(expectedValidationError, commonValidator.validateRequiredFields(request, requiredFields))
+  }
+
+  @Test
+  fun `test validateRequiredFields - static with errors`() {
+    val request = RiskScoreRequest(
+      gender = Gender.FEMALE,
+      isUnemployed = true,
+      temperControl = ProblemLevel.NO_PROBLEMS,
+      suitabilityOfAccommodation = ProblemLevel.SOME_PROBLEMS,
+    )
+
+    val requiredFields = listOf(
+      RiskScoreRequest::dateOfBirth,
+      RiskScoreRequest::gender,
+      RiskScoreRequest::temperControl,
+      RiskScoreRequest::suitabilityOfAccommodation,
+      RiskScoreRequest::currentOffenceCode,
+    )
+
+    val expectedValidationError = ValidationError(type = ValidationErrorType.MISSING_MANDATORY_INPUT, message = "Mandatory input field(s) missing", fields = listOf("dateOfBirth", "currentOffenceCode"))
+
+    assertEquals(expectedValidationError, commonValidator.validateRequiredFields(request, requiredFields, StaticOrDynamic.STATIC))
+  }
+
+  @Test
+  fun `test validateRequiredFields - static with no errors`() {
+    val request = RiskScoreRequest(
+      gender = Gender.FEMALE,
+      isUnemployed = true,
+      temperControl = ProblemLevel.NO_PROBLEMS,
+      suitabilityOfAccommodation = ProblemLevel.SOME_PROBLEMS,
+    )
+
+    val requiredFields = listOf(
+      RiskScoreRequest::gender,
+      RiskScoreRequest::temperControl,
+      RiskScoreRequest::suitabilityOfAccommodation,
+    )
+
+    assertNull(commonValidator.validateRequiredFields(request, requiredFields, StaticOrDynamic.STATIC))
+  }
+
+  @Test
+  fun `test validateRequiredFields - dynamic with errors`() {
+    val request = RiskScoreRequest(
+      gender = Gender.FEMALE,
+      isUnemployed = true,
+      temperControl = ProblemLevel.NO_PROBLEMS,
+      suitabilityOfAccommodation = ProblemLevel.SOME_PROBLEMS,
+    )
+
+    val requiredFields = listOf(
+      RiskScoreRequest::dateOfBirth,
+      RiskScoreRequest::gender,
+      RiskScoreRequest::temperControl,
+      RiskScoreRequest::suitabilityOfAccommodation,
+      RiskScoreRequest::currentOffenceCode,
+    )
+
+    val expectedValidationError = ValidationError(type = ValidationErrorType.MISSING_DYNAMIC_INPUT, message = "Dynamic input field(s) missing", fields = listOf("dateOfBirth", "currentOffenceCode"))
+
+    assertEquals(expectedValidationError, commonValidator.validateRequiredFields(request, requiredFields, StaticOrDynamic.DYNAMIC))
+  }
 }

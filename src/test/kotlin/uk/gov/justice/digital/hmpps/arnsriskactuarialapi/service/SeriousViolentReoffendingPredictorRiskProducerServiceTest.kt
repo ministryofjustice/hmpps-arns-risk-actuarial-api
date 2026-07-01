@@ -16,7 +16,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.seriousviolentreoffendingpredictor.SeriousViolentReoffendingPredictorObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.CommonValidator
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.SeriousViolentReoffendingPredictorValidator
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validSeriousViolentReoffendingPredictorDynamicRiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validSeriousViolentReoffendingPredictorStaticRiskScoreRequest
@@ -27,9 +26,10 @@ import java.time.LocalDate
 class SeriousViolentReoffendingPredictorRiskProducerServiceTest {
 
   @Mock
-  private lateinit var validator : SeriousViolentReoffendingPredictorValidator
+  private lateinit var validator: SeriousViolentReoffendingPredictorValidator
+
   @InjectMocks
-  private lateinit var service : SeriousViolentReoffendingPredictorRiskProducerService
+  private lateinit var service: SeriousViolentReoffendingPredictorRiskProducerService
 
   @Test
   fun `should return early with both static and dynamic errors when static validation fails`() {
