@@ -2,9 +2,14 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
+import org.mockito.InjectMocks
+import org.mockito.Mock
+import org.mockito.junit.jupiter.MockitoExtension
+import org.mockito.kotlin.whenever
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
@@ -13,12 +18,18 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.imagesandIndirectcontactsexualreoffendingpredictor.ImagesAndIndirectContactSexualReoffendingPredictorObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.ImagesAndIndirectContactSexualReoffendingPredictorValidator
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validImageAndIndirectContactPredictorStaticRiskScoreRequest
 import java.math.BigDecimal
 
-class ImagesAndIndirectContactSexualReoffendingPredictorRiskProducerServiceTest {
+@ExtendWith(MockitoExtension::class)
+class ImagesAndIndirectContactSexualReoffendingPredictorProducerServiceTest {
 
-  private val service = ImagesAndIndirectContactSexualReoffendingPredictorRiskProducerService()
+  @Mock
+  private lateinit var validator: ImagesAndIndirectContactSexualReoffendingPredictorValidator
+
+  @InjectMocks
+  private lateinit var service: ImagesAndIndirectContactSexualReoffendingPredictorProducerService
 
   @ParameterizedTest
   @MethodSource("riskScoreRequestProvider")
@@ -26,8 +37,7 @@ class ImagesAndIndirectContactSexualReoffendingPredictorRiskProducerServiceTest 
     riskScoreRequest: RiskScoreRequest,
     expectedStaticValidationErrors: ValidationError,
   ) {
-    val context = service.getRiskScore(riskScoreRequest, emptyContext())
-
+    // Assign
     val expected = ImagesAndIndirectContactSexualReoffendingPredictorObject(
       score = null,
       band = null,
@@ -38,17 +48,22 @@ class ImagesAndIndirectContactSexualReoffendingPredictorRiskProducerServiceTest 
       featureValues = null,
     )
 
+    whenever(validator.validateStatic(riskScoreRequest)).thenReturn(listOf(expectedStaticValidationErrors))
+
+    // Act
+    val context = service.getRiskScore(riskScoreRequest, emptyContext())
+
+    // Assert
     assertEquals(expected, context.imagesAndIndirectContactSexualReoffendingPredictor)
   }
 
   @Test
   fun `should return empty object when hasEverCommittedSexualOffence is false`() {
+    // Assign
     val request = RiskScoreRequest(
       gender = Gender.MALE,
       hasEverCommittedSexualOffence = false,
     )
-
-    val context = service.getRiskScore(request, emptyContext())
 
     val expected = ImagesAndIndirectContactSexualReoffendingPredictorObject(
       score = 0.0,
@@ -60,12 +75,18 @@ class ImagesAndIndirectContactSexualReoffendingPredictorRiskProducerServiceTest 
       featureValues = null,
     )
 
+    whenever(validator.validateStatic(request)).thenReturn(emptyList())
+
+    // Act
+    val context = service.getRiskScore(request, emptyContext())
+
     assertEquals(expected, context.imagesAndIndirectContactSexualReoffendingPredictor)
   }
 
   @Test
   fun `should calculate predictor when static validation pass`() {
-    val context = service.getRiskScore(validImageAndIndirectContactPredictorStaticRiskScoreRequest(), emptyContext())
+    // Assign
+    val request = validImageAndIndirectContactPredictorStaticRiskScoreRequest()
 
     val expected = ImagesAndIndirectContactSexualReoffendingPredictorObject(
       score = 3.33,
@@ -79,6 +100,12 @@ class ImagesAndIndirectContactSexualReoffendingPredictorRiskProducerServiceTest 
       ),
     )
 
+    whenever(validator.validateStatic(request)).thenReturn(emptyList())
+
+    // Act
+    val context = service.getRiskScore(request, emptyContext())
+
+    // Assert
     assertEquals(expected, context.imagesAndIndirectContactSexualReoffendingPredictor)
   }
 

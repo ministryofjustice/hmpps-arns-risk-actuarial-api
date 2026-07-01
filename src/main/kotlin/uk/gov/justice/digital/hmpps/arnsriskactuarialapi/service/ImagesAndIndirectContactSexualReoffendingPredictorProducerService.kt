@@ -12,14 +12,14 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.imagesandIndirectco
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.ImagesAndIndirectContactSexualReoffendingPredictorTransformationHelper.calculatePercentageScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.ImagesAndIndirectContactSexualReoffendingPredictorTransformationHelper.getHierarchyWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.ImagesAndIndirectContactSexualReoffendingPredictorTransformationHelper.getRiskBand
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateImagesAndIndirectContactSexualReoffendingPredictor
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.ImagesAndIndirectContactSexualReoffendingPredictorValidator
 import java.math.BigDecimal
 
 @Service
-class ImagesAndIndirectContactSexualReoffendingPredictorRiskProducerService : BaseRiskScoreProducer() {
+class ImagesAndIndirectContactSexualReoffendingPredictorProducerService(val inputValidator: ImagesAndIndirectContactSexualReoffendingPredictorValidator) : BaseRiskScoreProducer() {
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
-    val staticValidationErrors = validateImagesAndIndirectContactSexualReoffendingPredictor(request)
+    val staticValidationErrors = inputValidator.validateStatic(request)
 
     if (staticValidationErrors.isNotEmpty()) {
       return applyErrorsToContext(context, staticValidationErrors)
