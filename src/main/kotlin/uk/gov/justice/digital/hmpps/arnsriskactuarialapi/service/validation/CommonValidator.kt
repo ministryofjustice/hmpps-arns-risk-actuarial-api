@@ -158,8 +158,8 @@ class CommonValidator {
   fun validateImagesAndIndirectSexualFields(
     request: RiskScoreRequest,
     requiredSexualFields: List<KProperty1<RiskScoreRequest, Any?>>,
-  ): List<ValidationError> = when (request.hasEverCommittedSexualOffence) {
-    true -> listOfNotNull(
+  ): List<ValidationError> = if (request.hasEverCommittedSexualOffence == true) {
+    listOfNotNull(
       validateRequiredFields(
         request,
         requiredSexualFields,
@@ -167,9 +167,8 @@ class CommonValidator {
       ),
       validateSanctions(request, requiredSexualFields),
     )
-
-    false -> listOfNotNull(checkForExistingFields(request))
-    else -> listOfNotNull()
+  } else {
+    listOfNotNull(checkForExistingFields(request))
   }
 
   private fun validateSanctions(
