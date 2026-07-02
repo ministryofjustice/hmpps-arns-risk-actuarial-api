@@ -5,7 +5,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.ImagesAndIndirectContactSexualReoffendingPredictorValidator.Companion.IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR_REQUIRED_FIELDS
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.getAgeAtDate
 import kotlin.reflect.KProperty1
 
@@ -165,13 +164,13 @@ class CommonValidator {
         requiredSexualFields,
         StaticOrDynamic.STATIC,
       ),
-      validateSanctions(request, requiredSexualFields),
+      validateSexualSanctionsCount(request, requiredSexualFields),
     )
   } else {
-    listOfNotNull(checkForExistingFields(request))
+    listOfNotNull(checkForExistingFields(request, requiredSexualFields))
   }
 
-  private fun validateSanctions(
+  private fun validateSexualSanctionsCount(
     request: RiskScoreRequest,
     requiredSexualFields: List<KProperty1<RiskScoreRequest, Any?>>,
   ): ValidationError? = if (request.totalIndecentImageSanctions == 0 && request.totalContactAdultSexualSanctions == 0 && request.totalContactChildSexualSanctions == 0 && request.totalNonContactSexualOffences == 0) {
@@ -182,11 +181,14 @@ class CommonValidator {
     null
   }
 
-  private fun checkForExistingFields(request: RiskScoreRequest): ValidationError? {
+  private fun checkForExistingFields(
+    request: RiskScoreRequest,
+    requiredSexualFields: List<KProperty1<RiskScoreRequest, Any?>>,
+  ): ValidationError? {
     val existingFields = arrayListOf<String>()
 
-    IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR_REQUIRED_FIELDS.forEach {
-      existingFields.addIfNotNullAndZero(
+    requiredSexualFields.forEach {
+      existingFields.addIfNotNullAndNotZero(
         request,
         it,
       )

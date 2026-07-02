@@ -23,7 +23,7 @@
     "validationErrors": [
       {
         "type": "AMBIGUOUS_INPUT",
-        "message": "Ambiguous input fields",
+        "message": "hasEverCommittedSexualOffence cannot be null or false when sexual sanctions exist",
         "fields": [
           "hasEverCommittedSexualOffence",
           "totalIndecentImageSanctions"

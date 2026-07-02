@@ -147,7 +147,7 @@ class ImagesAndIndirectContactSexualReoffendingPredictorProducerServiceTest {
         ),
         ValidationError(
           ValidationErrorType.AMBIGUOUS_INPUT,
-          "Ambiguous input fields",
+          "hasEverCommittedSexualOffence cannot be null or false when sexual sanctions exist",
           listOf(
             "hasEverCommittedSexualOffence",
             "totalIndecentImageSanctions",

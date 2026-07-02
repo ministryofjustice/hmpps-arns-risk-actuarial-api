@@ -11,7 +11,7 @@ fun ArrayList<String>.addIfNotNull(request: RiskScoreRequest, prop: KProperty1<R
   if (prop.get(request) != null) this.add(prop.name)
 }
 
-fun ArrayList<String>.addIfNotNullAndZero(request: RiskScoreRequest, prop: KProperty1<RiskScoreRequest, Any?>) {
+fun ArrayList<String>.addIfNotNullAndNotZero(request: RiskScoreRequest, prop: KProperty1<RiskScoreRequest, Any?>) {
   if (prop.get(request) != null && prop.get(request) != 0) this.add(prop.name)
 }
 
