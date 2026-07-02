@@ -146,7 +146,7 @@ class ImagesAndIndirectContactSexualReoffendingPredictorProducerServiceTest {
           totalIndecentImageSanctions = 1,
         ),
         ValidationError(
-          ValidationErrorType.AMBIGUOUS_INPUT,
+          ValidationErrorType.IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR_INCONSISTENT_INPUT,
           "hasEverCommittedSexualOffence cannot be null or false when sexual sanctions exist",
           listOf(
             "hasEverCommittedSexualOffence",

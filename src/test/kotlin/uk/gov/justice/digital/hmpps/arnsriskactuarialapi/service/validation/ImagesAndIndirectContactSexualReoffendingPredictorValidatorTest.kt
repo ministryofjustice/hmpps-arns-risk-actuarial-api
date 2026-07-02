@@ -128,7 +128,7 @@ class ImagesAndIndirectContactSexualReoffendingPredictorValidatorTest {
     )
 
     val expectedErrors = listOf(
-      ValidationErrorType.AMBIGUOUS_INPUT.asError(
+      ValidationErrorType.IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR_INCONSISTENT_INPUT.asError(
         listOf(
           "hasEverCommittedSexualOffence",
           "totalIndecentImageSanctions",
