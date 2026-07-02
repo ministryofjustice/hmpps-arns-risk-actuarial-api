@@ -3,7 +3,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
- name: hmpps-manage-offences-api-wiremock-mappings-1
+ name: hmpps-manage-offences-api-wiremock-mapping
 data:
 {{ ($.Files.Glob "__files/get-actuarial-mapping.json").AsConfig | indent 2 }}
 ---
@@ -42,12 +42,8 @@ spec:
             periodSeconds: 30
       volumes:
         - name: mappings-volume
-          projected:
-            sources:
-              - configMap:
-                  name: hmpps-manage-offences-api-wiremock-mappings-1
-              - configMap:
-                  name: hmpps-manage-offences-api-wiremock-mappings-2
+          configMap:
+            name: hmpps-manage-offences-api-wiremock-mapping
 ---
 apiVersion: v1
 kind: Service
