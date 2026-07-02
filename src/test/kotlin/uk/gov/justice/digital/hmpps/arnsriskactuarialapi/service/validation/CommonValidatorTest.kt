@@ -322,7 +322,10 @@ class CommonValidatorTest {
       dateOfCurrentConviction = LocalDate.of(2026, 2, 1),
     )
     val error = commonValidator.validateDateOfCurrentConvictionAgainstAssessmentDate(request)
-    assertNull(error, "Errors list should remain empty when dateOfCurrentConviction is less than 3 months after assessmentDate")
+    assertNull(
+      error,
+      "Errors list should remain empty when dateOfCurrentConviction is less than 3 months after assessmentDate",
+    )
   }
 
   @Test
@@ -486,7 +489,11 @@ class CommonValidatorTest {
       RiskScoreRequest::currentOffenceCode,
     )
 
-    val expectedValidationError = ValidationError(type = ValidationErrorType.MISSING_MANDATORY_INPUT, message = "Mandatory input field(s) missing", fields = listOf("dateOfBirth", "currentOffenceCode"))
+    val expectedValidationError = ValidationError(
+      type = ValidationErrorType.MISSING_MANDATORY_INPUT,
+      message = "Mandatory input field(s) missing",
+      fields = listOf("dateOfBirth", "currentOffenceCode"),
+    )
 
     assertEquals(expectedValidationError, commonValidator.validateRequiredFields(request, requiredFields))
   }
@@ -508,9 +515,16 @@ class CommonValidatorTest {
       RiskScoreRequest::currentOffenceCode,
     )
 
-    val expectedValidationError = ValidationError(type = ValidationErrorType.MISSING_MANDATORY_INPUT, message = "Mandatory input field(s) missing", fields = listOf("dateOfBirth", "currentOffenceCode"))
+    val expectedValidationError = ValidationError(
+      type = ValidationErrorType.MISSING_MANDATORY_INPUT,
+      message = "Mandatory input field(s) missing",
+      fields = listOf("dateOfBirth", "currentOffenceCode"),
+    )
 
-    assertEquals(expectedValidationError, commonValidator.validateRequiredFields(request, requiredFields, StaticOrDynamic.STATIC))
+    assertEquals(
+      expectedValidationError,
+      commonValidator.validateRequiredFields(request, requiredFields, StaticOrDynamic.STATIC),
+    )
   }
 
   @Test
@@ -548,8 +562,126 @@ class CommonValidatorTest {
       RiskScoreRequest::currentOffenceCode,
     )
 
-    val expectedValidationError = ValidationError(type = ValidationErrorType.MISSING_DYNAMIC_INPUT, message = "Dynamic input field(s) missing", fields = listOf("dateOfBirth", "currentOffenceCode"))
+    val expectedValidationError = ValidationError(
+      type = ValidationErrorType.MISSING_DYNAMIC_INPUT,
+      message = "Dynamic input field(s) missing",
+      fields = listOf("dateOfBirth", "currentOffenceCode"),
+    )
 
-    assertEquals(expectedValidationError, commonValidator.validateRequiredFields(request, requiredFields, StaticOrDynamic.DYNAMIC))
+    assertEquals(
+      expectedValidationError,
+      commonValidator.validateRequiredFields(request, requiredFields, StaticOrDynamic.DYNAMIC),
+    )
+  }
+
+  @Test
+  fun `test validateStatic with missing sexual reoffending predictor required fields when hasEverCommittedSexualOffence true`() {
+    // Assign
+    val request = RiskScoreRequest(
+      gender = Gender.MALE,
+      hasEverCommittedSexualOffence = true,
+    )
+
+    val expectedSexualReoffendingPredictorRequiredFields = listOf(
+      RiskScoreRequest::totalIndecentImageSanctions,
+      RiskScoreRequest::totalContactAdultSexualSanctions,
+      RiskScoreRequest::totalContactChildSexualSanctions,
+      RiskScoreRequest::totalNonContactSexualOffences,
+    )
+
+    val expectedErrors = listOf(
+      ValidationErrorType.MISSING_MANDATORY_INPUT.asError(
+        listOf(
+          "totalIndecentImageSanctions",
+          "totalContactAdultSexualSanctions",
+          "totalContactChildSexualSanctions",
+          "totalNonContactSexualOffences",
+        ),
+      ),
+    )
+
+    // Act
+    val errors =
+      commonValidator.validateImagesAndIndirectSexualFields(request, expectedSexualReoffendingPredictorRequiredFields)
+
+    // Assert
+    assertEquals(expectedErrors, errors)
+  }
+
+  @Test
+  fun `test validateStatic with zero sexual reoffending predictor required fields when hasEverCommittedSexualOffence true`() {
+    // Assign
+    val request = RiskScoreRequest(
+      gender = Gender.MALE,
+      hasEverCommittedSexualOffence = true,
+      totalIndecentImageSanctions = 0,
+      totalContactAdultSexualSanctions = 0,
+      totalContactChildSexualSanctions = 0,
+      totalNonContactSexualOffences = 0,
+    )
+
+    val expectedSexualReoffendingPredictorRequiredFields = listOf(
+      RiskScoreRequest::totalIndecentImageSanctions,
+      RiskScoreRequest::totalContactAdultSexualSanctions,
+      RiskScoreRequest::totalContactChildSexualSanctions,
+      RiskScoreRequest::totalNonContactSexualOffences,
+    )
+
+    val expectedErrors = listOf(
+      ValidationErrorType.IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR_NO_SANCTIONS.asError(
+        listOf(
+          "totalIndecentImageSanctions",
+          "totalContactAdultSexualSanctions",
+          "totalContactChildSexualSanctions",
+          "totalNonContactSexualOffences",
+        ),
+      ),
+    )
+
+    // Act
+    val errors =
+      commonValidator.validateImagesAndIndirectSexualFields(request, expectedSexualReoffendingPredictorRequiredFields)
+
+    // Assert
+    assertEquals(expectedErrors, errors)
+  }
+
+  @Test
+  fun `test validateStatic with existing sexual reoffending predictor required fields when hasEverCommittedSexualOffence false`() {
+    // Assign
+    val request = RiskScoreRequest(
+      gender = Gender.MALE,
+      hasEverCommittedSexualOffence = false,
+      totalIndecentImageSanctions = 1,
+      totalContactAdultSexualSanctions = 1,
+      totalContactChildSexualSanctions = 1,
+      totalNonContactSexualOffences = 1,
+    )
+
+    val expectedSexualReoffendingPredictorRequiredFields = listOf(
+      RiskScoreRequest::totalIndecentImageSanctions,
+      RiskScoreRequest::totalContactAdultSexualSanctions,
+      RiskScoreRequest::totalContactChildSexualSanctions,
+      RiskScoreRequest::totalNonContactSexualOffences,
+    )
+
+    val expectedErrors = listOf(
+      ValidationErrorType.IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR_INCONSISTENT_INPUT.asError(
+        listOf(
+          "hasEverCommittedSexualOffence",
+          "totalIndecentImageSanctions",
+          "totalContactAdultSexualSanctions",
+          "totalContactChildSexualSanctions",
+          "totalNonContactSexualOffences",
+        ),
+      ),
+    )
+
+    // Act
+    val errors =
+      commonValidator.validateImagesAndIndirectSexualFields(request, expectedSexualReoffendingPredictorRequiredFields)
+
+    // Assert
+    assertEquals(expectedErrors, errors)
   }
 }

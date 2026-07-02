@@ -67,13 +67,21 @@
           "modelVersion": "1.0",
           "thresholdsVersion": "1.0",
           "output": {
-            "band": "NOT_APPLICABLE",
-            "score": 0.0,
-            "femaleVersion": false,
+            "band": null,
+            "score": null,
+            "femaleVersion": null,
             "hasSexualOffenceHistory": null
           },
           "featureValues": {},
-          "validationErrors": []
+          "validationErrors": [
+            {
+              "type": "MISSING_MANDATORY_INPUT",
+              "message": "Mandatory input field(s) missing",
+              "fields": [
+                "hasEverCommittedSexualOffence"
+              ]
+            }
+          ]
         },
         "seriousViolentPredictorScore": {
           "algorithm": "SERIOUS_VIOLENT_REOFFENDING_PREDICTOR",
@@ -126,7 +134,8 @@
         "type": "COMPONENT_VALIDATION_ERROR",
         "message": "Validation error(s) in component scores",
         "fields": [
-          "DIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR"
+          "DIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR",
+          "IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR"
         ]
       }
     ]
