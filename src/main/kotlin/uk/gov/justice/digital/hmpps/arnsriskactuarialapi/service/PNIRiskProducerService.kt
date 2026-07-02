@@ -14,6 +14,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.ProgrammeNeedId
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.anyNullSara
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.bothNullSara
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isAllReoffendingPredictorMedium
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isCombinedSeriousReoffendingPredictorHigh
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isCombinedSeriousReoffendingPredictorMedium
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isDirectContactSexualReoffendingPredictorHigh
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isDirectContactSexualReoffendingPredictorMedium
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isHighAllReoffendingPredictor
@@ -23,8 +25,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isMediumViolentReoffendingPredictor
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isOspIicHigh
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isOspIicMedium
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isRsrHigh
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.isRsrMedium
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.overallNeedsGroupingCalculation
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.PNIValidator
 
@@ -59,9 +59,9 @@ class PNIRiskProducerService(val validator: PNIValidator) : BaseRiskScoreProduce
       allReoffendingPredictorStaticScore = context.allReoffendingPredictor?.score,
       violentReoffendingPredictorStaticScore = context.violentReoffendingPredictor?.score,
       violentReoffendingPredictorBand = context.violentReoffendingPredictor?.band,
-      directContactSexualReoffendingPredictorBand = context.RSR?.directContactSexualReoffendingPredictorBand,
-      imagesAndIndirectContactSexualReoffendingPredictorBand = context.RSR?.imagesAndIndirectContactSexualReoffendingPredictorBand,
-      rsr = context.RSR?.rsrScore?.toInt(),
+      directContactSexualReoffendingPredictorBand = context.combinedSeriousReoffendingPredictorObject?.directContactSexualReoffendingPredictorBand,
+      imagesAndIndirectContactSexualReoffendingPredictorBand = context.combinedSeriousReoffendingPredictorObject?.imagesAndIndirectContactSexualReoffendingPredictorBand,
+      combinedSeriousReoffendingPredictor = context.combinedSeriousReoffendingPredictorObject?.combinedSeriousReoffendingPredictorScore?.toInt(),
       saraRiskToPartner = request.saraRiskToPartner,
       saraRiskToOthers = request.saraRiskToOthers,
       problemSolvingSkills = request.problemSolvingSkills,
@@ -90,7 +90,7 @@ class PNIRiskProducerService(val validator: PNIValidator) : BaseRiskScoreProduce
         requestValidated.copy(
           directContactSexualReoffendingPredictorBand = requestValidated.directContactSexualReoffendingPredictorBand ?: RiskBand.VERY_HIGH,
           imagesAndIndirectContactSexualReoffendingPredictorBand = requestValidated.imagesAndIndirectContactSexualReoffendingPredictorBand ?: RiskBand.VERY_HIGH,
-          rsr = requestValidated.rsr ?: 100,
+          combinedSeriousReoffendingPredictor = requestValidated.combinedSeriousReoffendingPredictor ?: 100,
         ),
       ) -> RiskBand.HIGH
 
@@ -200,7 +200,7 @@ class PNIRiskProducerService(val validator: PNIValidator) : BaseRiskScoreProduce
     isHighViolentReoffendingPredictor(requestValidated) ||
     isDirectContactSexualReoffendingPredictorHigh(requestValidated) ||
     isOspIicHigh(requestValidated) ||
-    isRsrHigh(requestValidated) ||
+    isCombinedSeriousReoffendingPredictorHigh(requestValidated) ||
     isHighSara(requestValidated)
 
   internal fun isMediumRisk(
@@ -210,5 +210,5 @@ class PNIRiskProducerService(val validator: PNIValidator) : BaseRiskScoreProduce
     isDirectContactSexualReoffendingPredictorMedium(requestValidated) ||
     isOspIicMedium(requestValidated) ||
     isMediumSara(requestValidated) ||
-    isRsrMedium(requestValidated)
+    isCombinedSeriousReoffendingPredictorMedium(requestValidated)
 }

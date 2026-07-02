@@ -1,6 +1,6 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.regression
 
-val rsrInputFields = mapOf(
+val combinedSeriousReoffendingPredictorInputFields = mapOf(
   InputField(arnsFieldName = "assessmentDate", oasysFieldName = "assessment_date") to
     listOf("2025-01-01"),
 

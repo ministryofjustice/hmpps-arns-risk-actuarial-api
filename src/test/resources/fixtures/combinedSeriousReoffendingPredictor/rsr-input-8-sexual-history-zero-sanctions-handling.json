@@ -25,18 +25,24 @@
     "previousConvictions": [
       "WOUNDING_GBH"
     ],
-    "hasEverCommittedSexualOffence": false
+    "isCurrentOffenceSexuallyMotivated": true,
+    "hasEverCommittedSexualOffence": true,
+    "totalContactAdultSexualSanctions": 0,
+    "totalContactChildSexualSanctions": 0,
+    "totalNonContactSexualOffences": 0,
+    "totalIndecentImageSanctions": 0,
+    "dateOfMostRecentSexualOffence": "1994-01-01"
   },
   "response": {
-    "algorithm": "RSR",
+    "algorithm": "COMBINED_SERIOUS_REOFFENDING_PREDICTOR",
     "type": "COMBINED",
     "modelVersion": "1.0",
     "thresholdsVersion": "1.0",
     "output": {
-      "band": "LOW",
-      "overallScore": 1.6,
-      "femaleVersion": false,
-      "hasSexualOffenceHistory": false,
+      "band": null,
+      "overallScore": null,
+      "femaleVersion": null,
+      "hasSexualOffenceHistory": null,
       "componentScores": {
         "directContactSexualPredictorScore": {
           "algorithm": "DIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR",
@@ -44,15 +50,26 @@
           "modelVersion": "1.0",
           "thresholdsVersion": "1.0",
           "output": {
-            "band": "NOT_APPLICABLE",
+            "band": null,
             "pointScore": null,
-            "score": 0.0,
-            "femaleVersion": false,
-            "hasSexualOffenceHistory": false,
+            "score": null,
+            "femaleVersion": null,
+            "hasSexualOffenceHistory": null,
             "riskBandReductionApplied": null
           },
           "featureValues": {},
-          "validationErrors": []
+          "validationErrors": [
+            {
+              "type": "SEXUAL_REOFFENDING_PREDICTOR_NO_SANCTIONS",
+              "message": "If hasEverCommittedSexualOffence is true, at least one sexual sanction/offence must be more than 0",
+              "fields": [
+                "totalIndecentImageSanctions",
+                "totalContactAdultSexualSanctions",
+                "totalContactChildSexualSanctions",
+                "totalNonContactSexualOffences"
+              ]
+            }
+          ]
         },
         "indirectContactSexualPredictorScore": {
           "algorithm": "IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR",
@@ -60,13 +77,24 @@
           "modelVersion": "1.0",
           "thresholdsVersion": "1.0",
           "output": {
-            "band": "NOT_APPLICABLE",
-            "score": 0.0,
-            "femaleVersion" : false,
-            "hasSexualOffenceHistory" : false
+            "band": null,
+            "score": null,
+            "femaleVersion": null,
+            "hasSexualOffenceHistory": null
           },
           "featureValues": {},
-          "validationErrors": []
+          "validationErrors": [
+            {
+              "type": "SEXUAL_REOFFENDING_PREDICTOR_NO_SANCTIONS",
+              "message": "If hasEverCommittedSexualOffence is true, at least one sexual sanction/offence must be more than 0",
+              "fields": [
+                "totalIndecentImageSanctions",
+                "totalContactAdultSexualSanctions",
+                "totalContactChildSexualSanctions",
+                "totalNonContactSexualOffences"
+              ]
+            }
+          ]
         },
         "seriousViolentPredictorScore": {
           "algorithm": "SERIOUS_VIOLENT_REOFFENDING_PREDICTOR",
@@ -114,6 +142,15 @@
       }
     },
     "featureValues": {},
-    "validationErrors": []
+    "validationErrors": [
+      {
+        "type": "COMPONENT_VALIDATION_ERROR",
+        "message": "Validation error(s) in component scores",
+        "fields": [
+          "DIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR",
+          "IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR"
+        ]
+      }
+    ]
   }
 }

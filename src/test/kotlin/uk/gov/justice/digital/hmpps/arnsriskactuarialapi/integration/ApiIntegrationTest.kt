@@ -37,7 +37,7 @@ class ApiIntegrationTest : IntegrationTestBase() {
       Pair("directContactSexualReoffendingPredictor", "/actuarialPredictors/directContactSexualPredictor"),
       Pair("imagesAndIndirectContactSexualReoffendingPredictor", "/actuarialPredictors/indirectContactSexualPredictor"),
       Pair("seriousViolentReoffendingPredictor", "/actuarialPredictors/seriousViolentPredictor"),
-      Pair("rsr", "/actuarialPredictors/seriousPredictor"),
+      Pair("combinedSeriousReoffendingPredictor", "/actuarialPredictors/seriousPredictor"),
       Pair("allReoffendingPredictor", "/actuarialPredictors/allPredictor"),
       Pair("violentReoffendingPredictor", "/actuarialPredictors/violentPredictor"),
       Pair("lds", "/lds"),

@@ -17,7 +17,7 @@ import kotlin.concurrent.atomics.incrementAndFetch
 @ExperimentalAtomicApi
 @SpringBootTest
 @ActiveProfiles("test")
-class RSRRegressionTest(
+class CombinedSeriousReoffendingPredictorRegressionTest(
   @param:Autowired private val riskScoreService: RiskScoreService,
   @param:Autowired private val objectMapper: ObjectMapper,
   @param:Autowired @param:Value("\${regression-test.output-path}") private val outputPath: String,
@@ -32,7 +32,7 @@ class RSRRegressionTest(
 
   @Test
   @Disabled("Cannot currently run on the build server")
-  fun `run RSR static test cases`() {
+  fun `run combinedSeriousReoffendingPredictor static test cases`() {
     // Set up directory structure
     val testOutputPath = "$outputPath/${System.currentTimeMillis()}"
     createDirectories(testOutputPath)
@@ -41,7 +41,7 @@ class RSRRegressionTest(
     val connection = getDatabaseConnection(oracleUsername, oraclePassword, oracleConnectionString)
 
     // Flatten input options into lists of lists
-    val inputCombinations = flattenInputOptions(rsrInputFields)
+    val inputCombinations = flattenInputOptions(combinedSeriousReoffendingPredictorInputFields)
 
     // Use the provided seed or generate a new one if not provided
     val seed = testSeed ?: System.nanoTime()

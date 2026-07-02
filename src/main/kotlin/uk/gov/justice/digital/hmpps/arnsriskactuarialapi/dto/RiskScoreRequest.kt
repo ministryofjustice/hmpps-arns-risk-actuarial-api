@@ -99,7 +99,7 @@ data class RiskScoreRequest(
   val learningDifficulties: ProblemLevel? = null,
   val professionalOrVocationalQualifications: HasQualifications? = null,
 
-  // RSR
+  // COMBINED_SERIOUS_REOFFENDING_PREDICTOR
   val dateAtStartOfFollowupUserInput: LocalDate? = null,
   val totalContactAdultSexualSanctions: Int? = null,
   val totalContactChildSexualSanctions: Int? = null,

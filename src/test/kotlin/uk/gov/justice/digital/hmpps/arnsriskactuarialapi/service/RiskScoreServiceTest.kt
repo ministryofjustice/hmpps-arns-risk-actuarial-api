@@ -12,13 +12,13 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyAllReoffendingPredictor
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyCombinedSeriousReoffendingPredictor
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyDirectContactSexualReoffendingPredictor
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyImagesAndIndirectContactSexualReoffendingPredictor
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyLDS
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyMST
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyOPD
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyRSR
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptySeriousViolentReoffendingPredictor
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyViolentReoffendingPredictor
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.omittedPNI
@@ -51,7 +51,7 @@ class RiskScoreServiceTest {
   private lateinit var seriousViolentReoffendingPredictorRiskProducerService: SeriousViolentReoffendingPredictorRiskProducerService
 
   @Mock
-  private lateinit var rsrRiskProducerService: RSRRiskProducerService
+  private lateinit var combinedSeriousReoffendingPredictorRiskProducerService: CombinedSeriousReoffendingPredictorRiskProducerService
 
   @Mock
   private lateinit var imagesAndIndirectContactSexualReoffendingPredictorRiskProducerService: ImagesAndIndirectContactSexualReoffendingPredictorProducerService
@@ -108,7 +108,7 @@ class RiskScoreServiceTest {
             emptyImagesAndIndirectContactSexualReoffendingPredictor()
         }
       },
-      Pair(rsrRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { RSR = emptyRSR() } },
+      Pair(combinedSeriousReoffendingPredictorRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { combinedSeriousReoffendingPredictorObject = emptyCombinedSeriousReoffendingPredictor() } },
 
       // add more Pairs for the other mocked risk producers here
     )

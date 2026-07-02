@@ -11,8 +11,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.ProgrammeNeedIdentifier
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyAllReoffendingPredictor
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyCombinedSeriousReoffendingPredictor
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyRSR
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyViolentReoffendingPredictor
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.CommonValidator
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.PNIValidator
@@ -85,7 +85,7 @@ class PNIRegressionTest {
     violentReoffendingPredictorRiskReconElm: String?,
     ospCdc: String?,
     ospIiic: String?,
-    rsrPercentageScore: String?,
+    combinedSeriousReoffendingPredictorPercentageScore: String?,
     saraRiskLevelToPartner: String?,
     saraRiskLevelToOther: String?,
     @Suppress("UNUSEDUPARAMETER")
@@ -113,7 +113,7 @@ class PNIRegressionTest {
     @Suppress("UNUSEDUPARAMETER")
     needsScoreMissingIgnored: String?,
     @Suppress("UNUSEDUPARAMETER")
-    convertedRsrLevel: String?,
+    convertedCombinedSeriousReoffendingPredictorLevel: String?,
     @Suppress("UNUSEDUPARAMETER")
     removeLeading: String?,
     @Suppress("UNUSEDUPARAMETER")
@@ -170,10 +170,10 @@ class PNIRegressionTest {
       isARiskOfSexualHarm = s6U11.toYesNoBoolean(),
     )
 
-    val rsr = emptyRSR().copy(
+    val combinedSeriousReoffendingPredictor = emptyCombinedSeriousReoffendingPredictor().copy(
       directContactSexualReoffendingPredictorBand = ospCdc.toRiskBand(),
       imagesAndIndirectContactSexualReoffendingPredictorBand = ospIiic.toRiskBand(),
-      rsrScore = rsrPercentageScore?.toDoubleOrNull(),
+      combinedSeriousReoffendingPredictorScore = combinedSeriousReoffendingPredictorPercentageScore?.toDoubleOrNull(),
     )
     val violentReoffendingPredictor = emptyViolentReoffendingPredictor().copy(
       score = violentReoffendingPredictorRiskReconElm.bandToViolentReoffendingPredictorScore(),
@@ -185,7 +185,7 @@ class PNIRegressionTest {
     val result = service.getRiskScore(
       request,
       emptyContext().copy(
-        RSR = rsr,
+        combinedSeriousReoffendingPredictorObject = combinedSeriousReoffendingPredictor,
         violentReoffendingPredictor = violentReoffendingPredictor,
         allReoffendingPredictor = allReoffendingPredictor,
       ),
@@ -207,10 +207,10 @@ class PNIRegressionTest {
         arrayListOf(
           id, scenario, expectedOutcome, community, s1U30, s6U11, s11U11, s11U12, s6U12, s12U1,
           s12U9, s6U1, s6U6, s7U3, s11U3, s11U2, s11U4, s11U6, s10U1, ogrsY2,
-          violentReoffendingPredictorRiskReconElm, ospCdc, ospIiic, rsrPercentageScore, saraRiskLevelToPartner,
+          violentReoffendingPredictorRiskReconElm, ospCdc, ospIiic, combinedSeriousReoffendingPredictorPercentageScore, saraRiskLevelToPartner,
           saraRiskLevelToOther, sexDomain, thinkingDomain, relaDomain, smDomain,
           overallNeedsCheck, overallRiskScore, expectedPni, sdScore, tdScore, rdScore,
-          smScore, needsScoreMissingIgnored, convertedRsrLevel, removeLeading,
+          smScore, needsScoreMissingIgnored, convertedCombinedSeriousReoffendingPredictorLevel, removeLeading,
           sdCountMissing, tdCountMissing, rdCountMissing, smCountMissing,
           sdPossibleRawScore, tdPossibleRawScore, rdPossibleRawScore, smPossibleRawScore,
           sdPossibleBand, tdPossibleBand, rdPossibleBand, smPossibleBand,

@@ -3,9 +3,9 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.ActuarialPredictorsResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.ALL_REOFFENDING_PREDICTOR
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.COMBINED_SERIOUS_REOFFENDING_PREDICTOR
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.DIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.RSR
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.SERIOUS_VIOLENT_REOFFENDING_PREDICTOR
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AlgorithmResponse.VIOLENT_REOFFENDING_PREDICTOR
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.AllPredictorPredictorOutputResponse
@@ -130,21 +130,21 @@ private fun buildPredictorResponseForSeriousViolentPredictor(riskScoreContext: R
 }
 
 private fun buildPredictorResponseForSeriousPredictor(riskScoreContext: RiskScoreContext): PredictorResponse<SeriousPredictorPredictorOutputResponse> {
-  val rsr = riskScoreContext.RSR!!
+  val combinedSeriousReoffendingPredictorObject = riskScoreContext.combinedSeriousReoffendingPredictorObject!!
   return PredictorResponse(
-    RSR,
+    COMBINED_SERIOUS_REOFFENDING_PREDICTOR,
     COMBINED,
     output = SeriousPredictorPredictorOutputResponse(
-      rsr.rsrBand.toRiskBandResponse(),
-      rsr.rsrScore,
-      rsr.femaleVersion,
-      rsr.sexualOffenceHistory,
+      combinedSeriousReoffendingPredictorObject.combinedSeriousReoffendingPredictorBand.toRiskBandResponse(),
+      combinedSeriousReoffendingPredictorObject.combinedSeriousReoffendingPredictorScore,
+      combinedSeriousReoffendingPredictorObject.femaleVersion,
+      combinedSeriousReoffendingPredictorObject.sexualOffenceHistory,
       componentScores = SeriousPredictorComponentScores(
         buildPredictorResponseForDirectContactSexualPredictor(riskScoreContext),
         buildPredictorResponseForIndirectContactSexualPredictor(riskScoreContext),
         buildPredictorResponseForSeriousViolentPredictor(riskScoreContext),
       ),
     ),
-    validationErrors = rsr.validationError ?: emptyList(),
+    validationErrors = combinedSeriousReoffendingPredictorObject.validationError ?: emptyList(),
   )
 }
