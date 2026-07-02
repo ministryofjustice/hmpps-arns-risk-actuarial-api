@@ -6,6 +6,7 @@ enum class ValidationErrorType(val message: String) {
   DATE_OF_START_OF_FOLLOWUP_BEFORE_DATE_OF_BIRTH("Date of start of followup cannot be before date of birth"),
   DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE("Age at date at start of followup must be less than 110"),
   DATE_OF_START_OF_FOLLOWUP_REQUIRED("Either Date at start of followup or date of current conviction must be provided"),
+  MOTIVATION_TO_TACKAGE_DRUG_MISUSE_INCONSISTENT("When motivationToTackleDrugMisuse is null, all drug usage question must also be false or null"),
   DOMESTIC_ABUSE_INCONSISTENT_INPUT("No evidence of domestic abuse identified - domesticAbuseAgainstPartner and domesticAbuseAgainstFamily should not be provided"),
   SEXUAL_OFFENDING_MISSING_COUNTS("Sexual motivation/offending identified - complete sexual offence counts"),
   SEXUAL_OFFENDING_INCONSISTENT_INPUT("No sexual motivation/offending identified - additional fields should not be provided"),

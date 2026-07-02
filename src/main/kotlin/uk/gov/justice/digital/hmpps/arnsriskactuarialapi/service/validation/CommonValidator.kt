@@ -153,4 +153,31 @@ class CommonValidator {
     }
     return null
   }
+
+  fun validateDrugMisuse(request: RiskScoreRequest): ValidationError? {
+    val drugUsageAnswers = mapOf(
+      RiskScoreRequest::hasHeroinUsage to request.hasHeroinUsage,
+      RiskScoreRequest::hasOtherOpiateUsage to request.hasOtherOpiateUsage,
+      RiskScoreRequest::hasCrackCocaineUsage to request.hasCrackCocaineUsage,
+      RiskScoreRequest::hasPowderCocaineUsage to request.hasPowderCocaineUsage,
+      RiskScoreRequest::hasMisusedPrescriptionDrugUsage to request.hasMisusedPrescriptionDrugUsage,
+      RiskScoreRequest::hasBenzodiazepinesUsage to request.hasBenzodiazepinesUsage,
+      RiskScoreRequest::hasCannabisUsage to request.hasCannabisUsage,
+      RiskScoreRequest::hasSteroidsUsage to request.hasSteroidsUsage,
+      RiskScoreRequest::hasOtherDrugsUsage to request.hasOtherDrugsUsage,
+      RiskScoreRequest::hasKetamineUsage to request.hasKetamineUsage,
+      RiskScoreRequest::hasSpiceUsage to request.hasSpiceUsage,
+      RiskScoreRequest::hasHallucinogensUsage to request.hasHallucinogensUsage,
+      RiskScoreRequest::hasSolventsUsage to request.hasSolventsUsage,
+    )
+
+    // If motivationToTackleDrugMisuse is null, then all the drug usage questions should be set to null or false
+    if (request.motivationToTackleDrugMisuse == null) {
+      val notNullFields = drugUsageAnswers.getTrueKeys()
+      if (notNullFields.isNotEmpty()) {
+        return ValidationErrorType.MOTIVATION_TO_TACKAGE_DRUG_MISUSE_INCONSISTENT.asError(notNullFields)
+      }
+    }
+    return null
+  }
 }

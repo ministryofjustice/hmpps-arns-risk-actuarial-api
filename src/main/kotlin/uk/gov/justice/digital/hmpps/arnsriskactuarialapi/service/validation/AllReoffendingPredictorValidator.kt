@@ -19,10 +19,9 @@ class AllReoffendingPredictorValidator(val commonValidator: CommonValidator) : A
     commonValidator.validateDateAtStartOfFollowupAge(request),
   )
 
-  override fun validateDynamicCustom(request: RiskScoreRequest): List<ValidationError> {
-    // TODO: Add further validation logic
-    return listOfNotNull()
-  }
+  override fun validateDynamicCustom(request: RiskScoreRequest): List<ValidationError> = listOfNotNull(
+    commonValidator.validateDrugMisuse(request),
+  )
 
   override fun staticRequiredFields(): List<KProperty1<RiskScoreRequest, Any?>> = listOf(
     RiskScoreRequest::assessmentDate,
@@ -41,20 +40,6 @@ class AllReoffendingPredictorValidator(val commonValidator: CommonValidator) : A
     RiskScoreRequest::evidenceOfDomesticAbuse,
     RiskScoreRequest::currentRelationshipStatus,
     RiskScoreRequest::regularOffendingActivities,
-    RiskScoreRequest::motivationToTackleDrugMisuse,
-    RiskScoreRequest::hasHeroinUsage,
-    RiskScoreRequest::hasOtherOpiateUsage,
-    RiskScoreRequest::hasCrackCocaineUsage,
-    RiskScoreRequest::hasPowderCocaineUsage,
-    RiskScoreRequest::hasMisusedPrescriptionDrugUsage,
-    RiskScoreRequest::hasBenzodiazepinesUsage,
-    RiskScoreRequest::hasCannabisUsage,
-    RiskScoreRequest::hasSteroidsUsage,
-    RiskScoreRequest::hasOtherDrugsUsage,
-    RiskScoreRequest::hasKetamineUsage,
-    RiskScoreRequest::hasSpiceUsage,
-    RiskScoreRequest::hasHallucinogensUsage,
-    RiskScoreRequest::hasSolventsUsage,
     RiskScoreRequest::currentAlcoholUseProblems,
     RiskScoreRequest::excessiveAlcoholUse,
     RiskScoreRequest::impulsivityProblems,
