@@ -595,7 +595,7 @@ class CommonValidatorTest {
     )
 
     val expectedError = ValidationError(
-      type = ValidationErrorType.MOTIVATION_TO_TACKAGE_DRUG_MISUSE_INCONSISTENT,
+      type = ValidationErrorType.MOTIVATION_TO_TACKLE_DRUG_MISUSE_INCONSISTENT,
       message = "When motivationToTackleDrugMisuse is null, all drug usage question must also be false or null",
       fields = listOf("hasSteroidsUsage", "hasKetamineUsage"),
     )

@@ -175,7 +175,7 @@ class CommonValidator {
     if (request.motivationToTackleDrugMisuse == null) {
       val notNullFields = drugUsageAnswers.getTrueKeys()
       if (notNullFields.isNotEmpty()) {
-        return ValidationErrorType.MOTIVATION_TO_TACKAGE_DRUG_MISUSE_INCONSISTENT.asError(notNullFields)
+        return ValidationErrorType.MOTIVATION_TO_TACKLE_DRUG_MISUSE_INCONSISTENT.asError(notNullFields)
       }
     }
     return null

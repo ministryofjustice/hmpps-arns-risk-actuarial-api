@@ -89,7 +89,7 @@ class AllReoffendingPredictorValidatorTest {
     val request: RiskScoreRequest = mock()
 
     val validationError1 = ValidationErrorType.MISSING_DYNAMIC_INPUT.asError(listOf("field1", "field2"))
-    val validationError2 = ValidationErrorType.MOTIVATION_TO_TACKAGE_DRUG_MISUSE_INCONSISTENT.asError(listOf("field3", "field4"))
+    val validationError2 = ValidationErrorType.MOTIVATION_TO_TACKLE_DRUG_MISUSE_INCONSISTENT.asError(listOf("field3", "field4"))
 
     // Mock common validator method calls
     whenever(commonValidator.validateRequiredFields(request, expectedDynamicRequiredFields, StaticOrDynamic.DYNAMIC)).thenReturn(validationError1)
