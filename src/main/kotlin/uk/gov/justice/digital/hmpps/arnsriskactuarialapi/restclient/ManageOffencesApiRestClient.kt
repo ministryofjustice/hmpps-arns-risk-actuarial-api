@@ -5,8 +5,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
-import org.springframework.web.reactive.function.client.bodyToFlux
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.offencecode.HoCode
+import org.springframework.web.reactive.function.client.bodyToMono
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.offencecode.OffenceCodeDetails
 
 @Component
 class ManageOffencesApiRestClient(
@@ -15,7 +15,7 @@ class ManageOffencesApiRestClient(
 
   val log: Logger = LoggerFactory.getLogger(this::class.java)
 
-  fun getActuarialMapping(): List<HoCode> {
+  fun getActuarialMapping(): Map<String, OffenceCodeDetails> {
     val path = "/offences/actuarial-mapping"
     return manageOffencesApiWebClient
       .get()
@@ -39,8 +39,7 @@ class ManageOffencesApiRestClient(
           ExternalService.MANAGE_OFFENCES_API,
         )
       }
-      .bodyToFlux<HoCode>()
-      .collectList()
+      .bodyToMono<Map<String, OffenceCodeDetails>>()
       .block().also { log.info("Retrieved actuarial mapping containing ${it?.size ?: 0} entries") }!!
   }
 }
