@@ -12,21 +12,27 @@ import org.mockito.kotlin.whenever
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
+import java.time.LocalDate
 import kotlin.test.assertEquals
 
 @ExtendWith(MockitoExtension::class)
-class ImagesAndIndirectContactSexualReoffendingPredictorValidatorTest {
+class DirectContactSexualReoffendingPredictorValidatorTest {
 
   @Mock
   private lateinit var commonValidator: CommonValidator
 
   @InjectMocks
-  private lateinit var validator: ImagesAndIndirectContactSexualReoffendingPredictorValidator
+  private lateinit var validator: DirectContactSexualReoffendingPredictorValidator
 
   private val expectedStaticRequiredFields = listOf(
     RiskScoreRequest::gender,
+    RiskScoreRequest::supervisionStatus,
     RiskScoreRequest::hasEverCommittedSexualOffence,
+    RiskScoreRequest::dateOfBirth,
+    RiskScoreRequest::dateAtStartOfFollowupCalculated,
+    RiskScoreRequest::totalNumberOfSanctionsForAllOffences,
   )
 
   @Test
@@ -35,7 +41,16 @@ class ImagesAndIndirectContactSexualReoffendingPredictorValidatorTest {
     val request = RiskScoreRequest()
 
     val validationError =
-      ValidationErrorType.MISSING_MANDATORY_INPUT.asError(listOf("gender", "hasEverCommittedSexualOffence"))
+      ValidationErrorType.MISSING_MANDATORY_INPUT.asError(
+        listOf(
+          "gender",
+          "supervisionStatus",
+          "hasEverCommittedSexualOffence",
+          "dateOfBirth",
+          "dateAtStartOfFollowupCalculated",
+          "totalNumberOfSanctionsForAllOffences",
+        ),
+      )
 
     whenever(
       commonValidator.validateRequiredFields(
@@ -62,7 +77,16 @@ class ImagesAndIndirectContactSexualReoffendingPredictorValidatorTest {
     // Assign
     val request = RiskScoreRequest(
       gender = Gender.MALE,
+      dateOfBirth = LocalDate.of(1980, 1, 1),
       hasEverCommittedSexualOffence = true,
+      totalContactAdultSexualSanctions = null,
+      totalContactChildSexualSanctions = null,
+      totalNonContactSexualOffences = null,
+      totalIndecentImageSanctions = null,
+      dateAtStartOfFollowupCalculated = LocalDate.of(2030, 1, 1),
+      dateOfMostRecentSexualOffence = null,
+      totalNumberOfSanctionsForAllOffences = 1,
+      supervisionStatus = SupervisionStatus.COMMUNITY,
     )
 
     val expectedErrors = listOf(
@@ -85,7 +109,7 @@ class ImagesAndIndirectContactSexualReoffendingPredictorValidatorTest {
       ),
     ).thenReturn(null)
     whenever(
-      commonValidator.validateSexualReoffendingPredictorFields(request),
+      commonValidator.validateSexualReoffendingPredictorFields(request, true),
     ).thenReturn(expectedErrors)
 
     // Act
@@ -100,6 +124,7 @@ class ImagesAndIndirectContactSexualReoffendingPredictorValidatorTest {
     )
     verify(commonValidator, times(1)).validateSexualReoffendingPredictorFields(
       request,
+      true,
     )
     verifyNoMoreInteractions(commonValidator)
   }
@@ -109,11 +134,17 @@ class ImagesAndIndirectContactSexualReoffendingPredictorValidatorTest {
     // Assert
     val request = RiskScoreRequest(
       gender = Gender.MALE,
+      dateOfBirth = LocalDate.of(1980, 1, 1),
       hasEverCommittedSexualOffence = true,
-      totalIndecentImageSanctions = 0,
       totalContactAdultSexualSanctions = 0,
       totalContactChildSexualSanctions = 0,
       totalNonContactSexualOffences = 0,
+      totalIndecentImageSanctions = 0,
+      dateAtStartOfFollowupCalculated = LocalDate.of(2030, 1, 1),
+      dateOfMostRecentSexualOffence = null,
+      totalNumberOfSanctionsForAllOffences = 1,
+      supervisionStatus = SupervisionStatus.COMMUNITY,
+      mostRecentOffenceDate = null,
     )
 
     val expectedErrors = listOf(
@@ -139,6 +170,7 @@ class ImagesAndIndirectContactSexualReoffendingPredictorValidatorTest {
     whenever(
       commonValidator.validateSexualReoffendingPredictorFields(
         request,
+        true,
       ),
     ).thenReturn(expectedErrors)
 
@@ -154,6 +186,7 @@ class ImagesAndIndirectContactSexualReoffendingPredictorValidatorTest {
     )
     verify(commonValidator, times(1)).validateSexualReoffendingPredictorFields(
       request,
+      true,
     )
     verifyNoMoreInteractions(commonValidator)
     verifyNoMoreInteractions(commonValidator)

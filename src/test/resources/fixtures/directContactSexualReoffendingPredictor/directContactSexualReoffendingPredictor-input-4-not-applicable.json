@@ -3,6 +3,7 @@
     "version": "V1_0",
     "gender": "MALE",
     "dateOfBirth": "1980-01-01",
+    "dateOfMostRecentSexualOffence": "1980-01-01",
     "totalNumberOfSanctionsForAllOffences": 1,
     "supervisionStatus": "COMMUNITY",
     "dateAtStartOfFollowupCalculated": "2027-01-01",

@@ -34,11 +34,11 @@
         "message": "Mandatory input field(s) missing",
         "fields": [
           "gender",
+          "supervisionStatus",
           "hasEverCommittedSexualOffence",
           "dateOfBirth",
           "dateAtStartOfFollowupCalculated",
-          "totalNumberOfSanctionsForAllOffences",
-          "supervisionStatus"
+          "totalNumberOfSanctionsForAllOffences"
         ]
       }
     ]

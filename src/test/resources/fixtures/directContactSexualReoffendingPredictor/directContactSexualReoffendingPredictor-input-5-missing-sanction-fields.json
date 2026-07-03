@@ -3,16 +3,17 @@
     "version": "V1_0",
     "gender": "MALE",
     "dateOfBirth": "1980-01-01",
+    "dateOfMostRecentSexualOffence": "1995-01-01",
     "totalNumberOfSanctionsForAllOffences": 1,
     "supervisionStatus": "COMMUNITY",
     "dateAtStartOfFollowupCalculated": "2027-01-01",
     "totalNumberOfViolentSanctions": 1,
-    "hasEverCommittedSexualOffence": false,
+    "hasEverCommittedSexualOffence": true,
     "isCurrentOffenceSexuallyMotivated": true,
-    "totalContactAdultSexualSanctions": 1,
-    "totalContactChildSexualSanctions": 2,
-    "totalNonContactSexualOffences": 3,
-    "totalIndecentImageSanctions": 4
+    "totalContactAdultSexualSanctions": null,
+    "totalContactChildSexualSanctions": null,
+    "totalNonContactSexualOffences": null,
+    "totalIndecentImageSanctions": null
   },
   "response": {
     "algorithm": "DIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR",
@@ -30,13 +31,13 @@
     "featureValues": {},
     "validationErrors": [
       {
-        "type": "SEXUAL_OFFENDING_INCONSISTENT_INPUT",
-        "message": "No sexual motivation/offending identified - additional fields should not be provided",
+        "type": "MISSING_MANDATORY_INPUT",
+        "message": "Mandatory input field(s) missing",
         "fields": [
+          "totalIndecentImageSanctions",
           "totalContactAdultSexualSanctions",
           "totalContactChildSexualSanctions",
-          "totalNonContactSexualOffences",
-          "totalIndecentImageSanctions"
+          "totalNonContactSexualOffences"
         ]
       }
     ]

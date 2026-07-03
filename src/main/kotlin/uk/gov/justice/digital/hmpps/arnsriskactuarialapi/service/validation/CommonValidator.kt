@@ -1,11 +1,13 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 
 import org.springframework.stereotype.Component
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.getAgeAtDate
+import kotlin.collections.emptyList
 import kotlin.reflect.KProperty1
 
 @Component
@@ -140,7 +142,7 @@ class CommonValidator {
     return null
   }
 
-  fun validateDateAtStartOfFollowupAge(request: RiskScoreRequest): ValidationError? {
+  fun validateDateAtStartOfFollowupAgeUpperLimit(request: RiskScoreRequest): ValidationError? {
     if (request.dateAtStartOfFollowupCalculated != null && request.dateOfBirth != null && request.dateAtStartOfFollowupCalculated > request.dateOfBirth) {
       val ageAtStartOfFollowup = getAgeAtDate(
         request.dateOfBirth,
@@ -148,33 +150,98 @@ class CommonValidator {
         RiskScoreRequest::dateAtStartOfFollowupCalculated.name,
       )
       if (ageAtStartOfFollowup >= 110) {
-        return ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE.asError(listOf(RiskScoreRequest::dateAtStartOfFollowupCalculated.name))
+        return ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE_UPPER.asError(listOf(RiskScoreRequest::dateAtStartOfFollowupCalculated.name))
       }
     }
     return null
   }
 
-  fun validateImagesAndIndirectSexualFields(
-    request: RiskScoreRequest,
-    requiredSexualFields: List<KProperty1<RiskScoreRequest, Any?>>,
-  ): List<ValidationError> = if (request.hasEverCommittedSexualOffence == true) {
-    listOfNotNull(
-      validateRequiredFields(
-        request,
-        requiredSexualFields,
-        StaticOrDynamic.STATIC,
-      ),
-      validateSexualSanctionsCount(request, requiredSexualFields),
-    )
+  fun validateDateAtStartOfFollowupAgeLowerLimit(request: RiskScoreRequest): ValidationError? {
+    if (request.dateAtStartOfFollowupCalculated != null && request.dateOfBirth != null && request.dateAtStartOfFollowupCalculated > request.dateOfBirth) {
+      val ageAtStartOfFollowup = getAgeAtDate(
+        request.dateOfBirth,
+        request.dateAtStartOfFollowupCalculated,
+        RiskScoreRequest::dateAtStartOfFollowupCalculated.name,
+      )
+      if (ageAtStartOfFollowup < 18) {
+        return ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE_LOWER.asError(listOf(RiskScoreRequest::dateAtStartOfFollowupCalculated.name))
+      }
+    }
+    return null
+  }
+
+  fun validateDateOfMostRecentSexualOffenceAgainstDateOfBirth(request: RiskScoreRequest): ValidationError? = if (request.hasEverCommittedSexualOffence == true) {
+    if (request.dateOfMostRecentSexualOffence == null) {
+      return ValidationErrorType.MISSING_MANDATORY_INPUT.asError(listOf(RiskScoreRequest::dateOfMostRecentSexualOffence.name))
+    }
+
+    // dateOfMostRecentSexualOffence must be after dateOfBirth
+    if (request.dateOfBirth != null && request.dateOfMostRecentSexualOffence <= request.dateOfBirth) {
+      return ValidationErrorType.DATE_OF_MOST_RECENT_SEXUAL_OFFENCE_BEFORE_DATE_OF_BIRTH.asError(
+        listOf(
+          RiskScoreRequest::dateOfMostRecentSexualOffence.name,
+        ),
+      )
+    }
+
+    if (request.dateOfBirth != null && request.dateOfMostRecentSexualOffence > request.dateOfBirth) {
+      val ageAtStartOfFollowup = getAgeAtDate(
+        request.dateOfBirth,
+        request.dateOfMostRecentSexualOffence,
+        RiskScoreRequest::dateOfMostRecentSexualOffence.name,
+      )
+      if (ageAtStartOfFollowup < 10) {
+        return ValidationErrorType.DATE_OF_MOST_RECENT_SEXUAL_OFFENCE_OUT_OF_RANGE.asError(listOf(RiskScoreRequest::dateOfMostRecentSexualOffence.name))
+      }
+    }
+    null
   } else {
-    listOfNotNull(checkForExistingFields(request, requiredSexualFields))
+    null
+  }
+
+  fun validateSexualReoffendingPredictorFields(
+    request: RiskScoreRequest,
+    isDirectContactPredictor: Boolean = false,
+  ): List<ValidationError> = if (request.gender == Gender.MALE) {
+    val requiredSexualFields = listOf(
+      RiskScoreRequest::totalIndecentImageSanctions,
+      RiskScoreRequest::totalContactAdultSexualSanctions,
+      RiskScoreRequest::totalContactChildSexualSanctions,
+      RiskScoreRequest::totalNonContactSexualOffences,
+    )
+
+    if (request.hasEverCommittedSexualOffence == true) {
+      val commonFields = listOfNotNull(
+        validateRequiredFields(
+          request,
+          requiredSexualFields,
+          StaticOrDynamic.STATIC,
+        ),
+        validateSexualSanctionsCount(request, requiredSexualFields),
+      )
+      val directContactFields = if (isDirectContactPredictor) {
+        listOfNotNull(
+          validateDateOfMostRecentSexualOffenceAgainstDateOfBirth(request),
+          validateDateAtStartOfFollowupAgeLowerLimit(request),
+          validateTotalNumberOfSanctionsForAllOffences(request),
+        )
+      } else {
+        emptyList()
+      }
+
+      commonFields + directContactFields
+    } else {
+      listOfNotNull(checkForExistingFields(request, requiredSexualFields))
+    }
+  } else {
+    emptyList()
   }
 
   private fun validateSexualSanctionsCount(
     request: RiskScoreRequest,
     requiredSexualFields: List<KProperty1<RiskScoreRequest, Any?>>,
   ): ValidationError? = if (request.totalIndecentImageSanctions == 0 && request.totalContactAdultSexualSanctions == 0 && request.totalContactChildSexualSanctions == 0 && request.totalNonContactSexualOffences == 0) {
-    ValidationErrorType.IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR_NO_SANCTIONS.asError(
+    ValidationErrorType.SEXUAL_REOFFENDING_PREDICTOR_NO_SANCTIONS.asError(
       requiredSexualFields.names(),
     )
   } else {
@@ -196,7 +263,9 @@ class CommonValidator {
 
     return if (existingFields.isNotEmpty()) {
       existingFields.addFirst(RiskScoreRequest::hasEverCommittedSexualOffence.name)
-      ValidationErrorType.IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR_INCONSISTENT_INPUT.asError(existingFields)
+      ValidationErrorType.SEXUAL_REOFFENDING_PREDICTOR_INCONSISTENT_INPUT.asError(
+        existingFields,
+      )
     } else {
       null
     }

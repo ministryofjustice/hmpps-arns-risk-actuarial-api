@@ -12,6 +12,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.MotivationLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import java.time.LocalDate
@@ -173,60 +174,13 @@ class CommonValidatorTest {
     }
   }
 
-  @Test
-  fun `validateDateOfCurrentConvictionAgainstDateOfBirth should not add error when date of current conviction is null`() {
-    val request = RiskScoreRequest(
-      dateOfCurrentConviction = null,
-      dateOfBirth = LocalDate.of(1995, 1, 1),
-    )
+  @ParameterizedTest
+  @MethodSource("test validateDateOfCurrentConvictionAgainstDateOfBirth logic data")
+  fun `test validateDateOfCurrentConvictionAgainstDateOfBirth logic`(
+    request: RiskScoreRequest,
+    expectedError: ValidationError?,
+  ) {
     val error = commonValidator.validateDateOfCurrentConvictionAgainstDateOfBirth(request)
-    assertNull(error, "Errors list should remain empty when dateOfCurrentConviction is null")
-  }
-
-  @Test
-  fun `validateDateOfCurrentConvictionAgainstDateOfBirth should not add error when date of birth is null`() {
-    val request = RiskScoreRequest(
-      dateOfCurrentConviction = LocalDate.of(2026, 1, 1),
-      dateOfBirth = null,
-    )
-    val error = commonValidator.validateDateOfCurrentConvictionAgainstDateOfBirth(request)
-    assertNull(error, "Errors list should remain empty when dateOfBirth is null")
-  }
-
-  @Test
-  fun `validateDateOfCurrentConvictionAgainstDateOfBirth should not add error when date of current conviction is after date of birth`() {
-    val request = RiskScoreRequest(
-      dateOfBirth = LocalDate.of(1995, 1, 1),
-      dateOfCurrentConviction = LocalDate.of(2026, 1, 1),
-    )
-    val error = commonValidator.validateDateOfCurrentConvictionAgainstDateOfBirth(request)
-    assertNull(error, "Valid chronological dates should not trigger an error")
-  }
-
-  @Test
-  fun `validateDateOfCurrentConvictionAgainstDateOfBirth should add error when date of current conviction is exactly equal to date of birth`() {
-    val identicalDate = LocalDate.of(2000, 1, 1)
-    val request = RiskScoreRequest(
-      dateOfBirth = identicalDate,
-      dateOfCurrentConviction = identicalDate,
-    )
-    val error = commonValidator.validateDateOfCurrentConvictionAgainstDateOfBirth(request)
-    val expectedError = ValidationErrorType.DATE_OF_CURRENT_CONVICTION_BEFORE_DATE_OF_BIRTH.asError(
-      listOf("dateOfCurrentConviction"),
-    )
-    assertEquals(expectedError, error)
-  }
-
-  @Test
-  fun `validateDateOfCurrentConvictionAgainstDateOfBirth should add error when date of current conviction is before date of birth`() {
-    val request = RiskScoreRequest(
-      dateOfBirth = LocalDate.of(2026, 1, 1),
-      dateOfCurrentConviction = LocalDate.of(2025, 1, 1),
-    )
-    val error = commonValidator.validateDateOfCurrentConvictionAgainstDateOfBirth(request)
-    val expectedError = ValidationErrorType.DATE_OF_CURRENT_CONVICTION_BEFORE_DATE_OF_BIRTH.asError(
-      listOf("dateOfCurrentConviction"),
-    )
     assertEquals(expectedError, error)
   }
 
@@ -379,16 +333,6 @@ class CommonValidatorTest {
     }
   }
 
-  fun `test validateDateAtStartOfFollowupAgainstDateOfCurrentConviction logic data`(): Stream<Arguments> = Stream.of(
-    // args: dateAtStartOfFollowup, dateOfCurrentConviction, error
-    // Both null should result in error
-    Arguments.of(null, null, true),
-    // All other combinations shouldn't result in an error (i.e. one or both dates provided)
-    Arguments.of(LocalDate.parse("2025-01-01"), LocalDate.parse("2025-01-01"), false),
-    Arguments.of(null, LocalDate.parse("2025-01-01"), false),
-    Arguments.of(LocalDate.parse("2025-01-01"), null, false),
-  )
-
   @ParameterizedTest
   @MethodSource("test validateDateAtStartOfFollowupAgainstDateOfBirth logic data")
   fun `test validateDateAtStartOfFollowupAgainstDateOfBirth logic`(
@@ -416,22 +360,9 @@ class CommonValidatorTest {
     }
   }
 
-  fun `test validateDateAtStartOfFollowupAgainstDateOfBirth logic data`(): Stream<Arguments> = Stream.of(
-    // args: dateAtStartOfFollowup, dateOfBirth, error
-    // Both or one null shouldn't result in an error
-    Arguments.of(null, null, false),
-    Arguments.of(null, LocalDate.parse("1980-01-01"), false),
-    Arguments.of(LocalDate.parse("2025-01-01"), null, false),
-    // dateAtStartOfFollowup being after dateOfBirth shouldn't result in an error
-    Arguments.of(LocalDate.parse("2026-05-01"), LocalDate.parse("2000-08-12"), false),
-    // dateAtStartOfFollowup being before (or equal to) dateOfBirth should result in an error
-    Arguments.of(LocalDate.parse("2026-05-01"), LocalDate.parse("2026-07-01"), true),
-    Arguments.of(LocalDate.parse("2000-08-12"), LocalDate.parse("2000-08-12"), true),
-  )
-
   @ParameterizedTest
-  @MethodSource("test validateDateAtStartOfFollowupAge logic data")
-  fun `test validateDateAtStartOfFollowupAge logic`(
+  @MethodSource("test validateDateAtStartOfFollowupAgeUpperLimit logic data")
+  fun `test validateDateAtStartOfFollowupAgeUpperLimit logic`(
     dateAtStartOfFollowupCalculated: LocalDate?,
     dateOfBirth: LocalDate?,
     error: Boolean,
@@ -440,12 +371,12 @@ class CommonValidatorTest {
       dateAtStartOfFollowupCalculated = dateAtStartOfFollowupCalculated,
       dateOfBirth = dateOfBirth,
     )
-    val actualError = commonValidator.validateDateAtStartOfFollowupAge(request)
+    val actualError = commonValidator.validateDateAtStartOfFollowupAgeUpperLimit(request)
 
     if (error) {
       assertEquals(
         ValidationError(
-          type = ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE,
+          type = ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE_UPPER,
           message = "Age at date at start of followup must be less than 110",
           fields = listOf("dateAtStartOfFollowupCalculated"),
         ),
@@ -456,22 +387,42 @@ class CommonValidatorTest {
     }
   }
 
-  fun `test validateDateAtStartOfFollowupAge logic data`(): Stream<Arguments> = Stream.of(
-    // args: dateAtStartOfFollowup, dateOfBirth, error
-    // Both or one null shouldn't result in an error
-    Arguments.of(null, null, false),
-    Arguments.of(null, LocalDate.parse("1980-01-01"), false),
-    Arguments.of(LocalDate.parse("2025-01-01"), null, false),
-    // If date of birth is after dateAtStartOfFollowup, do not error (should have already been caught)
-    Arguments.of(LocalDate.parse("2026-05-01"), LocalDate.parse("2026-08-12"), false),
-    // An age of less than 110 at dateAtStartOfFollowup shouldn't result in an error
-    Arguments.of(LocalDate.parse("2026-05-01"), LocalDate.parse("2000-08-12"), false),
-    Arguments.of(LocalDate.parse("2025-08-31"), LocalDate.parse("1915-09-01"), false),
-    // An age of 110 or more at dateAtStartOfFollowup should result in an error
-    Arguments.of(LocalDate.parse("2025-09-01"), LocalDate.parse("1915-09-01"), true),
-    Arguments.of(LocalDate.parse("2025-12-20"), LocalDate.parse("1915-09-01"), true),
-    Arguments.of(LocalDate.parse("2026-06-29"), LocalDate.parse("1915-09-01"), true),
-  )
+  @ParameterizedTest
+  @MethodSource("test validateDateAtStartOfFollowupAgeLowerLimit logic data")
+  fun `test validateDateAtStartOfFollowupAgeLowerLimit logic`(
+    dateAtStartOfFollowupCalculated: LocalDate?,
+    dateOfBirth: LocalDate?,
+    error: Boolean,
+  ) {
+    val request = RiskScoreRequest(
+      dateAtStartOfFollowupCalculated = dateAtStartOfFollowupCalculated,
+      dateOfBirth = dateOfBirth,
+    )
+    val actualError = commonValidator.validateDateAtStartOfFollowupAgeLowerLimit(request)
+
+    if (error) {
+      assertEquals(
+        ValidationError(
+          type = ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE_LOWER,
+          message = "Age at date at start of followup must be more than 18",
+          fields = listOf("dateAtStartOfFollowupCalculated"),
+        ),
+        actualError,
+      )
+    } else {
+      assertNull(actualError)
+    }
+  }
+
+  @ParameterizedTest
+  @MethodSource("test validateDateOfMostRecentSexualOffenceAgainstDateOfBirth logic data")
+  fun `test validateDateOfMostRecentSexualOffenceAgainstDateOfBirth logic`(
+    request: RiskScoreRequest,
+    expectedError: ValidationError?,
+  ) {
+    val error = commonValidator.validateDateOfMostRecentSexualOffenceAgainstDateOfBirth(request)
+    assertEquals(expectedError, error)
+  }
 
   @Test
   fun `test validateRequiredFields - default (static) with errors`() {
@@ -575,22 +526,230 @@ class CommonValidatorTest {
     )
   }
 
-  @Test
-  fun `test validateStatic with missing sexual reoffending predictor required fields when hasEverCommittedSexualOffence true`() {
-    // Assign
-    val request = RiskScoreRequest(
-      gender = Gender.MALE,
-      hasEverCommittedSexualOffence = true,
-    )
+  @ParameterizedTest
+  @MethodSource("test validateSexualReoffendingPredictorFields logic data")
+  fun `test validateSexualReoffendingPredictorFields logic`(
+    request: RiskScoreRequest,
+    expectedValidationError: ValidationError?,
+    isDirectContact: Boolean,
+  ) {
+    val error = commonValidator.validateSexualReoffendingPredictorFields(request, isDirectContact)
 
-    val expectedSexualReoffendingPredictorRequiredFields = listOf(
-      RiskScoreRequest::totalIndecentImageSanctions,
-      RiskScoreRequest::totalContactAdultSexualSanctions,
-      RiskScoreRequest::totalContactChildSexualSanctions,
-      RiskScoreRequest::totalNonContactSexualOffences,
-    )
+    assertEquals(listOfNotNull(expectedValidationError), error)
+  }
 
-    val expectedErrors = listOf(
+  // Logic Data
+
+  fun `test validateDateOfCurrentConvictionAgainstDateOfBirth logic data`(): Stream<Arguments> = Stream.of(
+    Arguments.of(
+      RiskScoreRequest(
+        dateOfCurrentConviction = null,
+        dateOfBirth = LocalDate.of(1995, 1, 1),
+      ),
+      null,
+    ),
+    Arguments.of(
+      RiskScoreRequest(
+        dateOfCurrentConviction = LocalDate.of(2026, 1, 1),
+        dateOfBirth = null,
+      ),
+      null,
+    ),
+    Arguments.of(
+      RiskScoreRequest(
+        dateOfCurrentConviction = LocalDate.of(2026, 1, 1),
+        dateOfBirth = LocalDate.of(1995, 1, 1),
+      ),
+      null,
+    ),
+    Arguments.of(
+      RiskScoreRequest(
+        dateOfCurrentConviction = LocalDate.of(2000, 1, 1),
+        dateOfBirth = LocalDate.of(2000, 1, 1),
+      ),
+      ValidationErrorType.DATE_OF_CURRENT_CONVICTION_BEFORE_DATE_OF_BIRTH.asError(
+        listOf("dateOfCurrentConviction"),
+      ),
+    ),
+    Arguments.of(
+      RiskScoreRequest(
+        dateOfCurrentConviction = LocalDate.of(2025, 1, 1),
+        dateOfBirth = LocalDate.of(2026, 1, 1),
+      ),
+      ValidationErrorType.DATE_OF_CURRENT_CONVICTION_BEFORE_DATE_OF_BIRTH.asError(
+        listOf("dateOfCurrentConviction"),
+      ),
+    ),
+  )
+
+  fun `test validateDateAtStartOfFollowupAgainstDateOfCurrentConviction logic data`(): Stream<Arguments> = Stream.of(
+    // args: dateAtStartOfFollowup, dateOfCurrentConviction, error
+    // Both null should result in error
+    Arguments.of(null, null, true),
+    // All other combinations shouldn't result in an error (i.e. one or both dates provided)
+    Arguments.of(LocalDate.parse("2025-01-01"), LocalDate.parse("2025-01-01"), false),
+    Arguments.of(null, LocalDate.parse("2025-01-01"), false),
+    Arguments.of(LocalDate.parse("2025-01-01"), null, false),
+  )
+
+  fun `test validateDateAtStartOfFollowupAgainstDateOfBirth logic data`(): Stream<Arguments> = Stream.of(
+    // args: dateAtStartOfFollowup, dateOfBirth, error
+    // Both or one null shouldn't result in an error
+    Arguments.of(null, null, false),
+    Arguments.of(null, LocalDate.parse("1980-01-01"), false),
+    Arguments.of(LocalDate.parse("2025-01-01"), null, false),
+    // dateAtStartOfFollowup being after dateOfBirth shouldn't result in an error
+    Arguments.of(LocalDate.parse("2026-05-01"), LocalDate.parse("2000-08-12"), false),
+    // dateAtStartOfFollowup being before (or equal to) dateOfBirth should result in an error
+    Arguments.of(LocalDate.parse("2026-05-01"), LocalDate.parse("2026-07-01"), true),
+    Arguments.of(LocalDate.parse("2000-08-12"), LocalDate.parse("2000-08-12"), true),
+  )
+
+  fun `test validateDateAtStartOfFollowupAgeUpperLimit logic data`(): Stream<Arguments> = Stream.of(
+    // args: dateAtStartOfFollowup, dateOfBirth, error
+    // Both or one null shouldn't result in an error
+    Arguments.of(null, null, false),
+    Arguments.of(null, LocalDate.parse("1980-01-01"), false),
+    Arguments.of(LocalDate.parse("2025-01-01"), null, false),
+    // If date of birth is after dateAtStartOfFollowup, do not error (should have already been caught)
+    Arguments.of(LocalDate.parse("2026-05-01"), LocalDate.parse("2026-08-12"), false),
+    // An age of less than 110 at dateAtStartOfFollowup shouldn't result in an error
+    Arguments.of(LocalDate.parse("2026-05-01"), LocalDate.parse("2000-08-12"), false),
+    Arguments.of(LocalDate.parse("2025-08-31"), LocalDate.parse("1915-09-01"), false),
+    // An age of 110 or more at dateAtStartOfFollowup should result in an error
+    Arguments.of(LocalDate.parse("2025-09-01"), LocalDate.parse("1915-09-01"), true),
+    Arguments.of(LocalDate.parse("2025-12-20"), LocalDate.parse("1915-09-01"), true),
+    Arguments.of(LocalDate.parse("2026-06-29"), LocalDate.parse("1915-09-01"), true),
+  )
+
+  fun `test validateDateAtStartOfFollowupAgeLowerLimit logic data`(): Stream<Arguments> = Stream.of(
+    // args: dateAtStartOfFollowup, dateOfBirth, error
+    // Both or one null shouldn't result in an error
+    Arguments.of(null, null, false),
+    Arguments.of(null, LocalDate.parse("1980-01-01"), false),
+    Arguments.of(LocalDate.parse("2025-01-01"), null, false),
+    // If date of birth is after dateAtStartOfFollowup, do not error (should have already been caught)
+    Arguments.of(LocalDate.parse("2026-05-01"), LocalDate.parse("2026-08-12"), false),
+    // An age of 18 or more at dateAtStartOfFollowup shouldn't result in an error
+    Arguments.of(LocalDate.parse("2026-05-01"), LocalDate.parse("2000-08-12"), false),
+    Arguments.of(LocalDate.parse("2025-08-31"), LocalDate.parse("2007-08-30"), false),
+    // An age of less than 18 at dateAtStartOfFollowup should result in an error
+    Arguments.of(LocalDate.parse("2025-09-01"), LocalDate.parse("2015-09-01"), true),
+    Arguments.of(LocalDate.parse("2025-12-20"), LocalDate.parse("2008-09-01"), true),
+    Arguments.of(LocalDate.parse("2026-06-29"), LocalDate.parse("2014-09-01"), true),
+  )
+
+  fun `test validateDateOfMostRecentSexualOffenceAgainstDateOfBirth logic data`(): Stream<Arguments> = Stream.of(
+    Arguments.of(
+      RiskScoreRequest(
+        hasEverCommittedSexualOffence = true,
+        dateOfMostRecentSexualOffence = LocalDate.of(2026, 1, 1),
+        dateOfBirth = null,
+      ),
+      null,
+    ),
+    Arguments.of(
+      RiskScoreRequest(
+        hasEverCommittedSexualOffence = true,
+        dateOfMostRecentSexualOffence = LocalDate.parse("2026-05-01"),
+        dateOfBirth = LocalDate.parse("2000-08-12"),
+      ),
+      null,
+    ),
+    Arguments.of(
+      RiskScoreRequest(
+        hasEverCommittedSexualOffence = true,
+        dateOfMostRecentSexualOffence = LocalDate.parse("2025-09-01"),
+        dateOfBirth = LocalDate.parse("2015-09-01"),
+      ),
+      null,
+    ),
+    Arguments.of(
+      RiskScoreRequest(
+        hasEverCommittedSexualOffence = false,
+        dateOfMostRecentSexualOffence = LocalDate.parse("2025-09-01"),
+        dateOfBirth = LocalDate.parse("2015-09-01"),
+      ),
+      null,
+    ),
+    Arguments.of(
+      RiskScoreRequest(
+        hasEverCommittedSexualOffence = true,
+        dateOfMostRecentSexualOffence = null,
+        dateOfBirth = LocalDate.of(1995, 1, 1),
+      ),
+      ValidationErrorType.MISSING_MANDATORY_INPUT.asError(
+        listOf("dateOfMostRecentSexualOffence"),
+      ),
+    ),
+    Arguments.of(
+      RiskScoreRequest(
+        hasEverCommittedSexualOffence = true,
+        dateOfMostRecentSexualOffence = LocalDate.parse("2025-09-01"),
+        dateOfBirth = LocalDate.parse("2015-10-01"),
+      ),
+      ValidationErrorType.DATE_OF_MOST_RECENT_SEXUAL_OFFENCE_OUT_OF_RANGE.asError(
+        listOf("dateOfMostRecentSexualOffence"),
+      ),
+    ),
+    Arguments.of(
+      RiskScoreRequest(
+        hasEverCommittedSexualOffence = true,
+        dateOfMostRecentSexualOffence = LocalDate.of(2000, 1, 1),
+        dateOfBirth = LocalDate.of(2000, 1, 1),
+      ),
+      ValidationErrorType.DATE_OF_MOST_RECENT_SEXUAL_OFFENCE_BEFORE_DATE_OF_BIRTH.asError(
+        listOf("dateOfMostRecentSexualOffence"),
+      ),
+    ),
+    Arguments.of(
+      RiskScoreRequest(
+        hasEverCommittedSexualOffence = true,
+        dateOfMostRecentSexualOffence = LocalDate.of(2025, 1, 1),
+        dateOfBirth = LocalDate.of(2026, 1, 1),
+      ),
+      ValidationErrorType.DATE_OF_MOST_RECENT_SEXUAL_OFFENCE_BEFORE_DATE_OF_BIRTH.asError(
+        listOf("dateOfMostRecentSexualOffence"),
+      ),
+    ),
+  )
+
+  fun `test validateSexualReoffendingPredictorFields logic data`(): Stream<Arguments> = Stream.of(
+    Arguments.of(
+      RiskScoreRequest(
+        gender = Gender.MALE,
+        hasEverCommittedSexualOffence = true,
+        totalIndecentImageSanctions = 1,
+        totalContactAdultSexualSanctions = 1,
+        totalContactChildSexualSanctions = 1,
+        totalNonContactSexualOffences = 1,
+        totalNumberOfSanctionsForAllOffences = 4,
+      ),
+      null,
+      false,
+    ),
+    Arguments.of(
+      RiskScoreRequest(
+        gender = Gender.MALE,
+        dateOfBirth = LocalDate.of(1980, 1, 1),
+        hasEverCommittedSexualOffence = true,
+        totalIndecentImageSanctions = 1,
+        totalContactAdultSexualSanctions = 1,
+        totalContactChildSexualSanctions = 1,
+        totalNonContactSexualOffences = 1,
+        dateAtStartOfFollowupCalculated = LocalDate.of(2030, 1, 1),
+        dateOfMostRecentSexualOffence = LocalDate.of(1999, 1, 1),
+        totalNumberOfSanctionsForAllOffences = 5,
+        supervisionStatus = SupervisionStatus.COMMUNITY,
+      ),
+      null,
+      true,
+    ),
+    Arguments.of(
+      RiskScoreRequest(
+        gender = Gender.MALE,
+        hasEverCommittedSexualOffence = true,
+      ),
       ValidationErrorType.MISSING_MANDATORY_INPUT.asError(
         listOf(
           "totalIndecentImageSanctions",
@@ -599,37 +758,18 @@ class CommonValidatorTest {
           "totalNonContactSexualOffences",
         ),
       ),
-    )
-
-    // Act
-    val errors =
-      commonValidator.validateImagesAndIndirectSexualFields(request, expectedSexualReoffendingPredictorRequiredFields)
-
-    // Assert
-    assertEquals(expectedErrors, errors)
-  }
-
-  @Test
-  fun `test validateStatic with zero sexual reoffending predictor required fields when hasEverCommittedSexualOffence true`() {
-    // Assign
-    val request = RiskScoreRequest(
-      gender = Gender.MALE,
-      hasEverCommittedSexualOffence = true,
-      totalIndecentImageSanctions = 0,
-      totalContactAdultSexualSanctions = 0,
-      totalContactChildSexualSanctions = 0,
-      totalNonContactSexualOffences = 0,
-    )
-
-    val expectedSexualReoffendingPredictorRequiredFields = listOf(
-      RiskScoreRequest::totalIndecentImageSanctions,
-      RiskScoreRequest::totalContactAdultSexualSanctions,
-      RiskScoreRequest::totalContactChildSexualSanctions,
-      RiskScoreRequest::totalNonContactSexualOffences,
-    )
-
-    val expectedErrors = listOf(
-      ValidationErrorType.IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR_NO_SANCTIONS.asError(
+      false,
+    ),
+    Arguments.of(
+      RiskScoreRequest(
+        gender = Gender.MALE,
+        hasEverCommittedSexualOffence = true,
+        totalIndecentImageSanctions = 0,
+        totalContactAdultSexualSanctions = 0,
+        totalContactChildSexualSanctions = 0,
+        totalNonContactSexualOffences = 0,
+      ),
+      ValidationErrorType.SEXUAL_REOFFENDING_PREDICTOR_NO_SANCTIONS.asError(
         listOf(
           "totalIndecentImageSanctions",
           "totalContactAdultSexualSanctions",
@@ -637,54 +777,84 @@ class CommonValidatorTest {
           "totalNonContactSexualOffences",
         ),
       ),
-    )
-
-    // Act
-    val errors =
-      commonValidator.validateImagesAndIndirectSexualFields(request, expectedSexualReoffendingPredictorRequiredFields)
-
-    // Assert
-    assertEquals(expectedErrors, errors)
-  }
-
-  @Test
-  fun `test validateStatic with existing sexual reoffending predictor required fields when hasEverCommittedSexualOffence false`() {
-    // Assign
-    val request = RiskScoreRequest(
-      gender = Gender.MALE,
-      hasEverCommittedSexualOffence = false,
-      totalIndecentImageSanctions = 1,
-      totalContactAdultSexualSanctions = 1,
-      totalContactChildSexualSanctions = 1,
-      totalNonContactSexualOffences = 1,
-    )
-
-    val expectedSexualReoffendingPredictorRequiredFields = listOf(
-      RiskScoreRequest::totalIndecentImageSanctions,
-      RiskScoreRequest::totalContactAdultSexualSanctions,
-      RiskScoreRequest::totalContactChildSexualSanctions,
-      RiskScoreRequest::totalNonContactSexualOffences,
-    )
-
-    val expectedErrors = listOf(
-      ValidationErrorType.IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR_INCONSISTENT_INPUT.asError(
+      false,
+    ),
+    Arguments.of(
+      RiskScoreRequest(
+        gender = Gender.MALE,
+        hasEverCommittedSexualOffence = false,
+        totalIndecentImageSanctions = 1,
+        totalContactAdultSexualSanctions = 1,
+        totalContactChildSexualSanctions = 1,
+        totalNonContactSexualOffences = 1,
+      ),
+      ValidationErrorType.SEXUAL_REOFFENDING_PREDICTOR_INCONSISTENT_INPUT.asError(
         listOf(
           "hasEverCommittedSexualOffence",
           "totalIndecentImageSanctions",
-          "totalContactAdultSexualSanctions",
-          "totalContactChildSexualSanctions",
           "totalNonContactSexualOffences",
         ),
       ),
-    )
-
-    // Act
-    val errors =
-      commonValidator.validateImagesAndIndirectSexualFields(request, expectedSexualReoffendingPredictorRequiredFields)
-
-    // Assert
-    assertEquals(expectedErrors, errors)
-  }
+      false,
+    ),
+    Arguments.of(
+      RiskScoreRequest(
+        gender = Gender.MALE,
+        dateOfBirth = LocalDate.of(1980, 1, 1),
+        hasEverCommittedSexualOffence = true,
+        totalIndecentImageSanctions = 1,
+        totalContactAdultSexualSanctions = 1,
+        totalContactChildSexualSanctions = 1,
+        totalNonContactSexualOffences = 1,
+        dateAtStartOfFollowupCalculated = LocalDate.of(2030, 1, 1),
+        dateOfMostRecentSexualOffence = null,
+        totalNumberOfSanctionsForAllOffences = 5,
+        supervisionStatus = SupervisionStatus.COMMUNITY,
+      ),
+      ValidationErrorType.MISSING_MANDATORY_INPUT.asError(
+        listOf("dateOfMostRecentSexualOffence"),
+      ),
+      true,
+    ),
+    Arguments.of(
+      RiskScoreRequest(
+        gender = Gender.MALE,
+        dateOfBirth = LocalDate.of(1980, 1, 1),
+        hasEverCommittedSexualOffence = true,
+        totalIndecentImageSanctions = 1,
+        totalContactAdultSexualSanctions = 1,
+        totalContactChildSexualSanctions = 1,
+        totalNonContactSexualOffences = 1,
+        dateAtStartOfFollowupCalculated = LocalDate.of(2030, 1, 1),
+        dateOfMostRecentSexualOffence = LocalDate.of(1989, 1, 1),
+        totalNumberOfSanctionsForAllOffences = 5,
+        supervisionStatus = SupervisionStatus.COMMUNITY,
+      ),
+      ValidationErrorType.DATE_OF_MOST_RECENT_SEXUAL_OFFENCE_OUT_OF_RANGE.asError(
+        listOf("dateOfMostRecentSexualOffence"),
+      ),
+      true,
+    ),
+    Arguments.of(
+      RiskScoreRequest(
+        gender = Gender.MALE,
+        dateOfBirth = LocalDate.of(1980, 1, 1),
+        hasEverCommittedSexualOffence = true,
+        totalIndecentImageSanctions = 1,
+        totalContactAdultSexualSanctions = 1,
+        totalContactChildSexualSanctions = 1,
+        totalNonContactSexualOffences = 1,
+        dateAtStartOfFollowupCalculated = LocalDate.of(1995, 1, 1),
+        dateOfMostRecentSexualOffence = LocalDate.of(1994, 1, 1),
+        totalNumberOfSanctionsForAllOffences = 5,
+        supervisionStatus = SupervisionStatus.COMMUNITY,
+      ),
+      ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE_LOWER.asError(
+        listOf("dateAtStartOfFollowupCalculated"),
+      ),
+      true,
+    ),
+  )
 
   @Test
   fun `test validateDrugMisuse - all null`() {

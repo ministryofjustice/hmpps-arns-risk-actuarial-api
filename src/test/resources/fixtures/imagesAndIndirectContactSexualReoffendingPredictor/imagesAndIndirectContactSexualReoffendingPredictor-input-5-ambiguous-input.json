@@ -1,7 +1,7 @@
 {
   "request": {
     "version": "V1_0",
-    "gender": "FEMALE",
+    "gender": "MALE",
     "totalIndecentImageSanctions": 2,
     "totalContactAdultSexualSanctions": 0,
     "totalContactChildSexualSanctions": 0,
@@ -22,7 +22,7 @@
     "featureValues": {},
     "validationErrors": [
       {
-        "type": "IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR_INCONSISTENT_INPUT",
+        "type": "SEXUAL_REOFFENDING_PREDICTOR_INCONSISTENT_INPUT",
         "message": "hasEverCommittedSexualOffence cannot be null or false when sexual sanctions exist",
         "fields": [
           "hasEverCommittedSexualOffence",

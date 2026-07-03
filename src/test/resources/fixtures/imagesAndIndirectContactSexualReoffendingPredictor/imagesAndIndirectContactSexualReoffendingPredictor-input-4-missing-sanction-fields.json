@@ -1,7 +1,7 @@
 {
   "request": {
     "version": "V1_0",
-    "gender": "FEMALE",
+    "gender": "MALE",
     "totalIndecentImageSanctions": null,
     "totalContactAdultSexualSanctions": null,
     "totalContactChildSexualSanctions": null,
