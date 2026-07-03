@@ -27,6 +27,33 @@ class ValidationUtilsTest {
   }
 
   @Test
+  fun `addIfNotNullAndNotZero should not add field name when property is null`() {
+    val request = RiskScoreRequest(totalNonContactSexualOffences = null)
+    val missingFields = arrayListOf<String>()
+
+    missingFields.addIfNotNullAndNotZero(request, RiskScoreRequest::totalNonContactSexualOffences)
+    assertEquals(emptyList<String>(), missingFields)
+  }
+
+  @Test
+  fun `addIfNotNullAndNotZero should not add field name when property is 0`() {
+    val request = RiskScoreRequest(totalNonContactSexualOffences = 0)
+    val missingFields = arrayListOf<String>()
+
+    missingFields.addIfNotNullAndNotZero(request, RiskScoreRequest::totalNonContactSexualOffences)
+    assertEquals(emptyList<String>(), missingFields)
+  }
+
+  @Test
+  fun `addIfNotNullAndNotZero should add field name when property is not null and not 0`() {
+    val request = RiskScoreRequest(totalNonContactSexualOffences = 1)
+    val existingFields = arrayListOf<String>()
+
+    existingFields.addIfNotNullAndNotZero(request, RiskScoreRequest::totalNonContactSexualOffences)
+    assertEquals(listOf("totalNonContactSexualOffences"), existingFields)
+  }
+
+  @Test
   fun `test getTrueKeys - all null`() {
     val map = mapOf(
       RiskScoreRequest::hasHeroinUsage to null,
@@ -69,5 +96,25 @@ class ValidationUtilsTest {
     )
 
     assertEquals(listOf("hasHeroinUsage", "hasCannabisUsage"), map.getTrueKeys())
+  }
+
+  @Test
+  fun `sumIntValues should calculate summary for non null values`() {
+    val request = RiskScoreRequest(
+      totalNonContactSexualOffences = 1,
+      totalIndecentImageSanctions = null,
+      totalContactChildSexualSanctions = 3,
+      totalContactAdultSexualSanctions = null,
+    )
+
+    val requiredSexualFields = listOf(
+      RiskScoreRequest::totalIndecentImageSanctions,
+      RiskScoreRequest::totalContactAdultSexualSanctions,
+      RiskScoreRequest::totalContactChildSexualSanctions,
+      RiskScoreRequest::totalNonContactSexualOffences,
+    )
+
+    val sum = requiredSexualFields.sumIntValues(request)
+    assertEquals(4, sum)
   }
 }
