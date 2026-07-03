@@ -691,8 +691,14 @@ class CommonValidatorTest {
     val request = RiskScoreRequest(
       motivationToTackleDrugMisuse = null,
     )
+    val drugQuestions = listOf(
+      RiskScoreRequest::hasHeroinUsage,
+      RiskScoreRequest::hasCannabisUsage,
+      RiskScoreRequest::hasSpiceUsage,
+      RiskScoreRequest::hasBenzodiazepinesUsage,
+    )
 
-    assertNull(commonValidator.validateDrugMisuse(request))
+    assertNull(commonValidator.validateDrugMisuse(request, drugQuestions))
   }
 
   @Test
@@ -700,8 +706,14 @@ class CommonValidatorTest {
     val request = RiskScoreRequest(
       motivationToTackleDrugMisuse = MotivationLevel.PARTIAL_MOTIVATION,
     )
+    val drugQuestions = listOf(
+      RiskScoreRequest::hasHeroinUsage,
+      RiskScoreRequest::hasCannabisUsage,
+      RiskScoreRequest::hasSpiceUsage,
+      RiskScoreRequest::hasBenzodiazepinesUsage,
+    )
 
-    assertNull(commonValidator.validateDrugMisuse(request))
+    assertNull(commonValidator.validateDrugMisuse(request, drugQuestions))
   }
 
   @Test
@@ -712,8 +724,15 @@ class CommonValidatorTest {
       hasSteroidsUsage = false,
       hasHallucinogensUsage = false,
     )
+    val drugQuestions = listOf(
+      RiskScoreRequest::hasPowderCocaineUsage,
+      RiskScoreRequest::hasSteroidsUsage,
+      RiskScoreRequest::hasHallucinogensUsage,
+      RiskScoreRequest::hasSpiceUsage,
+      RiskScoreRequest::hasBenzodiazepinesUsage,
+    )
 
-    assertNull(commonValidator.validateDrugMisuse(request))
+    assertNull(commonValidator.validateDrugMisuse(request, drugQuestions))
   }
 
   @Test
@@ -725,13 +744,21 @@ class CommonValidatorTest {
       hasHallucinogensUsage = false,
       hasKetamineUsage = true,
     )
+    val drugQuestions = listOf(
+      RiskScoreRequest::hasPowderCocaineUsage,
+      RiskScoreRequest::hasSteroidsUsage,
+      RiskScoreRequest::hasHallucinogensUsage,
+      RiskScoreRequest::hasSpiceUsage,
+      RiskScoreRequest::hasBenzodiazepinesUsage,
+      RiskScoreRequest::hasKetamineUsage,
+    )
 
     val expectedError = ValidationError(
       type = ValidationErrorType.MOTIVATION_TO_TACKLE_DRUG_MISUSE_INCONSISTENT,
-      message = "When motivationToTackleDrugMisuse is null, all drug usage question must also be false or null",
+      message = "When motivationToTackleDrugMisuse is null, all drug usage questions must be false or null",
       fields = listOf("hasSteroidsUsage", "hasKetamineUsage"),
     )
 
-    assertEquals(expectedError, commonValidator.validateDrugMisuse(request))
+    assertEquals(expectedError, commonValidator.validateDrugMisuse(request, drugQuestions))
   }
 }

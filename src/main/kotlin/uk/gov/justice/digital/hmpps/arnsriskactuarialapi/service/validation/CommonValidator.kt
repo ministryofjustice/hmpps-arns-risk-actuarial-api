@@ -201,23 +201,9 @@ class CommonValidator {
       null
     }
   }
-  
-  fun validateDrugMisuse(request: RiskScoreRequest): ValidationError? {
-    val drugUsageAnswers = mapOf(
-      RiskScoreRequest::hasHeroinUsage to request.hasHeroinUsage,
-      RiskScoreRequest::hasOtherOpiateUsage to request.hasOtherOpiateUsage,
-      RiskScoreRequest::hasCrackCocaineUsage to request.hasCrackCocaineUsage,
-      RiskScoreRequest::hasPowderCocaineUsage to request.hasPowderCocaineUsage,
-      RiskScoreRequest::hasMisusedPrescriptionDrugUsage to request.hasMisusedPrescriptionDrugUsage,
-      RiskScoreRequest::hasBenzodiazepinesUsage to request.hasBenzodiazepinesUsage,
-      RiskScoreRequest::hasCannabisUsage to request.hasCannabisUsage,
-      RiskScoreRequest::hasSteroidsUsage to request.hasSteroidsUsage,
-      RiskScoreRequest::hasOtherDrugsUsage to request.hasOtherDrugsUsage,
-      RiskScoreRequest::hasKetamineUsage to request.hasKetamineUsage,
-      RiskScoreRequest::hasSpiceUsage to request.hasSpiceUsage,
-      RiskScoreRequest::hasHallucinogensUsage to request.hasHallucinogensUsage,
-      RiskScoreRequest::hasSolventsUsage to request.hasSolventsUsage,
-    )
+
+  fun validateDrugMisuse(request: RiskScoreRequest, drugUsageQuestions: List<KProperty1<RiskScoreRequest, Boolean?>>): ValidationError? {
+    val drugUsageAnswers = drugUsageQuestions.associateWith { it.get(request) }
 
     // If motivationToTackleDrugMisuse is null, then all the drug usage questions should be set to null or false
     if (request.motivationToTackleDrugMisuse == null) {

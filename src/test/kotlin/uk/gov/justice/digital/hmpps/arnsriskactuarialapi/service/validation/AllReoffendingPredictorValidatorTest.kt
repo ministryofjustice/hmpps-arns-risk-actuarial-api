@@ -87,20 +87,35 @@ class AllReoffendingPredictorValidatorTest {
   fun `test validateDynamic`() {
     // Create request object
     val request: RiskScoreRequest = mock()
+    val drugQuestions = listOf(
+      RiskScoreRequest::hasHeroinUsage,
+      RiskScoreRequest::hasOtherOpiateUsage,
+      RiskScoreRequest::hasCrackCocaineUsage,
+      RiskScoreRequest::hasPowderCocaineUsage,
+      RiskScoreRequest::hasMisusedPrescriptionDrugUsage,
+      RiskScoreRequest::hasBenzodiazepinesUsage,
+      RiskScoreRequest::hasCannabisUsage,
+      RiskScoreRequest::hasSteroidsUsage,
+      RiskScoreRequest::hasOtherDrugsUsage,
+      RiskScoreRequest::hasKetamineUsage,
+      RiskScoreRequest::hasSpiceUsage,
+      RiskScoreRequest::hasHallucinogensUsage,
+      RiskScoreRequest::hasSolventsUsage,
+    )
 
     val validationError1 = ValidationErrorType.MISSING_DYNAMIC_INPUT.asError(listOf("field1", "field2"))
     val validationError2 = ValidationErrorType.MOTIVATION_TO_TACKLE_DRUG_MISUSE_INCONSISTENT.asError(listOf("field3", "field4"))
 
     // Mock common validator method calls
     whenever(commonValidator.validateRequiredFields(request, expectedDynamicRequiredFields, StaticOrDynamic.DYNAMIC)).thenReturn(validationError1)
-    whenever(commonValidator.validateDrugMisuse(request)).thenReturn(validationError2)
+    whenever(commonValidator.validateDrugMisuse(request, drugQuestions)).thenReturn(validationError2)
 
     // Check that validation errors are returned
     assertEquals(listOf(validationError1, validationError2), validator.validateDynamic(request))
 
     // verify each validation method is called once
     verify(commonValidator).validateRequiredFields(request, expectedDynamicRequiredFields, StaticOrDynamic.DYNAMIC)
-    verify(commonValidator).validateDrugMisuse(request)
+    verify(commonValidator).validateDrugMisuse(request, drugQuestions)
     verifyNoMoreInteractions(commonValidator)
   }
 }
