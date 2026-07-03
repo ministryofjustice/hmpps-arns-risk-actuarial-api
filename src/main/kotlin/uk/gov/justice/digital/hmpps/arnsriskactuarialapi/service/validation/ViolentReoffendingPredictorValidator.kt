@@ -7,6 +7,23 @@ import kotlin.reflect.KProperty1
 
 @Component
 class ViolentReoffendingPredictorValidator(val commonValidator: CommonValidator) : AbstractActuarialValidator(commonValidator) {
+
+  val drugUsageQuestions = listOf(
+    RiskScoreRequest::hasOtherOpiateUsage,
+    RiskScoreRequest::hasCrackCocaineUsage,
+    RiskScoreRequest::hasPowderCocaineUsage,
+    RiskScoreRequest::hasMisusedPrescriptionDrugUsage,
+    RiskScoreRequest::hasBenzodiazepinesUsage,
+    RiskScoreRequest::hasCannabisUsage,
+    RiskScoreRequest::hasSteroidsUsage,
+    RiskScoreRequest::hasOtherDrugsUsage,
+    RiskScoreRequest::hasKetamineUsage,
+    RiskScoreRequest::hasSpiceUsage,
+    RiskScoreRequest::hasHallucinogensUsage,
+    RiskScoreRequest::hasSolventsUsage,
+    RiskScoreRequest::hasMethadoneUsage,
+  )
+
   override fun validateStaticCustom(request: RiskScoreRequest): List<ValidationError> = listOfNotNull(
     commonValidator.validateAgeAtFirstSanction(request),
     commonValidator.validateTotalNumberOfSanctionsForAllOffences(request),
@@ -22,10 +39,9 @@ class ViolentReoffendingPredictorValidator(val commonValidator: CommonValidator)
     commonValidator.validateDateAtStartOfFollowupAge(request),
   )
 
-  override fun validateDynamicCustom(request: RiskScoreRequest): List<ValidationError> {
-    // TODO: Add further validation logic
-    return listOfNotNull()
-  }
+  override fun validateDynamicCustom(request: RiskScoreRequest): List<ValidationError> = listOfNotNull(
+    commonValidator.validateDrugMisuse(request, drugUsageQuestions),
+  )
 
   override fun staticRequiredFields(): List<KProperty1<RiskScoreRequest, Any?>> = listOf(
     RiskScoreRequest::assessmentDate,
@@ -46,19 +62,6 @@ class ViolentReoffendingPredictorValidator(val commonValidator: CommonValidator)
     RiskScoreRequest::currentRelationshipStatus,
     RiskScoreRequest::regularOffendingActivities,
     RiskScoreRequest::motivationToTackleDrugMisuse,
-    RiskScoreRequest::hasOtherOpiateUsage,
-    RiskScoreRequest::hasCrackCocaineUsage,
-    RiskScoreRequest::hasPowderCocaineUsage,
-    RiskScoreRequest::hasMisusedPrescriptionDrugUsage,
-    RiskScoreRequest::hasBenzodiazepinesUsage,
-    RiskScoreRequest::hasCannabisUsage,
-    RiskScoreRequest::hasSteroidsUsage,
-    RiskScoreRequest::hasOtherDrugsUsage,
-    RiskScoreRequest::hasKetamineUsage,
-    RiskScoreRequest::hasSpiceUsage,
-    RiskScoreRequest::hasHallucinogensUsage,
-    RiskScoreRequest::hasSolventsUsage,
-    RiskScoreRequest::hasMethadoneUsage,
     RiskScoreRequest::currentAlcoholUseProblems,
     RiskScoreRequest::excessiveAlcoholUse,
     RiskScoreRequest::impulsivityProblems,

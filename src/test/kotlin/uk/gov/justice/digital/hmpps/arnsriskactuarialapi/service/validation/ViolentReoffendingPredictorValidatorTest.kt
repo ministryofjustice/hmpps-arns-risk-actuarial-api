@@ -42,19 +42,6 @@ class ViolentReoffendingPredictorValidatorTest {
     RiskScoreRequest::currentRelationshipStatus,
     RiskScoreRequest::regularOffendingActivities,
     RiskScoreRequest::motivationToTackleDrugMisuse,
-    RiskScoreRequest::hasOtherOpiateUsage,
-    RiskScoreRequest::hasCrackCocaineUsage,
-    RiskScoreRequest::hasPowderCocaineUsage,
-    RiskScoreRequest::hasMisusedPrescriptionDrugUsage,
-    RiskScoreRequest::hasBenzodiazepinesUsage,
-    RiskScoreRequest::hasCannabisUsage,
-    RiskScoreRequest::hasSteroidsUsage,
-    RiskScoreRequest::hasOtherDrugsUsage,
-    RiskScoreRequest::hasKetamineUsage,
-    RiskScoreRequest::hasSpiceUsage,
-    RiskScoreRequest::hasHallucinogensUsage,
-    RiskScoreRequest::hasSolventsUsage,
-    RiskScoreRequest::hasMethadoneUsage,
     RiskScoreRequest::currentAlcoholUseProblems,
     RiskScoreRequest::excessiveAlcoholUse,
     RiskScoreRequest::impulsivityProblems,
@@ -112,18 +99,35 @@ class ViolentReoffendingPredictorValidatorTest {
     // Create request object
     val request: RiskScoreRequest = mock()
 
+    val drugQuestions = listOf(
+      RiskScoreRequest::hasOtherOpiateUsage,
+      RiskScoreRequest::hasCrackCocaineUsage,
+      RiskScoreRequest::hasPowderCocaineUsage,
+      RiskScoreRequest::hasMisusedPrescriptionDrugUsage,
+      RiskScoreRequest::hasBenzodiazepinesUsage,
+      RiskScoreRequest::hasCannabisUsage,
+      RiskScoreRequest::hasSteroidsUsage,
+      RiskScoreRequest::hasOtherDrugsUsage,
+      RiskScoreRequest::hasKetamineUsage,
+      RiskScoreRequest::hasSpiceUsage,
+      RiskScoreRequest::hasHallucinogensUsage,
+      RiskScoreRequest::hasSolventsUsage,
+      RiskScoreRequest::hasMethadoneUsage,
+    )
+
     val validationError1 = ValidationErrorType.MISSING_DYNAMIC_INPUT.asError(listOf("field1", "field2"))
+    val validationError2 = ValidationErrorType.MOTIVATION_TO_TACKLE_DRUG_MISUSE_INCONSISTENT.asError(listOf("field3", "field4"))
 
     // Mock common validator method calls
     whenever(commonValidator.validateRequiredFields(request, expectedDynamicRequiredFields, StaticOrDynamic.DYNAMIC)).thenReturn(validationError1)
-    // TODO update once further validation logic added
+    whenever(commonValidator.validateDrugMisuse(request, drugQuestions)).thenReturn(validationError2)
 
     // Check that validation errors are returned
-    assertEquals(listOf(validationError1), validator.validateDynamic(request))
+    assertEquals(listOf(validationError1, validationError2), validator.validateDynamic(request))
 
     // verify each validation method is called once
     verify(commonValidator).validateRequiredFields(request, expectedDynamicRequiredFields, StaticOrDynamic.DYNAMIC)
-    // TODO update once further validation logic added
+    verify(commonValidator).validateDrugMisuse(request, drugQuestions)
     verifyNoMoreInteractions(commonValidator)
   }
 }

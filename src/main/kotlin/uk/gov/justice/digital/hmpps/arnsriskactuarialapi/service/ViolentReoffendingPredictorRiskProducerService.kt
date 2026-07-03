@@ -1,6 +1,7 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
 import org.springframework.stereotype.Service
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.MotivationLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
@@ -86,20 +87,22 @@ class ViolentReoffendingPredictorRiskProducerService(val validator: ViolentReoff
       request.evidenceOfDomesticAbuse!!,
       request.currentRelationshipStatus!!,
       request.regularOffendingActivities!!,
-      request.motivationToTackleDrugMisuse!!,
-      request.hasOtherOpiateUsage!!,
-      request.hasCrackCocaineUsage!!,
-      request.hasPowderCocaineUsage!!,
-      request.hasMisusedPrescriptionDrugUsage!!,
-      request.hasBenzodiazepinesUsage!!,
-      request.hasCannabisUsage!!,
-      request.hasSteroidsUsage!!,
-      request.hasOtherDrugsUsage!!,
-      request.hasKetamineUsage!!,
-      request.hasSpiceUsage!!,
-      request.hasHallucinogensUsage!!,
-      request.hasSolventsUsage!!,
-      request.hasMethadoneUsage!!,
+      // The drug misuse questions are optional - if not answered then set them to FULL_MOTIVATION/false
+      // so drug misuse is not factored into the score calculation
+      request.motivationToTackleDrugMisuse ?: MotivationLevel.FULL_MOTIVATION,
+      request.hasOtherOpiateUsage ?: false,
+      request.hasCrackCocaineUsage ?: false,
+      request.hasPowderCocaineUsage ?: false,
+      request.hasMisusedPrescriptionDrugUsage ?: false,
+      request.hasBenzodiazepinesUsage ?: false,
+      request.hasCannabisUsage ?: false,
+      request.hasSteroidsUsage ?: false,
+      request.hasOtherDrugsUsage ?: false,
+      request.hasKetamineUsage ?: false,
+      request.hasSpiceUsage ?: false,
+      request.hasHallucinogensUsage ?: false,
+      request.hasSolventsUsage ?: false,
+      request.hasMethadoneUsage ?: false,
       request.currentAlcoholUseProblems!!,
       request.excessiveAlcoholUse!!,
       request.impulsivityProblems!!,
