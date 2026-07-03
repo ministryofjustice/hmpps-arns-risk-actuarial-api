@@ -37,7 +37,7 @@ class RiskScoreService {
   lateinit var rsrRiskProducerService: RSRRiskProducerService
 
   @Autowired
-  lateinit var imagesAndIndirectContactSexualReoffendingPredictorRiskProducerService: ImagesAndIndirectContactSexualReoffendingPredictorRiskProducerService
+  lateinit var imagesAndIndirectContactSexualReoffendingPredictorRiskProducerService: ImagesAndIndirectContactSexualReoffendingPredictorProducerService
 
   fun riskScoreProducer(riskScoreRequest: RiskScoreRequest): RiskScoreResponse = listOf(
     allReoffendingPredictorRiskProducerService,

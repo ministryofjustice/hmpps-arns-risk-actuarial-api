@@ -9,5 +9,6 @@ sealed interface ImagesAndIndirectContactSexualReoffendingPredictorRequestValida
     val totalContactAdultSexualSanctions: Int,
     val totalContactChildSexualSanctions: Int,
     val totalNonContactSexualOffences: Int,
+    val hasEverCommittedSexualOffence: Boolean,
   ) : ImagesAndIndirectContactSexualReoffendingPredictorRequestValidated
 }

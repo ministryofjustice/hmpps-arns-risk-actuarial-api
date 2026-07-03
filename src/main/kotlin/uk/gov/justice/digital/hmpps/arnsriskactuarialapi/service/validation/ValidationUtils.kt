@@ -11,4 +11,10 @@ fun ArrayList<String>.addIfNotNull(request: RiskScoreRequest, prop: KProperty1<R
   if (prop.get(request) != null) this.add(prop.name)
 }
 
+fun ArrayList<String>.addIfNotNullAndNotZero(request: RiskScoreRequest, prop: KProperty1<RiskScoreRequest, Any?>) {
+  if (prop.get(request) != null && prop.get(request) != 0) this.add(prop.name)
+}
+
+fun List<KProperty1<RiskScoreRequest, Any?>>.names(): List<String> = this.map { it.name }
+
 fun Map<KProperty1<RiskScoreRequest, Boolean?>, Any?>.getTrueKeys() = mapNotNull { (key, value) -> key.name.takeIf { value == true } }
