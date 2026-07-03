@@ -4,6 +4,10 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
  name: hmpps-manage-offences-api-wiremock-mapping
+ annotations:
+   "helm.sh/hook": pre-install,pre-upgrade
+   "helm.sh/hook-weight": "-5"
+   "helm.sh/hook-delete-policy": before-hook-creation
 data:
 {{ ($.Files.Glob "__files/get-actuarial-mapping.json").AsConfig | indent 2 }}
 ---
