@@ -10,17 +10,19 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.RiskScoreRequestTestCon
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 
-class LDSValidationHelperTest {
+class LDSValidatorTest {
+
+  private val validator = LDSValidator()
 
   @Test
   fun `initial validation no errors`() {
-    val result = validateLDS(FULL_LDS_REQUEST)
+    val result = validator.validateLDS(FULL_LDS_REQUEST)
     assertTrue(result.isEmpty())
   }
 
   @Test
   fun `fields not eligible`() {
-    val result = validateLDS(NULL_REQUEST)
+    val result = validator.validateLDS(NULL_REQUEST)
     assertEquals(
       listOf(
         ValidationError(
@@ -35,7 +37,7 @@ class LDSValidationHelperTest {
 
   @Test
   fun `educational field not present but reading difficulty present`() {
-    val result = validateLDS(BAD_READING_DIFFICULTY_LDS_REQUEST)
+    val result = validator.validateLDS(BAD_READING_DIFFICULTY_LDS_REQUEST)
     assertEquals(
       listOf(
         ValidationError(
@@ -52,7 +54,7 @@ class LDSValidationHelperTest {
 
   @Test
   fun `fields not eligible but some present error`() {
-    val result = validateLDS(INELIGIBLE_LDS_REQUEST)
+    val result = validator.validateLDS(INELIGIBLE_LDS_REQUEST)
     assertEquals(
       listOf(
         ValidationError(

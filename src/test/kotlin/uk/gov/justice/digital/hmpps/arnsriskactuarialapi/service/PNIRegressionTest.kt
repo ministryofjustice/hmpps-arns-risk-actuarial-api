@@ -13,6 +13,8 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyAllReoffendingPred
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyRSR
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyViolentReoffendingPredictor
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.CommonValidator
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.PNIValidator
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -23,7 +25,7 @@ private const val WRITE_FAILED_OUTPUTS = false
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PNIRegressionTest {
 
-  private val service = PNIRiskProducerService()
+  private val service = PNIRiskProducerService(PNIValidator(CommonValidator()))
   private val failedRows = ArrayList<String>()
 
   val csvHeader: String by lazy {

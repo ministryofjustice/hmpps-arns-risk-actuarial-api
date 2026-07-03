@@ -1,6 +1,12 @@
 {
   "request": {
-    "version": "V1_0"
+    "version": "V1_0",
+    "gender": "FEMALE",
+    "totalIndecentImageSanctions": null,
+    "totalContactAdultSexualSanctions": null,
+    "totalContactChildSexualSanctions": null,
+    "totalNonContactSexualOffences": null,
+    "hasEverCommittedSexualOffence": true
   },
   "response": {
     "algorithm": "IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR",
@@ -19,8 +25,10 @@
         "type": "MISSING_MANDATORY_INPUT",
         "message": "Mandatory input field(s) missing",
         "fields": [
-          "gender",
-          "hasEverCommittedSexualOffence"
+          "totalIndecentImageSanctions",
+          "totalContactAdultSexualSanctions",
+          "totalContactChildSexualSanctions",
+          "totalNonContactSexualOffences"
         ]
       }
     ]

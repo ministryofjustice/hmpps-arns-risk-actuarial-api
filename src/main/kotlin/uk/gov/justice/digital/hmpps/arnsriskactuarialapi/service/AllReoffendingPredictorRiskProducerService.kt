@@ -1,6 +1,7 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
 import org.springframework.stereotype.Service
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.MotivationLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
@@ -41,17 +42,16 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getSuitableAccommodationWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getTotalSanctionWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.AllReoffendingPredictorTransformationHelper.getUnemployedWeight
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateAllReoffendingPredictorDynamic
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateAllReoffendingPredictorStatic
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.AllReoffendingPredictorValidator
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.getAgeAtDate
 import java.math.BigDecimal
 
 @Service
-class AllReoffendingPredictorRiskProducerService : BaseRiskScoreProducer() {
+class AllReoffendingPredictorRiskProducerService(val inputValidator: AllReoffendingPredictorValidator) : BaseRiskScoreProducer() {
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
-    val staticValidationErrors = validateAllReoffendingPredictorStatic(request)
-    val dynamicValidationErrors = validateAllReoffendingPredictorDynamic(request)
+    val staticValidationErrors = inputValidator.validateStatic(request)
+    val dynamicValidationErrors = inputValidator.validateDynamic(request)
 
     if (staticValidationErrors.isNotEmpty()) {
       return applyErrorsToContext(context, staticValidationErrors + dynamicValidationErrors)
@@ -83,20 +83,22 @@ class AllReoffendingPredictorRiskProducerService : BaseRiskScoreProducer() {
       request.evidenceOfDomesticAbuse!!,
       request.currentRelationshipStatus!!,
       request.regularOffendingActivities!!,
-      request.motivationToTackleDrugMisuse!!,
-      request.hasHeroinUsage!!,
-      request.hasOtherOpiateUsage!!,
-      request.hasCrackCocaineUsage!!,
-      request.hasPowderCocaineUsage!!,
-      request.hasMisusedPrescriptionDrugUsage!!,
-      request.hasBenzodiazepinesUsage!!,
-      request.hasCannabisUsage!!,
-      request.hasSteroidsUsage!!,
-      request.hasOtherDrugsUsage!!,
-      request.hasKetamineUsage!!,
-      request.hasSpiceUsage!!,
-      request.hasHallucinogensUsage!!,
-      request.hasSolventsUsage!!,
+      // The drug misuse questions are optional - if not answered then set them to FULL_MOTIVATION/false
+      // so drug misuse is not factored into the score calculation
+      request.motivationToTackleDrugMisuse ?: MotivationLevel.FULL_MOTIVATION,
+      request.hasHeroinUsage ?: false,
+      request.hasOtherOpiateUsage ?: false,
+      request.hasCrackCocaineUsage ?: false,
+      request.hasPowderCocaineUsage ?: false,
+      request.hasMisusedPrescriptionDrugUsage ?: false,
+      request.hasBenzodiazepinesUsage ?: false,
+      request.hasCannabisUsage ?: false,
+      request.hasSteroidsUsage ?: false,
+      request.hasOtherDrugsUsage ?: false,
+      request.hasKetamineUsage ?: false,
+      request.hasSpiceUsage ?: false,
+      request.hasHallucinogensUsage ?: false,
+      request.hasSolventsUsage ?: false,
       request.currentAlcoholUseProblems!!,
       request.excessiveAlcoholUse!!,
       request.impulsivityProblems!!,

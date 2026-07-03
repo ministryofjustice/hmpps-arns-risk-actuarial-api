@@ -3,21 +3,46 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
+import org.mockito.InjectMocks
+import org.mockito.Mock
+import org.mockito.junit.jupiter.MockitoExtension
+import org.mockito.kotlin.whenever
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validOPDRiskScoreRequest
 import java.util.stream.Stream
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class OPDValidationHelperTest {
+@ExtendWith(MockitoExtension::class)
+class OPDValidatorTest {
+
+  @Mock
+  private lateinit var commonValidator: CommonValidator
+
+  @InjectMocks
+  private lateinit var validator: OPDValidator
+
+  companion object {
+    @JvmStatic
+    private fun domesticAbuseInconsistentInputTestInputs(): Stream<Arguments> = Stream.of(
+      Arguments.of(null, true, null),
+      Arguments.of(null, null, true),
+      Arguments.of(null, false, null),
+      Arguments.of(null, null, false),
+      Arguments.of(false, true, null),
+      Arguments.of(false, null, true),
+      Arguments.of(false, false, null),
+      Arguments.of(false, null, false),
+    )
+  }
 
   @Test
   fun `opdInitialValidation no errors`() {
-    val result = validateOPD(validOPDRiskScoreRequest())
+    val result = validator.validateOPD(validOPDRiskScoreRequest())
     assertTrue(result.isEmpty())
   }
 
@@ -32,7 +57,7 @@ class OPDValidationHelperTest {
       hasCustodialSentence = null,
       evidenceOfDomesticAbuse = false,
     )
-    val result = validateOPD(request)
+    val result = validator.validateOPD(request)
 
     val expectedFields = listOf(
       "gender",
@@ -54,7 +79,7 @@ class OPDValidationHelperTest {
       gender = Gender.MALE,
       isEligibleForMappa = null,
     )
-    val result = validateOPD(request)
+    val result = validator.validateOPD(request)
     assertTrue(result.isEmpty())
   }
 
@@ -64,7 +89,7 @@ class OPDValidationHelperTest {
       gender = Gender.FEMALE,
       isEligibleForMappa = null,
     )
-    val result = validateOPD(request)
+    val result = validator.validateOPD(request)
 
     val expectedFields = listOf(
       "isEligibleForMappa",
@@ -83,7 +108,7 @@ class OPDValidationHelperTest {
       domesticAbuseAgainstPartner = null,
       domesticAbuseAgainstFamily = null,
     )
-    val result = validateOPD(request)
+    val result = validator.validateOPD(request)
 
     val expectedFields = listOf(
       "domesticAbuseAgainstPartner",
@@ -95,17 +120,6 @@ class OPDValidationHelperTest {
     assertEquals("Mandatory input field(s) missing", error.message)
     assertEquals(expectedFields, error.fields)
   }
-
-  private fun domesticAbuseInconsistentInputTestInputs(): Stream<Arguments> = Stream.of(
-    Arguments.of(null, true, null),
-    Arguments.of(null, null, true),
-    Arguments.of(null, false, null),
-    Arguments.of(null, null, false),
-    Arguments.of(false, true, null),
-    Arguments.of(false, null, true),
-    Arguments.of(false, false, null),
-    Arguments.of(false, null, false),
-  )
 
   @ParameterizedTest
   @MethodSource("domesticAbuseInconsistentInputTestInputs")
@@ -119,7 +133,7 @@ class OPDValidationHelperTest {
       domesticAbuseAgainstPartner = domesticAbuseAgainstPartnerInput,
       domesticAbuseAgainstFamily = domesticAbuseAgainstFamilyInput,
     )
-    val result = validateOPD(request)
+    val result = validator.validateOPD(request)
 
     val error = result.first()
     assertEquals(ValidationErrorType.DOMESTIC_ABUSE_INCONSISTENT_INPUT, error.type)
@@ -139,9 +153,17 @@ class OPDValidationHelperTest {
     val request = validOPDRiskScoreRequest().copy(
       currentOffenceCode = "BLA",
     )
-    val result = validateOPD(request)
 
-    val error = result.first()
-    assertEquals(ValidationErrorType.OFFENCE_CODE_INCORRECT_FORMAT, error.type)
+    val expectedError = ValidationError(
+      type = ValidationErrorType.OFFENCE_CODE_INCORRECT_FORMAT,
+      message = "This is a message",
+      fields = listOf("currentOffenceCode"),
+    )
+
+    whenever(commonValidator.validateCurrentOffenceCode(request)).thenReturn(expectedError)
+
+    val result = validator.validateOPD(request)
+
+    assertEquals(listOf(expectedError), result)
   }
 }

@@ -1,0 +1,34 @@
+{
+  "request": {
+    "version": "V1_0",
+    "gender": "FEMALE",
+    "totalIndecentImageSanctions": 2,
+    "totalContactAdultSexualSanctions": 0,
+    "totalContactChildSexualSanctions": 0,
+    "totalNonContactSexualOffences": null,
+    "hasEverCommittedSexualOffence": false
+  },
+  "response": {
+    "algorithm": "IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR",
+    "type": "STATIC",
+    "modelVersion": "1.0",
+    "thresholdsVersion": "1.0",
+    "output": {
+      "band": null,
+      "score": null,
+      "femaleVersion": null,
+      "hasSexualOffenceHistory": null
+    },
+    "featureValues": {},
+    "validationErrors": [
+      {
+        "type": "IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR_INCONSISTENT_INPUT",
+        "message": "hasEverCommittedSexualOffence cannot be null or false when sexual sanctions exist",
+        "fields": [
+          "hasEverCommittedSexualOffence",
+          "totalIndecentImageSanctions"
+        ]
+      }
+    ]
+  }
+}

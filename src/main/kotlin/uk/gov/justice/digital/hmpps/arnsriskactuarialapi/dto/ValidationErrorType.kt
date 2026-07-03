@@ -3,12 +3,18 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto
 enum class ValidationErrorType(val message: String) {
 
   DATE_OF_CURRENT_CONVICTION_BEFORE_DATE_OF_BIRTH("Date of current conviction cannot be before date of birth"),
+  DATE_OF_START_OF_FOLLOWUP_BEFORE_DATE_OF_BIRTH("Date of start of followup cannot be before date of birth"),
+  DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE("Age at date at start of followup must be less than 110"),
+  DATE_OF_START_OF_FOLLOWUP_REQUIRED("Either Date at start of followup or date of current conviction must be provided"),
+  MOTIVATION_TO_TACKLE_DRUG_MISUSE_INCONSISTENT("When motivationToTackleDrugMisuse is null, all drug usage questions must be false or null"),
   DOMESTIC_ABUSE_INCONSISTENT_INPUT("No evidence of domestic abuse identified - domesticAbuseAgainstPartner and domesticAbuseAgainstFamily should not be provided"),
   SEXUAL_OFFENDING_MISSING_COUNTS("Sexual motivation/offending identified - complete sexual offence counts"),
   SEXUAL_OFFENDING_INCONSISTENT_INPUT("No sexual motivation/offending identified - additional fields should not be provided"),
   NEED_DETAILS_OF_EXACT_OFFENCE("For this group of offences, the OGRS 3 offence category takes different values depending on the nature of the exact offence. Therefore, it is not possible to calculate an OGRS 3 score without details of the exact offence."),
   MISSING_MANDATORY_INPUT("Mandatory input field(s) missing"),
   MISSING_DYNAMIC_INPUT("Dynamic input field(s) missing"),
+  IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR_INCONSISTENT_INPUT("hasEverCommittedSexualOffence cannot be null or false when sexual sanctions exist"),
+  IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR_NO_SANCTIONS("If hasEverCommittedSexualOffence is true, at least one sexual sanction/offence must be more than 0"),
   AGE_AT_FIRST_SANCTION_AFTER_AGE_AT_CURRENT_CONVICTION("Age at first sanction must be before age at current conviction"),
   DATE_OF_CURRENT_CONVICTION_WITHIN_THREE_MONTHS_OF_ASSESSMENT_DATE("Date of current conviction must be less than 3 months after the assessment date"),
   TOTAL_NUMBER_OF_SANCTIONS_OUT_OF_RANGE("Total number of sanctions must be between 1 and 999 (inclusive)"),
