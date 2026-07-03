@@ -792,6 +792,8 @@ class CommonValidatorTest {
         listOf(
           "hasEverCommittedSexualOffence",
           "totalIndecentImageSanctions",
+          "totalContactAdultSexualSanctions",
+          "totalContactChildSexualSanctions",
           "totalNonContactSexualOffences",
         ),
       ),
