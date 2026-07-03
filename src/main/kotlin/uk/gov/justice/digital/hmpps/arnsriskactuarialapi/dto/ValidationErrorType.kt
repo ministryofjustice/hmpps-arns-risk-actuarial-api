@@ -16,6 +16,7 @@ enum class ValidationErrorType(val message: String) {
   MISSING_DYNAMIC_INPUT("Dynamic input field(s) missing"),
   SEXUAL_REOFFENDING_PREDICTOR_INCONSISTENT_INPUT("hasEverCommittedSexualOffence cannot be null or false when sexual sanctions exist"),
   SEXUAL_REOFFENDING_PREDICTOR_NO_SANCTIONS("If hasEverCommittedSexualOffence is true, at least one sexual sanction/offence must be more than 0"),
+  TOTAL_NUMBER_OF_SEXUAL_SANCTIONS_OUT_OF_RANGE("Sexual sanctions count must be greater than 0, but less than or equal to total number of sanctions"),
   AGE_AT_FIRST_SANCTION_AFTER_AGE_AT_CURRENT_CONVICTION("Age at first sanction must be before age at current conviction"),
   DATE_OF_CURRENT_CONVICTION_WITHIN_THREE_MONTHS_OF_ASSESSMENT_DATE("Date of current conviction must be less than 3 months after the assessment date"),
   TOTAL_NUMBER_OF_SANCTIONS_OUT_OF_RANGE("Total number of sanctions must be between 1 and 999 (inclusive)"),

@@ -3,7 +3,7 @@
     "version": "V1_0",
     "gender": "MALE",
     "dateOfBirth": "1980-01-01",
-    "totalNumberOfSanctionsForAllOffences": 1,
+    "totalNumberOfSanctionsForAllOffences": 11,
     "supervisionStatus": "COMMUNITY",
     "dateAtStartOfFollowupCalculated": "2027-01-01",
     "totalNumberOfViolentSanctions": 1,
@@ -22,8 +22,8 @@
     "thresholdsVersion": "1.0",
     "output": {
       "band": "MEDIUM",
-      "pointScore": 22,
-      "score": 0.6,
+      "pointScore": 28,
+      "score": 1.54,
       "femaleVersion": false,
       "hasSexualOffenceHistory": true,
       "riskBandReductionApplied": false
@@ -34,9 +34,9 @@
       "totalNonContactSexualOffencesWeight": 6,
       "ageAtStartOfFollowUpWeight": 5,
       "ageAtLastSanctionForSexualOffenceWeight": 0,
-      "totalNumberOfSanctionsForAllOffencesWeight": 0,
+      "totalNumberOfSanctionsForAllOffencesWeight": 6,
       "currentOffenceAgainstVictimStrangerWeight": 0,
-      "totalWeight": 22
+      "totalWeight": 28
     },
     "validationErrors": []
   }

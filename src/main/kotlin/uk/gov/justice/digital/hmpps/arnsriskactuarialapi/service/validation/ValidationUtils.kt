@@ -18,3 +18,7 @@ fun ArrayList<String>.addIfNotNullAndNotZero(request: RiskScoreRequest, prop: KP
 fun List<KProperty1<RiskScoreRequest, Any?>>.names(): List<String> = this.map { it.name }
 
 fun Map<KProperty1<RiskScoreRequest, Boolean?>, Any?>.getTrueKeys() = mapNotNull { (key, value) -> key.name.takeIf { value == true } }
+
+fun List<KProperty1<RiskScoreRequest, Any?>>.sumIntValues(request: RiskScoreRequest): Int = this.map { it.get(request) }
+  .filterIsInstance<Int>()
+  .sum()

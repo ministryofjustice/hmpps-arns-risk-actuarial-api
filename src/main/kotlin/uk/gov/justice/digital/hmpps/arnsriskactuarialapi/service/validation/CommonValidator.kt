@@ -244,6 +244,10 @@ class CommonValidator {
     ValidationErrorType.SEXUAL_REOFFENDING_PREDICTOR_NO_SANCTIONS.asError(
       requiredSexualFields.names(),
     )
+  } else if (request.totalNumberOfSanctionsForAllOffences != null && requiredSexualFields.sumIntValues(request) > request.totalNumberOfSanctionsForAllOffences) {
+    ValidationErrorType.TOTAL_NUMBER_OF_SEXUAL_SANCTIONS_OUT_OF_RANGE.asError(
+      requiredSexualFields.names(),
+    )
   } else {
     null
   }
@@ -271,7 +275,10 @@ class CommonValidator {
     }
   }
 
-  fun validateDrugMisuse(request: RiskScoreRequest, drugUsageQuestions: List<KProperty1<RiskScoreRequest, Boolean?>>): ValidationError? {
+  fun validateDrugMisuse(
+    request: RiskScoreRequest,
+    drugUsageQuestions: List<KProperty1<RiskScoreRequest, Boolean?>>,
+  ): ValidationError? {
     val drugUsageAnswers = drugUsageQuestions.associateWith { it.get(request) }
 
     // If motivationToTackleDrugMisuse is null, then all the drug usage questions should be set to null or false

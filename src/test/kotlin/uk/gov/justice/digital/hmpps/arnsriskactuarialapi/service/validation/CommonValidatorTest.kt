@@ -856,6 +856,26 @@ class CommonValidatorTest {
       ),
       true,
     ),
+    Arguments.of(
+      RiskScoreRequest(
+        gender = Gender.MALE,
+        hasEverCommittedSexualOffence = true,
+        totalIndecentImageSanctions = 1,
+        totalContactAdultSexualSanctions = 1,
+        totalContactChildSexualSanctions = 1,
+        totalNonContactSexualOffences = 1,
+        totalNumberOfSanctionsForAllOffences = 3,
+      ),
+      ValidationErrorType.TOTAL_NUMBER_OF_SEXUAL_SANCTIONS_OUT_OF_RANGE.asError(
+        listOf(
+          "totalIndecentImageSanctions",
+          "totalContactAdultSexualSanctions",
+          "totalContactChildSexualSanctions",
+          "totalNonContactSexualOffences",
+        ),
+      ),
+      false,
+    ),
   )
 
   @Test
