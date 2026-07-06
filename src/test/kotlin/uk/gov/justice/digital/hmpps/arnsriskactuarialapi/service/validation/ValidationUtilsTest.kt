@@ -25,4 +25,49 @@ class ValidationUtilsTest {
     missingFields.addIfNull(request, RiskScoreRequest::hasPeerGroupInfluences)
     assertEquals(emptyList<String>(), missingFields)
   }
+
+  @Test
+  fun `test getTrueKeys - all null`() {
+    val map = mapOf(
+      RiskScoreRequest::hasHeroinUsage to null,
+      RiskScoreRequest::hasSpiceUsage to null,
+      RiskScoreRequest::hasCannabisUsage to null,
+    )
+
+    assertEquals(emptyList<String>(), map.getTrueKeys())
+  }
+
+  @Test
+  fun `test getTrueKeys - all false`() {
+    val map = mapOf(
+      RiskScoreRequest::hasHeroinUsage to false,
+      RiskScoreRequest::hasSpiceUsage to false,
+      RiskScoreRequest::hasCannabisUsage to false,
+    )
+
+    assertEquals(emptyList<String>(), map.getTrueKeys())
+  }
+
+  @Test
+  fun `test getTrueKeys - all true`() {
+    val map = mapOf(
+      RiskScoreRequest::hasHeroinUsage to true,
+      RiskScoreRequest::hasSpiceUsage to true,
+      RiskScoreRequest::hasCannabisUsage to true,
+    )
+
+    assertEquals(listOf("hasHeroinUsage", "hasSpiceUsage", "hasCannabisUsage"), map.getTrueKeys())
+  }
+
+  @Test
+  fun `test getTrueKeys - mix`() {
+    val map = mapOf(
+      RiskScoreRequest::hasHeroinUsage to true,
+      RiskScoreRequest::hasSpiceUsage to false,
+      RiskScoreRequest::hasCannabisUsage to true,
+      RiskScoreRequest::hasOtherOpiateUsage to null,
+    )
+
+    assertEquals(listOf("hasHeroinUsage", "hasCannabisUsage"), map.getTrueKeys())
+  }
 }

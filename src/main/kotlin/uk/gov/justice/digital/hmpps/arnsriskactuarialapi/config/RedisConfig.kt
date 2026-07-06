@@ -7,21 +7,21 @@ import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.data.redis.serializer.JacksonJsonRedisSerializer
 import org.springframework.data.redis.serializer.StringRedisSerializer
 import tools.jackson.databind.ObjectMapper
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.offencecode.OffenceCodeValues
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.offencecode.OffenceCodeDetails
 
 @Configuration
 class RedisConfig(private val objectMapper: ObjectMapper) {
 
   @Bean
-  fun redisTemplate(connectionFactory: RedisConnectionFactory): RedisTemplate<String, OffenceCodeValues> {
-    val offenceCodeValuesSerializer = JacksonJsonRedisSerializer(objectMapper, OffenceCodeValues::class.java)
+  fun redisTemplate(connectionFactory: RedisConnectionFactory): RedisTemplate<String, OffenceCodeDetails> {
+    val offenceCodeDetailsSerializer = JacksonJsonRedisSerializer(objectMapper, OffenceCodeDetails::class.java)
 
-    val template = RedisTemplate<String, OffenceCodeValues>()
+    val template = RedisTemplate<String, OffenceCodeDetails>()
     template.connectionFactory = connectionFactory
     template.keySerializer = StringRedisSerializer()
     template.hashKeySerializer = StringRedisSerializer()
-    template.valueSerializer = offenceCodeValuesSerializer
-    template.hashValueSerializer = offenceCodeValuesSerializer
+    template.valueSerializer = offenceCodeDetailsSerializer
+    template.hashValueSerializer = offenceCodeDetailsSerializer
     template.afterPropertiesSet()
     return template
   }

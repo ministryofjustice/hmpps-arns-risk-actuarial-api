@@ -4,18 +4,18 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Service
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.offencecode.OffenceCodeValues
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.offencecode.OffenceCodeWeighting
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.offencecode.ActuarialCategory
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.offencecode.OffenceCodeDetails
 
 @Service
-class OffenceCodeCacheService(private val redisTemplate: RedisTemplate<String, OffenceCodeValues>) {
+class OffenceCodeCacheService(private val redisTemplate: RedisTemplate<String, OffenceCodeDetails>) {
 
   val log: Logger = LoggerFactory.getLogger(this::class.java)
 
   val offenceCodeMappingPrefix = "offence_code_mapping_"
   val offenceCodeMappingPrefixPattern = "$offenceCodeMappingPrefix*"
 
-  fun sync(offenceCodeMappings: Map<String, OffenceCodeValues>) {
+  fun sync(offenceCodeMappings: Map<String, OffenceCodeDetails>) {
     val existingKeys = redisTemplate.keys(offenceCodeMappingPrefixPattern)
     log.info("Found ${existingKeys.size} existing offence code mappings within cache.")
 
@@ -29,17 +29,9 @@ class OffenceCodeCacheService(private val redisTemplate: RedisTemplate<String, O
     }
   }
 
-  private fun get(offenceKey: String): OffenceCodeValues? = redisTemplate.opsForValue().get(offenceCodeMappingPrefix + offenceKey)
+  private fun get(offenceKey: String): OffenceCodeDetails? = redisTemplate.opsForValue().get(offenceCodeMappingPrefix + offenceKey)
 
-  fun getOgrs3Weighting(offenceKey: String): OffenceCodeWeighting? = get(offenceKey)?.ogrs3Weighting
+  fun getActuarialCategory(offenceKey: String): ActuarialCategory? = get(offenceKey)?.actuarialCategory
 
-  fun isViolentOrSexualType(offenceKey: String): Boolean? = get(offenceKey)?.opdViolenceSexFlag
-
-  fun getSnsvStaticWeightingValue(offenceKey: String): Double? = get(offenceKey)?.snsvStaticWeighting?.value
-
-  fun getSnsvDynamicWeightingValue(offenceKey: String): Double? = get(offenceKey)?.snsvDynamicWeighting?.value
-
-  fun getSnsvVatpStaticWeightingValue(offenceKey: String): Double? = get(offenceKey)?.snsvVatpStaticWeighting?.value
-
-  fun getSnsvVatpDynamicWeightingValue(offenceKey: String): Double? = get(offenceKey)?.snsvVatpDynamicWeighting?.value
+  fun isViolentOrSexualType(offenceKey: String): Boolean? = get(offenceKey)?.flags?.opdViolenceSex
 }

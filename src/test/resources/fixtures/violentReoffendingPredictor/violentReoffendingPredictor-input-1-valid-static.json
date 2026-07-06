@@ -48,21 +48,9 @@
           "currentRelationshipStatus",
           "regularOffendingActivities",
           "motivationToTackleDrugMisuse",
-          "hasOtherOpiateUsage",
-          "hasCrackCocaineUsage",
-          "hasPowderCocaineUsage",
-          "hasMisusedPrescriptionDrugUsage",
-          "hasBenzodiazepinesUsage",
-          "hasCannabisUsage",
-          "hasSteroidsUsage",
-          "hasOtherDrugsUsage",
-          "hasKetamineUsage",
-          "hasSpiceUsage",
-          "hasHallucinogensUsage",
-          "hasSolventsUsage",
-          "hasMethadoneUsage",
           "currentAlcoholUseProblems",
           "excessiveAlcoholUse",
+          "impulsivityProblems",
           "temperControl"
         ]
       }

@@ -281,4 +281,85 @@ class AllReoffendingPredictorRiskProducerServiceTest {
       context.allReoffendingPredictor?.featureValues?.get(FeatureValue.OFFENCE_FREE_MONTHS_WEIGHT.outputName),
     )
   }
+
+  @Test
+  fun `drug questions should fallback to 0 weighting when null`() {
+    val requestMissingDateAtStartOfFollowup = RiskScoreRequest(
+      assessmentDate = LocalDate.of(2025, 1, 1),
+      dateOfBirth = LocalDate.of(1990, 1, 1),
+      dateOfCurrentConviction = LocalDate.of(2024, 1, 1),
+      ageAtFirstSanction = 18,
+      gender = Gender.MALE,
+      currentOffenceCode = "00001",
+      totalNumberOfSanctionsForAllOffences = 2,
+      suitabilityOfAccommodation = ProblemLevel.NO_PROBLEMS,
+      isUnemployed = true,
+      currentRelationshipWithPartner = ProblemLevel.NO_PROBLEMS,
+      evidenceOfDomesticAbuse = false,
+      currentRelationshipStatus = CurrentRelationshipStatus.NOT_IN_RELATIONSHIP,
+      regularOffendingActivities = ProblemLevel.NO_PROBLEMS,
+      motivationToTackleDrugMisuse = null,
+      hasHeroinUsage = null,
+      hasOtherOpiateUsage = null,
+      hasCrackCocaineUsage = null,
+      hasPowderCocaineUsage = null,
+      hasMisusedPrescriptionDrugUsage = null,
+      hasBenzodiazepinesUsage = null,
+      hasCannabisUsage = null,
+      hasSteroidsUsage = null,
+      hasOtherDrugsUsage = null,
+      hasKetamineUsage = null,
+      hasSpiceUsage = null,
+      hasHallucinogensUsage = null,
+      hasSolventsUsage = null,
+      currentAlcoholUseProblems = ProblemLevel.NO_PROBLEMS,
+      excessiveAlcoholUse = ProblemLevel.NO_PROBLEMS,
+      impulsivityProblems = ProblemLevel.NO_PROBLEMS,
+      proCriminalAttitudes = ProblemLevel.NO_PROBLEMS,
+    )
+
+    // Return no errors from both static and dynamic validation
+    whenever(validator.validateStatic(requestMissingDateAtStartOfFollowup)).thenReturn(emptyList())
+    whenever(validator.validateDynamic(requestMissingDateAtStartOfFollowup)).thenReturn(emptyList())
+
+    val expectedFeatureValues = mapOf(
+      "twoYearInterceptWeight" to BigDecimal("3.836541486920140187066863290965557098388671875"),
+      "ageGenderPolynomialWeight" to BigDecimal("-0.077626343685467402225266887023057138517145858713774941861629486083984375000"),
+      "genderWeight" to BigDecimal.ZERO,
+      "offenceGroupWeight" to BigDecimal.ZERO,
+      "firstSanctionWeight" to BigDecimal.ZERO,
+      "secondSanctionWeight" to BigDecimal("-2.603445812880039955672373253037221729755401611328125"),
+      "totalNumberOfSanctionsForAllOffencesWeight" to BigDecimal("-0.006052575129361000352834487614472891436889767646789550781250"),
+      "secondSanctionGapWeight" to BigDecimal("-0.511560045939358443156663724948884919285774230957031250000"),
+      "offenceFreeMonthsWeight" to BigDecimal("-0.048227776154024796801539354262899905734229832887649536132812500"),
+      "copasScore" to BigDecimal.ZERO,
+      "copasScoreSquared" to BigDecimal.ZERO,
+      "suitableAccommodationWeight" to BigDecimal("0E-56"),
+      "unemployedWeight" to BigDecimal("0.03177837338093769670166466312366537749767303466796875"),
+      "liveInRelationshipWeight" to BigDecimal.ZERO,
+      "relationshipQualityWeight" to BigDecimal("0E-55"),
+      "multiplicativeRelationshipWeight" to BigDecimal.ZERO,
+      "domesticViolenceWeight" to BigDecimal.ZERO,
+      "regularOffendingActivitiesWeight" to BigDecimal("0E-55"),
+      "drugMotivationWeight" to BigDecimal("0E-54"),
+      "chronicDrinkingProblemsWeight" to BigDecimal("0E-56"),
+      "bingeDrinkingProblemsWeight" to BigDecimal("0E-54"),
+      "impulsivityProblemsWeight" to BigDecimal("0E-54"),
+      "proCriminalAttitudesWeight" to BigDecimal("0E-57"),
+      "heroinUsageWeight" to BigDecimal.ZERO,
+      "otherOpiateUsageWeight" to BigDecimal.ZERO,
+      "crackCocaineUsageWeight" to BigDecimal.ZERO,
+      "powderCocaineUsageWeight" to BigDecimal.ZERO,
+      "misusedPrescriptionDrugUsageWeight" to BigDecimal.ZERO,
+      "benzodiazepinesUsageWeight" to BigDecimal.ZERO,
+      "cannabisUsageWeight" to BigDecimal.ZERO,
+      "steroidUsageWeight" to BigDecimal.ZERO,
+      "otherDrugUsageWeight" to BigDecimal.ZERO,
+      "totalWeight" to BigDecimal("0.621407306512826285559850247202685891156903608134598471224308013916015625000"),
+    )
+
+    val context = service.getRiskScore(requestMissingDateAtStartOfFollowup, emptyContext())
+
+    assertEquals(expectedFeatureValues, context.allReoffendingPredictor?.featureValues)
+  }
 }

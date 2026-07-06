@@ -201,4 +201,17 @@ class CommonValidator {
       null
     }
   }
+
+  fun validateDrugMisuse(request: RiskScoreRequest, drugUsageQuestions: List<KProperty1<RiskScoreRequest, Boolean?>>): ValidationError? {
+    val drugUsageAnswers = drugUsageQuestions.associateWith { it.get(request) }
+
+    // If motivationToTackleDrugMisuse is null, then all the drug usage questions should be set to null or false
+    if (request.motivationToTackleDrugMisuse == null) {
+      val notNullFields = drugUsageAnswers.getTrueKeys()
+      if (notNullFields.isNotEmpty()) {
+        return ValidationErrorType.MOTIVATION_TO_TACKLE_DRUG_MISUSE_INCONSISTENT.asError(notNullFields)
+      }
+    }
+    return null
+  }
 }
