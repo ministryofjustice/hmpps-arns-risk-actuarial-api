@@ -2,7 +2,7 @@ import kotlinx.kover.gradle.plugin.dsl.AggregationType
 import kotlinx.kover.gradle.plugin.dsl.CoverageUnit
 
 plugins {
-  id("uk.gov.justice.hmpps.gradle-spring-boot") version "10.5.0"
+  id("uk.gov.justice.hmpps.gradle-spring-boot") version "10.5.3"
   id("org.jetbrains.kotlinx.kover") version "0.9.8"
   kotlin("plugin.spring") version "2.4.0"
 }
@@ -37,7 +37,7 @@ dependencies {
   testImplementation("uk.gov.justice.service.hmpps:hmpps-kotlin-spring-boot-starter-test:2.5.0")
   testImplementation("org.springframework.boot:spring-boot-starter-webflux-test")
   testImplementation("org.wiremock:wiremock-standalone:3.13.2")
-  testImplementation("io.swagger.parser.v3:swagger-parser:2.1.44") {
+  testImplementation("io.swagger.parser.v3:swagger-parser:2.1.45") {
     exclude(group = "io.swagger.core.v3")
   }
   testImplementation("org.junit.jupiter:junit-jupiter-params")
