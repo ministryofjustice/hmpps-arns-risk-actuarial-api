@@ -361,57 +361,19 @@ class CommonValidatorTest {
   }
 
   @ParameterizedTest
-  @MethodSource("test validateDateAtStartOfFollowupAgeUpperLimit logic data")
-  fun `test validateDateAtStartOfFollowupAgeUpperLimit logic`(
+  @MethodSource("test validateDateAtStartOfFollowupAge logic data")
+  fun `test validateDateAtStartOfFollowupAge logic`(
     dateAtStartOfFollowupCalculated: LocalDate?,
     dateOfBirth: LocalDate?,
-    error: Boolean,
+    expectedError: ValidationError?,
   ) {
     val request = RiskScoreRequest(
       dateAtStartOfFollowupCalculated = dateAtStartOfFollowupCalculated,
       dateOfBirth = dateOfBirth,
     )
-    val actualError = commonValidator.validateDateAtStartOfFollowupAgeUpperLimit(request)
+    val actualError = commonValidator.validateDateAtStartOfFollowupAge(request)
 
-    if (error) {
-      assertEquals(
-        ValidationError(
-          type = ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE_UPPER,
-          message = "Age at date at start of followup must be less than 110",
-          fields = listOf("dateAtStartOfFollowupCalculated"),
-        ),
-        actualError,
-      )
-    } else {
-      assertNull(actualError)
-    }
-  }
-
-  @ParameterizedTest
-  @MethodSource("test validateDateAtStartOfFollowupAgeLowerLimit logic data")
-  fun `test validateDateAtStartOfFollowupAgeLowerLimit logic`(
-    dateAtStartOfFollowupCalculated: LocalDate?,
-    dateOfBirth: LocalDate?,
-    error: Boolean,
-  ) {
-    val request = RiskScoreRequest(
-      dateAtStartOfFollowupCalculated = dateAtStartOfFollowupCalculated,
-      dateOfBirth = dateOfBirth,
-    )
-    val actualError = commonValidator.validateDateAtStartOfFollowupAgeLowerLimit(request)
-
-    if (error) {
-      assertEquals(
-        ValidationError(
-          type = ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE_LOWER,
-          message = "Age at date at start of followup must be more than 18",
-          fields = listOf("dateAtStartOfFollowupCalculated"),
-        ),
-        actualError,
-      )
-    } else {
-      assertNull(actualError)
-    }
+    assertEquals(expectedError, actualError)
   }
 
   @ParameterizedTest
@@ -605,38 +567,54 @@ class CommonValidatorTest {
     Arguments.of(LocalDate.parse("2000-08-12"), LocalDate.parse("2000-08-12"), true),
   )
 
-  fun `test validateDateAtStartOfFollowupAgeUpperLimit logic data`(): Stream<Arguments> = Stream.of(
+  fun `test validateDateAtStartOfFollowupAge logic data`(): Stream<Arguments> = Stream.of(
     // args: dateAtStartOfFollowup, dateOfBirth, error
     // Both or one null shouldn't result in an error
-    Arguments.of(null, null, false),
-    Arguments.of(null, LocalDate.parse("1980-01-01"), false),
-    Arguments.of(LocalDate.parse("2025-01-01"), null, false),
+    Arguments.of(null, null, null),
+    Arguments.of(null, LocalDate.parse("1980-01-01"), null),
+    Arguments.of(LocalDate.parse("2025-01-01"), null, null),
     // If date of birth is after dateAtStartOfFollowup, do not error (should have already been caught)
-    Arguments.of(LocalDate.parse("2026-05-01"), LocalDate.parse("2026-08-12"), false),
+    Arguments.of(LocalDate.parse("2026-05-01"), LocalDate.parse("2026-08-12"), null),
     // An age of less than 110 at dateAtStartOfFollowup shouldn't result in an error
-    Arguments.of(LocalDate.parse("2026-05-01"), LocalDate.parse("2000-08-12"), false),
-    Arguments.of(LocalDate.parse("2025-08-31"), LocalDate.parse("1915-09-01"), false),
+    Arguments.of(LocalDate.parse("2026-05-01"), LocalDate.parse("2000-08-12"), null),
+    Arguments.of(LocalDate.parse("2025-08-31"), LocalDate.parse("1915-09-01"), null),
     // An age of 110 or more at dateAtStartOfFollowup should result in an error
-    Arguments.of(LocalDate.parse("2025-09-01"), LocalDate.parse("1915-09-01"), true),
-    Arguments.of(LocalDate.parse("2025-12-20"), LocalDate.parse("1915-09-01"), true),
-    Arguments.of(LocalDate.parse("2026-06-29"), LocalDate.parse("1915-09-01"), true),
-  )
-
-  fun `test validateDateAtStartOfFollowupAgeLowerLimit logic data`(): Stream<Arguments> = Stream.of(
-    // args: dateAtStartOfFollowup, dateOfBirth, error
-    // Both or one null shouldn't result in an error
-    Arguments.of(null, null, false),
-    Arguments.of(null, LocalDate.parse("1980-01-01"), false),
-    Arguments.of(LocalDate.parse("2025-01-01"), null, false),
-    // If date of birth is after dateAtStartOfFollowup, do not error (should have already been caught)
-    Arguments.of(LocalDate.parse("2026-05-01"), LocalDate.parse("2026-08-12"), false),
-    // An age of 18 or more at dateAtStartOfFollowup shouldn't result in an error
-    Arguments.of(LocalDate.parse("2026-05-01"), LocalDate.parse("2000-08-12"), false),
-    Arguments.of(LocalDate.parse("2025-08-31"), LocalDate.parse("2007-08-30"), false),
-    // An age of less than 18 at dateAtStartOfFollowup should result in an error
-    Arguments.of(LocalDate.parse("2025-09-01"), LocalDate.parse("2015-09-01"), true),
-    Arguments.of(LocalDate.parse("2025-12-20"), LocalDate.parse("2008-09-01"), true),
-    Arguments.of(LocalDate.parse("2026-06-29"), LocalDate.parse("2014-09-01"), true),
+    Arguments.of(
+      LocalDate.parse("2025-09-01"),
+      LocalDate.parse("1915-09-01"),
+      ValidationError(
+        type = ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE_UPPER,
+        message = "Age at date at start of followup must be less than 110",
+        fields = listOf("dateAtStartOfFollowupCalculated"),
+      ),
+    ),
+    Arguments.of(
+      LocalDate.parse("2025-12-20"),
+      LocalDate.parse("1915-09-01"),
+      ValidationError(
+        type = ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE_UPPER,
+        message = "Age at date at start of followup must be less than 110",
+        fields = listOf("dateAtStartOfFollowupCalculated"),
+      ),
+    ),
+    Arguments.of(
+      LocalDate.parse("2026-06-29"),
+      LocalDate.parse("1915-09-01"),
+      ValidationError(
+        type = ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE_UPPER,
+        message = "Age at date at start of followup must be less than 110",
+        fields = listOf("dateAtStartOfFollowupCalculated"),
+      ),
+    ),
+    Arguments.of(
+      LocalDate.parse("2025-09-01"),
+      LocalDate.parse("2015-09-02"),
+      ValidationError(
+        type = ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE_LOWER,
+        message = "Age at date at start of followup must be more than 10",
+        fields = listOf("dateAtStartOfFollowupCalculated"),
+      ),
+    ),
   )
 
   fun `test validateDateOfMostRecentSexualOffenceAgainstDateOfBirth logic data`(): Stream<Arguments> = Stream.of(
@@ -679,16 +657,6 @@ class CommonValidatorTest {
         dateOfBirth = LocalDate.of(1995, 1, 1),
       ),
       ValidationErrorType.MISSING_MANDATORY_INPUT.asError(
-        listOf("dateOfMostRecentSexualOffence"),
-      ),
-    ),
-    Arguments.of(
-      RiskScoreRequest(
-        hasEverCommittedSexualOffence = true,
-        dateOfMostRecentSexualOffence = LocalDate.parse("2025-09-01"),
-        dateOfBirth = LocalDate.parse("2015-10-01"),
-      ),
-      ValidationErrorType.DATE_OF_MOST_RECENT_SEXUAL_OFFENCE_OUT_OF_RANGE.asError(
         listOf("dateOfMostRecentSexualOffence"),
       ),
     ),
@@ -815,44 +783,6 @@ class CommonValidatorTest {
       ),
       ValidationErrorType.MISSING_MANDATORY_INPUT.asError(
         listOf("dateOfMostRecentSexualOffence"),
-      ),
-      true,
-    ),
-    Arguments.of(
-      RiskScoreRequest(
-        gender = Gender.MALE,
-        dateOfBirth = LocalDate.of(1980, 1, 1),
-        hasEverCommittedSexualOffence = true,
-        totalIndecentImageSanctions = 1,
-        totalContactAdultSexualSanctions = 1,
-        totalContactChildSexualSanctions = 1,
-        totalNonContactSexualOffences = 1,
-        dateAtStartOfFollowupCalculated = LocalDate.of(2030, 1, 1),
-        dateOfMostRecentSexualOffence = LocalDate.of(1989, 1, 1),
-        totalNumberOfSanctionsForAllOffences = 5,
-        supervisionStatus = SupervisionStatus.COMMUNITY,
-      ),
-      ValidationErrorType.DATE_OF_MOST_RECENT_SEXUAL_OFFENCE_OUT_OF_RANGE.asError(
-        listOf("dateOfMostRecentSexualOffence"),
-      ),
-      true,
-    ),
-    Arguments.of(
-      RiskScoreRequest(
-        gender = Gender.MALE,
-        dateOfBirth = LocalDate.of(1980, 1, 1),
-        hasEverCommittedSexualOffence = true,
-        totalIndecentImageSanctions = 1,
-        totalContactAdultSexualSanctions = 1,
-        totalContactChildSexualSanctions = 1,
-        totalNonContactSexualOffences = 1,
-        dateAtStartOfFollowupCalculated = LocalDate.of(1995, 1, 1),
-        dateOfMostRecentSexualOffence = LocalDate.of(1994, 1, 1),
-        totalNumberOfSanctionsForAllOffences = 5,
-        supervisionStatus = SupervisionStatus.COMMUNITY,
-      ),
-      ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE_LOWER.asError(
-        listOf("dateAtStartOfFollowupCalculated"),
       ),
       true,
     ),

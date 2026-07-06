@@ -64,7 +64,7 @@ class AllReoffendingPredictorValidatorTest {
     whenever(commonValidator.validateTotalNumberOfSanctionsForAllOffences(request)).thenReturn(null)
     whenever(commonValidator.validateDateAtStartOfFollowupAgainstDateOfCurrentConviction(request)).thenReturn(null)
     whenever(commonValidator.validateDateAtStartOfFollowupAgainstDateOfBirth(request)).thenReturn(validationError2)
-    whenever(commonValidator.validateDateAtStartOfFollowupAgeUpperLimit(request)).thenReturn(null)
+    whenever(commonValidator.validateDateAtStartOfFollowupAge(request)).thenReturn(null)
 
     // Check that validation errors are returned
     assertEquals(listOf(validationError1, validationError2), validator.validateStatic(request))
@@ -79,7 +79,7 @@ class AllReoffendingPredictorValidatorTest {
     verify(commonValidator).validateTotalNumberOfSanctionsForAllOffences(request)
     verify(commonValidator).validateDateAtStartOfFollowupAgainstDateOfCurrentConviction(request)
     verify(commonValidator).validateDateAtStartOfFollowupAgainstDateOfBirth(request)
-    verify(commonValidator).validateDateAtStartOfFollowupAgeUpperLimit(request)
+    verify(commonValidator).validateDateAtStartOfFollowupAge(request)
     verifyNoMoreInteractions(commonValidator)
   }
 

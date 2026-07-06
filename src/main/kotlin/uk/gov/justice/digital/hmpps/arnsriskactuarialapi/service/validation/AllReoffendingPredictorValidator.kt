@@ -33,7 +33,7 @@ class AllReoffendingPredictorValidator(val commonValidator: CommonValidator) : A
     commonValidator.validateTotalNumberOfSanctionsForAllOffences(request),
     commonValidator.validateDateAtStartOfFollowupAgainstDateOfCurrentConviction(request),
     commonValidator.validateDateAtStartOfFollowupAgainstDateOfBirth(request),
-    commonValidator.validateDateAtStartOfFollowupAgeUpperLimit(request),
+    commonValidator.validateDateAtStartOfFollowupAge(request),
   )
 
   override fun validateDynamicCustom(request: RiskScoreRequest): List<ValidationError> = listOfNotNull(

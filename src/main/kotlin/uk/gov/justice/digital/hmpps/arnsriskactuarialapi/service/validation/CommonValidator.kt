@@ -142,7 +142,7 @@ class CommonValidator {
     return null
   }
 
-  fun validateDateAtStartOfFollowupAgeUpperLimit(request: RiskScoreRequest): ValidationError? {
+  fun validateDateAtStartOfFollowupAge(request: RiskScoreRequest): ValidationError? {
     if (request.dateAtStartOfFollowupCalculated != null && request.dateOfBirth != null && request.dateAtStartOfFollowupCalculated > request.dateOfBirth) {
       val ageAtStartOfFollowup = getAgeAtDate(
         request.dateOfBirth,
@@ -152,18 +152,7 @@ class CommonValidator {
       if (ageAtStartOfFollowup >= 110) {
         return ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE_UPPER.asError(listOf(RiskScoreRequest::dateAtStartOfFollowupCalculated.name))
       }
-    }
-    return null
-  }
-
-  fun validateDateAtStartOfFollowupAgeLowerLimit(request: RiskScoreRequest): ValidationError? {
-    if (request.dateAtStartOfFollowupCalculated != null && request.dateOfBirth != null && request.dateAtStartOfFollowupCalculated > request.dateOfBirth) {
-      val ageAtStartOfFollowup = getAgeAtDate(
-        request.dateOfBirth,
-        request.dateAtStartOfFollowupCalculated,
-        RiskScoreRequest::dateAtStartOfFollowupCalculated.name,
-      )
-      if (ageAtStartOfFollowup < 18) {
+      if (ageAtStartOfFollowup < 10) {
         return ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE_LOWER.asError(listOf(RiskScoreRequest::dateAtStartOfFollowupCalculated.name))
       }
     }
@@ -182,17 +171,6 @@ class CommonValidator {
           RiskScoreRequest::dateOfMostRecentSexualOffence.name,
         ),
       )
-    }
-
-    if (request.dateOfBirth != null && request.dateOfMostRecentSexualOffence > request.dateOfBirth) {
-      val ageAtStartOfFollowup = getAgeAtDate(
-        request.dateOfBirth,
-        request.dateOfMostRecentSexualOffence,
-        RiskScoreRequest::dateOfMostRecentSexualOffence.name,
-      )
-      if (ageAtStartOfFollowup < 10) {
-        return ValidationErrorType.DATE_OF_MOST_RECENT_SEXUAL_OFFENCE_OUT_OF_RANGE.asError(listOf(RiskScoreRequest::dateOfMostRecentSexualOffence.name))
-      }
     }
     null
   } else {
@@ -222,7 +200,7 @@ class CommonValidator {
       val directContactFields = if (isDirectContactPredictor) {
         listOfNotNull(
           validateDateOfMostRecentSexualOffenceAgainstDateOfBirth(request),
-          validateDateAtStartOfFollowupAgeLowerLimit(request),
+          validateDateAtStartOfFollowupAge(request),
           validateTotalNumberOfSanctionsForAllOffences(request),
         )
       } else {
