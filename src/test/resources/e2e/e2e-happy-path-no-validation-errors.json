@@ -6,7 +6,7 @@
     "assessmentDate": "2025-01-01",
     "dateOfCurrentConviction": "2020-01-01",
     "currentOffenceCode": "02700",
-    "totalNumberOfSanctionsForAllOffences": 1,
+    "totalNumberOfSanctionsForAllOffences": 21,
     "ageAtFirstSanction": 40,
     "supervisionStatus": "COMMUNITY",
     "dateAtStartOfFollowupUserInput": "2040-01-01",
@@ -31,6 +31,7 @@
     "totalContactChildSexualSanctions": 5,
     "totalNonContactSexualOffences": 5,
     "totalIndecentImageSanctions": 5,
+    "dateOfMostRecentSexualOffence": "1994-01-01",
     "isCurrentlyOfNoFixedAbodeOrTransientAccommodation": true,
     "workRelatedSkills": "SIGNIFICANT_PROBLEMS",
     "problemsWithReadingWritingNumeracy": "SIGNIFICANT_PROBLEMS",
@@ -116,21 +117,21 @@
         "modelVersion": "1.0",
         "thresholdsVersion": "1.0",
         "output": {
-          "band": "MEDIUM",
-          "score": 66.1
+          "band": "VERY_HIGH",
+          "score": 97.46
         },
         "featureValues": {
           "twoYearInterceptWeight": 3.83654148692014,
           "ageGenderPolynomialWeight": -0.054695587536117,
           "genderWeight": 0,
           "offenceGroupWeight": 0.0971157179525287,
-          "firstSanctionWeight": -3.39824378336932,
+          "firstSanctionWeight": 0,
           "secondSanctionWeight": 0,
-          "totalNumberOfSanctionsForAllOffencesWeight": -0.0030262875646805,
+          "totalNumberOfSanctionsForAllOffencesWeight": -0.0635520388582905,
           "secondSanctionGapWeight": 0,
           "offenceFreeMonthsWeight": 0,
-          "copasScore": 0,
-          "copasScoreSquared": 0,
+          "copasScore": -0.2659863015992064,
+          "copasScoreSquared": 0.0036577521763939956,
           "suitableAccommodationWeight": 0.0,
           "unemployedWeight": 0,
           "liveInRelationshipWeight": 0,
@@ -152,7 +153,7 @@
           "cannabisUsageWeight": 0,
           "steroidUsageWeight": 0,
           "otherDrugUsageWeight": 0,
-          "totalWeight": 0.6677500686779753
+          "totalWeight": 3.646023833378344
         },
         "validationErrors": []
       },
@@ -162,24 +163,24 @@
         "modelVersion": "1.0",
         "thresholdsVersion": "1.0",
         "output": {
-          "band": "LOW",
-          "score": 24.15
+          "band": "VERY_HIGH",
+          "score": 89.75
         },
         "featureValues": {
           "twoYearInterceptWeight": 1.81687448362791,
           "ageGenderPolynomialWeight": -0.0366554758126667,
           "genderWeight": 0,
           "offenceGroupWeight": 0,
-          "firstSanctionWeight": -1.84616323808687,
+          "firstSanctionWeight": 0,
           "secondSanctionWeight": 0,
-          "totalNumberOfSanctionsForAllOffencesWeight": -0.0068338285932122,
+          "totalNumberOfSanctionsForAllOffencesWeight": -0.1435104004574562,
           "neverViolentWeight": 0,
           "onceViolentWeight": 0.158357795142317,
           "totalNumberOfViolentSanctionsWeight": 0.0143780957599777,
           "secondSanctionGapWeight": 0,
           "offenceFreeMonthsWeight": 0,
-          "copasScore": 0,
-          "copasViolentOffencesScore": -1.4184288873795037,
+          "copasScore": 0.33535289259304696,
+          "copasViolentOffencesScore": -0.14874704026730798,
           "suitableAccommodationWeight": 0.0,
           "unemployedWeight": 0,
           "liveInRelationshipWeight": 0,
@@ -201,7 +202,7 @@
           "cannabisUsageWeight": 0,
           "steroidUsageWeight": 0,
           "otherDrugUsageWeight": 0,
-          "totalWeight": -1.1444481942112128
+          "totalWeight": 2.170073211716656
         },
         "validationErrors": []
       },
@@ -211,22 +212,22 @@
         "modelVersion": "1.0",
         "thresholdsVersion": "1.0",
         "output": {
-          "band": "HIGH",
-          "pointScore": 30,
-          "score": 2.11,
+          "band": "VERY_HIGH",
+          "pointScore": 36,
+          "score": 5.31,
           "femaleVersion": false,
           "hasSexualOffenceHistory": true,
           "riskBandReductionApplied": false
         },
         "featureValues": {
-          "totalContactAdultSexualSanctionsWeight" : 15,
-          "totalContactChildSexualSanctionsWeight" : 9,
-          "totalNonContactSexualOffencesWeight" : 6,
-          "ageAtStartOfFollowUpWeight" : 0,
-          "ageAtLastSanctionForSexualOffenceWeight" : 0,
-          "totalNumberOfSanctionsForAllOffencesWeight" : 0,
-          "currentOffenceAgainstVictimStrangerWeight" : 0,
-          "totalWeight" : 30
+          "totalContactAdultSexualSanctionsWeight": 15,
+          "totalContactChildSexualSanctionsWeight": 9,
+          "totalNonContactSexualOffencesWeight": 6,
+          "ageAtStartOfFollowUpWeight": 0,
+          "ageAtLastSanctionForSexualOffenceWeight": 0,
+          "totalNumberOfSanctionsForAllOffencesWeight": 6,
+          "currentOffenceAgainstVictimStrangerWeight": 0,
+          "totalWeight": 36
         },
         "validationErrors": []
       },
@@ -238,8 +239,8 @@
         "output": {
           "band": "HIGH",
           "score": 10.31,
-          "femaleVersion" : false,
-          "hasSexualOffenceHistory" : true
+          "femaleVersion": false,
+          "hasSexualOffenceHistory": true
         },
         "featureValues": {
           "imagesAndIndirectContactWeight": 0.1031
@@ -252,20 +253,20 @@
         "modelVersion": "1.0",
         "thresholdsVersion": "1.0",
         "output": {
-          "band": "MEDIUM",
-          "score": 1.59
+          "band": "VERY_HIGH",
+          "score": 13.06
         },
         "featureValues": {
           "twoYearInterceptWeight": -1.70588696906607,
           "ageGenderPolynomialWeight": -0.0467502761404191,
           "genderWeight": 0,
           "offenceGroupWeight": 0,
-          "firstSanctionWeight": -2.26703484992352,
+          "firstSanctionWeight": 0,
           "secondSanctionWeight": 0,
-          "totalNumberOfSanctionsForAllOffencesWeight": -0.025992075782348,
+          "totalNumberOfSanctionsForAllOffencesWeight": -0.545833591429308,
           "secondSanctionGapWeight": 0,
           "offenceFreeMonthsWeight": 0,
-          "copasScore": 0,
+          "copasScore": 0.480207029074203,
           "neverViolentWeight": 0,
           "onceViolentWeight": 0.077746849480619,
           "violentSanctionsWeight": 0.006532999224634,
@@ -285,7 +286,7 @@
           "pastNonFirearmWeaponOffenceWeight": 0,
           "pastCriminalDamageOffenceWeight": 0,
           "pastArsonOffenceWeight": 0,
-          "totalWeight": -4.123202212959468
+          "totalWeight": -1.8958018496087048
         },
         "validationErrors": []
       },
@@ -296,7 +297,7 @@
         "thresholdsVersion": "1.0",
         "output": {
           "band": "HIGH",
-          "overallScore": 14.01,
+          "overallScore": 28.68,
           "femaleVersion": false,
           "hasSexualOffenceHistory": true,
           "componentScores": {
@@ -306,22 +307,22 @@
               "modelVersion": "1.0",
               "thresholdsVersion": "1.0",
               "output": {
-                "band": "HIGH",
-                "pointScore": 30,
-                "score": 2.11,
+                "band": "VERY_HIGH",
+                "pointScore": 36,
+                "score": 5.31,
                 "femaleVersion": false,
                 "hasSexualOffenceHistory": true,
                 "riskBandReductionApplied": false
               },
               "featureValues": {
-                "totalContactAdultSexualSanctionsWeight" : 15,
-                "totalContactChildSexualSanctionsWeight" : 9,
-                "totalNonContactSexualOffencesWeight" : 6,
-                "ageAtStartOfFollowUpWeight" : 0,
-                "ageAtLastSanctionForSexualOffenceWeight" : 0,
-                "totalNumberOfSanctionsForAllOffencesWeight" : 0,
-                "currentOffenceAgainstVictimStrangerWeight" : 0,
-                "totalWeight" : 30
+                "totalContactAdultSexualSanctionsWeight": 15,
+                "totalContactChildSexualSanctionsWeight": 9,
+                "totalNonContactSexualOffencesWeight": 6,
+                "ageAtStartOfFollowUpWeight": 0,
+                "ageAtLastSanctionForSexualOffenceWeight": 0,
+                "totalNumberOfSanctionsForAllOffencesWeight": 6,
+                "currentOffenceAgainstVictimStrangerWeight": 0,
+                "totalWeight": 36
               },
               "validationErrors": []
             },
@@ -333,8 +334,8 @@
               "output": {
                 "band": "HIGH",
                 "score": 10.31,
-                "femaleVersion" : false,
-                "hasSexualOffenceHistory" : true
+                "femaleVersion": false,
+                "hasSexualOffenceHistory": true
               },
               "featureValues": {
                 "imagesAndIndirectContactWeight": 0.1031
@@ -347,20 +348,20 @@
               "modelVersion": "1.0",
               "thresholdsVersion": "1.0",
               "output": {
-                "band": "MEDIUM",
-                "score": 1.59
+                "band": "VERY_HIGH",
+                "score": 13.06
               },
               "featureValues": {
                 "twoYearInterceptWeight": -1.70588696906607,
                 "ageGenderPolynomialWeight": -0.0467502761404191,
                 "genderWeight": 0,
                 "offenceGroupWeight": 0,
-                "firstSanctionWeight": -2.26703484992352,
+                "firstSanctionWeight": 0,
                 "secondSanctionWeight": 0,
-                "totalNumberOfSanctionsForAllOffencesWeight": -0.025992075782348,
+                "totalNumberOfSanctionsForAllOffencesWeight": -0.545833591429308,
                 "secondSanctionGapWeight": 0,
                 "offenceFreeMonthsWeight": 0,
-                "copasScore": 0,
+                "copasScore": 0.480207029074203,
                 "neverViolentWeight": 0,
                 "onceViolentWeight": 0.077746849480619,
                 "violentSanctionsWeight": 0.006532999224634,
@@ -380,7 +381,7 @@
                 "pastNonFirearmWeaponOffenceWeight": 0,
                 "pastCriminalDamageOffenceWeight": 0,
                 "pastArsonOffenceWeight": 0,
-                "totalWeight": -4.123202212959468
+                "totalWeight": -1.8958018496087048
               },
               "validationErrors": []
             }

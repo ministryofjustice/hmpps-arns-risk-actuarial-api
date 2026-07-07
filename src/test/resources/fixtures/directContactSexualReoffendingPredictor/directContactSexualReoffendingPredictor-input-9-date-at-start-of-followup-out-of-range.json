@@ -3,16 +3,17 @@
     "version": "V1_0",
     "gender": "MALE",
     "dateOfBirth": "1980-01-01",
-    "totalNumberOfSanctionsForAllOffences": 1,
+    "totalNumberOfSanctionsForAllOffences": 11,
     "supervisionStatus": "COMMUNITY",
-    "dateAtStartOfFollowupCalculated": "2027-01-01",
+    "dateAtStartOfFollowupCalculated": "2090-01-01",
     "totalNumberOfViolentSanctions": 1,
-    "hasEverCommittedSexualOffence": false,
+    "hasEverCommittedSexualOffence": true,
     "isCurrentOffenceSexuallyMotivated": true,
     "totalContactAdultSexualSanctions": 1,
     "totalContactChildSexualSanctions": 2,
     "totalNonContactSexualOffences": 3,
-    "totalIndecentImageSanctions": 4
+    "totalIndecentImageSanctions": 4,
+    "dateOfMostRecentSexualOffence": "1994-01-01"
   },
   "response": {
     "algorithm": "DIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR",
@@ -30,13 +31,10 @@
     "featureValues": {},
     "validationErrors": [
       {
-        "type": "SEXUAL_OFFENDING_INCONSISTENT_INPUT",
-        "message": "No sexual motivation/offending identified - additional fields should not be provided",
+        "type": "DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE",
+        "message": "Age at date at start of followup must be more than 10 and less than 110",
         "fields": [
-          "totalContactAdultSexualSanctions",
-          "totalContactChildSexualSanctions",
-          "totalNonContactSexualOffences",
-          "totalIndecentImageSanctions"
+          "dateAtStartOfFollowupCalculated"
         ]
       }
     ]

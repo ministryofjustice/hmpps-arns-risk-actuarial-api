@@ -30,7 +30,8 @@
     "totalContactAdultSexualSanctions": 0,
     "totalContactChildSexualSanctions": 0,
     "totalNonContactSexualOffences": 0,
-    "totalIndecentImageSanctions": 0
+    "totalIndecentImageSanctions": 0,
+    "dateOfMostRecentSexualOffence": "1994-01-01"
   },
   "response": {
     "algorithm": "RSR",
@@ -59,12 +60,12 @@
           "featureValues": {},
           "validationErrors": [
             {
-              "type": "SEXUAL_OFFENDING_MISSING_COUNTS",
-              "message": "Sexual motivation/offending identified - complete sexual offence counts",
+              "type": "SEXUAL_REOFFENDING_PREDICTOR_NO_SANCTIONS",
+              "message": "If hasEverCommittedSexualOffence is true, at least one sexual sanction/offence must be more than 0",
               "fields": [
+                "totalIndecentImageSanctions",
                 "totalContactAdultSexualSanctions",
                 "totalContactChildSexualSanctions",
-                "totalIndecentImageSanctions",
                 "totalNonContactSexualOffences"
               ]
             }
@@ -84,7 +85,7 @@
           "featureValues": {},
           "validationErrors": [
             {
-              "type": "IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR_NO_SANCTIONS",
+              "type": "SEXUAL_REOFFENDING_PREDICTOR_NO_SANCTIONS",
               "message": "If hasEverCommittedSexualOffence is true, at least one sexual sanction/offence must be more than 0",
               "fields": [
                 "totalIndecentImageSanctions",

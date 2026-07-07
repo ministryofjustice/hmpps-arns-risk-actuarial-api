@@ -7,12 +7,12 @@
     "supervisionStatus": "COMMUNITY",
     "dateAtStartOfFollowupCalculated": "2027-01-01",
     "totalNumberOfViolentSanctions": 1,
-    "hasEverCommittedSexualOffence": true,
+    "hasEverCommittedSexualOffence": false,
     "isCurrentOffenceSexuallyMotivated": true,
-    "totalContactAdultSexualSanctions": null,
-    "totalContactChildSexualSanctions": null,
-    "totalNonContactSexualOffences": null,
-    "totalIndecentImageSanctions": null
+    "totalContactAdultSexualSanctions": 1,
+    "totalContactChildSexualSanctions": 2,
+    "totalNonContactSexualOffences": 3,
+    "totalIndecentImageSanctions": 4
   },
   "response": {
     "algorithm": "DIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR",
@@ -30,13 +30,14 @@
     "featureValues": {},
     "validationErrors": [
       {
-        "type": "SEXUAL_OFFENDING_MISSING_COUNTS",
-        "message": "Sexual motivation/offending identified - complete sexual offence counts",
+        "type": "SEXUAL_REOFFENDING_PREDICTOR_INCONSISTENT_INPUT",
+        "message": "hasEverCommittedSexualOffence cannot be null or false when sexual sanctions exist",
         "fields": [
+          "hasEverCommittedSexualOffence",
+          "totalIndecentImageSanctions",
           "totalContactAdultSexualSanctions",
           "totalContactChildSexualSanctions",
-          "totalNonContactSexualOffences",
-          "totalIndecentImageSanctions"
+          "totalNonContactSexualOffences"
         ]
       }
     ]

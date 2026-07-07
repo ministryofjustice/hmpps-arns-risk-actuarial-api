@@ -2,11 +2,11 @@
   "request": {
     "version": "V1_0",
     "gender": "MALE",
-    "totalIndecentImageSanctions": null,
-    "totalContactAdultSexualSanctions": null,
-    "totalContactChildSexualSanctions": null,
+    "totalIndecentImageSanctions": 2,
+    "totalContactAdultSexualSanctions": 0,
+    "totalContactChildSexualSanctions": 0,
     "totalNonContactSexualOffences": null,
-    "hasEverCommittedSexualOffence": true
+    "hasEverCommittedSexualOffence": false
   },
   "response": {
     "algorithm": "IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR",
@@ -22,13 +22,11 @@
     "featureValues": {},
     "validationErrors": [
       {
-        "type": "MISSING_MANDATORY_INPUT",
-        "message": "Mandatory input field(s) missing",
+        "type": "SEXUAL_REOFFENDING_PREDICTOR_INCONSISTENT_INPUT",
+        "message": "hasEverCommittedSexualOffence cannot be null or false when sexual sanctions exist",
         "fields": [
-          "totalIndecentImageSanctions",
-          "totalContactAdultSexualSanctions",
-          "totalContactChildSexualSanctions",
-          "totalNonContactSexualOffences"
+          "hasEverCommittedSexualOffence",
+          "totalIndecentImageSanctions"
         ]
       }
     ]

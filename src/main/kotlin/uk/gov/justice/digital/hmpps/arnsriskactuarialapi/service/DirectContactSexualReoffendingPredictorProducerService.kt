@@ -19,33 +19,46 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.DirectContactSexualReoffendingPredictorTransformationHelper.getTotalContactChildSexualSanctionsWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.DirectContactSexualReoffendingPredictorTransformationHelper.getTotalNonContactSexualOffencesWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.DirectContactSexualReoffendingPredictorTransformationHelper.getTotalNumberOfSanctionsForAllOffencesWeight
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.validateOSP
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.DirectContactSexualReoffendingPredictorValidator
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.getAgeAtDate
 import java.math.BigDecimal
 
 @Service
-class DirectContactSexualReoffendingPredictorRiskProducerService : BaseRiskScoreProducer() {
+class DirectContactSexualReoffendingPredictorProducerService(val inputValidator: DirectContactSexualReoffendingPredictorValidator) : BaseRiskScoreProducer() {
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
-    val errors = validateOSP(request, true)
+    val errors = inputValidator.validateStatic(request)
 
     if (errors.isNotEmpty()) {
       return applyErrorsToContext(context, errors)
     }
 
+    return context.apply {
+      directContactSexualReoffendingPredictor = calculateAndBuildPredictor(request)
+    }
+  }
+
+  override fun applyErrorsToContext(
+    context: RiskScoreContext,
+    validationErrors: List<ValidationError>,
+  ): RiskScoreContext = context.apply {
+    directContactSexualReoffendingPredictor = DirectContactSexualReoffendingPredictorObject(null, null, null, null, null, null, validationErrors, null)
+  }
+
+  private fun calculateAndBuildPredictor(
+    request: RiskScoreRequest,
+  ): DirectContactSexualReoffendingPredictorObject {
     if (Gender.FEMALE == request.gender || request.hasEverCommittedSexualOffence == false) {
-      return context.apply {
-        directContactSexualReoffendingPredictor = DirectContactSexualReoffendingPredictorObject(
-          RiskBand.NOT_APPLICABLE,
-          0.0,
-          null,
-          null,
-          request.gender == Gender.FEMALE,
-          request.hasEverCommittedSexualOffence,
-          listOf(),
-          null,
-        )
-      }
+      return DirectContactSexualReoffendingPredictorObject(
+        RiskBand.NOT_APPLICABLE,
+        0.0,
+        null,
+        null,
+        request.gender == Gender.FEMALE,
+        request.hasEverCommittedSexualOffence,
+        listOf(),
+        null,
+      )
     }
 
     val validRequest = DirectContactSexualReoffendingPredictorRequestValidated(
@@ -64,22 +77,8 @@ class DirectContactSexualReoffendingPredictorRiskProducerService : BaseRiskScore
       request.mostRecentOffenceDate,
       request.assessmentDate,
     )
-    return context.apply {
-      directContactSexualReoffendingPredictor = calculateAndBuildPredictor(validRequest)
-    }
-  }
 
-  override fun applyErrorsToContext(
-    context: RiskScoreContext,
-    validationErrors: List<ValidationError>,
-  ): RiskScoreContext = context.apply {
-    directContactSexualReoffendingPredictor = DirectContactSexualReoffendingPredictorObject(null, null, null, null, null, null, validationErrors, null)
-  }
-
-  private fun calculateAndBuildPredictor(
-    request: DirectContactSexualReoffendingPredictorRequestValidated,
-  ): DirectContactSexualReoffendingPredictorObject {
-    val featureValues = buildFeatureValuesMap(request)
+    val featureValues = buildFeatureValuesMap(validRequest)
     val directContactSexualReoffendingPredictor64PointScore = featureValues[FeatureValue.TOTAL_WEIGHT.outputName]!!.toInt()
 
     if (directContactSexualReoffendingPredictor64PointScore == 0) {
@@ -88,7 +87,7 @@ class DirectContactSexualReoffendingPredictorRiskProducerService : BaseRiskScore
         getScore(directContactSexualReoffendingPredictor64PointScore),
         directContactSexualReoffendingPredictor64PointScore,
         null,
-        request.gender == Gender.FEMALE,
+        false,
         request.hasEverCommittedSexualOffence,
         emptyList(),
         featureValues,
@@ -96,12 +95,12 @@ class DirectContactSexualReoffendingPredictorRiskProducerService : BaseRiskScore
     } else {
       val directContactSexualReoffendingPredictorBand = getBand(directContactSexualReoffendingPredictor64PointScore)
       val directContactSexualReoffendingPredictorRiskReduction = getRiskReduction(
-        request.gender,
-        request.supervisionStatus,
-        request.mostRecentOffenceDate,
-        request.dateOfMostRecentSexualOffence,
-        request.dateAtStartOfFollowup,
-        request.assessmentDate,
+        validRequest.gender,
+        validRequest.supervisionStatus,
+        validRequest.mostRecentOffenceDate,
+        validRequest.dateOfMostRecentSexualOffence,
+        validRequest.dateAtStartOfFollowup,
+        validRequest.assessmentDate,
         directContactSexualReoffendingPredictorBand,
       )
       return DirectContactSexualReoffendingPredictorObject(
@@ -109,7 +108,7 @@ class DirectContactSexualReoffendingPredictorRiskProducerService : BaseRiskScore
         getScore(directContactSexualReoffendingPredictor64PointScore),
         directContactSexualReoffendingPredictor64PointScore,
         directContactSexualReoffendingPredictorRiskReduction,
-        request.gender == Gender.FEMALE,
+        false,
         request.hasEverCommittedSexualOffence,
         emptyList(),
         featureValues,
