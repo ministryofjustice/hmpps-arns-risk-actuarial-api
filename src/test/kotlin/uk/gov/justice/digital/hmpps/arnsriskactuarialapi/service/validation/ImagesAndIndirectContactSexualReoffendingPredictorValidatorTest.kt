@@ -30,42 +30,45 @@ class ImagesAndIndirectContactSexualReoffendingPredictorValidatorTest {
   )
 
   @Test
-  fun `test validateStatic with missing static required fields`() {
+  fun `test validateStatic with valid request`() {
     // Assign
-    val request = RiskScoreRequest()
-
-    val validationError =
-      ValidationErrorType.MISSING_MANDATORY_INPUT.asError(listOf("gender", "hasEverCommittedSexualOffence"))
-
-    whenever(
-      commonValidator.validateRequiredFields(
-        request,
-        expectedStaticRequiredFields,
-        StaticOrDynamic.STATIC,
-      ),
-    ).thenReturn(validationError)
+    val request = RiskScoreRequest(
+      gender = Gender.MALE,
+      hasEverCommittedSexualOffence = true,
+      totalIndecentImageSanctions = 1,
+      totalContactAdultSexualSanctions = 1,
+      totalContactChildSexualSanctions = 1,
+      totalNonContactSexualOffences = 1,
+    )
 
     // Act
-    val errors = validator.validateStatic(request)
+    val result = validator.validateStatic(request)
 
     // Assert
-    assertEquals(listOf(validationError), errors)
+    assertEquals(emptyList(), result)
     verify(commonValidator, times(1)).validateRequiredFields(
       request,
       expectedStaticRequiredFields,
       StaticOrDynamic.STATIC,
     )
+    verify(commonValidator, times(1)).validateSecondarySexualFields(request)
+    verify(commonValidator, times(1)).validateSexualSanctionsCount(request)
+    verify(commonValidator, times(1)).checkForExistingSexualFields(request)
+    verifyNoMoreInteractions(commonValidator)
   }
 
   @Test
-  fun `test validateStatic with missing sexual reoffending predictor required fields when hasEverCommittedSexualOffence true`() {
+  fun `test validateStatic with errors`() {
     // Assign
-    val request = RiskScoreRequest(
-      gender = Gender.MALE,
-      hasEverCommittedSexualOffence = true,
-    )
+    val request = RiskScoreRequest()
 
     val expectedErrors = listOf(
+      ValidationErrorType.MISSING_MANDATORY_INPUT.asError(
+        listOf(
+          "gender",
+          "hasEverCommittedSexualOffence",
+        ),
+      ),
       ValidationErrorType.MISSING_MANDATORY_INPUT.asError(
         listOf(
           "totalIndecentImageSanctions",
@@ -74,49 +77,14 @@ class ImagesAndIndirectContactSexualReoffendingPredictorValidatorTest {
           "totalNonContactSexualOffences",
         ),
       ),
-    )
-
-    // Mock
-    whenever(
-      commonValidator.validateRequiredFields(
-        request,
-        expectedStaticRequiredFields,
-        StaticOrDynamic.STATIC,
+      ValidationErrorType.SEXUAL_REOFFENDING_PREDICTOR_NO_SANCTIONS.asError(
+        listOf(
+          "totalIndecentImageSanctions",
+          "totalContactAdultSexualSanctions",
+          "totalContactChildSexualSanctions",
+          "totalNonContactSexualOffences",
+        ),
       ),
-    ).thenReturn(null)
-    whenever(
-      commonValidator.validateSexualReoffendingPredictorFields(request),
-    ).thenReturn(expectedErrors)
-
-    // Act
-    val errors = validator.validateStatic(request)
-
-    // Assert
-    assertEquals(expectedErrors, errors)
-    verify(commonValidator, times(1)).validateRequiredFields(
-      request,
-      expectedStaticRequiredFields,
-      StaticOrDynamic.STATIC,
-    )
-    verify(commonValidator, times(1)).validateSexualReoffendingPredictorFields(
-      request,
-    )
-    verifyNoMoreInteractions(commonValidator)
-  }
-
-  @Test
-  fun `test validateStatic with zero sexual reoffending predictor required fields when hasEverCommittedSexualOffence true`() {
-    // Assert
-    val request = RiskScoreRequest(
-      gender = Gender.MALE,
-      hasEverCommittedSexualOffence = true,
-      totalIndecentImageSanctions = 0,
-      totalContactAdultSexualSanctions = 0,
-      totalContactChildSexualSanctions = 0,
-      totalNonContactSexualOffences = 0,
-    )
-
-    val expectedErrors = listOf(
       ValidationErrorType.SEXUAL_REOFFENDING_PREDICTOR_INCONSISTENT_INPUT.asError(
         listOf(
           "hasEverCommittedSexualOffence",
@@ -128,34 +96,37 @@ class ImagesAndIndirectContactSexualReoffendingPredictorValidatorTest {
       ),
     )
 
-    // Mock
     whenever(
       commonValidator.validateRequiredFields(
         request,
         expectedStaticRequiredFields,
         StaticOrDynamic.STATIC,
       ),
-    ).thenReturn(null)
+    ).thenReturn(expectedErrors[0])
     whenever(
-      commonValidator.validateSexualReoffendingPredictorFields(
-        request,
-      ),
-    ).thenReturn(expectedErrors)
+      commonValidator.validateSecondarySexualFields(request),
+    ).thenReturn(expectedErrors[1])
+    whenever(
+      commonValidator.validateSexualSanctionsCount(request),
+    ).thenReturn(expectedErrors[2])
+    whenever(
+      commonValidator.checkForExistingSexualFields(request),
+    ).thenReturn(expectedErrors[3])
 
     // Act
     val errors = validator.validateStatic(request)
 
     // Assert
     assertEquals(expectedErrors, errors)
+
     verify(commonValidator, times(1)).validateRequiredFields(
       request,
       expectedStaticRequiredFields,
       StaticOrDynamic.STATIC,
     )
-    verify(commonValidator, times(1)).validateSexualReoffendingPredictorFields(
-      request,
-    )
-    verifyNoMoreInteractions(commonValidator)
+    verify(commonValidator, times(1)).validateSecondarySexualFields(request)
+    verify(commonValidator, times(1)).validateSexualSanctionsCount(request)
+    verify(commonValidator, times(1)).checkForExistingSexualFields(request)
     verifyNoMoreInteractions(commonValidator)
   }
 }

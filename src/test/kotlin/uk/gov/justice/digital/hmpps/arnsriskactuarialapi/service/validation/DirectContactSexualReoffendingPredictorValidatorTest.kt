@@ -12,7 +12,6 @@ import org.mockito.kotlin.whenever
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
 import java.time.LocalDate
 import kotlin.test.assertEquals
@@ -36,60 +35,52 @@ class DirectContactSexualReoffendingPredictorValidatorTest {
   )
 
   @Test
-  fun `test validateStatic with missing static required fields`() {
+  fun `test validateStatic with valid request`() {
     // Assign
-    val request = RiskScoreRequest()
-
-    val validationError =
-      ValidationErrorType.MISSING_MANDATORY_INPUT.asError(
-        listOf(
-          "gender",
-          "supervisionStatus",
-          "hasEverCommittedSexualOffence",
-          "dateOfBirth",
-          "dateAtStartOfFollowupCalculated",
-          "totalNumberOfSanctionsForAllOffences",
-        ),
-      )
-
-    whenever(
-      commonValidator.validateRequiredFields(
-        request,
-        expectedStaticRequiredFields,
-        StaticOrDynamic.STATIC,
-      ),
-    ).thenReturn(validationError)
+    val request = RiskScoreRequest(
+      gender = Gender.MALE,
+      hasEverCommittedSexualOffence = true,
+      totalIndecentImageSanctions = 1,
+      totalContactAdultSexualSanctions = 1,
+      totalContactChildSexualSanctions = 1,
+      totalNonContactSexualOffences = 1,
+      totalNumberOfSanctionsForAllOffences = 4,
+      dateOfBirth = LocalDate.of(1980, 1, 1),
+      dateOfMostRecentSexualOffence = LocalDate.of(2021, 1, 1),
+      dateAtStartOfFollowupCalculated = LocalDate.of(2021, 1, 1),
+    )
 
     // Act
-    val errors = validator.validateStatic(request)
+    val result = validator.validateStatic(request)
 
     // Assert
-    assertEquals(listOf(validationError), errors)
+    assertEquals(emptyList(), result)
     verify(commonValidator, times(1)).validateRequiredFields(
       request,
       expectedStaticRequiredFields,
       StaticOrDynamic.STATIC,
     )
+    verify(commonValidator, times(1)).validateSecondarySexualFields(request)
+    verify(commonValidator, times(1)).validateTotalNumberOfSanctionsForAllOffencesSexualPredictor(request)
+    verify(commonValidator, times(1)).validateSexualSanctionsCount(request)
+    verify(commonValidator, times(1)).validateDateOfMostRecentSexualOffenceAgainstDateOfBirth(request)
+    verify(commonValidator, times(1)).validateDateAtStartOfFollowupAgeSexualPredictor(request)
+    verify(commonValidator, times(1)).checkForExistingSexualFields(request)
+    verifyNoMoreInteractions(commonValidator)
   }
 
   @Test
-  fun `test validateStatic with missing sexual reoffending predictor required fields when hasEverCommittedSexualOffence true`() {
+  fun `test validateStatic with errors`() {
     // Assign
-    val request = RiskScoreRequest(
-      gender = Gender.MALE,
-      dateOfBirth = LocalDate.of(1980, 1, 1),
-      hasEverCommittedSexualOffence = true,
-      totalContactAdultSexualSanctions = null,
-      totalContactChildSexualSanctions = null,
-      totalNonContactSexualOffences = null,
-      totalIndecentImageSanctions = null,
-      dateAtStartOfFollowupCalculated = LocalDate.of(2030, 1, 1),
-      dateOfMostRecentSexualOffence = null,
-      totalNumberOfSanctionsForAllOffences = 1,
-      supervisionStatus = SupervisionStatus.COMMUNITY,
-    )
+    val request = RiskScoreRequest()
 
     val expectedErrors = listOf(
+      ValidationErrorType.MISSING_MANDATORY_INPUT.asError(
+        listOf(
+          "gender",
+          "hasEverCommittedSexualOffence",
+        ),
+      ),
       ValidationErrorType.MISSING_MANDATORY_INPUT.asError(
         listOf(
           "totalIndecentImageSanctions",
@@ -98,56 +89,29 @@ class DirectContactSexualReoffendingPredictorValidatorTest {
           "totalNonContactSexualOffences",
         ),
       ),
-    )
-
-    // Mock
-    whenever(
-      commonValidator.validateRequiredFields(
-        request,
-        expectedStaticRequiredFields,
-        StaticOrDynamic.STATIC,
+      ValidationErrorType.TOTAL_NUMBER_OF_SANCTIONS_OUT_OF_RANGE.asError(
+        listOf(
+          "totalNumberOfSanctionsForAllOffences",
+        ),
       ),
-    ).thenReturn(null)
-    whenever(
-      commonValidator.validateSexualReoffendingPredictorFields(request, true),
-    ).thenReturn(expectedErrors)
-
-    // Act
-    val errors = validator.validateStatic(request)
-
-    // Assert
-    assertEquals(expectedErrors, errors)
-    verify(commonValidator, times(1)).validateRequiredFields(
-      request,
-      expectedStaticRequiredFields,
-      StaticOrDynamic.STATIC,
-    )
-    verify(commonValidator, times(1)).validateSexualReoffendingPredictorFields(
-      request,
-      true,
-    )
-    verifyNoMoreInteractions(commonValidator)
-  }
-
-  @Test
-  fun `test validateStatic with zero sexual reoffending predictor required fields when hasEverCommittedSexualOffence true`() {
-    // Assert
-    val request = RiskScoreRequest(
-      gender = Gender.MALE,
-      dateOfBirth = LocalDate.of(1980, 1, 1),
-      hasEverCommittedSexualOffence = true,
-      totalContactAdultSexualSanctions = 0,
-      totalContactChildSexualSanctions = 0,
-      totalNonContactSexualOffences = 0,
-      totalIndecentImageSanctions = 0,
-      dateAtStartOfFollowupCalculated = LocalDate.of(2030, 1, 1),
-      dateOfMostRecentSexualOffence = null,
-      totalNumberOfSanctionsForAllOffences = 1,
-      supervisionStatus = SupervisionStatus.COMMUNITY,
-      mostRecentOffenceDate = null,
-    )
-
-    val expectedErrors = listOf(
+      ValidationErrorType.TOTAL_NUMBER_OF_SEXUAL_SANCTIONS_OUT_OF_RANGE.asError(
+        listOf(
+          "totalIndecentImageSanctions",
+          "totalContactAdultSexualSanctions",
+          "totalContactChildSexualSanctions",
+          "totalNonContactSexualOffences",
+        ),
+      ),
+      ValidationErrorType.DATE_OF_MOST_RECENT_SEXUAL_OFFENCE_BEFORE_DATE_OF_BIRTH.asError(
+        listOf(
+          "dateOfMostRecentSexualOffence",
+        ),
+      ),
+      ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE.asError(
+        listOf(
+          "dateAtStartOfFollowupCalculated",
+        ),
+      ),
       ValidationErrorType.SEXUAL_REOFFENDING_PREDICTOR_INCONSISTENT_INPUT.asError(
         listOf(
           "hasEverCommittedSexualOffence",
@@ -159,36 +123,49 @@ class DirectContactSexualReoffendingPredictorValidatorTest {
       ),
     )
 
-    // Mock
     whenever(
       commonValidator.validateRequiredFields(
         request,
         expectedStaticRequiredFields,
         StaticOrDynamic.STATIC,
       ),
-    ).thenReturn(null)
+    ).thenReturn(expectedErrors[0])
     whenever(
-      commonValidator.validateSexualReoffendingPredictorFields(
-        request,
-        true,
-      ),
-    ).thenReturn(expectedErrors)
+      commonValidator.validateSecondarySexualFields(request),
+    ).thenReturn(expectedErrors[1])
+    whenever(
+      commonValidator.validateTotalNumberOfSanctionsForAllOffencesSexualPredictor(request),
+    ).thenReturn(expectedErrors[2])
+    whenever(
+      commonValidator.validateSexualSanctionsCount(request),
+    ).thenReturn(expectedErrors[3])
+    whenever(
+      commonValidator.validateDateOfMostRecentSexualOffenceAgainstDateOfBirth(request),
+    ).thenReturn(expectedErrors[4])
+    whenever(
+      commonValidator.validateDateAtStartOfFollowupAgeSexualPredictor(request),
+    ).thenReturn(expectedErrors[5])
+    whenever(
+      commonValidator.checkForExistingSexualFields(request),
+    ).thenReturn(expectedErrors[6])
 
     // Act
     val errors = validator.validateStatic(request)
 
     // Assert
     assertEquals(expectedErrors, errors)
+
     verify(commonValidator, times(1)).validateRequiredFields(
       request,
       expectedStaticRequiredFields,
       StaticOrDynamic.STATIC,
     )
-    verify(commonValidator, times(1)).validateSexualReoffendingPredictorFields(
-      request,
-      true,
-    )
-    verifyNoMoreInteractions(commonValidator)
+    verify(commonValidator, times(1)).validateSecondarySexualFields(request)
+    verify(commonValidator, times(1)).validateTotalNumberOfSanctionsForAllOffencesSexualPredictor(request)
+    verify(commonValidator, times(1)).validateSexualSanctionsCount(request)
+    verify(commonValidator, times(1)).validateDateOfMostRecentSexualOffenceAgainstDateOfBirth(request)
+    verify(commonValidator, times(1)).validateDateAtStartOfFollowupAgeSexualPredictor(request)
+    verify(commonValidator, times(1)).checkForExistingSexualFields(request)
     verifyNoMoreInteractions(commonValidator)
   }
 }

@@ -1,6 +1,12 @@
 {
   "request": {
-    "version": "V1_0"
+    "version": "V1_0",
+    "gender": "MALE",
+    "totalIndecentImageSanctions": 0,
+    "totalContactAdultSexualSanctions": 0,
+    "totalContactChildSexualSanctions": 0,
+    "totalNonContactSexualOffences": 0,
+    "hasEverCommittedSexualOffence": true
   },
   "response": {
     "algorithm": "IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR",
@@ -16,16 +22,8 @@
     "featureValues": {},
     "validationErrors": [
       {
-        "type": "MISSING_MANDATORY_INPUT",
-        "message": "Mandatory input field(s) missing",
-        "fields": [
-          "gender",
-          "hasEverCommittedSexualOffence"
-        ]
-      },
-      {
-        "type": "MISSING_MANDATORY_INPUT",
-        "message": "Mandatory input field(s) missing",
+        "type": "SEXUAL_REOFFENDING_PREDICTOR_NO_SANCTIONS",
+        "message": "If hasEverCommittedSexualOffence is true, at least one sexual sanction/offence must be more than 0",
         "fields": [
           "totalIndecentImageSanctions",
           "totalContactAdultSexualSanctions",

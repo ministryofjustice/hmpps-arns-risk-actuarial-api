@@ -40,6 +40,16 @@
           "dateAtStartOfFollowupCalculated",
           "totalNumberOfSanctionsForAllOffences"
         ]
+      },
+      {
+        "type": "MISSING_MANDATORY_INPUT",
+        "message": "Mandatory input field(s) missing",
+        "fields": [
+          "totalIndecentImageSanctions",
+          "totalContactAdultSexualSanctions",
+          "totalContactChildSexualSanctions",
+          "totalNonContactSexualOffences"
+        ]
       }
     ]
   }

@@ -58,6 +58,16 @@
               "fields": [
                 "hasEverCommittedSexualOffence"
               ]
+            },
+            {
+              "type": "MISSING_MANDATORY_INPUT",
+              "message": "Mandatory input field(s) missing",
+              "fields": [
+                "totalIndecentImageSanctions",
+                "totalContactAdultSexualSanctions",
+                "totalContactChildSexualSanctions",
+                "totalNonContactSexualOffences"
+              ]
             }
           ]
         },
@@ -79,6 +89,16 @@
               "message": "Mandatory input field(s) missing",
               "fields": [
                 "hasEverCommittedSexualOffence"
+              ]
+            },
+            {
+              "type": "MISSING_MANDATORY_INPUT",
+              "message": "Mandatory input field(s) missing",
+              "fields": [
+                "totalIndecentImageSanctions",
+                "totalContactAdultSexualSanctions",
+                "totalContactChildSexualSanctions",
+                "totalNonContactSexualOffences"
               ]
             }
           ]

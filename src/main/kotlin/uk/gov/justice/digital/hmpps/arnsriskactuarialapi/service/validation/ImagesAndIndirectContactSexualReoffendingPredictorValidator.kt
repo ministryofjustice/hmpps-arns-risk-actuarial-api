@@ -7,7 +7,11 @@ import kotlin.reflect.KProperty1
 
 @Component
 class ImagesAndIndirectContactSexualReoffendingPredictorValidator(val commonValidator: CommonValidator) : AbstractActuarialValidator(commonValidator) {
-  override fun validateStaticCustom(request: RiskScoreRequest): List<ValidationError> = commonValidator.validateSexualReoffendingPredictorFields(request)
+  override fun validateStaticCustom(request: RiskScoreRequest): List<ValidationError> = listOfNotNull(
+    commonValidator.validateSecondarySexualFields(request),
+    commonValidator.validateSexualSanctionsCount(request),
+    commonValidator.checkForExistingSexualFields(request),
+  )
 
   override fun validateDynamicCustom(request: RiskScoreRequest): List<ValidationError> {
     // Not applicable
