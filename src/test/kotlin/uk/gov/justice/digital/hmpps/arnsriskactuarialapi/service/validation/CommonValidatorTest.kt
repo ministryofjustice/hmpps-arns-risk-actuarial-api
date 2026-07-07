@@ -1134,56 +1134,55 @@ class CommonValidatorTest {
     )
 
     @JvmStatic
-    fun `test validateTotalNumberOfSanctionsForAllOffencesForSexualPredictor logic data`(): Stream<Arguments> =
-      Stream.of(
-        Arguments.of(
-          RiskScoreRequest(
-            gender = Gender.FEMALE,
-            hasEverCommittedSexualOffence = true,
-          ),
-          null,
+    fun `test validateTotalNumberOfSanctionsForAllOffencesForSexualPredictor logic data`(): Stream<Arguments> = Stream.of(
+      Arguments.of(
+        RiskScoreRequest(
+          gender = Gender.FEMALE,
+          hasEverCommittedSexualOffence = true,
         ),
-        Arguments.of(
-          RiskScoreRequest(
-            gender = Gender.MALE,
-            hasEverCommittedSexualOffence = false,
-          ),
-          null,
+        null,
+      ),
+      Arguments.of(
+        RiskScoreRequest(
+          gender = Gender.MALE,
+          hasEverCommittedSexualOffence = false,
         ),
-        Arguments.of(
-          RiskScoreRequest(
-            gender = Gender.MALE,
-            hasEverCommittedSexualOffence = true,
-            totalNumberOfSanctionsForAllOffences = 1,
-          ),
-          null,
+        null,
+      ),
+      Arguments.of(
+        RiskScoreRequest(
+          gender = Gender.MALE,
+          hasEverCommittedSexualOffence = true,
+          totalNumberOfSanctionsForAllOffences = 1,
         ),
-        Arguments.of(
-          RiskScoreRequest(
-            gender = Gender.MALE,
-            hasEverCommittedSexualOffence = true,
-            totalNumberOfSanctionsForAllOffences = 500,
-          ),
-          null,
+        null,
+      ),
+      Arguments.of(
+        RiskScoreRequest(
+          gender = Gender.MALE,
+          hasEverCommittedSexualOffence = true,
+          totalNumberOfSanctionsForAllOffences = 500,
         ),
-        Arguments.of(
-          RiskScoreRequest(
-            gender = Gender.MALE,
-            hasEverCommittedSexualOffence = true,
-            totalNumberOfSanctionsForAllOffences = 999,
-          ),
-          null,
+        null,
+      ),
+      Arguments.of(
+        RiskScoreRequest(
+          gender = Gender.MALE,
+          hasEverCommittedSexualOffence = true,
+          totalNumberOfSanctionsForAllOffences = 999,
         ),
-        Arguments.of(
-          RiskScoreRequest(
-            gender = Gender.MALE,
-            hasEverCommittedSexualOffence = true,
-            totalNumberOfSanctionsForAllOffences = 1000,
-          ),
-          ValidationErrorType.TOTAL_NUMBER_OF_SANCTIONS_OUT_OF_RANGE.asError(
-            listOf("totalNumberOfSanctionsForAllOffences"),
-          ),
+        null,
+      ),
+      Arguments.of(
+        RiskScoreRequest(
+          gender = Gender.MALE,
+          hasEverCommittedSexualOffence = true,
+          totalNumberOfSanctionsForAllOffences = 1000,
         ),
-      )
+        ValidationErrorType.TOTAL_NUMBER_OF_SANCTIONS_OUT_OF_RANGE.asError(
+          listOf("totalNumberOfSanctionsForAllOffences"),
+        ),
+      ),
+    )
   }
 }
