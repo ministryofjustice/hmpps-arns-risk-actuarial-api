@@ -34,11 +34,21 @@
         "message": "Mandatory input field(s) missing",
         "fields": [
           "gender",
+          "supervisionStatus",
           "hasEverCommittedSexualOffence",
           "dateOfBirth",
           "dateAtStartOfFollowupCalculated",
-          "totalNumberOfSanctionsForAllOffences",
-          "supervisionStatus"
+          "totalNumberOfSanctionsForAllOffences"
+        ]
+      },
+      {
+        "type": "MISSING_MANDATORY_INPUT",
+        "message": "Mandatory input field(s) missing",
+        "fields": [
+          "totalIndecentImageSanctions",
+          "totalContactAdultSexualSanctions",
+          "totalContactChildSexualSanctions",
+          "totalNonContactSexualOffences"
         ]
       }
     ]

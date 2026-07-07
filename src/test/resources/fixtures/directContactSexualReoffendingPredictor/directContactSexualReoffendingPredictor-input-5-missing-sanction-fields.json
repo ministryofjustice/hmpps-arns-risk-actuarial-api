@@ -2,22 +2,31 @@
   "request": {
     "version": "V1_0",
     "gender": "MALE",
-    "totalIndecentImageSanctions": null,
+    "dateOfBirth": "1980-01-01",
+    "dateOfMostRecentSexualOffence": "1995-01-01",
+    "totalNumberOfSanctionsForAllOffences": 1,
+    "supervisionStatus": "COMMUNITY",
+    "dateAtStartOfFollowupCalculated": "2027-01-01",
+    "totalNumberOfViolentSanctions": 1,
+    "hasEverCommittedSexualOffence": true,
+    "isCurrentOffenceSexuallyMotivated": true,
     "totalContactAdultSexualSanctions": null,
     "totalContactChildSexualSanctions": null,
     "totalNonContactSexualOffences": null,
-    "hasEverCommittedSexualOffence": true
+    "totalIndecentImageSanctions": null
   },
   "response": {
-    "algorithm": "IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR",
+    "algorithm": "DIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR",
     "type": "STATIC",
     "modelVersion": "1.0",
     "thresholdsVersion": "1.0",
     "output": {
       "band": null,
+      "pointScore": null,
       "score": null,
       "femaleVersion": null,
-      "hasSexualOffenceHistory": null
+      "hasSexualOffenceHistory": null,
+      "riskBandReductionApplied": null
     },
     "featureValues": {},
     "validationErrors": [

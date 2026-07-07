@@ -1,0 +1,43 @@
+{
+  "request": {
+    "version": "V1_0",
+    "gender": "MALE",
+    "dateOfBirth": "1980-01-01",
+    "totalNumberOfSanctionsForAllOffences": 5,
+    "supervisionStatus": "COMMUNITY",
+    "dateAtStartOfFollowupCalculated": "2027-01-01",
+    "hasEverCommittedSexualOffence": true,
+    "totalContactAdultSexualSanctions": 0,
+    "totalContactChildSexualSanctions": 0,
+    "totalNonContactSexualOffences": 0,
+    "totalIndecentImageSanctions": 0,
+    "dateOfMostRecentSexualOffence": "1994-01-01"
+  },
+  "response": {
+    "algorithm": "DIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR",
+    "type": "STATIC",
+    "modelVersion": "1.0",
+    "thresholdsVersion": "1.0",
+    "output": {
+      "band": null,
+      "pointScore": null,
+      "score": null,
+      "femaleVersion": null,
+      "hasSexualOffenceHistory": null,
+      "riskBandReductionApplied": null
+    },
+    "featureValues": {},
+    "validationErrors": [
+      {
+        "type": "SEXUAL_REOFFENDING_PREDICTOR_NO_SANCTIONS",
+        "message": "If hasEverCommittedSexualOffence is true, at least one sexual sanction/offence must be more than 0",
+        "fields": [
+          "totalIndecentImageSanctions",
+          "totalContactAdultSexualSanctions",
+          "totalContactChildSexualSanctions",
+          "totalNonContactSexualOffences"
+        ]
+      }
+    ]
+  }
+}

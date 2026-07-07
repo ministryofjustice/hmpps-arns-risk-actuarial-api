@@ -45,7 +45,7 @@ class RiskScoreServiceTest {
   private lateinit var ldsRiskProducerService: LDSRiskProducerService
 
   @Mock
-  private lateinit var directContactSexualReoffendingPredictorRiskProducerService: DirectContactSexualReoffendingPredictorRiskProducerService
+  private lateinit var directContactSexualReoffendingPredictorProducerService: DirectContactSexualReoffendingPredictorProducerService
 
   @Mock
   private lateinit var seriousViolentReoffendingPredictorRiskProducerService: SeriousViolentReoffendingPredictorRiskProducerService
@@ -92,7 +92,7 @@ class RiskScoreServiceTest {
       Pair(opdRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { OPD = emptyOPD() } },
       Pair(pniRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { PNI = omittedPNI() } },
       Pair(ldsRiskProducerService) { ctx: RiskScoreContext -> ctx.apply { LDS = emptyLDS() } },
-      Pair(directContactSexualReoffendingPredictorRiskProducerService) { ctx: RiskScoreContext ->
+      Pair(directContactSexualReoffendingPredictorProducerService) { ctx: RiskScoreContext ->
         ctx.apply {
           directContactSexualReoffendingPredictor = emptyDirectContactSexualReoffendingPredictor()
         }
