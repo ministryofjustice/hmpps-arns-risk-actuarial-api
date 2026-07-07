@@ -118,7 +118,7 @@
         "thresholdsVersion": "1.0",
         "output": {
           "band": "VERY_HIGH",
-          "score": 97.46
+          "score": 97.69
         },
         "featureValues": {
           "twoYearInterceptWeight": 3.83654148692014,
@@ -153,7 +153,7 @@
           "cannabisUsageWeight": 0,
           "steroidUsageWeight": 0,
           "otherDrugUsageWeight": 0,
-          "totalWeight": 3.646023833378344
+          "totalWeight": 3.7431395513308727
         },
         "validationErrors": []
       },
