@@ -6,11 +6,13 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.offencecode.ActuarialCategory
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.OffenceCodeCacheService
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.getAgeAtDate
 import kotlin.reflect.KProperty1
 
 @Component
-class CommonValidator {
+class CommonValidator(val offenceCodeCacheService: OffenceCodeCacheService) {
 
   val sexualPredictorsSecondaryFields = listOf(
     RiskScoreRequest::totalIndecentImageSanctions,
@@ -63,12 +65,17 @@ class CommonValidator {
   }
 
   fun validateCurrentOffenceCode(request: RiskScoreRequest): ValidationError? {
-    if (request.currentOffenceCode != null && request.currentOffenceCode.length != 5) {
-      return ValidationErrorType.OFFENCE_CODE_INCORRECT_FORMAT.asError(listOf(RiskScoreRequest::currentOffenceCode.name))
+    if (request.currentOffenceCode != null) {
+      if (!request.currentOffenceCode.matches(Regex("^\\d{5}$"))) {
+        return ValidationErrorType.OFFENCE_CODE_INCORRECT_FORMAT.asError(listOf(RiskScoreRequest::currentOffenceCode.name))
+      }
+      val actuarialCategory = offenceCodeCacheService.getActuarialCategory(request.currentOffenceCode)
+      if (actuarialCategory == null || actuarialCategory == ActuarialCategory.UNKNOWN) {
+        return ValidationErrorType.OFFENCE_CODE_MAPPING_NOT_FOUND.asError(listOf(RiskScoreRequest::currentOffenceCode.name))
+      } else if (actuarialCategory == ActuarialCategory.NEED_DETAILS_OF_EXACT_OFFENCE) {
+        return ValidationErrorType.NEED_DETAILS_OF_EXACT_OFFENCE.asError(listOf(RiskScoreRequest::currentOffenceCode.name))
+      }
     }
-    // TODO - extra validation once offence code to actuarial category work is done to check
-    // - that we have a mapping for that offence code
-    // - that the category is not NEED_DETAILS_OF_EXACT_OFFENCE meaning we need the user to use a more specific code
     return null
   }
 

@@ -7,12 +7,16 @@ import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
+import org.mockito.Mockito.mock
+import org.mockito.kotlin.whenever
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CurrentRelationshipStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.MotivationLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.offencecode.ActuarialCategory
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.OffenceCodeCacheService
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.calculatePolynomial
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -56,12 +60,97 @@ class AllReoffendingPredictorTransformationHelperTest {
     assertEquals(expected, result)
   }
 
-  @Test
-  fun `getOffenceGroupWeight returns ZERO`() {
+  @ParameterizedTest
+  @MethodSource("getOffenceGroupWeightProvider")
+  fun `getOffenceGroupWeight returns correct weight - happy path`(staticOrDynamic: StaticOrDynamic, category: ActuarialCategory, expectedWeight: BigDecimal) {
+    val offenceCodeCacheService: OffenceCodeCacheService = mock()
+    val offenceCode = "12345"
+
+    whenever(offenceCodeCacheService.getActuarialCategory(offenceCode)).thenReturn(category)
     assertEquals(
-      BigDecimal.ZERO,
-      AllReoffendingPredictorTransformationHelper.getOffenceGroupWeight(StaticOrDynamic.STATIC, ""),
+      expectedWeight,
+      AllReoffendingPredictorTransformationHelper.getOffenceGroupWeight(offenceCodeCacheService, staticOrDynamic, offenceCode),
     )
+  }
+
+  @Test
+  fun `getOffenceGroupWeight error case - no code mapping`() {
+    val offenceCodeCacheService: OffenceCodeCacheService = mock()
+    val offenceCode = "12345"
+
+    whenever(offenceCodeCacheService.getActuarialCategory(offenceCode)).thenReturn(null)
+    val exception = assertThrows<IllegalArgumentException> {
+      AllReoffendingPredictorTransformationHelper.getOffenceGroupWeight(
+        offenceCodeCacheService,
+        StaticOrDynamic.STATIC,
+        offenceCode,
+      )
+    }
+    assertEquals("Offence code mapping for $offenceCode not found, ensure this is validated before the calculation", exception.message)
+  }
+
+  @Test
+  fun `getOffenceGroupWeight error case - UNKNOWN mapping (static)`() {
+    val offenceCodeCacheService: OffenceCodeCacheService = mock()
+    val offenceCode = "12345"
+
+    whenever(offenceCodeCacheService.getActuarialCategory(offenceCode)).thenReturn(ActuarialCategory.UNKNOWN)
+    val exception = assertThrows<IllegalArgumentException> {
+      AllReoffendingPredictorTransformationHelper.getOffenceGroupWeight(
+        offenceCodeCacheService,
+        StaticOrDynamic.STATIC,
+        offenceCode,
+      )
+    }
+    assertEquals("Offence code mapping for $offenceCode is UNKNOWN, ensure this is validated before the calculation", exception.message)
+  }
+
+  @Test
+  fun `getOffenceGroupWeight error case - UNKNOWN mapping (dynamic)`() {
+    val offenceCodeCacheService: OffenceCodeCacheService = mock()
+    val offenceCode = "12345"
+
+    whenever(offenceCodeCacheService.getActuarialCategory(offenceCode)).thenReturn(ActuarialCategory.UNKNOWN)
+    val exception = assertThrows<IllegalArgumentException> {
+      AllReoffendingPredictorTransformationHelper.getOffenceGroupWeight(
+        offenceCodeCacheService,
+        StaticOrDynamic.DYNAMIC,
+        offenceCode,
+      )
+    }
+    assertEquals("Offence code mapping for $offenceCode is UNKNOWN, ensure this is validated before the calculation", exception.message)
+  }
+
+  @Test
+  fun `getOffenceGroupWeight error case - NEED_DETAILS_OF_EXACT_OFFENCE mapping (static)`() {
+    val offenceCodeCacheService: OffenceCodeCacheService = mock()
+    val offenceCode = "12345"
+
+    whenever(offenceCodeCacheService.getActuarialCategory(offenceCode)).thenReturn(ActuarialCategory.NEED_DETAILS_OF_EXACT_OFFENCE)
+    val exception = assertThrows<IllegalArgumentException> {
+      AllReoffendingPredictorTransformationHelper.getOffenceGroupWeight(
+        offenceCodeCacheService,
+        StaticOrDynamic.STATIC,
+        offenceCode,
+      )
+    }
+    assertEquals("Offence code mapping for $offenceCode is NEED_DETAILS_OF_EXACT_OFFENCE, ensure this is validated before the calculation", exception.message)
+  }
+
+  @Test
+  fun `getOffenceGroupWeight error case - NEED_DETAILS_OF_EXACT_OFFENCE mapping (dynamic)`() {
+    val offenceCodeCacheService: OffenceCodeCacheService = mock()
+    val offenceCode = "12345"
+
+    whenever(offenceCodeCacheService.getActuarialCategory(offenceCode)).thenReturn(ActuarialCategory.NEED_DETAILS_OF_EXACT_OFFENCE)
+    val exception = assertThrows<IllegalArgumentException> {
+      AllReoffendingPredictorTransformationHelper.getOffenceGroupWeight(
+        offenceCodeCacheService,
+        StaticOrDynamic.DYNAMIC,
+        offenceCode,
+      )
+    }
+    assertEquals("Offence code mapping for $offenceCode is NEED_DETAILS_OF_EXACT_OFFENCE, ensure this is validated before the calculation", exception.message)
   }
 
   @ParameterizedTest
@@ -815,6 +904,58 @@ class AllReoffendingPredictorTransformationHelperTest {
     fun getRiskBandOutOfBoundsProvider() = listOf(
       Arguments.of(0.00),
       Arguments.of(100.00),
+    )
+
+    @JvmStatic
+    fun getOffenceGroupWeightProvider() = listOf(
+      Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.BURGLARY_DOMESTIC, BigDecimal("0.155944202809011")),
+      Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.BURGLARY_OTHER, BigDecimal("0.2060248043228")),
+      Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.DRUNKENNESS, BigDecimal("0.587490417262633")),
+      Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.DRINK_DRIVING, BigDecimal("-0.264724530382273")),
+      Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.MOTORING_OFFENCES, BigDecimal("-0.0439980822830184")),
+      Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.VEHICLE_RELATED_THEFT, BigDecimal("0.173405416410866")),
+      Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.FRAUD_AND_FORGERY, BigDecimal("-0.434791453303048")),
+      Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.WELFARE_FRAUD, BigDecimal("-1.15395495579948")),
+      Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.DRUG_IMPORT_EXPORT_OR_PRODUCTION, BigDecimal("-0.468252524851408")),
+      Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.DRUG_POSSESSION_OR_SUPPLY, BigDecimal("0.0204101986121863")),
+      Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.VIOLENCE_AGAINST_THE_PERSON_ABH_PLUS, BigDecimal("-0.110075583936778")),
+      Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.VIOLENCE_AGAINST_THE_PERSON_SUB_ABH, BigDecimal("-0.110075583936778")),
+      Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.PUBLIC_ORDER_AND_HARRASSMENT, BigDecimal("0.0854410288820027")),
+      Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.WEAPONS_NON_FIREARM, BigDecimal("-0.110075583936778")),
+      Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.FIREARMS_MOST_SERIOUS, BigDecimal("-0.110075583936778")),
+      Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.FIREARMS_OTHER, BigDecimal("-0.110075583936778")),
+      Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.HANDLING_STOLEN_GOODS, BigDecimal("0.088414958679896")),
+      Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.CRIMINAL_DAMAGE, BigDecimal("0.12167599899735")),
+      Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.ACQUISITIVE_VIOLENCE, BigDecimal("-0.119211282701221")),
+      Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.OTHER_OFFENCES, BigDecimal("0.0384434393037725")),
+      Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.ABSCONDING_OR_BAIL, BigDecimal("0.325485504296161")),
+      Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.SEXUAL_AGAINST_CHILD, BigDecimal("0.111620464721896")),
+      Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.SEXUAL_NOT_AGAINST_CHILD, BigDecimal("0.169969798103235")),
+      Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.THEFT_NON_MOTOR, BigDecimal("0.462548123919817")),
+      Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.BURGLARY_DOMESTIC, BigDecimal("0.153587984043406")),
+      Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.BURGLARY_OTHER, BigDecimal("0.222442735978286")),
+      Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.DRUNKENNESS, BigDecimal("0.523303164370094")),
+      Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.DRINK_DRIVING, BigDecimal("-0.196918572042409")),
+      Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.MOTORING_OFFENCES, BigDecimal("0.0730361702901059")),
+      Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.VEHICLE_RELATED_THEFT, BigDecimal("0.164192212478264")),
+      Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.FRAUD_AND_FORGERY, BigDecimal("-0.322533218006326")),
+      Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.WELFARE_FRAUD, BigDecimal("-0.841992532871743")),
+      Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.DRUG_IMPORT_EXPORT_OR_PRODUCTION, BigDecimal("-0.437670727296335")),
+      Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.DRUG_POSSESSION_OR_SUPPLY, BigDecimal("0.0049716912817919")),
+      Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.VIOLENCE_AGAINST_THE_PERSON_ABH_PLUS, BigDecimal("-0.171350876457525")),
+      Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.VIOLENCE_AGAINST_THE_PERSON_SUB_ABH, BigDecimal("-0.171350876457525")),
+      Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.PUBLIC_ORDER_AND_HARRASSMENT, BigDecimal("0.0629726265569029")),
+      Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.WEAPONS_NON_FIREARM, BigDecimal("-0.171350876457525")),
+      Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.FIREARMS_MOST_SERIOUS, BigDecimal("-0.171350876457525")),
+      Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.FIREARMS_OTHER, BigDecimal("-0.171350876457525")),
+      Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.HANDLING_STOLEN_GOODS, BigDecimal("0.155377725974202")),
+      Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.CRIMINAL_DAMAGE, BigDecimal("0.0250113803601321")),
+      Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.ACQUISITIVE_VIOLENCE, BigDecimal("-0.177705019766066")),
+      Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.OTHER_OFFENCES, BigDecimal("0.0971157179525287")),
+      Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.ABSCONDING_OR_BAIL, BigDecimal("0.236777685679456")),
+      Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.SEXUAL_AGAINST_CHILD, BigDecimal("0.0175628084853824")),
+      Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.SEXUAL_NOT_AGAINST_CHILD, BigDecimal("0.0919115743401314")),
+      Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.THEFT_NON_MOTOR, BigDecimal("0.428689161915978")),
     )
   }
 }

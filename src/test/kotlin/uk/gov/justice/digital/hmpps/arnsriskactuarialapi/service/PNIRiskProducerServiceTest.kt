@@ -6,9 +6,12 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertNotNull
+import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
+import org.mockito.InjectMocks
 import org.mockito.Mock
+import org.mockito.junit.jupiter.MockitoExtension
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.NeedScore
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
@@ -24,14 +27,17 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.Comm
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.PNIValidator
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.validPNIRiskScoreRequest
 
+@ExtendWith(MockitoExtension::class)
 class PNIRiskProducerServiceTest {
 
   @Mock
-  private val commonValidator = CommonValidator()
+  private lateinit var commonValidator: CommonValidator
 
   @Mock
-  private val validator = PNIValidator(commonValidator)
-  private val service = PNIRiskProducerService(validator)
+  private lateinit var validator: PNIValidator
+
+  @InjectMocks
+  private lateinit var service: PNIRiskProducerService
 
   @Test
   fun `should calculate ALTERNATIVE PNI with a valid request`() {
