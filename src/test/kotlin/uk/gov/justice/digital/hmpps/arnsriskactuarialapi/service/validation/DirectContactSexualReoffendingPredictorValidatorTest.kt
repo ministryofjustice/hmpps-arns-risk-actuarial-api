@@ -61,10 +61,10 @@ class DirectContactSexualReoffendingPredictorValidatorTest {
       StaticOrDynamic.STATIC,
     )
     verify(commonValidator, times(1)).validateSecondarySexualFields(request)
-    verify(commonValidator, times(1)).validateTotalNumberOfSanctionsForAllOffencesSexualPredictor(request)
+    verify(commonValidator, times(1)).validateTotalNumberOfSanctionsForAllOffencesForSexualPredictor(request)
     verify(commonValidator, times(1)).validateSexualSanctionsCount(request)
     verify(commonValidator, times(1)).validateDateOfMostRecentSexualOffenceAgainstDateOfBirth(request)
-    verify(commonValidator, times(1)).validateDateAtStartOfFollowupAgeSexualPredictor(request)
+    verify(commonValidator, times(1)).validateDateAtStartOfFollowupAgeForSexualPredictor(request)
     verify(commonValidator, times(1)).checkForExistingSexualFields(request)
     verifyNoMoreInteractions(commonValidator)
   }
@@ -134,7 +134,7 @@ class DirectContactSexualReoffendingPredictorValidatorTest {
       commonValidator.validateSecondarySexualFields(request),
     ).thenReturn(expectedErrors[1])
     whenever(
-      commonValidator.validateTotalNumberOfSanctionsForAllOffencesSexualPredictor(request),
+      commonValidator.validateTotalNumberOfSanctionsForAllOffencesForSexualPredictor(request),
     ).thenReturn(expectedErrors[2])
     whenever(
       commonValidator.validateSexualSanctionsCount(request),
@@ -143,7 +143,7 @@ class DirectContactSexualReoffendingPredictorValidatorTest {
       commonValidator.validateDateOfMostRecentSexualOffenceAgainstDateOfBirth(request),
     ).thenReturn(expectedErrors[4])
     whenever(
-      commonValidator.validateDateAtStartOfFollowupAgeSexualPredictor(request),
+      commonValidator.validateDateAtStartOfFollowupAgeForSexualPredictor(request),
     ).thenReturn(expectedErrors[5])
     whenever(
       commonValidator.checkForExistingSexualFields(request),
@@ -161,10 +161,10 @@ class DirectContactSexualReoffendingPredictorValidatorTest {
       StaticOrDynamic.STATIC,
     )
     verify(commonValidator, times(1)).validateSecondarySexualFields(request)
-    verify(commonValidator, times(1)).validateTotalNumberOfSanctionsForAllOffencesSexualPredictor(request)
+    verify(commonValidator, times(1)).validateTotalNumberOfSanctionsForAllOffencesForSexualPredictor(request)
     verify(commonValidator, times(1)).validateSexualSanctionsCount(request)
     verify(commonValidator, times(1)).validateDateOfMostRecentSexualOffenceAgainstDateOfBirth(request)
-    verify(commonValidator, times(1)).validateDateAtStartOfFollowupAgeSexualPredictor(request)
+    verify(commonValidator, times(1)).validateDateAtStartOfFollowupAgeForSexualPredictor(request)
     verify(commonValidator, times(1)).checkForExistingSexualFields(request)
     verifyNoMoreInteractions(commonValidator)
   }

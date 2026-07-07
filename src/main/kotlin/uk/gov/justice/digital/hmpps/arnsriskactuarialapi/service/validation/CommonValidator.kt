@@ -162,7 +162,7 @@ class CommonValidator {
     return null
   }
 
-  fun validateDateAtStartOfFollowupAgeSexualPredictor(request: RiskScoreRequest): ValidationError? {
+  fun validateDateAtStartOfFollowupAgeForSexualPredictor(request: RiskScoreRequest): ValidationError? {
     if (request.gender == Gender.FEMALE || request.hasEverCommittedSexualOffence == false) return null
 
     val dateOfBirth = request.dateOfBirth ?: return null
@@ -178,7 +178,7 @@ class CommonValidator {
     return null
   }
 
-  fun validateTotalNumberOfSanctionsForAllOffencesSexualPredictor(request: RiskScoreRequest): ValidationError? {
+  fun validateTotalNumberOfSanctionsForAllOffencesForSexualPredictor(request: RiskScoreRequest): ValidationError? {
     if (request.gender == Gender.FEMALE || request.hasEverCommittedSexualOffence == false) return null
 
     if (request.totalNumberOfSanctionsForAllOffences != null && request.totalNumberOfSanctionsForAllOffences !in 1..999) {

@@ -510,12 +510,23 @@ class CommonValidatorTest {
   }
 
   @ParameterizedTest
-  @MethodSource("test validateDateAtStartOfFollowupAgeSexualPredictor logic data")
-  fun `test validateDateAtStartOfFollowupAgeSexualPredictor logic`(
+  @MethodSource("test validateDateAtStartOfFollowupAgeForSexualPredictor logic data")
+  fun `test validateDateAtStartOfFollowupAgeForSexualPredictor logic`(
     request: RiskScoreRequest,
     expectedValidationError: ValidationError?,
   ) {
-    val error = commonValidator.validateDateAtStartOfFollowupAgeSexualPredictor(request)
+    val error = commonValidator.validateDateAtStartOfFollowupAgeForSexualPredictor(request)
+
+    assertEquals(expectedValidationError, error)
+  }
+
+  @ParameterizedTest
+  @MethodSource("test validateTotalNumberOfSanctionsForAllOffencesForSexualPredictor logic data")
+  fun `test validateTotalNumberOfSanctionsForAllOffencesForSexualPredictor logic`(
+    request: RiskScoreRequest,
+    expectedValidationError: ValidationError?,
+  ) {
+    val error = commonValidator.validateTotalNumberOfSanctionsForAllOffencesForSexualPredictor(request)
 
     assertEquals(expectedValidationError, error)
   }
@@ -896,7 +907,7 @@ class CommonValidatorTest {
     ),
   )
 
-  fun `test validateDateAtStartOfFollowupAgeSexualPredictor logic data`(): Stream<Arguments> = Stream.of(
+  fun `test validateDateAtStartOfFollowupAgeForSexualPredictor logic data`(): Stream<Arguments> = Stream.of(
     Arguments.of(
       RiskScoreRequest(
         gender = Gender.FEMALE,
@@ -957,6 +968,57 @@ class CommonValidatorTest {
       ),
       ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE.asError(
         listOf("dateAtStartOfFollowupCalculated"),
+      ),
+    ),
+  )
+
+  fun `test validateTotalNumberOfSanctionsForAllOffencesForSexualPredictor logic data`(): Stream<Arguments> = Stream.of(
+    Arguments.of(
+      RiskScoreRequest(
+        gender = Gender.FEMALE,
+        hasEverCommittedSexualOffence = true,
+      ),
+      null,
+    ),
+    Arguments.of(
+      RiskScoreRequest(
+        gender = Gender.MALE,
+        hasEverCommittedSexualOffence = false,
+      ),
+      null,
+    ),
+    Arguments.of(
+      RiskScoreRequest(
+        gender = Gender.MALE,
+        hasEverCommittedSexualOffence = true,
+        totalNumberOfSanctionsForAllOffences = 1,
+      ),
+      null,
+    ),
+    Arguments.of(
+      RiskScoreRequest(
+        gender = Gender.MALE,
+        hasEverCommittedSexualOffence = true,
+        totalNumberOfSanctionsForAllOffences = 500,
+      ),
+      null,
+    ),
+    Arguments.of(
+      RiskScoreRequest(
+        gender = Gender.MALE,
+        hasEverCommittedSexualOffence = true,
+        totalNumberOfSanctionsForAllOffences = 999,
+      ),
+      null,
+    ),
+    Arguments.of(
+      RiskScoreRequest(
+        gender = Gender.MALE,
+        hasEverCommittedSexualOffence = true,
+        totalNumberOfSanctionsForAllOffences = 1000,
+      ),
+      ValidationErrorType.TOTAL_NUMBER_OF_SANCTIONS_OUT_OF_RANGE.asError(
+        listOf("totalNumberOfSanctionsForAllOffences"),
       ),
     ),
   )

@@ -10,10 +10,10 @@ class DirectContactSexualReoffendingPredictorValidator(val commonValidator: Comm
 
   override fun validateStaticCustom(request: RiskScoreRequest): List<ValidationError> = listOfNotNull(
     commonValidator.validateSecondarySexualFields(request),
-    commonValidator.validateTotalNumberOfSanctionsForAllOffencesSexualPredictor(request),
+    commonValidator.validateTotalNumberOfSanctionsForAllOffencesForSexualPredictor(request),
     commonValidator.validateSexualSanctionsCount(request),
     commonValidator.validateDateOfMostRecentSexualOffenceAgainstDateOfBirth(request),
-    commonValidator.validateDateAtStartOfFollowupAgeSexualPredictor(request),
+    commonValidator.validateDateAtStartOfFollowupAgeForSexualPredictor(request),
     commonValidator.checkForExistingSexualFields(request),
   )
 
