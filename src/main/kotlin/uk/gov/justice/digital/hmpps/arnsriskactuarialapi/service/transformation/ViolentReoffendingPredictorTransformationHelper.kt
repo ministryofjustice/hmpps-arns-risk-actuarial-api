@@ -6,8 +6,11 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.MotivationLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.OffenceCodeCacheService
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.coefficients.ViolentReoffendingPredictorDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.coefficients.ViolentReoffendingPredictorStatic
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.coefficients.getViolentReoffendingPredictorDynamicOffenceCodeCoefficient
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.coefficients.getViolentReoffendingPredictorStaticOffenceCodeCoefficient
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.constants.ViolentReoffendingPredictorConstant
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asDoublePercentage
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.calculatePolynomial
@@ -73,7 +76,15 @@ object ViolentReoffendingPredictorTransformationHelper {
     }
   }
 
-  fun getOffenceGroupWeight(staticOrDynamic: StaticOrDynamic, currentOffenceCode: String): BigDecimal = BigDecimal.ZERO
+  fun getOffenceGroupWeight(offenceCodeCacheService: OffenceCodeCacheService, staticOrDynamic: StaticOrDynamic, currentOffenceCode: String): BigDecimal {
+    // The currentOffenceCode has been prevalidated but just in case throw an error if this returns null
+    val actuarialCategory = offenceCodeCacheService.getActuarialCategory(currentOffenceCode)
+      ?: throw IllegalArgumentException("Offence code mapping for $currentOffenceCode not found, ensure this is validated before the calculation")
+    return when (staticOrDynamic) {
+      StaticOrDynamic.STATIC -> getViolentReoffendingPredictorStaticOffenceCodeCoefficient(actuarialCategory, currentOffenceCode)
+      StaticOrDynamic.DYNAMIC -> getViolentReoffendingPredictorDynamicOffenceCodeCoefficient(actuarialCategory, currentOffenceCode)
+    }
+  }
 
   fun getFirstSanctionWeight(
     staticOrDynamic: StaticOrDynamic,

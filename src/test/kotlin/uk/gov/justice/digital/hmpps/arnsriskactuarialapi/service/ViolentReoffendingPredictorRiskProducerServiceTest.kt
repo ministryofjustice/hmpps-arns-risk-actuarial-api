@@ -16,6 +16,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.offencecode.ActuarialCategory
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.violentreoffendingpredictor.ViolentReoffendingPredictorObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.ViolentReoffendingPredictorValidator
@@ -29,6 +30,9 @@ class ViolentReoffendingPredictorRiskProducerServiceTest {
 
   @Mock
   private lateinit var validator: ViolentReoffendingPredictorValidator
+
+  @Mock
+  private lateinit var offenceCodeCacheService: OffenceCodeCacheService
 
   @InjectMocks
   private lateinit var service: ViolentReoffendingPredictorRiskProducerService
@@ -135,6 +139,7 @@ class ViolentReoffendingPredictorRiskProducerServiceTest {
     // Mock out validation
     whenever(validator.validateStatic(request)).thenReturn(emptyList())
     whenever(validator.validateDynamic(request)).thenReturn(listOf(expectedDynamicValidationError))
+    whenever(offenceCodeCacheService.getActuarialCategory("00001")).thenReturn(ActuarialCategory.ACQUISITIVE_VIOLENCE)
 
     val context = service.getRiskScore(request, emptyContext())
 
@@ -142,7 +147,7 @@ class ViolentReoffendingPredictorRiskProducerServiceTest {
       "twoYearInterceptWeight" to BigDecimal("3.123244332355790131572348400368355214595794677734375"),
       "ageGenderPolynomialWeight" to BigDecimal("-0.064735129815653604791494371735460777728121684049256145954132080078125000000"),
       "genderWeight" to BigDecimal("0"),
-      "offenceGroupWeight" to BigDecimal("0"),
+      "offenceGroupWeight" to BigDecimal("-0.0032926198476618"),
       "firstSanctionWeight" to BigDecimal("0"),
       "secondSanctionWeight" to BigDecimal("-1.1099508455483400037877572685829363763332366943359375"),
       "neverViolentWeight" to BigDecimal("0"),
@@ -153,11 +158,11 @@ class ViolentReoffendingPredictorRiskProducerServiceTest {
       "offenceFreeMonthsWeight" to BigDecimal("0"),
       "copasScore" to BigDecimal("0"),
       "copasViolentOffencesScore" to BigDecimal("-1.63758298544199690944625227297797298575687818811275064945220947265625"),
-      "totalWeight" to BigDecimal("-0.512741666099965920380226439195803234127879477455280721187591552734375000000"),
+      "totalWeight" to BigDecimal("-0.516034285947627720380226439195803234127879477455280721187591552734375000000"),
     )
 
     val expected = ViolentReoffendingPredictorObject(
-      score = 37.46,
+      score = 37.38,
       band = RiskBand.MEDIUM,
       staticOrDynamic = StaticOrDynamic.STATIC,
       validationErrors = listOf(expectedDynamicValidationError),
@@ -174,14 +179,15 @@ class ViolentReoffendingPredictorRiskProducerServiceTest {
     // Mock out validation
     whenever(validator.validateStatic(request)).thenReturn(emptyList())
     whenever(validator.validateDynamic(request)).thenReturn(emptyList())
+    whenever(offenceCodeCacheService.getActuarialCategory("00001")).thenReturn(ActuarialCategory.ACQUISITIVE_VIOLENCE)
 
     val context = service.getRiskScore(request, emptyContext())
 
-    val expectedFeatureValues = mapOf<String, BigDecimal>(
+    val expectedFeatureValues = mapOf(
       "twoYearInterceptWeight" to BigDecimal("1.816874483627910041860786805045790970325469970703125"),
       "ageGenderPolynomialWeight" to BigDecimal("-0.0478027480673314988240951706188752723392099142074584960937500"),
       "genderWeight" to BigDecimal("0"),
-      "offenceGroupWeight" to BigDecimal("0"),
+      "offenceGroupWeight" to BigDecimal("0.0442727884290873"),
       "firstSanctionWeight" to BigDecimal("0"),
       "secondSanctionWeight" to BigDecimal("-1.0828982243873899182773357097175903618335723876953125"),
       "totalNumberOfSanctionsForAllOffencesWeight" to BigDecimal("-0.01366765718642439994545689785354625200852751731872558593750"),
@@ -213,11 +219,11 @@ class ViolentReoffendingPredictorRiskProducerServiceTest {
       "cannabisUsageWeight" to BigDecimal("0.0018647061979710000990950735655360404052771627902984619140625"),
       "steroidUsageWeight" to BigDecimal("0.34219755115315797500130656771943904459476470947265625"),
       "otherDrugUsageWeight" to BigDecimal("0"),
-      "totalWeight" to BigDecimal("-0.3026529767628007660154268083743278605624027477460913360118865966796875"),
+      "totalWeight" to BigDecimal("-0.2583801883337134660154268083743278605624027477460913360118865966796875"),
     )
 
     val expected = ViolentReoffendingPredictorObject(
-      score = 42.49,
+      score = 43.58,
       band = RiskBand.MEDIUM,
       staticOrDynamic = StaticOrDynamic.DYNAMIC,
       validationErrors = emptyList(),
@@ -267,6 +273,7 @@ class ViolentReoffendingPredictorRiskProducerServiceTest {
     // Mock out validation
     whenever(validator.validateStatic(requestMissingDateAtStartOfFollowup)).thenReturn(emptyList())
     whenever(validator.validateDynamic(requestMissingDateAtStartOfFollowup)).thenReturn(emptyList())
+    whenever(offenceCodeCacheService.getActuarialCategory("00001")).thenReturn(ActuarialCategory.ACQUISITIVE_VIOLENCE)
 
     val context = service.getRiskScore(requestMissingDateAtStartOfFollowup, emptyContext())
 
@@ -321,12 +328,13 @@ class ViolentReoffendingPredictorRiskProducerServiceTest {
     // Return no errors from both static and dynamic validation
     whenever(validator.validateStatic(requestMissingDateAtStartOfFollowup)).thenReturn(emptyList())
     whenever(validator.validateDynamic(requestMissingDateAtStartOfFollowup)).thenReturn(emptyList())
+    whenever(offenceCodeCacheService.getActuarialCategory("00001")).thenReturn(ActuarialCategory.ACQUISITIVE_VIOLENCE)
 
     val expectedFeatureValues = mapOf(
       "twoYearInterceptWeight" to BigDecimal("1.816874483627910041860786805045790970325469970703125"),
       "ageGenderPolynomialWeight" to BigDecimal("-0.0487316874218868987742037113264359504682943224906921386718750"),
       "genderWeight" to BigDecimal.ZERO,
-      "offenceGroupWeight" to BigDecimal.ZERO,
+      "offenceGroupWeight" to BigDecimal("0.0442727884290873"),
       "firstSanctionWeight" to BigDecimal.ZERO,
       "secondSanctionWeight" to BigDecimal("-1.0828982243873899182773357097175903618335723876953125"),
       "totalNumberOfSanctionsForAllOffencesWeight" to BigDecimal("-0.01366765718642439994545689785354625200852751731872558593750"),
@@ -358,7 +366,7 @@ class ViolentReoffendingPredictorRiskProducerServiceTest {
       "cannabisUsageWeight" to BigDecimal.ZERO,
       "steroidUsageWeight" to BigDecimal.ZERO,
       "otherDrugUsageWeight" to BigDecimal.ZERO,
-      "totalWeight" to BigDecimal("-1.1962567752453564473593214019344788123788703160244040191173553466796875"),
+      "totalWeight" to BigDecimal("-1.1519839868162691473593214019344788123788703160244040191173553466796875"),
     )
 
     val context = service.getRiskScore(requestMissingDateAtStartOfFollowup, emptyContext())
