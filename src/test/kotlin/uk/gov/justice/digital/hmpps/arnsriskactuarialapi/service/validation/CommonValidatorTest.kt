@@ -3,10 +3,14 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
+import org.mockito.InjectMocks
+import org.mockito.Mock
+import org.mockito.junit.jupiter.MockitoExtension
+import org.mockito.kotlin.whenever
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.MotivationLevel
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
@@ -14,17 +18,26 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.offencecode.ActuarialCategory
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.OffenceCodeCacheService
 import java.time.LocalDate
 import java.util.stream.Stream
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ExtendWith(MockitoExtension::class)
 class CommonValidatorTest {
 
-  private val commonValidator = CommonValidator()
+  @Mock
+  private lateinit var offenceCodeCacheService: OffenceCodeCacheService
+
+  @InjectMocks
+  private lateinit var commonValidator: CommonValidator
 
   @Test
   fun `getCurrentOffenceCodeValidation no errors`() {
-    val riskScoreRequestInput = RiskScoreRequest(currentOffenceCode = "00101")
+    val offenceCode = "00101"
+    whenever(offenceCodeCacheService.getActuarialCategory(offenceCode)).thenReturn(ActuarialCategory.CRIMINAL_DAMAGE)
+
+    val riskScoreRequestInput = RiskScoreRequest(currentOffenceCode = offenceCode)
     val validationErrorResponse = commonValidator.validateCurrentOffenceCode(riskScoreRequestInput)
     assertNull(validationErrorResponse)
   }
@@ -48,6 +61,68 @@ class CommonValidatorTest {
       ),
       validationErrorResponse,
     )
+  }
+
+  @Test
+  fun `getCurrentOffenceCodeValidation not numeric error`() {
+    val riskScoreRequestInput = RiskScoreRequest(currentOffenceCode = "a45hg")
+    val validationErrorResponse = commonValidator.validateCurrentOffenceCode(riskScoreRequestInput)
+    assertEquals(
+      ValidationError(
+        type = ValidationErrorType.OFFENCE_CODE_INCORRECT_FORMAT,
+        message = "Offence code must be a string of 5 digits",
+        fields = listOf("currentOffenceCode"),
+      ),
+      validationErrorResponse,
+    )
+  }
+
+  @Test
+  fun `getCurrentOffenceCodeValidation no mapping`() {
+    val offenceCode = "00101"
+    whenever(offenceCodeCacheService.getActuarialCategory(offenceCode)).thenReturn(null)
+
+    val riskScoreRequestInput = RiskScoreRequest(currentOffenceCode = offenceCode)
+    val validationErrorResponse = commonValidator.validateCurrentOffenceCode(riskScoreRequestInput)
+
+    val expectedValidationError = ValidationError(
+      type = ValidationErrorType.OFFENCE_CODE_MAPPING_NOT_FOUND,
+      message = "No offence code to actuarial weighting mapping found for offence code",
+      fields = listOf("currentOffenceCode"),
+    )
+    assertEquals(expectedValidationError, validationErrorResponse)
+  }
+
+  @Test
+  fun `getCurrentOffenceCodeValidation unknown mapping`() {
+    val offenceCode = "00101"
+    whenever(offenceCodeCacheService.getActuarialCategory(offenceCode)).thenReturn(ActuarialCategory.UNKNOWN)
+
+    val riskScoreRequestInput = RiskScoreRequest(currentOffenceCode = offenceCode)
+    val validationErrorResponse = commonValidator.validateCurrentOffenceCode(riskScoreRequestInput)
+
+    val expectedValidationError = ValidationError(
+      type = ValidationErrorType.OFFENCE_CODE_MAPPING_NOT_FOUND,
+      message = "No offence code to actuarial weighting mapping found for offence code",
+      fields = listOf("currentOffenceCode"),
+    )
+    assertEquals(expectedValidationError, validationErrorResponse)
+  }
+
+  @Test
+  fun `getCurrentOffenceCodeValidation need details of exact offence mapping`() {
+    val offenceCode = "00101"
+    whenever(offenceCodeCacheService.getActuarialCategory(offenceCode)).thenReturn(ActuarialCategory.NEED_DETAILS_OF_EXACT_OFFENCE)
+
+    val riskScoreRequestInput = RiskScoreRequest(currentOffenceCode = offenceCode)
+    val validationErrorResponse = commonValidator.validateCurrentOffenceCode(riskScoreRequestInput)
+
+    val expectedValidationError = ValidationError(
+      type = ValidationErrorType.NEED_DETAILS_OF_EXACT_OFFENCE,
+      message = "For this group of offences, the offence category is different depending on the nature of the exact offence. Provide a more specific offence.",
+      fields = listOf("currentOffenceCode"),
+    )
+    assertEquals(expectedValidationError, validationErrorResponse)
   }
 
   @Test
@@ -379,16 +454,6 @@ class CommonValidatorTest {
     }
   }
 
-  fun `test validateDateAtStartOfFollowupAgainstDateOfCurrentConviction logic data`(): Stream<Arguments> = Stream.of(
-    // args: dateAtStartOfFollowup, dateOfCurrentConviction, error
-    // Both null should result in error
-    Arguments.of(null, null, true),
-    // All other combinations shouldn't result in an error (i.e. one or both dates provided)
-    Arguments.of(LocalDate.parse("2025-01-01"), LocalDate.parse("2025-01-01"), false),
-    Arguments.of(null, LocalDate.parse("2025-01-01"), false),
-    Arguments.of(LocalDate.parse("2025-01-01"), null, false),
-  )
-
   @ParameterizedTest
   @MethodSource("test validateDateAtStartOfFollowupAgainstDateOfBirth logic data")
   fun `test validateDateAtStartOfFollowupAgainstDateOfBirth logic`(
@@ -416,19 +481,6 @@ class CommonValidatorTest {
     }
   }
 
-  fun `test validateDateAtStartOfFollowupAgainstDateOfBirth logic data`(): Stream<Arguments> = Stream.of(
-    // args: dateAtStartOfFollowup, dateOfBirth, error
-    // Both or one null shouldn't result in an error
-    Arguments.of(null, null, false),
-    Arguments.of(null, LocalDate.parse("1980-01-01"), false),
-    Arguments.of(LocalDate.parse("2025-01-01"), null, false),
-    // dateAtStartOfFollowup being after dateOfBirth shouldn't result in an error
-    Arguments.of(LocalDate.parse("2026-05-01"), LocalDate.parse("2000-08-12"), false),
-    // dateAtStartOfFollowup being before (or equal to) dateOfBirth should result in an error
-    Arguments.of(LocalDate.parse("2026-05-01"), LocalDate.parse("2026-07-01"), true),
-    Arguments.of(LocalDate.parse("2000-08-12"), LocalDate.parse("2000-08-12"), true),
-  )
-
   @ParameterizedTest
   @MethodSource("test validateDateAtStartOfFollowupAge logic data")
   fun `test validateDateAtStartOfFollowupAge logic`(
@@ -455,23 +507,6 @@ class CommonValidatorTest {
       assertNull(actualError)
     }
   }
-
-  fun `test validateDateAtStartOfFollowupAge logic data`(): Stream<Arguments> = Stream.of(
-    // args: dateAtStartOfFollowup, dateOfBirth, error
-    // Both or one null shouldn't result in an error
-    Arguments.of(null, null, false),
-    Arguments.of(null, LocalDate.parse("1980-01-01"), false),
-    Arguments.of(LocalDate.parse("2025-01-01"), null, false),
-    // If date of birth is after dateAtStartOfFollowup, do not error (should have already been caught)
-    Arguments.of(LocalDate.parse("2026-05-01"), LocalDate.parse("2026-08-12"), false),
-    // An age of less than 110 at dateAtStartOfFollowup shouldn't result in an error
-    Arguments.of(LocalDate.parse("2026-05-01"), LocalDate.parse("2000-08-12"), false),
-    Arguments.of(LocalDate.parse("2025-08-31"), LocalDate.parse("1915-09-01"), false),
-    // An age of 110 or more at dateAtStartOfFollowup should result in an error
-    Arguments.of(LocalDate.parse("2025-09-01"), LocalDate.parse("1915-09-01"), true),
-    Arguments.of(LocalDate.parse("2025-12-20"), LocalDate.parse("1915-09-01"), true),
-    Arguments.of(LocalDate.parse("2026-06-29"), LocalDate.parse("1915-09-01"), true),
-  )
 
   @Test
   fun `test validateRequiredFields - default (static) with errors`() {
@@ -760,5 +795,50 @@ class CommonValidatorTest {
     )
 
     assertEquals(expectedError, commonValidator.validateDrugMisuse(request, drugQuestions))
+  }
+
+  companion object {
+    @JvmStatic
+    fun `test validateDateAtStartOfFollowupAge logic data`(): Stream<Arguments> = Stream.of(
+      // args: dateAtStartOfFollowup, dateOfBirth, error
+      // Both or one null shouldn't result in an error
+      Arguments.of(null, null, false),
+      Arguments.of(null, LocalDate.parse("1980-01-01"), false),
+      Arguments.of(LocalDate.parse("2025-01-01"), null, false),
+      // If date of birth is after dateAtStartOfFollowup, do not error (should have already been caught)
+      Arguments.of(LocalDate.parse("2026-05-01"), LocalDate.parse("2026-08-12"), false),
+      // An age of less than 110 at dateAtStartOfFollowup shouldn't result in an error
+      Arguments.of(LocalDate.parse("2026-05-01"), LocalDate.parse("2000-08-12"), false),
+      Arguments.of(LocalDate.parse("2025-08-31"), LocalDate.parse("1915-09-01"), false),
+      // An age of 110 or more at dateAtStartOfFollowup should result in an error
+      Arguments.of(LocalDate.parse("2025-09-01"), LocalDate.parse("1915-09-01"), true),
+      Arguments.of(LocalDate.parse("2025-12-20"), LocalDate.parse("1915-09-01"), true),
+      Arguments.of(LocalDate.parse("2026-06-29"), LocalDate.parse("1915-09-01"), true),
+    )
+
+    @JvmStatic
+    fun `test validateDateAtStartOfFollowupAgainstDateOfBirth logic data`(): Stream<Arguments> = Stream.of(
+      // args: dateAtStartOfFollowup, dateOfBirth, error
+      // Both or one null shouldn't result in an error
+      Arguments.of(null, null, false),
+      Arguments.of(null, LocalDate.parse("1980-01-01"), false),
+      Arguments.of(LocalDate.parse("2025-01-01"), null, false),
+      // dateAtStartOfFollowup being after dateOfBirth shouldn't result in an error
+      Arguments.of(LocalDate.parse("2026-05-01"), LocalDate.parse("2000-08-12"), false),
+      // dateAtStartOfFollowup being before (or equal to) dateOfBirth should result in an error
+      Arguments.of(LocalDate.parse("2026-05-01"), LocalDate.parse("2026-07-01"), true),
+      Arguments.of(LocalDate.parse("2000-08-12"), LocalDate.parse("2000-08-12"), true),
+    )
+
+    @JvmStatic
+    fun `test validateDateAtStartOfFollowupAgainstDateOfCurrentConviction logic data`(): Stream<Arguments> = Stream.of(
+      // args: dateAtStartOfFollowup, dateOfCurrentConviction, error
+      // Both null should result in error
+      Arguments.of(null, null, true),
+      // All other combinations shouldn't result in an error (i.e. one or both dates provided)
+      Arguments.of(LocalDate.parse("2025-01-01"), LocalDate.parse("2025-01-01"), false),
+      Arguments.of(null, LocalDate.parse("2025-01-01"), false),
+      Arguments.of(LocalDate.parse("2025-01-01"), null, false),
+    )
   }
 }

@@ -10,7 +10,7 @@ enum class ValidationErrorType(val message: String) {
   DOMESTIC_ABUSE_INCONSISTENT_INPUT("No evidence of domestic abuse identified - domesticAbuseAgainstPartner and domesticAbuseAgainstFamily should not be provided"),
   SEXUAL_OFFENDING_MISSING_COUNTS("Sexual motivation/offending identified - complete sexual offence counts"),
   SEXUAL_OFFENDING_INCONSISTENT_INPUT("No sexual motivation/offending identified - additional fields should not be provided"),
-  NEED_DETAILS_OF_EXACT_OFFENCE("For this group of offences, the OGRS 3 offence category takes different values depending on the nature of the exact offence. Therefore, it is not possible to calculate an OGRS 3 score without details of the exact offence."),
+  NEED_DETAILS_OF_EXACT_OFFENCE("For this group of offences, the offence category is different depending on the nature of the exact offence. Provide a more specific offence."),
   MISSING_MANDATORY_INPUT("Mandatory input field(s) missing"),
   MISSING_DYNAMIC_INPUT("Dynamic input field(s) missing"),
   IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR_INCONSISTENT_INPUT("hasEverCommittedSexualOffence cannot be null or false when sexual sanctions exist"),
