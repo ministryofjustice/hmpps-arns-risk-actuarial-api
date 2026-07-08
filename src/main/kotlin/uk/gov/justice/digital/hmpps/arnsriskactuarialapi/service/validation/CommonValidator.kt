@@ -70,10 +70,10 @@ class CommonValidator(val offenceCodeCacheService: OffenceCodeCacheService) {
         return ValidationErrorType.OFFENCE_CODE_INCORRECT_FORMAT.asError(listOf(RiskScoreRequest::currentOffenceCode.name))
       }
       val actuarialCategory = offenceCodeCacheService.getActuarialCategory(request.currentOffenceCode)
-      if (actuarialCategory == null || actuarialCategory == ActuarialCategory.UNKNOWN) {
-        return ValidationErrorType.OFFENCE_CODE_MAPPING_NOT_FOUND.asError(listOf(RiskScoreRequest::currentOffenceCode.name))
-      } else if (actuarialCategory == ActuarialCategory.NEED_DETAILS_OF_EXACT_OFFENCE) {
-        return ValidationErrorType.NEED_DETAILS_OF_EXACT_OFFENCE.asError(listOf(RiskScoreRequest::currentOffenceCode.name))
+      return when (actuarialCategory) {
+        null, ActuarialCategory.UNKNOWN -> ValidationErrorType.OFFENCE_CODE_MAPPING_NOT_FOUND.asError(listOf(RiskScoreRequest::currentOffenceCode.name))
+        ActuarialCategory.NEED_DETAILS_OF_EXACT_OFFENCE -> ValidationErrorType.NEED_DETAILS_OF_EXACT_OFFENCE.asError(listOf(RiskScoreRequest::currentOffenceCode.name))
+        else -> null
       }
     }
     return null

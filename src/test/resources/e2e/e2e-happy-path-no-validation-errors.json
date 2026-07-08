@@ -164,13 +164,13 @@
         "thresholdsVersion": "1.0",
         "output": {
           "band": "VERY_HIGH",
-          "score": 89.75
+          "score": 91.34
         },
         "featureValues": {
           "twoYearInterceptWeight": 1.81687448362791,
           "ageGenderPolynomialWeight": -0.0366554758126667,
           "genderWeight": 0,
-          "offenceGroupWeight": 0,
+          "offenceGroupWeight": 0.186300883246964,
           "firstSanctionWeight": 0,
           "secondSanctionWeight": 0,
           "totalNumberOfSanctionsForAllOffencesWeight": -0.1435104004574562,
@@ -202,7 +202,7 @@
           "cannabisUsageWeight": 0,
           "steroidUsageWeight": 0,
           "otherDrugUsageWeight": 0,
-          "totalWeight": 2.170073211716656
+          "totalWeight": 2.35637409496362
         },
         "validationErrors": []
       },

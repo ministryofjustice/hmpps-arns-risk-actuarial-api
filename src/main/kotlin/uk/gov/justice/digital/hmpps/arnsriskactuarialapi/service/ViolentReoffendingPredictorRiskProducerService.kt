@@ -50,7 +50,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.getAgeAtDate
 import java.math.BigDecimal
 
 @Service
-class ViolentReoffendingPredictorRiskProducerService(val validator: ViolentReoffendingPredictorValidator) : BaseRiskScoreProducer() {
+class ViolentReoffendingPredictorRiskProducerService(val validator: ViolentReoffendingPredictorValidator, val offenceCodeCacheService: OffenceCodeCacheService) : BaseRiskScoreProducer() {
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
     val staticValidationErrors = validator.validateStatic(request)
@@ -183,7 +183,7 @@ class ViolentReoffendingPredictorRiskProducerService(val validator: ViolentReoff
         ),
       )
       FeatureValue.GENDER_WEIGHT.set(getGenderWeight(staticOrDynamic, staticData.gender))
-      FeatureValue.OFFENCE_GROUP_WEIGHT.set(getOffenceGroupWeight(staticOrDynamic, staticData.currentOffenceCode))
+      FeatureValue.OFFENCE_GROUP_WEIGHT.set(getOffenceGroupWeight(offenceCodeCacheService, staticOrDynamic, staticData.currentOffenceCode))
       FeatureValue.FIRST_SANCTION_WEIGHT.set(
         getFirstSanctionWeight(
           staticOrDynamic,
