@@ -39,12 +39,12 @@
     "supervisionStatus": "REMAND"
   },
   "response": {
-    "algorithm": "RSR",
+    "algorithm": "COMBINED_SERIOUS_REOFFENDING_PREDICTOR",
     "type": "COMBINED",
     "modelVersion": "1.0",
     "thresholdsVersion": "1.0",
     "output": {
-      "band": "HIGH",
+      "band": "VERY_HIGH",
       "overallScore": 14.15,
       "femaleVersion": false,
       "hasSexualOffenceHistory": false,

@@ -23,7 +23,7 @@ data class PNIRequestValidated(
   val temperControl: ProblemLevel?,
   val allReoffendingPredictorStaticScore: Double?,
   val violentReoffendingPredictorStaticScore: Double?,
-  val rsr: Int?,
+  val combinedSeriousReoffendingPredictor: Int?,
   val violentReoffendingPredictorBand: RiskBand?,
   val directContactSexualReoffendingPredictorBand: RiskBand?,
   val imagesAndIndirectContactSexualReoffendingPredictorBand: RiskBand?,

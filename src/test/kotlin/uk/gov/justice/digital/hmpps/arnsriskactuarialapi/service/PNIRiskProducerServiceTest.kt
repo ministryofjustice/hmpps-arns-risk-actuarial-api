@@ -234,8 +234,8 @@ class PNIRiskProducerServiceTest {
     }
 
     @Test
-    fun `isHighRisk returns true for rsr high when male and osp scores null`() {
-      val result = service.isHighRisk(pniRequest().copy(rsr = 4))
+    fun `isHighRisk returns true for combinedSeriousReoffendingPredictor high when male and osp scores null`() {
+      val result = service.isHighRisk(pniRequest().copy(combinedSeriousReoffendingPredictor = 4))
       assertTrue(result)
     }
 
@@ -252,7 +252,7 @@ class PNIRiskProducerServiceTest {
           supervisionStatus = SupervisionStatus.COMMUNITY,
           allReoffendingPredictorStaticScore = 40.0,
           violentReoffendingPredictorStaticScore = 10.0,
-          rsr = 1,
+          combinedSeriousReoffendingPredictor = 1,
         ),
       )
       assertFalse(result)
@@ -289,8 +289,8 @@ class PNIRiskProducerServiceTest {
     }
 
     @Test
-    fun `isMediumRisk returns false for rsr medium when male and osp scores are present`() {
-      val result = service.isMediumRisk(pniRequest().copy(rsr = 2, directContactSexualReoffendingPredictorBand = RiskBand.HIGH))
+    fun `isMediumRisk returns false for CSRP medium when male and osp scores are present`() {
+      val result = service.isMediumRisk(pniRequest().copy(combinedSeriousReoffendingPredictor = 2, directContactSexualReoffendingPredictorBand = RiskBand.HIGH))
       assertFalse(result)
     }
 
@@ -302,7 +302,7 @@ class PNIRiskProducerServiceTest {
 
     @Test
     fun `isMediumRisk returns false when all factors are low or null`() {
-      val result = service.isMediumRisk(pniRequest().copy(allReoffendingPredictorStaticScore = 40.0, violentReoffendingPredictorStaticScore = 10.0, rsr = 0))
+      val result = service.isMediumRisk(pniRequest().copy(allReoffendingPredictorStaticScore = 40.0, violentReoffendingPredictorStaticScore = 10.0, combinedSeriousReoffendingPredictor = 0))
       assertFalse(result)
     }
   }

@@ -213,7 +213,7 @@
         ]
       },
       "seriousPredictor": {
-        "algorithm": "RSR",
+        "algorithm": "COMBINED_SERIOUS_REOFFENDING_PREDICTOR",
         "type": "COMBINED",
         "modelVersion": "1.0",
         "thresholdsVersion": "1.0",
@@ -346,6 +346,11 @@
               "IMAGES_AND_INDIRECT_CONTACT_SEXUAL_REOFFENDING_PREDICTOR",
               "SERIOUS_VIOLENT_REOFFENDING_PREDICTOR"
             ]
+          },
+          {
+            "type" : "MISSING_MANDATORY_INPUT",
+            "message" : "Mandatory input field(s) missing",
+            "fields" : [ "gender", "hasEverCommittedSexualOffence" ]
           }
         ]
       }

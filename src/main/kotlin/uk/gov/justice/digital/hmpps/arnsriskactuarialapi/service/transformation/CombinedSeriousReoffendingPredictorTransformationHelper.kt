@@ -2,33 +2,49 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.coefficients.CombinedSeriousReoffendingPredictor
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asDoublePercentage
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.roundToNDecimals
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sanitisePercentage
 import java.math.BigDecimal
 
-fun getCSRPScore(
-  gender: Gender,
-  sexualOffendingHistory: Boolean,
-  seriousViolentPercentageScore: BigDecimal,
-  directContactSexualReoffendingPredictorPercentageScore: BigDecimal,
-  iicsrpPercentageScore: BigDecimal,
-): BigDecimal {
-  val femaleSexualOffenderCoefficient = if (gender == Gender.FEMALE && sexualOffendingHistory) {
+object CombinedSeriousReoffendingPredictorTransformationHelper {
+  fun getFemaleWeight(request: RiskScoreRequest): BigDecimal? = if (request.gender == Gender.FEMALE && request.hasEverCommittedSexualOffence!!) {
     CombinedSeriousReoffendingPredictor.FEMALE_SEXUAL_OFFENDER.coefficient
   } else {
-    BigDecimal.ZERO
+    null
   }
 
-  return seriousViolentPercentageScore
-    .add(directContactSexualReoffendingPredictorPercentageScore)
-    .add(iicsrpPercentageScore)
-    .add(femaleSexualOffenderCoefficient)
-    .min(BigDecimal("99.99"))
-}
+  fun getScore(
+    seriousViolentPercentageScore: Double?,
+    directContactSexualReoffendingPredictorPercentageScore: Double?,
+    iicsrpPercentageScore: Double?,
+    femaleSexualOffenderCoefficient: Double?,
+  ): Double? {
+    if (
+      seriousViolentPercentageScore == null &&
+      directContactSexualReoffendingPredictorPercentageScore == null &&
+      iicsrpPercentageScore == null &&
+      femaleSexualOffenderCoefficient == null
+    ) {
+      return null
+    }
 
-fun getCSRPBand(rsrScore: BigDecimal): RiskBand = when {
-  rsrScore < BigDecimal.ZERO -> RiskBand.NOT_APPLICABLE
-  rsrScore < BigDecimal.ONE -> RiskBand.LOW
-  rsrScore < BigDecimal("3") -> RiskBand.MEDIUM
-  rsrScore < BigDecimal("6.9") -> RiskBand.HIGH
-  else -> RiskBand.VERY_HIGH
+    return listOf(
+      seriousViolentPercentageScore!!,
+      directContactSexualReoffendingPredictorPercentageScore!!,
+      iicsrpPercentageScore!!,
+      femaleSexualOffenderCoefficient?.asDoublePercentage() ?: 0.0,
+    ).sum().roundToNDecimals(2).sanitisePercentage()
+  }
+
+  fun getBand(score: Double?): RiskBand? = when {
+    score == null -> null
+    score < 0.0 -> RiskBand.NOT_APPLICABLE
+    score < 1.0 -> RiskBand.LOW
+    score < 3.0 -> RiskBand.MEDIUM
+    score < 6.9 -> RiskBand.HIGH
+    else -> RiskBand.VERY_HIGH
+  }
 }

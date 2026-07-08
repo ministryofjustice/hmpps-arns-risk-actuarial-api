@@ -33,10 +33,10 @@ data class InputFieldWithOption(
   val oasysOption: Any?,
 )
 
-data class OASysRSROutput(
+data class OASysCombinedSeriousReoffendingPredictorOutput(
   val scoreType: ScoreTypeResponse?,
-  val rsrBand: RiskBandResponse?,
-  val rsrScore: Double?,
+  val combinedSeriousReoffendingPredictorBand: RiskBandResponse?,
+  val combinedSeriousReoffendingPredictorScore: Double?,
   val directContactSexualReoffendingPredictorBand: RiskBandResponse?,
   val directContactSexualReoffendingPredictorScore: Double?,
   val ospiicBand: RiskBandResponse?,
@@ -58,7 +58,7 @@ data class ARNSRequestAndResponse(
 
 data class OASysRequestAndResponse(
   val request: Map<String, Any?>,
-  val response: OASysRSROutput,
+  val response: OASysCombinedSeriousReoffendingPredictorOutput,
 )
 
 fun convertDefault() = { input: Any? ->
@@ -364,10 +364,10 @@ fun runBatchIntoOASys(inputMappings: List<InputMapping>, connection: Connection)
     oasysResponseObjects.add(
       OASysRequestAndResponse(
         request = inputMappings[oasysResponse.row - 1].oasysData,
-        response = OASysRSROutput(
+        response = OASysCombinedSeriousReoffendingPredictorOutput(
           scoreType = oasysResponse.getString("Score_Type")?.convertOASysScoreType(),
-          rsrBand = oasysResponse.getString("RSR_Band")?.convertOASysBand(),
-          rsrScore = oasysResponse.getString("RSR_Score")?.toDoubleOrNull(),
+          combinedSeriousReoffendingPredictorBand = oasysResponse.getString("RSR_Band")?.convertOASysBand(),
+          combinedSeriousReoffendingPredictorScore = oasysResponse.getString("RSR_Score")?.toDoubleOrNull(),
           directContactSexualReoffendingPredictorBand = oasysResponse.getString("OSPC_Band")?.convertOASysBand(),
           directContactSexualReoffendingPredictorScore = oasysResponse.getString("OSPC_Score")?.toDoubleOrNull(),
           ospiicBand = oasysResponse.getString("OSPI_Band")?.convertOASysBand(),
@@ -384,9 +384,9 @@ fun runBatchIntoOASys(inputMappings: List<InputMapping>, connection: Connection)
   return oasysResponseObjects
 }
 
-fun arnsAndOasysResultsNotEqual(arnsResponse: RiskScoreResponse, oasysResponse: OASysRSROutput) = // Check RSR score and band
-  arnsResponse.actuarialPredictors.seriousPredictor.output.band != oasysResponse.rsrBand ||
-    arnsResponse.actuarialPredictors.seriousPredictor.output.overallScore != oasysResponse.rsrScore ||
+fun arnsAndOasysResultsNotEqual(arnsResponse: RiskScoreResponse, oasysResponse: OASysCombinedSeriousReoffendingPredictorOutput) = // Check RSR score and band
+  arnsResponse.actuarialPredictors.seriousPredictor.output.band != oasysResponse.combinedSeriousReoffendingPredictorBand ||
+    arnsResponse.actuarialPredictors.seriousPredictor.output.overallScore != oasysResponse.combinedSeriousReoffendingPredictorScore ||
     // Check directContactSexualReoffendingPredictor score and band
     arnsResponse.actuarialPredictors.directContactSexualPredictor.output.band != oasysResponse.directContactSexualReoffendingPredictorBand ||
     arnsResponse.actuarialPredictors.directContactSexualPredictor.output.score != oasysResponse.directContactSexualReoffendingPredictorScore ||
@@ -414,10 +414,10 @@ fun getTestOutputText(objectMapper: ObjectMapper, testNum: Long, arnsResponse: A
     OASys score type = ${oasysResponse.response.scoreType}
     
     ARNS RSR Band  = ${arnsResponse.response.actuarialPredictors.seriousPredictor.output.band}
-    OASys RSR Band = ${oasysResponse.response.rsrBand}
+    OASys RSR Band = ${oasysResponse.response.combinedSeriousReoffendingPredictorBand}
     
     ARNS RSR Score  = ${arnsResponse.response.actuarialPredictors.seriousPredictor.output.overallScore}
-    OASys RSR Score = ${oasysResponse.response.rsrScore}
+    OASys RSR Score = ${oasysResponse.response.combinedSeriousReoffendingPredictorScore}
     
     ARNS directContactSexualReoffendingPredictor Band  = ${arnsResponse.response.actuarialPredictors.directContactSexualPredictor.output.band}
     OASys directContactSexualReoffendingPredictor Band = ${oasysResponse.response.directContactSexualReoffendingPredictorBand}

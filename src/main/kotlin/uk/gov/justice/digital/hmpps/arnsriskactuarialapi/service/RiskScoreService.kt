@@ -34,7 +34,7 @@ class RiskScoreService {
   lateinit var seriousViolentReoffendingPredictorRiskProducerService: SeriousViolentReoffendingPredictorRiskProducerService
 
   @Autowired
-  lateinit var rsrRiskProducerService: RSRRiskProducerService
+  lateinit var combinedSeriousReoffendingPredictorRiskProducerService: CombinedSeriousReoffendingPredictorRiskProducerService
 
   @Autowired
   lateinit var imagesAndIndirectContactSexualReoffendingPredictorRiskProducerService: ImagesAndIndirectContactSexualReoffendingPredictorProducerService
@@ -49,7 +49,7 @@ class RiskScoreService {
     directContactSexualReoffendingPredictorProducerService,
     seriousViolentReoffendingPredictorRiskProducerService,
     imagesAndIndirectContactSexualReoffendingPredictorRiskProducerService,
-    rsrRiskProducerService,
+    combinedSeriousReoffendingPredictorRiskProducerService,
   ).fold(RiskScoreContext(riskScoreRequest.version)) { context, service ->
     service.calculateRiskScore(riskScoreRequest, context)
   }.toRiskScoreResponse()

@@ -11,7 +11,7 @@
     "hasEverCommittedSexualOffence": false
   },
   "response": {
-    "algorithm": "RSR",
+    "algorithm": "COMBINED_SERIOUS_REOFFENDING_PREDICTOR",
     "type": "COMBINED",
     "modelVersion": "1.0",
     "thresholdsVersion": "1.0",

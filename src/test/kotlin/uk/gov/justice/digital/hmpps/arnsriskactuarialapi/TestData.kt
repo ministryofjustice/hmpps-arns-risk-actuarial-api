@@ -13,6 +13,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.SupervisionStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.YesSometimesNo
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.allreoffendingpredictor.AllReoffendingPredictorObject
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.combinedseriousreoffendingpredictor.CombinedSeriousReoffendingPredictorObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.directContactSexualReoffendingPredictor.DirectContactSexualReoffendingPredictorObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.imagesandIndirectcontactsexualreoffendingpredictor.ImagesAndIndirectContactSexualReoffendingPredictorObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.lds.HasQualifications
@@ -23,7 +24,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.opd.OPDRequestValid
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.PNIRequestValidated
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.pni.ProgrammeNeedIdentifier
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.rsr.RSRObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.seriousviolentreoffendingpredictor.SeriousViolentReoffendingPredictorObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.violentreoffendingpredictor.ViolentReoffendingPredictorObject
 import java.time.LocalDate
@@ -45,7 +45,7 @@ fun emptyLDS(): LDSObject = LDSObject(null, null)
 
 fun emptySeriousViolentReoffendingPredictor(): SeriousViolentReoffendingPredictorObject = SeriousViolentReoffendingPredictorObject(null, null, null, null, null)
 
-fun emptyRSR(): RSRObject = RSRObject(null, null, null, null, null, null, null, null, null, null, null)
+fun emptyCombinedSeriousReoffendingPredictor(): CombinedSeriousReoffendingPredictorObject = CombinedSeriousReoffendingPredictorObject(null, null, null, null, null, null, null, null, null, null, null, null)
 
 fun emptyImagesAndIndirectContactSexualReoffendingPredictor(): ImagesAndIndirectContactSexualReoffendingPredictorObject = ImagesAndIndirectContactSexualReoffendingPredictorObject(null, null, null, null, null, null, null)
 
@@ -280,6 +280,26 @@ fun validImageAndIndirectContactPredictorStaticRiskScoreRequest(): RiskScoreRequ
   totalIndecentImageSanctions = 1,
 )
 
+fun validCombinedSeriousReoffendingPredictorStaticRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
+  assessmentDate = LocalDate.of(2025, 1, 1),
+  dateOfBirth = LocalDate.of(1990, 1, 1),
+  dateOfCurrentConviction = LocalDate.of(2024, 1, 1),
+  ageAtFirstSanction = 18,
+  gender = Gender.MALE,
+  currentOffenceCode = "00001",
+  totalNumberOfSanctionsForAllOffences = 2,
+  totalNumberOfViolentSanctions = 2,
+  dateAtStartOfFollowupCalculated = LocalDate.of(2026, 1, 1),
+  hasEverCommittedSexualOffence = true,
+  totalContactAdultSexualSanctions = 1,
+  totalContactChildSexualSanctions = 1,
+  totalNonContactSexualOffences = 1,
+  totalIndecentImageSanctions = 1,
+  version = RiskScoreVersion.V1_0,
+  isCurrentOffenceSexuallyMotivated = false,
+  supervisionStatus = SupervisionStatus.CUSTODY,
+)
+
 fun validMSTRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
   version = RiskScoreVersion.V1_0,
   gender = Gender.MALE,
@@ -470,5 +490,5 @@ fun pniRequest(
   directContactSexualReoffendingPredictorBand = null,
   saraRiskToPartner = null,
   saraRiskToOthers = null,
-  rsr = null,
+  combinedSeriousReoffendingPredictor = null,
 )
