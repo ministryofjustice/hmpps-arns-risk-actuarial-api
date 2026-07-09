@@ -148,7 +148,7 @@ class SeriousViolentReoffendingPredictorRiskProducerService(val validator: Serio
       "Date at start of followup calculated",
     )
 
-    val featureValuesMap =  buildMap {
+    val featureValuesMap = buildMap {
       fun FeatureValue.set(weight: BigDecimal) = put(this.outputName, weight)
 
       FeatureValue.TWO_YEAR_INTERCEPT_WEIGHT.set(get2YearInterceptWeight(staticOrDynamic))
