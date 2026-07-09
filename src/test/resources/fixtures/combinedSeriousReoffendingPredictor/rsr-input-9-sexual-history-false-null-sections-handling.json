@@ -34,7 +34,7 @@
     "thresholdsVersion": "1.0",
     "output": {
       "band": "MEDIUM",
-      "overallScore": 1.6,
+      "overallScore": 1.82,
       "femaleVersion": false,
       "hasSexualOffenceHistory": false,
       "componentScores": {
@@ -62,8 +62,8 @@
           "output": {
             "band": "NOT_APPLICABLE",
             "score": 0.0,
-            "femaleVersion" : false,
-            "hasSexualOffenceHistory" : false
+            "femaleVersion": false,
+            "hasSexualOffenceHistory": false
           },
           "featureValues": {},
           "validationErrors": []
@@ -75,13 +75,13 @@
           "thresholdsVersion": "1.0",
           "output": {
             "band": "MEDIUM",
-            "score": 1.6
+            "score": 1.82
           },
           "featureValues": {
             "twoYearInterceptWeight": -1.70588696906607,
             "ageGenderPolynomialWeight": -0.0440713740196372,
             "genderWeight": 0,
-            "offenceGroupWeight": 0,
+            "offenceGroupWeight": 0.135286411622716,
             "firstSanctionWeight": -2.26703484992352,
             "secondSanctionWeight": 0,
             "totalNumberOfSanctionsForAllOffencesWeight": -0.025992075782348,
@@ -107,7 +107,7 @@
             "pastNonFirearmWeaponOffenceWeight": 0,
             "pastCriminalDamageOffenceWeight": 0,
             "pastArsonOffenceWeight": 0,
-            "totalWeight": -4.120523310838686
+            "totalWeight": -3.9852368992159697
           },
           "validationErrors": []
         }

@@ -254,13 +254,13 @@
         "thresholdsVersion": "1.0",
         "output": {
           "band": "VERY_HIGH",
-          "score": 13.06
+          "score": 14.67
         },
         "featureValues": {
           "twoYearInterceptWeight": -1.70588696906607,
           "ageGenderPolynomialWeight": -0.0467502761404191,
           "genderWeight": 0,
-          "offenceGroupWeight": 0,
+          "offenceGroupWeight": 0.135286411622716,
           "firstSanctionWeight": 0,
           "secondSanctionWeight": 0,
           "totalNumberOfSanctionsForAllOffencesWeight": -0.545833591429308,
@@ -286,7 +286,7 @@
           "pastNonFirearmWeaponOffenceWeight": 0,
           "pastCriminalDamageOffenceWeight": 0,
           "pastArsonOffenceWeight": 0,
-          "totalWeight": -1.8958018496087048
+          "totalWeight": -1.7605154379859886
         },
         "validationErrors": []
       },
@@ -297,7 +297,7 @@
         "thresholdsVersion": "1.0",
         "output": {
           "band": "VERY_HIGH",
-          "overallScore": 28.68,
+          "overallScore": 30.29,
           "femaleVersion": false,
           "hasSexualOffenceHistory": true,
           "componentScores": {
@@ -349,13 +349,13 @@
               "thresholdsVersion": "1.0",
               "output": {
                 "band": "VERY_HIGH",
-                "score": 13.06
+                "score": 14.67
               },
               "featureValues": {
                 "twoYearInterceptWeight": -1.70588696906607,
                 "ageGenderPolynomialWeight": -0.0467502761404191,
                 "genderWeight": 0,
-                "offenceGroupWeight": 0,
+                "offenceGroupWeight": 0.135286411622716,
                 "firstSanctionWeight": 0,
                 "secondSanctionWeight": 0,
                 "totalNumberOfSanctionsForAllOffencesWeight": -0.545833591429308,
@@ -381,7 +381,7 @@
                 "pastNonFirearmWeaponOffenceWeight": 0,
                 "pastCriminalDamageOffenceWeight": 0,
                 "pastArsonOffenceWeight": 0,
-                "totalWeight": -1.8958018496087048
+                "totalWeight": -1.7605154379859886
               },
               "validationErrors": []
             }
