@@ -9,7 +9,10 @@ import tools.jackson.databind.cfg.CoercionAction
 import tools.jackson.databind.cfg.CoercionInputShape
 import tools.jackson.databind.cfg.DateTimeFeature
 import tools.jackson.databind.cfg.EnumFeature
+import tools.jackson.databind.module.SimpleModule
+import tools.jackson.databind.ser.std.ToStringSerializer
 import tools.jackson.module.kotlin.kotlinModule
+import java.math.BigDecimal
 import java.text.SimpleDateFormat
 
 @Configuration
@@ -35,5 +38,6 @@ class JacksonConfig {
           .setCoercion(CoercionInputShape.Float, CoercionAction.Fail)
           .setCoercion(CoercionInputShape.String, CoercionAction.Fail)
       }
+      .addModule(SimpleModule("BigDecimalAsStrings").addSerializer(BigDecimal::class.java, ToStringSerializer.instance))
   }
 }

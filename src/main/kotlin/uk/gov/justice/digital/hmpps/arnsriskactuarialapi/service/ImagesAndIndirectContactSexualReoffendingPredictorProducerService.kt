@@ -94,7 +94,7 @@ class ImagesAndIndirectContactSexualReoffendingPredictorProducerService(val inpu
   private fun buildFeatureValuesMap(
     staticData: ImagesAndIndirectContactSexualReoffendingPredictorRequestValidated.Static,
   ): Map<String, BigDecimal> = buildMap {
-    fun FeatureValue.set(weight: BigDecimal) = put(this.outputName, weight)
+    fun FeatureValue.set(weight: BigDecimal) = put(this.outputName, weight.stripTrailingZeros())
 
     FeatureValue.IMAGES_AND_INDIRECT_CONTACT_WEIGHT.set(
       getHierarchyWeight(

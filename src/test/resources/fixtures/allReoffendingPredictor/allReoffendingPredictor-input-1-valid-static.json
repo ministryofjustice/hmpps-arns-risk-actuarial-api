@@ -15,28 +15,28 @@
     "modelVersion": "1.0",
     "thresholdsVersion": "1.0",
     "output": {
-      "band" : "HIGH",
-      "score" : 80.98
+      "band": "HIGH",
+      "score": 80.98
     },
-    "featureValues" : {
-      "twoYearInterceptWeight" : 5.01702292499072,
-      "ageGenderPolynomialWeight" : -0.09871083570104801,
-      "genderWeight" : 0,
-      "offenceGroupWeight" : 0.0384434393037725,
-      "firstSanctionWeight" : 0,
-      "secondSanctionWeight" : -3.06189212045904,
-      "totalNumberOfSanctionsForAllOffencesWeight" : -0.008551460256999,
-      "secondSanctionGapWeight" : -0.3888466552456506,
-      "offenceFreeMonthsWeight" : -0.048448405561096,
-      "copasScore" : 0,
-      "copasScoreSquared" : 0,
-      "totalWeight" : 1.4490168870706592
+    "featureValues": {
+      "twoYearInterceptWeight": "5.01702292499072033393758829333819448947906494140625",
+      "ageGenderPolynomialWeight": "-0.09871083570104801012575274272477232617717390894540585577487945556640625",
+      "genderWeight": "0",
+      "offenceGroupWeight": "0.0384434393037725",
+      "firstSanctionWeight": "0",
+      "secondSanctionWeight": "-3.061892120459039912105936309671960771083831787109375",
+      "totalNumberOfSanctionsForAllOffencesWeight": "-0.00855146025699900051708635118075108039192855358123779296875",
+      "secondSanctionGapWeight": "-0.38884665524565061034412138951665838249027729034423828125",
+      "offenceFreeMonthsWeight": "-0.048448405561096005714151642440601364114627358503639698028564453125",
+      "copasScore": "0",
+      "copasScoreSquared": "0",
+      "totalWeight": "1.44901688707065929513053985780345056522122604292235337197780609130859375"
     },
     "validationErrors": [
       {
-        "type" : "MISSING_DYNAMIC_INPUT",
-        "message" : "Dynamic input field(s) missing",
-        "fields" : [
+        "type": "MISSING_DYNAMIC_INPUT",
+        "message": "Dynamic input field(s) missing",
+        "fields": [
           "suitabilityOfAccommodation",
           "isUnemployed",
           "currentRelationshipWithPartner",

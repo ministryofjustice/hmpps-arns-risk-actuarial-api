@@ -20,21 +20,21 @@
       "score": 49.54
     },
     "featureValues": {
-      "twoYearInterceptWeight": 3.12324433235579,
-      "ageGenderPolynomialWeight": -0.071516991764084,
-      "genderWeight": 0,
-      "offenceGroupWeight": 0.0998951874967628,
-      "firstSanctionWeight": 0,
-      "secondSanctionWeight": -1.10995084554834,
-      "totalNumberOfSanctionsForAllOffencesWeight": -0.0135316135489862,
-      "neverViolentWeight" : 0,
-      "onceViolentWeight" : 0,
-      "totalNumberOfViolentSanctionsWeight": 0.0185294325031695,
-      "secondSanctionGapWeight": -0.4661521068397212,
-      "offenceFreeMonthsWeight": -0.0476168447456602,
-      "copasScore": 0,
-      "copasViolentOffencesScore": -1.551366340851716,
-      "totalWeight": -0.01846579094278517
+      "twoYearInterceptWeight": "3.123244332355790131572348400368355214595794677734375",
+      "ageGenderPolynomialWeight": "-0.071516991764084005076467526348070469222051315227872692048549652099609375",
+      "genderWeight": "0",
+      "offenceGroupWeight": "0.0998951874967628",
+      "firstSanctionWeight": "0",
+      "secondSanctionWeight": "-1.1099508455483400037877572685829363763332366943359375",
+      "totalNumberOfSanctionsForAllOffencesWeight": "-0.01353161354898619987696672950505671906284987926483154296875",
+      "neverViolentWeight": "0",
+      "onceViolentWeight": "0",
+      "totalNumberOfViolentSanctionsWeight": "0.0185294325031695010508325793807671288959681987762451171875",
+      "secondSanctionGapWeight": "-0.4661521068397212197442769365807180292904376983642578125",
+      "offenceFreeMonthsWeight": "-0.047616844745660195651801825655891065025571151636540889739990234375",
+      "copasScore": "0",
+      "copasViolentOffencesScore": "-1.55136634085171597861683822611784666634093809989280998706817626953125",
+      "totalWeight": "-0.018465790942785170130927533041396981783321962211630307137966156005859375"
     },
     "validationErrors": [
       {
