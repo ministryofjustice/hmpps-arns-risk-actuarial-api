@@ -14,6 +14,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationError
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ValidationErrorType
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.offencecode.ActuarialCategory
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.seriousviolentreoffendingpredictor.SeriousViolentReoffendingPredictorObject
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.emptyContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.validation.SeriousViolentReoffendingPredictorValidator
@@ -27,6 +28,9 @@ class SeriousViolentReoffendingPredictorRiskProducerServiceTest {
 
   @Mock
   private lateinit var validator: SeriousViolentReoffendingPredictorValidator
+
+  @Mock
+  private lateinit var offenceCodeCacheService: OffenceCodeCacheService
 
   @InjectMocks
   private lateinit var service: SeriousViolentReoffendingPredictorRiskProducerService
@@ -100,29 +104,30 @@ class SeriousViolentReoffendingPredictorRiskProducerServiceTest {
     // Mock out validation
     whenever(validator.validateStatic(request)).thenReturn(emptyList())
     whenever(validator.validateDynamic(request)).thenReturn(listOf(expectedDynamicValidationErrors))
+    whenever(offenceCodeCacheService.getActuarialCategory("00001")).thenReturn(ActuarialCategory.VIOLENCE_AGAINST_THE_PERSON_ABH_PLUS)
 
     val context = service.getRiskScore(validSeriousViolentReoffendingPredictorStaticRiskScoreRequest(), emptyContext())
 
-    val expectedFeatureValues = mapOf<String, BigDecimal>(
+    val expectedFeatureValues = mapOf(
       "twoYearInterceptWeight" to BigDecimal("-0.97073455522398699457653492572717368602752685546875"),
-      "ageGenderPolynomialWeight" to BigDecimal("-0.042776507656246201116018168519872233446221798658370971679687500"),
+      "ageGenderPolynomialWeight" to BigDecimal("-0.0427765076562462011160181685198722334462217986583709716796875"),
       "genderWeight" to BigDecimal("0"),
-      "offenceGroupWeight" to BigDecimal("0"),
+      "offenceGroupWeight" to BigDecimal("0.0914232846880801"),
       "firstSanctionWeight" to BigDecimal("0"),
       "secondSanctionWeight" to BigDecimal("-1.3616142884911799360025952410069294273853302001953125"),
-      "totalNumberOfSanctionsForAllOffencesWeight" to BigDecimal("-0.05009251800373060170556982484413310885429382324218750"),
-      "secondSanctionGapWeight" to BigDecimal("-1.88730499684657604397841623722342774271965026855468750000"),
+      "totalNumberOfSanctionsForAllOffencesWeight" to BigDecimal("-0.0500925180037306017055698248441331088542938232421875"),
+      "secondSanctionGapWeight" to BigDecimal("-1.8873049968465760439784162372234277427196502685546875"),
       "offenceFreeMonthsWeight" to BigDecimal("0"),
       "copasScore" to BigDecimal("0"),
       "neverViolentWeight" to BigDecimal("0"),
       "onceViolentWeight" to BigDecimal("0"),
-      "violentSanctionsWeight" to BigDecimal("0.02838954995116220111905924738948669983074069023132324218750"),
+      "violentSanctionsWeight" to BigDecimal("0.0283895499511622011190592473894866998307406902313232421875"),
       "violenceRateWeight" to BigDecimal("-0.785373799886639244900096464390770734098623506724834442138671875"),
-      "totalWeight" to BigDecimal("-5.069507116157196821160171614322820232700905762612819671630859375"),
+      "totalWeight" to BigDecimal("-4.978083831469116721160171614322820232700905762612819671630859375"),
     )
 
     val expected = SeriousViolentReoffendingPredictorObject(
-      score = 0.62,
+      score = 0.68,
       band = RiskBand.LOW,
       staticOrDynamic = StaticOrDynamic.STATIC,
       validationErrors = listOf(expectedDynamicValidationErrors),
@@ -139,23 +144,24 @@ class SeriousViolentReoffendingPredictorRiskProducerServiceTest {
     // Mock out validation
     whenever(validator.validateStatic(request)).thenReturn(emptyList())
     whenever(validator.validateDynamic(request)).thenReturn(emptyList())
+    whenever(offenceCodeCacheService.getActuarialCategory("00001")).thenReturn(ActuarialCategory.VIOLENCE_AGAINST_THE_PERSON_ABH_PLUS)
 
     val context = service.getRiskScore(request, emptyContext())
 
     val expectedFeatureValues = mapOf(
       "twoYearInterceptWeight" to BigDecimal("-1.705886969066070069089846583665348589420318603515625"),
-      "ageGenderPolynomialWeight" to BigDecimal("-0.04180461068666790089374402095145910607243422418832778930664062500"),
+      "ageGenderPolynomialWeight" to BigDecimal("-0.041804610686667900893744020951459106072434224188327789306640625"),
       "genderWeight" to BigDecimal("0"),
-      "offenceGroupWeight" to BigDecimal("0"),
+      "offenceGroupWeight" to BigDecimal("-0.048353695619906"),
       "firstSanctionWeight" to BigDecimal("0"),
       "secondSanctionWeight" to BigDecimal("-1.17946726635963994311850910889916121959686279296875"),
-      "totalNumberOfSanctionsForAllOffencesWeight" to BigDecimal("-0.0519841515646959975716079327412444399669766426086425781250"),
-      "secondSanctionGapWeight" to BigDecimal("-1.54822420498653445797287986351875588297843933105468750000"),
+      "totalNumberOfSanctionsForAllOffencesWeight" to BigDecimal("-0.051984151564695997571607932741244439966976642608642578125"),
+      "secondSanctionGapWeight" to BigDecimal("-1.5482242049865344579728798635187558829784393310546875"),
       "offenceFreeMonthsWeight" to BigDecimal("0"),
       "copasScore" to BigDecimal("0"),
       "neverViolentWeight" to BigDecimal("0"),
       "onceViolentWeight" to BigDecimal("0"),
-      "violentSanctionsWeight" to BigDecimal("0.0130659984492680000811581919606396695598959922790527343750"),
+      "violentSanctionsWeight" to BigDecimal("0.013065998449268000081158191960639669559895992279052734375"),
       "violenceRateWeight" to BigDecimal("-0.51778627936787994302401369086317484136117172965896315872669219970703125"),
       "offenceInvolveCarryingOrUsingWeaponsWeight" to BigDecimal("0.385215247009075001383138214805512689054012298583984375"),
       "suitableAccommodationWeight" to BigDecimal("0.044223953156797703167857349626501672901213169097900390625"),
@@ -172,12 +178,12 @@ class SeriousViolentReoffendingPredictorRiskProducerServiceTest {
       "pastNonFirearmWeaponOffenceWeight" to BigDecimal("0"),
       "pastCriminalDamageOffenceWeight" to BigDecimal("0"),
       "pastArsonOffenceWeight" to BigDecimal("0"),
-      "totalWeight" to BigDecimal("-3.44978795689754304746828364071851436012394742647302336990833282470703125"),
+      "totalWeight" to BigDecimal("-3.49814165251744904746828364071851436012394742647302336990833282470703125"),
     )
 
     val expected = SeriousViolentReoffendingPredictorObject(
-      score = 3.08,
-      band = RiskBand.HIGH,
+      score = 2.94,
+      band = RiskBand.MEDIUM,
       staticOrDynamic = StaticOrDynamic.DYNAMIC,
       validationErrors = emptyList(),
       featureValues = expectedFeatureValues,
@@ -209,15 +215,16 @@ class SeriousViolentReoffendingPredictorRiskProducerServiceTest {
     // Mock out validation
     whenever(validator.validateStatic(requestMissingDateAtStartOfFollowup)).thenReturn(emptyList())
     whenever(validator.validateDynamic(requestMissingDateAtStartOfFollowup)).thenReturn(emptyList())
+    whenever(offenceCodeCacheService.getActuarialCategory("00001")).thenReturn(ActuarialCategory.VIOLENCE_AGAINST_THE_PERSON_ABH_PLUS)
 
     val context = service.getRiskScore(requestMissingDateAtStartOfFollowup, emptyContext())
 
     assertEquals(
-      BigDecimal("-0.04139247189885530091692580900719633518747286871075630187988281250"),
+      BigDecimal("-0.0413924718988553009169258090071963351874728687107563018798828125"),
       context.seriousViolentReoffendingPredictor?.featureValues?.get(FeatureValue.AGE_GENDER_POLYNOMIAL_WEIGHT.outputName),
     )
     assertEquals(
-      BigDecimal("-0.02569553363490000022091564423065701561199603020213544368743896484375000000"),
+      BigDecimal("-0.02569553363490000022091564423065701561199603020213544368743896484375"),
       context.seriousViolentReoffendingPredictor?.featureValues?.get(FeatureValue.OFFENCE_FREE_MONTHS_WEIGHT.outputName),
     )
   }

@@ -16,11 +16,11 @@
     "output": {
       "band": "HIGH",
       "score": 10.31,
-      "femaleVersion" : false,
-      "hasSexualOffenceHistory" : true
+      "femaleVersion": false,
+      "hasSexualOffenceHistory": true
     },
     "featureValues": {
-      "imagesAndIndirectContactWeight": 0.10310
+      "imagesAndIndirectContactWeight": 0.1031
     },
     "validationErrors": []
   }

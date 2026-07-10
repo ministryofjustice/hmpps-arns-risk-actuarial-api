@@ -1,5 +1,6 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.coefficients
 
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.offencecode.ActuarialCategory
 import java.math.BigDecimal
 
 enum class SeriousViolentReoffendingPredictorDynamic(val label: String, val coefficient: BigDecimal) {
@@ -42,4 +43,33 @@ enum class SeriousViolentReoffendingPredictorDynamic(val label: String, val coef
   PAST_WEAPON_OFFENCE("pastweapon", BigDecimal(0.231407077551008)),
   PAST_CRIMINAL_DAMAGE_OFFENCE("pastcdlife", BigDecimal(1.01491061134195)),
   PAST_ARSON_OFFENCE("pastarson", BigDecimal(0.0073649024927637)),
+}
+
+fun getSeriousViolentReoffendingPredictorDynamicOffenceCodeCoefficient(category: ActuarialCategory, currentOffenceCode: String) = when (category) {
+  ActuarialCategory.UNKNOWN -> throw IllegalArgumentException("Offence code mapping for $currentOffenceCode is UNKNOWN, ensure this is validated before the calculation")
+  ActuarialCategory.BURGLARY_DOMESTIC -> BigDecimal("0.392304322484302")
+  ActuarialCategory.BURGLARY_OTHER -> BigDecimal("0.210475686624578")
+  ActuarialCategory.DRUNKENNESS -> BigDecimal("-0.266212126484843")
+  ActuarialCategory.DRINK_DRIVING -> BigDecimal("0.0719681498702402")
+  ActuarialCategory.MOTORING_OFFENCES -> BigDecimal("0.285285632874374")
+  ActuarialCategory.VEHICLE_RELATED_THEFT -> BigDecimal("0.335872011000959")
+  ActuarialCategory.FRAUD_AND_FORGERY -> BigDecimal("0.128223795291931")
+  ActuarialCategory.WELFARE_FRAUD -> BigDecimal("-2.54378150425616")
+  ActuarialCategory.DRUG_IMPORT_EXPORT_OR_PRODUCTION -> BigDecimal("0.146018219011484")
+  ActuarialCategory.DRUG_POSSESSION_OR_SUPPLY -> BigDecimal("0.210481894371787")
+  ActuarialCategory.VIOLENCE_AGAINST_THE_PERSON_ABH_PLUS -> BigDecimal("-0.158615820403553").add(BigDecimal("0.110262124783647"))
+  ActuarialCategory.VIOLENCE_AGAINST_THE_PERSON_SUB_ABH -> BigDecimal("0.110262124783647")
+  ActuarialCategory.PUBLIC_ORDER_AND_HARRASSMENT -> BigDecimal("-0.165010485104843")
+  ActuarialCategory.WEAPONS_NON_FIREARM -> BigDecimal("-0.0859338473048713").add(BigDecimal("0.110262124783647"))
+  ActuarialCategory.FIREARMS_MOST_SERIOUS -> BigDecimal("-0.492759700145113").add(BigDecimal("0.110262124783647"))
+  ActuarialCategory.FIREARMS_OTHER -> BigDecimal("0.038831669251795").add(BigDecimal("0.110262124783647"))
+  ActuarialCategory.HANDLING_STOLEN_GOODS -> BigDecimal("0.405987757430537")
+  ActuarialCategory.CRIMINAL_DAMAGE -> BigDecimal("0.184857953812071")
+  ActuarialCategory.ACQUISITIVE_VIOLENCE -> BigDecimal("0.0719174180811535")
+  ActuarialCategory.OTHER_OFFENCES -> BigDecimal("0.135286411622716")
+  ActuarialCategory.ABSCONDING_OR_BAIL -> BigDecimal("0.414243541008181")
+  ActuarialCategory.SEXUAL_AGAINST_CHILD -> BigDecimal("-0.60993507861302")
+  ActuarialCategory.SEXUAL_NOT_AGAINST_CHILD -> BigDecimal("-0.545166046667834")
+  ActuarialCategory.THEFT_NON_MOTOR -> BigDecimal("-0.047968924813678")
+  ActuarialCategory.NEED_DETAILS_OF_EXACT_OFFENCE -> throw IllegalArgumentException("Offence code mapping for $currentOffenceCode is NEED_DETAILS_OF_EXACT_OFFENCE, ensure this is validated before the calculation")
 }

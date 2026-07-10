@@ -131,7 +131,7 @@ class DirectContactSexualReoffendingPredictorProducerService(val inputValidator:
     }
 
     return buildMap {
-      fun FeatureValue.set(weight: BigDecimal) = put(this.outputName, weight)
+      fun FeatureValue.set(weight: BigDecimal) = put(this.outputName, weight.stripTrailingZeros())
 
       FeatureValue.TOTAL_CONTACT_ADULT_SEXUAL_SANCTIONS_WEIGHT.set(
         BigDecimal(

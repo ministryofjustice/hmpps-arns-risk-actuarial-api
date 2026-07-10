@@ -154,17 +154,17 @@ class AllReoffendingPredictorRiskProducerServiceTest {
 
     val expectedFeatureValues = mapOf(
       "twoYearInterceptWeight" to BigDecimal("5.01702292499072033393758829333819448947906494140625"),
-      "ageGenderPolynomialWeight" to BigDecimal("-0.08945517776523581101263157648595392146262383903376758098602294921875000000"),
+      "ageGenderPolynomialWeight" to BigDecimal("-0.08945517776523581101263157648595392146262383903376758098602294921875"),
       "genderWeight" to BigDecimal("0"),
       "offenceGroupWeight" to BigDecimal("0.12167599899735"),
       "firstSanctionWeight" to BigDecimal("0"),
       "secondSanctionWeight" to BigDecimal("-3.061892120459039912105936309671960771083831787109375"),
-      "totalNumberOfSanctionsForAllOffencesWeight" to BigDecimal("-0.008551460256999000517086351180751080391928553581237792968750"),
-      "secondSanctionGapWeight" to BigDecimal("-0.69128294265893441838954913691850379109382629394531250000"),
+      "totalNumberOfSanctionsForAllOffencesWeight" to BigDecimal("-0.00855146025699900051708635118075108039192855358123779296875"),
+      "secondSanctionGapWeight" to BigDecimal("-0.6912829426589344183895491369185037910938262939453125"),
       "offenceFreeMonthsWeight" to BigDecimal("0"),
       "copasScore" to BigDecimal("0"),
       "copasScoreSquared" to BigDecimal("0"),
-      "totalWeight" to BigDecimal("1.28751722284786119191238491908102492544685446773655712604522705078125000000"),
+      "totalWeight" to BigDecimal("1.28751722284786119191238491908102492544685446773655712604522705078125"),
     )
 
     val expected = AllReoffendingPredictorObject(
@@ -191,13 +191,13 @@ class AllReoffendingPredictorRiskProducerServiceTest {
 
     val expectedFeatureValues = mapOf(
       "twoYearInterceptWeight" to BigDecimal("3.836541486920140187066863290965557098388671875"),
-      "ageGenderPolynomialWeight" to BigDecimal("-0.075523168843552202323133877397143276510860232519917190074920654296875000000"),
+      "ageGenderPolynomialWeight" to BigDecimal("-0.075523168843552202323133877397143276510860232519917190074920654296875"),
       "genderWeight" to BigDecimal("0"),
       "offenceGroupWeight" to BigDecimal("0.0250113803601321"),
       "firstSanctionWeight" to BigDecimal("0"),
       "secondSanctionWeight" to BigDecimal("-2.603445812880039955672373253037221729755401611328125"),
-      "totalNumberOfSanctionsForAllOffencesWeight" to BigDecimal("-0.006052575129361000352834487614472891436889767646789550781250"),
-      "secondSanctionGapWeight" to BigDecimal("-0.511560045939358443156663724948884919285774230957031250000"),
+      "totalNumberOfSanctionsForAllOffencesWeight" to BigDecimal("-0.00605257512936100035283448761447289143688976764678955078125"),
+      "secondSanctionGapWeight" to BigDecimal("-0.51156004593935844315666372494888491928577423095703125"),
       "offenceFreeMonthsWeight" to BigDecimal("0"),
       "copasScore" to BigDecimal("0"),
       "copasScoreSquared" to BigDecimal("0"),
@@ -222,7 +222,7 @@ class AllReoffendingPredictorRiskProducerServiceTest {
       "cannabisUsageWeight" to BigDecimal("0.049300440360878002021838284463228774257004261016845703125"),
       "steroidUsageWeight" to BigDecimal("0.202231737251706011893048753336188383400440216064453125"),
       "otherDrugUsageWeight" to BigDecimal("0"),
-      "totalWeight" to BigDecimal("1.476588332903889890367294773122008866295118423295207321643829345703125000000"),
+      "totalWeight" to BigDecimal("1.476588332903889890367294773122008866295118423295207321643829345703125"),
     )
 
     val expected = AllReoffendingPredictorObject(
@@ -280,11 +280,11 @@ class AllReoffendingPredictorRiskProducerServiceTest {
     val context = service.getRiskScore(requestMissingDateAtStartOfFollowup, emptyContext())
 
     assertEquals(
-      BigDecimal("-0.077626343685467402225266887023057138517145858713774941861629486083984375000"),
+      BigDecimal("-0.077626343685467402225266887023057138517145858713774941861629486083984375"),
       context.allReoffendingPredictor?.featureValues?.get(FeatureValue.AGE_GENDER_POLYNOMIAL_WEIGHT.outputName),
     )
     assertEquals(
-      BigDecimal("-0.048227776154024796801539354262899905734229832887649536132812500"),
+      BigDecimal("-0.0482277761540247968015393542628999057342298328876495361328125"),
       context.allReoffendingPredictor?.featureValues?.get(FeatureValue.OFFENCE_FREE_MONTHS_WEIGHT.outputName),
     )
   }
@@ -332,28 +332,28 @@ class AllReoffendingPredictorRiskProducerServiceTest {
 
     val expectedFeatureValues = mapOf(
       "twoYearInterceptWeight" to BigDecimal("3.836541486920140187066863290965557098388671875"),
-      "ageGenderPolynomialWeight" to BigDecimal("-0.077626343685467402225266887023057138517145858713774941861629486083984375000"),
+      "ageGenderPolynomialWeight" to BigDecimal("-0.077626343685467402225266887023057138517145858713774941861629486083984375"),
       "genderWeight" to BigDecimal.ZERO,
       "offenceGroupWeight" to BigDecimal("0.0250113803601321"),
       "firstSanctionWeight" to BigDecimal.ZERO,
       "secondSanctionWeight" to BigDecimal("-2.603445812880039955672373253037221729755401611328125"),
-      "totalNumberOfSanctionsForAllOffencesWeight" to BigDecimal("-0.006052575129361000352834487614472891436889767646789550781250"),
-      "secondSanctionGapWeight" to BigDecimal("-0.511560045939358443156663724948884919285774230957031250000"),
-      "offenceFreeMonthsWeight" to BigDecimal("-0.048227776154024796801539354262899905734229832887649536132812500"),
+      "totalNumberOfSanctionsForAllOffencesWeight" to BigDecimal("-0.00605257512936100035283448761447289143688976764678955078125"),
+      "secondSanctionGapWeight" to BigDecimal("-0.51156004593935844315666372494888491928577423095703125"),
+      "offenceFreeMonthsWeight" to BigDecimal("-0.0482277761540247968015393542628999057342298328876495361328125"),
       "copasScore" to BigDecimal.ZERO,
       "copasScoreSquared" to BigDecimal.ZERO,
-      "suitableAccommodationWeight" to BigDecimal("0E-56"),
+      "suitableAccommodationWeight" to BigDecimal.ZERO,
       "unemployedWeight" to BigDecimal("0.03177837338093769670166466312366537749767303466796875"),
       "liveInRelationshipWeight" to BigDecimal.ZERO,
-      "relationshipQualityWeight" to BigDecimal("0E-55"),
+      "relationshipQualityWeight" to BigDecimal.ZERO,
       "multiplicativeRelationshipWeight" to BigDecimal.ZERO,
       "domesticViolenceWeight" to BigDecimal.ZERO,
-      "regularOffendingActivitiesWeight" to BigDecimal("0E-55"),
-      "drugMotivationWeight" to BigDecimal("0E-54"),
-      "chronicDrinkingProblemsWeight" to BigDecimal("0E-56"),
-      "bingeDrinkingProblemsWeight" to BigDecimal("0E-54"),
-      "impulsivityProblemsWeight" to BigDecimal("0E-54"),
-      "proCriminalAttitudesWeight" to BigDecimal("0E-57"),
+      "regularOffendingActivitiesWeight" to BigDecimal.ZERO,
+      "drugMotivationWeight" to BigDecimal.ZERO,
+      "chronicDrinkingProblemsWeight" to BigDecimal.ZERO,
+      "bingeDrinkingProblemsWeight" to BigDecimal.ZERO,
+      "impulsivityProblemsWeight" to BigDecimal.ZERO,
+      "proCriminalAttitudesWeight" to BigDecimal.ZERO,
       "heroinUsageWeight" to BigDecimal.ZERO,
       "otherOpiateUsageWeight" to BigDecimal.ZERO,
       "crackCocaineUsageWeight" to BigDecimal.ZERO,
@@ -363,7 +363,7 @@ class AllReoffendingPredictorRiskProducerServiceTest {
       "cannabisUsageWeight" to BigDecimal.ZERO,
       "steroidUsageWeight" to BigDecimal.ZERO,
       "otherDrugUsageWeight" to BigDecimal.ZERO,
-      "totalWeight" to BigDecimal("0.646418686872958385559850247202685891156903608134598471224308013916015625000"),
+      "totalWeight" to BigDecimal("0.646418686872958385559850247202685891156903608134598471224308013916015625"),
     )
 
     val context = service.getRiskScore(requestMissingDateAtStartOfFollowup, emptyContext())

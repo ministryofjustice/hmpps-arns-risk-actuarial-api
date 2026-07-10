@@ -172,7 +172,7 @@ class ViolentReoffendingPredictorRiskProducerService(val validator: ViolentReoff
     )
 
     return buildMap {
-      fun FeatureValue.set(weight: BigDecimal) = put(this.outputName, weight)
+      fun FeatureValue.set(weight: BigDecimal) = put(this.outputName, weight.stripTrailingZeros())
 
       FeatureValue.TWO_YEAR_INTERCEPT_WEIGHT.set(get2YearInterceptWeight(staticOrDynamic))
       FeatureValue.AGE_GENDER_POLYNOMIAL_WEIGHT.set(

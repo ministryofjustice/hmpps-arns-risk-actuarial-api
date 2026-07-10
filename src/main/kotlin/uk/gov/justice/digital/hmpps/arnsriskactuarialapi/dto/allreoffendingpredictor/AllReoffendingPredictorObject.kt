@@ -9,6 +9,6 @@ data class AllReoffendingPredictorObject(
   val score: Double?,
   val band: RiskBand?,
   val staticOrDynamic: StaticOrDynamic?,
-  var validationErrors: List<ValidationError>?,
+  val validationErrors: List<ValidationError>?,
   val featureValues: Map<String, BigDecimal>?,
 )

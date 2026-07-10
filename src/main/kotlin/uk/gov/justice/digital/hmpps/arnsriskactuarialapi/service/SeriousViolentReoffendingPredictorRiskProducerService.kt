@@ -43,7 +43,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.getAgeAtDate
 import java.math.BigDecimal
 
 @Service
-class SeriousViolentReoffendingPredictorRiskProducerService(val validator: SeriousViolentReoffendingPredictorValidator) : BaseRiskScoreProducer() {
+class SeriousViolentReoffendingPredictorRiskProducerService(val validator: SeriousViolentReoffendingPredictorValidator, val offenceCodeCacheService: OffenceCodeCacheService) : BaseRiskScoreProducer() {
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
     val staticValidationErrors = validator.validateStatic(request)
@@ -145,8 +145,8 @@ class SeriousViolentReoffendingPredictorRiskProducerService(val validator: Serio
       "Date at start of followup calculated",
     )
 
-    return buildMap {
-      fun FeatureValue.set(weight: BigDecimal) = put(this.outputName, weight)
+    val featureValuesMap = buildMap {
+      fun FeatureValue.set(weight: BigDecimal) = put(this.outputName, weight.stripTrailingZeros())
 
       FeatureValue.TWO_YEAR_INTERCEPT_WEIGHT.set(get2YearInterceptWeight(staticOrDynamic))
       FeatureValue.AGE_GENDER_POLYNOMIAL_WEIGHT.set(
@@ -157,7 +157,7 @@ class SeriousViolentReoffendingPredictorRiskProducerService(val validator: Serio
         ),
       )
       FeatureValue.GENDER_WEIGHT.set(getGenderWeight(staticOrDynamic, staticData.gender))
-      FeatureValue.OFFENCE_GROUP_WEIGHT.set(getOffenceGroupWeight(staticOrDynamic, staticData.currentOffenceCode))
+      FeatureValue.OFFENCE_GROUP_WEIGHT.set(getOffenceGroupWeight(offenceCodeCacheService, staticOrDynamic, staticData.currentOffenceCode))
       FeatureValue.FIRST_SANCTION_WEIGHT.set(
         getFirstSanctionWeight(
           staticOrDynamic,
@@ -256,5 +256,7 @@ class SeriousViolentReoffendingPredictorRiskProducerService(val validator: Serio
       val totalWeight = values.fold(BigDecimal.ZERO, BigDecimal::add)
       FeatureValue.TOTAL_WEIGHT.set(totalWeight)
     }
+
+    return featureValuesMap
   }
 }
