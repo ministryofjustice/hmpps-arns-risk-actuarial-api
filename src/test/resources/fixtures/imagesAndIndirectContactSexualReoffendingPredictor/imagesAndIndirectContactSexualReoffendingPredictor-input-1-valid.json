@@ -20,7 +20,7 @@
       "hasSexualOffenceHistory": true
     },
     "featureValues": {
-      "imagesAndIndirectContactWeight": "0.1030999999999999972022379779446055181324481964111328125"
+      "imagesAndIndirectContactWeight": 0.1031
     },
     "validationErrors": []
   }

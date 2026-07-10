@@ -1,6 +1,5 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service
 
-import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreContext
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
@@ -45,8 +44,6 @@ import java.math.BigDecimal
 
 @Service
 class SeriousViolentReoffendingPredictorRiskProducerService(val validator: SeriousViolentReoffendingPredictorValidator, val offenceCodeCacheService: OffenceCodeCacheService) : BaseRiskScoreProducer() {
-
-  private val log = LoggerFactory.getLogger(this::class.java)
 
   override fun getRiskScore(request: RiskScoreRequest, context: RiskScoreContext): RiskScoreContext {
     val staticValidationErrors = validator.validateStatic(request)
@@ -259,8 +256,6 @@ class SeriousViolentReoffendingPredictorRiskProducerService(val validator: Serio
       val totalWeight = values.fold(BigDecimal.ZERO, BigDecimal::add)
       FeatureValue.TOTAL_WEIGHT.set(totalWeight)
     }
-
-    log.info("#### Current Feature values = $featureValuesMap")
 
     return featureValuesMap
   }

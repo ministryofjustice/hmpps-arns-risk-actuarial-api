@@ -4,15 +4,18 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.jackson.autoconfigure.JsonMapperBuilderCustomizer
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import tools.jackson.core.JsonGenerator
 import tools.jackson.databind.DeserializationFeature
+import tools.jackson.databind.SerializationContext
 import tools.jackson.databind.cfg.CoercionAction
 import tools.jackson.databind.cfg.CoercionInputShape
 import tools.jackson.databind.cfg.DateTimeFeature
 import tools.jackson.databind.cfg.EnumFeature
 import tools.jackson.databind.module.SimpleModule
-import tools.jackson.databind.ser.std.ToStringSerializer
+import tools.jackson.databind.ser.std.StdSerializer
 import tools.jackson.module.kotlin.kotlinModule
 import java.math.BigDecimal
+import java.math.RoundingMode
 import java.text.SimpleDateFormat
 
 @Configuration
@@ -38,6 +41,17 @@ class JacksonConfig {
           .setCoercion(CoercionInputShape.Float, CoercionAction.Fail)
           .setCoercion(CoercionInputShape.String, CoercionAction.Fail)
       }
-      .addModule(SimpleModule("BigDecimalAsStrings").addSerializer(BigDecimal::class.java, ToStringSerializer.instance))
+      .addModule(SimpleModule("BigDecimalRounding").addSerializer(BigDecimal::class.java, BigDecimalScaleSerializer()))
+  }
+}
+
+class BigDecimalScaleSerializer : StdSerializer<BigDecimal>(BigDecimal::class.java) {
+  override fun serialize(value: BigDecimal?, gen: JsonGenerator, ctxt: SerializationContext) {
+    if (value == null) {
+      gen.writeNull()
+    } else {
+      val scaledValue = value.setScale(14, RoundingMode.HALF_UP)
+      gen.writeNumber(scaledValue)
+    }
   }
 }
