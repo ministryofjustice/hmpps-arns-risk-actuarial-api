@@ -22,7 +22,7 @@ class DirectContactSexualReoffendingPredictorValidator(val commonValidator: Comm
     RiskScoreRequest::supervisionStatus,
     RiskScoreRequest::hasEverCommittedSexualOffence,
     RiskScoreRequest::dateOfBirth,
-    RiskScoreRequest::dateAtStartOfFollowupCalculated,
+    RiskScoreRequest::dateAtStartOfFollowup,
     RiskScoreRequest::totalNumberOfSanctionsForAllOffences,
   )
 

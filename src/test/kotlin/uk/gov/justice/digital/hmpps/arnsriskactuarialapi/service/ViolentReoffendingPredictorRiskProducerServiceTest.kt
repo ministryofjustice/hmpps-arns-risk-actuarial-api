@@ -298,7 +298,7 @@ class ViolentReoffendingPredictorRiskProducerServiceTest {
       currentOffenceCode = "00001",
       totalNumberOfSanctionsForAllOffences = 2,
       totalNumberOfViolentSanctions = 1,
-      dateAtStartOfFollowupCalculated = LocalDate.of(2024, 1, 1),
+      dateAtStartOfFollowup = LocalDate.of(2024, 1, 1),
       suitabilityOfAccommodation = ProblemLevel.NO_PROBLEMS,
       isUnemployed = true,
       currentRelationshipWithPartner = ProblemLevel.NO_PROBLEMS,

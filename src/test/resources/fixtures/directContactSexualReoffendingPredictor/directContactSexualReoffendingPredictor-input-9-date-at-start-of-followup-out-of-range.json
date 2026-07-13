@@ -5,7 +5,7 @@
     "dateOfBirth": "1980-01-01",
     "totalNumberOfSanctionsForAllOffences": 11,
     "supervisionStatus": "COMMUNITY",
-    "dateAtStartOfFollowupCalculated": "2090-01-01",
+    "dateAtStartOfFollowup": "2090-01-01",
     "totalNumberOfViolentSanctions": 1,
     "hasEverCommittedSexualOffence": true,
     "isCurrentOffenceSexuallyMotivated": true,
@@ -34,7 +34,7 @@
         "type": "DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE",
         "message": "Age at date at start of followup must be more than 10 and less than 110",
         "fields": [
-          "dateAtStartOfFollowupCalculated"
+          "dateAtStartOfFollowup"
         ]
       }
     ]

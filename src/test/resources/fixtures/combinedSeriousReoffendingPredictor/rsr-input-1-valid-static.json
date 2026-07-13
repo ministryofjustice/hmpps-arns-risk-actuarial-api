@@ -9,8 +9,7 @@
     "totalNumberOfSanctionsForAllOffences": 1,
     "ageAtFirstSanction": 40,
     "supervisionStatus": "COMMUNITY",
-    "dateAtStartOfFollowupUserInput": "2024-01-01",
-    "dateAtStartOfFollowupCalculated": "2024-01-01",
+    "dateAtStartOfFollowup": "2024-01-01",
     "totalNumberOfViolentSanctions": 1,
     "hasEverCommittedSexualOffence": false
   },

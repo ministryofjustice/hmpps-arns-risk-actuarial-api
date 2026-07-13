@@ -30,7 +30,7 @@
             "type": "DATE_OF_START_OF_FOLLOWUP_REQUIRED",
             "message": "Either Date at start of followup or date of current conviction must be provided",
             "fields": [
-              "dateAtStartOfFollowupCalculated"
+              "dateAtStartOfFollowup"
             ]
           },
           {
@@ -79,7 +79,7 @@
             "type": "DATE_OF_START_OF_FOLLOWUP_REQUIRED",
             "message": "Either Date at start of followup or date of current conviction must be provided",
             "fields": [
-              "dateAtStartOfFollowupCalculated"
+              "dateAtStartOfFollowup"
             ]
           },
           {
@@ -124,7 +124,7 @@
               "supervisionStatus",
               "hasEverCommittedSexualOffence",
               "dateOfBirth",
-              "dateAtStartOfFollowupCalculated",
+              "dateAtStartOfFollowup",
               "totalNumberOfSanctionsForAllOffences"
             ]
           },
@@ -246,7 +246,7 @@
                     "supervisionStatus",
                     "hasEverCommittedSexualOffence",
                     "dateOfBirth",
-                    "dateAtStartOfFollowupCalculated",
+                    "dateAtStartOfFollowup",
                     "totalNumberOfSanctionsForAllOffences"
                   ]
                 },

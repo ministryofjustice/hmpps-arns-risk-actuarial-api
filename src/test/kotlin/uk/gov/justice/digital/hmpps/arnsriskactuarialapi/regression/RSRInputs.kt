@@ -72,7 +72,7 @@ val combinedSeriousReoffendingPredictorInputFields = mapOf(
   InputField(arnsFieldName = "supervisionStatus", oasysFieldName = "CUSTODY_IND", transformFunction = convertSupervisionStatus()) to
     listOf("CUSTODY", "COMMUNITY", "REMAND"),
 
-  InputField(arnsFieldName = "dateAtStartOfFollowupUserInput", oasysFieldName = "community_date") to
+  InputField(arnsFieldName = "dateAtStartOfFollowup", oasysFieldName = "community_date") to
     listOf("2028-05-04", "2020-01-09", "2025-01-03"),
 
   InputField(arnsFieldName = "totalNumberOfViolentSanctions", oasysFieldName = "Violent_Sanctions_count") to

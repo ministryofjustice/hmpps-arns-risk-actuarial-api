@@ -57,7 +57,7 @@ class AllReoffendingPredictorRiskProducerServiceTest {
       ValidationError(
         ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_REQUIRED,
         "Either Date at start of followup or date of current conviction must be provided",
-        listOf("dateAtStartOfFollowupCalculated"),
+        listOf("dateAtStartOfFollowup"),
       ),
     )
     val dynamicValidationErrors = listOf(

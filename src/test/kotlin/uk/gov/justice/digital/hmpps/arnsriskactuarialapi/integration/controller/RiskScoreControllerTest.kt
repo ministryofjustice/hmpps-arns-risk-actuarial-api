@@ -19,7 +19,7 @@ class RiskScoreControllerTest : IntegrationTestBase() {
     10,
     30,
     "05101",
-    dateAtStartOfFollowupCalculated = LocalDate.of(2027, 12, 12),
+    dateAtStartOfFollowup = LocalDate.of(2027, 12, 12),
   )
 
   @Test
@@ -47,7 +47,7 @@ class RiskScoreControllerTest : IntegrationTestBase() {
           "gender": "MALE",
           "dateOfBirth": "1965-01-01",
           "dateOfCurrentConviction": "2024-01-01",
-          "dateAtStartOfFollowupUserInput": "2027-01-01",
+          "dateAtStartOfFollowup": "2027-01-01",
           "totalNumberOfSanctionsForAllOffences": 3,
           "ageAtFirstSanction": 50,
           "currentOffenceCode": "05101"

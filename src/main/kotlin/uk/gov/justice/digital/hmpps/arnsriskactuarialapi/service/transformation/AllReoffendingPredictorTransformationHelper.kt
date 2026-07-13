@@ -155,15 +155,15 @@ object AllReoffendingPredictorTransformationHelper {
   fun getOffenceFreeMonthsPolynomialWeight(
     staticOrDynamic: StaticOrDynamic,
     assessmentDate: LocalDate,
-    dateAtStartOfFollowupCalculated: LocalDate,
+    dateAtStartOfFollowup: LocalDate,
   ): BigDecimal {
     // They are not in the community
-    if (assessmentDate.isBefore(dateAtStartOfFollowupCalculated)) {
+    if (assessmentDate.isBefore(dateAtStartOfFollowup)) {
       return BigDecimal.ZERO
     }
 
     val monthsBetweenAssessmentAndFollowup = ChronoUnit.MONTHS.between(
-      dateAtStartOfFollowupCalculated,
+      dateAtStartOfFollowup,
       assessmentDate,
     ).coerceAtMost(36)
 
