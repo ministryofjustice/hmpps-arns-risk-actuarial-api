@@ -69,7 +69,7 @@ class DirectContactSexualReoffendingPredictorProducerService(val inputValidator:
       request.totalContactChildSexualSanctions!!,
       request.totalNonContactSexualOffences!!,
       request.totalIndecentImageSanctions!!,
-      request.dateAtStartOfFollowupCalculated ?: request.dateOfCurrentConviction!!,
+      request.dateAtStartOfFollowup ?: request.dateOfCurrentConviction!!,
       request.totalNumberOfSanctionsForAllOffences!!,
       request.dateOfMostRecentSexualOffence,
       request.isCurrentOffenceAgainstVictimStranger,

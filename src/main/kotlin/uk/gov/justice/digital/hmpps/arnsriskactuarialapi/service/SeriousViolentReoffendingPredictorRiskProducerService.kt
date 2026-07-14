@@ -62,7 +62,7 @@ class SeriousViolentReoffendingPredictorRiskProducerService(val validator: Serio
       request.currentOffenceCode!!,
       request.totalNumberOfSanctionsForAllOffences!!,
       request.totalNumberOfViolentSanctions!!,
-      request.dateAtStartOfFollowupCalculated ?: request.dateOfCurrentConviction,
+      request.dateAtStartOfFollowup ?: request.dateOfCurrentConviction,
     )
 
     if (dynamicValidationErrors.isNotEmpty()) {
@@ -141,7 +141,7 @@ class SeriousViolentReoffendingPredictorRiskProducerService(val validator: Serio
       getAgeAtDate(staticData.dateOfBirth, staticData.dateOfCurrentConviction, "dateOfCurrentConviction")
     val ageAtStartOfFollowup = getAgeAtDate(
       staticData.dateOfBirth,
-      staticData.dateAtStartOfFollowupCalculated,
+      staticData.dateAtStartOfFollowup,
       "Date at start of followup calculated",
     )
 
@@ -189,7 +189,7 @@ class SeriousViolentReoffendingPredictorRiskProducerService(val validator: Serio
         getOffenceFreeMonthsPolynomialWeight(
           staticOrDynamic,
           staticData.assessmentDate,
-          staticData.dateAtStartOfFollowupCalculated,
+          staticData.dateAtStartOfFollowup,
         ),
       )
       FeatureValue.COPAS_SCORE.set(

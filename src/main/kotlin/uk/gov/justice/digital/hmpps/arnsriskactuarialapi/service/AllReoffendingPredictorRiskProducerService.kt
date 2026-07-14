@@ -65,7 +65,7 @@ class AllReoffendingPredictorRiskProducerService(val inputValidator: AllReoffend
       request.gender!!,
       request.currentOffenceCode!!,
       request.totalNumberOfSanctionsForAllOffences!!,
-      request.dateAtStartOfFollowupCalculated ?: request.dateOfCurrentConviction,
+      request.dateAtStartOfFollowup ?: request.dateOfCurrentConviction,
     )
 
     if (dynamicValidationErrors.isNotEmpty()) {
@@ -163,7 +163,7 @@ class AllReoffendingPredictorRiskProducerService(val inputValidator: AllReoffend
       getAgeAtDate(staticData.dateOfBirth, staticData.dateOfCurrentConviction, "dateOfCurrentConviction")
     val ageAtStartOfFollowup = getAgeAtDate(
       staticData.dateOfBirth,
-      staticData.dateAtStartOfFollowupCalculated,
+      staticData.dateAtStartOfFollowup,
       "Date at start of followup calculated",
     )
 
@@ -211,7 +211,7 @@ class AllReoffendingPredictorRiskProducerService(val inputValidator: AllReoffend
         getOffenceFreeMonthsPolynomialWeight(
           staticOrDynamic,
           staticData.assessmentDate,
-          staticData.dateAtStartOfFollowupCalculated,
+          staticData.dateAtStartOfFollowup,
         ),
       )
       FeatureValue.COPAS_SCORE.set(

@@ -383,12 +383,12 @@ class CommonValidatorTest {
   @ParameterizedTest
   @MethodSource("test validateDateAtStartOfFollowupAgainstDateOfCurrentConviction logic data")
   fun `test validateDateAtStartOfFollowupAgainstDateOfCurrentConviction logic`(
-    dateAtStartOfFollowupCalculated: LocalDate?,
+    dateAtStartOfFollowup: LocalDate?,
     dateOfCurrentConviction: LocalDate?,
     error: Boolean,
   ) {
     val request = RiskScoreRequest(
-      dateAtStartOfFollowupCalculated = dateAtStartOfFollowupCalculated,
+      dateAtStartOfFollowup = dateAtStartOfFollowup,
       dateOfCurrentConviction = dateOfCurrentConviction,
     )
     val actualError = commonValidator.validateDateAtStartOfFollowupAgainstDateOfCurrentConviction(request)
@@ -398,7 +398,7 @@ class CommonValidatorTest {
         ValidationError(
           type = ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_REQUIRED,
           message = "Either Date at start of followup or date of current conviction must be provided",
-          fields = listOf("dateAtStartOfFollowupCalculated"),
+          fields = listOf("dateAtStartOfFollowup"),
         ),
         actualError,
       )
@@ -410,12 +410,12 @@ class CommonValidatorTest {
   @ParameterizedTest
   @MethodSource("test validateDateAtStartOfFollowupAgainstDateOfBirth logic data")
   fun `test validateDateAtStartOfFollowupAgainstDateOfBirth logic`(
-    dateAtStartOfFollowupCalculated: LocalDate?,
+    dateAtStartOfFollowup: LocalDate?,
     dateOfBirth: LocalDate?,
     error: Boolean,
   ) {
     val request = RiskScoreRequest(
-      dateAtStartOfFollowupCalculated = dateAtStartOfFollowupCalculated,
+      dateAtStartOfFollowup = dateAtStartOfFollowup,
       dateOfBirth = dateOfBirth,
     )
     val actualError = commonValidator.validateDateAtStartOfFollowupAgainstDateOfBirth(request)
@@ -425,7 +425,7 @@ class CommonValidatorTest {
         ValidationError(
           type = ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_BEFORE_DATE_OF_BIRTH,
           message = "Date of start of followup cannot be before date of birth",
-          fields = listOf("dateAtStartOfFollowupCalculated"),
+          fields = listOf("dateAtStartOfFollowup"),
         ),
         actualError,
       )
@@ -437,12 +437,12 @@ class CommonValidatorTest {
   @ParameterizedTest
   @MethodSource("test validateDateAtStartOfFollowupAge logic data")
   fun `test validateDateAtStartOfFollowupAge logic`(
-    dateAtStartOfFollowupCalculated: LocalDate?,
+    dateAtStartOfFollowup: LocalDate?,
     dateOfBirth: LocalDate?,
     error: Boolean,
   ) {
     val request = RiskScoreRequest(
-      dateAtStartOfFollowupCalculated = dateAtStartOfFollowupCalculated,
+      dateAtStartOfFollowup = dateAtStartOfFollowup,
       dateOfBirth = dateOfBirth,
     )
     val actualError = commonValidator.validateDateAtStartOfFollowupAge(request)
@@ -452,7 +452,7 @@ class CommonValidatorTest {
         ValidationError(
           type = ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE,
           message = "Age at date at start of followup must be more than 10 and less than 110",
-          fields = listOf("dateAtStartOfFollowupCalculated"),
+          fields = listOf("dateAtStartOfFollowup"),
         ),
         actualError,
       )
@@ -735,7 +735,7 @@ class CommonValidatorTest {
         RiskScoreRequest(
           gender = Gender.MALE,
           hasEverCommittedSexualOffence = true,
-          dateAtStartOfFollowupCalculated = null,
+          dateAtStartOfFollowup = null,
         ),
         null,
       ),
@@ -744,7 +744,7 @@ class CommonValidatorTest {
           gender = Gender.MALE,
           dateOfBirth = LocalDate.of(1980, 1, 1),
           hasEverCommittedSexualOffence = true,
-          dateAtStartOfFollowupCalculated = LocalDate.of(2030, 1, 1),
+          dateAtStartOfFollowup = LocalDate.of(2030, 1, 1),
           dateOfMostRecentSexualOffence = LocalDate.of(1999, 1, 1),
         ),
         null,
@@ -754,10 +754,10 @@ class CommonValidatorTest {
           gender = Gender.MALE,
           dateOfBirth = LocalDate.of(1980, 1, 1),
           hasEverCommittedSexualOffence = true,
-          dateAtStartOfFollowupCalculated = LocalDate.of(1989, 1, 1),
+          dateAtStartOfFollowup = LocalDate.of(1989, 1, 1),
         ),
         ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE.asError(
-          listOf("dateAtStartOfFollowupCalculated"),
+          listOf("dateAtStartOfFollowup"),
         ),
       ),
       Arguments.of(
@@ -765,10 +765,10 @@ class CommonValidatorTest {
           gender = Gender.MALE,
           dateOfBirth = LocalDate.of(1980, 1, 1),
           hasEverCommittedSexualOffence = true,
-          dateAtStartOfFollowupCalculated = LocalDate.of(2090, 1, 1),
+          dateAtStartOfFollowup = LocalDate.of(2090, 1, 1),
         ),
         ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE.asError(
-          listOf("dateAtStartOfFollowupCalculated"),
+          listOf("dateAtStartOfFollowup"),
         ),
       ),
     )

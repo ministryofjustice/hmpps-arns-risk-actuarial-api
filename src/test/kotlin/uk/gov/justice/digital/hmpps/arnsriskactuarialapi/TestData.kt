@@ -143,7 +143,7 @@ fun validAllReoffendingPredictorStaticRiskScoreRequest(): RiskScoreRequest = Ris
   gender = Gender.MALE,
   currentOffenceCode = "00001",
   totalNumberOfSanctionsForAllOffences = 2,
-  dateAtStartOfFollowupCalculated = LocalDate.of(2026, 1, 1),
+  dateAtStartOfFollowup = LocalDate.of(2026, 1, 1),
 )
 
 fun validMinimumAllReoffendingPredictorStaticRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
@@ -164,7 +164,7 @@ fun validAllReoffendingPredictorDynamicRiskScoreRequest(): RiskScoreRequest = Ri
   gender = Gender.MALE,
   currentOffenceCode = "00001",
   totalNumberOfSanctionsForAllOffences = 2,
-  dateAtStartOfFollowupCalculated = LocalDate.of(2026, 1, 1),
+  dateAtStartOfFollowup = LocalDate.of(2026, 1, 1),
   suitabilityOfAccommodation = ProblemLevel.SOME_PROBLEMS,
   isUnemployed = true,
   currentRelationshipWithPartner = ProblemLevel.SOME_PROBLEMS,
@@ -200,7 +200,7 @@ fun validSeriousViolentReoffendingPredictorStaticRiskScoreRequest(): RiskScoreRe
   currentOffenceCode = "00001",
   totalNumberOfSanctionsForAllOffences = 2,
   totalNumberOfViolentSanctions = 2,
-  dateAtStartOfFollowupCalculated = LocalDate.of(2026, 1, 1),
+  dateAtStartOfFollowup = LocalDate.of(2026, 1, 1),
 )
 
 fun validSeriousViolentReoffendingPredictorDynamicRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
@@ -212,7 +212,7 @@ fun validSeriousViolentReoffendingPredictorDynamicRiskScoreRequest(): RiskScoreR
   currentOffenceCode = "00001",
   totalNumberOfSanctionsForAllOffences = 2,
   totalNumberOfViolentSanctions = 2,
-  dateAtStartOfFollowupCalculated = LocalDate.of(2026, 1, 1),
+  dateAtStartOfFollowup = LocalDate.of(2026, 1, 1),
   didOffenceInvolveCarryingOrUsingWeapon = true,
   suitabilityOfAccommodation = ProblemLevel.SOME_PROBLEMS,
   isUnemployed = true,
@@ -231,7 +231,7 @@ fun validViolentReoffendingPredictorStaticRiskScoreRequest(): RiskScoreRequest =
   currentOffenceCode = "00001",
   totalNumberOfSanctionsForAllOffences = 2,
   totalNumberOfViolentSanctions = 2,
-  dateAtStartOfFollowupCalculated = LocalDate.of(2026, 1, 1),
+  dateAtStartOfFollowup = LocalDate.of(2026, 1, 1),
 )
 
 fun validViolentReoffendingPredictorDynamicRiskScoreRequest(): RiskScoreRequest = RiskScoreRequest(
@@ -243,7 +243,7 @@ fun validViolentReoffendingPredictorDynamicRiskScoreRequest(): RiskScoreRequest 
   currentOffenceCode = "00001",
   totalNumberOfSanctionsForAllOffences = 2,
   totalNumberOfViolentSanctions = 2,
-  dateAtStartOfFollowupCalculated = LocalDate.of(2026, 1, 1),
+  dateAtStartOfFollowup = LocalDate.of(2026, 1, 1),
   suitabilityOfAccommodation = ProblemLevel.SOME_PROBLEMS,
   isUnemployed = true,
   currentRelationshipWithPartner = ProblemLevel.SOME_PROBLEMS,
@@ -289,7 +289,7 @@ fun validCombinedSeriousReoffendingPredictorStaticRiskScoreRequest(): RiskScoreR
   currentOffenceCode = "00001",
   totalNumberOfSanctionsForAllOffences = 2,
   totalNumberOfViolentSanctions = 2,
-  dateAtStartOfFollowupCalculated = LocalDate.of(2026, 1, 1),
+  dateAtStartOfFollowup = LocalDate.of(2026, 1, 1),
   hasEverCommittedSexualOffence = true,
   totalContactAdultSexualSanctions = 1,
   totalContactChildSexualSanctions = 1,
@@ -398,7 +398,7 @@ fun validDirectContactSexualReoffendingPredictorRiskScoreRequest() = RiskScoreRe
   totalContactChildSexualSanctions = 1,
   totalNonContactSexualOffences = 1,
   totalIndecentImageSanctions = 1,
-  dateAtStartOfFollowupCalculated = LocalDate.of(2025, 1, 1),
+  dateAtStartOfFollowup = LocalDate.of(2025, 1, 1),
   dateOfMostRecentSexualOffence = LocalDate.of(2000, 1, 1),
   totalNumberOfSanctionsForAllOffences = 4,
   isCurrentOffenceSexuallyMotivated = false,

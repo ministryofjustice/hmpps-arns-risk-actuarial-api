@@ -9,7 +9,7 @@
     "currentOffenceCode": "02700",
     "totalNumberOfSanctionsForAllOffences": 1,
     "totalNumberOfViolentSanctions": 1,
-    "dateAtStartOfFollowupCalculated": "2024-01-01"
+    "dateAtStartOfFollowup": "2024-01-01"
   },
   "response": {
     "algorithm": "SERIOUS_VIOLENT_REOFFENDING_PREDICTOR",

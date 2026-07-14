@@ -224,13 +224,13 @@ class ViolentReoffendingPredictorTransformationHelperTest {
   fun `getOffenceFreeMonthsPolynomialWeight returns correct calculated weight`(
     staticOrDynamic: StaticOrDynamic,
     assessmentDate: LocalDate,
-    dateAtStartOfFollowupCalculated: LocalDate,
+    dateAtStartOfFollowup: LocalDate,
     expected: BigDecimal,
   ) {
     val result = ViolentReoffendingPredictorTransformationHelper.getOffenceFreeMonthsPolynomialWeight(
       staticOrDynamic,
       assessmentDate,
-      dateAtStartOfFollowupCalculated,
+      dateAtStartOfFollowup,
     )
     assertEquals(expected, result)
   }

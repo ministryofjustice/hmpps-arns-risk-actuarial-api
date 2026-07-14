@@ -14,7 +14,7 @@ data class RiskScoreRequest(
   val currentOffenceCode: String? = null,
 
   // OVP additional properties
-  val dateAtStartOfFollowupCalculated: LocalDate? = null,
+  val dateAtStartOfFollowup: LocalDate? = null,
   val totalNumberOfViolentSanctions: Int? = null,
   val doesRecogniseImpactOfOffendingOnOthers: Boolean? = null,
   val isCurrentlyOfNoFixedAbodeOrTransientAccommodation: Boolean? = null,
@@ -100,7 +100,6 @@ data class RiskScoreRequest(
   val professionalOrVocationalQualifications: HasQualifications? = null,
 
   // COMBINED_SERIOUS_REOFFENDING_PREDICTOR
-  val dateAtStartOfFollowupUserInput: LocalDate? = null,
   val totalContactAdultSexualSanctions: Int? = null,
   val totalContactChildSexualSanctions: Int? = null,
   val totalIndecentImageSanctions: Int? = null,

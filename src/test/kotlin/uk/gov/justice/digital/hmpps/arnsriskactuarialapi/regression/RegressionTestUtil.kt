@@ -289,7 +289,7 @@ fun runBatchIntoRiskScoreService(inputMappings: List<InputMapping>, riskScoreSer
     totalNumberOfSanctionsForAllOffences = inputs["totalNumberOfSanctionsForAllOffences"] as Int?,
     ageAtFirstSanction = inputs["ageAtFirstSanction"] as Int?,
     supervisionStatus = inputs["supervisionStatus"]?.let { SupervisionStatus.valueOf(it as String) },
-    dateAtStartOfFollowupCalculated = inputs["dateAtStartOfFollowupUserInput"]?.let { LocalDate.parse(it as String) },
+    dateAtStartOfFollowup = inputs["dateAtStartOfFollowup"]?.let { LocalDate.parse(it as String) },
     totalNumberOfViolentSanctions = inputs["totalNumberOfViolentSanctions"] as Int?,
     hasEverCommittedSexualOffence = inputs["hasEverCommittedSexualOffence"] as Boolean?,
     totalContactAdultSexualSanctions = inputs["totalContactAdultSexualSanctions"] as Int?,

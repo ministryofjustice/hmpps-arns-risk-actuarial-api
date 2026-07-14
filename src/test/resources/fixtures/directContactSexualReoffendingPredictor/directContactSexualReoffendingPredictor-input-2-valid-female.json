@@ -5,7 +5,7 @@
     "dateOfBirth": "1980-01-01",
     "totalNumberOfSanctionsForAllOffences": 1,
     "supervisionStatus": "COMMUNITY",
-    "dateAtStartOfFollowupCalculated": "2027-01-01",
+    "dateAtStartOfFollowup": "2027-01-01",
     "totalNumberOfViolentSanctions": 1,
     "hasEverCommittedSexualOffence": true,
     "isCurrentOffenceSexuallyMotivated": true,

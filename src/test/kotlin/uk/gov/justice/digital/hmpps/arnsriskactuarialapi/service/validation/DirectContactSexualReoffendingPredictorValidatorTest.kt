@@ -30,7 +30,7 @@ class DirectContactSexualReoffendingPredictorValidatorTest {
     RiskScoreRequest::supervisionStatus,
     RiskScoreRequest::hasEverCommittedSexualOffence,
     RiskScoreRequest::dateOfBirth,
-    RiskScoreRequest::dateAtStartOfFollowupCalculated,
+    RiskScoreRequest::dateAtStartOfFollowup,
     RiskScoreRequest::totalNumberOfSanctionsForAllOffences,
   )
 
@@ -47,7 +47,7 @@ class DirectContactSexualReoffendingPredictorValidatorTest {
       totalNumberOfSanctionsForAllOffences = 4,
       dateOfBirth = LocalDate.of(1980, 1, 1),
       dateOfMostRecentSexualOffence = LocalDate.of(2021, 1, 1),
-      dateAtStartOfFollowupCalculated = LocalDate.of(2021, 1, 1),
+      dateAtStartOfFollowup = LocalDate.of(2021, 1, 1),
     )
 
     // Act
@@ -109,7 +109,7 @@ class DirectContactSexualReoffendingPredictorValidatorTest {
       ),
       ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE.asError(
         listOf(
-          "dateAtStartOfFollowupCalculated",
+          "dateAtStartOfFollowup",
         ),
       ),
       ValidationErrorType.SEXUAL_REOFFENDING_PREDICTOR_INCONSISTENT_INPUT.asError(

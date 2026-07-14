@@ -141,29 +141,29 @@ class CommonValidator(val offenceCodeCacheService: OffenceCodeCacheService) {
   fun validateDateAtStartOfFollowupAgainstDateOfCurrentConviction(request: RiskScoreRequest): ValidationError? {
     // One of dateAtStartOfFollowup and dateOfCurrentConviction must be provided
     // This is not strictly needed but adding to ensure consistency with OASys
-    if (request.dateAtStartOfFollowupCalculated == null && request.dateOfCurrentConviction == null) {
-      return ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_REQUIRED.asError(listOf(RiskScoreRequest::dateAtStartOfFollowupCalculated.name))
+    if (request.dateAtStartOfFollowup == null && request.dateOfCurrentConviction == null) {
+      return ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_REQUIRED.asError(listOf(RiskScoreRequest::dateAtStartOfFollowup.name))
     }
     return null
   }
 
   fun validateDateAtStartOfFollowupAgainstDateOfBirth(request: RiskScoreRequest): ValidationError? {
-    // dateAtStartOfFollowupCalculated must be after dateOfBirth
-    if (request.dateAtStartOfFollowupCalculated != null && request.dateOfBirth != null && request.dateAtStartOfFollowupCalculated <= request.dateOfBirth) {
-      return ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_BEFORE_DATE_OF_BIRTH.asError(listOf(RiskScoreRequest::dateAtStartOfFollowupCalculated.name))
+    // dateAtStartOfFollowup must be after dateOfBirth
+    if (request.dateAtStartOfFollowup != null && request.dateOfBirth != null && request.dateAtStartOfFollowup <= request.dateOfBirth) {
+      return ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_BEFORE_DATE_OF_BIRTH.asError(listOf(RiskScoreRequest::dateAtStartOfFollowup.name))
     }
     return null
   }
 
   fun validateDateAtStartOfFollowupAge(request: RiskScoreRequest): ValidationError? {
-    if (request.dateAtStartOfFollowupCalculated != null && request.dateOfBirth != null && request.dateAtStartOfFollowupCalculated > request.dateOfBirth) {
+    if (request.dateAtStartOfFollowup != null && request.dateOfBirth != null && request.dateAtStartOfFollowup > request.dateOfBirth) {
       val ageAtStartOfFollowup = getAgeAtDate(
         request.dateOfBirth,
-        request.dateAtStartOfFollowupCalculated,
-        RiskScoreRequest::dateAtStartOfFollowupCalculated.name,
+        request.dateAtStartOfFollowup,
+        RiskScoreRequest::dateAtStartOfFollowup.name,
       )
       if (ageAtStartOfFollowup !in 10..<110) {
-        return ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE.asError(listOf(RiskScoreRequest::dateAtStartOfFollowupCalculated.name))
+        return ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE.asError(listOf(RiskScoreRequest::dateAtStartOfFollowup.name))
       }
     }
     return null
@@ -173,12 +173,12 @@ class CommonValidator(val offenceCodeCacheService: OffenceCodeCacheService) {
     if (request.gender == Gender.FEMALE || request.hasEverCommittedSexualOffence == false) return null
 
     val dateOfBirth = request.dateOfBirth ?: return null
-    val dateAtStartOfFollowupCalculated = request.dateAtStartOfFollowupCalculated ?: return null
+    val dateAtStartOfFollowup = request.dateAtStartOfFollowup ?: return null
 
-    if (dateAtStartOfFollowupCalculated > dateOfBirth) {
-      val ageAtStartOfFollowup = getAgeAtDate(dateOfBirth, dateAtStartOfFollowupCalculated, RiskScoreRequest::dateAtStartOfFollowupCalculated.name)
+    if (dateAtStartOfFollowup > dateOfBirth) {
+      val ageAtStartOfFollowup = getAgeAtDate(dateOfBirth, dateAtStartOfFollowup, RiskScoreRequest::dateAtStartOfFollowup.name)
       if (ageAtStartOfFollowup !in 10..<110) {
-        return ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE.asError(listOf(RiskScoreRequest::dateAtStartOfFollowupCalculated.name))
+        return ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE.asError(listOf(RiskScoreRequest::dateAtStartOfFollowup.name))
       }
     }
 

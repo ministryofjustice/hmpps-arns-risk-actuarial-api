@@ -5,7 +5,7 @@
     "dateOfBirth": null,
     "totalNumberOfSanctionsForAllOffences": null,
     "supervisionStatus": null,
-    "dateAtStartOfFollowupCalculated": null,
+    "dateAtStartOfFollowup": null,
     "totalNumberOfViolentSanctions": null,
     "hasEverCommittedSexualOffence": null,
     "isCurrentOffenceSexuallyMotivated": null,
@@ -37,7 +37,7 @@
           "supervisionStatus",
           "hasEverCommittedSexualOffence",
           "dateOfBirth",
-          "dateAtStartOfFollowupCalculated",
+          "dateAtStartOfFollowup",
           "totalNumberOfSanctionsForAllOffences"
         ]
       },

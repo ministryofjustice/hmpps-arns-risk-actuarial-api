@@ -16,7 +16,7 @@ sealed interface AllReoffendingPredictorRequestValidated {
     val gender: Gender,
     val currentOffenceCode: String,
     val totalNumberOfSanctionsForAllOffences: Int,
-    val dateAtStartOfFollowupCalculated: LocalDate,
+    val dateAtStartOfFollowup: LocalDate,
   ) : AllReoffendingPredictorRequestValidated
 
   data class Dynamic(

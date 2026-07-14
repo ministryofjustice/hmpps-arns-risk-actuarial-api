@@ -16,7 +16,7 @@ sealed interface SeriousViolentReoffendingPredictorRequestValidated {
     val currentOffenceCode: String,
     val totalNumberOfSanctionsForAllOffences: Int,
     val totalNumberOfViolentSanctions: Int,
-    val dateAtStartOfFollowupCalculated: LocalDate,
+    val dateAtStartOfFollowup: LocalDate,
   ) : SeriousViolentReoffendingPredictorRequestValidated
 
   data class Dynamic(
