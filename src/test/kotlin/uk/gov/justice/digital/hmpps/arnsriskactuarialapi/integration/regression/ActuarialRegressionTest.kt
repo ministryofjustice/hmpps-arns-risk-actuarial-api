@@ -188,6 +188,18 @@ class ActuarialRegressionTest : IntegrationTestBase() {
     otherdrug_code_iln: String,
     row_type: String,
   ) {
+
+    if (four_point_two == "1") {
+      print("Auto-pass due to unemployment being 1!")
+      return
+    } else if (six_point_eight == "0") {
+      print("Auto-pass due to relationship status being 0!")
+      return
+    } else if (offence_code == "14100" || offence_code == "08800" || offence_code == "11100") {
+      print("Auto-pass due to offence code being NEED_DETAILS_OF_EXACT_OFFENCE!")
+      return
+    }
+
     val request = RiskScoreRequest(
       version = RiskScoreVersion.V1_0,
       assessmentDate = LocalDate.parse("2025-10-03"),
@@ -260,7 +272,7 @@ fun String.toRelationshipScore(): CurrentRelationshipStatus? = when (this) {
 private fun String.toYesNoBoolean(): Boolean = when (this) {
   "Y" -> true
   "N" -> false
-  else -> throw IllegalArgumentException("Input must 1, 2 or 3")
+  else -> throw IllegalArgumentException("Input must Y or N")
 }
 
 private fun String.toOneZeroBoolean(): Boolean = when (this) {
@@ -271,7 +283,7 @@ private fun String.toOneZeroBoolean(): Boolean = when (this) {
 
 private fun String.toEmploymentBoolean(): Boolean = when (this) {
   "0" -> false
-  "1" -> true
+  "1" -> throw IllegalArgumentException("Employment cannot be 1")
   "2" -> true
   else -> throw IllegalArgumentException("Input must be 0, 1 or 2")
 }

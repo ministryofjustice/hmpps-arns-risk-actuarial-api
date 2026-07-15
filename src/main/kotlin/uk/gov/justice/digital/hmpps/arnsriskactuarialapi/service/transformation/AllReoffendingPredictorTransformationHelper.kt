@@ -250,7 +250,7 @@ object AllReoffendingPredictorTransformationHelper {
 
   fun getSuitableAccommodationWeight(suitabilityOfAccommodation: ProblemLevel): BigDecimal = suitabilityOfAccommodation.score.toBigDecimal() * AllReoffendingPredictorDynamic.ACCOMMODATION_SUITABILITY.coefficient
 
-  fun getUnemployedWeight(isUnemployed: Boolean): BigDecimal = if (isUnemployed) AllReoffendingPredictorDynamic.UNEMPLOYED.coefficient else BigDecimal.ZERO
+  fun getUnemployedWeight(isUnemployed: Boolean): BigDecimal = if (isUnemployed) AllReoffendingPredictorDynamic.UNEMPLOYED.coefficient * BigDecimal.TWO else BigDecimal.ZERO
 
   fun getLiveInRelationshipWeight(currentRelationshipStatus: CurrentRelationshipStatus): BigDecimal = if (currentRelationshipStatus == CurrentRelationshipStatus.IN_RELATIONSHIP_LIVING_TOGETHER) AllReoffendingPredictorDynamic.LIVE_IN_RELATIONSHIP.coefficient else BigDecimal.ZERO
 
