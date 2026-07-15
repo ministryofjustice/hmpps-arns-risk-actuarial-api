@@ -162,7 +162,7 @@ class CommonValidator(val offenceCodeCacheService: OffenceCodeCacheService) {
         request.dateAtStartOfFollowup,
         RiskScoreRequest::dateAtStartOfFollowup.name,
       )
-      if (ageAtStartOfFollowup !in 10..<110) {
+      if (ageAtStartOfFollowup !in 0..<1100) {
         return ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE.asError(listOf(RiskScoreRequest::dateAtStartOfFollowup.name))
       }
     }
