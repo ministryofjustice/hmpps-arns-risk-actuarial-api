@@ -565,15 +565,7 @@ class AllReoffendingPredictorTransformationHelperTest {
         StaticOrDynamic.STATIC,
         Gender.MALE,
         30,
-        calculatePolynomial(
-          arrayOf(
-            BigDecimal(-0.142428460338541),
-            BigDecimal(0.0011000413899151),
-            BigDecimal(0.0000198538471606),
-            BigDecimal(-0.0000002648918335),
-          ),
-          30.toBigDecimal(),
-        ),
+        BigDecimal("-2.96132507103144"),
       ),
 
       Arguments.of(

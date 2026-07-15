@@ -35,9 +35,15 @@ fun Double.sigmoid(): Double = exp(this).let { it / (1.0 + it) }
 fun calculatePolynomial(coeffs: DoubleArray, x: Double): Double = (0..<coeffs.size).fold(0.0) { sum, i -> sum + coeffs[i] * x.pow(i) }
 
 // Horners method
-fun calculatePolynomial(coefficients: Array<BigDecimal>, x: BigDecimal): BigDecimal = coefficients.foldRight(BigDecimal.ZERO) { coefficient, sum ->
+fun calculatePolynomial(coefficients: Array<BigDecimal>, x: BigDecimal): BigDecimal = coefficients.dropLast(1).foldRight(coefficients.last()) { coefficient, sum ->
   (sum * x) + coefficient
 }
+
+fun calculatePolynomial(x: BigDecimal, c1: BigDecimal, c2: BigDecimal, c3: BigDecimal, c4: BigDecimal): BigDecimal =
+  (x.multiply(c1))
+    .add(x.pow(2).multiply(c2))
+    .add(x.pow(3).multiply(c3))
+    .add(x.pow(4).multiply(c4))
 
 fun getAgeAtDate(
   dateOfBirth: LocalDate,

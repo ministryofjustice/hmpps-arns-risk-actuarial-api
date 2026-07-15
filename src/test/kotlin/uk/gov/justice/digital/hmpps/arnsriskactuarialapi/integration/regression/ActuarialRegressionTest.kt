@@ -14,6 +14,10 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.RiskScoreResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.integration.IntegrationTestBase
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asDoublePercentage
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.roundToNDecimals
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sanitisePercentage
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sigmoid
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -21,7 +25,7 @@ import java.time.LocalDate
 import kotlin.test.assertEquals
 import kotlin.test.fail
 
-private const val TEST_CSV_FILE = "/regression/v4_1_1_oasys_test_data_first_5.csv"
+private const val TEST_CSV_FILE = "/regression/v4_1_1_oasys_test_data.csv"
 private const val WRITE_FAILED_OUTPUTS = false
 
 class ActuarialRegressionTest : IntegrationTestBase() {
@@ -197,7 +201,7 @@ class ActuarialRegressionTest : IntegrationTestBase() {
       totalNumberOfViolentSanctions = total_violent_sanctions.toInt(),
       didOffenceInvolveCarryingOrUsingWeapon = two_point_two.toOneZeroBoolean(),
       suitabilityOfAccommodation = three_point_four.toProblemScore(),
-      isUnemployed = four_point_two.toOneZeroBoolean(),
+      isUnemployed = four_point_two.toEmploymentBoolean(),
       currentRelationshipWithPartner = six_point_four.toProblemScore(),
       evidenceOfDomesticAbuse = six_point_seven.toOneZeroBoolean(),
       currentRelationshipStatus = six_point_eight.toRelationshipScore(),
@@ -207,6 +211,7 @@ class ActuarialRegressionTest : IntegrationTestBase() {
       impulsivityProblems = eleven_point_two.toProblemScore(),
       temperControl = eleven_point_four.toProblemScore(),
       proCriminalAttitudes = twelve_point_one.toProblemScore(),
+      regularOffendingActivities = seven_point_two.toProblemScore(),
       previousConvictions = buildPreviousConvictionsList(aggravated_burglary, arson, criminal_damage, firearms, gbh, homicide, kidnap, robbery, weapons_not_firearms),
       hasHeroinUsage = heroin.toYesNoBoolean(),
       hasKetamineUsage = ketamine.toYesNoBoolean(),
@@ -218,6 +223,7 @@ class ActuarialRegressionTest : IntegrationTestBase() {
       hasSolventsUsage = solvents.toYesNoBoolean(),
       hasSpiceUsage = spice.toYesNoBoolean(),
       hasSteroidsUsage = steroids.toYesNoBoolean(),
+      hasCrackCocaineUsage = crack_cocaine.toYesNoBoolean(),
     )
 
     val responseBody = webTestClient.post()
@@ -231,7 +237,9 @@ class ActuarialRegressionTest : IntegrationTestBase() {
       .returnResult()
       .responseBody
 
-    assertEquals(all_extended_predictions.toDouble(), responseBody?.actuarialPredictors?.allPredictor?.output?.score)
+    println(responseBody)
+
+    assertEquals(all_extended_predictions.toDouble().asDoublePercentage(), responseBody?.actuarialPredictors?.allPredictor?.output?.score)
   }
 }
 
@@ -243,27 +251,34 @@ fun String.toDrugMotivation(): MotivationLevel? = when (this) {
 }
 
 fun String.toRelationshipScore(): CurrentRelationshipStatus? = when (this) {
-  "1" -> CurrentRelationshipStatus.IN_RELATIONSHIP_NOT_LIVING_TOGETHER
-  "2" -> CurrentRelationshipStatus.IN_RELATIONSHIP_LIVING_TOGETHER
+  "1" -> CurrentRelationshipStatus.IN_RELATIONSHIP_LIVING_TOGETHER
+  "2" -> CurrentRelationshipStatus.IN_RELATIONSHIP_NOT_LIVING_TOGETHER
   "3" -> CurrentRelationshipStatus.NOT_IN_RELATIONSHIP
   else -> throw IllegalArgumentException("Input must 1, 2 or 3")
 }
 
-private fun String.toYesNoBoolean(): Boolean = when {
-  this == "Y" -> true
-  this == "N" -> false
+private fun String.toYesNoBoolean(): Boolean = when (this) {
+  "Y" -> true
+  "N" -> false
   else -> throw IllegalArgumentException("Input must 1, 2 or 3")
 }
 
-private fun String.toOneZeroBoolean(): Boolean = when {
-  this == "1" -> true
-  this == "0" -> false
+private fun String.toOneZeroBoolean(): Boolean = when (this) {
+  "1" -> true
+  "0" -> false
   else -> throw IllegalArgumentException("Input must be 0 or 1")
 }
 
-private fun String.convertGender(): Gender = when {
-  this == "M" -> Gender.MALE
-  this == "F" -> Gender.FEMALE
+private fun String.toEmploymentBoolean(): Boolean = when (this) {
+  "0" -> false
+  "1" -> true
+  "2" -> true
+  else -> throw IllegalArgumentException("Input must be 0, 1 or 2")
+}
+
+private fun String.convertGender(): Gender = when (this) {
+  "M" -> Gender.MALE
+  "F" -> Gender.FEMALE
   else -> throw IllegalArgumentException("Gender must be M or F")
 }
 
@@ -275,33 +290,33 @@ private fun String.toProblemScore(): ProblemLevel = when (this) {
 }
 
 private fun buildPreviousConvictionsList(aggravatedBurglary: String, arson: String, criminalDamage: String, firearms: String, gbh: String, homicide: String, kidnap: String, robbery: String, weaponsNotFirearms: String): List<PreviousConviction> {
-  val convictions = mutableListOf<PreviousConviction>()
-  if (aggravatedBurglary == "1") {
-    convictions.add(PreviousConviction.AGGRAVATED_BURGLARY)
+  return buildList {
+    if (aggravatedBurglary == "1") {
+      add(PreviousConviction.AGGRAVATED_BURGLARY)
+    }
+    if (arson == "1") {
+      add(PreviousConviction.ARSON)
+    }
+    if (criminalDamage == "1") {
+      add(PreviousConviction.CRIMINAL_DAMAGE)
+    }
+    if (firearms == "1") {
+      add(PreviousConviction.FIREARMS)
+    }
+    if (gbh == "1") {
+      add(PreviousConviction.WOUNDING_GBH)
+    }
+    if (homicide == "1") {
+      add(PreviousConviction.HOMICIDE)
+    }
+    if (kidnap == "1") {
+      add(PreviousConviction.KIDNAPPING)
+    }
+    if (robbery == "1") {
+      add(PreviousConviction.ROBBERY)
+    }
+    if (weaponsNotFirearms == "1") {
+      add(PreviousConviction.WEAPON)
+    }
   }
-  if (arson == "1") {
-    convictions.add(PreviousConviction.ARSON)
-  }
-  if (criminalDamage == "1") {
-    convictions.add(PreviousConviction.CRIMINAL_DAMAGE)
-  }
-  if (firearms == "1") {
-    convictions.add(PreviousConviction.FIREARMS)
-  }
-  if (gbh == "1") {
-    convictions.add(PreviousConviction.WOUNDING_GBH)
-  }
-  if (homicide == "1") {
-    convictions.add(PreviousConviction.HOMICIDE)
-  }
-  if (kidnap == "1") {
-    convictions.add(PreviousConviction.KIDNAPPING)
-  }
-  if (robbery == "1") {
-    convictions.add(PreviousConviction.ROBBERY)
-  }
-  if (weaponsNotFirearms == "1") {
-    convictions.add(PreviousConviction.WEAPON)
-  }
-  return convictions
 }
