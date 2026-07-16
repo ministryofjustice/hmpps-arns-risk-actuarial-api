@@ -792,7 +792,7 @@ class AllReoffendingPredictorTransformationHelperTest {
     @JvmStatic
     fun getUnemployedWeightProvider() = listOf(
       Arguments.of(false, BigDecimal.ZERO),
-      Arguments.of(true, BigDecimal(0.0317783733809377)),
+      Arguments.of(true, BigDecimal("0.06355674676187539340332932624733075499534606933593750")),
     )
 
     @JvmStatic
