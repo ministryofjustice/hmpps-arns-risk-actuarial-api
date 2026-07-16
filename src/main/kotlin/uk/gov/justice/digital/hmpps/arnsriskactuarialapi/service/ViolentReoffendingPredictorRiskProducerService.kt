@@ -218,6 +218,7 @@ class ViolentReoffendingPredictorRiskProducerService(val validator: ViolentReoff
       FeatureValue.TOTAL_NUMBER_OF_VIOLENT_SANCTIONS_WEIGHT.set(
         getTotalViolentSanctionsWeight(
           staticOrDynamic,
+          staticData.totalNumberOfViolentSanctions,
         ),
       )
       FeatureValue.SECOND_SANCTION_GAP_WEIGHT.set(

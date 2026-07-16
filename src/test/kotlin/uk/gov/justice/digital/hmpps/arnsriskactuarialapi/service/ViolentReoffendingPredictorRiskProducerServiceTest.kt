@@ -153,16 +153,16 @@ class ViolentReoffendingPredictorRiskProducerServiceTest {
       "neverViolentWeight" to BigDecimal("0"),
       "onceViolentWeight" to BigDecimal("0"),
       "totalNumberOfSanctionsForAllOffencesWeight" to BigDecimal("-0.01353161354898619987696672950505671906284987926483154296875"),
-      "totalNumberOfViolentSanctionsWeight" to BigDecimal("0.0185294325031695010508325793807671288959681987762451171875"),
+      "totalNumberOfViolentSanctionsWeight" to BigDecimal("0.037058865006339002101665158761534257791936397552490234375"),
       "secondSanctionGapWeight" to BigDecimal("-0.828714856603948835100936776143498718738555908203125"),
       "offenceFreeMonthsWeight" to BigDecimal("0"),
       "copasScore" to BigDecimal("0"),
       "copasViolentOffencesScore" to BigDecimal("-1.63758298544199690944625227297797298575687818811275064945220947265625"),
-      "totalWeight" to BigDecimal("-0.516034285947627720380226439195803234127879477455280721187591552734375"),
+      "totalWeight" to BigDecimal("-0.497504853444458219329393859815036105231911278679035604000091552734375"),
     )
 
     val expected = ViolentReoffendingPredictorObject(
-      score = 37.38,
+      score = 37.81,
       band = RiskBand.MEDIUM,
       staticOrDynamic = StaticOrDynamic.STATIC,
       validationErrors = listOf(expectedDynamicValidationError),
@@ -193,7 +193,7 @@ class ViolentReoffendingPredictorRiskProducerServiceTest {
       "totalNumberOfSanctionsForAllOffencesWeight" to BigDecimal("-0.0136676571864243999454568978535462520085275173187255859375"),
       "neverViolentWeight" to BigDecimal("0"),
       "onceViolentWeight" to BigDecimal("0"),
-      "totalNumberOfViolentSanctionsWeight" to BigDecimal("0.0143780957599776992861251301292213611304759979248046875"),
+      "totalNumberOfViolentSanctionsWeight" to BigDecimal("0.028756191519955398572250260258442722260951995849609375"),
       "secondSanctionGapWeight" to BigDecimal("-0.71836505462946875777419108999310992658138275146484375"),
       "offenceFreeMonthsWeight" to BigDecimal("0"),
       "copasScore" to BigDecimal("0"),
@@ -219,11 +219,11 @@ class ViolentReoffendingPredictorRiskProducerServiceTest {
       "cannabisUsageWeight" to BigDecimal("0.0018647061979710000990950735655360404052771627902984619140625"),
       "steroidUsageWeight" to BigDecimal("0.34219755115315797500130656771943904459476470947265625"),
       "otherDrugUsageWeight" to BigDecimal("0"),
-      "totalWeight" to BigDecimal("-0.2251986219013973638156313705194822016864009128767065703868865966796875"),
+      "totalWeight" to BigDecimal("-0.2108205261414196645295062403902608405559249149519018828868865966796875"),
     )
 
     val expected = ViolentReoffendingPredictorObject(
-      score = 44.39,
+      score = 44.75,
       band = RiskBand.MEDIUM,
       staticOrDynamic = StaticOrDynamic.DYNAMIC,
       validationErrors = emptyList(),

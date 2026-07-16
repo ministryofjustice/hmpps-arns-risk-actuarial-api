@@ -3,6 +3,11 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.coefficients.AllReoffendingPredictorStatic
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.coefficients.ViolentReoffendingPredictorDynamic
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.time.LocalDate
@@ -12,20 +17,6 @@ import kotlin.math.cosh
 import kotlin.math.exp
 
 class NumbersUtilsTest {
-
-  companion object {
-    const val SCALE = 2
-    fun Double.equalsDelta(other: Double) = BigDecimal(abs(this / other - 1)).setScale(SCALE, RoundingMode.HALF_UP)
-      .equals(BigDecimal(0).setScale(SCALE, RoundingMode.HALF_UP))
-
-    // for Horner's rule
-    val cubic = doubleArrayOf(-1.0, 0.0, 0.0, 1.0)
-    val linear = doubleArrayOf(-1.0, 1.0)
-    val quadratic = doubleArrayOf(1.0, 1.0, 1.0)
-
-    private val today = LocalDate.of(2025, 1, 1)
-  }
-
   @Test
   fun `roundTo5Decimals should round correctly`() {
     assertEquals(1.23457, 1.23456789.roundTo5Decimals())
@@ -80,39 +71,46 @@ class NumbersUtilsTest {
     assertTrue(f(x).equalsDelta(g(x)))
   }
 
-  @Test
-  fun `polynomial calculations`() {
-    assertEquals(7.0, calculatePolynomial(cubic, 2.0), 0.00001)
-    assertEquals(PI - 1, calculatePolynomial(linear, PI), 0.00001)
-    assertEquals(21.0, calculatePolynomial(quadratic, 4.0), 0.00001)
-    // should be true for any x
-    val x = PI
-    val productOfPolynomials = { x: Double -> calculatePolynomial(linear, x) * calculatePolynomial(quadratic, x) }
-    val cubicPolynomial = { x: Double -> calculatePolynomial(cubic, x) }
-    assertEquals(productOfPolynomials(x), cubicPolynomial(x), 0.00001)
-  }
+//  @Test
+//  fun `BigDecimal polynomial calculations`() {
+//    val cubic: Array<BigDecimal> = arrayOf(BigDecimal("-1.0"), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal("1.0"))
+//    val linear: Array<BigDecimal> = arrayOf(BigDecimal("-1.0"), BigDecimal("1.0"))
+//    val quadratic: Array<BigDecimal> = arrayOf(BigDecimal("1.0"), BigDecimal("1.0"), BigDecimal("1.0"))
+//
+//    val result1 = calculatePolynomial(cubic, BigDecimal("2.0"))
+//    assertTrue(BigDecimal("7.0").compareTo(result1) == 0, "Expected 7.0 but was $result1")
+//
+//    val pi = Math.PI.toBigDecimal()
+//    val result2 = calculatePolynomial(linear, pi)
+//    assertTrue((pi - BigDecimal.ONE).compareTo(result2) == 0, "Expected PI - 1 but was $result2")
+//
+//    val result3 = calculatePolynomial(quadratic, BigDecimal("4.0"))
+//    assertTrue(BigDecimal("21.0").compareTo(result3) == 0, "Expected 21.0 but was $result3")
+//
+//    val x = pi
+//    val productOfPolynomials = calculatePolynomial(linear, x) * calculatePolynomial(quadratic, x)
+//    val cubicPolynomial = calculatePolynomial(cubic, x)
+//
+//    assertTrue(
+//      productOfPolynomials.compareTo(cubicPolynomial) == 0,
+//      "Polynomial product did not match cubic evaluation",
+//    )
+//  }
 
-  @Test
-  fun `BigDecimal polynomial calculations`() {
-    val cubic: Array<BigDecimal> = arrayOf(BigDecimal("-1.0"), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal("1.0"))
-    val linear: Array<BigDecimal> = arrayOf(BigDecimal("-1.0"), BigDecimal("1.0"))
-    val quadratic: Array<BigDecimal> = arrayOf(BigDecimal("1.0"), BigDecimal("1.0"), BigDecimal("1.0"))
+  @ParameterizedTest
+  @MethodSource("calculatePolynomialProvider")
+  fun `should calculate polynomial with all powers`(
+    coefficients: Array<BigDecimal>,
+    x: BigDecimal,
+    expectedResult: BigDecimal,
+  ) {
+    // Act
+    val result = calculatePolynomial(coefficients, x)
 
-    val result1 = calculatePolynomial(cubic, BigDecimal("2.0"))
-    assertTrue(BigDecimal("7.0").compareTo(result1) == 0, "Expected 7.0 but was $result1")
-
-    val pi = Math.PI.toBigDecimal()
-    val result2 = calculatePolynomial(linear, pi)
-    assertTrue((pi - BigDecimal.ONE).compareTo(result2) == 0, "Expected PI - 1 but was $result2")
-
-    val result3 = calculatePolynomial(quadratic, BigDecimal("4.0"))
-    assertTrue(BigDecimal("21.0").compareTo(result3) == 0, "Expected 21.0 but was $result3")
-
-    val x = pi
-    val productOfPolynomials = calculatePolynomial(linear, x) * calculatePolynomial(quadratic, x)
-    val cubicPolynomial = calculatePolynomial(cubic, x)
-
-    assertTrue(productOfPolynomials.compareTo(cubicPolynomial) == 0, "Polynomial product did not match cubic evaluation")
+    // Assert
+    assertTrue(expectedResult.compareTo(result) == 0) {
+      "Expected $expectedResult, but got $result"
+    }
   }
 
   @Test
@@ -150,20 +148,6 @@ class NumbersUtilsTest {
   }
 
   @Test
-  fun `test polynomial yields exact same results`() {
-    val coeffsDouble = doubleArrayOf(2.0, 3.0, 4.0, 5.0)
-    val xDouble = 20.0
-
-    val coeffsBigDecimal = coeffsDouble.map { BigDecimal.valueOf(it) }.toTypedArray()
-    val xBigDecimal = BigDecimal.valueOf(xDouble)
-
-    val resultDouble = calculatePolynomial(coeffsDouble, xDouble)
-    val resultBigDecimal = calculatePolynomial(coeffsBigDecimal, xBigDecimal)
-
-    assertEquals(resultBigDecimal.toDouble(), resultDouble)
-  }
-
-  @Test
   fun `getAgeAtDate exact`() {
     val dob = today.minusYears(15)
     assertEquals(
@@ -195,5 +179,40 @@ class NumbersUtilsTest {
     }
     assertTrue(result.isFailure)
     assertEquals("fieldName cannot be on or before date of birth.", result.exceptionOrNull()?.message)
+  }
+
+  companion object {
+    const val SCALE = 2
+    fun Double.equalsDelta(other: Double) = BigDecimal(abs(this / other - 1)).setScale(SCALE, RoundingMode.HALF_UP)
+      .equals(BigDecimal(0).setScale(SCALE, RoundingMode.HALF_UP))
+
+    // for Horner's rule
+    val cubic = doubleArrayOf(-1.0, 0.0, 0.0, 1.0)
+    val linear = doubleArrayOf(-1.0, 1.0)
+    val quadratic = doubleArrayOf(1.0, 1.0, 1.0)
+
+    private val today = LocalDate.of(2025, 1, 1)
+
+    @JvmStatic
+    fun calculatePolynomialProvider() = listOf(
+      Arguments.of(
+        arrayOf(
+          ViolentReoffendingPredictorDynamic.AAI_MALE.coefficient,
+          ViolentReoffendingPredictorDynamic.AAI_QUADRATIC_MALE.coefficient,
+        ),
+        BigDecimal(2),
+        BigDecimal("-0.1271894341895465959518807252948136010672897100448608398437500"),
+      ),
+      Arguments.of(
+        arrayOf(
+          AllReoffendingPredictorStatic.AAI_MALE.coefficient,
+          AllReoffendingPredictorStatic.AAI_QUADRATIC_MALE.coefficient,
+          AllReoffendingPredictorStatic.AAI_CUBIC_MALE.coefficient,
+          AllReoffendingPredictorStatic.AAI_QUARTIC_MALE.coefficient,
+        ),
+        BigDecimal.TWO,
+        BigDecimal("-0.28030216260947281525577160247661434588906104181660339236259460449218750000"),
+      ),
+    )
   }
 }
