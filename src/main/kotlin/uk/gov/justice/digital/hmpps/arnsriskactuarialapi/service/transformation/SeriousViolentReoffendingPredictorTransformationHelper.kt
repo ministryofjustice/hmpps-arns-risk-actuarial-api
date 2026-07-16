@@ -285,7 +285,7 @@ object SeriousViolentReoffendingPredictorTransformationHelper {
 
   fun getSuitableAccommodationWeight(suitabilityOfAccommodation: ProblemLevel): BigDecimal = SeriousViolentReoffendingPredictorDynamic.ACCOMMODATION_SUITABILITY.coefficient * suitabilityOfAccommodation.score.toBigDecimal()
 
-  fun getUnemployedWeight(isUnemployed: Boolean): BigDecimal = if (isUnemployed) SeriousViolentReoffendingPredictorDynamic.UNEMPLOYED.coefficient else BigDecimal.ZERO
+  fun getUnemployedWeight(isUnemployed: Boolean): BigDecimal = if (isUnemployed) SeriousViolentReoffendingPredictorDynamic.UNEMPLOYED.coefficient * BigDecimal.TWO else BigDecimal.ZERO
 
   fun getChronicDrinkingWeight(currentAlcoholUseProblems: ProblemLevel): BigDecimal = currentAlcoholUseProblems.score.toBigDecimal() * SeriousViolentReoffendingPredictorDynamic.CHRONIC_DRINKING.coefficient
 

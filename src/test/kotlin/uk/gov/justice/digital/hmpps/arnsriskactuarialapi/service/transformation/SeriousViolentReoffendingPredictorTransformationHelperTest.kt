@@ -62,7 +62,7 @@ class SeriousViolentReoffendingPredictorTransformationHelperTest {
 
   @Test
   fun `getUnemployedWeight should lookup value`() {
-    assertEquals(BigDecimal("0.073462846618329302739169861524715088307857513427734375"), getUnemployedWeight(true))
+    assertEquals(BigDecimal("0.146925693236658605478339723049430176615715026855468750"), getUnemployedWeight(true))
     assertEquals(BigDecimal.ZERO, getUnemployedWeight(false))
   }
 

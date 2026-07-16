@@ -20,7 +20,7 @@ enum class ValidationErrorType(val message: String) {
   DATE_OF_CURRENT_CONVICTION_WITHIN_THREE_MONTHS_OF_ASSESSMENT_DATE("Date of current conviction must be less than 3 months after the assessment date"),
   TOTAL_NUMBER_OF_SANCTIONS_OUT_OF_RANGE("Total number of sanctions must be between 1 and 999 (inclusive)"),
   VIOLENT_SANCTION_OUT_OF_RANGE("Violent sanctions count must be greater than 0, but less than or equal to total number of sanctions"),
-  AGE_AT_FIRST_SANCTION_OUT_OF_RANGE("Age at current conviction must be between 9 and 98 (inclusive)"),
+  AGE_AT_FIRST_SANCTION_OUT_OF_RANGE("Age at current conviction must be less than 110"),
   LDS_NOT_ENOUGH_FIELDS_PRESENT("At least three input fields must be provided"),
   OFFENCE_CODE_INCORRECT_FORMAT("Offence code must be a string of 5 digits"),
   OFFENCE_CODE_MAPPING_NOT_FOUND("No offence code to actuarial weighting mapping found for offence code"),
