@@ -165,7 +165,7 @@ class SeriousViolentReoffendingPredictorRiskProducerServiceTest {
       "violenceRateWeight" to BigDecimal("-0.51778627936787994302401369086317484136117172965896315872669219970703125"),
       "offenceInvolveCarryingOrUsingWeaponsWeight" to BigDecimal("0.385215247009075001383138214805512689054012298583984375"),
       "suitableAccommodationWeight" to BigDecimal("0.044223953156797703167857349626501672901213169097900390625"),
-      "unemployedWeight" to BigDecimal("0.073462846618329302739169861524715088307857513427734375"),
+      "unemployedWeight" to BigDecimal("0.14692569323665860547833972304943017661571502685546875"),
       "chronicDrinkingProblemsWeight" to BigDecimal("0.076554599290370506370351222358294762670993804931640625"),
       "temperControlWeight" to BigDecimal("0.12420740735737599569343814209787524305284023284912109375"),
       "proCriminalAttitudesWeight" to BigDecimal("0.0982315473681467932198785319997114129364490509033203125"),
@@ -178,12 +178,12 @@ class SeriousViolentReoffendingPredictorRiskProducerServiceTest {
       "pastNonFirearmWeaponOffenceWeight" to BigDecimal("0"),
       "pastCriminalDamageOffenceWeight" to BigDecimal("0"),
       "pastArsonOffenceWeight" to BigDecimal("0"),
-      "totalWeight" to BigDecimal("-3.49814165251744904746828364071851436012394742647302336990833282470703125"),
+      "totalWeight" to BigDecimal("-3.42467880589911974472911377919379927181608991304528899490833282470703125"),
     )
 
     val expected = SeriousViolentReoffendingPredictorObject(
-      score = 2.94,
-      band = RiskBand.MEDIUM,
+      score = 3.15,
+      band = RiskBand.HIGH,
       staticOrDynamic = StaticOrDynamic.DYNAMIC,
       validationErrors = emptyList(),
       featureValues = expectedFeatureValues,
