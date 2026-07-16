@@ -451,7 +451,7 @@ class CommonValidatorTest {
       assertEquals(
         ValidationError(
           type = ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE,
-          message = "Age at date at start of followup must be more than 10 and less than 110",
+          message = "Age at date at start of followup must be less than 110",
           fields = listOf("dateAtStartOfFollowup"),
         ),
         actualError,
@@ -754,17 +754,6 @@ class CommonValidatorTest {
           gender = Gender.MALE,
           dateOfBirth = LocalDate.of(1980, 1, 1),
           hasEverCommittedSexualOffence = true,
-          dateAtStartOfFollowup = LocalDate.of(1989, 1, 1),
-        ),
-        ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE.asError(
-          listOf("dateAtStartOfFollowup"),
-        ),
-      ),
-      Arguments.of(
-        RiskScoreRequest(
-          gender = Gender.MALE,
-          dateOfBirth = LocalDate.of(1980, 1, 1),
-          hasEverCommittedSexualOffence = true,
           dateAtStartOfFollowup = LocalDate.of(2090, 1, 1),
         ),
         ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE.asError(
@@ -913,17 +902,6 @@ class CommonValidatorTest {
         RiskScoreRequest(
           gender = Gender.MALE,
           hasEverCommittedSexualOffence = true,
-          dateOfMostRecentSexualOffence = LocalDate.of(2026, 1, 1),
-          dateOfBirth = LocalDate.of(2025, 1, 1),
-        ),
-        ValidationErrorType.DATE_OF_MOST_RECENT_SEXUAL_OFFENCE_OUT_OF_RANGE.asError(
-          listOf("dateOfMostRecentSexualOffence"),
-        ),
-      ),
-      Arguments.of(
-        RiskScoreRequest(
-          gender = Gender.MALE,
-          hasEverCommittedSexualOffence = true,
           dateOfMostRecentSexualOffence = LocalDate.of(2135, 1, 2),
           dateOfBirth = LocalDate.of(2025, 1, 1),
         ),
@@ -949,8 +927,6 @@ class CommonValidatorTest {
       Arguments.of(LocalDate.parse("2025-09-01"), LocalDate.parse("1915-09-01"), true),
       Arguments.of(LocalDate.parse("2025-12-20"), LocalDate.parse("1915-09-01"), true),
       Arguments.of(LocalDate.parse("2026-06-29"), LocalDate.parse("1915-09-01"), true),
-      // An age of 10 or less at dateAtStartOfFollowup should result in an error
-      Arguments.of(LocalDate.parse("2025-09-01"), LocalDate.parse("2015-09-02"), true),
     )
 
     @JvmStatic
