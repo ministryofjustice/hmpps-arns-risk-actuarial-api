@@ -162,7 +162,7 @@ class CommonValidator(val offenceCodeCacheService: OffenceCodeCacheService) {
         request.dateAtStartOfFollowup,
         RiskScoreRequest::dateAtStartOfFollowup.name,
       )
-      if (ageAtStartOfFollowup !in 10..<110) {
+      if (ageAtStartOfFollowup >= 110) {
         return ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE.asError(listOf(RiskScoreRequest::dateAtStartOfFollowup.name))
       }
     }
@@ -177,7 +177,7 @@ class CommonValidator(val offenceCodeCacheService: OffenceCodeCacheService) {
 
     if (dateAtStartOfFollowup > dateOfBirth) {
       val ageAtStartOfFollowup = getAgeAtDate(dateOfBirth, dateAtStartOfFollowup, RiskScoreRequest::dateAtStartOfFollowup.name)
-      if (ageAtStartOfFollowup !in 10..<110) {
+      if (ageAtStartOfFollowup >= 110) {
         return ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE.asError(listOf(RiskScoreRequest::dateAtStartOfFollowup.name))
       }
     }
@@ -210,7 +210,7 @@ class CommonValidator(val offenceCodeCacheService: OffenceCodeCacheService) {
     }
 
     val ageAtDateOfMostRecentSexualOffence = getAgeAtDate(dateOfBirth, dateOfMostRecentSexualOffence, fieldName)
-    if (ageAtDateOfMostRecentSexualOffence !in 10..<110) {
+    if (ageAtDateOfMostRecentSexualOffence >= 110) {
       return ValidationErrorType.DATE_OF_MOST_RECENT_SEXUAL_OFFENCE_OUT_OF_RANGE.asError(listOf(fieldName))
     }
     null
