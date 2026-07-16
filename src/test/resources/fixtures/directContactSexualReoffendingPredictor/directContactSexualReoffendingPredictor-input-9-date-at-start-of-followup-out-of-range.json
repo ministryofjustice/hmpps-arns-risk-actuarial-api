@@ -32,7 +32,7 @@
     "validationErrors": [
       {
         "type": "DATE_OF_START_OF_FOLLOWUP_OUT_OF_RANGE",
-        "message": "Age at date at start of followup must be more than 10 and less than 110",
+        "message": "Age at date at start of followup must be less than 110",
         "fields": [
           "dateAtStartOfFollowup"
         ]
