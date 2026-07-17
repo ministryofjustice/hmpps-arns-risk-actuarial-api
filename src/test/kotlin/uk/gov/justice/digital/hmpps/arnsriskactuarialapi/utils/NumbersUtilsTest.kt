@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.coefficients.AllReoffendingPredictorStatic
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.coefficients.ViolentReoffendingPredictorDynamic
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.time.LocalDate
@@ -132,21 +130,21 @@ class NumbersUtilsTest {
     fun calculatePolynomialProvider() = listOf(
       Arguments.of(
         arrayOf(
-          ViolentReoffendingPredictorDynamic.AAI_MALE.coefficient,
-          ViolentReoffendingPredictorDynamic.AAI_QUADRATIC_MALE.coefficient,
+          BigDecimal(-0.0645236564493287),
+          BigDecimal(0.0004644696772777),
         ),
         BigDecimal(2),
         BigDecimal("-0.1271894341895465959518807252948136010672897100448608398437500"),
       ),
       Arguments.of(
         arrayOf(
-          AllReoffendingPredictorStatic.AAI_MALE.coefficient,
-          AllReoffendingPredictorStatic.AAI_QUADRATIC_MALE.coefficient,
-          AllReoffendingPredictorStatic.AAI_CUBIC_MALE.coefficient,
-          AllReoffendingPredictorStatic.AAI_QUARTIC_MALE.coefficient,
+          BigDecimal(-0.104477239763612),
+          BigDecimal(0.0008606154365776),
+          BigDecimal(0.000013815779629),
+          BigDecimal(-0.0000001960154357),
         ),
         BigDecimal.TWO,
-        BigDecimal("-0.28030216260947281525577160247661434588906104181660339236259460449218750000"),
+        BigDecimal("-0.205404627790852812809007326257451642170792638353304937481880187988281250000"),
       ),
       Arguments.of(
         arrayOf(
