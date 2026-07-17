@@ -39,19 +39,19 @@
     "modelVersion": "1.0",
     "thresholdsVersion": "1.0",
     "output": {
-      "band": "HIGH",
-      "score": 79.95
+      "band": "LOW",
+      "score": 8.81
     },
     "featureValues": {
       "twoYearInterceptWeight": 3.83654148692014,
-      "ageGenderPolynomialWeight": -0.08188635280028,
+      "ageGenderPolynomialWeight": -2.45659058400843,
       "genderWeight": 0.0,
       "offenceGroupWeight": 0.09711571795253,
       "firstSanctionWeight": 0.0,
       "secondSanctionWeight": -2.60344581288004,
       "totalNumberOfSanctionsForAllOffencesWeight": -0.00605257512936,
       "secondSanctionGapWeight": -0.28775252584089,
-      "offenceFreeMonthsWeight": -0.03844725168101,
+      "offenceFreeMonthsWeight": -1.38410106051643,
       "copasScore": 0.0,
       "copasScoreSquared": 0.0,
       "suitableAccommodationWeight": 0.08480491583558,
@@ -75,7 +75,7 @@
       "cannabisUsageWeight": 0.0,
       "steroidUsageWeight": 0.0,
       "otherDrugUsageWeight": 0.0,
-      "totalWeight": 1.3832698396938
+      "totalWeight": -2.33708820034977
     },
     "validationErrors": []
   }

@@ -263,10 +263,10 @@ object ViolentReoffendingPredictorTransformationHelper {
     }
   }
 
-  fun getTotalViolentSanctionsWeight(staticOrDynamic: StaticOrDynamic): BigDecimal = when (staticOrDynamic) {
+  fun getTotalViolentSanctionsWeight(staticOrDynamic: StaticOrDynamic, totalNumberOfViolentSanctions: Int): BigDecimal = when (staticOrDynamic) {
     StaticOrDynamic.STATIC -> ViolentReoffendingPredictorStatic.VIOLENT_SANCTIONS.coefficient
     StaticOrDynamic.DYNAMIC -> ViolentReoffendingPredictorDynamic.VIOLENT_SANCTIONS.coefficient
-  }
+  }.times(BigDecimal(totalNumberOfViolentSanctions))
 
   fun getSuitableAccommodationWeight(suitabilityOfAccommodation: ProblemLevel): BigDecimal = suitabilityOfAccommodation.score.toBigDecimal() * ViolentReoffendingPredictorDynamic.ACCOMMODATION_SUITABILITY.coefficient
 
