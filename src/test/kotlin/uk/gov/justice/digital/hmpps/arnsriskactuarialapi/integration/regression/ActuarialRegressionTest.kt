@@ -7,13 +7,10 @@ import org.junit.jupiter.params.provider.CsvFileSource
 import org.springframework.http.MediaType
 import org.springframework.test.web.reactive.server.expectBody
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreVersion
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.RiskScoreResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.integration.IntegrationTestBase
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asDoublePercentage
-import java.time.LocalDate
-import java.time.Period
 import kotlin.test.assertEquals
 
 private const val TEST_CSV_FILE = "/regression/v4_1_1_oasys_test_data.csv"
@@ -27,8 +24,8 @@ class ActuarialRegressionTest : IntegrationTestBase() {
     ignoreLeadingAndTrailingWhitespace = true,
     encoding = "UTF8",
   )
-  fun `regression test suite - static`(@CsvToActuarialRegressionTestCase testCase: ActuarialRegressionTestCase) {
-    // Skip some test cases with invalid test input for now
+  fun `actuarial predictors regression test suite`(@CsvToActuarialRegressionTestCase testCase: ActuarialRegressionTestCase) {
+    // Skip some test cases with invalid test inputs for now
     assumeFalse(testCase.fourPointTwo == 1) {
       "Test case ${testCase.id}: skipping as fourPointTwo/unemployment cannot be 1"
     }
@@ -49,7 +46,8 @@ class ActuarialRegressionTest : IntegrationTestBase() {
     println("DYNAMIC response: $dynamicResponse")
 
     // Check all scores match
-    assertAll("Check risk scores",
+    assertAll(
+      "Check risk scores",
       { assertEquals(testCase.allBriefPredictions?.asDoublePercentage(), staticResponse?.actuarialPredictors?.allPredictor?.output?.score, "All reoffending predictor STATIC score mismatch") },
       { assertEquals(testCase.violenceBriefPredictions?.asDoublePercentage(), staticResponse?.actuarialPredictors?.violentPredictor?.output?.score, "Violent reoffending predictor STATIC score mismatch") },
       { assertEquals(testCase.seriousViolenceBriefPredictions?.asDoublePercentage(), staticResponse?.actuarialPredictors?.seriousViolentPredictor?.output?.score, "Serious violent predictor STATIC score mismatch") },

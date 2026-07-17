@@ -1,6 +1,5 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.integration.regression
 
-import org.junit.jupiter.api.Assumptions.assumeFalse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CurrentRelationshipStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.MotivationLevel
@@ -57,35 +56,33 @@ fun Int.toProblemScore(): ProblemLevel = when (this) {
   else -> throw IllegalArgumentException("Input must 0, 1 or 2")
 }
 
-fun buildPreviousConvictionsList(testCase: ActuarialRegressionTestCase): List<PreviousConviction> {
-  return buildList {
-    if (testCase.aggravatedBurglary == 1) {
-      add(PreviousConviction.AGGRAVATED_BURGLARY)
-    }
-    if (testCase.arson == 1) {
-      add(PreviousConviction.ARSON)
-    }
-    if (testCase.criminalDamage == 1) {
-      add(PreviousConviction.CRIMINAL_DAMAGE)
-    }
-    if (testCase.firearms == 1) {
-      add(PreviousConviction.FIREARMS)
-    }
-    if (testCase.gbh == 1) {
-      add(PreviousConviction.WOUNDING_GBH)
-    }
-    if (testCase.homicide == 1) {
-      add(PreviousConviction.HOMICIDE)
-    }
-    if (testCase.kidnap == 1) {
-      add(PreviousConviction.KIDNAPPING)
-    }
-    if (testCase.robbery == 1) {
-      add(PreviousConviction.ROBBERY)
-    }
-    if (testCase.weaponsNotFirearms == 1) {
-      add(PreviousConviction.WEAPON)
-    }
+fun buildPreviousConvictionsList(testCase: ActuarialRegressionTestCase): List<PreviousConviction> = buildList {
+  if (testCase.aggravatedBurglary == 1) {
+    add(PreviousConviction.AGGRAVATED_BURGLARY)
+  }
+  if (testCase.arson == 1) {
+    add(PreviousConviction.ARSON)
+  }
+  if (testCase.criminalDamage == 1) {
+    add(PreviousConviction.CRIMINAL_DAMAGE)
+  }
+  if (testCase.firearms == 1) {
+    add(PreviousConviction.FIREARMS)
+  }
+  if (testCase.gbh == 1) {
+    add(PreviousConviction.WOUNDING_GBH)
+  }
+  if (testCase.homicide == 1) {
+    add(PreviousConviction.HOMICIDE)
+  }
+  if (testCase.kidnap == 1) {
+    add(PreviousConviction.KIDNAPPING)
+  }
+  if (testCase.robbery == 1) {
+    add(PreviousConviction.ROBBERY)
+  }
+  if (testCase.weaponsNotFirearms == 1) {
+    add(PreviousConviction.WEAPON)
   }
 }
 
