@@ -37,11 +37,15 @@ object SeriousViolentReoffendingPredictorTransformationHelper {
         StaticOrDynamic.STATIC -> arrayOf(
           SeriousViolentReoffendingPredictorStatic.AAI_MALE.coefficient,
           SeriousViolentReoffendingPredictorStatic.AAI_QUADRATIC_MALE.coefficient,
+          BigDecimal.ZERO,
+          BigDecimal.ZERO,
         )
 
         StaticOrDynamic.DYNAMIC -> arrayOf(
           SeriousViolentReoffendingPredictorDynamic.AAI_MALE.coefficient,
           SeriousViolentReoffendingPredictorDynamic.AAI_QUADRATIC_MALE.coefficient,
+          BigDecimal.ZERO,
+          BigDecimal.ZERO,
         )
       }
 
@@ -49,16 +53,20 @@ object SeriousViolentReoffendingPredictorTransformationHelper {
         StaticOrDynamic.STATIC -> arrayOf(
           SeriousViolentReoffendingPredictorStatic.AAI_FEMALE.coefficient,
           SeriousViolentReoffendingPredictorStatic.AAI_QUADRATIC_FEMALE.coefficient,
+          BigDecimal.ZERO,
+          BigDecimal.ZERO,
         )
 
         StaticOrDynamic.DYNAMIC -> arrayOf(
           SeriousViolentReoffendingPredictorDynamic.AAI_FEMALE.coefficient,
           SeriousViolentReoffendingPredictorDynamic.AAI_QUADRATIC_FEMALE.coefficient,
+          BigDecimal.ZERO,
+          BigDecimal.ZERO,
         )
       }
     }
 
-    return calculatePolynomial(coefficients, ageAtStartOfFollowup.toBigDecimal())
+    return calculatePolynomial(ageAtStartOfFollowup.toBigDecimal(), coefficients[0], coefficients[1], coefficients[2], coefficients[3])
   }
 
   fun getGenderWeight(staticOrDynamic: StaticOrDynamic, gender: Gender): BigDecimal = when (gender) {
@@ -173,7 +181,7 @@ object SeriousViolentReoffendingPredictorTransformationHelper {
       )
     }
 
-    return calculatePolynomial(coefficients, monthsBetweenAssessmentAndFollowup.toBigDecimal())
+    return calculatePolynomial(monthsBetweenAssessmentAndFollowup.toBigDecimal(), coefficients[0], coefficients[1], coefficients[2], coefficients[3])
   }
 
   fun getCopasWeight(
@@ -285,7 +293,7 @@ object SeriousViolentReoffendingPredictorTransformationHelper {
 
   fun getSuitableAccommodationWeight(suitabilityOfAccommodation: ProblemLevel): BigDecimal = SeriousViolentReoffendingPredictorDynamic.ACCOMMODATION_SUITABILITY.coefficient * suitabilityOfAccommodation.score.toBigDecimal()
 
-  fun getUnemployedWeight(isUnemployed: Boolean): BigDecimal = if (isUnemployed) SeriousViolentReoffendingPredictorDynamic.UNEMPLOYED.coefficient else BigDecimal.ZERO
+  fun getUnemployedWeight(isUnemployed: Boolean): BigDecimal = if (isUnemployed) SeriousViolentReoffendingPredictorDynamic.UNEMPLOYED.coefficient.times(BigDecimal.TWO) else BigDecimal.ZERO
 
   fun getChronicDrinkingWeight(currentAlcoholUseProblems: ProblemLevel): BigDecimal = currentAlcoholUseProblems.score.toBigDecimal() * SeriousViolentReoffendingPredictorDynamic.CHRONIC_DRINKING.coefficient
 
@@ -377,7 +385,7 @@ object SeriousViolentReoffendingPredictorTransformationHelper {
   fun calculatePercentageScore(totalWeight: BigDecimal): Double = totalWeight.toDouble().sigmoid().asDoublePercentage().sanitisePercentage()
 
   fun getRiskBand(percentageScore: Double): RiskBand = when {
-    percentageScore <= SeriousViolentReoffendingPredictorConstant.EXCLUSIVE_MIN_PERCENTAGE -> throw IllegalArgumentException("Percentage score cannot be less than 0%: $percentageScore")
+    //percentageScore <= SeriousViolentReoffendingPredictorConstant.EXCLUSIVE_MIN_PERCENTAGE -> throw IllegalArgumentException("Percentage score cannot be less than 0%: $percentageScore")
 
     percentageScore < SeriousViolentReoffendingPredictorConstant.MEDIUM_BAND_LOWER_BOUND -> RiskBand.LOW
     percentageScore < SeriousViolentReoffendingPredictorConstant.HIGH_BAND_LOWER_BOUND -> RiskBand.MEDIUM

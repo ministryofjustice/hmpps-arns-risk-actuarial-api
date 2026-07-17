@@ -331,6 +331,7 @@ class ViolentReoffendingPredictorTransformationHelperTest {
   ) {
     val actualWeight = ViolentReoffendingPredictorTransformationHelper.getTotalViolentSanctionsWeight(
       staticOrDynamic,
+      1,
     )
     assertTrue(expectedWeight.compareTo(actualWeight) == 0) {
       "Expected $expectedWeight but got $actualWeight"
