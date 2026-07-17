@@ -71,32 +71,6 @@ class NumbersUtilsTest {
     assertTrue(f(x).equalsDelta(g(x)))
   }
 
-//  @Test
-//  fun `BigDecimal polynomial calculations`() {
-//    val cubic: Array<BigDecimal> = arrayOf(BigDecimal("-1.0"), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal("1.0"))
-//    val linear: Array<BigDecimal> = arrayOf(BigDecimal("-1.0"), BigDecimal("1.0"))
-//    val quadratic: Array<BigDecimal> = arrayOf(BigDecimal("1.0"), BigDecimal("1.0"), BigDecimal("1.0"))
-//
-//    val result1 = calculatePolynomial(cubic, BigDecimal("2.0"))
-//    assertTrue(BigDecimal("7.0").compareTo(result1) == 0, "Expected 7.0 but was $result1")
-//
-//    val pi = Math.PI.toBigDecimal()
-//    val result2 = calculatePolynomial(linear, pi)
-//    assertTrue((pi - BigDecimal.ONE).compareTo(result2) == 0, "Expected PI - 1 but was $result2")
-//
-//    val result3 = calculatePolynomial(quadratic, BigDecimal("4.0"))
-//    assertTrue(BigDecimal("21.0").compareTo(result3) == 0, "Expected 21.0 but was $result3")
-//
-//    val x = pi
-//    val productOfPolynomials = calculatePolynomial(linear, x) * calculatePolynomial(quadratic, x)
-//    val cubicPolynomial = calculatePolynomial(cubic, x)
-//
-//    assertTrue(
-//      productOfPolynomials.compareTo(cubicPolynomial) == 0,
-//      "Polynomial product did not match cubic evaluation",
-//    )
-//  }
-
   @ParameterizedTest
   @MethodSource("calculatePolynomialProvider")
   fun `should calculate polynomial with all powers`(
@@ -112,40 +86,6 @@ class NumbersUtilsTest {
       "Expected $expectedResult, but got $result"
     }
   }
-
-//  @Test
-//  fun `running the calculator performs a step by step chain reaction from right to left`() {
-//    // Explanation Horner's polynomial rule for future maintainers
-//    //
-//    // Multiplier (x) is usually an age of a person, lets set this to 20.
-//    // Our list of coefficients is [2, 3, 4, 5] for simplicity.
-//    // Because of 'foldRight', the code loops backward from right to left (5, then 4, then 3, then 2).
-//    // It keeps a running tally, starting at 0.
-//    //
-//    // Step 1 (Start at the right with 5):
-//    // (Running Tally of 0 * 20) + 5 = 5
-//    //
-//    // Step 2 (Move left to 4):
-//    // (Running Tally of 5 * 20) + 4 = 104
-//    //
-//    // Step 3 (Move left to 3):
-//    // (Running Tally of 104 * 20) + 3 = 2083
-//    //
-//    // Step 4 (Move left to 2):
-//    // (Running Tally of 2083 * 20) + 2 = 41662
-//    //
-//    // Final total: 41662
-//
-//    val x = BigDecimal(20)
-//    val coefficients = arrayOf(
-//      BigDecimal(2),
-//      BigDecimal(3),
-//      BigDecimal(4),
-//      BigDecimal(5),
-//    )
-//    val actualTotal = calculatePolynomial(coefficients, x)
-//    assertEquals(BigDecimal(41662), actualTotal)
-//  }
 
   @Test
   fun `getAgeAtDate exact`() {
@@ -186,11 +126,6 @@ class NumbersUtilsTest {
     fun Double.equalsDelta(other: Double) = BigDecimal(abs(this / other - 1)).setScale(SCALE, RoundingMode.HALF_UP)
       .equals(BigDecimal(0).setScale(SCALE, RoundingMode.HALF_UP))
 
-    // for Horner's rule
-    val cubic = doubleArrayOf(-1.0, 0.0, 0.0, 1.0)
-    val linear = doubleArrayOf(-1.0, 1.0)
-    val quadratic = doubleArrayOf(1.0, 1.0, 1.0)
-
     private val today = LocalDate.of(2025, 1, 1)
 
     @JvmStatic
@@ -212,6 +147,33 @@ class NumbersUtilsTest {
         ),
         BigDecimal.TWO,
         BigDecimal("-0.28030216260947281525577160247661434588906104181660339236259460449218750000"),
+      ),
+      Arguments.of(
+        arrayOf(
+          BigDecimal.ONE,
+          BigDecimal.TWO,
+        ),
+        BigDecimal.TWO,
+        BigDecimal(10),
+      ),
+      Arguments.of(
+        arrayOf(
+          BigDecimal.ONE,
+          BigDecimal.TWO,
+          BigDecimal(3),
+        ),
+        BigDecimal.TWO,
+        BigDecimal(34),
+      ),
+      Arguments.of(
+        arrayOf(
+          BigDecimal.ONE,
+          BigDecimal.TWO,
+          BigDecimal(3),
+          BigDecimal(4),
+        ),
+        BigDecimal.TWO,
+        BigDecimal(98),
       ),
     )
   }
