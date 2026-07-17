@@ -26,12 +26,12 @@
     "modelVersion": "1.0",
     "thresholdsVersion": "1.0",
     "output": {
-      "band": "MEDIUM",
-      "score": 1.82
+      "band": "LOW",
+      "score": 0.24
     },
     "featureValues": {
       "twoYearInterceptWeight": -1.70588696906607,
-      "ageGenderPolynomialWeight": -0.04407137401964,
+      "ageGenderPolynomialWeight": -2.07135457892295,
       "genderWeight": 0.0,
       "offenceGroupWeight": 0.13528641162272,
       "firstSanctionWeight": -2.26703484992352,
@@ -59,7 +59,7 @@
       "pastNonFirearmWeaponOffenceWeight": 0.0,
       "pastCriminalDamageOffenceWeight": 0.0,
       "pastArsonOffenceWeight": 0.0,
-      "totalWeight": -3.98523689921597
+      "totalWeight": -6.01252010411928
     },
     "validationErrors": []
   }

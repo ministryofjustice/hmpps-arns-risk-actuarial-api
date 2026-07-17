@@ -154,7 +154,7 @@ class AllReoffendingPredictorRiskProducerServiceTest {
 
     val expectedFeatureValues = mapOf(
       "twoYearInterceptWeight" to BigDecimal("5.01702292499072033393758829333819448947906494140625"),
-      "ageGenderPolynomialWeight" to BigDecimal("-0.08945517776523581101263157648595392146262383903376758098602294921875"),
+      "ageGenderPolynomialWeight" to BigDecimal("-3.220386399548489196454736753494341172654458205215632915496826171875"),
       "genderWeight" to BigDecimal("0"),
       "offenceGroupWeight" to BigDecimal("0.12167599899735"),
       "firstSanctionWeight" to BigDecimal("0"),
@@ -164,12 +164,12 @@ class AllReoffendingPredictorRiskProducerServiceTest {
       "offenceFreeMonthsWeight" to BigDecimal("0"),
       "copasScore" to BigDecimal("0"),
       "copasScoreSquared" to BigDecimal("0"),
-      "totalWeight" to BigDecimal("1.28751722284786119191238491908102492544685446773655712604522705078125"),
+      "totalWeight" to BigDecimal("-1.843413998935392193529720257927362325744979898445308208465576171875"),
     )
 
     val expected = AllReoffendingPredictorObject(
-      score = 78.37,
-      band = RiskBand.HIGH,
+      score = 13.66,
+      band = RiskBand.LOW,
       staticOrDynamic = StaticOrDynamic.STATIC,
       validationErrors = listOf(expectedDynamicValidationError),
       featureValues = expectedFeatureValues,
@@ -191,7 +191,7 @@ class AllReoffendingPredictorRiskProducerServiceTest {
 
     val expectedFeatureValues = mapOf(
       "twoYearInterceptWeight" to BigDecimal("3.836541486920140187066863290965557098388671875"),
-      "ageGenderPolynomialWeight" to BigDecimal("-0.075523168843552202323133877397143276510860232519917190074920654296875"),
+      "ageGenderPolynomialWeight" to BigDecimal("-2.7188340783678792836328195862971579543909683707170188426971435546875"),
       "genderWeight" to BigDecimal("0"),
       "offenceGroupWeight" to BigDecimal("0.0250113803601321"),
       "firstSanctionWeight" to BigDecimal("0"),
@@ -202,7 +202,7 @@ class AllReoffendingPredictorRiskProducerServiceTest {
       "copasScore" to BigDecimal("0"),
       "copasScoreSquared" to BigDecimal("0"),
       "suitableAccommodationWeight" to BigDecimal("0.08480491583557529799985985619059647433459758758544921875"),
-      "unemployedWeight" to BigDecimal("0.03177837338093769670166466312366537749767303466796875"),
+      "unemployedWeight" to BigDecimal("0.0635567467618753934033293262473307549953460693359375"),
       "liveInRelationshipWeight" to BigDecimal("0"),
       "relationshipQualityWeight" to BigDecimal("0.0364051885005138020634518625229247845709323883056640625"),
       "multiplicativeRelationshipWeight" to BigDecimal("0"),
@@ -222,12 +222,12 @@ class AllReoffendingPredictorRiskProducerServiceTest {
       "cannabisUsageWeight" to BigDecimal("0.049300440360878002021838284463228774257004261016845703125"),
       "steroidUsageWeight" to BigDecimal("0.202231737251706011893048753336188383400440216064453125"),
       "otherDrugUsageWeight" to BigDecimal("0"),
-      "totalWeight" to BigDecimal("1.476588332903889890367294773122008866295118423295207321643829345703125"),
+      "totalWeight" to BigDecimal("-1.1349442032394994942407262726543404340873166802339255809783935546875"),
     )
 
     val expected = AllReoffendingPredictorObject(
-      score = 81.41,
-      band = RiskBand.HIGH,
+      score = 24.32,
+      band = RiskBand.LOW,
       staticOrDynamic = StaticOrDynamic.DYNAMIC,
       validationErrors = emptyList(),
       featureValues = expectedFeatureValues,
@@ -280,11 +280,11 @@ class AllReoffendingPredictorRiskProducerServiceTest {
     val context = service.getRiskScore(requestMissingDateAtStartOfFollowup, emptyContext())
 
     assertEquals(
-      BigDecimal("-0.077626343685467402225266887023057138517145858713774941861629486083984375"),
+      BigDecimal("-2.63929568530589167565907415878394270958295919626834802329540252685546875"),
       context.allReoffendingPredictor?.featureValues?.get(FeatureValue.AGE_GENDER_POLYNOMIAL_WEIGHT.outputName),
     )
     assertEquals(
-      BigDecimal("-0.0482277761540247968015393542628999057342298328876495361328125"),
+      BigDecimal("-0.57873331384829756161847225115479886881075799465179443359375"),
       context.allReoffendingPredictor?.featureValues?.get(FeatureValue.OFFENCE_FREE_MONTHS_WEIGHT.outputName),
     )
   }
@@ -332,18 +332,18 @@ class AllReoffendingPredictorRiskProducerServiceTest {
 
     val expectedFeatureValues = mapOf(
       "twoYearInterceptWeight" to BigDecimal("3.836541486920140187066863290965557098388671875"),
-      "ageGenderPolynomialWeight" to BigDecimal("-0.077626343685467402225266887023057138517145858713774941861629486083984375"),
+      "ageGenderPolynomialWeight" to BigDecimal("-2.63929568530589167565907415878394270958295919626834802329540252685546875"),
       "genderWeight" to BigDecimal.ZERO,
       "offenceGroupWeight" to BigDecimal("0.0250113803601321"),
       "firstSanctionWeight" to BigDecimal.ZERO,
       "secondSanctionWeight" to BigDecimal("-2.603445812880039955672373253037221729755401611328125"),
       "totalNumberOfSanctionsForAllOffencesWeight" to BigDecimal("-0.00605257512936100035283448761447289143688976764678955078125"),
       "secondSanctionGapWeight" to BigDecimal("-0.51156004593935844315666372494888491928577423095703125"),
-      "offenceFreeMonthsWeight" to BigDecimal("-0.0482277761540247968015393542628999057342298328876495361328125"),
+      "offenceFreeMonthsWeight" to BigDecimal("-0.57873331384829756161847225115479886881075799465179443359375"),
       "copasScore" to BigDecimal.ZERO,
       "copasScoreSquared" to BigDecimal.ZERO,
       "suitableAccommodationWeight" to BigDecimal.ZERO,
-      "unemployedWeight" to BigDecimal("0.03177837338093769670166466312366537749767303466796875"),
+      "unemployedWeight" to BigDecimal("0.0635567467618753934033293262473307549953460693359375"),
       "liveInRelationshipWeight" to BigDecimal.ZERO,
       "relationshipQualityWeight" to BigDecimal.ZERO,
       "multiplicativeRelationshipWeight" to BigDecimal.ZERO,
@@ -363,7 +363,7 @@ class AllReoffendingPredictorRiskProducerServiceTest {
       "cannabisUsageWeight" to BigDecimal.ZERO,
       "steroidUsageWeight" to BigDecimal.ZERO,
       "otherDrugUsageWeight" to BigDecimal.ZERO,
-      "totalWeight" to BigDecimal("0.646418686872958385559850247202685891156903608134598471224308013916015625"),
+      "totalWeight" to BigDecimal("-2.41397781906080095598922525832643326548776485651615075767040252685546875"),
     )
 
     val context = service.getRiskScore(requestMissingDateAtStartOfFollowup, emptyContext())

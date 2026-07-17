@@ -236,7 +236,7 @@ class CommonValidatorTest {
 
   @Test
   fun `validateAgeAtFirstSanction should add error when age at first sanction is outside of valid range`() {
-    val invalidValues = listOf(7, 99)
+    val invalidValues = listOf(-1, 110)
 
     invalidValues.forEach { invalidValue ->
       val request = RiskScoreRequest(ageAtFirstSanction = invalidValue)

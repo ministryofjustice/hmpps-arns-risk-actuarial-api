@@ -62,7 +62,7 @@ class SeriousViolentReoffendingPredictorTransformationHelperTest {
 
   @Test
   fun `getUnemployedWeight should lookup value`() {
-    assertEquals(BigDecimal("0.073462846618329302739169861524715088307857513427734375"), getUnemployedWeight(true))
+    assertEquals(BigDecimal("0.146925693236658605478339723049430176615715026855468750"), getUnemployedWeight(true))
     assertEquals(BigDecimal.ZERO, getUnemployedWeight(false))
   }
 
@@ -533,40 +533,40 @@ class SeriousViolentReoffendingPredictorTransformationHelperTest {
         Gender.MALE,
         30,
         StaticOrDynamic.DYNAMIC,
-        BigDecimal("-0.04056819432323010096328938511867079341755015775561332702636718750"),
+        BigDecimal("-1.21704582969690302889868155356012380252650473266839981079101562500"),
       ),
       Arguments.of(
         Gender.MALE,
         31,
         StaticOrDynamic.DYNAMIC,
-        BigDecimal("-0.04077426371713640095169849109080217886003083549439907073974609375"),
+        BigDecimal("-1.26400217523122842950265322381486754466095590032637119293212890625"),
       ),
       // Male, isSeriousViolentReoffendingPredictorDynamic = false
       Arguments.of(
         Gender.MALE,
         30,
         StaticOrDynamic.STATIC,
-        BigDecimal("-0.041515631634486001170017410721868600376183167099952697753906250"),
+        BigDecimal("-1.245468949034580035100522321656058011285495012998580932617187500"),
       ),
       // Female, isSeriousViolentReoffendingPredictorDynamic = true
       Arguments.of(
         Gender.FEMALE,
         30,
         StaticOrDynamic.DYNAMIC,
-        BigDecimal("-0.023211910414104098627141245514415857087442418560385704040527343750"),
+        BigDecimal("-0.696357312423122958814237365432475712623272556811571121215820312500"),
       ),
       Arguments.of(
         Gender.FEMALE,
         31,
         StaticOrDynamic.DYNAMIC,
-        BigDecimal("-0.023265867822882398626457671475531441274142707698047161102294921875"),
+        BigDecimal("-0.721241902509354357420187815741474679498423938639461994171142578125"),
       ),
       // Female, isSeriousViolentReoffendingPredictorDynamic = false
       Arguments.of(
         Gender.FEMALE,
         30,
         StaticOrDynamic.STATIC,
-        BigDecimal("-0.0201549375772399013930684733009179865348414750769734382629394531250"),
+        BigDecimal("-0.6046481273171970417920541990275395960452442523092031478881835937500"),
       ),
     )
 
@@ -697,14 +697,14 @@ class SeriousViolentReoffendingPredictorTransformationHelperTest {
         LocalDate.of(2025, Month.JUNE, 1),
         LocalDate.of(2025, Month.JANUARY, 1),
         StaticOrDynamic.DYNAMIC,
-        BigDecimal("-0.02767046939861000016220832938809888468245645753995631821453571319580078125"),
+        BigDecimal("-0.13835234699305000081104164694049442341228228769978159107267856597900390625"),
       ),
       // Normal calculation for static
       Arguments.of(
         LocalDate.of(2025, Month.SEPTEMBER, 1),
         LocalDate.of(2025, Month.JANUARY, 1),
         StaticOrDynamic.STATIC,
-        BigDecimal("-0.029902009080577798933136927928000403653641114942729473114013671875000000000"),
+        BigDecimal("-0.239216072644622391465095423424003229229128919541835784912109375000000000000"),
       ),
     )
 

@@ -116,12 +116,12 @@
         "modelVersion": "1.0",
         "thresholdsVersion": "1.0",
         "output": {
-          "band": "VERY_HIGH",
-          "score": 97.69
+          "band": "MEDIUM",
+          "score": 62.62
         },
         "featureValues": {
           "twoYearInterceptWeight": 3.83654148692014,
-          "ageGenderPolynomialWeight": -0.05469558753612,
+          "ageGenderPolynomialWeight": -3.28173525216702,
           "genderWeight": 0.0,
           "offenceGroupWeight": 0.09711571795253,
           "firstSanctionWeight": 0.0,
@@ -152,7 +152,7 @@
           "cannabisUsageWeight": 0.0,
           "steroidUsageWeight": 0.0,
           "otherDrugUsageWeight": 0.0,
-          "totalWeight": 3.74313955133087
+          "totalWeight": 0.51609988669997
         },
         "validationErrors": []
       },
@@ -162,12 +162,12 @@
         "modelVersion": "1.0",
         "thresholdsVersion": "1.0",
         "output": {
-          "band": "VERY_HIGH",
-          "score": 91.34
+          "band": "MEDIUM",
+          "score": 54.83
         },
         "featureValues": {
           "twoYearInterceptWeight": 1.81687448362791,
-          "ageGenderPolynomialWeight": -0.03665547581267,
+          "ageGenderPolynomialWeight": -2.19932854876,
           "genderWeight": 0.0,
           "offenceGroupWeight": 0.18630088324696,
           "firstSanctionWeight": 0.0,
@@ -201,7 +201,7 @@
           "cannabisUsageWeight": 0.0,
           "steroidUsageWeight": 0.0,
           "otherDrugUsageWeight": 0.0,
-          "totalWeight": 2.35637409496362
+          "totalWeight": 0.19370102201628
         },
         "validationErrors": []
       },
@@ -252,12 +252,12 @@
         "modelVersion": "1.0",
         "thresholdsVersion": "1.0",
         "output": {
-          "band": "VERY_HIGH",
-          "score": 14.67
+          "band": "MEDIUM",
+          "score": 1.08
         },
         "featureValues": {
           "twoYearInterceptWeight": -1.70588696906607,
-          "ageGenderPolynomialWeight": -0.04675027614042,
+          "ageGenderPolynomialWeight": -2.80501656842515,
           "genderWeight": 0.0,
           "offenceGroupWeight": 0.13528641162272,
           "firstSanctionWeight": 0.0,
@@ -285,7 +285,7 @@
           "pastNonFirearmWeaponOffenceWeight": 0.0,
           "pastCriminalDamageOffenceWeight": 0.0,
           "pastArsonOffenceWeight": 0.0,
-          "totalWeight": -1.76051543798599
+          "totalWeight": -4.51878173027072
         },
         "validationErrors": []
       },
@@ -296,7 +296,7 @@
         "thresholdsVersion": "1.0",
         "output": {
           "band": "VERY_HIGH",
-          "overallScore": 30.29,
+          "overallScore": 16.7,
           "femaleVersion": false,
           "hasSexualOffenceHistory": true,
           "componentScores": {
@@ -347,12 +347,12 @@
               "modelVersion": "1.0",
               "thresholdsVersion": "1.0",
               "output": {
-                "band": "VERY_HIGH",
-                "score": 14.67
+                "band": "MEDIUM",
+                "score": 1.08
               },
               "featureValues": {
                 "twoYearInterceptWeight": -1.70588696906607,
-                "ageGenderPolynomialWeight": -0.04675027614042,
+                "ageGenderPolynomialWeight": -2.80501656842515,
                 "genderWeight": 0.0,
                 "offenceGroupWeight": 0.13528641162272,
                 "firstSanctionWeight": 0.0,
@@ -380,7 +380,7 @@
                 "pastNonFirearmWeaponOffenceWeight": 0.0,
                 "pastCriminalDamageOffenceWeight": 0.0,
                 "pastArsonOffenceWeight": 0.0,
-                "totalWeight": -1.76051543798599
+                "totalWeight": -4.51878173027072
               },
               "validationErrors": []
             }

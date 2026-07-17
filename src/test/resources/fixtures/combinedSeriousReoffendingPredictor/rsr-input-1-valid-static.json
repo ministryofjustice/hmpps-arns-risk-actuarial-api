@@ -19,8 +19,8 @@
     "modelVersion": "1.0",
     "thresholdsVersion": "1.0",
     "output": {
-      "band": "MEDIUM",
-      "overallScore": 1.68,
+      "band": "LOW",
+      "overallScore": 0.18,
       "femaleVersion": false,
       "hasSexualOffenceHistory": false,
       "componentScores": {
@@ -60,25 +60,25 @@
           "modelVersion": "1.0",
           "thresholdsVersion": "1.0",
           "output": {
-            "band": "MEDIUM",
-            "score": 1.68
+            "band": "LOW",
+            "score": 0.18
           },
           "featureValues": {
             "twoYearInterceptWeight": -0.97073455522399,
-            "ageGenderPolynomialWeight": -0.04445767568526,
+            "ageGenderPolynomialWeight": -1.95613773015143,
             "genderWeight": 0.0,
             "offenceGroupWeight": 0.17515603154649,
             "firstSanctionWeight": -2.3335499201698,
             "secondSanctionWeight": 0.0,
             "totalNumberOfSanctionsForAllOffencesWeight": -0.02504625900187,
             "secondSanctionGapWeight": 0.0,
-            "offenceFreeMonthsWeight": -0.02884812051542,
+            "offenceFreeMonthsWeight": -0.34617744618503,
             "copasScore": 0.0,
             "neverViolentWeight": 0.0,
             "onceViolentWeight": -0.00134885331124,
             "violentSanctionsWeight": 0.01419477497558,
             "violenceRateWeight": -0.85192672282093,
-            "totalWeight": -4.06656130020643
+            "totalWeight": -6.29557068034221
           },
           "validationErrors": [
             {
