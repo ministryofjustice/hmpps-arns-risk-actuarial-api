@@ -344,7 +344,7 @@ class ViolentReoffendingPredictorRiskProducerServiceTest {
       "secondSanctionGapWeight" to BigDecimal("-0.71836505462946875777419108999310992658138275146484375"),
       "offenceFreeMonthsWeight" to BigDecimal("-0.573186577259884768274778021890369927859865128993988037109375"),
       "copasScore" to BigDecimal.ZERO,
-      "copasViolentOffencesScore" to BigDecimal("-1.3076205444777169057478052500811560587834492253023199737071990966796875"),
+      "copasViolentOffencesScore" to BigDecimal("-1.596689326375757132921761630262313946815311282989569008350372314453125"),
       "suitableAccommodationWeight" to BigDecimal.ZERO,
       "unemployedWeight" to BigDecimal("0.06636313286463220439959087570969131775200366973876953125"),
       "liveInRelationshipWeight" to BigDecimal.ZERO,
@@ -366,7 +366,7 @@ class ViolentReoffendingPredictorRiskProducerServiceTest {
       "cannabisUsageWeight" to BigDecimal.ZERO,
       "steroidUsageWeight" to BigDecimal.ZERO,
       "otherDrugUsageWeight" to BigDecimal.ZERO,
-      "totalWeight" to BigDecimal("-3.2523691344611150756267949579181919528281241582590155303478240966796875"),
+      "totalWeight" to BigDecimal("-3.541437916359155302800751338099349840859986215946264564990997314453125"),
     )
 
     val context = service.getRiskScore(requestMissingDateAtStartOfFollowup, emptyContext())
