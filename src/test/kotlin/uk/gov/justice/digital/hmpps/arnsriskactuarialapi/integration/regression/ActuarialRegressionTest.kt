@@ -2,11 +2,8 @@ package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.integration.regression
 
 import org.junit.jupiter.api.Assertions.assertAll
 import org.junit.jupiter.api.Assumptions.assumeFalse
-import org.junit.jupiter.api.DynamicTest
-import org.junit.jupiter.api.DynamicTest.dynamicTest
-import org.junit.jupiter.api.TestFactory
-import org.junit.jupiter.api.parallel.Execution
-import org.junit.jupiter.api.parallel.ExecutionMode
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.CsvFileSource
 import org.springframework.http.MediaType
 import org.springframework.test.web.reactive.server.expectBody
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskScoreRequest
@@ -14,27 +11,20 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.api.RiskScoreResponse
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.integration.IntegrationTestBase
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asDoublePercentage
-import java.util.stream.Stream
 import kotlin.test.assertEquals
 
 private const val TEST_CSV_FILE = "/regression/v4_1_1_oasys_test_data.csv"
 
-// NOTE - for debugging locally change this to SAME_THREAD otherwise logging won't work
-@Execution(ExecutionMode.CONCURRENT)
 class ActuarialRegressionTest : IntegrationTestBase() {
 
-  @TestFactory
-  fun `run actuarial regression test suite`(): Stream<DynamicTest> {
-    val testCases = loadActuarialRegressionTestCsv(TEST_CSV_FILE)
-
-    return testCases.map { testCase ->
-      dynamicTest("Test case: $testCase") {
-        runActuarialRegressionTest(testCase)
-      }
-    }.stream()
-  }
-
-  fun runActuarialRegressionTest(testCase: ActuarialRegressionTestCase) {
+  @ParameterizedTest(name = "[{index}] {arguments}")
+  @CsvFileSource(
+    resources = [TEST_CSV_FILE],
+    useHeadersInDisplayName = true,
+    ignoreLeadingAndTrailingWhitespace = true,
+    encoding = "UTF8",
+  )
+  fun `actuarial predictors regression test suite`(@CsvToActuarialRegressionTestCase testCase: ActuarialRegressionTestCase) {
     // Skip some test cases with invalid test inputs for now
     assumeFalse(testCase.fourPointTwo == 1) {
       "Test case ${testCase.id}: skipping as fourPointTwo/unemployment cannot be 1"
@@ -52,9 +42,8 @@ class ActuarialRegressionTest : IntegrationTestBase() {
     val staticResponse = postToApi(buildRiskScoreRequest(testCase, StaticOrDynamic.STATIC))
     val dynamicResponse = postToApi(buildRiskScoreRequest(testCase, StaticOrDynamic.DYNAMIC))
 
-    // Uncomment these when debugging locally
-//    println("STATIC response: $staticResponse")
-//    println("DYNAMIC response: $dynamicResponse")
+    println("STATIC response: $staticResponse")
+    println("DYNAMIC response: $dynamicResponse")
 
     // Check all scores match
     assertAll(
