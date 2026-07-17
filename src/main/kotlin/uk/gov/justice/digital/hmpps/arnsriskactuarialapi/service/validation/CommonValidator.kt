@@ -82,7 +82,7 @@ class CommonValidator(val offenceCodeCacheService: OffenceCodeCacheService) {
   fun validateAgeAtFirstSanction(request: RiskScoreRequest): ValidationError? {
     // ageAtFirstSanction must be between 8-98 (inclusive)
     if (request.ageAtFirstSanction != null) {
-      if (request.ageAtFirstSanction !in 0..1000) {
+      if (request.ageAtFirstSanction !in 0..<110) {
         return ValidationErrorType.AGE_AT_FIRST_SANCTION_OUT_OF_RANGE.asError(listOf(RiskScoreRequest::ageAtFirstSanction.name))
       }
     }

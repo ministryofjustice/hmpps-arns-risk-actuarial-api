@@ -565,7 +565,15 @@ class AllReoffendingPredictorTransformationHelperTest {
         StaticOrDynamic.STATIC,
         Gender.MALE,
         30,
-        BigDecimal("-2.96132507103144"),
+        calculatePolynomial(
+          arrayOf(
+            BigDecimal(-0.142428460338541),
+            BigDecimal(0.0011000413899151),
+            BigDecimal(0.0000198538471606),
+            BigDecimal(-0.0000002648918335),
+          ),
+          30.toBigDecimal(),
+        ),
       ),
 
       Arguments.of(
@@ -784,7 +792,7 @@ class AllReoffendingPredictorTransformationHelperTest {
     @JvmStatic
     fun getUnemployedWeightProvider() = listOf(
       Arguments.of(false, BigDecimal.ZERO),
-      Arguments.of(true, BigDecimal(0.0317783733809377)),
+      Arguments.of(true, BigDecimal("0.06355674676187539340332932624733075499534606933593750")),
     )
 
     @JvmStatic

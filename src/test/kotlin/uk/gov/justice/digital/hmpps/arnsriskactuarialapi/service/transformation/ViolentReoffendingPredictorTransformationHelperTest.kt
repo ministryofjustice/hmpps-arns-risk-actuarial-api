@@ -327,11 +327,12 @@ class ViolentReoffendingPredictorTransformationHelperTest {
   @MethodSource("getTotalViolentSanctionsWeightProvider")
   fun `getTotalViolentSanctionsWeight returns correct calculated weight`(
     staticOrDynamic: StaticOrDynamic,
+    totalNumberOfViolentSanctions: Int,
     expectedWeight: BigDecimal,
   ) {
     val actualWeight = ViolentReoffendingPredictorTransformationHelper.getTotalViolentSanctionsWeight(
       staticOrDynamic,
-      1,
+      totalNumberOfViolentSanctions,
     )
     assertTrue(expectedWeight.compareTo(actualWeight) == 0) {
       "Expected $expectedWeight but got $actualWeight"
@@ -876,18 +877,20 @@ class ViolentReoffendingPredictorTransformationHelperTest {
     fun getTotalViolentSanctionsWeightProvider() = listOf(
       Arguments.of(
         StaticOrDynamic.STATIC,
-        ViolentReoffendingPredictorStatic.VIOLENT_SANCTIONS.coefficient,
+        2,
+        "0.0370588650063390021016651587615342577919363975524902343750",
       ),
       Arguments.of(
         StaticOrDynamic.DYNAMIC,
-        ViolentReoffendingPredictorDynamic.VIOLENT_SANCTIONS.coefficient,
+        3,
+        "0.0431342872799330978583753903876640833914279937744140625",
       ),
     )
 
     @JvmStatic
     fun getUnemployedWeightProvider() = listOf(
       Arguments.of(false, BigDecimal.ZERO),
-      Arguments.of(true, BigDecimal(0.0331815664323161)),
+      Arguments.of(true, BigDecimal("0.066363132864632204399590875709691317752003669738769531250")),
     )
 
     @JvmStatic

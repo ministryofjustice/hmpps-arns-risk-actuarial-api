@@ -45,8 +45,6 @@ object ViolentReoffendingPredictorTransformationHelper {
         StaticOrDynamic.DYNAMIC -> arrayOf(
           ViolentReoffendingPredictorDynamic.AAI_MALE.coefficient,
           ViolentReoffendingPredictorDynamic.AAI_QUADRATIC_MALE.coefficient,
-          BigDecimal.ZERO,
-          BigDecimal.ZERO,
         )
       }
 
@@ -67,7 +65,7 @@ object ViolentReoffendingPredictorTransformationHelper {
       }
     }
 
-    return calculatePolynomial(ageAtStartOfFollowup.toBigDecimal(), coefficients[0], coefficients[1], coefficients[2], coefficients[3])
+    return calculatePolynomial(coefficients, ageAtStartOfFollowup.toBigDecimal())
   }
 
   fun getGenderWeight(staticOrDynamic: StaticOrDynamic, gender: Gender): BigDecimal = when (gender) {
@@ -173,12 +171,10 @@ object ViolentReoffendingPredictorTransformationHelper {
       StaticOrDynamic.DYNAMIC -> arrayOf(
         ViolentReoffendingPredictorDynamic.OFFENCE_FREE_MONTHS.coefficient,
         ViolentReoffendingPredictorDynamic.OFFENCE_FREE_MONTHS_QUADRATIC.coefficient,
-        BigDecimal.ZERO,
-        BigDecimal.ZERO,
       )
     }
 
-    return calculatePolynomial(monthsBetweenAssessmentAndFollowup.toBigDecimal(), coefficients[0], coefficients[1], coefficients[2], coefficients[3])
+    return calculatePolynomial(coefficients, monthsBetweenAssessmentAndFollowup.toBigDecimal())
   }
 
   fun getCopasVWeight(
@@ -268,13 +264,13 @@ object ViolentReoffendingPredictorTransformationHelper {
   }
 
   fun getTotalViolentSanctionsWeight(staticOrDynamic: StaticOrDynamic, totalNumberOfViolentSanctions: Int): BigDecimal = when (staticOrDynamic) {
-    StaticOrDynamic.STATIC -> ViolentReoffendingPredictorStatic.VIOLENT_SANCTIONS.coefficient.times(BigDecimal(totalNumberOfViolentSanctions))
-    StaticOrDynamic.DYNAMIC -> ViolentReoffendingPredictorDynamic.VIOLENT_SANCTIONS.coefficient.times(BigDecimal(totalNumberOfViolentSanctions))
-  }
+    StaticOrDynamic.STATIC -> ViolentReoffendingPredictorStatic.VIOLENT_SANCTIONS.coefficient
+    StaticOrDynamic.DYNAMIC -> ViolentReoffendingPredictorDynamic.VIOLENT_SANCTIONS.coefficient
+  }.times(BigDecimal(totalNumberOfViolentSanctions))
 
   fun getSuitableAccommodationWeight(suitabilityOfAccommodation: ProblemLevel): BigDecimal = suitabilityOfAccommodation.score.toBigDecimal() * ViolentReoffendingPredictorDynamic.ACCOMMODATION_SUITABILITY.coefficient
 
-  fun getUnemployedWeight(isUnemployed: Boolean): BigDecimal = if (isUnemployed) ViolentReoffendingPredictorDynamic.UNEMPLOYED.coefficient.times(BigDecimal.TWO) else BigDecimal.ZERO
+  fun getUnemployedWeight(isUnemployed: Boolean): BigDecimal = if (isUnemployed) ViolentReoffendingPredictorDynamic.UNEMPLOYED.coefficient * BigDecimal.TWO else BigDecimal.ZERO
 
   fun getLiveInRelationshipWeight(currentRelationshipStatus: CurrentRelationshipStatus): BigDecimal = if (currentRelationshipStatus == CurrentRelationshipStatus.IN_RELATIONSHIP_LIVING_TOGETHER) ViolentReoffendingPredictorDynamic.LIVE_IN_RELATIONSHIP.coefficient else BigDecimal.ZERO
 

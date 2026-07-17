@@ -68,7 +68,7 @@ object AllReoffendingPredictorTransformationHelper {
       }
     }
 
-    return calculatePolynomial(ageAtStartOfFollowup.toBigDecimal(), coefficients[0], coefficients[1], coefficients[2], coefficients[3])
+    return calculatePolynomial(coefficients, ageAtStartOfFollowup.toBigDecimal())
   }
 
   fun getGenderWeight(staticOrDynamic: StaticOrDynamic, gender: Gender): BigDecimal = when (gender) {
@@ -178,12 +178,10 @@ object AllReoffendingPredictorTransformationHelper {
       StaticOrDynamic.DYNAMIC -> arrayOf(
         AllReoffendingPredictorDynamic.OFFENCE_FREE_MONTHS.coefficient,
         AllReoffendingPredictorDynamic.OFFENCE_FREE_MONTHS_QUADRATIC.coefficient,
-        BigDecimal.ZERO,
-        BigDecimal.ZERO,
       )
     }
 
-    return calculatePolynomial(monthsBetweenAssessmentAndFollowup.toBigDecimal(), coefficients[0], coefficients[1], coefficients[2], coefficients[3])
+    return calculatePolynomial(coefficients, monthsBetweenAssessmentAndFollowup.toBigDecimal())
   }
 
   fun getCopasWeight(
