@@ -377,7 +377,7 @@ object SeriousViolentReoffendingPredictorTransformationHelper {
   fun calculatePercentageScore(totalWeight: BigDecimal): Double = totalWeight.toDouble().sigmoid().asDoublePercentage().sanitisePercentage()
 
   fun getRiskBand(percentageScore: Double): RiskBand = when {
-    percentageScore <= SeriousViolentReoffendingPredictorConstant.EXCLUSIVE_MIN_PERCENTAGE -> throw IllegalArgumentException("Percentage score cannot be less than 0%: $percentageScore")
+    percentageScore < SeriousViolentReoffendingPredictorConstant.EXCLUSIVE_MIN_PERCENTAGE -> throw IllegalArgumentException("Percentage score cannot be less than 0%: $percentageScore")
 
     percentageScore < SeriousViolentReoffendingPredictorConstant.MEDIUM_BAND_LOWER_BOUND -> RiskBand.LOW
     percentageScore < SeriousViolentReoffendingPredictorConstant.HIGH_BAND_LOWER_BOUND -> RiskBand.MEDIUM

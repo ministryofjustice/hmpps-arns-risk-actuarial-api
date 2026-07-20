@@ -858,7 +858,7 @@ class SeriousViolentReoffendingPredictorTransformationHelperTest {
 
     @JvmStatic
     fun getRiskBandOutOfBoundsProvider() = listOf(
-      Arguments.of(0.00),
+      Arguments.of(-1.00),
       Arguments.of(100.00),
     )
 

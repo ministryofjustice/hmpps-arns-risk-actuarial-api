@@ -249,7 +249,7 @@ class ViolentReoffendingPredictorRiskProducerService(val validator: ViolentReoff
       FeatureValue.COPAS_VIOLENT_OFFENCES_SCORE.set(
         getCopasViolentOffencesWeight(
           staticOrDynamic,
-          staticData.totalNumberOfSanctionsForAllOffences,
+          staticData.totalNumberOfViolentSanctions,
           staticData.ageAtFirstSanction,
           ageAtCurrentSanction,
         ),
