@@ -9893,7 +9893,7 @@
     "parentGroupDescription": "Sexual offences",
     "categoryDescription": "Miscellaneous sexual offences",
     "subCategoryDescription": "Miscellaneous sexual offences    [Use this code only if you are unable to determine which subcoded Offence applies]",
-    "actuarialCategory": "NEED_DETAILS_OF_EXACT_OFFENCE",
+    "actuarialCategory": "SEXUAL_NOT_AGAINST_CHILD",
     "flags": {
       "opdViolenceSex": true,
       "isViolentSanction": false
@@ -17533,7 +17533,7 @@
     "parentGroupDescription": "Other summary offences",
     "categoryDescription": "Dogs, offences in relation to",
     "subCategoryDescription": "Dogs, offences in relation to    [Use this code only if you are unable to determine which subcoded Offence applies]",
-    "actuarialCategory": "NEED_DETAILS_OF_EXACT_OFFENCE",
+    "actuarialCategory": "OTHER_OFFENCES",
     "flags": {
       "opdViolenceSex": false,
       "isViolentSanction": false
@@ -21423,7 +21423,7 @@
     "parentGroupDescription": "Other summary offences",
     "categoryDescription": "Drunkenness, with aggravations",
     "subCategoryDescription": "Drunkenness, with aggravations    [Use this code only if you are unable to determine which subcoded Offence applies]",
-    "actuarialCategory": "NEED_DETAILS_OF_EXACT_OFFENCE",
+    "actuarialCategory": "DRUNKENNESS",
     "flags": {
       "opdViolenceSex": false,
       "isViolentSanction": true
