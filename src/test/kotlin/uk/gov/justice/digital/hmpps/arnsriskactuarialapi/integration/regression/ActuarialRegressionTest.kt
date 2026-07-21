@@ -34,9 +34,9 @@ class ActuarialRegressionTest : IntegrationTestBase() {
       "Test case ${testCase.id}: skipping as sixPointEight/currentRelationshipStatus cannot be 0"
     }
 
-//    assumeFalse(testCase.offenceCode == "14100" || testCase.offenceCode == "08800" || testCase.offenceCode == "11100") {
-//      "Test case ${testCase.id}: skipping as offence code category ${testCase.offenceCode} cannot be NEED_DETAILS_OF_EXACT_OFFENCE"
-//    }
+    assumeFalse(testCase.offenceCode == "14100" || testCase.offenceCode == "08800" || testCase.offenceCode == "11100") {
+      "Test case ${testCase.id}: skipping as offence code category ${testCase.offenceCode} cannot be NEED_DETAILS_OF_EXACT_OFFENCE"
+    }
 
     // Build and run STATIC and DYNAMIC calculations using API
     val staticResponse = postToApi(buildRiskScoreRequest(testCase, StaticOrDynamic.STATIC))
