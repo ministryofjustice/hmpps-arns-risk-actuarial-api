@@ -49,6 +49,3 @@ generic-service:
 
 generic-prometheus-alerts:
   targetApplication: hmpps-arns-risk-actuarial-api
-
-manage_offences_api_wiremock:
-  enabled: false
