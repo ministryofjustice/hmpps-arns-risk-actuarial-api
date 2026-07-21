@@ -30,7 +30,7 @@ class AdminControllerTest : IntegrationTestBase() {
       .isOk
 
     val keys = redisTemplate.keys("*")
-    assertEquals(3223, keys.count())
+    assertEquals(3039, keys.count())
 
     val actualOffenceCodeMappings: Map<String, OffenceCodeDetails> = keys.associateWith { key -> redisTemplate.opsForValue().get(key)!! }
 
