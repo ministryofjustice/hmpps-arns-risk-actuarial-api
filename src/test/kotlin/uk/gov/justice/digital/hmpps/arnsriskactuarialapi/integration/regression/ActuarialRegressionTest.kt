@@ -13,7 +13,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.integration.Integration
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asDoublePercentage
 import kotlin.test.assertEquals
 
-private const val TEST_CSV_FILE = "/regression/v4_1_1_oasys_test_data.csv"
+private const val TEST_CSV_FILE = "/regression/v4_1_1_oasys_test_data_6_8.csv"
 
 class ActuarialRegressionTest : IntegrationTestBase() {
 
@@ -28,10 +28,6 @@ class ActuarialRegressionTest : IntegrationTestBase() {
     // Skip some test cases with invalid test inputs for now
     assumeFalse(testCase.fourPointTwo == 1) {
       "Test case ${testCase.id}: skipping as fourPointTwo/unemployment cannot be 1"
-    }
-
-    assumeFalse(testCase.sixPointEight == 0) {
-      "Test case ${testCase.id}: skipping as sixPointEight/currentRelationshipStatus cannot be 0"
     }
 
     assumeFalse(testCase.offenceCode == "14100" || testCase.offenceCode == "08800" || testCase.offenceCode == "11100") {
