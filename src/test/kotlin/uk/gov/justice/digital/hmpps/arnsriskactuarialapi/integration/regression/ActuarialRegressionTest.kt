@@ -13,7 +13,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.integration.Integration
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asDoublePercentage
 import kotlin.test.assertEquals
 
-private const val TEST_CSV_FILE = "/regression/v4_1_1_oasys_test_data_4_2.csv"
+private const val TEST_CSV_FILE = "/regression/v4_1_2_oasys_test_data.csv"
 
 class ActuarialRegressionTest : IntegrationTestBase() {
 
