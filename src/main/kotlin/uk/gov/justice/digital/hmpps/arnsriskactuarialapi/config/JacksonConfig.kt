@@ -50,7 +50,7 @@ class BigDecimalScaleSerializer : StdSerializer<BigDecimal>(BigDecimal::class.ja
     if (value == null) {
       gen.writeNull()
     } else {
-      val scaledValue = value.setScale(14, RoundingMode.HALF_UP)
+      val scaledValue = value.setScale(15, RoundingMode.HALF_UP)
       gen.writeNumber(scaledValue)
     }
   }

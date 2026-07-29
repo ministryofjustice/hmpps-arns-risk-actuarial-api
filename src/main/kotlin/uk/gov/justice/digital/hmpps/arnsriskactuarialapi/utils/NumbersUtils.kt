@@ -1,11 +1,11 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils
 
+import ch.obermuhlner.math.big.DefaultBigDecimalMath.exp
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.time.LocalDate
 import java.time.Period
 import kotlin.collections.fold
-import ch.obermuhlner.math.big.DefaultBigDecimalMath.exp
 import kotlin.math.exp
 
 fun Double.asDoublePercentage(): Double = BigDecimal(this).multiply(BigDecimal.valueOf(100)).setScale(2, RoundingMode.HALF_UP).toDouble()

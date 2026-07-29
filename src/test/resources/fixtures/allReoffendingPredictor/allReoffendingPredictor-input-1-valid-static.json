@@ -22,15 +22,15 @@
       "twoYearInterceptWeight": 5.01702292499072,
       "ageGenderPolynomialWeight": -2.96132507103144,
       "genderWeight": 0.0,
-      "offenceGroupWeight": 0.03844343930377,
+      "offenceGroupWeight": 0.038443439303773,
       "firstSanctionWeight": 0.0,
       "secondSanctionWeight": -3.06189212045904,
-      "totalNumberOfSanctionsForAllOffencesWeight": -0.008551460257,
-      "secondSanctionGapWeight": -0.38884665524565,
-      "offenceFreeMonthsWeight": -1.74414260019946,
+      "totalNumberOfSanctionsForAllOffencesWeight": -0.008551460256999,
+      "secondSanctionGapWeight": -0.388846655245651,
+      "offenceFreeMonthsWeight": -1.744142600199456,
       "copasScore": 0.0,
       "copasScoreSquared": 0.0,
-      "totalWeight": -3.10929154289809
+      "totalWeight": -3.109291542898093
     },
     "validationErrors": [
       {

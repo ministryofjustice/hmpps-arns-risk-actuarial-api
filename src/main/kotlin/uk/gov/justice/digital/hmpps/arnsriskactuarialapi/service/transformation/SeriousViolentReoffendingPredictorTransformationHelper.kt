@@ -205,7 +205,7 @@ object SeriousViolentReoffendingPredictorTransformationHelper {
 
     val totalSanctionsRatio: BigDecimal = totalNumberOfSanctionsForAllOffences.toBigDecimal() / lengthOfCareer.toBigDecimal()
 
-    val naturalLog =  log(totalSanctionsRatio)
+    val naturalLog = log(totalSanctionsRatio)
 
     return naturalLog * coefficient
   }
