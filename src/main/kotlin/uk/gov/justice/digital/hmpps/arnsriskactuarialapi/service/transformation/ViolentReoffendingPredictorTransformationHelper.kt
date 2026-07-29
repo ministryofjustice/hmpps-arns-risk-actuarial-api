@@ -1,5 +1,7 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 
+import ch.obermuhlner.math.big.DefaultBigDecimalMath.log
+import ch.obermuhlner.math.big.kotlin.bigdecimal.div
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.CurrentRelationshipStatus
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.MotivationLevel
@@ -19,7 +21,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sigmoid
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
-import kotlin.math.ln
 
 object ViolentReoffendingPredictorTransformationHelper {
 
@@ -202,10 +203,11 @@ object ViolentReoffendingPredictorTransformationHelper {
       }
     }
 
-    val totalSanctionsRatio: Double = totalNumberOfSanctionsForAllOffences.toDouble() / lengthOfCareer
-    val naturalLog = ln(totalSanctionsRatio)
+    val totalSanctionsRatio: BigDecimal = totalNumberOfSanctionsForAllOffences.toBigDecimal() / lengthOfCareer.toBigDecimal()
 
-    return naturalLog.toBigDecimal() * coefficient
+    val naturalLog = log(totalSanctionsRatio)
+
+    return naturalLog * coefficient
   }
 
   fun getCopasViolentOffencesWeight(
@@ -225,10 +227,11 @@ object ViolentReoffendingPredictorTransformationHelper {
       StaticOrDynamic.DYNAMIC -> ViolentReoffendingPredictorDynamic.VIOLENT_RATE.coefficient
     }
 
-    val totalSanctionsRatio: Double = totalNumberOfViolentSanctions.toDouble() / lengthOfCareer
-    val naturalLog = ln(totalSanctionsRatio)
+    val totalViolentSanctionsRatio: BigDecimal = totalNumberOfViolentSanctions.toBigDecimal() / lengthOfCareer.toBigDecimal()
 
-    return naturalLog.toBigDecimal() * coefficient
+    val naturalLog = log(totalViolentSanctionsRatio)
+
+    return naturalLog * coefficient
   }
 
   fun getNeverViolentWeight(
@@ -319,7 +322,7 @@ object ViolentReoffendingPredictorTransformationHelper {
     hasSolventsUsage: Boolean,
   ): BigDecimal = if (hasOtherDrugsUsage || hasKetamineUsage || hasSpiceUsage || hasHallucinogensUsage || hasSolventsUsage) ViolentReoffendingPredictorDynamic.OTHER_DRUGS.coefficient else BigDecimal.ZERO
 
-  fun calculatePercentageScore(totalWeight: BigDecimal): Double = totalWeight.toDouble().sigmoid().asDoublePercentage().sanitisePercentage()
+  fun calculatePercentageScore(totalWeight: BigDecimal): Double = totalWeight.sigmoid().asDoublePercentage().sanitisePercentage()
 
   fun getRiskBand(percentageScore: Double): RiskBand = when {
     percentageScore <= ViolentReoffendingPredictorConstant.EXCLUSIVE_MIN_PERCENTAGE -> throw IllegalArgumentException(

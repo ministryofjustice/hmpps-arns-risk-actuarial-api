@@ -1,5 +1,7 @@
 package uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation
 
+import ch.obermuhlner.math.big.DefaultBigDecimalMath.log
+import ch.obermuhlner.math.big.kotlin.bigdecimal.div
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.Gender
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.PreviousConviction
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.ProblemLevel
@@ -18,7 +20,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sigmoid
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
-import kotlin.math.ln
 
 object SeriousViolentReoffendingPredictorTransformationHelper {
 
@@ -202,10 +203,11 @@ object SeriousViolentReoffendingPredictorTransformationHelper {
       }
     }
 
-    val totalSanctionsRatio = totalNumberOfSanctionsForAllOffences.toDouble() / lengthOfCareer
-    val naturalLog = ln(totalSanctionsRatio)
+    val totalSanctionsRatio: BigDecimal = totalNumberOfSanctionsForAllOffences.toBigDecimal() / lengthOfCareer.toBigDecimal()
 
-    return naturalLog.toBigDecimal() * coefficient
+    val naturalLog = log(totalSanctionsRatio)
+
+    return naturalLog * coefficient
   }
 
   fun getNeverViolentHistoryWeight(
@@ -275,10 +277,12 @@ object SeriousViolentReoffendingPredictorTransformationHelper {
     }
 
     val lengthOfCareer = ageAtCurrentSanction - ageAtFirstSanction + 30
-    val violentSanctionsRatio = totalNumberOfViolentSanctions / lengthOfCareer.toDouble()
-    val naturalLog = ln(violentSanctionsRatio)
 
-    return naturalLog.toBigDecimal() * coefficient
+    val totalViolentSanctionsRatio: BigDecimal = totalNumberOfViolentSanctions.toBigDecimal() / lengthOfCareer.toBigDecimal()
+
+    val naturalLog = log(totalViolentSanctionsRatio)
+
+    return naturalLog * coefficient
   }
 
   fun getOffenceInvolvedCarryingOrUsingWeaponWeight(carryingOrUsingWeapon: Boolean): BigDecimal = if (carryingOrUsingWeapon) SeriousViolentReoffendingPredictorDynamic.CARRY_OR_USE_WEAPON.coefficient else BigDecimal.ZERO
@@ -374,7 +378,7 @@ object SeriousViolentReoffendingPredictorTransformationHelper {
     BigDecimal.ZERO
   }
 
-  fun calculatePercentageScore(totalWeight: BigDecimal): Double = totalWeight.toDouble().sigmoid().asDoublePercentage().sanitisePercentage()
+  fun calculatePercentageScore(totalWeight: BigDecimal): Double = totalWeight.sigmoid().asDoublePercentage().sanitisePercentage()
 
   fun getRiskBand(percentageScore: Double): RiskBand = when {
     percentageScore < SeriousViolentReoffendingPredictorConstant.EXCLUSIVE_MIN_PERCENTAGE -> throw IllegalArgumentException("Percentage score cannot be less than 0%: $percentageScore")

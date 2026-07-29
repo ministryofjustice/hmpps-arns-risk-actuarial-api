@@ -122,8 +122,8 @@ class SeriousViolentReoffendingPredictorRiskProducerServiceTest {
       "neverViolentWeight" to BigDecimal("0"),
       "onceViolentWeight" to BigDecimal("0"),
       "violentSanctionsWeight" to BigDecimal("0.0283895499511622011190592473894866998307406902313232421875"),
-      "violenceRateWeight" to BigDecimal("-0.785373799886639244900096464390770734098623506724834442138671875"),
-      "totalWeight" to BigDecimal("-6.475261599437733760220807512518348403318668715655803680419921875"),
+      "violenceRateWeight" to BigDecimal("-0.785373799886639242597385961817335344974106426519711021683178842067718505859375"),
+      "totalWeight" to BigDecimal("-6.475261599437733757918097009944913014194151635450680259964428842067718505859375"),
     )
 
     val expected = SeriousViolentReoffendingPredictorObject(
@@ -162,7 +162,7 @@ class SeriousViolentReoffendingPredictorRiskProducerServiceTest {
       "neverViolentWeight" to BigDecimal("0"),
       "onceViolentWeight" to BigDecimal("0"),
       "violentSanctionsWeight" to BigDecimal("0.013065998449268000081158191960639669559895992279052734375"),
-      "violenceRateWeight" to BigDecimal("-0.51778627936787994302401369086317484136117172965896315872669219970703125"),
+      "violenceRateWeight" to BigDecimal("-0.51778627936787994150586793178521961485628024195249086147896377951838076114654541015625"),
       "offenceInvolveCarryingOrUsingWeaponsWeight" to BigDecimal("0.385215247009075001383138214805512689054012298583984375"),
       "suitableAccommodationWeight" to BigDecimal("0.044223953156797703167857349626501672901213169097900390625"),
       "unemployedWeight" to BigDecimal("0.14692569323665860547833972304943017661571502685546875"),
@@ -178,7 +178,7 @@ class SeriousViolentReoffendingPredictorRiskProducerServiceTest {
       "pastNonFirearmWeaponOffenceWeight" to BigDecimal("0"),
       "pastCriminalDamageOffenceWeight" to BigDecimal("0"),
       "pastArsonOffenceWeight" to BigDecimal("0"),
-      "totalWeight" to BigDecimal("-4.88784017993249627601015451249486798435128775963676162064075469970703125"),
+      "totalWeight" to BigDecimal("-4.88784017993249627449200875341691275784639627193028932339302627951838076114654541015625"),
     )
 
     val expected = SeriousViolentReoffendingPredictorObject(

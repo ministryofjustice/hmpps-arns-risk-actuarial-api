@@ -720,7 +720,7 @@ class SeriousViolentReoffendingPredictorTransformationHelperTest {
         Gender.MALE,
         18,
         30,
-        BigDecimal("-1.34603134139388240263282725883868806704413145780563354492187500"),
+        BigDecimal("-1.3460313413938824412870143358150382426755147254766598052810877561569213867187500"),
       ),
       // Male - static
       Arguments.of(
@@ -729,7 +729,7 @@ class SeriousViolentReoffendingPredictorTransformationHelperTest {
         Gender.MALE,
         20,
         30,
-        BigDecimal("-1.217355696421490995930692185342258948566040999139659106731414794921875"),
+        BigDecimal("-1.21735569642149095158202826164717342718788963446607809260058274958282709121704101562500"),
       ),
       // Female - dynamic
       Arguments.of(
@@ -738,7 +738,7 @@ class SeriousViolentReoffendingPredictorTransformationHelperTest {
         Gender.FEMALE,
         17,
         30,
-        BigDecimal("-1.554396467051176747796658669386826723268768546404317021369934082031250"),
+        BigDecimal("-1.55439646705117668873396119287892728213720647691631349118779326090589165687561035156250"),
       ),
       // Female - static
       Arguments.of(
@@ -747,7 +747,7 @@ class SeriousViolentReoffendingPredictorTransformationHelperTest {
         Gender.FEMALE,
         17,
         30,
-        BigDecimal("-1.564340305665617358688432855460548331905101804295554757118225097656250"),
+        BigDecimal("-1.56434030566561729924789745646039018952092914702522996606148808496072888374328613281250"),
       ),
     )
 
@@ -832,7 +832,7 @@ class SeriousViolentReoffendingPredictorTransformationHelperTest {
         18,
         6,
         StaticOrDynamic.STATIC,
-        BigDecimal("-0.54090431489041145094615396831727593962568789720535278320312500"),
+        BigDecimal("-0.54090431489041153963443771810866308004665779082387189191649667918682098388671875"),
       ),
       // Dynamic
       Arguments.of(
@@ -840,7 +840,7 @@ class SeriousViolentReoffendingPredictorTransformationHelperTest {
         25,
         3,
         StaticOrDynamic.DYNAMIC,
-        BigDecimal("-0.42774909019168334886759086074493330098533760974532924592494964599609375"),
+        BigDecimal("-0.4277490901916833342458953948411840372828863824152811901058157673105597496032714843750000"),
       ),
     )
 
