@@ -13,7 +13,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.integration.Integration
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.asDoublePercentage
 import kotlin.test.assertEquals
 
-private const val TEST_CSV_FILE = "/regression/v4_1_1_oasys_test_data.csv"
+private const val TEST_CSV_FILE = "/regression/v4_1_2_oasys_test_data.csv"
 
 class ActuarialRegressionTest : IntegrationTestBase() {
 
@@ -22,18 +22,11 @@ class ActuarialRegressionTest : IntegrationTestBase() {
     resources = [TEST_CSV_FILE],
     useHeadersInDisplayName = true,
     ignoreLeadingAndTrailingWhitespace = true,
+
     encoding = "UTF8",
   )
   fun `actuarial predictors regression test suite`(@CsvToActuarialRegressionTestCase testCase: ActuarialRegressionTestCase) {
     // Skip some test cases with invalid test inputs for now
-    assumeFalse(testCase.fourPointTwo == 1) {
-      "Test case ${testCase.id}: skipping as fourPointTwo/unemployment cannot be 1"
-    }
-
-    assumeFalse(testCase.sixPointEight == 0) {
-      "Test case ${testCase.id}: skipping as sixPointEight/currentRelationshipStatus cannot be 0"
-    }
-
     assumeFalse(testCase.offenceCode == "14100" || testCase.offenceCode == "08800" || testCase.offenceCode == "11100") {
       "Test case ${testCase.id}: skipping as offence code category ${testCase.offenceCode} cannot be NEED_DETAILS_OF_EXACT_OFFENCE"
     }
@@ -247,5 +240,38 @@ class ActuarialRegressionTest : IntegrationTestBase() {
     "09895",
     "09576",
     "11011",
+    "03606",
+    "06818",
+    "06812",
+    "09602",
+    "19465",
+    "07912",
+    "12592",
+    "09374",
+    "15523",
+    "08183",
+    "81803",
+    "19713",
+    "00870",
+    "03610",
+    "09582",
+    "19655",
+    "06817",
+    "09601",
+    "09606",
+    "10444",
+    "18403",
+    "09413",
+    "11517",
+    "16861",
+    "11607",
+    "11512",
+    "19718",
+    "10525",
+    "15526",
+    "09892",
+    "19359",
+    "11507",
+    "06813",
   )
 }
