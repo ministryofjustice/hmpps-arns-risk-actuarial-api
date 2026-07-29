@@ -32,6 +32,8 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-data-redis")
   implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.3")
   implementation("org.apache.commons:commons-csv:1.14.1")
+  implementation("ch.obermuhlner:big-math:2.3.2")
+  implementation("ch.obermuhlner:kotlin-big-math:2.3.0")
   implementation(kotlin("reflect"))
 
   testImplementation("uk.gov.justice.service.hmpps:hmpps-kotlin-spring-boot-starter-test:3.0.0")

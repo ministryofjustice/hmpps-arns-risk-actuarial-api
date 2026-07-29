@@ -5,14 +5,15 @@ import java.math.RoundingMode
 import java.time.LocalDate
 import java.time.Period
 import kotlin.collections.fold
+import ch.obermuhlner.math.big.DefaultBigDecimalMath.exp
 import kotlin.math.exp
 
 fun Double.asDoublePercentage(): Double = BigDecimal(this).multiply(BigDecimal.valueOf(100)).setScale(2, RoundingMode.HALF_UP).toDouble()
+fun BigDecimal.asDoublePercentage(): Double = this.multiply(BigDecimal.valueOf(100)).setScale(2, RoundingMode.HALF_UP).toDouble()
 fun Double.roundToNDecimals(n: Int): Double = BigDecimal(this).setScale(n, RoundingMode.HALF_UP).toDouble()
 fun Double.roundTo5Decimals(): Double = roundToNDecimals(5)
 fun Double.asPercentage(): Int = BigDecimal(this).multiply(BigDecimal.valueOf(100)).setScale(0, RoundingMode.HALF_UP).toInt()
 fun Double.roundToInt(): Int = roundToNDecimals(0).toInt()
-fun BigDecimal.asPercentage(): Double = (this * 100.toBigDecimal()).setScale(2, RoundingMode.HALF_UP).toDouble()
 
 /**
  * This is business logic that does not accept 0% nor 100% instead they are defaulted to 1% and 99% respectively.
@@ -30,6 +31,7 @@ fun Double.sanitisePercentage(): Double = when {
 }
 
 fun Double.sigmoid(): Double = exp(this).let { it / (1.0 + it) }
+fun BigDecimal.sigmoid(): BigDecimal = exp(this).let { eX -> eX / (BigDecimal.ONE + eX) }
 
 fun calculatePolynomial(coefficients: Array<BigDecimal>, x: BigDecimal): BigDecimal = coefficients.indices.fold(BigDecimal.ZERO) { sum, i -> sum + coefficients[i] * x.pow(i + 1) }
 
