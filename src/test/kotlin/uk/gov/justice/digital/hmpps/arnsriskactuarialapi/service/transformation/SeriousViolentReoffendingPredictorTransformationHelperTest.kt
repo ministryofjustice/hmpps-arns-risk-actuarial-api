@@ -487,38 +487,6 @@ class SeriousViolentReoffendingPredictorTransformationHelperTest {
     assertEquals("Offence code mapping for $offenceCode is UNKNOWN, ensure this is validated before the calculation", exception.message)
   }
 
-  @Test
-  fun `getOffenceGroupWeight error case - NEED_DETAILS_OF_EXACT_OFFENCE mapping (static)`() {
-    val offenceCodeCacheService: OffenceCodeCacheService = mock()
-    val offenceCode = "12345"
-
-    whenever(offenceCodeCacheService.getActuarialCategory(offenceCode)).thenReturn(ActuarialCategory.NEED_DETAILS_OF_EXACT_OFFENCE)
-    val exception = assertThrows<IllegalArgumentException> {
-      SeriousViolentReoffendingPredictorTransformationHelper.getOffenceGroupWeight(
-        offenceCodeCacheService,
-        StaticOrDynamic.STATIC,
-        offenceCode,
-      )
-    }
-    assertEquals("Offence code mapping for $offenceCode is NEED_DETAILS_OF_EXACT_OFFENCE, ensure this is validated before the calculation", exception.message)
-  }
-
-  @Test
-  fun `getOffenceGroupWeight error case - NEED_DETAILS_OF_EXACT_OFFENCE mapping (dynamic)`() {
-    val offenceCodeCacheService: OffenceCodeCacheService = mock()
-    val offenceCode = "12345"
-
-    whenever(offenceCodeCacheService.getActuarialCategory(offenceCode)).thenReturn(ActuarialCategory.NEED_DETAILS_OF_EXACT_OFFENCE)
-    val exception = assertThrows<IllegalArgumentException> {
-      SeriousViolentReoffendingPredictorTransformationHelper.getOffenceGroupWeight(
-        offenceCodeCacheService,
-        StaticOrDynamic.DYNAMIC,
-        offenceCode,
-      )
-    }
-    assertEquals("Offence code mapping for $offenceCode is NEED_DETAILS_OF_EXACT_OFFENCE, ensure this is validated before the calculation", exception.message)
-  }
-
   companion object {
     @JvmStatic
     fun get2YearInterceptWeightProvider() = listOf(

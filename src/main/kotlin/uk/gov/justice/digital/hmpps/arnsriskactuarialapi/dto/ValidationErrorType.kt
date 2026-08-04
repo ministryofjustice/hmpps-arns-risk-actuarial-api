@@ -10,7 +10,6 @@ enum class ValidationErrorType(val message: String) {
   DATE_OF_MOST_RECENT_SEXUAL_OFFENCE_OUT_OF_RANGE("Age at date at start of most recent sexual offence must be less than 110"),
   MOTIVATION_TO_TACKLE_DRUG_MISUSE_INCONSISTENT("When motivationToTackleDrugMisuse is null, all drug usage questions must be false or null"),
   DOMESTIC_ABUSE_INCONSISTENT_INPUT("No evidence of domestic abuse identified - domesticAbuseAgainstPartner and domesticAbuseAgainstFamily should not be provided"),
-  NEED_DETAILS_OF_EXACT_OFFENCE("For this group of offences, the offence category is different depending on the nature of the exact offence. Provide a more specific offence."),
   MISSING_MANDATORY_INPUT("Mandatory input field(s) missing"),
   MISSING_DYNAMIC_INPUT("Dynamic input field(s) missing"),
   SEXUAL_REOFFENDING_PREDICTOR_INCONSISTENT_INPUT("hasEverCommittedSexualOffence cannot be null or false when sexual sanctions exist"),

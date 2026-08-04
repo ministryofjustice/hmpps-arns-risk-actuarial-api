@@ -26,10 +26,6 @@ class ActuarialRegressionTest : IntegrationTestBase() {
     encoding = "UTF8",
   )
   fun `actuarial predictors regression test suite`(@CsvToActuarialRegressionTestCase testCase: ActuarialRegressionTestCase) {
-    // Skip some test cases with invalid test inputs for now
-    assumeFalse(testCase.offenceCode == "14100" || testCase.offenceCode == "08800" || testCase.offenceCode == "11100") {
-      "Test case ${testCase.id}: skipping as offence code category ${testCase.offenceCode} cannot be NEED_DETAILS_OF_EXACT_OFFENCE"
-    }
 
     assumeFalse(removedOffenceCodes.contains(testCase.offenceCode)) {
       "Test case ${testCase.id}: skipping as offence code ${testCase.offenceCode} has been removed"

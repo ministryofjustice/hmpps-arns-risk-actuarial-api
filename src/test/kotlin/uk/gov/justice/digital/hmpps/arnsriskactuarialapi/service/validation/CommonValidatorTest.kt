@@ -110,22 +110,6 @@ class CommonValidatorTest {
   }
 
   @Test
-  fun `getCurrentOffenceCodeValidation need details of exact offence mapping`() {
-    val offenceCode = "00101"
-    whenever(offenceCodeCacheService.getActuarialCategory(offenceCode)).thenReturn(ActuarialCategory.NEED_DETAILS_OF_EXACT_OFFENCE)
-
-    val riskScoreRequestInput = RiskScoreRequest(currentOffenceCode = offenceCode)
-    val validationErrorResponse = commonValidator.validateCurrentOffenceCode(riskScoreRequestInput)
-
-    val expectedValidationError = ValidationError(
-      type = ValidationErrorType.NEED_DETAILS_OF_EXACT_OFFENCE,
-      message = "For this group of offences, the offence category is different depending on the nature of the exact offence. Provide a more specific offence.",
-      fields = listOf("currentOffenceCode"),
-    )
-    assertEquals(expectedValidationError, validationErrorResponse)
-  }
-
-  @Test
   fun `validateTotalNumberOfSanctionsForAllOffences should not add error when total number of sanctions for all offences is null`() {
     val request = RiskScoreRequest(totalNumberOfSanctionsForAllOffences = null)
     val error = commonValidator.validateTotalNumberOfSanctionsForAllOffences(request)

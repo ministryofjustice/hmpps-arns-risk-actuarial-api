@@ -72,7 +72,6 @@ class CommonValidator(val offenceCodeCacheService: OffenceCodeCacheService) {
       val actuarialCategory = offenceCodeCacheService.getActuarialCategory(request.currentOffenceCode)
       return when (actuarialCategory) {
         null, ActuarialCategory.UNKNOWN -> ValidationErrorType.OFFENCE_CODE_MAPPING_NOT_FOUND.asError(listOf(RiskScoreRequest::currentOffenceCode.name))
-        ActuarialCategory.NEED_DETAILS_OF_EXACT_OFFENCE -> ValidationErrorType.NEED_DETAILS_OF_EXACT_OFFENCE.asError(listOf(RiskScoreRequest::currentOffenceCode.name))
         else -> null
       }
     }

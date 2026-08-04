@@ -55,5 +55,4 @@ fun getSeriousViolentReoffendingPredictorStaticOffenceCodeCoefficient(category: 
   ActuarialCategory.SEXUAL_AGAINST_CHILD -> BigDecimal("-0.269534814977957")
   ActuarialCategory.SEXUAL_NOT_AGAINST_CHILD -> BigDecimal("-0.481426313870417")
   ActuarialCategory.THEFT_NON_MOTOR -> BigDecimal("-0.126315026107379")
-  ActuarialCategory.NEED_DETAILS_OF_EXACT_OFFENCE -> throw IllegalArgumentException("Offence code mapping for $currentOffenceCode is NEED_DETAILS_OF_EXACT_OFFENCE, ensure this is validated before the calculation")
 }
