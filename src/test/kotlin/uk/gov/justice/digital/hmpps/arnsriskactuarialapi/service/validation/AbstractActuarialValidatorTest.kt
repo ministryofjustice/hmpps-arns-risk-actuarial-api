@@ -15,7 +15,7 @@ class AbstractActuarialValidatorTest {
   companion object {
     val customError1 = ValidationErrorType.OFFENCE_CODE_INCORRECT_FORMAT.asError(listOf("field1"))
     val customError2 = ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_REQUIRED.asError(listOf("field2"))
-    val customError3 = ValidationErrorType.NEED_DETAILS_OF_EXACT_OFFENCE.asError(listOf("field3"))
+    val customError3 = ValidationErrorType.OFFENCE_CODE_MAPPING_NOT_FOUND.asError(listOf("field3"))
     val customError4 = ValidationErrorType.DATE_OF_START_OF_FOLLOWUP_BEFORE_DATE_OF_BIRTH.asError(listOf("field2"))
   }
 
