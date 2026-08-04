@@ -26,7 +26,6 @@ class ActuarialRegressionTest : IntegrationTestBase() {
     encoding = "UTF8",
   )
   fun `actuarial predictors regression test suite`(@CsvToActuarialRegressionTestCase testCase: ActuarialRegressionTestCase) {
-
     assumeFalse(removedOffenceCodes.contains(testCase.offenceCode)) {
       "Test case ${testCase.id}: skipping as offence code ${testCase.offenceCode} has been removed"
     }
