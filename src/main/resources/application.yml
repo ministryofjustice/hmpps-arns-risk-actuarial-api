@@ -1,3 +1,7 @@
+springdoc:
+  swagger-ui:
+    version: 5.32.11
+
 info.app:
   name: HMPPS Arns Risk Actuarial Api
   version: 1.0
