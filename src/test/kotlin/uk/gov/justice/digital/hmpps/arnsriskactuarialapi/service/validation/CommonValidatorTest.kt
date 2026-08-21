@@ -691,7 +691,7 @@ class CommonValidatorTest {
 
     val expectedError = ValidationError(
       type = ValidationErrorType.DRUG_MISUSE_REQUIRED,
-      message = "When hasCurrentDrugMisuse is true, motivationToTackleDrugMisuse cannot be null and drug usage questions cannot be null",
+      message = "When hasCurrentDrugMisuse is true, motivationToTackleDrugMisuse and drug usage questions cannot be null",
       fields = listOf("motivationToTackleDrugMisuse", "hasSpiceUsage", "hasBenzodiazepinesUsage"),
     )
 

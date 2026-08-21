@@ -269,33 +269,20 @@ class CommonValidator(val offenceCodeCacheService: OffenceCodeCacheService) {
     drugUsageQuestions: List<KProperty1<RiskScoreRequest, Boolean?>>,
   ): ValidationError? {
     val drugUsageAnswers = drugUsageQuestions.associateWith { it.get(request) }
+    val motivationFieldName = RiskScoreRequest::motivationToTackleDrugMisuse.name
 
-    if (request.hasCurrentDrugMisuse == true) {
-      val invalidFields = mutableListOf<String>()
-      val nullDrugFields = drugUsageAnswers.filterValues { it == null }.keys.map { it.name }
-      if (request.motivationToTackleDrugMisuse == null) {
-        invalidFields.add(RiskScoreRequest::motivationToTackleDrugMisuse.name)
-      }
-      if (nullDrugFields.isNotEmpty()) {
-        invalidFields.addAll(nullDrugFields)
-      }
-      if (invalidFields.isNotEmpty()) {
-        return ValidationErrorType.DRUG_MISUSE_REQUIRED.asError(invalidFields)
+    val (errorType, invalidFields) = if (request.hasCurrentDrugMisuse == true) {
+      ValidationErrorType.DRUG_MISUSE_REQUIRED to buildList {
+        if (request.motivationToTackleDrugMisuse == null) add(motivationFieldName)
+        addAll(drugUsageAnswers.filterValues { it == null }.keys.map { it.name })
       }
     } else {
-      val invalidFields = mutableListOf<String>()
-      val trueFields = drugUsageAnswers.getTrueKeys()
-      if (request.motivationToTackleDrugMisuse != null) {
-        invalidFields.add(RiskScoreRequest::motivationToTackleDrugMisuse.name)
-      }
-      if (trueFields.isNotEmpty()) {
-        invalidFields.addAll(trueFields)
-      }
-      if (invalidFields.isNotEmpty()) {
-        return ValidationErrorType.DRUG_MISUSE_INCONSISTENT.asError(invalidFields)
+      ValidationErrorType.DRUG_MISUSE_INCONSISTENT to buildList {
+        if (request.motivationToTackleDrugMisuse != null) add(motivationFieldName)
+        addAll(drugUsageAnswers.getTrueKeys())
       }
     }
 
-    return null
+    return if (invalidFields.isNotEmpty()) errorType.asError(invalidFields) else null
   }
 }
