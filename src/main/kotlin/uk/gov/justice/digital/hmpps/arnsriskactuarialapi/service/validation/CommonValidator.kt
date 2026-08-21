@@ -270,13 +270,32 @@ class CommonValidator(val offenceCodeCacheService: OffenceCodeCacheService) {
   ): ValidationError? {
     val drugUsageAnswers = drugUsageQuestions.associateWith { it.get(request) }
 
-    // If motivationToTackleDrugMisuse is null, then all the drug usage questions should be set to null or false
-    if (request.motivationToTackleDrugMisuse == null) {
-      val notNullFields = drugUsageAnswers.getTrueKeys()
-      if (notNullFields.isNotEmpty()) {
-        return ValidationErrorType.MOTIVATION_TO_TACKLE_DRUG_MISUSE_INCONSISTENT.asError(notNullFields)
+    if (request.hasCurrentDrugMisuse == true) {
+      val invalidFields = mutableListOf<String>()
+      val nullDrugFields = drugUsageAnswers.filterValues { it == null }.keys.map { it.name }
+      if (request.motivationToTackleDrugMisuse == null) {
+        invalidFields.add(RiskScoreRequest::motivationToTackleDrugMisuse.name)
+      }
+      if (nullDrugFields.isNotEmpty()) {
+        invalidFields.addAll(nullDrugFields)
+      }
+      if (invalidFields.isNotEmpty()) {
+        return ValidationErrorType.DRUG_MISUSE_REQUIRED.asError(invalidFields)
+      }
+    } else {
+      val invalidFields = mutableListOf<String>()
+      val trueFields = drugUsageAnswers.getTrueKeys()
+      if (request.motivationToTackleDrugMisuse != null) {
+        invalidFields.add(RiskScoreRequest::motivationToTackleDrugMisuse.name)
+      }
+      if (trueFields.isNotEmpty()) {
+        invalidFields.addAll(trueFields)
+      }
+      if (invalidFields.isNotEmpty()) {
+        return ValidationErrorType.DRUG_MISUSE_INCONSISTENT.asError(invalidFields)
       }
     }
+
     return null
   }
 }

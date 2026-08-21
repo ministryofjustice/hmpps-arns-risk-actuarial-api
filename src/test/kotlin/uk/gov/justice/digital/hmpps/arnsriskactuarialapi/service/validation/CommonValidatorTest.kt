@@ -617,6 +617,7 @@ class CommonValidatorTest {
   @Test
   fun `test validateDrugMisuse - all null`() {
     val request = RiskScoreRequest(
+      hasCurrentDrugMisuse = null,
       motivationToTackleDrugMisuse = null,
     )
     val drugQuestions = listOf(
@@ -630,9 +631,14 @@ class CommonValidatorTest {
   }
 
   @Test
-  fun `test validateDrugMisuse - motivationToTackleDrugMisuse not null`() {
+  fun `test validateDrugMisuse - hasCurrentDrugMisuse true and not null associated drug misuse fields`() {
     val request = RiskScoreRequest(
+      hasCurrentDrugMisuse = true,
       motivationToTackleDrugMisuse = MotivationLevel.PARTIAL_MOTIVATION,
+      hasHeroinUsage = true,
+      hasCannabisUsage = false,
+      hasSpiceUsage = false,
+      hasBenzodiazepinesUsage = false,
     )
     val drugQuestions = listOf(
       RiskScoreRequest::hasHeroinUsage,
@@ -645,8 +651,9 @@ class CommonValidatorTest {
   }
 
   @Test
-  fun `test validateDrugMisuse - motivationToTackleDrugMisuse null and some usage false`() {
+  fun `test validateDrugMisuse - hasCurrentDrugMisuse false and motivationToTackleDrugMisuse null and usage false or null`() {
     val request = RiskScoreRequest(
+      hasCurrentDrugMisuse = false,
       motivationToTackleDrugMisuse = null,
       hasPowderCocaineUsage = false,
       hasSteroidsUsage = false,
@@ -664,9 +671,38 @@ class CommonValidatorTest {
   }
 
   @Test
-  fun `test validateDrugMisuse - motivationToTackleDrugMisuse null and some usage true`() {
+  fun `test validateDrugMisuse - hasCurrentDrugMisuse true and motivationToTackleDrugMisuse null and all usage false or null`() {
     val request = RiskScoreRequest(
+      hasCurrentDrugMisuse = true,
       motivationToTackleDrugMisuse = null,
+      hasPowderCocaineUsage = false,
+      hasSteroidsUsage = false,
+      hasHallucinogensUsage = false,
+      hasKetamineUsage = false,
+    )
+    val drugQuestions = listOf(
+      RiskScoreRequest::hasPowderCocaineUsage,
+      RiskScoreRequest::hasSteroidsUsage,
+      RiskScoreRequest::hasHallucinogensUsage,
+      RiskScoreRequest::hasSpiceUsage,
+      RiskScoreRequest::hasBenzodiazepinesUsage,
+      RiskScoreRequest::hasKetamineUsage,
+    )
+
+    val expectedError = ValidationError(
+      type = ValidationErrorType.DRUG_MISUSE_REQUIRED,
+      message = "When hasCurrentDrugMisuse is true, motivationToTackleDrugMisuse cannot be null and drug usage questions cannot be null",
+      fields = listOf("motivationToTackleDrugMisuse", "hasSpiceUsage", "hasBenzodiazepinesUsage"),
+    )
+
+    assertEquals(expectedError, commonValidator.validateDrugMisuse(request, drugQuestions))
+  }
+
+  @Test
+  fun `test validateDrugMisuse - hasCurrentDrugMisuse false and motivationToTackleDrugMisuse not null and some usage true`() {
+    val request = RiskScoreRequest(
+      hasCurrentDrugMisuse = false,
+      motivationToTackleDrugMisuse = MotivationLevel.PARTIAL_MOTIVATION,
       hasPowderCocaineUsage = false,
       hasSteroidsUsage = true,
       hasHallucinogensUsage = false,
@@ -682,9 +718,9 @@ class CommonValidatorTest {
     )
 
     val expectedError = ValidationError(
-      type = ValidationErrorType.MOTIVATION_TO_TACKLE_DRUG_MISUSE_INCONSISTENT,
-      message = "When motivationToTackleDrugMisuse is null, all drug usage questions must be false or null",
-      fields = listOf("hasSteroidsUsage", "hasKetamineUsage"),
+      type = ValidationErrorType.DRUG_MISUSE_INCONSISTENT,
+      message = "When hasCurrentDrugMisuse is false, motivationToTackleDrugMisuse must be null and all drug usage questions must be false or null",
+      fields = listOf("motivationToTackleDrugMisuse", "hasSteroidsUsage", "hasKetamineUsage"),
     )
 
     assertEquals(expectedError, commonValidator.validateDrugMisuse(request, drugQuestions))

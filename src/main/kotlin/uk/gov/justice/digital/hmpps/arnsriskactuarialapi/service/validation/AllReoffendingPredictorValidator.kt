@@ -57,6 +57,7 @@ class AllReoffendingPredictorValidator(val commonValidator: CommonValidator) : A
     RiskScoreRequest::evidenceOfDomesticAbuse,
     RiskScoreRequest::currentRelationshipStatus,
     RiskScoreRequest::regularOffendingActivities,
+    RiskScoreRequest::hasCurrentDrugMisuse,
     RiskScoreRequest::currentAlcoholUseProblems,
     RiskScoreRequest::excessiveAlcoholUse,
     RiskScoreRequest::impulsivityProblems,

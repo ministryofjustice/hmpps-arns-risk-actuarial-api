@@ -15,6 +15,7 @@
     "evidenceOfDomesticAbuse": true,
     "currentRelationshipStatus": "IN_RELATIONSHIP_LIVING_TOGETHER",
     "regularOffendingActivities": "SOME_PROBLEMS",
+    "hasCurrentDrugMisuse": true,
     "motivationToTackleDrugMisuse": "PARTIAL_MOTIVATION",
     "hasMethadoneUsage": false,
     "hasOtherOpiateUsage": false,

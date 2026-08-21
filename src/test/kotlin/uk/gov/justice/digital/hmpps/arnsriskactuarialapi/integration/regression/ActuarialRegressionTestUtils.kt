@@ -101,6 +101,42 @@ fun buildRiskScoreRequest(testCase: ActuarialRegressionTestCase, staticOrDynamic
   )
 
   if (staticOrDynamic == StaticOrDynamic.DYNAMIC) {
+    val motivationToTackleDrugMisuse = testCase.eightPointEight?.toDrugMotivation()
+
+    val hasHeroinUsage = testCase.heroin?.toYesNoBoolean()
+    val hasOtherOpiateUsage = testCase.otherOpiate?.toYesNoBoolean()
+    val hasCrackCocaineUsage = testCase.crackCocaine?.toYesNoBoolean()
+    val hasPowderCocaineUsage = testCase.powderCocaine?.toYesNoBoolean()
+    val hasMisusedPrescriptionDrugUsage = testCase.misusedPrescribed?.toYesNoBoolean()
+    val hasBenzodiazepinesUsage = testCase.benzodiazipines?.toYesNoBoolean()
+    val hasCannabisUsage = testCase.cannabis?.toYesNoBoolean()
+    val hasMethadoneUsage = testCase.methadone?.toYesNoBoolean()
+    val hasSteroidsUsage = testCase.steroids?.toYesNoBoolean()
+    val hasOtherDrugsUsage = testCase.otherDrugs?.toYesNoBoolean()
+    val hasKetamineUsage = testCase.ketamine?.toYesNoBoolean()
+    val hasSpiceUsage = testCase.spice?.toYesNoBoolean()
+    val hasHallucinogensUsage = testCase.hallucinogens?.toYesNoBoolean()
+    val hasSolventsUsage = testCase.solvents?.toYesNoBoolean()
+
+    val hasAnyDrugUsage = listOfNotNull(
+      hasHeroinUsage,
+      hasOtherOpiateUsage,
+      hasCrackCocaineUsage,
+      hasPowderCocaineUsage,
+      hasMisusedPrescriptionDrugUsage,
+      hasBenzodiazepinesUsage,
+      hasCannabisUsage,
+      hasMethadoneUsage,
+      hasSteroidsUsage,
+      hasOtherDrugsUsage,
+      hasKetamineUsage,
+      hasSpiceUsage,
+      hasHallucinogensUsage,
+      hasSolventsUsage,
+    ).any { it }
+
+    val hasCurrentDrugMisuse = motivationToTackleDrugMisuse != null || hasAnyDrugUsage
+
     return staticRequest.copy(
       didOffenceInvolveCarryingOrUsingWeapon = testCase.twoPointTwo?.toOneZeroBoolean(),
       suitabilityOfAccommodation = testCase.threePointFour?.toProblemScore(),
@@ -108,7 +144,8 @@ fun buildRiskScoreRequest(testCase: ActuarialRegressionTestCase, staticOrDynamic
       currentRelationshipWithPartner = testCase.sixPointFour?.toProblemScore(),
       evidenceOfDomesticAbuse = testCase.sixPointSeven?.toOneZeroBoolean(),
       currentRelationshipStatus = testCase.sixPointEight?.toRelationshipScore(),
-      motivationToTackleDrugMisuse = testCase.eightPointEight?.toDrugMotivation(),
+      hasCurrentDrugMisuse = hasCurrentDrugMisuse,
+      motivationToTackleDrugMisuse = motivationToTackleDrugMisuse,
       currentAlcoholUseProblems = testCase.ninePointOne?.toProblemScore(),
       excessiveAlcoholUse = testCase.ninePointTwo?.toProblemScore(),
       impulsivityProblems = testCase.elevenPointTwo?.toProblemScore(),
@@ -116,20 +153,20 @@ fun buildRiskScoreRequest(testCase: ActuarialRegressionTestCase, staticOrDynamic
       proCriminalAttitudes = testCase.twelvePointOne?.toProblemScore(),
       regularOffendingActivities = testCase.sevenPointTwo?.toProblemScore(),
       previousConvictions = buildPreviousConvictionsList(testCase),
-      hasHeroinUsage = testCase.heroin?.toYesNoBoolean(),
-      hasOtherOpiateUsage = testCase.otherOpiate?.toYesNoBoolean(),
-      hasCrackCocaineUsage = testCase.crackCocaine?.toYesNoBoolean(),
-      hasPowderCocaineUsage = testCase.powderCocaine?.toYesNoBoolean(),
-      hasMisusedPrescriptionDrugUsage = testCase.misusedPrescribed?.toYesNoBoolean(),
-      hasBenzodiazepinesUsage = testCase.benzodiazipines?.toYesNoBoolean(),
-      hasCannabisUsage = testCase.cannabis?.toYesNoBoolean(),
-      hasMethadoneUsage = testCase.methadone?.toYesNoBoolean(),
-      hasSteroidsUsage = testCase.steroids?.toYesNoBoolean(),
-      hasOtherDrugsUsage = testCase.otherDrugs?.toYesNoBoolean(),
-      hasKetamineUsage = testCase.ketamine?.toYesNoBoolean(),
-      hasSpiceUsage = testCase.spice?.toYesNoBoolean(),
-      hasHallucinogensUsage = testCase.hallucinogens?.toYesNoBoolean(),
-      hasSolventsUsage = testCase.solvents?.toYesNoBoolean(),
+      hasHeroinUsage = hasHeroinUsage,
+      hasOtherOpiateUsage = hasOtherOpiateUsage,
+      hasCrackCocaineUsage = hasCrackCocaineUsage,
+      hasPowderCocaineUsage = hasPowderCocaineUsage,
+      hasMisusedPrescriptionDrugUsage = hasMisusedPrescriptionDrugUsage,
+      hasBenzodiazepinesUsage = hasBenzodiazepinesUsage,
+      hasCannabisUsage = hasCannabisUsage,
+      hasMethadoneUsage = hasMethadoneUsage,
+      hasSteroidsUsage = hasSteroidsUsage,
+      hasOtherDrugsUsage = hasOtherDrugsUsage,
+      hasKetamineUsage = hasKetamineUsage,
+      hasSpiceUsage = hasSpiceUsage,
+      hasHallucinogensUsage = hasHallucinogensUsage,
+      hasSolventsUsage = hasSolventsUsage,
     )
   }
   return staticRequest

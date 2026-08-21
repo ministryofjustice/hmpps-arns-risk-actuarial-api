@@ -79,30 +79,6 @@ val FIXED_TEST_DATE: LocalDate = LocalDate.of(2025, 1, 1)
 
 object RiskScoreRequestTestConstants {
   val NULL_REQUEST = RiskScoreRequest(version = RiskScoreVersion.V1_0)
-  val FULL_OGP_REQUEST = RiskScoreRequest(
-    version = RiskScoreVersion.V1_0,
-    isCurrentlyOfNoFixedAbodeOrTransientAccommodation = true,
-    isUnemployed = false,
-    regularOffendingActivities = ProblemLevel.NO_PROBLEMS,
-    currentDrugMisuse = ProblemLevel.NO_PROBLEMS,
-    motivationToTackleDrugMisuse = MotivationLevel.FULL_MOTIVATION,
-    problemSolvingSkills = ProblemLevel.NO_PROBLEMS,
-    awarenessOfConsequences = YesSometimesNo.YES,
-    understandsOtherPeoplesViews = ProblemLevel.NO_PROBLEMS,
-    proCriminalAttitudes = ProblemLevel.SOME_PROBLEMS,
-  )
-  val OGP_REQUEST_39 = RiskScoreRequest(
-    version = RiskScoreVersion.V1_0,
-    isCurrentlyOfNoFixedAbodeOrTransientAccommodation = true,
-    isUnemployed = false,
-    regularOffendingActivities = null,
-    currentDrugMisuse = ProblemLevel.NO_PROBLEMS,
-    motivationToTackleDrugMisuse = MotivationLevel.FULL_MOTIVATION,
-    problemSolvingSkills = ProblemLevel.NO_PROBLEMS,
-    awarenessOfConsequences = YesSometimesNo.YES,
-    understandsOtherPeoplesViews = ProblemLevel.NO_PROBLEMS,
-    proCriminalAttitudes = null,
-  )
   val FULL_LDS_REQUEST = RiskScoreRequest(
     version = RiskScoreVersion.V1_0,
     isCurrentlyOfNoFixedAbodeOrTransientAccommodation = true,
