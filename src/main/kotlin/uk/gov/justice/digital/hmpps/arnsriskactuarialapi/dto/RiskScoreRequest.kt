@@ -27,7 +27,7 @@ data class RiskScoreRequest(
 
   // OGP additional properties
   val regularOffendingActivities: ProblemLevel? = null,
-  val currentDrugMisuse: ProblemLevel? = null,
+  val hasCurrentDrugMisuse: Boolean? = null,
   val motivationToTackleDrugMisuse: MotivationLevel? = null,
   val problemSolvingSkills: ProblemLevel? = null,
   val awarenessOfConsequences: YesSometimesNo? = null,
