@@ -40,7 +40,7 @@
           "evidenceOfDomesticAbuse",
           "currentRelationshipStatus",
           "regularOffendingActivities",
-          "motivationToTackleDrugMisuse",
+          "hasCurrentDrugMisuse",
           "currentAlcoholUseProblems",
           "excessiveAlcoholUse",
           "impulsivityProblems",

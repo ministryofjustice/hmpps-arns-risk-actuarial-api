@@ -47,7 +47,7 @@
     "awarenessOfConsequences": "YES",
     "understandsOtherPeoplesViews": "NO_PROBLEMS",
     "regularOffendingActivities": "SOME_PROBLEMS",
-    "currentDrugMisuse": "SIGNIFICANT_PROBLEMS",
+    "hasCurrentDrugMisuse": true,
     "motivationToTackleDrugMisuse": "FULL_MOTIVATION",
     "applyOPDOverride": null,
     "didOffenceInvolveViolenceOrThreatOfViolence": true,
