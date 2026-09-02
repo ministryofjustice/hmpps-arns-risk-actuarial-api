@@ -269,14 +269,20 @@ class CommonValidator(val offenceCodeCacheService: OffenceCodeCacheService) {
     drugUsageQuestions: List<KProperty1<RiskScoreRequest, Boolean?>>,
   ): ValidationError? {
     val drugUsageAnswers = drugUsageQuestions.associateWith { it.get(request) }
+    val motivationFieldName = RiskScoreRequest::motivationToTackleDrugMisuse.name
 
-    // If motivationToTackleDrugMisuse is null, then all the drug usage questions should be set to null or false
-    if (request.motivationToTackleDrugMisuse == null) {
-      val notNullFields = drugUsageAnswers.getTrueKeys()
-      if (notNullFields.isNotEmpty()) {
-        return ValidationErrorType.MOTIVATION_TO_TACKLE_DRUG_MISUSE_INCONSISTENT.asError(notNullFields)
+    val (errorType, invalidFields) = if (request.hasCurrentDrugMisuse == true) {
+      ValidationErrorType.DRUG_MISUSE_REQUIRED to buildList {
+        if (request.motivationToTackleDrugMisuse == null) add(motivationFieldName)
+        addAll(drugUsageAnswers.filterValues { it == null }.keys.map { it.name })
+      }
+    } else {
+      ValidationErrorType.DRUG_MISUSE_INCONSISTENT to buildList {
+        if (request.motivationToTackleDrugMisuse != null) add(motivationFieldName)
+        addAll(drugUsageAnswers.getTrueKeys())
       }
     }
-    return null
+
+    return if (invalidFields.isNotEmpty()) errorType.asError(invalidFields) else null
   }
 }
