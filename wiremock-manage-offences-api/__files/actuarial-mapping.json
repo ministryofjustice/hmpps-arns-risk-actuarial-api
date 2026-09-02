@@ -259,6 +259,26 @@
       "isViolentSanction": false
     }
   },
+  "00413": {
+    "parentGroupDescription": "Summary motoring offences",
+    "categoryDescription": "Manslaughter etc",
+    "subCategoryDescription": "Cause death by driving without due care / consideration while over prescribed limit - specified controlled drug",
+    "actuarialCategory": "MOTORING_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "00417": {
+    "parentGroupDescription": "Summary motoring offences",
+    "categoryDescription": "Manslaughter etc",
+    "subCategoryDescription": "Cause death by driving whilst disqualified",
+    "actuarialCategory": "MOTORING_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
   "00418": {
     "parentGroupDescription": "Summary motoring offences",
     "categoryDescription": "Manslaughter etc",
@@ -424,16 +444,6 @@
     "categoryDescription": "Wounding and other acts endangering life",
     "subCategoryDescription": "Possession of firearms etc. with intent to endanger life (Group III)",
     "actuarialCategory": "FIREARMS_MOST_SERIOUS",
-    "flags": {
-      "opdViolenceSex": true,
-      "isViolentSanction": true
-    }
-  },
-  "00807": {
-    "parentGroupDescription": "Violence against the person",
-    "categoryDescription": "Malicious wounding and other like offences",
-    "subCategoryDescription": "*Assault PC (Indictable/Either way)",
-    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_ABH_PLUS",
     "flags": {
       "opdViolenceSex": true,
       "isViolentSanction": true
@@ -859,6 +869,16 @@
       "isViolentSanction": true
     }
   },
+  "00807": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Malicious wounding and other like offences",
+    "subCategoryDescription": "*Assault PC (Indictable/Either way)",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_ABH_PLUS",
+    "flags": {
+      "opdViolenceSex": true,
+      "isViolentSanction": true
+    }
+  },
   "00808": {
     "parentGroupDescription": "Violence against the person",
     "categoryDescription": "Malicious wounding and other like offences",
@@ -1249,16 +1269,6 @@
       "isViolentSanction": true
     }
   },
-  "01911": {
-    "parentGroupDescription": "Sexual offences",
-    "categoryDescription": "Rape",
-    "subCategoryDescription": "Attempted rape of a female aged under 16",
-    "actuarialCategory": "SEXUAL_AGAINST_CHILD",
-    "flags": {
-      "opdViolenceSex": true,
-      "isViolentSanction": false
-    }
-  },
   "00849": {
     "parentGroupDescription": "Violence against the person",
     "categoryDescription": "Malicious wounding and other like offences",
@@ -1446,6 +1456,36 @@
     "actuarialCategory": "PUBLIC_ORDER_AND_HARRASSMENT",
     "flags": {
       "opdViolenceSex": true,
+      "isViolentSanction": true
+    }
+  },
+  "00868": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Threaten with offensive weapon",
+    "subCategoryDescription": "Fail to protect girl from risk of genital mutilation",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_ABH_PLUS",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "00869": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Threaten with offensive weapon",
+    "subCategoryDescription": "Care worker ill-treat / wilfully neglect an individual",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_ABH_PLUS",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "00870": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Threaten with offensive weapon",
+    "subCategoryDescription": "Care provider breach duty of care resulting in ill-treatment / neglect of individual",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_ABH_PLUS",
+    "flags": {
+      "opdViolenceSex": false,
       "isViolentSanction": true
     }
   },
@@ -2139,6 +2179,16 @@
       "isViolentSanction": false
     }
   },
+  "01911": {
+    "parentGroupDescription": "Sexual offences",
+    "categoryDescription": "Rape",
+    "subCategoryDescription": "Attempted rape of a female aged under 16",
+    "actuarialCategory": "SEXUAL_AGAINST_CHILD",
+    "flags": {
+      "opdViolenceSex": true,
+      "isViolentSanction": false
+    }
+  },
   "01912": {
     "parentGroupDescription": "Sexual offences",
     "categoryDescription": "Rape",
@@ -2539,6 +2589,26 @@
       "isViolentSanction": false
     }
   },
+  "02126": {
+    "parentGroupDescription": "Sexual offences",
+    "categoryDescription": "Sexual Activity (Male & Female) (including with a child under 13)",
+    "subCategoryDescription": "Arrange / facilitate the rape / assault by penetration of a child under 13",
+    "actuarialCategory": "SEXUAL_AGAINST_CHILD",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "02127": {
+    "parentGroupDescription": "Sexual offences",
+    "categoryDescription": "Sexual Activity (Male & Female) (including with a child under 13)",
+    "subCategoryDescription": "Arrange / facilitate a child under 13 to engage in sexual activity - penetration",
+    "actuarialCategory": "SEXUAL_AGAINST_CHILD",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
   "02200": {
     "parentGroupDescription": "Sexual offences",
     "categoryDescription": "Sexual Activity (Male & Female) (including with a child under 16)",
@@ -2796,6 +2866,26 @@
     "actuarialCategory": "SEXUAL_AGAINST_CHILD",
     "flags": {
       "opdViolenceSex": true,
+      "isViolentSanction": false
+    }
+  },
+  "02226": {
+    "parentGroupDescription": "Sexual offences",
+    "categoryDescription": "Sexual Activity (Male & Female) (including with a child under 16)",
+    "subCategoryDescription": "Arrange / facilitate sexual activity with a child / incite a child to engage - penetration",
+    "actuarialCategory": "SEXUAL_AGAINST_CHILD",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "02230": {
+    "parentGroupDescription": "Sexual offences",
+    "categoryDescription": "Sexual Activity (Male & Female) (including with a child under 16)",
+    "subCategoryDescription": "Arrange / facilitate a sexual offence commited by a child / young person",
+    "actuarialCategory": "SEXUAL_AGAINST_CHILD",
+    "flags": {
+      "opdViolenceSex": false,
       "isViolentSanction": false
     }
   },
@@ -3479,6 +3569,16 @@
       "isViolentSanction": false
     }
   },
+  "02804": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Burglary in a dwelling",
+    "subCategoryDescription": "Burglary (with intent to inflict GBH - in dwelling) - Reclassified",
+    "actuarialCategory": "ACQUISITIVE_VIOLENCE",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
   "02900": {
     "parentGroupDescription": "Burglary",
     "categoryDescription": "Aggravated burglary in a dwelling",
@@ -3649,10 +3749,50 @@
       "isViolentSanction": true
     }
   },
+  "03605": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Kidnapping",
+    "subCategoryDescription": "Forced marriage",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_ABH_PLUS",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "03606": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Kidnapping",
+    "subCategoryDescription": "Hold person in slavery or servitude",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_ABH_PLUS",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "03607": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Kidnapping",
+    "subCategoryDescription": "Require person to perform forced or compulsory labour",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_ABH_PLUS",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
   "03608": {
     "parentGroupDescription": "Other indictable",
     "categoryDescription": "Kidnapping",
     "subCategoryDescription": "UK national arrange or facilitate travel of another person with a view to exploitation",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_ABH_PLUS",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "03610": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Kidnapping",
+    "subCategoryDescription": "Commit offence other than kidnapping or false imprisonment with intention of arranging travel with view to exploitation",
     "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_ABH_PLUS",
     "flags": {
       "opdViolenceSex": false,
@@ -3676,6 +3816,26 @@
     "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_ABH_PLUS",
     "flags": {
       "opdViolenceSex": true,
+      "isViolentSanction": true
+    }
+  },
+  "03613": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Kidnapping",
+    "subCategoryDescription": "Fail to comply with requirement to surrender passport under Modern Slavery Act 2015",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_ABH_PLUS",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "03614": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Kidnapping",
+    "subCategoryDescription": "Fail to comply with requirement to provide name and address under Modern Slavery Act 2015",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_ABH_PLUS",
+    "flags": {
+      "opdViolenceSex": false,
       "isViolentSanction": true
     }
   },
@@ -3703,6 +3863,16 @@
     "parentGroupDescription": "Theft and handling",
     "categoryDescription": "Aggravated Taking of a Vehicle",
     "subCategoryDescription": "Aggravated Taking of a Vehicle: Where the vehicle was driven dangerously, where injury to any person or damage to any property was caused, or damage was caused to the vehicle",
+    "actuarialCategory": "VEHICLE_RELATED_THEFT",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "03703": {
+    "parentGroupDescription": "Theft and handling",
+    "categoryDescription": "Aggravated Taking of a Vehicle",
+    "subCategoryDescription": "Aggravated vehicle taking (taking) accident causing damage to property other than vehicle UNDER ¿¿¿¿5000 (Reclassified)",
     "actuarialCategory": "VEHICLE_RELATED_THEFT",
     "flags": {
       "opdViolenceSex": false,
@@ -3949,6 +4119,16 @@
       "isViolentSanction": false
     }
   },
+  "04901": {
+    "parentGroupDescription": "Theft and handling",
+    "categoryDescription": "Other stealing and unauthorised taking",
+    "subCategoryDescription": "Simple larceny (offences not included in headings 44 to 48) (1963-68)",
+    "actuarialCategory": "THEFT_NON_MOTOR",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
   "04910": {
     "parentGroupDescription": "Theft and handling",
     "categoryDescription": "Other stealing and unauthorised taking",
@@ -4163,6 +4343,26 @@
     "parentGroupDescription": "Fraud forgery",
     "categoryDescription": "False accounting",
     "subCategoryDescription": "Failure to comply with requirements concerning approval and signing of abbreviated accounts",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "05211": {
+    "parentGroupDescription": "Fraud forgery",
+    "categoryDescription": "False accounting",
+    "subCategoryDescription": "Failure to provide up-to-date information on People with Significant Control (PSC) register",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "05212": {
+    "parentGroupDescription": "Fraud forgery",
+    "categoryDescription": "False accounting",
+    "subCategoryDescription": "Offences in connection with request for or disclosure of information from People with Significant Control (PSC) register",
     "actuarialCategory": "FRAUD_AND_FORGERY",
     "flags": {
       "opdViolenceSex": false,
@@ -4629,6 +4829,26 @@
       "isViolentSanction": false
     }
   },
+  "05358": {
+    "parentGroupDescription": "Fraud forgery",
+    "categoryDescription": "Other Frauds",
+    "subCategoryDescription": "Knowingly make a statement which was false misleading in a material particular (Reclassified)",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "05359": {
+    "parentGroupDescription": "Fraud forgery",
+    "categoryDescription": "Other Frauds",
+    "subCategoryDescription": "Withhold information to obtain insurance. (Reclassified)",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
   "05399": {
     "parentGroupDescription": "Fraud forgery",
     "categoryDescription": "Other Frauds",
@@ -4829,6 +5049,16 @@
       "isViolentSanction": true
     }
   },
+  "05603": {
+    "parentGroupDescription": "Criminal damage",
+    "categoryDescription": "Arson",
+    "subCategoryDescription": "Racially aggravated arson (Criminal Damage Act 1971)",
+    "actuarialCategory": "CRIMINAL_DAMAGE",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
   "05700": {
     "parentGroupDescription": "Criminal damage",
     "categoryDescription": "Criminal damage endangering life (excluding arson).",
@@ -4983,6 +5213,16 @@
     "parentGroupDescription": "Criminal damage",
     "categoryDescription": "Other criminal damage",
     "subCategoryDescription": "Racially or religiously aggravated criminal damage",
+    "actuarialCategory": "CRIMINAL_DAMAGE",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "05805": {
+    "parentGroupDescription": "Criminal damage",
+    "categoryDescription": "Other criminal damage",
+    "subCategoryDescription": "Destroy property (value of damage ¿¿5000 or less - offence against Criminal Damage Act 1971 only) Reclassified",
     "actuarialCategory": "CRIMINAL_DAMAGE",
     "flags": {
       "opdViolenceSex": false,
@@ -6499,6 +6739,46 @@
       "isViolentSanction": true
     }
   },
+  "06811": {
+    "parentGroupDescription": "Summary motoring offences",
+    "categoryDescription": "Miscellaneous Other Offences",
+    "subCategoryDescription": "Fail to give permission for a laboratory test on a blood specimen having caused death (Reclassified)",
+    "actuarialCategory": "DRINK_DRIVING",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "06812": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Miscellaneous Other Offences",
+    "subCategoryDescription": "Care provider supply / publish / make available information which was false or misleading in material respect",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "06813": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Miscellaneous Other Offences",
+    "subCategoryDescription": "Obstruct/ disrupt person engaged in lawful activity / seek to intimidate someone in order to disrupt lawful activity (Reclassified)",
+    "actuarialCategory": "PUBLIC_ORDER_AND_HARRASSMENT",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "06814": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Miscellaneous Other Offences",
+    "subCategoryDescription": "Individual/body corporate/partnership supply specialist printing equipment knowing it will be used for criminal purposes",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
   "06815": {
     "parentGroupDescription": "Other indictable",
     "categoryDescription": "Miscellaneous Other Offences",
@@ -6519,6 +6799,26 @@
       "isViolentSanction": true
     }
   },
+  "06817": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Miscellaneous Other Offences",
+    "subCategoryDescription": "Breach Knife Crime Prevention Order (KCPO) or Interim KCPO",
+    "actuarialCategory": "WEAPONS_NON_FIREARM",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "06818": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Miscellaneous Other Offences",
+    "subCategoryDescription": "Fail to notify police with name or address or give false information (Knife Crime Prevention Order)",
+    "actuarialCategory": "WEAPONS_NON_FIREARM",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
   "06819": {
     "parentGroupDescription": "Other indictable",
     "categoryDescription": "Miscellaneous Other Offences",
@@ -6533,6 +6833,36 @@
     "parentGroupDescription": "Other indictable",
     "categoryDescription": "Miscellaneous Other Offences",
     "subCategoryDescription": "Offences relating to notification requirements of a Domesic Abuse Protection Order",
+    "actuarialCategory": "PUBLIC_ORDER_AND_HARRASSMENT",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "06821": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Miscellaneous Other Offences",
+    "subCategoryDescription": "Offences relating to carrying out, aiding or abetting the carrying out of a virginity test",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_ABH_PLUS",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "06822": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Miscellaneous Other Offences",
+    "subCategoryDescription": "Offences relating to carryin out of a hymenoplasty aiding and abbeting the carrying out of a hymenoplasty",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_ABH_PLUS",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "06823": {
+    "parentGroupDescription": "Other indictable",
+    "categoryDescription": "Miscellaneous Other Offences",
+    "subCategoryDescription": "Intentionally / recklessly cause a public nuisance",
     "actuarialCategory": "PUBLIC_ORDER_AND_HARRASSMENT",
     "flags": {
       "opdViolenceSex": false,
@@ -6949,16 +7279,6 @@
       "isViolentSanction": false
     }
   },
-  "07500": {
-    "parentGroupDescription": "Other indictable",
-    "categoryDescription": "Betting, Gaming and Lotteries",
-    "subCategoryDescription": "Betting, Gaming and Lotteries    [Use this code only if you are unable to determine which subcoded Offence applies]",
-    "actuarialCategory": "OTHER_OFFENCES",
-    "flags": {
-      "opdViolenceSex": false,
-      "isViolentSanction": false
-    }
-  },
   "07109": {
     "parentGroupDescription": "Sexual offences",
     "categoryDescription": "Abuse of children through prostitution and pornography (child prostitution & pornography)",
@@ -7336,6 +7656,16 @@
     "actuarialCategory": "SEXUAL_AGAINST_CHILD",
     "flags": {
       "opdViolenceSex": true,
+      "isViolentSanction": false
+    }
+  },
+  "07500": {
+    "parentGroupDescription": "Other indictable",
+    "categoryDescription": "Betting, Gaming and Lotteries",
+    "subCategoryDescription": "Betting, Gaming and Lotteries    [Use this code only if you are unable to determine which subcoded Offence applies]",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
       "isViolentSanction": false
     }
   },
@@ -7919,6 +8249,16 @@
       "isViolentSanction": false
     }
   },
+  "07766": {
+    "parentGroupDescription": "Drug offences",
+    "categoryDescription": "Misuse of Drugs",
+    "subCategoryDescription": "Possess a Class C controlled drug on board a ship - Khat",
+    "actuarialCategory": "DRUG_IMPORT_EXPORT_OR_PRODUCTION",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
   "07800": {
     "parentGroupDescription": "Other indictable",
     "categoryDescription": "Immigration Acts",
@@ -7933,6 +8273,26 @@
     "parentGroupDescription": "Other indictable",
     "categoryDescription": "Immigration Acts",
     "subCategoryDescription": "Knowingly facilitating or assisting the entry of an illegal entrant",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "07802": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Immigration Acts",
+    "subCategoryDescription": "Knowingly concerned in making or carrying out arrangements for securing or facilitating the entry into the UK of anyone whom he knows or has reasonable cause for believing to be anasylum claimant (historic)",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "07803": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Immigration Acts",
+    "subCategoryDescription": "Immigration Act 1971 Sec. 25  1C as Added by the asylum & Immigration Act 1996 S.5  (IM marker)",
     "actuarialCategory": "FRAUD_AND_FORGERY",
     "flags": {
       "opdViolenceSex": false,
@@ -8159,6 +8519,26 @@
       "isViolentSanction": false
     }
   },
+  "07826": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Immigration Acts",
+    "subCategoryDescription": "Contravention of tenancy agreements in relation to immigration status (Immigration Act 2016)",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "07827": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Immigration Acts",
+    "subCategoryDescription": "Fail to comply with an Labour Market Enforcement Order (Immigration Act 2016)",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
   "07828": {
     "parentGroupDescription": "Other indictable",
     "categoryDescription": "Immigration Acts",
@@ -8239,6 +8619,16 @@
       "isViolentSanction": true
     }
   },
+  "07906": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Attempting to pervert the course of public justice",
+    "subCategoryDescription": "Member of a jury carry out research during the trial period",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
   "07907": {
     "parentGroupDescription": "Other indictable",
     "categoryDescription": "Attempting to pervert the course of public justice",
@@ -8249,10 +8639,60 @@
       "isViolentSanction": false
     }
   },
+  "07908": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Attempting to pervert the course of public justice",
+    "subCategoryDescription": "Member of a jury engage in prohibited conduct",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "07909": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Attempting to pervert the course of public justice",
+    "subCategoryDescription": "Intentionally disclose jurys deliberations",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "07910": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Attempting to pervert the course of public justice",
+    "subCategoryDescription": "Member of a jury at an inquest research the case during the inquest period",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
   "07911": {
     "parentGroupDescription": "Other indictable",
     "categoryDescription": "Attempting to pervert the course of public justice",
     "subCategoryDescription": "Member of a Jury carry out research during the trial period",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "07912": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Attempting to pervert the course of public justice",
+    "subCategoryDescription": "Member of a jury at an inquest engage in prohibited conduct",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "07913": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Attempting to pervert the course of public justice",
+    "subCategoryDescription": "Intentionally disclose jurys deliberations at an inquest",
     "actuarialCategory": "FRAUD_AND_FORGERY",
     "flags": {
       "opdViolenceSex": false,
@@ -8283,6 +8723,16 @@
     "parentGroupDescription": "Other indictable",
     "categoryDescription": "Absconding from lawful custody",
     "subCategoryDescription": "Temporarily released prisoner unlawfully at large",
+    "actuarialCategory": "ABSCONDING_OR_BAIL",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "08003": {
+    "parentGroupDescription": "Other indictable",
+    "categoryDescription": "Absconding from lawful custody",
+    "subCategoryDescription": "Temporarily released prisoner failed to comply with recall",
     "actuarialCategory": "ABSCONDING_OR_BAIL",
     "flags": {
       "opdViolenceSex": false,
@@ -8449,6 +8899,16 @@
       "isViolentSanction": true
     }
   },
+  "08128": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Firearms Act 1968 and other Firearms Acts",
+    "subCategoryDescription": "Having Small - caliber pistol outside premises of licensed pistol club",
+    "actuarialCategory": "FIREARMS_OTHER",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
   "08129": {
     "parentGroupDescription": "Other indictable",
     "categoryDescription": "Firearms Act 1968 and other Firearms Acts",
@@ -8526,6 +8986,16 @@
     "actuarialCategory": "FIREARMS_OTHER",
     "flags": {
       "opdViolenceSex": true,
+      "isViolentSanction": true
+    }
+  },
+  "08141": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Firearms Act 1968 and other Firearms Acts",
+    "subCategoryDescription": "Firearms (Amendment) Act 1988 Sec.17 (10)(b) as amended by Firearms (Amendment) Act 1997 S.12 (1) (3) (5)",
+    "actuarialCategory": "FIREARMS_OTHER",
+    "flags": {
+      "opdViolenceSex": false,
       "isViolentSanction": true
     }
   },
@@ -8659,6 +9129,16 @@
       "isViolentSanction": true
     }
   },
+  "08180": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Firearms Act 1968 and other Firearms Acts",
+    "subCategoryDescription": "Remove prohibited weapons / ammunition from their place of importation with intent to evade prohibition / restriction",
+    "actuarialCategory": "FIREARMS_OTHER",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
   "08181": {
     "parentGroupDescription": "Violence against the person",
     "categoryDescription": "Firearms Act 1968 and other Firearms Acts",
@@ -8669,6 +9149,26 @@
       "isViolentSanction": true
     }
   },
+  "08182": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Firearms Act 1968 and other Firearms Acts",
+    "subCategoryDescription": "Export prohibited weapon / ammunition with intent to evade prohibition / restriction",
+    "actuarialCategory": "FIREARMS_OTHER",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "08183": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Firearms Act 1968 and other Firearms Acts",
+    "subCategoryDescription": "Carry / remove / deposit etc. prohibited weapons / ammunition with intent to evade a prohibition / restriction",
+    "actuarialCategory": "FIREARMS_OTHER",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
   "08184": {
     "parentGroupDescription": "Violence against the person",
     "categoryDescription": "Firearms Act 1968 and other Firearms Acts",
@@ -8676,6 +9176,16 @@
     "actuarialCategory": "FIREARMS_OTHER",
     "flags": {
       "opdViolenceSex": true,
+      "isViolentSanction": true
+    }
+  },
+  "08185": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Firearms Act 1968 and other Firearms Acts",
+    "subCategoryDescription": "Manufacture weapon / ammunition specified in section 5(1) of the Firearms Act 1968",
+    "actuarialCategory": "FIREARMS_OTHER",
+    "flags": {
+      "opdViolenceSex": false,
       "isViolentSanction": true
     }
   },
@@ -8706,6 +9216,36 @@
     "actuarialCategory": "FIREARMS_OTHER",
     "flags": {
       "opdViolenceSex": true,
+      "isViolentSanction": true
+    }
+  },
+  "08189": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Firearms Act 1968 and other Firearms Acts",
+    "subCategoryDescription": "Import / acquire / possess / use a regulated explosives precursor without a licence",
+    "actuarialCategory": "WEAPONS_NON_FIREARM",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "08190": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Firearms Act 1968 and other Firearms Acts",
+    "subCategoryDescription": "Manufacture an offensive weapon (Reclassified). Possess article for use in connection with conversion of deactivated firearm.",
+    "actuarialCategory": "WEAPONS_NON_FIREARM",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "08191": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Firearms Act 1968 and other Firearms Acts",
+    "subCategoryDescription": "Controls on defectively deactivated weapons Make defectively deactivated weapon available for sale / gift  Sell / give as gift defectively deactivated weapon ",
+    "actuarialCategory": "WEAPONS_NON_FIREARM",
+    "flags": {
+      "opdViolenceSex": false,
       "isViolentSanction": true
     }
   },
@@ -8803,6 +9343,26 @@
     "parentGroupDescription": "Other indictable",
     "categoryDescription": "Offences relating to bail",
     "subCategoryDescription": "Remain unlawfully at large after recall to prison - Criminal Justice Act 2003",
+    "actuarialCategory": "ABSCONDING_OR_BAIL",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "08307": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Offences relating to bail",
+    "subCategoryDescription": "Disclose information acquired in employment at contracted-out secure college relating to detainee",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "08308": {
+    "parentGroupDescription": "Other indictable",
+    "categoryDescription": "Offences relating to bail",
+    "subCategoryDescription": "Breach of pre-charge bail condition not to leave the United Kingdom/relating to travel",
     "actuarialCategory": "ABSCONDING_OR_BAIL",
     "flags": {
       "opdViolenceSex": false,
@@ -9123,6 +9683,16 @@
     "parentGroupDescription": "Other indictable",
     "categoryDescription": "Health and Safety at Work etc",
     "subCategoryDescription": "Contravening requirements of asbestos related health and safety regulations, licences or authorisations",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "08512": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Health and Safety at Work etc Act 1974",
+    "subCategoryDescription": "Triable either way offences under the Explosives Regulations 2014",
     "actuarialCategory": "OTHER_OFFENCES",
     "flags": {
       "opdViolenceSex": false,
@@ -9489,20 +10059,20 @@
       "isViolentSanction": false
     }
   },
+  "08813": {
+    "parentGroupDescription": "Sexual offences",
+    "categoryDescription": "Miscellaneous sexual offences",
+    "subCategoryDescription": "Offences relating to using equipment to film or observe another while breastfeeding",
+    "actuarialCategory": "SEXUAL_NOT_AGAINST_CHILD",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
   "08814": {
     "parentGroupDescription": "Sexual offences",
     "categoryDescription": "Miscellaneous sexual offences",
     "subCategoryDescription": "Send photograph or film of genitals to cause alarm distress or humiliation",
-    "actuarialCategory": "SEXUAL_NOT_AGAINST_CHILD",
-    "flags": {
-      "opdViolenceSex": true,
-      "isViolentSanction": false
-    }
-  },
-  "08815": {
-    "parentGroupDescription": "Sexual offences",
-    "categoryDescription": "Miscellaneous sexual offences",
-    "subCategoryDescription": "Sharing or threatening to share intimate photograph or film",
     "actuarialCategory": "SEXUAL_NOT_AGAINST_CHILD",
     "flags": {
       "opdViolenceSex": true,
@@ -9709,6 +10279,16 @@
       "isViolentSanction": true
     }
   },
+  "09006": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Knives Act 1997 and other related Offensive Weapons Acts and Regulations not dealt with elsewhere",
+    "subCategoryDescription": "Offences under S.28 Violent Crime Reduction Act 2006 (using someone to mind a weapon - could be firearm or bladed)",
+    "actuarialCategory": "FIREARMS_OTHER",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
   "09100": {
     "parentGroupDescription": "Other indictable",
     "categoryDescription": "Public Health",
@@ -9794,16 +10374,6 @@
     "categoryDescription": "Public Health",
     "subCategoryDescription": "Making a statement known to be materially false or misleading or recklessly making a statement which is materially false or misleading in compliance with a requirement under Part I of the Act or in order to obtain authorisation or variation of authorisation for oneself or any other person - Environmental Protection Act 1990",
     "actuarialCategory": "OTHER_OFFENCES",
-    "flags": {
-      "opdViolenceSex": false,
-      "isViolentSanction": false
-    }
-  },
-  "09259": {
-    "parentGroupDescription": "Drug offences",
-    "categoryDescription": "Misuse of Drugs",
-    "subCategoryDescription": "Having possession of a controlled drug - Class A - Other Class A",
-    "actuarialCategory": "DRUG_POSSESSION_OR_SUPPLY",
     "flags": {
       "opdViolenceSex": false,
       "isViolentSanction": false
@@ -10189,16 +10759,6 @@
       "isViolentSanction": false
     }
   },
-  "09260": {
-    "parentGroupDescription": "Drug offences",
-    "categoryDescription": "Misuse of Drugs",
-    "subCategoryDescription": "Having possession of a controlled drug - Class B - Amphetamine",
-    "actuarialCategory": "DRUG_POSSESSION_OR_SUPPLY",
-    "flags": {
-      "opdViolenceSex": false,
-      "isViolentSanction": false
-    }
-  },
   "09152": {
     "parentGroupDescription": "Other indictable",
     "categoryDescription": "Public Health",
@@ -10539,6 +11099,26 @@
       "isViolentSanction": false
     }
   },
+  "09189": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Public Health",
+    "subCategoryDescription": "Producer of portable batteries fail to register with a battery compliance scheme, Waste Batteries and Accumulators Regulations 2009",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09191": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Public Health",
+    "subCategoryDescription": "Triable either way offences under the Transfrontier Shipment of Radioactive Waste and Spent Fuel (EU Exit) Regulations 2019",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
   "09200": {
     "parentGroupDescription": "Drug offences",
     "categoryDescription": "Misuse of Drugs",
@@ -10683,6 +11263,36 @@
     "parentGroupDescription": "Drug offences",
     "categoryDescription": "Misuse of Drugs",
     "subCategoryDescription": "Production of or being concerned in the production of a controlled drug - Class A - Methadone",
+    "actuarialCategory": "DRUG_IMPORT_EXPORT_OR_PRODUCTION",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09216": {
+    "parentGroupDescription": "Drug offences",
+    "categoryDescription": "Misuse of Drugs",
+    "subCategoryDescription": "Concerned in the fraudulent evasion of a prohibition on the importation of Khat",
+    "actuarialCategory": "DRUG_IMPORT_EXPORT_OR_PRODUCTION",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09217": {
+    "parentGroupDescription": "Drug offences",
+    "categoryDescription": "Misuse of Drugs",
+    "subCategoryDescription": "Import khat with intent to evade a prohibition / restriction",
+    "actuarialCategory": "DRUG_IMPORT_EXPORT_OR_PRODUCTION",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09218": {
+    "parentGroupDescription": "Drug offences",
+    "categoryDescription": "Misuse of Drugs",
+    "subCategoryDescription": "Evade prohibition / restriction on the exporting of class C drug - Khat",
     "actuarialCategory": "DRUG_IMPORT_EXPORT_OR_PRODUCTION",
     "flags": {
       "opdViolenceSex": false,
@@ -11029,6 +11639,26 @@
       "isViolentSanction": false
     }
   },
+  "09259": {
+    "parentGroupDescription": "Drug offences",
+    "categoryDescription": "Misuse of Drugs",
+    "subCategoryDescription": "Having possession of a controlled drug - Class A - Other Class A",
+    "actuarialCategory": "DRUG_POSSESSION_OR_SUPPLY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09260": {
+    "parentGroupDescription": "Drug offences",
+    "categoryDescription": "Misuse of Drugs",
+    "subCategoryDescription": "Having possession of a controlled drug - Class B - Amphetamine",
+    "actuarialCategory": "DRUG_POSSESSION_OR_SUPPLY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
   "09261": {
     "parentGroupDescription": "Drug offences",
     "categoryDescription": "Misuse of Drugs",
@@ -11309,6 +11939,16 @@
       "isViolentSanction": false
     }
   },
+  "09295": {
+    "parentGroupDescription": "Drug offences",
+    "categoryDescription": "Misuse of Drugs",
+    "subCategoryDescription": "Producing controlled drug - Class A Misuse of Drugs Act 1971 S.4(2)(a)",
+    "actuarialCategory": "DRUG_IMPORT_EXPORT_OR_PRODUCTION",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
   "09300": {
     "parentGroupDescription": "Drug offences",
     "categoryDescription": "Permitting premises to be used for unlawful purposes",
@@ -11499,6 +12139,86 @@
       "isViolentSanction": false
     }
   },
+  "09341": {
+    "parentGroupDescription": "Drug offences",
+    "categoryDescription": "Permitting premises to be used for unlawful purposes",
+    "subCategoryDescription": "Produce a psychoactive substance",
+    "actuarialCategory": "DRUG_IMPORT_EXPORT_OR_PRODUCTION",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09342": {
+    "parentGroupDescription": "Drug offences",
+    "categoryDescription": "Permitting premises to be used for unlawful purposes",
+    "subCategoryDescription": "Supply a psychoactive substance",
+    "actuarialCategory": "DRUG_POSSESSION_OR_SUPPLY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09343": {
+    "parentGroupDescription": "Drug offences",
+    "categoryDescription": "Permitting premises to be used for unlawful purposes",
+    "subCategoryDescription": "Offer to supply a psychoactive substance",
+    "actuarialCategory": "DRUG_POSSESSION_OR_SUPPLY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09344": {
+    "parentGroupDescription": "Drug offences",
+    "categoryDescription": "Permitting premises to be used for unlawful purposes",
+    "subCategoryDescription": "Possess a psychoactive substance with intent to supply",
+    "actuarialCategory": "DRUG_POSSESSION_OR_SUPPLY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09345": {
+    "parentGroupDescription": "Drug offences",
+    "categoryDescription": "Permitting premises to be used for unlawful purposes",
+    "subCategoryDescription": "Import a psychoactive substance",
+    "actuarialCategory": "DRUG_IMPORT_EXPORT_OR_PRODUCTION",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09346": {
+    "parentGroupDescription": "Drug offences",
+    "categoryDescription": "Permitting premises to be used for unlawful purposes",
+    "subCategoryDescription": "Export a psychoactive substance",
+    "actuarialCategory": "DRUG_IMPORT_EXPORT_OR_PRODUCTION",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09347": {
+    "parentGroupDescription": "Drug offences",
+    "categoryDescription": "Permitting premises to be used for unlawful purposes",
+    "subCategoryDescription": "Possess a psychoactive substance in a custodial institution",
+    "actuarialCategory": "DRUG_POSSESSION_OR_SUPPLY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09348": {
+    "parentGroupDescription": "Drug offences",
+    "categoryDescription": "Permitting premises to be used for unlawful purposes",
+    "subCategoryDescription": "Fail to comply with a prohibition / premises order re psychoactive substances",
+    "actuarialCategory": "DRUG_IMPORT_EXPORT_OR_PRODUCTION",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
   "09349": {
     "parentGroupDescription": "Drug offences",
     "categoryDescription": "Permitting premises to be used for unlawful purposes",
@@ -11619,6 +12339,16 @@
       "isViolentSanction": false
     }
   },
+  "09362": {
+    "parentGroupDescription": "Drug offences",
+    "categoryDescription": "Permitting premises to be used for unlawful purposes",
+    "subCategoryDescription": "Production of or being concerned in the production of a controlled drug - Class C - Khat",
+    "actuarialCategory": "DRUG_IMPORT_EXPORT_OR_PRODUCTION",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
   "09363": {
     "parentGroupDescription": "Drug offences",
     "categoryDescription": "Misuse of drugs",
@@ -11663,6 +12393,16 @@
     "parentGroupDescription": "Drug offences",
     "categoryDescription": "Permitting premises to be used for unlawful purposes",
     "subCategoryDescription": "Having possession of a controlled drug - Class A - Methamphetamine (Crystal meth)",
+    "actuarialCategory": "DRUG_POSSESSION_OR_SUPPLY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09368": {
+    "parentGroupDescription": "Drug offences",
+    "categoryDescription": "Permitting premises to be used for unlawful purposes",
+    "subCategoryDescription": "Supplying or offering to supply (or being concerned in supplying or offering to supply) a controlled drug - Class C - Khat",
     "actuarialCategory": "DRUG_POSSESSION_OR_SUPPLY",
     "flags": {
       "opdViolenceSex": false,
@@ -11719,6 +12459,16 @@
       "isViolentSanction": false
     }
   },
+  "09374": {
+    "parentGroupDescription": "Drug offences",
+    "categoryDescription": "Permitting premises to be used for unlawful purposes",
+    "subCategoryDescription": "Attempt to possess khat",
+    "actuarialCategory": "DRUG_POSSESSION_OR_SUPPLY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
   "09375": {
     "parentGroupDescription": "Drug offences",
     "categoryDescription": "Misuse of drugs",
@@ -11763,6 +12513,16 @@
     "parentGroupDescription": "Drug offences",
     "categoryDescription": "Permitting premises to be used for unlawful purposes",
     "subCategoryDescription": "Permitting premises to be used for unlawful purposes - Class A - Methamphetamine (Crystal meth)",
+    "actuarialCategory": "DRUG_POSSESSION_OR_SUPPLY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09380": {
+    "parentGroupDescription": "Drug offences",
+    "categoryDescription": "Permitting premises to be used for unlawful purposes",
+    "subCategoryDescription": "Having possession of a controlled drug with intent to supply - Class C - Khat",
     "actuarialCategory": "DRUG_POSSESSION_OR_SUPPLY",
     "flags": {
       "opdViolenceSex": false,
@@ -11854,6 +12614,16 @@
     "categoryDescription": "Permitting premises to be used for unlawful purposes",
     "subCategoryDescription": "Obstructing a PC in exercise of a S.23A(6) power to detain or search a person, vehicle or vessel regarding a drug the subject of a temporary class drug order",
     "actuarialCategory": "DRUG_IMPORT_EXPORT_OR_PRODUCTION",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09390": {
+    "parentGroupDescription": "Drug offences",
+    "categoryDescription": "Permitting premises to be used for unlawful purposes",
+    "subCategoryDescription": "Permitting premises to be used for unlawful purposes - class C (khat)",
+    "actuarialCategory": "DRUG_POSSESSION_OR_SUPPLY",
     "flags": {
       "opdViolenceSex": false,
       "isViolentSanction": false
@@ -11999,10 +12769,70 @@
       "isViolentSanction": false
     }
   },
+  "09412": {
+    "parentGroupDescription": "Other indictable",
+    "categoryDescription": "Town and Country Planning Act 1990",
+    "subCategoryDescription": "Enter aircraft when drunk / be drunk in aircraft",
+    "actuarialCategory": "DRUNKENNESS",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "09413": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Town and Country Planning Act 1990",
+    "subCategoryDescription": "Act as crew of aircraft when under influence of drink / drug impairing capacity",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_ABH_PLUS",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "09414": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Town and Country Planning Act 1990",
+    "subCategoryDescription": "Intentionally interfere with performance of aircraft crew members duty",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_ABH_PLUS",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "09415": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Town and Country Planning Act 1990",
+    "subCategoryDescription": "Recklessly / negligently act in manner likely to endanger aircraft / person in an aircraft",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_ABH_PLUS",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "09416": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Town and Country Planning Act 1990",
+    "subCategoryDescription": "Shine / direct laser beam towards a vehicle",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_ABH_PLUS",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
   "09417": {
     "parentGroupDescription": "Other indictable",
     "categoryDescription": "Town and Country Planning Act 1990",
     "subCategoryDescription": "Shine / direct laser beam towards a land / water vehicle or aircraft",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_ABH_PLUS",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "09418": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Town and Country Planning Act 1990",
+    "subCategoryDescription": "Shine / direct laser beam towards an air traffic facility /a person providing air traffic services",
     "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_ABH_PLUS",
     "flags": {
       "opdViolenceSex": false,
@@ -12144,16 +12974,6 @@
     "categoryDescription": "Disclosure, obstruction, false or misleading statements etc.",
     "subCategoryDescription": "Making false statements to authorised enforcement officer - Tobacco Advertising and Promotion Act",
     "actuarialCategory": "FRAUD_AND_FORGERY",
-    "flags": {
-      "opdViolenceSex": false,
-      "isViolentSanction": false
-    }
-  },
-  "09839": {
-    "parentGroupDescription": "Other indictable",
-    "categoryDescription": "Other indictable offences",
-    "subCategoryDescription": "Facilitating unauthorised broadcasting",
-    "actuarialCategory": "OTHER_OFFENCES",
     "flags": {
       "opdViolenceSex": false,
       "isViolentSanction": false
@@ -12739,10 +13559,180 @@
       "isViolentSanction": false
     }
   },
+  "09572": {
+    "parentGroupDescription": "Fraud forgery",
+    "categoryDescription": "Disclosure, obstruction, false or misleading statements etc.",
+    "subCategoryDescription": "TEW offences contrary to the Financial Services Act 2012.",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09573": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Disclosure, obstruction, false or misleading statements etc.",
+    "subCategoryDescription": "Disclose information relating to a persons identity without prior consent of Commissioners",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09576": {
+    "parentGroupDescription": "Fraud forgery",
+    "categoryDescription": "Disclosure, obstruction, false or misleading statements etc.",
+    "subCategoryDescription": "Triable either way offences related to Money Laundering Terrorist Financing and Transfer of Funds Regulations 2017",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09577": {
+    "parentGroupDescription": "Fraud forgery",
+    "categoryDescription": "Disclosure, obstruction, false or misleading statements etc.",
+    "subCategoryDescription": "Triable either way offences under Criminal Justice (European Investigation Order) Regulations 2017",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09578": {
+    "parentGroupDescription": "Fraud forgery",
+    "categoryDescription": "Disclosure, obstruction, false or misleading statements etc.",
+    "subCategoryDescription": "Triable either way offences under Digital Economy Act 2017",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09579": {
+    "parentGroupDescription": "Fraud forgery",
+    "categoryDescription": "Disclosure, obstruction, false or misleading statements etc.",
+    "subCategoryDescription": "Make a false or misleading statement in purported compliance with an Unexplained Wealth/Disclosure Order Criminal Finance Act 2017",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09580": {
+    "parentGroupDescription": "Fraud forgery",
+    "categoryDescription": "Disclosure, obstruction, false or misleading statements etc.",
+    "subCategoryDescription": "Knowingly / recklessly furnish information false / misleading in a material particular Common Agricultural Policy (Control and Enforcement Cross-Compliance Scrutiny of Transactions and Appeals) Regulations 2014",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09582": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Disclosure, obstruction, false or misleading statements etc.",
+    "subCategoryDescription": "TEW offences under Ukraine (European Union Financial Sanctions) (No. 2) Regulations 2014",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09584": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Disclosure, obstruction, false or misleading statements etc.",
+    "subCategoryDescription": "TEW offences under the Merchant Shipping (Safety of Navigation) Regulations 2020",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09585": {
+    "parentGroupDescription": "Fraud forgery",
+    "categoryDescription": "Disclosure, obstruction, false or misleading statements etc.",
+    "subCategoryDescription": "Deal with or make available funds for benefit of a designated person under the Global Anti-Corruption Sanctions Regulations 2021",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09586": {
+    "parentGroupDescription": "Fraud forgery",
+    "categoryDescription": "Disclosure, obstruction, false or misleading statements etc.",
+    "subCategoryDescription": "Breach of confidentiality (Global Anti-Corruption Sanctions Regulations 2021)",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
   "09600": {
     "parentGroupDescription": "Other indictable",
     "categoryDescription": "Packaging Waste (Data Reporting) (England) Regulations 2023 - data reporting obligations",
     "subCategoryDescription": "Packaging Waste (Data Reporting) (England) Regulations 2023 - data reporting obligations Use this code only if you are unable to determine which subcoded Offence applies",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09601": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Packaging Waste (Data Reporting) (England) Regulations 2023 - data reporting obligations",
+    "subCategoryDescription": "Unauthorised disclosure of information by the Commissioner/member of Commissioners staff/agent of the Commissioner, s.132(3) of the Data Protection Act 2018",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09602": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Packaging Waste (Data Reporting) (England) Regulations 2023 - data reporting obligations",
+    "subCategoryDescription": "Make false statement knowingly/recklessly in response to an information notice, s.144 of the Data Protection Act 2018",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09603": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Packaging Waste (Data Reporting) (England) Regulations 2023 - data reporting obligations",
+    "subCategoryDescription": "Obtain / procure disclose / retain personal data without consent of controller",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09604": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Packaging Waste (Data Reporting) (England) Regulations 2023 - data reporting obligations",
+    "subCategoryDescription": "Unlawfully sell / offer to sell personal data",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09606": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Packaging Waste (Data Reporting) (England) Regulations 2023 - data reporting obligations",
+    "subCategoryDescription": "Make employment/provision of goods/facilities/services conditional on access to a relevant record",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09607": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Packaging Waste (Data Reporting) (England) Regulations 2023 - data reporting obligations",
+    "subCategoryDescription": "Destroying or falsifying information and documents specified in information/assessment notices under s.148(2) of the Data Protection Act 2018",
     "actuarialCategory": "OTHER_OFFENCES",
     "flags": {
       "opdViolenceSex": false,
@@ -12769,10 +13759,40 @@
       "isViolentSanction": false
     }
   },
-  "09888": {
-    "parentGroupDescription": "Other indictable",
-    "categoryDescription": "Other indictable offences",
-    "subCategoryDescription": "TEW offences under Sea Fisheries Act 1968",
+  "09701": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Representation of the People Act 1983",
+    "subCategoryDescription": "Causing permitting or failing to prevent unnecessary suffering of protected animal",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09703": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Representation of the People Act 1983",
+    "subCategoryDescription": "Removing or causing or permitting or failing to prevent removal of dog¿¿¿s tail other than for medical treatment",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09704": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Representation of the People Act 1983",
+    "subCategoryDescription": "Administration of poisons etc to a protected animal",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09705": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Representation of the People Act 1983",
+    "subCategoryDescription": "Offences relating to animal fights",
     "actuarialCategory": "OTHER_OFFENCES",
     "flags": {
       "opdViolenceSex": false,
@@ -13169,6 +14189,16 @@
       "isViolentSanction": false
     }
   },
+  "09839": {
+    "parentGroupDescription": "Other indictable",
+    "categoryDescription": "Other indictable offences",
+    "subCategoryDescription": "Facilitating unauthorised broadcasting",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
   "09840": {
     "parentGroupDescription": "Other indictable",
     "categoryDescription": "Other indictable offences",
@@ -13314,6 +14344,66 @@
     "categoryDescription": "Other indictable offences",
     "subCategoryDescription": "Disclosing debtor information without authority",
     "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09857": {
+    "parentGroupDescription": "Fraud forgery",
+    "categoryDescription": "Other indictable offences",
+    "subCategoryDescription": "Other triable either way offences under Insolvency Act 1986",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09858": {
+    "parentGroupDescription": "Fraud forgery",
+    "categoryDescription": "Other indictable offences",
+    "subCategoryDescription": "False representations and omissions in application for debt relief order",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09859": {
+    "parentGroupDescription": "Fraud forgery",
+    "categoryDescription": "Other indictable offences",
+    "subCategoryDescription": "Concealment or falsification of documents during moratorium period of debt relief order",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09860": {
+    "parentGroupDescription": "Fraud forgery",
+    "categoryDescription": "Other indictable offences",
+    "subCategoryDescription": "Fraudulent disposal of property during moratorium period of debt relief order",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09861": {
+    "parentGroupDescription": "Fraud forgery",
+    "categoryDescription": "Other indictable offences",
+    "subCategoryDescription": "Fraudulent dealing with property obtained on credit during moratorium period of debt relief order",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09862": {
+    "parentGroupDescription": "Fraud forgery",
+    "categoryDescription": "Other indictable offences",
+    "subCategoryDescription": "Obtaining credit or engaging in business during moratorium period of debt relief order",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
     "flags": {
       "opdViolenceSex": false,
       "isViolentSanction": false
@@ -13559,10 +14649,80 @@
       "isViolentSanction": false
     }
   },
+  "09888": {
+    "parentGroupDescription": "Other indictable",
+    "categoryDescription": "Other indictable offences",
+    "subCategoryDescription": "TEW offences under Sea Fisheries Act 1968",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
   "09889": {
     "parentGroupDescription": "Other indictable",
     "categoryDescription": "Other indictable offences",
     "subCategoryDescription": "Offences of damaging etc protected features of MCZs, With intent to deceive falsely pretending to be an enforcement officer under the Act - Marine and Coastal Access Act 2009",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09890": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Other indictable offences",
+    "subCategoryDescription": "Conservation of Whales- various TEW offences",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09892": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Other indictable offences",
+    "subCategoryDescription": "Fishing with, or possessing for  fishing prohibited instruments",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09894": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Other indictable offences",
+    "subCategoryDescription": "Various TEW offences under these regulations",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09895": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Other indictable offences",
+    "subCategoryDescription": "Fish / take fish by other than licensable means in circumstances where fish / taking may or may not be authorised, or possess unlicensed instrument with intent to fish / take fish or without a S27A authority",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09896": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Other indictable offences",
+    "subCategoryDescription": "Various TEW offences under these regulations",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09897": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Other indictable offences",
+    "subCategoryDescription": "Offences relating to solemnization/registration of marriages",
     "actuarialCategory": "OTHER_OFFENCES",
     "flags": {
       "opdViolenceSex": false,
@@ -13733,6 +14893,26 @@
     "parentGroupDescription": "Other indictable",
     "categoryDescription": "Other indictable offences",
     "subCategoryDescription": "Unlawful disclosure of information; providing false information - Postal Services Act 2011",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09917": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Other indictable offences",
+    "subCategoryDescription": "Triable either way offences under the Control of Trade in Endangered Species Regulations 2018 para 1",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "09918": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Other indictable offences",
+    "subCategoryDescription": "Triable either way offences under the Control of Trade in Endangered Species Regulations 2018, para 2",
     "actuarialCategory": "OTHER_OFFENCES",
     "flags": {
       "opdViolenceSex": false,
@@ -14409,16 +15589,6 @@
       "isViolentSanction": false
     }
   },
-  "10702": {
-    "parentGroupDescription": "Sexual offences",
-    "categoryDescription": "Brothel keeping",
-    "subCategoryDescription": "Letting premises for use as a brothel",
-    "actuarialCategory": "OTHER_OFFENCES",
-    "flags": {
-      "opdViolenceSex": false,
-      "isViolentSanction": false
-    }
-  },
   "09987": {
     "parentGroupDescription": "Other indictable",
     "categoryDescription": "Other indictable offences",
@@ -14919,11 +16089,71 @@
       "isViolentSanction": true
     }
   },
+  "10441": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Assault",
+    "subCategoryDescription": "Obstruct a person serving / enforcing a closure notice / order",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_SUB_ABH",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
   "10442": {
     "parentGroupDescription": "Other indictable",
     "categoryDescription": "Assault",
     "subCategoryDescription": "Contrary to section 48(1), (2)(a) and 52 of the Anti-social Behaviour, Crime and Policing Act 2014",
     "actuarialCategory": "PUBLIC_ORDER_AND_HARRASSMENT",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "10443": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Assault",
+    "subCategoryDescription": "Owner / manager / operator of hotel fail to comply with requirement to provide guest information imposed under s116(4) (Anti-social Behaviour Crime and Policing Act 2014)",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_SUB_ABH",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "10444": {
+    "parentGroupDescription": "Other indictable",
+    "categoryDescription": "Assault",
+    "subCategoryDescription": "Fail to comply with a public spaces protection order",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "10446": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Assault",
+    "subCategoryDescription": "Offences in relation to enforcement officer functions Part 1 Schedule 2 Modern Slavery Act Modern Slavery Act 2015",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_SUB_ABH",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "10447": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Assault",
+    "subCategoryDescription": "Intentionally obstruct or fail to comply with requirement imposed by law enforcement officer provide false or fail to disclose information requested by law enforcement officer",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_SUB_ABH",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "10448": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Assault",
+    "subCategoryDescription": "Fail to consent to being searched for alcohol/container for alcohol/tobacco/cigarette papers by CSO/CSV",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_SUB_ABH",
     "flags": {
       "opdViolenceSex": false,
       "isViolentSanction": true
@@ -15109,6 +16339,76 @@
       "isViolentSanction": true
     }
   },
+  "10518": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Common assaults etc",
+    "subCategoryDescription": "Fail to hand over travel documents when required by examining officer / constable",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_SUB_ABH",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "10519": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Common assaults etc",
+    "subCategoryDescription": "Make off when required to wait with a secure college custody officer",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_SUB_ABH",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "10520": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Common assaults etc",
+    "subCategoryDescription": "Resist / wilfully obstruct a custody officer performing custodial duties at a contracted-out secure college",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_SUB_ABH",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "10522": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Common assaults etc",
+    "subCategoryDescription": "Resist / wilfully obstruct custody officer performing contracted-out functions at directly managed secure college",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_SUB_ABH",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "10523": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Common assaults etc",
+    "subCategoryDescription": "Assault custody officer performing contracted-out functions at directly managed secure college",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_SUB_ABH",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "10524": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Common assaults etc",
+    "subCategoryDescription": "Obstruct police / customs officer executing a drug-cutting agent search and seizure warrant",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_SUB_ABH",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "10525": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Common assaults etc",
+    "subCategoryDescription": "Assault/resist or wilfully obstruct appropriate person acting in exercise of relevant power",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_SUB_ABH",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
   "10600": {
     "parentGroupDescription": "Other summary offences",
     "categoryDescription": "Betting, Gaming and Lotteries",
@@ -15273,16 +16573,6 @@
     "parentGroupDescription": "Other summary offences",
     "categoryDescription": "Betting, Gaming and Lotteries",
     "subCategoryDescription": "Refusal to produce betting agency permit on request by a constable",
-    "actuarialCategory": "OTHER_OFFENCES",
-    "flags": {
-      "opdViolenceSex": false,
-      "isViolentSanction": false
-    }
-  },
-  "10703": {
-    "parentGroupDescription": "Sexual offences",
-    "categoryDescription": "Brothel keeping",
-    "subCategoryDescription": "Tenant permitting premises to be used as brothel",
     "actuarialCategory": "OTHER_OFFENCES",
     "flags": {
       "opdViolenceSex": false,
@@ -15693,6 +16983,26 @@
     "parentGroupDescription": "Sexual offences",
     "categoryDescription": "Brothel keeping",
     "subCategoryDescription": "Keeping a brothel",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "10702": {
+    "parentGroupDescription": "Sexual offences",
+    "categoryDescription": "Brothel keeping",
+    "subCategoryDescription": "Letting premises for use as a brothel",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "10703": {
+    "parentGroupDescription": "Sexual offences",
+    "categoryDescription": "Brothel keeping",
+    "subCategoryDescription": "Tenant permitting premises to be used as brothel",
     "actuarialCategory": "OTHER_OFFENCES",
     "flags": {
       "opdViolenceSex": false,
@@ -16139,6 +17449,16 @@
       "isViolentSanction": false
     }
   },
+  "10840": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Cruelty to animals",
+    "subCategoryDescription": "Transported animal in transporter not fit for intended journey",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
   "10900": {
     "parentGroupDescription": "Violence against the person",
     "categoryDescription": "Cruelty to or neglect of children",
@@ -16147,16 +17467,6 @@
     "flags": {
       "opdViolenceSex": true,
       "isViolentSanction": true
-    }
-  },
-  "11203": {
-    "parentGroupDescription": "Other summary offences",
-    "categoryDescription": "Education Acts, offences against",
-    "subCategoryDescription": "Failure to secure regular attendance at school",
-    "actuarialCategory": "OTHER_OFFENCES",
-    "flags": {
-      "opdViolenceSex": false,
-      "isViolentSanction": false
     }
   },
   "10901": {
@@ -16293,6 +17603,26 @@
     "parentGroupDescription": "Other summary offences",
     "categoryDescription": "Cruelty to animals",
     "subCategoryDescription": "Keeper of bovine animal failing to comply with a notice to have it tested for tuberculosis",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "11011": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Cruelty to animals",
+    "subCategoryDescription": "Fail to comply with notice issued under Genetically Modified Animal Feed (England) Regulations 2004",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "11012": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Cruelty to animals",
+    "subCategoryDescription": "Fail to comply with specified provisions under Genetically Modified Food (England) Regulations 2004",
     "actuarialCategory": "OTHER_OFFENCES",
     "flags": {
       "opdViolenceSex": false,
@@ -16559,6 +17889,26 @@
       "isViolentSanction": false
     }
   },
+  "11202": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Education Acts, offences against",
+    "subCategoryDescription": "Preventing child from receiving education",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "11203": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Education Acts, offences against",
+    "subCategoryDescription": "Failure to secure regular attendance at school",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
   "11204": {
     "parentGroupDescription": "Other summary offences",
     "categoryDescription": "Education Acts, offences against",
@@ -16596,6 +17946,26 @@
     "actuarialCategory": "WEAPONS_NON_FIREARM",
     "flags": {
       "opdViolenceSex": true,
+      "isViolentSanction": true
+    }
+  },
+  "11301": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Explosives Acts, offences against",
+    "subCategoryDescription": "Supplier of regulated / reportable explosives precursor fail to report suspicious transaction / proposed transaction Fail to report significant disappearance / theft of regulated / reportable explosives precursors",
+    "actuarialCategory": "WEAPONS_NON_FIREARM",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "11302": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Explosives Acts, offences against",
+    "subCategoryDescription": "Supply a regulated explosives precursor without entering details of the transaction in the licence or ensuring warning label is affixed to the packaging when supplying to member of public",
+    "actuarialCategory": "WEAPONS_NON_FIREARM",
+    "flags": {
+      "opdViolenceSex": false,
       "isViolentSanction": true
     }
   },
@@ -16646,6 +18016,106 @@
     "actuarialCategory": "FIREARMS_OTHER",
     "flags": {
       "opdViolenceSex": true,
+      "isViolentSanction": true
+    }
+  },
+  "11507": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Offences against the Firearms Act 1968 and other Firearms Acts",
+    "subCategoryDescription": "Non-compliance with condition of permit to have small-caliber pistols outside licensed clubs.  Firearms (Amendment) Act 1997 Sec. 13(5)(a)",
+    "actuarialCategory": "FIREARMS_OTHER",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "11508": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Offences against the Firearms Act 1968 and other Firearms Acts",
+    "subCategoryDescription": "Making false statement etc. for purposes of procuring (whether for himself or another) the grant of a permit to have small-caliber pistol outside licensed club.  Firearms ( Amendment ) Act 1997 S.13 (5)(b)",
+    "actuarialCategory": "FIREARMS_OTHER",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "11509": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Offences against the Firearms Act 1968 and other Firearms Acts",
+    "subCategoryDescription": "No pistol club to operate without a license - if small-caliber pistol is stored or used in contravention of Sec. 20(1)(2) Club management held responsible. Firearms (Amendment) Act 1997 Sec. 20(4)",
+    "actuarialCategory": "FIREARMS_OTHER",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "11510": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Offences against the Firearms Act 1968 and other Firearms Acts",
+    "subCategoryDescription": "Failure to comply with conditions of licence. Firearms (Amendment) Act 1997 S.23",
+    "actuarialCategory": "FIREARMS_OTHER",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "11511": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Offences against the Firearms Act 1968 and other Firearms Acts",
+    "subCategoryDescription": "Non-compliance with notice of revocation of club licence. Firearms (Amendment) Act 1997 Sec. 26(2)(3)(9)",
+    "actuarialCategory": "FIREARMS_OTHER",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "11512": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Offences against the Firearms Act 1968 and other Firearms Acts",
+    "subCategoryDescription": "Failure to comply with requirements to keep registers at licensed pistol clubs. Firearms (Amendment) Act 1997 S.28(4)(a)",
+    "actuarialCategory": "FIREARMS_OTHER",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "11514": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Offences against the Firearms Act 1968 and other Firearms Acts",
+    "subCategoryDescription": "Breach of Regulations made under Section 29(1)(a)(b)(c). Firearms (Amendment) Act 1997 Sec.29(2) (historic)",
+    "actuarialCategory": "FIREARMS_OTHER",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "11515": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Offences against the Firearms Act 1968 and other Firearms Acts",
+    "subCategoryDescription": "Obstruction of constable or civilian officer entering or inspecting licensed premises.  Firearms (Amendment) Act 1997 S.30",
+    "actuarialCategory": "FIREARMS_OTHER",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "11516": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Offences against the Firearms Act 1968 and other Firearms Acts",
+    "subCategoryDescription": "Making false statement for purpose of procuring grant renewal or variation of a licence or release of small-caliber pistol from police custody. Firearms (Amendment) Act 1997 S.31",
+    "actuarialCategory": "FIREARMS_OTHER",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "11517": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Offences against the Firearms Act 1968 and other Firearms Acts",
+    "subCategoryDescription": "Making false statement for purpose of procuring the release of small-caliber pistol from police custody (other than under S.26 ) Firearms (Amendment) Act 1997 Sch.1 para.7",
+    "actuarialCategory": "FIREARMS_OTHER",
+    "flags": {
+      "opdViolenceSex": false,
       "isViolentSanction": true
     }
   },
@@ -16756,6 +18226,16 @@
     "actuarialCategory": "FIREARMS_OTHER",
     "flags": {
       "opdViolenceSex": true,
+      "isViolentSanction": true
+    }
+  },
+  "11540": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Offences against the Firearms Act 1968 and other Firearms Acts",
+    "subCategoryDescription": "Unknown offence presumed to be firearms",
+    "actuarialCategory": "FIREARMS_OTHER",
+    "flags": {
+      "opdViolenceSex": false,
       "isViolentSanction": true
     }
   },
@@ -16927,16 +18407,6 @@
     "flags": {
       "opdViolenceSex": true,
       "isViolentSanction": true
-    }
-  },
-  "12117": {
-    "parentGroupDescription": "Other summary offences",
-    "categoryDescription": "Other offences against Game Laws",
-    "subCategoryDescription": "Attending a hare coursing event",
-    "actuarialCategory": "OTHER_OFFENCES",
-    "flags": {
-      "opdViolenceSex": false,
-      "isViolentSanction": false
     }
   },
   "11558": {
@@ -17339,6 +18809,16 @@
       "isViolentSanction": true
     }
   },
+  "11599": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Offences against the Firearms Act 1968 and other Firearms Acts",
+    "subCategoryDescription": "Fail to notify Secretary of State of transfer or possession of deactivated firearm",
+    "actuarialCategory": "FIREARMS_OTHER",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
   "11600": {
     "parentGroupDescription": "Other summary offences",
     "categoryDescription": "Fishery Laws, offences against",
@@ -17393,6 +18873,16 @@
     "parentGroupDescription": "Other summary offences",
     "categoryDescription": "Fishery Laws, offences against",
     "subCategoryDescription": "Offences against Salmon and Freshwater Fisheries Act 1975",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "11607": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Fishery Laws, offences against",
+    "subCategoryDescription": "Fishing salmon or freshwater fish in breach of The Scotland Act 1998 (River Tweed) Order 2006",
     "actuarialCategory": "OTHER_OFFENCES",
     "flags": {
       "opdViolenceSex": false,
@@ -17693,6 +19183,16 @@
     "parentGroupDescription": "Other summary offences",
     "categoryDescription": "Other offences against Game Laws",
     "subCategoryDescription": "Participating in a hare coursing event",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "12117": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Other offences against Game Laws",
+    "subCategoryDescription": "Attending a hare coursing event",
     "actuarialCategory": "OTHER_OFFENCES",
     "flags": {
       "opdViolenceSex": false,
@@ -18899,16 +20399,6 @@
       "isViolentSanction": true
     }
   },
-  "14403": {
-    "parentGroupDescription": "Other summary offences",
-    "categoryDescription": "Juvenile Smoking, offences in relation to",
-    "subCategoryDescription": "Failure to display warning statement",
-    "actuarialCategory": "OTHER_OFFENCES",
-    "flags": {
-      "opdViolenceSex": false,
-      "isViolentSanction": false
-    }
-  },
   "12585": {
     "parentGroupDescription": "Other summary offences",
     "categoryDescription": "Offences against public order",
@@ -18923,6 +20413,76 @@
     "parentGroupDescription": "Other summary offences",
     "categoryDescription": "Offences against public order",
     "subCategoryDescription": "Trespassing on sites- Knowingly as a trespasser live/intend to live in residential building",
+    "actuarialCategory": "PUBLIC_ORDER_AND_HARRASSMENT",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "12587": {
+    "parentGroupDescription": "Other indictable",
+    "categoryDescription": "Offences against public order",
+    "subCategoryDescription": "Fail to stop a vehicle when required to do so by virtue of section 116(3) of Terrorism Act 2000",
+    "actuarialCategory": "PUBLIC_ORDER_AND_HARRASSMENT",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "12588": {
+    "parentGroupDescription": "Other indictable",
+    "categoryDescription": "Offences against public order",
+    "subCategoryDescription": "Possess pyrotechnic article at a musical event (Policing and Crime Act 2017)",
+    "actuarialCategory": "PUBLIC_ORDER_AND_HARRASSMENT",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "12589": {
+    "parentGroupDescription": "Other indictable",
+    "categoryDescription": "Offences against public order",
+    "subCategoryDescription": "Fail to comply with requirement imposed under disclosure order (Criminal Finance Act 2017)",
+    "actuarialCategory": "PUBLIC_ORDER_AND_HARRASSMENT",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "12590": {
+    "parentGroupDescription": "Other indictable",
+    "categoryDescription": "Offences against public order",
+    "subCategoryDescription": "Publish an image of an item of clothing or other article - terrorism",
+    "actuarialCategory": "PUBLIC_ORDER_AND_HARRASSMENT",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "12591": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Offences against public order",
+    "subCategoryDescription": "Offences relating to obstruction or non-compliance with searches or duties carried out under Counter-Terrorism and Border Security Act 2019",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_SUB_ABH",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "12592": {
+    "parentGroupDescription": "Other indictable",
+    "categoryDescription": "Offences against public order",
+    "subCategoryDescription": "Offences relating one person protests failing to comply with condition",
+    "actuarialCategory": "PUBLIC_ORDER_AND_HARRASSMENT",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "12593": {
+    "parentGroupDescription": "Other indictable",
+    "categoryDescription": "Offences against public order",
+    "subCategoryDescription": "Offences relating to the failure to leave land / remove vehicle and returning without permission",
     "actuarialCategory": "PUBLIC_ORDER_AND_HARRASSMENT",
     "flags": {
       "opdViolenceSex": false,
@@ -18944,6 +20504,16 @@
     "categoryDescription": "Interference with motor vehicles",
     "subCategoryDescription": "Interference with motor vehicles",
     "actuarialCategory": "VEHICLE_RELATED_THEFT",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "12701": {
+    "parentGroupDescription": "Other indictable",
+    "categoryDescription": "Firearms (Amendment) Act 1997 S.31",
+    "subCategoryDescription": "Absconding by person released on bail",
+    "actuarialCategory": "ABSCONDING_OR_BAIL",
     "flags": {
       "opdViolenceSex": false,
       "isViolentSanction": false
@@ -19819,6 +21389,26 @@
       "isViolentSanction": false
     }
   },
+  "13836": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Offences involving impersonation, making false or misleading statements or failing to give information etc",
+    "subCategoryDescription": "Knowingly serve as a juror at an inquest when disqualified",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "13840": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Offences involving impersonation, making false or misleading statements or failing to give information etc",
+    "subCategoryDescription": "On summons as a juror fail without reasonable excuse to attend an inquest/Attend a coroner inquest as a juror refuse and without reasonable excuse refuse to serve",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
   "13845": {
     "parentGroupDescription": "Other summary offences",
     "categoryDescription": "Offences involving impersonation, making false or misleading statements or failing to give information etc",
@@ -19859,6 +21449,16 @@
       "isViolentSanction": false
     }
   },
+  "13850": {
+    "parentGroupDescription": "Fraud forgery",
+    "categoryDescription": "Offences involving impersonation, making false or misleading statements or failing to give information etc",
+    "subCategoryDescription": "Summary offences for failure to give information regarding offshore income assets and/or activities (Taxes Management Act 1970)",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
   "13852": {
     "parentGroupDescription": "Other summary offences",
     "categoryDescription": "Offences involving impersonation, making false or misleading statements or failing to give information etc",
@@ -19887,16 +21487,6 @@
     "flags": {
       "opdViolenceSex": false,
       "isViolentSanction": true
-    }
-  },
-  "19511": {
-    "parentGroupDescription": "Other summary offences",
-    "categoryDescription": "Other Offences",
-    "subCategoryDescription": "Failure to attend etc. an inquiry into matters connected with NCIS",
-    "actuarialCategory": "OTHER_OFFENCES",
-    "flags": {
-      "opdViolenceSex": false,
-      "isViolentSanction": false
     }
   },
   "14001": {
@@ -20253,16 +21843,6 @@
     "parentGroupDescription": "Other summary offences",
     "categoryDescription": "Offences by licensed persons or others acting on their behalf",
     "subCategoryDescription": "Making an internal communication between licensed premises and premises used for public resort, or as a refreshment house",
-    "actuarialCategory": "OTHER_OFFENCES",
-    "flags": {
-      "opdViolenceSex": false,
-      "isViolentSanction": false
-    }
-  },
-  "19558": {
-    "parentGroupDescription": "Other summary offences",
-    "categoryDescription": "Other Offences",
-    "subCategoryDescription": "Offences under Insurance Companies Act 1982 S.71(3)",
     "actuarialCategory": "OTHER_OFFENCES",
     "flags": {
       "opdViolenceSex": false,
@@ -21689,6 +23269,16 @@
       "isViolentSanction": false
     }
   },
+  "14403": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Juvenile Smoking, offences in relation to",
+    "subCategoryDescription": "Failure to display warning statement",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
   "14500": {
     "parentGroupDescription": "Other summary offences",
     "categoryDescription": "Intimidation",
@@ -21999,6 +23589,16 @@
       "isViolentSanction": true
     }
   },
+  "14901": {
+    "parentGroupDescription": "Criminal damage",
+    "categoryDescription": "Criminal Damage, ¿¿5,000 or less, and Malicious Damage",
+    "subCategoryDescription": "Racially aggravated criminal damage to property value under ¿¿5000",
+    "actuarialCategory": "CRIMINAL_DAMAGE",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
   "15000": {
     "parentGroupDescription": "Other summary offences",
     "categoryDescription": "Merchant Shipping Acts, offences against",
@@ -22169,6 +23769,16 @@
       "isViolentSanction": false
     }
   },
+  "15042": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Merchant Shipping Acts, offences against",
+    "subCategoryDescription": "Fishing vessel owner fails to provide suitable accommodation required food or drinking water (Merchant Shipping (Work in Fishing Convention) Regulations 2018)",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
   "15100": {
     "parentGroupDescription": "Other summary offences",
     "categoryDescription": "Social Security Offences",
@@ -22293,6 +23903,36 @@
     "parentGroupDescription": "Other summary offences",
     "categoryDescription": "Social Security Offences",
     "subCategoryDescription": "All offences under Jobseekers Act 1995",
+    "actuarialCategory": "WELFARE_FRAUD",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "15116": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Social Security Offences",
+    "subCategoryDescription": "Other social security offences",
+    "actuarialCategory": "WELFARE_FRAUD",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "15117": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Social Security Offences",
+    "subCategoryDescription": "Make false statement / representation to obtain reduction under council tax reduction scheme",
+    "actuarialCategory": "WELFARE_FRAUD",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "15118": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Social Security Offences",
+    "subCategoryDescription": "Cause / allow another to fail to give notice of change in entitlement to reduction in council tax reduction scheme",
     "actuarialCategory": "WELFARE_FRAUD",
     "flags": {
       "opdViolenceSex": false,
@@ -22547,6 +24187,56 @@
     "flags": {
       "opdViolenceSex": true,
       "isViolentSanction": true
+    }
+  },
+  "15520": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Air Force and Air Navigation",
+    "subCategoryDescription": "Fly small unmanned surveillance aircraft as described in 167(2) not in accordance with permission issued by CAA",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "15522": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Air Force and Air Navigation",
+    "subCategoryDescription": "Fly small unmanned aircraft when not reasonably satisfied that the flight can safely be made",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "15523": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Air Force and Air Navigation",
+    "subCategoryDescription": "Fly small unmanned aircraft (mass greater than 7kg) in Class A C D or E airspace without permission",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "15526": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Air Force and Air Navigation",
+    "subCategoryDescription": "Fly small unmanned aircraft for purposes of aerial work other than in accordance with permission granted by CAA",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "15530": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Air Force and Air Navigation",
+    "subCategoryDescription": "Offences by remote pilots flying unmanned aircraft",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
     }
   },
   "15600": {
@@ -23309,6 +24999,16 @@
       "isViolentSanction": false
     }
   },
+  "16806": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Public Health, offences in relation to",
+    "subCategoryDescription": "Breaking up streets for the purposes of laying pipes",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
   "16807": {
     "parentGroupDescription": "Other summary offences",
     "categoryDescription": "Public Health, offences in relation to",
@@ -23423,16 +25123,6 @@
     "parentGroupDescription": "Other summary offences",
     "categoryDescription": "Public Health, offences in relation to",
     "subCategoryDescription": "Summary offences created by Regulations made under SS.6 & 7 - Waste and Emissions Trading Act 2003",
-    "actuarialCategory": "OTHER_OFFENCES",
-    "flags": {
-      "opdViolenceSex": false,
-      "isViolentSanction": false
-    }
-  },
-  "16882": {
-    "parentGroupDescription": "Other summary offences",
-    "categoryDescription": "Public Health, offences in relation to",
-    "subCategoryDescription": "Offences under Environmental Protection Act 1990 S.87",
     "actuarialCategory": "OTHER_OFFENCES",
     "flags": {
       "opdViolenceSex": false,
@@ -23662,7 +25352,27 @@
   "16856": {
     "parentGroupDescription": "Other summary offences",
     "categoryDescription": "Public Health, offences in relation to",
-    "subCategoryDescription": "Public Health, offences in relation to, Summary offences under this regulation",
+    "subCategoryDescription": "Public Health, offences in relation to, Summary offences under this regulation ",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "16857": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Public Health, offences in relation to",
+    "subCategoryDescription": "Failure to comply with screening restriction/requirement (coronavirus)",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "16861": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Public Health, offences in relation to",
+    "subCategoryDescription": "Offences in relation to events and gatherings (coronavirus)",
     "actuarialCategory": "OTHER_OFFENCES",
     "flags": {
       "opdViolenceSex": false,
@@ -23853,6 +25563,16 @@
     "parentGroupDescription": "Other summary offences",
     "categoryDescription": "Public Health, offences in relation to",
     "subCategoryDescription": "Offences under Environmental Protection Act 1990 S.82",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "16882": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Public Health, offences in relation to",
+    "subCategoryDescription": "Offences under Environmental Protection Act 1990 S.87",
     "actuarialCategory": "OTHER_OFFENCES",
     "flags": {
       "opdViolenceSex": false,
@@ -24269,6 +25989,16 @@
       "isViolentSanction": false
     }
   },
+  "17317": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Stage Carriage and Public Service Vehicles, offences peculiar to",
+    "subCategoryDescription": "Offences against the regulation of services by public service vehicles in and around London (S.23 of the Transport (London) Act 1969) (historic)",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
   "17318": {
     "parentGroupDescription": "Summary motoring offences",
     "categoryDescription": "Stage Carriage and Public Service Vehicles, offences peculiar to",
@@ -24637,6 +26367,16 @@
     "flags": {
       "opdViolenceSex": false,
       "isViolentSanction": false
+    }
+  },
+  "18403": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Obstruction or Failure to comply with authorised officer",
+    "subCategoryDescription": "Obstruct local authority in exercise of s47(3)(a) power to enter premises - Care Act 2014",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_SUB_ABH",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
     }
   },
   "18500": {
@@ -25659,6 +27399,46 @@
       "isViolentSanction": false
     }
   },
+  "19356": {
+    "parentGroupDescription": "Drug offences",
+    "categoryDescription": "Misuse of Drugs, offences in relation to",
+    "subCategoryDescription": "Remain on / enter premises in contravention of access prohibition re psychoactive substances",
+    "actuarialCategory": "DRUG_POSSESSION_OR_SUPPLY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "19357": {
+    "parentGroupDescription": "Drug offences",
+    "categoryDescription": "Misuse of Drugs, offences in relation to",
+    "subCategoryDescription": "Obstruct a person entering premises / securing premises against entry re psychoactive substances",
+    "actuarialCategory": "DRUG_POSSESSION_OR_SUPPLY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "19358": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Misuse of Drugs, offences in relation to",
+    "subCategoryDescription": "Obstruct enforcement officer in performance of functions under Psychoactive Substances Act 2016",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_SUB_ABH",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "19359": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Misuse of Drugs, offences in relation to",
+    "subCategoryDescription": "Fail to comply / prevent compliance with requirement / direction under Psychoactive Substances Act 2016",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_SUB_ABH",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
   "19391": {
     "parentGroupDescription": "Drug offences",
     "categoryDescription": "Misuse of Drugs, offences in relation to",
@@ -25684,16 +27464,6 @@
     "categoryDescription": "Immigration Act, offences against",
     "subCategoryDescription": "Immigration Act, offences against    [Use this code only if you are unable to determine which subcoded Offence applies]",
     "actuarialCategory": "FRAUD_AND_FORGERY",
-    "flags": {
-      "opdViolenceSex": false,
-      "isViolentSanction": false
-    }
-  },
-  "19508": {
-    "parentGroupDescription": "Other summary offences",
-    "categoryDescription": "Other Offences",
-    "subCategoryDescription": "Offences under Criminal Justice & Public Order Act 1994 S.60",
-    "actuarialCategory": "OTHER_OFFENCES",
     "flags": {
       "opdViolenceSex": false,
       "isViolentSanction": false
@@ -26029,26 +27799,6 @@
       "isViolentSanction": false
     }
   },
-  "19509": {
-    "parentGroupDescription": "Other summary offences",
-    "categoryDescription": "Other Offences",
-    "subCategoryDescription": "Offences under Gas Acts 1965 and 1986",
-    "actuarialCategory": "OTHER_OFFENCES",
-    "flags": {
-      "opdViolenceSex": false,
-      "isViolentSanction": false
-    }
-  },
-  "19510": {
-    "parentGroupDescription": "Other summary offences",
-    "categoryDescription": "Other Offences",
-    "subCategoryDescription": "Without authority sell an Olympic games ticket",
-    "actuarialCategory": "OTHER_OFFENCES",
-    "flags": {
-      "opdViolenceSex": false,
-      "isViolentSanction": false
-    }
-  },
   "19434": {
     "parentGroupDescription": "Other summary offences",
     "categoryDescription": "Immigration Act, offences against",
@@ -26063,6 +27813,16 @@
     "parentGroupDescription": "Other summary offences",
     "categoryDescription": "Immigration Act, offences against",
     "subCategoryDescription": "Employing a person subject to immigration control who has attained the age of 16",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "19436": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Immigration Act, offences against",
+    "subCategoryDescription": "Immigration Act 1971 - Obtain / Seek to obtain leave to enter UK by deception (historic)",
     "actuarialCategory": "FRAUD_AND_FORGERY",
     "flags": {
       "opdViolenceSex": false,
@@ -26329,6 +28089,56 @@
       "isViolentSanction": false
     }
   },
+  "19463": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Immigration Act, offences against",
+    "subCategoryDescription": "Drive motor vehicle on road/public place when not lawfully resident in UK",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "19464": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Immigration Act, offences against",
+    "subCategoryDescription": "Illegal working",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "19465": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Immigration Act, offences against",
+    "subCategoryDescription": "Provide false information / intentionally failed to disclose information to a relevant officer enforcing a power under Part 1 of Schedule 4A of the Immigration Act 1971",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "19466": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Immigration Act, offences against",
+    "subCategoryDescription": "Fail to comply with direction to move container for search - immigration",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "19467": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Immigration Act, offences against",
+    "subCategoryDescription": "Immigration offences relating to maritime enforcement",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
   "19500": {
     "parentGroupDescription": "Other summary offences",
     "categoryDescription": "Other Offences",
@@ -26403,6 +28213,46 @@
     "parentGroupDescription": "Other summary offences",
     "categoryDescription": "Other Offences",
     "subCategoryDescription": "Offences under Child Benefit Act 1975 S.11",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "19508": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Other Offences",
+    "subCategoryDescription": "Offences under Criminal Justice & Public Order Act 1994 S.60",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "19509": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Other Offences",
+    "subCategoryDescription": "Offences under Gas Acts 1965 and 1986",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "19510": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Other Offences",
+    "subCategoryDescription": "Without authority sell an Olympic games ticket",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "19511": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Other Offences",
+    "subCategoryDescription": "Failure to attend etc. an inquiry into matters connected with NCIS",
     "actuarialCategory": "OTHER_OFFENCES",
     "flags": {
       "opdViolenceSex": false,
@@ -26849,6 +28699,16 @@
       "isViolentSanction": false
     }
   },
+  "19558": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Other Offences",
+    "subCategoryDescription": "Offences under Insurance Companies Act 1982 S.71(3)",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
   "19559": {
     "parentGroupDescription": "Other summary offences",
     "categoryDescription": "Other Offences",
@@ -27207,6 +29067,26 @@
     "flags": {
       "opdViolenceSex": false,
       "isViolentSanction": true
+    }
+  },
+  "19597": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Other Offences",
+    "subCategoryDescription": "Sex Offenders Act 1997 S.3[1](b) Notifies police with false information as to name or names",
+    "actuarialCategory": "SEXUAL_NOT_AGAINST_CHILD",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "19598": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Other Offences",
+    "subCategoryDescription": "Sex Offenders Act 1997 S.3[1](b) Notifies police with false information as to home address",
+    "actuarialCategory": "SEXUAL_NOT_AGAINST_CHILD",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
     }
   },
   "19599": {
@@ -27749,6 +29629,16 @@
       "isViolentSanction": false
     }
   },
+  "19655": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Other Offences",
+    "subCategoryDescription": "Obstruction of regulator in exercise of his power",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_SUB_ABH",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
   "19657": {
     "parentGroupDescription": "Other summary offences",
     "categoryDescription": "Other Offences",
@@ -28179,10 +30069,150 @@
       "isViolentSanction": false
     }
   },
+  "19702": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Other Offences",
+    "subCategoryDescription": "Smoking in a vehicle in which a child was present",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_ABH_PLUS",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "19706": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Other Offences",
+    "subCategoryDescription": "Requirement to give information in criminal proceedings to state nationality/produce nationality document",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "19707": {
+    "parentGroupDescription": "Fraud forgery",
+    "categoryDescription": "Other Offences",
+    "subCategoryDescription": "Failure to comply with requirement under reg 20-27 of Company Limited Liability Partnership and Business (Names and Trading Disclosures) Regulations 2015",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "19708": {
+    "parentGroupDescription": "Fraud forgery",
+    "categoryDescription": "Other Offences",
+    "subCategoryDescription": "Company/director/secretary/officer fail to deliver confirmation statement before end 14 day review period",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "19709": {
+    "parentGroupDescription": "Fraud forgery",
+    "categoryDescription": "Other Offences",
+    "subCategoryDescription": "Offences breaching reg.7(1-4) of the Personal Protective Equipment Regulations 2018",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "19710": {
+    "parentGroupDescription": "Fraud forgery",
+    "categoryDescription": "Other Offences",
+    "subCategoryDescription": "Obstructing/failure to assist person with power/executing warrant to inspect personal data",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "19711": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Other Offences",
+    "subCategoryDescription": "Fail to supply or give false/misleading information documents or records to enforcement officer Intentionally obstruct enforcement officer (Environmental Protection (Microbeads) (Wales) Regulations 2018)",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "19713": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Other Offences",
+    "subCategoryDescription": "Summary offences under The Equine Identification (Wales) Regulations 2019",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "19714": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Other Offences",
+    "subCategoryDescription": "Summary offences under the Water Supply (Water Fittings) Regulations 1999",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "19716": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Other Offences",
+    "subCategoryDescription": "Intentionally obstruct or fail to give assistance or information to any person acting in the execution of the Common Agricultural Policy Regulations 2014",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_SUB_ABH",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "19717": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Other Offences",
+    "subCategoryDescription": "Unauthorised recording/transmission of court proceedings broadcast or video/audio link",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "19718": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Other Offences",
+    "subCategoryDescription": "Contravention of registration requirements under The Care Quality Commission (Registration) Regulations 2009",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "19719": {
+    "parentGroupDescription": "Fraud forgery",
+    "categoryDescription": "Other Offences",
+    "subCategoryDescription": "Fail to disclose information relevant to Global Anti-Corruption Sanctions Regulations 2021",
+    "actuarialCategory": "FRAUD_AND_FORGERY",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
   "19721": {
     "parentGroupDescription": "Violence against the person",
     "categoryDescription": "Other Offences",
     "subCategoryDescription": "Possess an offensive weapon in private place",
+    "actuarialCategory": "WEAPONS_NON_FIREARM",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": true
+    }
+  },
+  "19722": {
+    "parentGroupDescription": "Violence against the person",
+    "categoryDescription": "Other Offences",
+    "subCategoryDescription": "Summary offence under the Offensive Weapons Act 2019",
     "actuarialCategory": "WEAPONS_NON_FIREARM",
     "flags": {
       "opdViolenceSex": false,
@@ -28224,6 +30254,26 @@
     "categoryDescription": "Other non-motoring classifications",
     "subCategoryDescription": "Risk of Sexual Harm Order (RSHO) or Interim RSHO made on application by police",
     "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "59800": {
+    "parentGroupDescription": "Other indictable",
+    "categoryDescription": "Not an offence. Various breaches",
+    "subCategoryDescription": "Not an offence. Various breaches - 59800",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_SUB_ABH",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "59900": {
+    "parentGroupDescription": "Other indictable",
+    "categoryDescription": "Not an offence. Various breaches",
+    "subCategoryDescription": "Not an offence. Various breaches - 59900",
+    "actuarialCategory": "VIOLENCE_AGAINST_THE_PERSON_SUB_ABH",
     "flags": {
       "opdViolenceSex": false,
       "isViolentSanction": false
@@ -28559,16 +30609,6 @@
       "isViolentSanction": false
     }
   },
-  "99620": {
-    "parentGroupDescription": "Other indictable",
-    "categoryDescription": "Coronavirus Related Offences",
-    "subCategoryDescription": "Provide false / misleading information in relation to Schedule 21 (99620)",
-    "actuarialCategory": "OTHER_OFFENCES",
-    "flags": {
-      "opdViolenceSex": false,
-      "isViolentSanction": false
-    }
-  },
   "80312": {
     "parentGroupDescription": "Summary motoring offences",
     "categoryDescription": "Driving etc after consuming alcohol or taking drugs",
@@ -28583,6 +30623,16 @@
     "parentGroupDescription": "Summary motoring offences",
     "categoryDescription": "Driving etc after consuming alcohol or taking drugs",
     "subCategoryDescription": "Drive motor vehicle with a proportion of a specified controlled drug above the specified limit",
+    "actuarialCategory": "DRINK_DRIVING",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "80314": {
+    "parentGroupDescription": "Summary motoring offences",
+    "categoryDescription": "Driving etc after consuming alcohol or taking drugs",
+    "subCategoryDescription": "Unknown drink/drug driving offence",
     "actuarialCategory": "DRINK_DRIVING",
     "flags": {
       "opdViolenceSex": false,
@@ -28849,6 +30899,16 @@
       "isViolentSanction": false
     }
   },
+  "80801": {
+    "parentGroupDescription": "Summary motoring offences",
+    "categoryDescription": "HGV Offences",
+    "subCategoryDescription": "Use / keep HGV on a road when HGV road user levy not paid",
+    "actuarialCategory": "MOTORING_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
   "80900": {
     "parentGroupDescription": "Summary motoring offences",
     "categoryDescription": "Vehicle insurance offences",
@@ -28933,6 +30993,26 @@
     "parentGroupDescription": "Summary motoring offences",
     "categoryDescription": "Vehicle registration and excise licence offences",
     "subCategoryDescription": "Disclose any information obtained from the register of vehicles held under S.21 of the Vehicle Excise & Registration Act 1994",
+    "actuarialCategory": "MOTORING_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "81004": {
+    "parentGroupDescription": "Summary motoring offences",
+    "categoryDescription": "Vehicle registration and excise licence offences",
+    "subCategoryDescription": "Operator uses or permits goods vehicle to be taken outside UK without international road transport permit or in breach of prohibition notice under S7.",
+    "actuarialCategory": "MOTORING_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "81005": {
+    "parentGroupDescription": "Summary motoring offences",
+    "categoryDescription": "Vehicle registration and excise licence offences",
+    "subCategoryDescription": "Use goods vehicle in Great Britain for international carriage without a Community licence",
     "actuarialCategory": "MOTORING_OFFENCES",
     "flags": {
       "opdViolenceSex": false,
@@ -29229,6 +31309,16 @@
       "isViolentSanction": false
     }
   },
+  "81602": {
+    "parentGroupDescription": "Summary motoring offences",
+    "categoryDescription": "Speed limit offences",
+    "subCategoryDescription": "Motor vehicle exceeding temporary speed restriction made by Highway Authority on road other than motorway under s14 of this Act",
+    "actuarialCategory": "MOTORING_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
   "81611": {
     "parentGroupDescription": "Summary motoring offences",
     "categoryDescription": "Speed limit offences",
@@ -29279,6 +31369,16 @@
       "isViolentSanction": false
     }
   },
+  "81803": {
+    "parentGroupDescription": "Summary motoring offences",
+    "categoryDescription": "Neglect of traffic directions",
+    "subCategoryDescription": "Driving Heavy Commercial Vehicle in Kent in breach of restriction period or requirement by traffic officer",
+    "actuarialCategory": "MOTORING_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
   "81811": {
     "parentGroupDescription": "Summary motoring offences",
     "categoryDescription": "Neglect of traffic directions",
@@ -29323,6 +31423,16 @@
     "parentGroupDescription": "Summary motoring offences",
     "categoryDescription": "Neglect of pedestrian rights",
     "subCategoryDescription": "Driving on a footway",
+    "actuarialCategory": "MOTORING_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "81903": {
+    "parentGroupDescription": "Summary motoring offences",
+    "categoryDescription": "Neglect of pedestrian rights",
+    "subCategoryDescription": "Failure to follow pedestrian crossing regulations",
     "actuarialCategory": "MOTORING_OFFENCES",
     "flags": {
       "opdViolenceSex": false,
@@ -29709,16 +31819,6 @@
       "isViolentSanction": false
     }
   },
-  "99700": {
-    "parentGroupDescription": "Other summary offences",
-    "categoryDescription": "Other Breach, Recall and Arrest Offences",
-    "subCategoryDescription": "Other Breach, Recall and Arrest Offences",
-    "actuarialCategory": "OTHER_OFFENCES",
-    "flags": {
-      "opdViolenceSex": false,
-      "isViolentSanction": false
-    }
-  },
   "82514": {
     "parentGroupDescription": "Summary motoring offences",
     "categoryDescription": "Miscellaneous offences (including trailer offences)",
@@ -29823,6 +31923,16 @@
     "parentGroupDescription": "Summary motoring offences",
     "categoryDescription": "Miscellaneous offences (including trailer offences)",
     "subCategoryDescription": "Offences relating to the immobilisation of vehicles",
+    "actuarialCategory": "MOTORING_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "82525": {
+    "parentGroupDescription": "Summary motoring offences",
+    "categoryDescription": "Miscellaneous offences",
+    "subCategoryDescription": "Summary offences under Road Vehicles (Approval) Regulations 2020",
     "actuarialCategory": "MOTORING_OFFENCES",
     "flags": {
       "opdViolenceSex": false,
@@ -30133,6 +32243,16 @@
     "parentGroupDescription": "Other indictable",
     "categoryDescription": "Coronavirus Related Offences",
     "subCategoryDescription": "Obstruct person carrying out function under Coronavirus Closure of Leisure Regs (Wales) (99618)",
+    "actuarialCategory": "OTHER_OFFENCES",
+    "flags": {
+      "opdViolenceSex": false,
+      "isViolentSanction": false
+    }
+  },
+  "99700": {
+    "parentGroupDescription": "Other summary offences",
+    "categoryDescription": "Other Breach, Recall and Arrest Offences",
+    "subCategoryDescription": "Other Breach, Recall and Arrest Offences",
     "actuarialCategory": "OTHER_OFFENCES",
     "flags": {
       "opdViolenceSex": false,
