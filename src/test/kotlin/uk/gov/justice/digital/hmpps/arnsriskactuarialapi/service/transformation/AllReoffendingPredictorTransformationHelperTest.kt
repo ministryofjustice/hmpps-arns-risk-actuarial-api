@@ -19,7 +19,6 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.offencecode.Actuari
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.OffenceCodeCacheService
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.coefficients.AllReoffendingPredictorDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.coefficients.AllReoffendingPredictorStatic
-import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.coefficients.SeriousViolentReoffendingPredictorStatic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.calculatePolynomial
 import java.math.BigDecimal
 import java.time.LocalDate
