@@ -19,6 +19,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sanitisePercentag
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sigmoid
 import java.math.BigDecimal
 import java.time.LocalDate
+import java.time.YearMonth
 import java.time.temporal.ChronoUnit
 
 object SeriousViolentReoffendingPredictorTransformationHelper {
@@ -154,8 +155,8 @@ object SeriousViolentReoffendingPredictorTransformationHelper {
     }
 
     val monthsBetweenAssessmentAndFollowup = ChronoUnit.MONTHS.between(
-      dateAtStartOfFollowup,
-      assessmentDate,
+      YearMonth.from(dateAtStartOfFollowup),
+      YearMonth.from(assessmentDate),
     ).coerceAtMost(36)
 
     val coefficients: Array<BigDecimal> = when (staticOrDynamic) {

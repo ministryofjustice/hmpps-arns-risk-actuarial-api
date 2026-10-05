@@ -16,6 +16,9 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.RiskBand
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.StaticOrDynamic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.dto.offencecode.ActuarialCategory
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.OffenceCodeCacheService
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.coefficients.SeriousViolentReoffendingPredictorDynamic
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.coefficients.SeriousViolentReoffendingPredictorStatic
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.coefficients.ViolentReoffendingPredictorStatic
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.get2YearInterceptWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getAgeGenderPolynomialWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getChronicDrinkingWeight
@@ -44,6 +47,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getUnemployedWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getViolenceRateWeight
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.service.transformation.SeriousViolentReoffendingPredictorTransformationHelper.getViolentSanctionsWeight
+import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.calculatePolynomial
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.Month
@@ -428,14 +432,22 @@ class SeriousViolentReoffendingPredictorTransformationHelperTest {
 
   @ParameterizedTest
   @MethodSource("getOffenceGroupWeightProvider")
-  fun `getOffenceGroupWeight returns correct weight - happy path`(staticOrDynamic: StaticOrDynamic, category: ActuarialCategory, expectedWeight: BigDecimal) {
+  fun `getOffenceGroupWeight returns correct weight - happy path`(
+    staticOrDynamic: StaticOrDynamic,
+    category: ActuarialCategory,
+    expectedWeight: BigDecimal,
+  ) {
     val offenceCodeCacheService: OffenceCodeCacheService = mock()
     val offenceCode = "12345"
 
     whenever(offenceCodeCacheService.getActuarialCategory(offenceCode)).thenReturn(category)
     assertEquals(
       expectedWeight,
-      SeriousViolentReoffendingPredictorTransformationHelper.getOffenceGroupWeight(offenceCodeCacheService, staticOrDynamic, offenceCode),
+      SeriousViolentReoffendingPredictorTransformationHelper.getOffenceGroupWeight(
+        offenceCodeCacheService,
+        staticOrDynamic,
+        offenceCode,
+      ),
     )
   }
 
@@ -452,7 +464,10 @@ class SeriousViolentReoffendingPredictorTransformationHelperTest {
         offenceCode,
       )
     }
-    assertEquals("Offence code mapping for $offenceCode not found, ensure this is validated before the calculation", exception.message)
+    assertEquals(
+      "Offence code mapping for $offenceCode not found, ensure this is validated before the calculation",
+      exception.message,
+    )
   }
 
   @Test
@@ -468,7 +483,10 @@ class SeriousViolentReoffendingPredictorTransformationHelperTest {
         offenceCode,
       )
     }
-    assertEquals("Offence code mapping for $offenceCode is UNKNOWN, ensure this is validated before the calculation", exception.message)
+    assertEquals(
+      "Offence code mapping for $offenceCode is UNKNOWN, ensure this is validated before the calculation",
+      exception.message,
+    )
   }
 
   @Test
@@ -484,7 +502,10 @@ class SeriousViolentReoffendingPredictorTransformationHelperTest {
         offenceCode,
       )
     }
-    assertEquals("Offence code mapping for $offenceCode is UNKNOWN, ensure this is validated before the calculation", exception.message)
+    assertEquals(
+      "Offence code mapping for $offenceCode is UNKNOWN, ensure this is validated before the calculation",
+      exception.message,
+    )
   }
 
   companion object {
@@ -665,14 +686,58 @@ class SeriousViolentReoffendingPredictorTransformationHelperTest {
         LocalDate.of(2025, Month.JUNE, 1),
         LocalDate.of(2025, Month.JANUARY, 1),
         StaticOrDynamic.DYNAMIC,
-        BigDecimal("-0.13835234699305000081104164694049442341228228769978159107267856597900390625"),
+        calculatePolynomial(
+          arrayOf(
+            SeriousViolentReoffendingPredictorDynamic.OFFENCE_FREE_MONTHS.coefficient,
+            SeriousViolentReoffendingPredictorDynamic.OFFENCE_FREE_MONTHS_QUADRATIC.coefficient,
+            SeriousViolentReoffendingPredictorDynamic.OFFENCE_FREE_MONTHS_CUBIC.coefficient,
+            SeriousViolentReoffendingPredictorDynamic.OFFENCE_FREE_MONTHS_QUARTIC.coefficient,
+          ),
+          BigDecimal(5),
+        ),
       ),
       // Normal calculation for static
       Arguments.of(
         LocalDate.of(2025, Month.SEPTEMBER, 1),
         LocalDate.of(2025, Month.JANUARY, 1),
         StaticOrDynamic.STATIC,
-        BigDecimal("-0.239216072644622391465095423424003229229128919541835784912109375000000000000"),
+        calculatePolynomial(
+          arrayOf(
+            SeriousViolentReoffendingPredictorStatic.OFFENCE_FREE_MONTHS.coefficient,
+            SeriousViolentReoffendingPredictorStatic.OFFENCE_FREE_MONTHS_QUADRATIC.coefficient,
+            SeriousViolentReoffendingPredictorStatic.OFFENCE_FREE_MONTHS_CUBIC.coefficient,
+            SeriousViolentReoffendingPredictorStatic.OFFENCE_FREE_MONTHS_QUARTIC.coefficient,
+          ),
+          BigDecimal(8),
+        ),
+      ),
+      Arguments.of(
+        LocalDate.of(2026, 12, 1),
+        LocalDate.of(2026, 11, 30),
+        StaticOrDynamic.STATIC,
+        calculatePolynomial(
+          arrayOf(
+            SeriousViolentReoffendingPredictorStatic.OFFENCE_FREE_MONTHS.coefficient,
+            SeriousViolentReoffendingPredictorStatic.OFFENCE_FREE_MONTHS_QUADRATIC.coefficient,
+            SeriousViolentReoffendingPredictorStatic.OFFENCE_FREE_MONTHS_CUBIC.coefficient,
+            SeriousViolentReoffendingPredictorStatic.OFFENCE_FREE_MONTHS_QUARTIC.coefficient,
+          ),
+          BigDecimal.ONE,
+        ),
+      ),
+      Arguments.of(
+        LocalDate.of(2026, 6, 30),
+        LocalDate.of(2025, 7, 31),
+        StaticOrDynamic.STATIC,
+        calculatePolynomial(
+          arrayOf(
+            SeriousViolentReoffendingPredictorStatic.OFFENCE_FREE_MONTHS.coefficient,
+            SeriousViolentReoffendingPredictorStatic.OFFENCE_FREE_MONTHS_QUADRATIC.coefficient,
+            SeriousViolentReoffendingPredictorStatic.OFFENCE_FREE_MONTHS_CUBIC.coefficient,
+            SeriousViolentReoffendingPredictorStatic.OFFENCE_FREE_MONTHS_QUARTIC.coefficient,
+          ),
+          BigDecimal(11),
+        ),
       ),
     )
 
@@ -840,11 +905,31 @@ class SeriousViolentReoffendingPredictorTransformationHelperTest {
       Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.VEHICLE_RELATED_THEFT, BigDecimal("0.286214108247545")),
       Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.FRAUD_AND_FORGERY, BigDecimal("-0.0932918356073765")),
       Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.WELFARE_FRAUD, BigDecimal("-2.75700217295462")),
-      Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.DRUG_IMPORT_EXPORT_OR_PRODUCTION, BigDecimal("-0.151563625759297")),
-      Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.DRUG_POSSESSION_OR_SUPPLY, BigDecimal("0.196404663980207")),
-      Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.VIOLENCE_AGAINST_THE_PERSON_ABH_PLUS, BigDecimal("0.0914232846880801")),
-      Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.VIOLENCE_AGAINST_THE_PERSON_SUB_ABH, BigDecimal("0.0881806276607277")),
-      Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.PUBLIC_ORDER_AND_HARRASSMENT, BigDecimal("-0.102680989477238")),
+      Arguments.of(
+        StaticOrDynamic.STATIC,
+        ActuarialCategory.DRUG_IMPORT_EXPORT_OR_PRODUCTION,
+        BigDecimal("-0.151563625759297"),
+      ),
+      Arguments.of(
+        StaticOrDynamic.STATIC,
+        ActuarialCategory.DRUG_POSSESSION_OR_SUPPLY,
+        BigDecimal("0.196404663980207"),
+      ),
+      Arguments.of(
+        StaticOrDynamic.STATIC,
+        ActuarialCategory.VIOLENCE_AGAINST_THE_PERSON_ABH_PLUS,
+        BigDecimal("0.0914232846880801"),
+      ),
+      Arguments.of(
+        StaticOrDynamic.STATIC,
+        ActuarialCategory.VIOLENCE_AGAINST_THE_PERSON_SUB_ABH,
+        BigDecimal("0.0881806276607277"),
+      ),
+      Arguments.of(
+        StaticOrDynamic.STATIC,
+        ActuarialCategory.PUBLIC_ORDER_AND_HARRASSMENT,
+        BigDecimal("-0.102680989477238"),
+      ),
       Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.WEAPONS_NON_FIREARM, BigDecimal("0.4050968835329157")),
       Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.FIREARMS_MOST_SERIOUS, BigDecimal("-0.0211330064692993")),
       Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.FIREARMS_OTHER, BigDecimal("0.3539581212971587")),
@@ -854,7 +939,11 @@ class SeriousViolentReoffendingPredictorTransformationHelperTest {
       Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.OTHER_OFFENCES, BigDecimal("0.175156031546492")),
       Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.ABSCONDING_OR_BAIL, BigDecimal("0.361929924513904")),
       Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.SEXUAL_AGAINST_CHILD, BigDecimal("-0.269534814977957")),
-      Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.SEXUAL_NOT_AGAINST_CHILD, BigDecimal("-0.481426313870417")),
+      Arguments.of(
+        StaticOrDynamic.STATIC,
+        ActuarialCategory.SEXUAL_NOT_AGAINST_CHILD,
+        BigDecimal("-0.481426313870417"),
+      ),
       Arguments.of(StaticOrDynamic.STATIC, ActuarialCategory.THEFT_NON_MOTOR, BigDecimal("-0.126315026107379")),
       Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.BURGLARY_DOMESTIC, BigDecimal("0.392304322484302")),
       Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.BURGLARY_OTHER, BigDecimal("0.210475686624578")),
@@ -864,11 +953,31 @@ class SeriousViolentReoffendingPredictorTransformationHelperTest {
       Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.VEHICLE_RELATED_THEFT, BigDecimal("0.335872011000959")),
       Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.FRAUD_AND_FORGERY, BigDecimal("0.128223795291931")),
       Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.WELFARE_FRAUD, BigDecimal("-2.54378150425616")),
-      Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.DRUG_IMPORT_EXPORT_OR_PRODUCTION, BigDecimal("0.146018219011484")),
-      Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.DRUG_POSSESSION_OR_SUPPLY, BigDecimal("0.210481894371787")),
-      Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.VIOLENCE_AGAINST_THE_PERSON_ABH_PLUS, BigDecimal("-0.048353695619906")),
-      Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.VIOLENCE_AGAINST_THE_PERSON_SUB_ABH, BigDecimal("0.110262124783647")),
-      Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.PUBLIC_ORDER_AND_HARRASSMENT, BigDecimal("-0.165010485104843")),
+      Arguments.of(
+        StaticOrDynamic.DYNAMIC,
+        ActuarialCategory.DRUG_IMPORT_EXPORT_OR_PRODUCTION,
+        BigDecimal("0.146018219011484"),
+      ),
+      Arguments.of(
+        StaticOrDynamic.DYNAMIC,
+        ActuarialCategory.DRUG_POSSESSION_OR_SUPPLY,
+        BigDecimal("0.210481894371787"),
+      ),
+      Arguments.of(
+        StaticOrDynamic.DYNAMIC,
+        ActuarialCategory.VIOLENCE_AGAINST_THE_PERSON_ABH_PLUS,
+        BigDecimal("-0.048353695619906"),
+      ),
+      Arguments.of(
+        StaticOrDynamic.DYNAMIC,
+        ActuarialCategory.VIOLENCE_AGAINST_THE_PERSON_SUB_ABH,
+        BigDecimal("0.110262124783647"),
+      ),
+      Arguments.of(
+        StaticOrDynamic.DYNAMIC,
+        ActuarialCategory.PUBLIC_ORDER_AND_HARRASSMENT,
+        BigDecimal("-0.165010485104843"),
+      ),
       Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.WEAPONS_NON_FIREARM, BigDecimal("0.0243282774787757")),
       Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.FIREARMS_MOST_SERIOUS, BigDecimal("-0.382497575361466")),
       Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.FIREARMS_OTHER, BigDecimal("0.149093794035442")),
@@ -878,7 +987,11 @@ class SeriousViolentReoffendingPredictorTransformationHelperTest {
       Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.OTHER_OFFENCES, BigDecimal("0.135286411622716")),
       Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.ABSCONDING_OR_BAIL, BigDecimal("0.414243541008181")),
       Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.SEXUAL_AGAINST_CHILD, BigDecimal("-0.60993507861302")),
-      Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.SEXUAL_NOT_AGAINST_CHILD, BigDecimal("-0.545166046667834")),
+      Arguments.of(
+        StaticOrDynamic.DYNAMIC,
+        ActuarialCategory.SEXUAL_NOT_AGAINST_CHILD,
+        BigDecimal("-0.545166046667834"),
+      ),
       Arguments.of(StaticOrDynamic.DYNAMIC, ActuarialCategory.THEFT_NON_MOTOR, BigDecimal("-0.047968924813678")),
     )
   }
