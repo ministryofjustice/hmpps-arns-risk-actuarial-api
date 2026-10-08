@@ -20,6 +20,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sanitisePercentag
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sigmoid
 import java.math.BigDecimal
 import java.time.LocalDate
+import java.time.YearMonth
 import java.time.temporal.ChronoUnit
 
 object ViolentReoffendingPredictorTransformationHelper {
@@ -77,13 +78,24 @@ object ViolentReoffendingPredictorTransformationHelper {
     }
   }
 
-  fun getOffenceGroupWeight(offenceCodeCacheService: OffenceCodeCacheService, staticOrDynamic: StaticOrDynamic, currentOffenceCode: String): BigDecimal {
+  fun getOffenceGroupWeight(
+    offenceCodeCacheService: OffenceCodeCacheService,
+    staticOrDynamic: StaticOrDynamic,
+    currentOffenceCode: String,
+  ): BigDecimal {
     // The currentOffenceCode has been prevalidated but just in case throw an error if this returns null
     val actuarialCategory = offenceCodeCacheService.getActuarialCategory(currentOffenceCode)
       ?: throw IllegalArgumentException("Offence code mapping for $currentOffenceCode not found, ensure this is validated before the calculation")
     return when (staticOrDynamic) {
-      StaticOrDynamic.STATIC -> getViolentReoffendingPredictorStaticOffenceCodeCoefficient(actuarialCategory, currentOffenceCode)
-      StaticOrDynamic.DYNAMIC -> getViolentReoffendingPredictorDynamicOffenceCodeCoefficient(actuarialCategory, currentOffenceCode)
+      StaticOrDynamic.STATIC -> getViolentReoffendingPredictorStaticOffenceCodeCoefficient(
+        actuarialCategory,
+        currentOffenceCode,
+      )
+
+      StaticOrDynamic.DYNAMIC -> getViolentReoffendingPredictorDynamicOffenceCodeCoefficient(
+        actuarialCategory,
+        currentOffenceCode,
+      )
     }
   }
 
@@ -157,8 +169,8 @@ object ViolentReoffendingPredictorTransformationHelper {
     if (assessmentDate.isBefore(dateAtStartOfFollowup)) return BigDecimal.ZERO
 
     val monthsBetweenAssessmentAndFollowup = ChronoUnit.MONTHS.between(
-      dateAtStartOfFollowup,
-      assessmentDate,
+      YearMonth.from(dateAtStartOfFollowup),
+      YearMonth.from(assessmentDate),
     ).coerceAtMost(36)
 
     val coefficients: Array<BigDecimal> = when (staticOrDynamic) {
@@ -189,7 +201,8 @@ object ViolentReoffendingPredictorTransformationHelper {
       return BigDecimal.ZERO
     }
 
-    val lengthOfCareer = (ageAtCurrentSanction - ageAtFirstSanction) + ViolentReoffendingPredictorConstant.CAREER_BOOST_COPAS
+    val lengthOfCareer =
+      (ageAtCurrentSanction - ageAtFirstSanction) + ViolentReoffendingPredictorConstant.CAREER_BOOST_COPAS
 
     val coefficient = when (staticOrDynamic) {
       StaticOrDynamic.STATIC -> when (gender) {
@@ -203,7 +216,8 @@ object ViolentReoffendingPredictorTransformationHelper {
       }
     }
 
-    val totalSanctionsRatio: BigDecimal = totalNumberOfSanctionsForAllOffences.toBigDecimal() / lengthOfCareer.toBigDecimal()
+    val totalSanctionsRatio: BigDecimal =
+      totalNumberOfSanctionsForAllOffences.toBigDecimal() / lengthOfCareer.toBigDecimal()
 
     val naturalLog = log(totalSanctionsRatio)
 
@@ -220,14 +234,16 @@ object ViolentReoffendingPredictorTransformationHelper {
       return BigDecimal.ZERO
     }
 
-    val lengthOfCareer = (ageAtCurrentSanction - ageAtFirstSanction) + ViolentReoffendingPredictorConstant.CAREER_BOOST_VIOLENT
+    val lengthOfCareer =
+      (ageAtCurrentSanction - ageAtFirstSanction) + ViolentReoffendingPredictorConstant.CAREER_BOOST_VIOLENT
 
     val coefficient = when (staticOrDynamic) {
       StaticOrDynamic.STATIC -> ViolentReoffendingPredictorStatic.VIOLENT_RATE.coefficient
       StaticOrDynamic.DYNAMIC -> ViolentReoffendingPredictorDynamic.VIOLENT_RATE.coefficient
     }
 
-    val totalViolentSanctionsRatio: BigDecimal = totalNumberOfViolentSanctions.toBigDecimal() / lengthOfCareer.toBigDecimal()
+    val totalViolentSanctionsRatio: BigDecimal =
+      totalNumberOfViolentSanctions.toBigDecimal() / lengthOfCareer.toBigDecimal()
 
     val naturalLog = log(totalViolentSanctionsRatio)
 

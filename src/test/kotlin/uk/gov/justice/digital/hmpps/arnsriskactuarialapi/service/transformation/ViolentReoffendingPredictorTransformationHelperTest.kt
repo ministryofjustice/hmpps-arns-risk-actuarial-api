@@ -725,6 +725,34 @@ class ViolentReoffendingPredictorTransformationHelperTest {
           12.toBigDecimal(),
         ),
       ),
+      Arguments.of(
+        StaticOrDynamic.STATIC,
+        LocalDate.of(2026, 12, 1),
+        LocalDate.of(2026, 11, 30),
+        calculatePolynomial(
+          arrayOf(
+            ViolentReoffendingPredictorStatic.OFFENCE_FREE_MONTHS.coefficient,
+            ViolentReoffendingPredictorStatic.OFFENCE_FREE_MONTHS_QUADRATIC.coefficient,
+            ViolentReoffendingPredictorStatic.OFFENCE_FREE_MONTHS_CUBIC.coefficient,
+            ViolentReoffendingPredictorStatic.OFFENCE_FREE_MONTHS_QUARTIC.coefficient,
+          ),
+          BigDecimal.ONE,
+        ),
+      ),
+      Arguments.of(
+        StaticOrDynamic.STATIC,
+        LocalDate.of(2026, 6, 30),
+        LocalDate.of(2025, 7, 31),
+        calculatePolynomial(
+          arrayOf(
+            ViolentReoffendingPredictorStatic.OFFENCE_FREE_MONTHS.coefficient,
+            ViolentReoffendingPredictorStatic.OFFENCE_FREE_MONTHS_QUADRATIC.coefficient,
+            ViolentReoffendingPredictorStatic.OFFENCE_FREE_MONTHS_CUBIC.coefficient,
+            ViolentReoffendingPredictorStatic.OFFENCE_FREE_MONTHS_QUARTIC.coefficient,
+          ),
+          BigDecimal(11),
+        ),
+      ),
     )
 
     @JvmStatic

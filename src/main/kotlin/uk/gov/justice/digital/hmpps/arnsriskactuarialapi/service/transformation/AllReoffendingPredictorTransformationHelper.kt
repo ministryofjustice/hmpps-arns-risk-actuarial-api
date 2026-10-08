@@ -20,6 +20,7 @@ import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sanitisePercentag
 import uk.gov.justice.digital.hmpps.arnsriskactuarialapi.utils.sigmoid
 import java.math.BigDecimal
 import java.time.LocalDate
+import java.time.YearMonth
 import java.time.temporal.ChronoUnit
 
 object AllReoffendingPredictorTransformationHelper {
@@ -79,13 +80,24 @@ object AllReoffendingPredictorTransformationHelper {
     }
   }
 
-  fun getOffenceGroupWeight(offenceCodeCacheService: OffenceCodeCacheService, staticOrDynamic: StaticOrDynamic, currentOffenceCode: String): BigDecimal {
+  fun getOffenceGroupWeight(
+    offenceCodeCacheService: OffenceCodeCacheService,
+    staticOrDynamic: StaticOrDynamic,
+    currentOffenceCode: String,
+  ): BigDecimal {
     // The currentOffenceCode has been prevalidated but just in case throw an error if this returns null
     val actuarialCategory = offenceCodeCacheService.getActuarialCategory(currentOffenceCode)
       ?: throw IllegalArgumentException("Offence code mapping for $currentOffenceCode not found, ensure this is validated before the calculation")
     return when (staticOrDynamic) {
-      StaticOrDynamic.STATIC -> getAllReoffendingPredictorStaticOffenceCodeCoefficient(actuarialCategory, currentOffenceCode)
-      StaticOrDynamic.DYNAMIC -> getAllReoffendingPredictorDynamicOffenceCodeCoefficient(actuarialCategory, currentOffenceCode)
+      StaticOrDynamic.STATIC -> getAllReoffendingPredictorStaticOffenceCodeCoefficient(
+        actuarialCategory,
+        currentOffenceCode,
+      )
+
+      StaticOrDynamic.DYNAMIC -> getAllReoffendingPredictorDynamicOffenceCodeCoefficient(
+        actuarialCategory,
+        currentOffenceCode,
+      )
     }
   }
 
@@ -163,8 +175,8 @@ object AllReoffendingPredictorTransformationHelper {
     }
 
     val monthsBetweenAssessmentAndFollowup = ChronoUnit.MONTHS.between(
-      dateAtStartOfFollowup,
-      assessmentDate,
+      YearMonth.from(dateAtStartOfFollowup),
+      YearMonth.from(assessmentDate),
     ).coerceAtMost(36)
 
     val coefficients: Array<BigDecimal> = when (staticOrDynamic) {
@@ -209,7 +221,8 @@ object AllReoffendingPredictorTransformationHelper {
       }
     }
 
-    val totalSanctionsRatio: BigDecimal = totalNumberOfSanctionsForAllOffences.toBigDecimal() / lengthOfCareer.toBigDecimal()
+    val totalSanctionsRatio: BigDecimal =
+      totalNumberOfSanctionsForAllOffences.toBigDecimal() / lengthOfCareer.toBigDecimal()
 
     val naturalLog = log(totalSanctionsRatio)
 
@@ -241,7 +254,8 @@ object AllReoffendingPredictorTransformationHelper {
       }
     }
 
-    val totalSanctionsRatio: BigDecimal = totalNumberOfSanctionsForAllOffences.toBigDecimal() / lengthOfCareer.toBigDecimal()
+    val totalSanctionsRatio: BigDecimal =
+      totalNumberOfSanctionsForAllOffences.toBigDecimal() / lengthOfCareer.toBigDecimal()
 
     val naturalLog = log(totalSanctionsRatio)
 
