@@ -85,6 +85,7 @@ class ActuarialRegressionTest : IntegrationTestBase() {
     "17507",
     "50300",
     "50400",
+    "08851"
   )
 
   private val skipTestIds = listOf(
