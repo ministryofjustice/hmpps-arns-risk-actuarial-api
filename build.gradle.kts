@@ -46,6 +46,11 @@ dependencies {
   testImplementation(kotlin("test"))
   testImplementation(platform("org.testcontainers:testcontainers-bom:2.0.5"))
   testImplementation("org.testcontainers:testcontainers")
+  constraints {
+    implementation("org.apache.tomcat.embed:tomcat-embed-core:11.0.27") {
+      because("Fixes critical authentication bypass vulnerability CVE")
+    }
+  }
 }
 
 kotlin {
