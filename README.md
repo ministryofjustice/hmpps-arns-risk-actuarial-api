@@ -4,6 +4,14 @@
 [![Docker Repository on ghcr](https://img.shields.io/badge/ghcr.io-repository-2496ED.svg?logo=docker)](https://ghcr.io/ministryofjustice/hmpps-arns-risk-actuarial-api)
 [![API docs](https://img.shields.io/badge/API_docs_-view-85EA2D.svg?logo=swagger)](https://arns-risk-actuarial-api-dev.hmpps.service.justice.gov.uk/swagger-ui/index.html)
 
+## Pre-requisites
+
+* **Docker Desktop**
+* **Java SDK 25**
+* **API Testing Tool** (e.g. [Bruno](https://www.usebruno.com/) or Postman)
+
+---
+
 ## Running the application locally in Docker (not recommended)
 
 The application comes with a `dev` spring profile that includes default settings for running locally. This is not
@@ -27,6 +35,14 @@ docker compose pull && docker compose up --scale hmpps-arns-risk-actuarial-api=0
 will just start a docker instance of Redis, Manage-Offences-Api (wiremock) & HMPPS Auth. The application should then be started with a `dev` active profile
 in Intellij. Alternatively use a command like:
 `HMPPS_AUTH_URL=https://localhost:8090/auth SPRING_PROFILES_ACTIVE=dev ./gradlew bootRun`
+
+### Run the API application in IntelliJ
+1. Navigate to the main application entry point: `uk.gov.justice.digital.hmpps.arnsriskactuarialapi.ArnsRiskActuarialApi (src/main/kotlin/.../ArnsRiskActuarialApi.kt)`. <br/> <br/>
+2. Open Run/Debug Configurations:
+* Select or create the configuration for `ArnsRiskActuarialApi`.
+* Under Active profiles, enter: `dev`. <br/>
+3. Click Run ▶️ or Debug 🪲. <br/> <br/>
+4. Wait for the console log: `Started ArnsRiskActuarialApiKt in ... seconds.` The API is now listening on http://localhost:8080.
 
 ### Calling the API locally
 You will need to generate a JWT token to call the API. This can be done by running the following command
