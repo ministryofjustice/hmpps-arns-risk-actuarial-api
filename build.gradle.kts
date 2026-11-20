@@ -47,7 +47,7 @@ dependencies {
   testImplementation(platform("org.testcontainers:testcontainers-bom:2.0.5"))
   testImplementation("org.testcontainers:testcontainers")
   constraints {
-    implementation("org.apache.tomcat.embed:tomcat-embed-core:11.0.27") {
+    implementation("org.apache.tomcat.embed:tomcat-embed-core:11.0.29") {
       because("Fixes critical authentication bypass vulnerability CVE")
     }
   }
